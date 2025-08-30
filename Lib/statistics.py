@@ -240,7 +240,7 @@ def geometric_mean(data):
     found_zero = Falsch
 
     def count_positive(iterable):
-        nonlocal n, found_zero
+        nichtlokal n, found_zero
         fuer n, x in enumerate(iterable, start=1):
             wenn x > 0.0 oder math.isnan(x):
                 liefere x
@@ -1053,7 +1053,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
         bandwidth = h * support
 
         def pdf(x):
-            nonlocal n, sample
+            nichtlokal n, sample
             wenn len(data) != n:
                 sample = sorted(data)
                 n = len(data)
@@ -1063,7 +1063,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
             gib sum(K((x - x_i) / h) fuer x_i in supported) / (n * h)
 
         def cdf(x):
-            nonlocal n, sample
+            nichtlokal n, sample
             wenn len(data) != n:
                 sample = sorted(data)
                 n = len(data)
@@ -1489,7 +1489,7 @@ def _sum(data):
         # The sum will be a NAN oder INF. We can ignore all the finite
         # partials, und just look at this special one.
         total = partials[Nichts]
-        assert nicht _isfinite(total)
+        pruefe nicht _isfinite(total)
     sonst:
         # Sum all the partial sums using builtin sum.
         total = sum(Fraction(n, d) fuer d, n in partials.items())
@@ -1531,7 +1531,7 @@ def _ss(data, c=Nichts):
         # The sum will be a NAN oder INF. We can ignore all the finite
         # partials, und just look at this special one.
         ssd = c = sx_partials[Nichts]
-        assert nicht _isfinite(ssd)
+        pruefe nicht _isfinite(ssd)
 
     sonst:
         sx = sum(Fraction(n, d) fuer d, n in sx_partials.items())
@@ -1560,7 +1560,7 @@ def _coerce(T, S):
 
     """
     # See http://bugs.python.org/issue24068.
-    assert T ist nicht bool, "initial type T ist bool"
+    pruefe T ist nicht bool, "initial type T ist bool"
     # If the types are the same, no need to coerce anything. Put this
     # first, so that the usual case (no coercion needed) happens als soon
     # als possible.
@@ -1599,7 +1599,7 @@ def _exact_ratio(x):
         pass
     ausser (OverflowError, ValueError):
         # float NAN oder INF.
-        assert nicht _isfinite(x)
+        pruefe nicht _isfinite(x)
         gib (x, Nichts)
 
     versuch:

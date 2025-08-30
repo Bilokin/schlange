@@ -188,7 +188,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         con = self.con
         action = 0
         def progress():
-            nonlocal action
+            nichtlokal action
             action = 1
             gib 0
         con.set_progress_handler(progress, 1)

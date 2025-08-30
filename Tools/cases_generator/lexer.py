@@ -279,7 +279,7 @@ klasse Token:
         gib self.end[1] - self.begin[1]
 
     def replaceText(self, txt: str) -> "Token":
-        assert isinstance(txt, str)
+        pruefe isinstance(txt, str)
         gib Token(self.filename, self.kind, txt, self.begin, self.end)
 
     def __repr__(self) -> str:

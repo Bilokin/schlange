@@ -46,7 +46,7 @@ def is_pickleable(obj):
 def defined_in___main__(name, script, *, remove=Falsch):
     importiere __main__ als mainmod
     mainns = vars(mainmod)
-    assert name nicht in mainns
+    pruefe name nicht in mainns
     exec(script, mainns, mainns)
     wenn remove:
         liefere mainns.pop(name)
@@ -59,7 +59,7 @@ def defined_in___main__(name, script, *, remove=Falsch):
 
 def build_excinfo(exctype, msg=Nichts, formatted=Nichts, errdisplay=Nichts):
     wenn isinstance(exctype, type):
-        assert issubclass(exctype, BaseException), exctype
+        pruefe issubclass(exctype, BaseException), exctype
         exctype = types.SimpleNamespace(
             __name__=exctype.__name__,
             __qualname__=exctype.__qualname__,
@@ -75,10 +75,10 @@ def build_excinfo(exctype, msg=Nichts, formatted=Nichts, errdisplay=Nichts):
             __module__=module oder Nichts,
         )
     sonst:
-        assert isinstance(exctype, types.SimpleNamespace)
-    assert msg ist Nichts oder isinstance(msg, str), msg
-    assert formatted  ist Nichts oder isinstance(formatted, str), formatted
-    assert errdisplay ist Nichts oder isinstance(errdisplay, str), errdisplay
+        pruefe isinstance(exctype, types.SimpleNamespace)
+    pruefe msg ist Nichts oder isinstance(msg, str), msg
+    pruefe formatted  ist Nichts oder isinstance(formatted, str), formatted
+    pruefe errdisplay ist Nichts oder isinstance(errdisplay, str), errdisplay
     gib types.SimpleNamespace(
         type=exctype,
         msg=msg,
@@ -119,7 +119,7 @@ klasse CreateTests(TestBase):
         lock = threading.Lock()
         interp = Nichts
         def f():
-            nonlocal interp
+            nichtlokal interp
             interp = interpreters.create()
             lock.acquire()
             lock.release()
@@ -476,7 +476,7 @@ klasse TestInterpreterIsRunning(TestBase):
 
             def task():
                 v = os.read({r_thread}, 1)
-                assert v == {DONE!r}
+                pruefe v == {DONE!r}
                 os.write({w_interp}, {FINISHED!r})
             t = threading.Thread(target=task)
             t.start()
@@ -925,7 +925,7 @@ klasse TestInterpreterExec(TestBase):
 
             def task():
                 v = os.read({r_thread}, 1)
-                assert v == {DONE!r}
+                pruefe v == {DONE!r}
                 os.write({w_interp}, {FINISHED!r})
             t = threading.Thread(target=task)
             t.start()
@@ -1136,8 +1136,8 @@ klasse TestInterpreterCall(TestBase):
         )
 
     def assert_exceptions_equal(self, exc1, exc2):
-        assert isinstance(exc1, Exception)
-        assert isinstance(exc2, Exception)
+        pruefe isinstance(exc1, Exception)
+        pruefe isinstance(exc2, Exception)
         wenn exc1 == exc2:
             gib
         self.assertIs(type(exc1), type(exc2))
@@ -1184,7 +1184,7 @@ klasse TestInterpreterCall(TestBase):
             memoryview(b'spam!'),
         ]:
             mit self.subTest(f'shareable {arg!r}'):
-                assert _interpreters.is_shareable(arg)
+                pruefe _interpreters.is_shareable(arg)
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assertEqual(res, arg)
 
@@ -1199,7 +1199,7 @@ klasse TestInterpreterCall(TestBase):
             mit self.subTest(f'stateful func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assert_funcs_equal(res, arg)
-                assert is_pickleable(arg)
+                pruefe is_pickleable(arg)
 
         fuer arg in [
             Ellipsis,
@@ -1233,7 +1233,7 @@ klasse TestInterpreterCall(TestBase):
                     self.assert_exceptions_equal(res, arg)
                 sonst:
                     self.assertEqual(res, arg)
-                assert is_pickleable(arg)
+                pruefe is_pickleable(arg)
 
         fuer arg in [
             types.MappingProxyType({}),
@@ -1241,8 +1241,8 @@ klasse TestInterpreterCall(TestBase):
               wenn f nicht in defs.STATELESS_FUNCTIONS),
         ]:
             mit self.subTest(f'unpickleable {arg!r}'):
-                assert nicht _interpreters.is_shareable(arg)
-                assert nicht is_pickleable(arg)
+                pruefe nicht _interpreters.is_shareable(arg)
+                pruefe nicht is_pickleable(arg)
                 mit self.assertRaises(interpreters.NotShareableError):
                     interp.call(defs.spam_returns_arg, arg)
 
@@ -1928,7 +1928,7 @@ klasse LowLevelTests(TestBase):
         fuer field, value in vars(supported['empty']).items():
             wenn field == 'gil':
                 weiter
-            assert isinstance(value, bool)
+            pruefe isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
                 mit self.subTest(f'bad override ({field}={value!r})'):
                     mit self.assertRaises(TypeError):

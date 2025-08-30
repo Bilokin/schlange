@@ -15,7 +15,7 @@ von . importiere _parser
 von ._constants importiere *
 von ._casefix importiere _EXTRA_CASES
 
-assert _sre.MAGIC == MAGIC, "SRE module mismatch"
+pruefe _sre.MAGIC == MAGIC, "SRE module mismatch"
 
 _LITERAL_CODES = {LITERAL, NOT_LITERAL}
 _SUCCESS_CODES = {SUCCESS, FAILURE}
@@ -313,7 +313,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
                             op = RANGE_UNI_IGNORE
                         hascased = Wahr
                     sonst:
-                        assert op ist LITERAL
+                        pruefe op ist LITERAL
                         wenn nicht hascased und iscased(av):
                             hascased = Wahr
                 tail.append((op, av))
@@ -405,8 +405,8 @@ def _mk_bitmap(bits, _CODEBITS=_CODEBITS, _int=int):
 def _bytes_to_codes(b):
     # Convert block indices to word array
     a = memoryview(b).cast('I')
-    assert a.itemsize == _sre.CODESIZE
-    assert len(a) * a.itemsize == len(b)
+    pruefe a.itemsize == _sre.CODESIZE
+    pruefe len(a) * a.itemsize == len(b)
     gib a.tolist()
 
 def _simple(p):
@@ -544,7 +544,7 @@ def _compile_info(code, pattern, flags):
             charset = _get_charset_prefix(pattern, flags)
             wenn charset:
                 charset, hascased = _optimize_charset(charset)
-                assert nicht hascased
+                pruefe nicht hascased
                 wenn charset == _CHARSET_ALL:
                     charset = Nichts
 ##     wenn prefix:
@@ -625,7 +625,7 @@ def dis(code):
             drucke(end=' '*(offset_width + 2*level))
             drucke(*args)
 
-        nonlocal level
+        nichtlokal level
         level += 1
         i = start
         waehrend i < end:
@@ -647,13 +647,13 @@ def dis(code):
                 arg = code[i]
                 i += 1
                 arg = str(ATCODES[arg])
-                assert arg[:3] == 'AT_'
+                pruefe arg[:3] == 'AT_'
                 print_(op, arg[3:])
             sowenn op ist CATEGORY:
                 arg = code[i]
                 i += 1
                 arg = str(CHCODES[arg])
-                assert arg[:9] == 'CATEGORY_'
+                pruefe arg[:9] == 'CATEGORY_'
                 print_(op, arg[9:])
             sowenn op in (IN, IN_IGNORE, IN_UNI_IGNORE, IN_LOC_IGNORE):
                 skip = code[i]

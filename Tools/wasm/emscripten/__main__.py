@@ -234,7 +234,7 @@ def configure_emscripten_python(context, working_dir):
 
     python_build_dir = NATIVE_BUILD_DIR / "build"
     lib_dirs = list(python_build_dir.glob("lib.*"))
-    assert (
+    pruefe (
         len(lib_dirs) == 1
     ), f"Expected a single lib.* directory in {python_build_dir}"
     lib_dir = os.fsdecode(lib_dirs[0])

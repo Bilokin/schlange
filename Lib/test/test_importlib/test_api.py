@@ -84,7 +84,7 @@ klasse ImportModuleTests:
         def load_a():
             self.init.import_module('a.b')
         def load_b():
-            nonlocal b_load_count
+            nichtlokal b_load_count
             b_load_count += 1
         code = {'a': load_a, 'a.b': load_b}
         modules = ['a.__init__', 'a.b']

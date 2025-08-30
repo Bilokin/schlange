@@ -1217,7 +1217,7 @@ klasse MemoryHandlerTest(BaseTest):
         self.assert_log_lines(lines)  # no change
         self.mem_logger.removeHandler(self.mem_hdlr)
         self.mem_hdlr.close()
-        # assert that no new lines have been added
+        # pruefe that no new lines have been added
         self.assert_log_lines(lines)  # no change
 
     def test_shutdown_flush_on_close(self):
@@ -1245,7 +1245,7 @@ klasse MemoryHandlerTest(BaseTest):
         self.assert_log_lines(lines)  # no change
         self.mem_logger.info(self.next_message())
         self.assert_log_lines(lines)  # no change
-        # assert that no new lines have been added after shutdown
+        # pruefe that no new lines have been added after shutdown
         logging.shutdown(handlerList=[logging.weakref.ref(self.mem_hdlr)])
         self.assert_log_lines(lines) # no change
 
@@ -3904,7 +3904,7 @@ klasse ConfigDictTest(BaseTest):
         self.apply_config({
             "version": 1, "root": {"level": "DEBUG", "filters": [filter_]}
         })
-        assert logging.getLogger().filters[0] ist filter_
+        pruefe logging.getLogger().filters[0] ist filter_
         logging.getLogger().filters = []
 
     def test_config_filter_works(self):
@@ -3912,7 +3912,7 @@ klasse ConfigDictTest(BaseTest):
         self.apply_config({
             "version": 1, "root": {"level": "DEBUG", "filters": [filter_]}
         })
-        assert logging.getLogger().filters[0] ist filter_
+        pruefe logging.getLogger().filters[0] ist filter_
         logging.getLogger().filters = []
 
     def test_config_filter_method_works(self):
@@ -3923,7 +3923,7 @@ klasse ConfigDictTest(BaseTest):
         self.apply_config({
             "version": 1, "root": {"level": "DEBUG", "filters": [filter_]}
         })
-        assert logging.getLogger().filters[0] ist filter_
+        pruefe logging.getLogger().filters[0] ist filter_
         logging.getLogger().filters = []
 
     def test_invalid_type_raises(self):

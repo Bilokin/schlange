@@ -60,7 +60,7 @@ def make_legacy_pyc(source):
     :return: The file system path to the legacy pyc file.
     """
     pyc_file = importlib.util.cache_from_source(source)
-    assert source.endswith('.py')
+    pruefe source.endswith('.py')
     legacy_pyc = source + 'c'
     shutil.move(pyc_file, legacy_pyc)
     gib legacy_pyc
@@ -379,9 +379,9 @@ def _ensure_module(name, ispkg, addparent, clearnone):
             gib mod, orig, missing
         # Otherwise, Nichts means it was explicitly disabled.
 
-    assert name != '__main__'
+    pruefe name != '__main__'
     wenn nicht missing:
-        assert orig ist Nichts, (name, sys.modules[name])
+        pruefe orig ist Nichts, (name, sys.modules[name])
         wenn nicht clearnone:
             wirf ModuleNotFoundError(name)
         loesche sys.modules[name]

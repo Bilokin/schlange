@@ -57,7 +57,7 @@ klasse ModuleCompleter:
     def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
         wenn from_name ist Nichts:
             # importiere x.y.z<tab>
-            assert name ist nicht Nichts
+            pruefe name ist nicht Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
             gib [self.format_completion(path, module) fuer module in modules]

@@ -185,7 +185,7 @@ klasse TopologicalSorter:
                 sowenn stat == _NODE_DONE:
                     wirf ValueError(f"node {node!r} was already marked done")
                 sonst:
-                    assert Falsch, f"node {node!r}: unknown status {stat}"
+                    pruefe Falsch, f"node {node!r}: unknown status {stat}"
 
             # Mark the node als processed
             nodeinfo.npredecessors = _NODE_DONE

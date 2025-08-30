@@ -47,21 +47,21 @@ klasse MyBaseProto(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        assert self.state == 'INITIAL', self.state
+        pruefe self.state == 'INITIAL', self.state
         self.state = 'CONNECTED'
         wenn self.connected:
             self.connected.set_result(Nichts)
 
     def data_received(self, data):
-        assert self.state == 'CONNECTED', self.state
+        pruefe self.state == 'CONNECTED', self.state
         self.nbytes += len(data)
 
     def eof_received(self):
-        assert self.state == 'CONNECTED', self.state
+        pruefe self.state == 'CONNECTED', self.state
         self.state = 'EOF'
 
     def connection_lost(self, exc):
-        assert self.state in ('CONNECTED', 'EOF'), self.state
+        pruefe self.state in ('CONNECTED', 'EOF'), self.state
         self.state = 'CLOSED'
         wenn self.done:
             self.done.set_result(Nichts)
@@ -212,7 +212,7 @@ klasse TestSSL(test_utils.TestCase):
         clients = []
 
         async def handle_client(reader, writer):
-            nonlocal CNT
+            nichtlokal CNT
 
             data = warte reader.readexactly(len(A_DATA))
             self.assertEqual(data, A_DATA)
@@ -337,7 +337,7 @@ klasse TestSSL(test_utils.TestCase):
             writer.write(B_DATA)
             self.assertEqual(warte reader.readexactly(4), b'SPAM')
 
-            nonlocal CNT
+            nichtlokal CNT
             CNT += 1
 
             writer.close()
@@ -357,7 +357,7 @@ klasse TestSSL(test_utils.TestCase):
             writer.write(B_DATA)
             self.assertEqual(warte reader.readexactly(4), b'SPAM')
 
-            nonlocal CNT
+            nichtlokal CNT
             CNT += 1
 
             writer.close()
@@ -365,7 +365,7 @@ klasse TestSSL(test_utils.TestCase):
             sock.close()
 
         def run(coro):
-            nonlocal CNT
+            nichtlokal CNT
             CNT = 0
 
             async def _gather(*tasks):
@@ -471,7 +471,7 @@ klasse TestSSL(test_utils.TestCase):
         server_side_aborted = Falsch
 
         def server(sock):
-            nonlocal server_side_aborted
+            nichtlokal server_side_aborted
             versuch:
                 sock.recv_all(1024 * 1024)
             ausser ConnectionAbortedError:
@@ -521,11 +521,11 @@ klasse TestSSL(test_utils.TestCase):
 
         klasse ClientProto(asyncio.Protocol):
             def connection_made(self, transport):
-                nonlocal connection_made_called
+                nichtlokal connection_made_called
                 connection_made_called = Wahr
 
             def connection_lost(self, exc):
-                nonlocal connection_lost_called
+                nichtlokal connection_lost_called
                 connection_lost_called = Wahr
 
         async def client(addr):
@@ -587,7 +587,7 @@ klasse TestSSL(test_utils.TestCase):
         expected_response = b'roger'
 
         def client():
-            nonlocal response
+            nichtlokal response
             versuch:
                 csock = socket.socket(socket.AF_INET)
                 wenn client_ssl ist nicht Nichts:
@@ -838,14 +838,14 @@ klasse TestSSL(test_utils.TestCase):
                 self.buf = bytearray(1)
 
             def connection_made(self, tr):
-                nonlocal client_con_made_calls
+                nichtlokal client_con_made_calls
                 client_con_made_calls += 1
 
             def get_buffer(self, sizehint):
                 gib self.buf
 
             def buffer_updated(self, nsize):
-                assert nsize == 1
+                pruefe nsize == 1
                 self.on_data.set_result(bytes(self.buf[:nsize]))
 
             def eof_received(self):
@@ -858,7 +858,7 @@ klasse TestSSL(test_utils.TestCase):
                 self.con_made_cnt = 0
 
             def connection_made(self, tr):
-                nonlocal client_con_made_calls
+                nichtlokal client_con_made_calls
                 client_con_made_calls += 1
 
             def data_received(self, data):
@@ -1058,7 +1058,7 @@ klasse TestSSL(test_utils.TestCase):
         clients = []
 
         async def handle_client(reader, writer):
-            nonlocal CNT
+            nichtlokal CNT
 
             data = warte reader.readexactly(len(A_DATA))
             self.assertEqual(data, A_DATA)
@@ -1223,14 +1223,14 @@ klasse TestSSL(test_utils.TestCase):
 
             self.assertEqual(warte reader.read(), b'')
 
-            nonlocal CNT
+            nichtlokal CNT
             CNT += 1
 
             writer.close()
             warte self.wait_closed(writer)
 
         def run(coro):
-            nonlocal CNT
+            nichtlokal CNT
             CNT = 0
 
             async def _gather(*tasks):
@@ -1281,7 +1281,7 @@ klasse TestSSL(test_utils.TestCase):
             gib wrapper
 
         async def client(addr):
-            nonlocal future
+            nichtlokal future
             future = self.loop.create_future()
             reader, writer = warte asyncio.open_connection(
                 *addr,
@@ -1392,7 +1392,7 @@ klasse TestSSL(test_utils.TestCase):
             sock.close()
 
         async def client(addr):
-            nonlocal future
+            nichtlokal future
             future = self.loop.create_future()
 
             reader, writer = warte asyncio.open_connection(
@@ -1523,7 +1523,7 @@ klasse TestSSL(test_utils.TestCase):
             sock.close()
 
         async def client(addr):
-            nonlocal future
+            nichtlokal future
             future = self.loop.create_future()
 
             reader, writer = warte asyncio.open_connection(
@@ -1698,13 +1698,13 @@ klasse TestSSL(test_utils.TestCase):
             )
             sock = sslctx.wrap_socket(sock, server_side=Wahr)
             sock.send(b'hello')
-            assert sock.recv(1024) == b'world'
+            pruefe sock.recv(1024) == b'world'
             sock.send(b'extra bytes')
             # sending EOF here
             sock.shutdown(socket.SHUT_WR)
             loop.call_soon_threadsafe(eof.set)
             # make sure we have enough time to reproduce the issue
-            assert sock.recv(1024) == b''
+            pruefe sock.recv(1024) == b''
             sock.close()
 
         klasse Protocol(asyncio.Protocol):
@@ -1721,7 +1721,7 @@ klasse TestSSL(test_utils.TestCase):
                     # pause reading would make incoming data stay in the sslobj
                     self.transport.pause_reading()
                 sonst:
-                    nonlocal extra
+                    nichtlokal extra
                     extra = data
 
             def connection_lost(self, exc):
@@ -1737,7 +1737,7 @@ klasse TestSSL(test_utils.TestCase):
             tr.resume_reading()
             warte pr.fut
             tr.close()
-            assert extra == b'extra bytes'
+            pruefe extra == b'extra bytes'
 
         mit self.tcp_server(server) als srv:
             loop.run_until_complete(client(srv.addr))
@@ -1767,7 +1767,7 @@ klasse TestSocketWrapper:
                  server_hostname=Nichts,
                  do_handshake_on_connect=Wahr):
 
-        assert isinstance(ssl_context, ssl.SSLContext)
+        pruefe isinstance(ssl_context, ssl.SSLContext)
 
         ssl_sock = ssl_context.wrap_socket(
             self.__sock, server_side=server_side,

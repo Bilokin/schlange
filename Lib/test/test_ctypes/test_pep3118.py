@@ -40,7 +40,7 @@ klasse Test(unittest.TestCase):
             self.assertEqual(v.shape, shape)
             # XXX Issue #12851: PyCData_NewGetBuffer() must provide strides
             #     wenn requested. memoryview currently reconstructs missing
-            #     stride information, so this assert will fail.
+            #     stride information, so this pruefe will fail.
             # self.assertEqual(v.strides, ())
 
             # they are always read/write

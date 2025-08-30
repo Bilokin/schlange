@@ -392,10 +392,10 @@ klasse TestCase(object):
         the instance's assertion methods fail; test methods raising this
         exception will be deemed to have 'failed' rather than 'errored'.
     * longMessage: determines whether long messages (including repr of
-        objects used in assert methods) will be printed on failure in *addition*
+        objects used in pruefe methods) will be printed on failure in *addition*
         to any explicit message passed.
     * maxDiff: sets the maximum length of a diff in failure messages
-        by assert methods using difflib. It ist looked up als an instance
+        by pruefe methods using difflib. It ist looked up als an instance
         attribute so can be configured by individual tests wenn required.
     """
 
@@ -1435,7 +1435,7 @@ klasse TestCase(object):
     def assertRegex(self, text, expected_regex, msg=Nichts):
         """Fail the test unless the text matches the regular expression."""
         wenn isinstance(expected_regex, (str, bytes)):
-            assert expected_regex, "expected_regex must nicht be empty."
+            pruefe expected_regex, "expected_regex must nicht be empty."
             expected_regex = re.compile(expected_regex)
         wenn nicht expected_regex.search(text):
             standardMsg = "Regex didn't match: %r nicht found in %r" % (

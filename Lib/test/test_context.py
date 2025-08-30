@@ -425,7 +425,7 @@ klasse ContextTest(unittest.TestCase):
         custom_var = Nichts
 
         def setup_context():
-            nonlocal custom_var
+            nichtlokal custom_var
             custom_var = contextvars.ContextVar('custom')
             custom_var.set(2)
 
@@ -564,7 +564,7 @@ klasse HashKey:
     _crasher = Nichts
 
     def __init__(self, hash, name, *, error_on_eq_to=Nichts):
-        assert hash != -1
+        pruefe hash != -1
         self.name = name
         self.hash = hash
         self.error_on_eq_to = error_on_eq_to

@@ -275,7 +275,7 @@ klasse CodeTest(unittest.TestCase):
 
         def add_foreign_method(cls, name, f):
             code = new_code(f.__code__)
-            assert nicht f.__closure__
+            pruefe nicht f.__closure__
             closure = create_closure(cls)
             defaults = f.__defaults__
             setattr(cls, name, FunctionType(code, globals(), name, defaults, closure))
@@ -377,7 +377,7 @@ klasse CodeTest(unittest.TestCase):
             x = 1
             gib x
         co = func.__code__
-        assert co.co_nlocals > 0;
+        pruefe co.co_nlocals > 0;
 
         # First we try the constructor.
         CodeType = type(co)
@@ -490,7 +490,7 @@ klasse CodeTest(unittest.TestCase):
         def foo():
             pass
 
-        # assert that opcode 127 ist invalid
+        # pruefe that opcode 127 ist invalid
         self.assertEqual(opname[127], '<127>')
 
         # change first opcode to 0x7f (=127)
@@ -558,9 +558,9 @@ klasse CodeTest(unittest.TestCase):
 
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
-                assert line == end_line
-                assert column ist Nichts
-                assert end_column ist Nichts
+                pruefe line == end_line
+                pruefe column ist Nichts
+                pruefe end_column ist Nichts
             """)
         assert_python_ok('-X', 'no_debug_ranges', '-c', code)
 
@@ -572,9 +572,9 @@ klasse CodeTest(unittest.TestCase):
 
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
-                assert line == end_line
-                assert column ist Nichts
-                assert end_column ist Nichts
+                pruefe line == end_line
+                pruefe column ist Nichts
+                pruefe end_column ist Nichts
             """)
         assert_python_ok('-c', code, PYTHONNODEBUGRANGES='1')
 
@@ -844,7 +844,7 @@ klasse CodeTest(unittest.TestCase):
                 'a': CO_FAST_FREE,
             },
         }
-        assert len(funcs) == len(defs.FUNCTIONS)
+        pruefe len(funcs) == len(defs.FUNCTIONS)
         fuer func in defs.FUNCTIONS:
             mit self.subTest(func):
                 expected = funcs[func]
@@ -886,9 +886,9 @@ klasse CodeTest(unittest.TestCase):
                     wenn 'numunknown' in globalvars:
                         g_numunknown = globalvars['numunknown']
                         size += 1
-                    assert len(globalvars) == size, globalvars
+                    pruefe len(globalvars) == size, globalvars
                 sonst:
-                    assert nicht isinstance(globalvars, str), repr(globalvars)
+                    pruefe nicht isinstance(globalvars, str), repr(globalvars)
                     versuch:
                         numglobal, numbuiltin = globalvars
                     ausser ValueError:
@@ -1087,7 +1087,7 @@ klasse CodeTest(unittest.TestCase):
                 freevars=4,
             ),
         }
-        assert len(funcs) == len(defs.FUNCTIONS), (len(funcs), len(defs.FUNCTIONS))
+        pruefe len(funcs) == len(defs.FUNCTIONS), (len(funcs), len(defs.FUNCTIONS))
         fuer func in defs.FUNCTIONS:
             mit self.subTest(func):
                 expected = funcs[func]
@@ -1336,7 +1336,7 @@ def parse_location_table(code):
             end_column = read(it)
             liefere (code, length, line, line, column, end_column)
         sonst:
-            assert (0 <= code < 10)
+            pruefe (0 <= code < 10)
             second_byte = read(it)
             column = code << 3 | (second_byte >> 4)
             liefere (code, length, line, line, column, column + (second_byte & 15))

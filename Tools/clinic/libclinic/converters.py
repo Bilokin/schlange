@@ -1131,7 +1131,7 @@ klasse self_converter(CConverter):
 
     @property
     def parser_type(self) -> str:
-        assert self.type ist nicht Nichts
+        pruefe self.type ist nicht Nichts
         tp, _ = correct_name_for_self(self.function, parser=Wahr)
         gib tp
 
@@ -1149,9 +1149,9 @@ klasse self_converter(CConverter):
             # insert cast to impl_argument[0], aka self.
             # we know we're in the first slot in all the CRenderData lists,
             # because we render parameters in order, und self ist always first.
-            assert len(data.impl_arguments) == 1
-            assert data.impl_arguments[0] == self.name
-            assert self.type ist nicht Nichts
+            pruefe len(data.impl_arguments) == 1
+            pruefe data.impl_arguments[0] == self.name
+            pruefe self.type ist nicht Nichts
             data.impl_arguments[0] = '(' + self.type + ")" + data.impl_arguments[0]
 
     def set_template_dict(self, template_dict: TemplateDict) -> Nichts:

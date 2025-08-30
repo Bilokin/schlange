@@ -1612,7 +1612,7 @@ klasse MathTests(unittest.TestCase):
             the vectors x, y randomly und calculate the achieved condition number.
             """
 
-            assert n >= 6
+            pruefe n >= 6
             n2 = n // 2
             x = [0.0] * n
             y = [0.0] * n

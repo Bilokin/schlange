@@ -137,7 +137,7 @@ def regrtest_unraisable_hook(unraisable) -> Nichts:
     versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_unraisablehook ist nicht Nichts, "orig_unraisablehook nicht set"
+        pruefe orig_unraisablehook ist nicht Nichts, "orig_unraisablehook nicht set"
         orig_unraisablehook(unraisable)
         sys.stderr.flush()
     schliesslich:
@@ -161,7 +161,7 @@ def regrtest_threading_excepthook(args) -> Nichts:
     versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_threading_excepthook ist nicht Nichts, "orig_threading_excepthook nicht set"
+        pruefe orig_threading_excepthook ist nicht Nichts, "orig_threading_excepthook nicht set"
         orig_threading_excepthook(args)
         sys.stderr.flush()
     schliesslich:

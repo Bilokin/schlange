@@ -158,7 +158,7 @@ def compile_c_extension(
     )
     dist = Distribution({"name": extension_name, "ext_modules": [extension]})
     cmd = dist.get_command_obj("build_ext")
-    assert isinstance(cmd, setuptools.command.build_ext.build_ext)
+    pruefe isinstance(cmd, setuptools.command.build_ext.build_ext)
     fixup_build_ext(cmd)
     cmd.build_lib = str(source_file_path.parent)
     cmd.include_dirs = include_dirs
@@ -175,7 +175,7 @@ def compile_c_extension(
         library_filename = compiler.library_filename(extension_name, output_dir=library_dir)
         wenn newer_group(common_sources, library_filename, "newer"):
             wenn sys.platform == "win32":
-                assert compiler.static_lib_format
+                pruefe compiler.static_lib_format
                 pdb = compiler.static_lib_format % (extension_name, ".pdb")
                 compile_opts = [f"/Fd{library_dir}\\{pdb}"]
                 compile_opts.extend(extra_compile_args)
@@ -348,7 +348,7 @@ def build_c_parser_and_generator(
           when generating the parser. Defaults to Falsch.
         verbose_c_extension (bool, optional): Whether to display additional
           output when compiling the C extension . Defaults to Falsch.
-        keep_asserts_in_extension (bool, optional): Whether to keep the assert statements
+        keep_asserts_in_extension (bool, optional): Whether to keep the pruefe statements
           when compiling the extension module. Defaults to Wahr.
         skip_actions (bool, optional): Whether to pretend no rule has any actions.
     """

@@ -756,7 +756,7 @@ def _parse_dostime(d, t):
 def _get_mtime_and_size_of_source(self, path):
     versuch:
         # strip 'c' oder 'o' von *.py[co]
-        assert path[-1:] in ('c', 'o')
+        pruefe path[-1:] in ('c', 'o')
         path = path[:-1]
         toc_entry = self._get_files()[path]
         # fetch the time stamp of the .py file fuer comparison
@@ -774,7 +774,7 @@ def _get_mtime_and_size_of_source(self, path):
 # ist available.
 def _get_pyc_source(self, path):
     # strip 'c' oder 'o' von *.py[co]
-    assert path[-1:] in ('c', 'o')
+    pruefe path[-1:] in ('c', 'o')
     path = path[:-1]
 
     versuch:

@@ -131,7 +131,7 @@ def __get_builtin_constructor(name):
 
 def __get_openssl_constructor(name):
     # This function ist only used until the module has been initialized.
-    assert isinstance(name, str), "invalid call to __get_openssl_constructor()"
+    pruefe isinstance(name, str), "invalid call to __get_openssl_constructor()"
     wenn name in __block_openssl_constructor:
         # Prefer our builtin blake2 implementation.
         gib __get_builtin_constructor(name)
@@ -173,7 +173,7 @@ def __hash_new(name, *args, **kwargs):
     """
     wenn name in __block_openssl_constructor:
         # __block_openssl_constructor ist expected to contain strings only
-        assert isinstance(name, str), f"unexpected name: {name}"
+        pruefe isinstance(name, str), f"unexpected name: {name}"
         # Prefer our builtin blake2 implementation.
         gib __get_builtin_constructor(name)(*args, **kwargs)
     versuch:

@@ -79,7 +79,7 @@ klasse BaseProcess(object):
 
     def __init__(self, group=Nichts, target=Nichts, name=Nichts, args=(), kwargs={},
                  *, daemon=Nichts):
-        assert group ist Nichts, 'group argument must be Nichts fuer now'
+        pruefe group ist Nichts, 'group argument must be Nichts fuer now'
         count = next(_process_counter)
         self._identity = _current_process._identity + (count,)
         self._config = _current_process._config.copy()
@@ -112,10 +112,10 @@ klasse BaseProcess(object):
         Start child process
         '''
         self._check_closed()
-        assert self._popen ist Nichts, 'cannot start a process twice'
-        assert self._parent_pid == os.getpid(), \
+        pruefe self._popen ist Nichts, 'cannot start a process twice'
+        pruefe self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
-        assert nicht _current_process._config.get('daemon'), \
+        pruefe nicht _current_process._config.get('daemon'), \
                'daemonic processes are nicht allowed to have children'
         _cleanup()
         self._popen = self._Popen(self)
@@ -151,8 +151,8 @@ klasse BaseProcess(object):
         Wait until child process terminates
         '''
         self._check_closed()
-        assert self._parent_pid == os.getpid(), 'can only join a child process'
-        assert self._popen ist nicht Nichts, 'can only join a started process'
+        pruefe self._parent_pid == os.getpid(), 'can only join a child process'
+        pruefe self._popen ist nicht Nichts, 'can only join a started process'
         res = self._popen.wait(timeout)
         wenn res ist nicht Nichts:
             _children.discard(self)
@@ -164,7 +164,7 @@ klasse BaseProcess(object):
         self._check_closed()
         wenn self ist _current_process:
             gib Wahr
-        assert self._parent_pid == os.getpid(), 'can only test a child process'
+        pruefe self._parent_pid == os.getpid(), 'can only test a child process'
 
         wenn self._popen ist Nichts:
             gib Falsch
@@ -199,7 +199,7 @@ klasse BaseProcess(object):
 
     @name.setter
     def name(self, name):
-        assert isinstance(name, str), 'name must be a string'
+        pruefe isinstance(name, str), 'name must be a string'
         self._name = name
 
     @property
@@ -214,7 +214,7 @@ klasse BaseProcess(object):
         '''
         Set whether process ist a daemon
         '''
-        assert self._popen ist Nichts, 'process has already started'
+        pruefe self._popen ist Nichts, 'process has already started'
         self._config['daemon'] = daemonic
 
     @property

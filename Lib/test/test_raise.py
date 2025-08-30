@@ -142,7 +142,7 @@ klasse TestRaise(unittest.TestCase):
 
     def test_assert_with_tuple_arg(self):
         versuch:
-            assert Falsch, (3,)
+            pruefe Falsch, (3,)
         ausser AssertionError als e:
             self.assertEqual(str(e), "(3,)")
 

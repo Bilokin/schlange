@@ -275,7 +275,7 @@ klasse IntegrationTests(TestCase):
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
                         breche
-                nonlocal received
+                nichtlokal received
                 received = len(response.read())
             http.close()
 

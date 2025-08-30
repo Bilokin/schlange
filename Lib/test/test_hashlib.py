@@ -65,7 +65,7 @@ requires_sha3 = unittest.skipUnless(_sha3, 'requires _sha3')
 
 
 def hexstr(s):
-    assert isinstance(s, bytes), repr(s)
+    pruefe isinstance(s, bytes), repr(s)
     h = "0123456789abcdef"
     r = ''
     fuer i in s:

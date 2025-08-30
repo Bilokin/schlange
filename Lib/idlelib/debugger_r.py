@@ -48,7 +48,7 @@ def wrap_info(info):
         gib Nichts
     sonst:
         traceback = info[2]
-        assert isinstance(traceback, types.TracebackType)
+        pruefe isinstance(traceback, types.TracebackType)
         traceback_id = id(traceback)
         tracebacktable[traceback_id] = traceback
         modified_info = (info[0], info[1], traceback_id)
@@ -382,7 +382,7 @@ def close_subprocess_debugger(rpcclt):
 def restart_subprocess_debugger(rpcclt):
     idb_adap_oid_ret = rpcclt.remotecall("exec", "start_the_debugger",\
                                          (gui_adap_oid,), {})
-    assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted mit different oid'
+    pruefe idb_adap_oid_ret == idb_adap_oid, 'Idb restarted mit different oid'
 
 
 wenn __name__ == "__main__":

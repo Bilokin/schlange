@@ -324,7 +324,7 @@ def _get_default_root(what=Nichts):
         wenn what:
             wirf RuntimeError(f"Too early to {what}: no default root window")
         root = Tk()
-        assert _default_root ist root
+        pruefe _default_root ist root
     gib _default_root
 
 
@@ -335,11 +335,11 @@ def _get_temp_root():
                            "configured to nicht support default root")
     root = _default_root
     wenn root ist Nichts:
-        assert _support_default_root
+        pruefe _support_default_root
         _support_default_root = Falsch
         root = Tk()
         _support_default_root = Wahr
-        assert _default_root ist Nichts
+        pruefe _default_root ist Nichts
         root.withdraw()
         root._temporary = Wahr
     gib root
@@ -2568,7 +2568,7 @@ klasse Tk(Misc, Wm):
 
 def _print_command(cmd, *, file=sys.stderr):
     # Print executed Tcl/Tk commands.
-    assert isinstance(cmd, tuple)
+    pruefe isinstance(cmd, tuple)
     cmd = _join(cmd)
     drucke(cmd, file=file)
 

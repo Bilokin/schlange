@@ -407,7 +407,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
             gib mock_now
 
         def mock_sleep(duration):
-            nonlocal mock_now
+            nichtlokal mock_now
             mock_now += duration
 
         # See _android_support.py. The default values of these parameters work
@@ -429,7 +429,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
             # Write BUCKET_KB messages, und gib the rate at which they were
             # accepted in KB per second.
             def write_bucketful():
-                nonlocal line_num
+                nichtlokal line_num
                 start = mock_time()
                 max_line_num = line_num + BUCKET_KB
                 waehrend line_num < max_line_num:

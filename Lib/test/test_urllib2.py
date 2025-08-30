@@ -428,7 +428,7 @@ klasse MockHandler:
             gib self.parent.error("http", args[0], res, code, "", {})
         sowenn action == "raise":
             wirf urllib.error.URLError("blah")
-        assert Falsch
+        pruefe Falsch
 
     def close(self):
         pass
@@ -669,7 +669,7 @@ klasse OpenerDirectorTests(unittest.TestCase):
         handlers = add_ordered_mock_handlers(o, meth_spec)
         req = Request("http://example.com/")
         o.open(req)
-        assert len(o.calls) == 2
+        pruefe len(o.calls) == 2
         calls = [(handlers[0], "http_open", (req,)),
                  (handlers[2], "http_error_302",
                   (req, support.ALWAYS_EQ, 302, "", {}))]

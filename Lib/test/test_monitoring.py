@@ -1932,7 +1932,7 @@ klasse TestLoadSuperAttr(CheckEvents):
                 ausser TypeError:
                     pass
                 sonst:
-                    assert Falsch, "should have raised TypeError"
+                    pruefe Falsch, "should have raised TypeError"
         """
         d = self._exec_super(codestr, optimized)
         expected = [
@@ -2092,7 +2092,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         caught = Nichts
 
         def inner():
-            nonlocal caught
+            nichtlokal caught
             versuch:
                 liefere
             ausser Exception:
@@ -2100,7 +2100,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
                 liefere
 
         def outer():
-            nonlocal caught
+            nichtlokal caught
             versuch:
                 liefere von inner()
             ausser Exception:
@@ -2338,7 +2338,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         fuer _, event, function, *args in self.cases:
             wenn event nicht in self.EXPECT_RAISED_EXCEPTION:
                 weiter
-            assert args und isinstance(args[-1], BaseException)
+            pruefe args und isinstance(args[-1], BaseException)
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
             mit self.subTest(function.__name__):

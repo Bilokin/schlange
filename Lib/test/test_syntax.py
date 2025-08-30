@@ -967,7 +967,7 @@ sowenn can't come after an else.
       ...
     SyntaxError: 'elif' block follows an 'else' block
 
-Misuse of the nonlocal und global statement can lead to a few unique syntax errors.
+Misuse of the nichtlokal und global statement can lead to a few unique syntax errors.
 
    >>> def f():
    ...     drucke(x)
@@ -993,52 +993,52 @@ Misuse of the nonlocal und global statement can lead to a few unique syntax erro
    ...     x = 1
    ...     def g():
    ...         drucke(x)
-   ...         nonlocal x
+   ...         nichtlokal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' ist used prior to nonlocal declaration
+   SyntaxError: name 'x' ist used prior to nichtlokal declaration
 
    >>> def f():
    ...     x = 1
    ...     def g():
    ...         x = 2
-   ...         nonlocal x
+   ...         nichtlokal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' ist assigned to before nonlocal declaration
+   SyntaxError: name 'x' ist assigned to before nichtlokal declaration
 
    >>> def f(x):
-   ...     nonlocal x
+   ...     nichtlokal x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' ist parameter und nonlocal
 
    >>> def f():
    ...     global x
-   ...     nonlocal x
+   ...     nichtlokal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' ist nonlocal und global
+   SyntaxError: name 'x' ist nichtlokal und global
 
    >>> def f():
-   ...     nonlocal x
+   ...     nichtlokal x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding fuer nonlocal 'x' found
+   SyntaxError: no binding fuer nichtlokal 'x' found
 
 From SF bug #1705365
-   >>> nonlocal x
+   >>> nichtlokal x
    Traceback (most recent call last):
      ...
-   SyntaxError: nonlocal declaration nicht allowed at module level
+   SyntaxError: nichtlokal declaration nicht allowed at module level
 
 From https://bugs.python.org/issue25973
    >>> klasse A:
    ...     def f(self):
-   ...         nonlocal __x
+   ...         nichtlokal __x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding fuer nonlocal '_A__x' found
+   SyntaxError: no binding fuer nichtlokal '_A__x' found
 
 
 This tests assignment-context; there was a bug in Python 2.5 where compiling
@@ -2865,7 +2865,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
     def test_nonlocal_param_err_first(self):
         source = """if 1:
             def error(a):
-                nonlocal a  # SyntaxError
+                nichtlokal a  # SyntaxError
             def error2():
                 b = 1
                 global b  # SyntaxError
@@ -3204,7 +3204,7 @@ case(34)
         # This raises a SyntaxError, it used to wirf a SystemError. Context
         # fuer this change can be found on issue #27514
 
-        # In 2.5 there was a missing exception und an assert was triggered in a
+        # In 2.5 there was a missing exception und an pruefe was triggered in a
         # debug build.  The number of blocks must be greater than CO_MAXBLOCKS.
         # SF #1565514
 

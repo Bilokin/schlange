@@ -1205,12 +1205,12 @@ klasse TZStrTest(ZoneInfoTestBase):
             """Decorator to call the addition methods.
 
             This will call a function which adds at least one new entry into
-            the `cases` dictionary. The decorator will also assert that
+            the `cases` dictionary. The decorator will also pruefe that
             something was added to the dictionary.
             """
             prev_len = len(cases)
             f()
-            assert len(cases) > prev_len, "Function did nicht add a test case!"
+            pruefe len(cases) > prev_len, "Function did nicht add a test case!"
 
         NORMAL = cls.NORMAL
         FOLD = cls.FOLD
@@ -2074,12 +2074,12 @@ klasse ZoneInfoData:
         gib lzma.decompress(decoded)
 
     def _convert_to_v1(self, contents):
-        assert contents[0:4] == b"TZif", "Invalid TZif data found!"
+        pruefe contents[0:4] == b"TZif", "Invalid TZif data found!"
         version = int(contents[4:5])
 
         header_start = 4 + 16
         header_end = header_start + 24  # 6l == 24 bytes
-        assert version >= 2, "Version 1 file found: no conversion necessary"
+        pruefe version >= 2, "Version 1 file found: no conversion necessary"
         isutcnt, isstdcnt, leapcnt, timecnt, typecnt, charcnt = struct.unpack(
             ">6l", contents[header_start:header_end]
         )
@@ -2095,7 +2095,7 @@ klasse ZoneInfoData:
         file_size += header_end
         out = b"TZif" + b"\x00" + contents[5:file_size]
 
-        assert (
+        pruefe (
             contents[file_size : (file_size + 4)] == b"TZif"
         ), "Version 2 file nicht truncated at Version 2 header"
 

@@ -26,7 +26,7 @@ def test_short_halfway_cases():
             # Remove any additional powers of 5.
             waehrend n % 5 == 0:
                 n, e = n // 5, e + 1
-            assert n % 10 in (1, 3, 7, 9)
+            pruefe n % 10 in (1, 3, 7, 9)
 
             # Try numbers of the form n * 2**p2 * 10**e, p2 >= 0,
             # until n * 2**p2 has more than 20 significant digits.

@@ -566,7 +566,7 @@ klasse finalize:
                         f()
                     ausser Exception:
                         sys.excepthook(*sys.exc_info())
-                    assert f nicht in cls._registry
+                    pruefe f nicht in cls._registry
         schliesslich:
             # prevent any more finalizers von executing during shutdown
             finalize._shutdown = Wahr

@@ -54,7 +54,7 @@ def main(
 
     def dump_gotos(d, prefix):
         fuer i, item in enumerate(sorted(d)):
-            assert i == item
+            pruefe i == item
             liefere f"    &&{prefix}_{item},\n"
 
     content = [sre_constants_header]

@@ -39,7 +39,7 @@ def _random_data(size: int, rand: random.Random) -> list[float]:
         temp.reverse()
         result.extend(temp)
         loesche temp
-    assert len(result) == size
+    pruefe len(result) == size
     gib result
 
 
@@ -66,7 +66,7 @@ def list_sort_ascending_exchanged(size: int, rand: random.Random) -> list[float]
 
 
 def list_sort_ascending_random(size: int, rand: random.Random) -> list[float]:
-    assert size >= 10, "This benchmark requires size to be >= 10"
+    pruefe size >= 10, "This benchmark requires size to be >= 10"
     result = list_sort_ascending(size, rand)
     # Replace the last 10 mit random floats.
     result[-10:] = [rand.random() fuer _ in range(10)]
@@ -82,7 +82,7 @@ def list_sort_ascending_one_percent(size: int, rand: random.Random) -> list[floa
 
 
 def list_sort_duplicates(size: int, rand: random.Random) -> list[float]:
-    assert size >= 4
+    pruefe size >= 4
     result = list_sort_ascending(4, rand)
     # Arrange fuer lots of duplicates.
     result = result * (size // 4)

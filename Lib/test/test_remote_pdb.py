@@ -197,7 +197,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
         sent_msgs = [msg.args[0] fuer msg in server_sock.sendall.mock_calls]
         fuer msg in sent_msgs:
-            assert msg.endswith(b"\n")
+            pruefe msg.endswith(b"\n")
         actual_outgoing = [json.loads(msg) fuer msg in sent_msgs]
 
         self.assertEqual(actual_outgoing, expected_outgoing)
@@ -216,7 +216,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 fuer call in interrupt_sock.sendall.call_args_list
             ]
         sonst:
-            assert mock_kill ist nicht Nichts
+            pruefe mock_kill ist nicht Nichts
             outgoing_signals = []
             fuer call in mock_kill.call_args_list:
                 pid, signum = call.args

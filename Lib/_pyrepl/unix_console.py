@@ -708,8 +708,8 @@ klasse UnixConsole(Console):
             self.__write_code(fmt, *args)
 
     def __move_y_cuu1_cud1(self, y):
-        assert self._cud1 ist nicht Nichts
-        assert self._cuu1 ist nicht Nichts
+        pruefe self._cud1 ist nicht Nichts
+        pruefe self._cuu1 ist nicht Nichts
         dy = y - self.posxy[1]
         wenn dy > 0:
             self.__write_code(dy * self._cud1)
@@ -728,8 +728,8 @@ klasse UnixConsole(Console):
             self.__write_code(self._hpa, x)
 
     def __move_x_cub1_cuf1(self, x: int) -> Nichts:
-        assert self._cuf1 ist nicht Nichts
-        assert self._cub1 ist nicht Nichts
+        pruefe self._cuf1 ist nicht Nichts
+        pruefe self._cub1 ist nicht Nichts
         dx = x - self.posxy[0]
         wenn dx > 0:
             self.__write_code(self._cuf1 * dx)
@@ -748,7 +748,7 @@ klasse UnixConsole(Console):
         self.__move_y(y)
 
     def __move_tall(self, x, y):
-        assert 0 <= y - self.__offset < self.height, y - self.__offset
+        pruefe 0 <= y - self.__offset < self.height, y - self.__offset
         self.__write_code(self._cup, y - self.__offset, x)
 
     def __sigwinch(self, signum, frame):

@@ -153,7 +153,7 @@ impl_definition block
                     preset[name] = buffer
                 weiter
 
-            assert name in self.destination_buffers
+            pruefe name in self.destination_buffers
             preset[name] = buffer
 
     def add_destination(
@@ -187,7 +187,7 @@ impl_definition block
             dsl_name = block.dsl_name
             wenn dsl_name:
                 wenn dsl_name nicht in self.parsers:
-                    assert dsl_name in parsers, f"No parser to handle {dsl_name!r} block."
+                    pruefe dsl_name in parsers, f"No parser to handle {dsl_name!r} block."
                     self.parsers[dsl_name] = parsers[dsl_name](self)
                 parser = self.parsers[dsl_name]
                 parser.parse(block)

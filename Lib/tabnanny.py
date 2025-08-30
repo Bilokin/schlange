@@ -311,10 +311,10 @@ def _process_tokens(tokens):
             # program statement (or ENDMARKER) that triggered the run is
             # equal to what's left at the top of the indents stack
 
-            # Ouch!  This assert triggers wenn the last line of the source
+            # Ouch!  This pruefe triggers wenn the last line of the source
             # ist indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
-            # assert check_equal  # sonst no earlier NEWLINE, oder an earlier INDENT
+            # pruefe check_equal  # sonst no earlier NEWLINE, oder an earlier INDENT
             check_equal = 1
 
             loesche indents[-1]

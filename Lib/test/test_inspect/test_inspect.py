@@ -862,7 +862,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
     def test_getsource_on_class_without_firstlineno(self):
         __firstlineno__ = 1
         klasse C:
-            nonlocal __firstlineno__
+            nichtlokal __firstlineno__
         self.assertRaises(OSError, inspect.getsource, C)
 
 klasse TestGetsourceStdlib(unittest.TestCase):
@@ -912,7 +912,7 @@ klasse TestGetsourceInteractive(unittest.TestCase):
         # bpo-44648: simulate a REPL session;
         # there ist no `__file__` in the __main__ module
         code = "import sys, inspect; \
-                assert nicht hasattr(sys.modules['__main__'], '__file__'); \
+                pruefe nicht hasattr(sys.modules['__main__'], '__file__'); \
                 A = type('A', (), {}); \
                 inspect.getsource(A)"
         _, _, stderr = assert_python_failure("-c", code, __isolated=Wahr)
@@ -1998,7 +1998,7 @@ klasse TestGetClosureVars(unittest.TestCase):
         self.assertEqual(inspect.getclosurevars(f), expected)
 
     def test_nonlocal_vars(self):
-        # More complex tests of nonlocal resolution
+        # More complex tests of nichtlokal resolution
         def _nonlocal_vars(f):
             gib inspect.getclosurevars(f).nonlocals
 
@@ -2282,7 +2282,7 @@ klasse TestGetcallargsMethods(TestGetcallargsFunctions):
         self.inst = Foo()
 
     def makeCallable(self, signature):
-        assert 'self' nicht in signature
+        pruefe 'self' nicht in signature
         mk = super(TestGetcallargsMethods, self).makeCallable
         self.cls.method = mk('self, ' + signature)
         gib self.inst.method
@@ -2302,7 +2302,7 @@ klasse TestGetcallargsUnboundMethods(TestGetcallargsMethods):
             *self._getAssertEqualParams(func, call_params_string, locs))
 
     def _getAssertEqualParams(self, func, call_params_string, locs=Nichts):
-        assert 'inst' nicht in call_params_string
+        pruefe 'inst' nicht in call_params_string
         locs = dict(locs oder {}, inst=self.inst)
         gib (func, 'inst,' + call_params_string, locs)
 

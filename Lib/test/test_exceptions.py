@@ -313,10 +313,10 @@ klasse ExceptionTests(unittest.TestCase):
         check('def f():\n  von _ importiere *', 2, 17)
         check('def f(x, x):\n  pass', 1, 10)
         check('{i fuer i in range(5) wenn (j := 0) fuer j in range(5)}', 1, 38)
-        check('def f(x):\n  nonlocal x', 2, 3)
+        check('def f(x):\n  nichtlokal x', 2, 3)
         check('def f(x):\n  x = 1\n  global x', 3, 3)
         check('nonlocal x', 1, 1)
-        check('def f():\n  global x\n  nonlocal x', 2, 3)
+        check('def f():\n  global x\n  nichtlokal x', 2, 3)
 
         # Errors thrown by future.c
         check('from __future__ importiere doesnt_exist', 1, 24)
@@ -1092,7 +1092,7 @@ klasse ExceptionTests(unittest.TestCase):
         # obsolete and/or deallocated objects.
         klasse MyObject:
             def __del__(self):
-                nonlocal e
+                nichtlokal e
                 e = sys.exception()
         e = ()
         versuch:
@@ -1667,7 +1667,7 @@ klasse ExceptionTests(unittest.TestCase):
             pass
         wr = Nichts
         def inner():
-            nonlocal wr
+            nichtlokal wr
             c = C()
             wr = weakref.ref(c)
             raise_memoryerror()
@@ -1688,7 +1688,7 @@ klasse ExceptionTests(unittest.TestCase):
             pass
         wr = Nichts
         def inner():
-            nonlocal wr
+            nichtlokal wr
             c = C()
             wr = weakref.ref(c)
             inner()
@@ -1827,12 +1827,12 @@ klasse ExceptionTests(unittest.TestCase):
 
     @unittest.skipUnless(__debug__, "Won't work wenn __debug__ ist Falsch")
     def test_assert_shadowing(self):
-        # Shadowing AssertionError would cause the assert statement to
+        # Shadowing AssertionError would cause the pruefe statement to
         # misbehave.
         global AssertionError
         AssertionError = TypeError
         versuch:
-            assert Falsch, 'hello'
+            pruefe Falsch, 'hello'
         ausser BaseException als e:
             loesche AssertionError
             self.assertIsInstance(e, AssertionError)
@@ -2143,56 +2143,56 @@ klasse AssertionErrorTests(unittest.TestCase):
         cases = [
             ('assert Nichts',
                 [
-                    '    assert Nichts',
+                    '    pruefe Nichts',
                     '           ^^^^',
                     'AssertionError',
                 ],
             ),
             ('assert 0',
                 [
-                    '    assert 0',
+                    '    pruefe 0',
                     '           ^',
                     'AssertionError',
                 ],
             ),
             ('assert 1 > 2',
                 [
-                    '    assert 1 > 2',
+                    '    pruefe 1 > 2',
                     '           ^^^^^',
                     'AssertionError',
                 ],
             ),
             ('assert 1 > 2 und 3 > 2',
                 [
-                    '    assert 1 > 2 und 3 > 2',
+                    '    pruefe 1 > 2 und 3 > 2',
                     '           ^^^^^^^^^^^^^^^',
                     'AssertionError',
                 ],
             ),
             ('assert 1 > 2, "messäge"',
                 [
-                    '    assert 1 > 2, "messäge"',
+                    '    pruefe 1 > 2, "messäge"',
                     '           ^^^^^',
                     'AssertionError: messäge',
                 ],
             ),
             ('assert 1 > 2, "messäge"'.encode(),
                 [
-                    '    assert 1 > 2, "messäge"',
+                    '    pruefe 1 > 2, "messäge"',
                     '           ^^^^^',
                     'AssertionError: messäge',
                 ],
             ),
             ('# coding: latin1\nassert 1 > 2, "messäge"'.encode('latin1'),
                 [
-                    '    assert 1 > 2, "messäge"',
+                    '    pruefe 1 > 2, "messäge"',
                     '           ^^^^^',
                     'AssertionError: messäge',
                 ],
             ),
             (BOM_UTF8 + 'assert 1 > 2, "messäge"'.encode(),
                 [
-                    '    assert 1 > 2, "messäge"',
+                    '    pruefe 1 > 2, "messäge"',
                     '           ^^^^^',
                     'AssertionError: messäge',
                 ],
@@ -2200,7 +2200,7 @@ klasse AssertionErrorTests(unittest.TestCase):
 
             # Multiline:
             ("""
-             assert (
+             pruefe (
                  1 > 2)
              """,
                 [
@@ -2210,7 +2210,7 @@ klasse AssertionErrorTests(unittest.TestCase):
                 ],
             ),
             ("""
-             assert (
+             pruefe (
                  1 > 2), "Message"
              """,
                 [
@@ -2220,7 +2220,7 @@ klasse AssertionErrorTests(unittest.TestCase):
                 ],
             ),
             ("""
-             assert (
+             pruefe (
                  1 > 2), \\
                  "Message"
              """,
@@ -2240,7 +2240,7 @@ klasse AssertionErrorTests(unittest.TestCase):
     def test_multiline_not_highlighted(self):
         cases = [
             ("""
-             assert (
+             pruefe (
                  1 > 2
              )
              """,
@@ -2250,7 +2250,7 @@ klasse AssertionErrorTests(unittest.TestCase):
                 ],
             ),
             ("""
-             assert (
+             pruefe (
                  1 < 2 und
                  3 > 4
              )

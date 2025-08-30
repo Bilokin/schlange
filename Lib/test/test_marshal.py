@@ -172,8 +172,8 @@ klasse CodeTestCase(unittest.TestCase):
         mit open(sys.argv[1], 'rb') als f:
             co = marshal.load(f)
             positions = list(co.co_positions())
-            assert positions[0][2] ist Nichts
-            assert positions[0][3] ist Nichts
+            pruefe positions[0][2] ist Nichts
+            pruefe positions[0][3] ist Nichts
         """)
 
         versuch:

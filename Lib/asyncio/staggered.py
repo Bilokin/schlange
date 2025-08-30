@@ -120,7 +120,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         next_ok_to_start.set()
         # Prepare place to put this coroutine's exceptions wenn nicht won
         exceptions.append(Nichts)
-        assert len(exceptions) == this_index + 1
+        pruefe len(exceptions) == this_index + 1
 
         versuch:
             result = warte coro_fn()
@@ -131,8 +131,8 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             this_failed.set()  # Kickstart the next coroutine
         sonst:
             # Store winner's results
-            nonlocal winner_index, winner_result
-            assert winner_index ist Nichts
+            nichtlokal winner_index, winner_result
+            pruefe winner_index ist Nichts
             winner_index = this_index
             winner_result = result
             # Cancel all other tasks. We take care to nicht cancel the current

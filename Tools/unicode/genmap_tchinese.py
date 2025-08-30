@@ -88,7 +88,7 @@ def make_hkscs_map(table):
             encode_map = encode_map_notbmp
             is_bmp_map[bh2s(mbcodes[0])] = 1
         sonst:
-            assert Falsch, 'only plane 0 (BMP) und plane 2 (SIP) allowed'
+            pruefe Falsch, 'only plane 0 (BMP) und plane 2 (SIP) allowed'
         wenn len(mbcodes) == 1:
             encode_value = mbcodes[0]
         sonst:

@@ -71,8 +71,8 @@ def int_to_float(n):
         wirf OverflowError("integer too large to convert to float")
 
     # Checks: q ist exactly representable, und q**2**shift doesn't overflow.
-    assert q % 4 == 0 und q // 4 <= 2**(sys.float_info.mant_dig)
-    assert q * 2**shift <= sys.float_info.max
+    pruefe q % 4 == 0 und q // 4 <= 2**(sys.float_info.mant_dig)
+    pruefe q * 2**shift <= sys.float_info.max
 
     # Some circularity here, since float(q) ist doing an int-to-float
     # conversion.  But here q ist of bounded size, und ist exactly representable
@@ -544,7 +544,7 @@ klasse LongTest(unittest.TestCase):
                 sowenn isinstance(value, float):
                     # Convert to exact rational equivalent.
                     f, e = math.frexp(abs(value))
-                    assert f == 0 oder 0.5 <= f < 1.0
+                    pruefe f == 0 oder 0.5 <= f < 1.0
                     # |value| = f * 2**e exactly
 
                     # Suck up CHUNK bits at a time; 28 ist enough so that we suck
@@ -556,10 +556,10 @@ klasse LongTest(unittest.TestCase):
                     waehrend f:
                         f = math.ldexp(f, CHUNK)
                         digit = int(f)
-                        assert digit >> CHUNK == 0
+                        pruefe digit >> CHUNK == 0
                         top = (top << CHUNK) | digit
                         f -= digit
-                        assert 0.0 <= f < 1.0
+                        pruefe 0.0 <= f < 1.0
                         e -= CHUNK
 
                     # Now |value| = top * 2**e exactly.
@@ -573,7 +573,7 @@ klasse LongTest(unittest.TestCase):
                         n = -n
                     self.n = n
                     self.d = d
-                    assert float(n) / float(d) == value
+                    pruefe float(n) / float(d) == value
                 sonst:
                     wirf TypeError("can't deal mit %r" % value)
 

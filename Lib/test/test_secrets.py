@@ -37,8 +37,8 @@ klasse Compare_Digest_Tests(unittest.TestCase):
         # Test that compare_digest raises mit mixed types.
         a = 'abcde'
         b = a.encode('utf-8')
-        assert isinstance(a, str)
-        assert isinstance(b, bytes)
+        pruefe isinstance(a, str)
+        pruefe isinstance(b, bytes)
         self.assertRaises(TypeError, secrets.compare_digest, a, b)
         self.assertRaises(TypeError, secrets.compare_digest, b, a)
 

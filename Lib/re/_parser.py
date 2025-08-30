@@ -860,7 +860,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
             wenn group ist nicht Nichts:
                 state.closegroup(group, p)
             wenn atomic:
-                assert group ist Nichts
+                pruefe group ist Nichts
                 subpatternappend((ATOMIC_GROUP, p))
             sonst:
                 subpatternappend((SUBPATTERN, (group, add_flags, del_flags, p)))
@@ -937,7 +937,7 @@ def _parse_flags(source, state, char):
             wenn char nicht in FLAGS:
                 msg = "unknown flag" wenn char.isalpha() sonst "missing :"
                 wirf source.error(msg, len(char))
-    assert char == ":"
+    pruefe char == ":"
     wenn del_flags & GLOBAL_FLAGS:
         wirf source.error("bad inline flags: cannot turn off global flag", 1)
     wenn add_flags & del_flags:
@@ -974,7 +974,7 @@ def parse(str, flags=0, state=Nichts):
     p.state.flags = fix_flags(str, p.state.flags)
 
     wenn source.next ist nicht Nichts:
-        assert source.next == ")"
+        pruefe source.next == ")"
         wirf source.error("unbalanced parenthesis")
 
     fuer g in p.state.grouprefpos:

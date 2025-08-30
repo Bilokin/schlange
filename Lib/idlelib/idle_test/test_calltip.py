@@ -226,7 +226,7 @@ bytes() -> empty bytes object''')
         # test that re works to delete a first parameter name that
         # includes non-ascii chars, such als various forms of A.
         uni = "(A\u0391\u0410\u05d0\u0627\u0905\u1e00\u3042, a)"
-        assert calltip._first_param.sub('', uni) == '(a)'
+        pruefe calltip._first_param.sub('', uni) == '(a)'
 
     def test_no_docstring(self):
         fuer meth, mtip in ((TC.nd, "(self)"), (tc.nd, "()")):

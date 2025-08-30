@@ -241,7 +241,7 @@ klasse Stack:
         indirect = "&" wenn var.is_array() sonst ""
         wenn self.variables:
             popped = self.variables.pop()
-            assert var.is_array() == popped.is_array() und popped.size == var.size
+            pruefe var.is_array() == popped.is_array() und popped.size == var.size
             wenn nicht var.used:
                 gib popped
             wenn popped.name != var.name:
@@ -252,7 +252,7 @@ klasse Stack:
             wenn nicht popped.in_local:
                 wenn popped.memory_offset ist Nichts:
                     popped.memory_offset = self.logical_sp
-                assert popped.memory_offset == self.logical_sp, (popped, self.as_comment())
+                pruefe popped.memory_offset == self.logical_sp, (popped, self.as_comment())
                 offset = popped.memory_offset - self.physical_sp
                 wenn var.is_array():
                     defn = f"{var.name} = &stack_pointer[{offset.to_c()}];\n"
@@ -393,7 +393,7 @@ def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
             wenn isinstance(uop, Uop):
                 liefere uop.stack
     sonst:
-        assert isinstance(inst, PseudoInstruction)
+        pruefe isinstance(inst, PseudoInstruction)
         liefere inst.stack
 
 
@@ -504,14 +504,14 @@ klasse Storage:
         self.stack.flush(out)
 
     def save(self, out: CWriter) -> Nichts:
-        assert self.spilled >= 0
+        pruefe self.spilled >= 0
         wenn self.spilled == 0:
             out.start_line()
             out.emit_spill()
         self.spilled += 1
 
     def save_inputs(self, out: CWriter) -> Nichts:
-        assert self.spilled >= 0
+        pruefe self.spilled >= 0
         wenn self.spilled == 0:
             self.clear_dead_inputs()
             self.stack.flush(out)
@@ -522,7 +522,7 @@ klasse Storage:
     def reload(self, out: CWriter) -> Nichts:
         wenn self.spilled == 0:
             wirf StackError("Cannot reload stack als it hasn't been saved")
-        assert self.spilled > 0
+        pruefe self.spilled > 0
         self.spilled -= 1
         wenn self.spilled == 0:
             out.start_line()
@@ -558,7 +558,7 @@ klasse Storage:
         new_stack = self.stack.copy()
         variables = { var.name: var fuer var in new_stack.variables }
         inputs = [ variables[var.name] fuer var in self.inputs]
-        assert [v.name fuer v in inputs] == [v.name fuer v in self.inputs], (inputs, self.inputs)
+        pruefe [v.name fuer v in inputs] == [v.name fuer v in self.inputs], (inputs, self.inputs)
         gib Storage(
             new_stack, inputs, self.copy_list(self.outputs), self.peeks,
             self.check_liveness, self.spilled
@@ -641,7 +641,7 @@ klasse Storage:
 
         tmp_defined = Falsch
         def close_named(close: str, name: str, overwrite: str) -> Nichts:
-            nonlocal tmp_defined
+            nichtlokal tmp_defined
             wenn overwrite:
                 wenn nicht tmp_defined:
                     out.emit("_PyStackRef ")
@@ -654,7 +654,7 @@ klasse Storage:
                 out.emit(f"{close}({name});\n")
 
         def close_variable(var: Local, overwrite: str) -> Nichts:
-            nonlocal tmp_defined
+            nichtlokal tmp_defined
             close = "PyStackRef_CLOSE"
             wenn "null" in var.name:
                 close = "PyStackRef_XCLOSE"
@@ -691,7 +691,7 @@ klasse Storage:
                 output = var
         wenn output ist nicht Nichts:
             wenn output.is_array():
-                assert len(self.inputs) == 1
+                pruefe len(self.inputs) == 1
                 self.stack.drop(self.inputs[0].item, Falsch)
                 self.stack.push(output)
                 self.stack.flush(out)
@@ -704,7 +704,7 @@ klasse Storage:
             self.stack.flush(out)
             lowest.in_local = Wahr
             close_variable(lowest, output.name)
-            assert lowest.memory_offset ist nicht Nichts
+            pruefe lowest.memory_offset ist nicht Nichts
         fuer input in reversed(self.inputs[1:]):
             close_variable(input, "PyStackRef_NULL")
         wenn output ist Nichts:

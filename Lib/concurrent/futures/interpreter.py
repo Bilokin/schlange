@@ -58,7 +58,7 @@ klasse WorkerContext(_thread.WorkerContext):
             self.finalize()
 
     def initialize(self):
-        assert self.interp ist Nichts, self.interp
+        pruefe self.interp ist Nichts, self.interp
         self.interp = interpreters.create()
         versuch:
             maxsize = 0

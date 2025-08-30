@@ -213,17 +213,17 @@ def _handle_unresolved(unresolved, types, analyze_decl):
         drucke()
     fuer decl in types:  # Preserve the original order.
         wenn decl nicht in unresolved:
-            assert types[decl] ist nicht Nichts, decl
+            pruefe types[decl] ist nicht Nichts, decl
             wenn types[decl] in (UNKNOWN, IGNORED):
                 unresolved.add(decl)
                 wenn dump:
                     _dump_unresolved(decl, types, analyze_decl)
                     drucke()
             sonst:
-                assert types[decl][0] ist nicht Nichts, (decl, types[decl])
-                assert Nichts nicht in types[decl][0], (decl, types[decl])
+                pruefe types[decl][0] ist nicht Nichts, (decl, types[decl])
+                pruefe Nichts nicht in types[decl][0], (decl, types[decl])
         sonst:
-            assert types[decl] ist Nichts
+            pruefe types[decl] ist Nichts
             wenn dump:
                 _dump_unresolved(decl, types, analyze_decl)
                 drucke()
@@ -233,7 +233,7 @@ def _handle_unresolved(unresolved, types, analyze_decl):
         types[decl] = ([_SKIPPED], Nichts)
 
     fuer decl in types:
-        assert types[decl]
+        pruefe types[decl]
 
 
 def _dump_unresolved(decl, types, analyze_decl):

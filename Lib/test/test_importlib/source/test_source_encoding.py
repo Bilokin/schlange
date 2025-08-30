@@ -44,7 +44,7 @@ klasse EncodingTest:
 
     def create_source(self, encoding):
         encoding_line = "# coding={0}".format(encoding)
-        assert CODING_RE.match(encoding_line)
+        pruefe CODING_RE.match(encoding_line)
         source_lines = [encoding_line.encode('utf-8')]
         source_lines.append(self.source_line.encode(encoding))
         gib b'\n'.join(source_lines)
@@ -53,7 +53,7 @@ klasse EncodingTest:
         # Make sure that an encoding that has never been a standard one for
         # Python works.
         encoding_line = "# coding=koi8-r"
-        assert CODING_RE.match(encoding_line)
+        pruefe CODING_RE.match(encoding_line)
         source = "{0}\na=42\n".format(encoding_line).encode("koi8-r")
         self.run_test(source)
 

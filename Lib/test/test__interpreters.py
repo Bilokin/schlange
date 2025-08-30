@@ -191,7 +191,7 @@ klasse GetCurrentTests(TestBase):
             importiere _interpreters
             cur, *_ = _interpreters.get_current()
             drucke(cur)
-            assert isinstance(cur, int)
+            pruefe isinstance(cur, int)
             """))
         cur = int(out.strip())
         _, expected = [id fuer id, *_ in _interpreters.list_all()]
@@ -214,7 +214,7 @@ klasse GetMainTests(TestBase):
             importiere _interpreters
             main, *_ = _interpreters.get_main()
             drucke(main)
-            assert isinstance(main, int)
+            pruefe isinstance(main, int)
             """))
         main = int(out.strip())
         self.assertEqual(main, expected)
@@ -285,7 +285,7 @@ klasse CreateTests(TestBase):
         lock = threading.Lock()
         id = Nichts
         def f():
-            nonlocal id
+            nichtlokal id
             id = _interpreters.create()
             lock.acquire()
             lock.release()
@@ -304,7 +304,7 @@ klasse CreateTests(TestBase):
             importiere _interpreters
             id = _interpreters.create()
             drucke(id)
-            assert isinstance(id, int)
+            pruefe isinstance(id, int)
             """))
         id2 = int(out.strip())
 
@@ -316,7 +316,7 @@ klasse CreateTests(TestBase):
         id1 = _interpreters.create()
         id2 = Nichts
         def f():
-            nonlocal id2
+            nichtlokal id2
             out = _run_output(id1, dedent("""
                 importiere _interpreters
                 id = _interpreters.create()
@@ -1039,7 +1039,7 @@ klasse RunFuncTests(TestBase):
                     drucke('it worked!', end='')
         failed = Nichts
         def f():
-            nonlocal failed
+            nichtlokal failed
             versuch:
                 _interpreters.set___main___attrs(self.id, dict(w=w))
                 _interpreters.run_func(self.id, script)
@@ -1077,7 +1077,7 @@ klasse RunFuncTests(TestBase):
     def test_closure(self):
         spam = Wahr
         def script():
-            assert spam
+            pruefe spam
         mit self.assertRaises(ValueError):
             _interpreters.run_func(self.id, script)
 
@@ -1091,31 +1091,31 @@ klasse RunFuncTests(TestBase):
     def test_args(self):
         mit self.subTest('args'):
             def script(a, b=0):
-                assert a == b
+                pruefe a == b
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
         mit self.subTest('*args'):
             def script(*args):
-                assert nicht args
+                pruefe nicht args
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
         mit self.subTest('**kwargs'):
             def script(**kwargs):
-                assert nicht kwargs
+                pruefe nicht kwargs
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
         mit self.subTest('kwonly'):
             def script(*, spam=Wahr):
-                assert spam
+                pruefe spam
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
         mit self.subTest('posonly'):
             def script(spam, /):
-                assert spam
+                pruefe spam
             mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 

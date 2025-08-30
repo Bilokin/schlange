@@ -1115,7 +1115,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         # now mit asynchronous generators
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere
             ausser:
@@ -1123,7 +1123,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             DONE = 1
 
         async def run():
-            nonlocal DONE
+            nichtlokal DONE
             g = gen()
             warte g.asend(Nichts)
             mit self.assertRaises(StopAsyncIteration):
@@ -1236,7 +1236,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         async def foo():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere 1
                 1 / 0
@@ -1261,7 +1261,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         fut = asyncio.Future(loop=self.loop)
 
         async def foo():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere 1
                 warte fut
@@ -1290,7 +1290,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 waehrend Wahr:
                     liefere 1
@@ -1329,7 +1329,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         # now mit asynchronous generators
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere
             ausser:
@@ -1337,7 +1337,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             DONE = 1
 
         async def run():
-            nonlocal DONE
+            nichtlokal DONE
             g = gen()
             warte g.asend(Nichts)
             warte g.aclose()
@@ -1364,7 +1364,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         # now mit asynchronous generators
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere
             ausser:
@@ -1373,7 +1373,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             DONE += 1
 
         async def run():
-            nonlocal DONE
+            nichtlokal DONE
             g = gen()
             warte g.asend(Nichts)
             mit self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
@@ -1391,7 +1391,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             1 / 0
 
         async def foo():
-            nonlocal DONE
+            nichtlokal DONE
             task = asyncio.create_task(target())
             versuch:
                 liefere 1
@@ -1424,7 +1424,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         self.assertEqual(v, 200)
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 warte asyncio.sleep(0.01)
                 v = liefere 1
@@ -1460,7 +1460,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             1 / 0
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 warte asyncio.sleep(0.01)
                 v = liefere 1
@@ -1494,7 +1494,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             gib warte fut
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 warte asyncio.sleep(0.01)
                 v = liefere 1
@@ -1540,7 +1540,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             sg.send(Nichts)
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 warte asyncio.sleep(0.01)
                 versuch:
@@ -1584,7 +1584,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             gib warte fut
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 warte asyncio.sleep(0.01)
                 versuch:
@@ -1634,7 +1634,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         # now mit asynchronous generators
 
         async def gen():
-            nonlocal DONE
+            nichtlokal DONE
             versuch:
                 liefere
             ausser:
@@ -1642,7 +1642,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             DONE = 1
 
         async def run():
-            nonlocal DONE
+            nichtlokal DONE
             g = gen()
             warte g.asend(Nichts)
             mit self.assertRaises(StopAsyncIteration):
@@ -1693,7 +1693,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         finalized = 0
 
         async def waiter(timeout):
-            nonlocal finalized
+            nichtlokal finalized
             versuch:
                 warte asyncio.sleep(timeout)
                 liefere 1

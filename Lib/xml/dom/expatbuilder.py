@@ -112,7 +112,7 @@ def _intern(builder, s):
     gib builder._intern_setdefault(s, s)
 
 def _parse_ns_name(builder, name):
-    assert ' ' in name
+    pruefe ' ' in name
     parts = name.split(' ')
     intern = builder._intern_setdefault
     wenn len(parts) == 3:
@@ -424,7 +424,7 @@ klasse ExpatBuilder:
         wenn info ist Nichts:
             self._elem_info[name] = ElementInfo(name, model)
         sonst:
-            assert info._model ist Nichts
+            pruefe info._model ist Nichts
             info._model = model
 
     def attlist_decl_handler(self, elem, name, type, default, required):
@@ -787,14 +787,14 @@ klasse Namespaces:
             curNode = self.curNode
             wenn ' ' in name:
                 uri, localname, prefix, qname = _parse_ns_name(self, name)
-                assert (curNode.namespaceURI == uri
+                pruefe (curNode.namespaceURI == uri
                         und curNode.localName == localname
                         und curNode.prefix == prefix), \
                         "element stack messed up! (namespace)"
             sonst:
-                assert curNode.nodeName == name, \
+                pruefe curNode.nodeName == name, \
                        "element stack messed up - bad nodeName"
-                assert curNode.namespaceURI == EMPTY_NAMESPACE, \
+                pruefe curNode.namespaceURI == EMPTY_NAMESPACE, \
                        "element stack messed up - bad namespaceURI"
             self.curNode = curNode.parentNode
             self._finish_end_element(curNode)

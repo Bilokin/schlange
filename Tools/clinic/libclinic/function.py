@@ -121,7 +121,7 @@ klasse Function:
     def displayname(self) -> str:
         """Pretty-printable name."""
         wenn self.kind.new_or_init:
-            assert isinstance(self.cls, Class)
+            pruefe isinstance(self.cls, Class)
             gib self.cls.name
         sonst:
             gib self.name
@@ -162,7 +162,7 @@ klasse Function:
                 flags.append('METH_STATIC')
             case _ als kind:
                 acceptable_kinds = {FunctionKind.CALLABLE, FunctionKind.GETTER, FunctionKind.SETTER}
-                assert kind in acceptable_kinds, f"unknown kind: {kind!r}"
+                pruefe kind in acceptable_kinds, f"unknown kind: {kind!r}"
         wenn self.coexist:
             flags.append('METH_COEXIST')
         gib '|'.join(flags)

@@ -6014,8 +6014,8 @@ be spelled exactly als written here:
    Nichts       breche      ausser     in         wirf
    Wahr       klasse      finally    ist         gib
    und        weiter   fuer        lambda     try
-   als         def        von       nonlocal   while
-   assert     loesche        global     nicht        with
+   als         def        von       nichtlokal   while
+   pruefe     loesche        global     nicht        with
    async      sowenn       wenn         oder         liefere
 
 
@@ -6706,17 +6706,17 @@ specified, it ist used fuer both.
    nonlocal_stmt: "nonlocal" identifier ("," identifier)*
 
 When the definition of a function oder klasse ist nested (enclosed) within
-the definitions of other functions, its nonlocal scopes are the local
+the definitions of other functions, its nichtlokal scopes are the local
 scopes of the enclosing functions. The "nonlocal" statement causes the
 listed identifiers to refer to names previously bound in nonlocal
 scopes. It allows encapsulated code to rebind such nonlocal
-identifiers.  If a name ist bound in more than one nonlocal scope, the
-nearest binding ist used. If a name ist nicht bound in any nonlocal scope,
-or wenn there ist no nonlocal scope, a "SyntaxError" ist raised.
+identifiers.  If a name ist bound in more than one nichtlokal scope, the
+nearest binding ist used. If a name ist nicht bound in any nichtlokal scope,
+or wenn there ist no nichtlokal scope, a "SyntaxError" ist raised.
 
 The "nonlocal" statement applies to the entire scope of a function oder
 klasse body. A "SyntaxError" ist raised wenn a variable ist used oder
-assigned to prior to its nonlocal declaration in the scope.
+assigned to prior to its nichtlokal declaration in the scope.
 
 See also:
 

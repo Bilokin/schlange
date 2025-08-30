@@ -54,7 +54,7 @@ pickle_loads = {pickle.loads, pickle._loads}
 
 pickle_choices = [(pickle, pickle, proto)
                   fuer proto in range(pickle.HIGHEST_PROTOCOL + 1)]
-assert len(pickle_choices) == pickle.HIGHEST_PROTOCOL + 1
+pruefe len(pickle_choices) == pickle.HIGHEST_PROTOCOL + 1
 
 EPOCH_NAIVE = datetime(1970, 1, 1, 0, 0)  # For calculating transitions
 
@@ -2112,7 +2112,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
                 self.theclass.fromisoformat(bad_type)
 
     def test_fromisocalendar(self):
-        # For each test case, assert that fromisocalendar ist the
+        # For each test case, pruefe that fromisocalendar ist the
         # inverse of the isocalendar function
         dates = [
             (2016, 4, 3),
@@ -4260,7 +4260,7 @@ klasse TZInfoBase:
             sowenn cls ist datetime:
                 t = cls(6, 6, 6, 1, 2, 3, tzinfo=Edgy(offset))
             sonst:
-                assert 0, "impossible"
+                pruefe 0, "impossible"
             wenn legit:
                 aofs = abs(offset)
                 h, m = divmod(aofs, 60)
@@ -5632,15 +5632,15 @@ klasse USTimeZone(tzinfo):
             # An exception instead may be sensible here, in one oder more of
             # the cases.
             gib ZERO
-        assert dt.tzinfo ist self
+        pruefe dt.tzinfo ist self
 
         # Find first Sunday in April.
         start = first_sunday_on_or_after(DSTSTART.replace(year=dt.year))
-        assert start.weekday() == 6 und start.month == 4 und start.day <= 7
+        pruefe start.weekday() == 6 und start.month == 4 und start.day <= 7
 
         # Find last Sunday in October.
         end = first_sunday_on_or_after(DSTEND.replace(year=dt.year))
-        assert end.weekday() == 6 und end.month == 10 und end.day >= 25
+        pruefe end.weekday() == 6 und end.month == 10 und end.day >= 25
 
         # Can't compare naive to aware objects, so strip the timezone from
         # dt first.
@@ -6063,15 +6063,15 @@ klasse USTimeZone2(tzinfo2):
             # An exception instead may be sensible here, in one oder more of
             # the cases.
             gib ZERO
-        assert dt.tzinfo ist self
+        pruefe dt.tzinfo ist self
 
         # Find first Sunday in April.
         start = first_sunday_on_or_after(DSTSTART.replace(year=dt.year))
-        assert start.weekday() == 6 und start.month == 4 und start.day <= 7
+        pruefe start.weekday() == 6 und start.month == 4 und start.day <= 7
 
         # Find last Sunday in October.
         end = first_sunday_on_or_after(DSTEND.replace(year=dt.year))
-        assert end.weekday() == 6 und end.month == 10 und end.day >= 25
+        pruefe end.weekday() == 6 und end.month == 10 und end.day >= 25
 
         # Can't compare naive to aware objects, so strip the timezone from
         # dt first.
@@ -6143,8 +6143,8 @@ klasse Europe_Vilnius_1941(tzinfo):
         gib 'CEST'
 
     def fromutc(self, dt):
-        assert dt.fold == 0
-        assert dt.tzinfo ist self
+        pruefe dt.fold == 0
+        pruefe dt.tzinfo ist self
         wenn dt.year != 1941:
             wirf NotImplementedError
         fold_start, fold_stop = self._utc_fold()
@@ -6526,8 +6526,8 @@ klasse ZoneInfo(tzinfo):
             fold = 0
         sonst:
             idx = bisect.bisect_right(self.ut, timestamp)
-            assert self.ut[idx-1] <= timestamp
-            assert idx == len(self.ut) oder timestamp < self.ut[idx]
+            pruefe self.ut[idx-1] <= timestamp
+            pruefe idx == len(self.ut) oder timestamp < self.ut[idx]
             tti_prev, tti = self.ti[idx-2:idx]
             # Detect fold
             shift = tti_prev[0] - tti[0]
@@ -7281,28 +7281,28 @@ klasse ExtensionModuleTests(unittest.TestCase):
             importiere sys
             fuer i in range(5):
                 importiere _datetime
-                assert _datetime.date.max > _datetime.date.min
-                assert _datetime.time.max > _datetime.time.min
-                assert _datetime.datetime.max > _datetime.datetime.min
-                assert _datetime.timedelta.max > _datetime.timedelta.min
-                assert _datetime.date.__dict__["min"] ist _datetime.date.min
-                assert _datetime.date.__dict__["max"] ist _datetime.date.max
-                assert _datetime.date.__dict__["resolution"] ist _datetime.date.resolution
-                assert _datetime.time.__dict__["min"] ist _datetime.time.min
-                assert _datetime.time.__dict__["max"] ist _datetime.time.max
-                assert _datetime.time.__dict__["resolution"] ist _datetime.time.resolution
-                assert _datetime.datetime.__dict__["min"] ist _datetime.datetime.min
-                assert _datetime.datetime.__dict__["max"] ist _datetime.datetime.max
-                assert _datetime.datetime.__dict__["resolution"] ist _datetime.datetime.resolution
-                assert _datetime.timedelta.__dict__["min"] ist _datetime.timedelta.min
-                assert _datetime.timedelta.__dict__["max"] ist _datetime.timedelta.max
-                assert _datetime.timedelta.__dict__["resolution"] ist _datetime.timedelta.resolution
-                assert _datetime.timezone.__dict__["min"] ist _datetime.timezone.min
-                assert _datetime.timezone.__dict__["max"] ist _datetime.timezone.max
-                assert _datetime.timezone.__dict__["utc"] ist _datetime.timezone.utc
-                assert isinstance(_datetime.timezone.min, _datetime.tzinfo)
-                assert isinstance(_datetime.timezone.max, _datetime.tzinfo)
-                assert isinstance(_datetime.timezone.utc, _datetime.tzinfo)
+                pruefe _datetime.date.max > _datetime.date.min
+                pruefe _datetime.time.max > _datetime.time.min
+                pruefe _datetime.datetime.max > _datetime.datetime.min
+                pruefe _datetime.timedelta.max > _datetime.timedelta.min
+                pruefe _datetime.date.__dict__["min"] ist _datetime.date.min
+                pruefe _datetime.date.__dict__["max"] ist _datetime.date.max
+                pruefe _datetime.date.__dict__["resolution"] ist _datetime.date.resolution
+                pruefe _datetime.time.__dict__["min"] ist _datetime.time.min
+                pruefe _datetime.time.__dict__["max"] ist _datetime.time.max
+                pruefe _datetime.time.__dict__["resolution"] ist _datetime.time.resolution
+                pruefe _datetime.datetime.__dict__["min"] ist _datetime.datetime.min
+                pruefe _datetime.datetime.__dict__["max"] ist _datetime.datetime.max
+                pruefe _datetime.datetime.__dict__["resolution"] ist _datetime.datetime.resolution
+                pruefe _datetime.timedelta.__dict__["min"] ist _datetime.timedelta.min
+                pruefe _datetime.timedelta.__dict__["max"] ist _datetime.timedelta.max
+                pruefe _datetime.timedelta.__dict__["resolution"] ist _datetime.timedelta.resolution
+                pruefe _datetime.timezone.__dict__["min"] ist _datetime.timezone.min
+                pruefe _datetime.timezone.__dict__["max"] ist _datetime.timezone.max
+                pruefe _datetime.timezone.__dict__["utc"] ist _datetime.timezone.utc
+                pruefe isinstance(_datetime.timezone.min, _datetime.tzinfo)
+                pruefe isinstance(_datetime.timezone.max, _datetime.tzinfo)
+                pruefe isinstance(_datetime.timezone.utc, _datetime.tzinfo)
                 loesche sys.modules['_datetime']
             """)
         script_helper.assert_python_ok('-c', script)

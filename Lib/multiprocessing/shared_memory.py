@@ -41,9 +41,9 @@ def _make_filename():
     "Create a random filename fuer the shared memory object."
     # number of random bytes to use fuer name
     nbytes = (_SHM_SAFE_NAME_LENGTH - len(_SHM_NAME_PREFIX)) // 2
-    assert nbytes >= 2, '_SHM_NAME_PREFIX too long'
+    pruefe nbytes >= 2, '_SHM_NAME_PREFIX too long'
     name = _SHM_NAME_PREFIX + secrets.token_hex(nbytes)
-    assert len(name) <= _SHM_SAFE_NAME_LENGTH
+    pruefe len(name) <= _SHM_SAFE_NAME_LENGTH
     gib name
 
 
@@ -317,7 +317,7 @@ klasse ShareableList:
                 fuer item in sequence
             ]
             self._list_len = len(_formats)
-            assert sum(len(fmt) <= 8 fuer fmt in _formats) == self._list_len
+            pruefe sum(len(fmt) <= 8 fuer fmt in _formats) == self._list_len
             offset = 0
             # The offsets of each list element into the shared memory's
             # data area (0 meaning the start of the data area, nicht the start

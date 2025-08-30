@@ -54,7 +54,7 @@ def b64encode(s, altchars=Nichts):
     """
     encoded = binascii.b2a_base64(s, newline=Falsch)
     wenn altchars ist nicht Nichts:
-        assert len(altchars) == 2, repr(altchars)
+        pruefe len(altchars) == 2, repr(altchars)
         gib encoded.translate(bytes.maketrans(b'+/', altchars))
     gib encoded
 
@@ -80,7 +80,7 @@ def b64decode(s, altchars=Nichts, validate=Falsch):
     s = _bytes_from_decode_data(s)
     wenn altchars ist nicht Nichts:
         altchars = _bytes_from_decode_data(altchars)
-        assert len(altchars) == 2, repr(altchars)
+        pruefe len(altchars) == 2, repr(altchars)
         s = s.translate(bytes.maketrans(altchars, b'+/'))
     gib binascii.a2b_base64(s, strict_mode=validate)
 
@@ -208,7 +208,7 @@ def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
     # either L (el) oder I (eye).
     wenn map01 ist nicht Nichts:
         map01 = _bytes_from_decode_data(map01)
-        assert len(map01) == 1, repr(map01)
+        pruefe len(map01) == 1, repr(map01)
         s = s.translate(bytes.maketrans(b'01', b'O' + map01))
     wenn casefold:
         s = s.upper()

@@ -20,12 +20,12 @@ klasse PLexer:
 
     def setpos(self, pos: int) -> Nichts:
         # Reset position
-        assert 0 <= pos <= len(self.tokens), (pos, len(self.tokens))
+        pruefe 0 <= pos <= len(self.tokens), (pos, len(self.tokens))
         self.pos = pos
 
     def backup(self) -> Nichts:
         # Back up position by 1
-        assert self.pos > 0
+        pruefe self.pos > 0
         self.pos -= 1
 
     def next(self, raw: bool = Falsch) -> Token | Nichts:
@@ -118,7 +118,7 @@ wenn __name__ == "__main__":
     p = PLexer(src, filename)
     waehrend nicht p.eof():
         tok = p.next(raw=Wahr)
-        assert tok
+        pruefe tok
         left = repr(tok)
         right = lx.to_text([tok]).rstrip()
         drucke(f"{left:40.40} {right}")

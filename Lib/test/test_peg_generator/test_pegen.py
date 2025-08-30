@@ -717,7 +717,7 @@ klasse TestPegen(unittest.TestCase):
         start: attr | NAME
         attr: start '.' NAME
         """
-        # Would assert Falsch without a special case in compute_left_recursives().
+        # Would pruefe Falsch without a special case in compute_left_recursives().
         make_parser(grammar)
 
     def test_opt_sequence(self) -> Nichts:
@@ -818,7 +818,7 @@ klasse TestPegen(unittest.TestCase):
         self.assertEqual(
             parse_string("number test 1", parser_class), "test = 1"
         )
-        assert (
+        pruefe (
             parse_string("string test 'b'", parser_class) == "test = 'b'"
         )
         mit self.assertRaises(SyntaxError):

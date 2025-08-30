@@ -127,7 +127,7 @@ klasse BaseTestTaskGroup:
             1 / 0
 
         async def foo2():
-            nonlocal NUM, t2_cancel
+            nichtlokal NUM, t2_cancel
             versuch:
                 warte asyncio.sleep(1)
             ausser asyncio.CancelledError:
@@ -136,7 +136,7 @@ klasse BaseTestTaskGroup:
             NUM += 1
 
         async def runner():
-            nonlocal NUM, t2
+            nichtlokal NUM, t2
 
             async mit taskgroups.TaskGroup() als g:
                 g.create_task(foo1())
@@ -166,7 +166,7 @@ klasse BaseTestTaskGroup:
             1 / 0
 
         async def foo2():
-            nonlocal NUM, t2_cancel
+            nichtlokal NUM, t2_cancel
             versuch:
                 warte asyncio.sleep(5)
             ausser asyncio.CancelledError:
@@ -175,7 +175,7 @@ klasse BaseTestTaskGroup:
             NUM += 1
 
         async def runner():
-            nonlocal NUM, runner_cancel
+            nichtlokal NUM, runner_cancel
 
             async mit taskgroups.TaskGroup() als g:
                 g.create_task(foo1())
@@ -205,7 +205,7 @@ klasse BaseTestTaskGroup:
         NUM = 0
 
         async def foo():
-            nonlocal NUM
+            nichtlokal NUM
             versuch:
                 warte asyncio.sleep(5)
             ausser asyncio.CancelledError:
@@ -232,7 +232,7 @@ klasse BaseTestTaskGroup:
         NUM = 0
 
         async def foo():
-            nonlocal NUM
+            nichtlokal NUM
             versuch:
                 warte asyncio.sleep(5)
             ausser asyncio.CancelledError:
@@ -240,7 +240,7 @@ klasse BaseTestTaskGroup:
                 wirf
 
         async def runner():
-            nonlocal NUM
+            nichtlokal NUM
             async mit taskgroups.TaskGroup() als g:
                 fuer _ in range(5):
                     g.create_task(foo())
@@ -298,7 +298,7 @@ klasse BaseTestTaskGroup:
             gib 11
 
         async def runner():
-            nonlocal t1, t2
+            nichtlokal t1, t2
             async mit taskgroups.TaskGroup() als g:
                 t1 = g.create_task(foo1())
                 t2 = g.create_task(foo2())
@@ -328,7 +328,7 @@ klasse BaseTestTaskGroup:
             gib 11
 
         async def runner():
-            nonlocal t1, t2
+            nichtlokal t1, t2
             async mit taskgroups.TaskGroup() als g:
                 t1 = g.create_task(foo1())
                 t2 = g.create_task(foo2())
@@ -495,7 +495,7 @@ klasse BaseTestTaskGroup:
         NUM = 0
 
         async def runner():
-            nonlocal NUM
+            nichtlokal NUM
             async mit taskgroups.TaskGroup():
                 versuch:
                     warte asyncio.sleep(10)
@@ -517,7 +517,7 @@ klasse BaseTestTaskGroup:
         NUM = 0
 
         async def runner():
-            nonlocal NUM
+            nichtlokal NUM
             async mit taskgroups.TaskGroup():
                 versuch:
                     warte asyncio.sleep(10)
@@ -712,7 +712,7 @@ klasse BaseTestTaskGroup:
         nhydras = 0
 
         async def hydra(g):
-            nonlocal nhydras
+            nichtlokal nhydras
             nhydras += 1
             warte asyncio.sleep(0.01)
             g.create_task(hydra(g))
@@ -1044,7 +1044,7 @@ klasse BaseTestTaskGroup:
         name = Nichts
 
         async def asyncfn():
-            nonlocal name
+            nichtlokal name
             name = asyncio.current_task().get_name()
 
         async mit asyncio.TaskGroup() als tg:
@@ -1066,7 +1066,7 @@ klasse BaseTestTaskGroup:
                     wirf MyError("third task failed")
 
                 async def second_task():
-                    nonlocal ran
+                    nichtlokal ran
                     tg.create_task(third_task())
                     mit self.assertRaises(asyncio.CancelledError):
                         warte asyncio.sleep(0)  # eager tasks cancel here

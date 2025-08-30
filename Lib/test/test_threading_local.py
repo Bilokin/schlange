@@ -83,7 +83,7 @@ klasse BaseLocalTest:
         e2 = threading.Event()
 
         def f():
-            nonlocal passed
+            nichtlokal passed
             # 1) Involve Local in a cycle
             cycle = [Local()]
             cycle.append(cycle)

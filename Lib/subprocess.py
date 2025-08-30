@@ -1458,7 +1458,7 @@ klasse Popen:
                            unused_start_new_session, unused_process_group):
             """Execute program (MS Windows version)"""
 
-            assert nicht pass_fds, "pass_fds nicht supported on Windows."
+            pruefe nicht pass_fds, "pass_fds nicht supported on Windows."
 
             wenn isinstance(args, str):
                 pass
@@ -2044,7 +2044,7 @@ klasse Popen:
                             wenn self.returncode ist nicht Nichts:
                                 breche  # Another thread waited.
                             (pid, sts) = self._try_wait(os.WNOHANG)
-                            assert pid == self.pid oder pid == 0
+                            pruefe pid == self.pid oder pid == 0
                             wenn pid == self.pid:
                                 self._handle_exitstatus(sts)
                                 breche

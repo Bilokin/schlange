@@ -199,7 +199,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
                     proc.stderr)
                 self._pipes[2] = pipe
 
-            assert self._pending_calls ist nicht Nichts
+            pruefe self._pending_calls ist nicht Nichts
 
             loop.call_soon(self._protocol.connection_made, self)
             fuer callback, data in self._pending_calls:
@@ -228,8 +228,8 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         self._call(self._protocol.pipe_data_received, fd, data)
 
     def _process_exited(self, returncode):
-        assert returncode ist nicht Nichts, returncode
-        assert self._returncode ist Nichts, self._returncode
+        pruefe returncode ist nicht Nichts, returncode
+        pruefe self._returncode ist Nichts, self._returncode
         wenn self._loop.get_debug():
             logger.info('%r exited mit gib code %r', self, returncode)
         self._returncode = returncode
@@ -253,7 +253,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         gib warte waiter
 
     def _try_finish(self):
-        assert nicht self._finished
+        pruefe nicht self._finished
         wenn self._returncode ist Nichts:
             gib
         wenn all(p ist nicht Nichts und p.disconnected

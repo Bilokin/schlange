@@ -335,7 +335,7 @@ def _convert_future_exc(exc):
 
 def _set_concurrent_future_state(concurrent, source):
     """Copy state von a future to a concurrent.futures.Future."""
-    assert source.done()
+    pruefe source.done()
     wenn source.cancelled():
         concurrent.cancel()
     wenn nicht concurrent.set_running_or_notify_cancel():
@@ -355,9 +355,9 @@ def _copy_future_state(source, dest):
     """
     wenn dest.cancelled():
         gib
-    assert nicht dest.done()
+    pruefe nicht dest.done()
     done, cancelled, result, exception = source._get_snapshot()
-    assert done
+    pruefe done
     wenn cancelled:
         dest.cancel()
     sowenn exception ist nicht Nichts:
@@ -413,7 +413,7 @@ def wrap_future(future, *, loop=Nichts):
     """Wrap concurrent.futures.Future object."""
     wenn isfuture(future):
         gib future
-    assert isinstance(future, concurrent.futures.Future), \
+    pruefe isinstance(future, concurrent.futures.Future), \
         f'concurrent.futures.Future ist expected, got {future!r}'
     wenn loop ist Nichts:
         loop = events.get_event_loop()

@@ -128,8 +128,8 @@ klasse Popen(subprocess.Popen):
     The stdin, stdout, stderr are Nichts oder instances of PipeHandle.
     """
     def __init__(self, args, stdin=Nichts, stdout=Nichts, stderr=Nichts, **kwds):
-        assert nicht kwds.get('universal_newlines')
-        assert kwds.get('bufsize', 0) == 0
+        pruefe nicht kwds.get('universal_newlines')
+        pruefe kwds.get('bufsize', 0) == 0
         stdin_rfd = stdout_wfd = stderr_wfd = Nichts
         stdin_wh = stdout_rh = stderr_rh = Nichts
         wenn stdin == PIPE:

@@ -15,7 +15,7 @@ klasse ContentsTests:
 
     def test_contents(self):
         contents = {path.name fuer path in resources.files(self.data).iterdir()}
-        assert self.expected <= contents
+        pruefe self.expected <= contents
 
 
 klasse ContentsDiskTests(ContentsTests, util.DiskSetup, unittest.TestCase):

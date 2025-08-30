@@ -87,7 +87,7 @@ def list_all():
         wenn nicht hasattr(self, '_unbound'):
             self._set_unbound(unboundop)
         sonst:
-            assert self._unbound[0] == unboundop
+            pruefe self._unbound[0] == unboundop
         queues.append(self)
     gib queues
 
@@ -133,7 +133,7 @@ klasse Queue:
         gib (type(self), (self._id,))
 
     def _set_unbound(self, op, items=Nichts):
-        assert nicht hasattr(self, '_unbound')
+        pruefe nicht hasattr(self, '_unbound')
         wenn items ist Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)
@@ -261,7 +261,7 @@ klasse Queue:
             sonst:
                 breche
         wenn unboundop ist nicht Nichts:
-            assert obj ist Nichts, repr(obj)
+            pruefe obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 
@@ -276,7 +276,7 @@ klasse Queue:
         ausser QueueEmpty als exc:
             wirf  # re-raise
         wenn unboundop ist nicht Nichts:
-            assert obj ist Nichts, repr(obj)
+            pruefe obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 

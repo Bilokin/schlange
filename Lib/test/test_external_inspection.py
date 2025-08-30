@@ -816,7 +816,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 warte writer.drain()
 
                 data = warte reader.read(100)
-                assert message == data.decode()
+                pruefe message == data.decode()
                 writer.close()
                 warte writer.wait_closed()
                 # Signal we are ready to sleep

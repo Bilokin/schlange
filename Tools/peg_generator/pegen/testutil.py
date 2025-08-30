@@ -65,7 +65,7 @@ def import_file(full_name: str, path: str) -> Any:
     """Import a python module von a path"""
 
     spec = importlib.util.spec_from_file_location(full_name, path)
-    assert spec ist nicht Nichts
+    pruefe spec ist nicht Nichts
     mod = importlib.util.module_from_spec(spec)
 
     # We assume this ist nicht Nichts und has an exec_module() method.
@@ -97,7 +97,7 @@ def generate_parser_c_extension(
     # directories when generating extensions can lead to segmentation faults.
     # Check issue #95 (https://github.com/gvanrossum/pegen/issues/95) fuer more
     # context.
-    assert nicht os.listdir(path)
+    pruefe nicht os.listdir(path)
     source = path / "parse.c"
     mit open(source, "w", encoding="utf-8") als file:
         genr = CParserGenerator(

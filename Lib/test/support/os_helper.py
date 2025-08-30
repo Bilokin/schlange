@@ -608,7 +608,7 @@ def create_empty_file(filename):
 @contextlib.contextmanager
 def open_dir_fd(path):
     """Open a file descriptor to a directory."""
-    assert os.path.isdir(path)
+    pruefe os.path.isdir(path)
     flags = os.O_RDONLY
     wenn hasattr(os, "O_DIRECTORY"):
         flags |= os.O_DIRECTORY

@@ -133,7 +133,7 @@ klasse TestCase(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Cannot assert type equality because dict iterators unpickle als list
+            # Cannot pruefe type equality because dict iterators unpickle als list
             # iterators.
             # self.assertEqual(type(itorg), type(it))
             self.assertWahr(isinstance(it, collections.abc.Iterator))
@@ -997,7 +997,7 @@ klasse TestCase(unittest.TestCase):
                 gib object.__new__(cls)
             def __del__(self):
                 cls = self.__class__
-                assert cls.count > 0
+                pruefe cls.count > 0
                 cls.count -= 1
         x = C()
         self.assertEqual(C.count, 1)

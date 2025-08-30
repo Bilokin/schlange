@@ -650,7 +650,7 @@ klasse Unmarshaller:
 
     def xml(self, encoding, standalone):
         self._encoding = encoding
-        # FIXME: assert standalone == 1 ???
+        # FIXME: pruefe standalone == 1 ???
 
     def start(self, tag, attrs):
         # prepare to handle this element
@@ -938,11 +938,11 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
     where necessary.
     """
 
-    assert isinstance(params, (tuple, Fault)), "argument must be tuple oder Fault instance"
+    pruefe isinstance(params, (tuple, Fault)), "argument must be tuple oder Fault instance"
     wenn isinstance(params, Fault):
         methodresponse = 1
     sowenn methodresponse und isinstance(params, tuple):
-        assert len(params) == 1, "response tuple must be a singleton"
+        pruefe len(params) == 1, "response tuple must be a singleton"
 
     wenn nicht encoding:
         encoding = "utf-8"

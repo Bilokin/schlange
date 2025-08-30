@@ -395,9 +395,9 @@ Call mit dict subtype:
     ...     gib (n, kwargs)
 
     >>> md = MyDict({'a': 1, 'b': 2})
-    >>> assert s1(**md) == {'a': 1, 'b': 2}
-    >>> assert s2(*(1, 2), **md) == ((1, 2), {'a': 1, 'b': 2})
-    >>> assert s3(**MyDict({'n': 1, 'b': 2})) == (1, {'b': 2})
+    >>> pruefe s1(**md) == {'a': 1, 'b': 2}
+    >>> pruefe s2(*(1, 2), **md) == ((1, 2), {'a': 1, 'b': 2})
+    >>> pruefe s3(**MyDict({'n': 1, 'b': 2})) == (1, {'b': 2})
     >>> s3(**md)
     Traceback (most recent call last):
       ...

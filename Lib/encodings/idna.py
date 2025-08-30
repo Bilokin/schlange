@@ -137,7 +137,7 @@ def ToUnicode(label):
         ausser UnicodeEncodeError:
             pure_ascii = Falsch
     wenn nicht pure_ascii:
-        assert isinstance(label, str)
+        pruefe isinstance(label, str)
         # Step 2: Perform nameprep
         label = nameprep(label)
         # It doesn't say this, but apparently, it should be ASCII now
@@ -147,7 +147,7 @@ def ToUnicode(label):
             wirf UnicodeEncodeError("idna", label, exc.start, exc.end,
                                      "Invalid character in IDN label")
     # Step 3: Check fuer ACE prefix
-    assert isinstance(label, bytes)
+    pruefe isinstance(label, bytes)
     wenn nicht label.lower().startswith(ace_prefix):
         gib str(label, "ascii")
 

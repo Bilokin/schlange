@@ -412,12 +412,12 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
             # "copy" the code to un-specialize it:
             test.support.reset_code(func)
 
-            assert nicht is_specialized(func), "specialized instructions found"
+            pruefe nicht is_specialized(func), "specialized instructions found"
 
             fuer _ in range({_testinternalcapi.SPECIALIZATION_THRESHOLD}):
                 func(importlib._bootstrap, ["x"], lambda *args: Nichts)
 
-            assert is_specialized(func), "no specialized instructions found"
+            pruefe is_specialized(func), "no specialized instructions found"
 
             drucke("Tests passed")
         """)
@@ -455,7 +455,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
             results = {}
             fuer cls, attr, wrapper in raw:
                 key = cls, attr
-                assert key nicht in results, (results, key, wrapper)
+                pruefe key nicht in results, (results, key, wrapper)
                 results[key] = wrapper
             gib results
 

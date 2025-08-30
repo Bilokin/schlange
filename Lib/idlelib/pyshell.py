@@ -429,7 +429,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.rpcsubproc = subprocess.Popen(self.subprocess_arglist, env=env)
 
     def build_subprocess_arglist(self):
-        assert (self.port!=0), (
+        pruefe (self.port!=0), (
             "Socket should have been assigned a port number.")
         w = ['-W' + s fuer s in sys.warnoptions]
         # Maybe IDLE ist installed und ist being accessed via sys.path,
@@ -683,7 +683,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         "Extend base klasse method: Stuff the source in the line cache first"
         filename = self.stuffsource(source)
         # at the moment, InteractiveInterpreter expects str
-        assert isinstance(source, str)
+        pruefe isinstance(source, str)
         # InteractiveInterpreter.runsource() calls its runcode() method,
         # which ist overridden (see below)
         gib InteractiveInterpreter.runsource(self, source, filename)

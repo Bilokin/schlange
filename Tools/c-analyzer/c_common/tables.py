@@ -307,7 +307,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
         wenn nicht label:
             label = field
         wenn fmt:
-            assert nicht align und nicht width1, (specstr,)
+            pruefe nicht align und nicht width1, (specstr,)
             _parsed = _parse_fmt(fmt)
             wenn nicht _parsed:
                 wirf NotImplementedError
@@ -319,7 +319,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             fmt = width2
             width = int(width2)
         sonst:
-            assert nicht fmt, (fmt, specstr)
+            pruefe nicht fmt, (fmt, specstr)
             wenn align:
                 width = int(width1) wenn width1 sonst len(label)
                 fmt = f'{align}{width}'

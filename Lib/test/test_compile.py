@@ -635,7 +635,7 @@ klasse TestSpecifics(unittest.TestCase):
         i = 0
 
         def f():
-            nonlocal i
+            nichtlokal i
             i += 1
             gib i
 
@@ -1160,7 +1160,7 @@ klasse TestSpecifics(unittest.TestCase):
                 drucke()
             )
         line1 = call.__code__.co_firstlineno + 1
-        assert line1 nicht in [line fuer (_, _, line) in call.__code__.co_lines()]
+        pruefe line1 nicht in [line fuer (_, _, line) in call.__code__.co_lines()]
 
     def test_lineno_after_implicit_return(self):
         TRUE = Wahr
@@ -1189,7 +1189,7 @@ klasse TestSpecifics(unittest.TestCase):
         lastlines = [ 3, 3, 3, 2]
         frame = Nichts
         def save_caller_frame():
-            nonlocal frame
+            nichtlokal frame
             frame = sys._getframe(1)
         fuer func, lastline in zip(funcs, lastlines, strict=Wahr):
             mit self.subTest(func=func):
@@ -1861,7 +1861,7 @@ klasse TestSourcePositions(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize, "Assertions are disabled in optimized mode")
     def test_multiline_assert(self):
         snippet = textwrap.dedent("""\
-            assert (a > 0 und
+            pruefe (a > 0 und
                     bb > 0 und
                     ccc == 1000000), "error msg"
             """)
@@ -2146,7 +2146,7 @@ klasse TestSourcePositions(unittest.TestCase):
             line=1, end_line=1, column=0, end_column=27, occurrence=5)
 
     def test_multiline_assert_rewritten_as_method_call(self):
-        # GH-94694: Don't crash wenn pytest rewrites a multiline assert als a
+        # GH-94694: Don't crash wenn pytest rewrites a multiline pruefe als a
         # method call mit the same location information:
         tree = ast.parse("assert (\n42\n)")
         old_node = tree.body[0]
@@ -2305,7 +2305,7 @@ klasse TestSourcePositions(unittest.TestCase):
             mit self.subTest(snippet=snippet):
                 lamb = run_code(snippet)["f"]
                 positions = lamb.__code__.co_positions()
-                # assert that all positions are within the lambda
+                # pruefe that all positions are within the lambda
                 fuer i, pos in enumerate(positions):
                     mit self.subTest(i=i, pos=pos):
                         start_line, end_line, start_col, end_col = pos
@@ -2423,7 +2423,7 @@ klasse TestExpressionStackSize(unittest.TestCase):
     N = 100
 
     def check_stack_size(self, code):
-        # To assert that the alleged stack size ist nicht O(N), we
+        # To pruefe that the alleged stack size ist nicht O(N), we
         # check that it ist smaller than log(N).
         wenn isinstance(code, str):
             code = compile(code, "<foo>", "single")

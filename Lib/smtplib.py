@@ -468,7 +468,7 @@ klasse SMTP:
             gib (code, msg)
         self.does_esmtp = Wahr
         #parse the ehlo response -ddm
-        assert isinstance(self.ehlo_resp, bytes), repr(self.ehlo_resp)
+        pruefe isinstance(self.ehlo_resp, bytes), repr(self.ehlo_resp)
         resp = self.ehlo_resp.decode("latin-1").split('\n')
         loesche resp[0]
         fuer each in resp:

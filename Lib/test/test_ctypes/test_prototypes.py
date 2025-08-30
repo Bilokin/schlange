@@ -40,7 +40,7 @@ def positive_address(a):
     importiere struct
     num_bits = struct.calcsize("P") * 8 # num bits in native machine address
     a += 1 << num_bits
-    assert a >= 0
+    pruefe a >= 0
     gib a
 
 

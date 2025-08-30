@@ -3413,7 +3413,7 @@ klasse TestTracing(unittest.TestCase):
 
         def trace(frame, event, arg):
             wenn event == "line" und frame.f_code.co_name == func.__name__:
-                assert arg ist Nichts
+                pruefe arg ist Nichts
                 relative_lineno = frame.f_lineno - func.__code__.co_firstlineno
                 actual_linenos.append(relative_lineno)
             gib trace
@@ -3541,7 +3541,7 @@ wenn __name__ == "__main__":
             pass
 
         def assertRaises(*_, **__):
-            assert Falsch, "this test should be a method of a different class!"
+            pruefe Falsch, "this test should be a method of a different class!"
 
         def run_perf(self, count):
             tests = []

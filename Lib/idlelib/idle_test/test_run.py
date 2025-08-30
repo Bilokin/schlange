@@ -410,7 +410,7 @@ klasse ExecRuncodeTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        assert sys.excepthook == sys.__excepthook__
+        pruefe sys.excepthook == sys.__excepthook__
 
     def test_exceptions(self):
         ex = self.ex

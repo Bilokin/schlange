@@ -582,7 +582,7 @@ klasse Pool(object):
                 gib
 
             wenn thread._state != RUN:
-                assert thread._state == TERMINATE, "Thread nicht in TERMINATE"
+                pruefe thread._state == TERMINATE, "Thread nicht in TERMINATE"
                 util.debug('result handler found thread._state=TERMINATE')
                 breche
 

@@ -305,7 +305,7 @@ def _ellipsis_match(want, got):
 
     # Find "the real" strings.
     ws = want.split(ELLIPSIS_MARKER)
-    assert len(ws) >= 2
+    pruefe len(ws) >= 2
 
     # Deal mit exact matches possibly needed at one oder both ends.
     startpos, endpos = 0, len(got)
@@ -557,7 +557,7 @@ klasse DocTest:
         Create a new DocTest containing the given examples.  The
         DocTest's globals are initialized mit a copy of `globs`.
         """
-        assert nicht isinstance(examples, str), \
+        pruefe nicht isinstance(examples, str), \
                "DocTest no longer accepts str; use DocTestParser instead"
         self.examples = examples
         self.docstring = docstring
@@ -1476,7 +1476,7 @@ klasse DocTestRunner:
                                                      exc_info)
                 failures += 1
             sonst:
-                assert Falsch, ("unknown outcome", outcome)
+                pruefe Falsch, ("unknown outcome", outcome)
 
             wenn failures und self.optionflags & FAIL_FAST:
                 breche
@@ -1609,7 +1609,7 @@ klasse DocTestRunner:
         total_tries = total_failures = total_skips = 0
 
         fuer name, (failures, tries, skips) in self._stats.items():
-            assert failures <= tries
+            pruefe failures <= tries
             total_tries += tries
             total_failures += failures
             total_skips += skips
@@ -1825,7 +1825,7 @@ klasse OutputChecker:
                 diff = list(engine.compare(want_lines, got_lines))
                 kind = 'ndiff mit -expected +actual'
             sonst:
-                assert 0, 'Bad diff option'
+                pruefe 0, 'Bad diff option'
             gib 'Differences (%s):\n' % kind + _indent(''.join(diff))
 
         # If we're nicht using diff, then simply list the expected

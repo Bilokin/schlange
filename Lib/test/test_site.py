@@ -381,13 +381,13 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_gethistoryfile(self):
         filename = 'file'
         rc, out, err = assert_python_ok('-c',
-            f'import site; assert site.gethistoryfile() == "{filename}"',
+            f'import site; pruefe site.gethistoryfile() == "{filename}"',
             PYTHON_HISTORY=filename)
         self.assertEqual(rc, 0)
 
         # Check that PYTHON_HISTORY ist ignored in isolated mode.
         rc, out, err = assert_python_ok('-I', '-c',
-            f'import site; assert site.gethistoryfile() != "{filename}"',
+            f'import site; pruefe site.gethistoryfile() != "{filename}"',
             PYTHON_HISTORY=filename)
         self.assertEqual(rc, 0)
 

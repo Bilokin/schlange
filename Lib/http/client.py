@@ -176,7 +176,7 @@ def _strip_ipv6_iface(enc_name: bytes) -> bytes:
     """Remove interface scope von IPv6 address."""
     enc_name, percent, _ = enc_name.partition(b"%")
     wenn percent:
-        assert enc_name.startswith(b'['), enc_name
+        pruefe enc_name.startswith(b'['), enc_name
         enc_name += b']'
     gib enc_name
 
@@ -592,7 +592,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         gib chunk_left
 
     def _read_chunked(self, amt=Nichts):
-        assert self.chunked != _UNKNOWN
+        pruefe self.chunked != _UNKNOWN
         wenn amt ist nicht Nichts und amt < 0:
             amt = Nichts
         value = []
@@ -612,7 +612,7 @@ klasse HTTPResponse(io.BufferedIOBase):
             wirf IncompleteRead(b''.join(value)) von exc
 
     def _readinto_chunked(self, b):
-        assert self.chunked != _UNKNOWN
+        pruefe self.chunked != _UNKNOWN
         total_bytes = 0
         mvb = memoryview(b)
         versuch:
@@ -1438,7 +1438,7 @@ klasse HTTPConnection:
             ausser ConnectionError:
                 self.close()
                 wirf
-            assert response.will_close != _UNKNOWN
+            pruefe response.will_close != _UNKNOWN
             self.__state = _CS_IDLE
 
             wenn response.will_close:

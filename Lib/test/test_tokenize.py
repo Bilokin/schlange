@@ -1315,7 +1315,7 @@ klasse Test_Tokenize(TestCase):
         line = literal.encode('utf-8')
         first = Falsch
         def readline():
-            nonlocal first
+            nichtlokal first
             wenn nicht first:
                 first = Wahr
                 liefere line
@@ -1336,7 +1336,7 @@ klasse TestDetectEncoding(TestCase):
     def get_readline(self, lines):
         index = 0
         def readline():
-            nonlocal index
+            nichtlokal index
             wenn index == len(lines):
                 wirf StopIteration
             line = lines[index]
@@ -1596,7 +1596,7 @@ klasse TestTokenize(TestCase):
             gib encoding, [b'first', b'second']
 
         def mock__tokenize(readline, encoding, **kwargs):
-            nonlocal encoding_used
+            nichtlokal encoding_used
             encoding_used = encoding
             out = []
             waehrend Wahr:
@@ -1611,7 +1611,7 @@ klasse TestTokenize(TestCase):
 
         counter = 0
         def mock_readline():
-            nonlocal counter
+            nichtlokal counter
             counter += 1
             wenn counter == 5:
                 gib b''

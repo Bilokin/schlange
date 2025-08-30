@@ -40,11 +40,11 @@ klasse TestZip(fixtures.ZipFixtures, unittest.TestCase):
     def test_files(self):
         fuer file in files('example'):
             path = str(file.dist.locate_file(file))
-            assert '.whl/' in path, path
+            pruefe '.whl/' in path, path
 
     def test_one_distribution(self):
         dists = list(distributions(path=sys.path[:1]))
-        assert len(dists) == 1
+        pruefe len(dists) == 1
 
 
 klasse TestEgg(TestZip):
@@ -55,8 +55,8 @@ klasse TestEgg(TestZip):
     def test_files(self):
         fuer file in files('example'):
             path = str(file.dist.locate_file(file))
-            assert '.egg/' in path, path
+            pruefe '.egg/' in path, path
 
     def test_normalized_name(self):
         dist = distribution('example')
-        assert dist._normalized_name == 'example'
+        pruefe dist._normalized_name == 'example'

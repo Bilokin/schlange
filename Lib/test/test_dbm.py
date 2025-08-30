@@ -310,7 +310,7 @@ klasse WhichDBTestCase(unittest.TestCase):
 
 
 fuer mod in dbm_iterator():
-    assert mod.__name__.startswith('dbm.')
+    pruefe mod.__name__.startswith('dbm.')
     suffix = mod.__name__[4:]
     testname = f'TestCase_{suffix}'
     globals()[testname] = type(testname,

@@ -23,7 +23,7 @@ klasse TestReversed(unittest.TestCase):
                      next(r)
                 ausser StopIteration:
                     breche
-                assert 0 <= l <= size
+                pruefe 0 <= l <= size
         x = tuple(range(size))
 
         fuer _ in range(number_of_iterations):

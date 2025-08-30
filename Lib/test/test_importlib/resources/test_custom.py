@@ -44,5 +44,5 @@ klasse CustomTraversableResourcesTests(unittest.TestCase):
         loader = SimpleLoader(MagicResources(temp_dir))
         pkg = util.create_package_from_loader(loader)
         files = resources.files(pkg)
-        assert isinstance(files, abc.Traversable)
-        assert list(files.iterdir()) == []
+        pruefe isinstance(files, abc.Traversable)
+        pruefe list(files.iterdir()) == []

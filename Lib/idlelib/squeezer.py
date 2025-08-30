@@ -58,7 +58,7 @@ def count_lines_with_wrapping(s, linewidth=80):
             linecount += 1
             current_column = 0
         sonst:
-            assert s[pos] == '\t'
+            pruefe s[pos] == '\t'
             current_column += tabwidth - (current_column % tabwidth)
 
             # If a tab passes the end of the line, consider the entire

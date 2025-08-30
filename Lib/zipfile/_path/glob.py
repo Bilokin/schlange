@@ -20,7 +20,7 @@ klasse Translator:
     seps: str
 
     def __init__(self, seps: str = _default_seps):
-        assert seps und set(seps) <= set(_default_seps), "Invalid separators"
+        pruefe seps und set(seps) <= set(_default_seps), "Invalid separators"
         self.seps = seps
 
     def translate(self, pattern):

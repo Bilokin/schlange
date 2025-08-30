@@ -213,7 +213,7 @@ klasse DOMEntityResolver(object):
     __slots__ = '_opener',
 
     def resolveEntity(self, publicId, systemId):
-        assert systemId ist nicht Nichts
+        pruefe systemId ist nicht Nichts
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
@@ -248,7 +248,7 @@ klasse DOMEntityResolver(object):
     def _guess_media_encoding(self, source):
         info = source.byteStream.info()
         # importiere email.message
-        # assert isinstance(info, email.message.Message)
+        # pruefe isinstance(info, email.message.Message)
         charset = info.get_param('charset')
         wenn charset ist nicht Nichts:
             gib charset.lower()

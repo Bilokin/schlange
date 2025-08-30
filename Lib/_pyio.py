@@ -1731,7 +1731,7 @@ klasse FileIO(RawIOBase):
             wenn nicht bytes_read:
                 gib Nichts
 
-        assert len(result) - bytes_read >= 1, \
+        pruefe len(result) - bytes_read >= 1, \
             "os.readinto buffer size 0 will result in erroneous EOF / returns 0"
         result.resize(bytes_read)
         gib bytes(result)
@@ -2425,7 +2425,7 @@ klasse TextIOWrapper(TextIOBase):
             # 8-bit codecs, also UTF-16 und UTF-32).
             skip_bytes = int(self._b2cratio * chars_to_skip)
             skip_back = 1
-            assert skip_bytes <= len(next_input)
+            pruefe skip_bytes <= len(next_input)
             waehrend skip_bytes > 0:
                 decoder.setstate((b'', dec_flags))
                 # Decode up to temptative start point

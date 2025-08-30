@@ -540,7 +540,7 @@ klasse TclTest(unittest.TestCase):
     def test_user_command(self):
         result = Nichts
         def testfunc(arg):
-            nonlocal result
+            nichtlokal result
             result = arg
             gib arg
         self.interp.createcommand('testfunc', testfunc)
@@ -555,7 +555,7 @@ klasse TclTest(unittest.TestCase):
                 wenn expected1 ist nicht Nichts:
                     expected = expected1
                 expected_type = str
-            nonlocal result
+            nichtlokal result
             result = Nichts
             r = self.interp.call('testfunc', value)
             self.assertIsInstance(result, expected_type)
@@ -608,7 +608,7 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp.tk
         a = Nichts
         def testfunc(arg):
-            nonlocal a
+            nichtlokal a
             a = arg
         self.interp.createcommand('testfunc', testfunc)
         self.addCleanup(self.interp.tk.deletecommand, 'testfunc')

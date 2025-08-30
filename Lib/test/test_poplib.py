@@ -221,7 +221,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.handler_instance = Nichts
 
     def start(self):
-        assert nicht self.active
+        pruefe nicht self.active
         self.__flag = threading.Event()
         threading.Thread.start(self)
         self.__flag.wait()
@@ -237,7 +237,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
             asyncore.close_all(ignore_all=Wahr)
 
     def stop(self):
-        assert self.active
+        pruefe self.active
         self.active = Falsch
         self.join()
 

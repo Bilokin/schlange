@@ -66,7 +66,7 @@ def source_wo_bytecode(seconds, repeat):
         name = '__importlib_test_benchmark__'
         # Clears out sys.modules und puts an entry at the front of sys.path.
         mit util.create_modules(name) als mapping:
-            assert nicht os.path.exists(cache_from_source(mapping[name]))
+            pruefe nicht os.path.exists(cache_from_source(mapping[name]))
             sys.meta_path.append(importlib.machinery.PathFinder)
             loader = (importlib.machinery.SourceFileLoader,
                       importlib.machinery.SOURCE_SUFFIXES)
@@ -100,7 +100,7 @@ decimal_wo_bytecode = _wo_bytecode(decimal)
 
 def source_writing_bytecode(seconds, repeat):
     """Source writing bytecode: small"""
-    assert nicht sys.dont_write_bytecode
+    pruefe nicht sys.dont_write_bytecode
     name = '__importlib_test_benchmark__'
     mit util.create_modules(name) als mapping:
         sys.meta_path.append(importlib.machinery.PathFinder)
@@ -111,7 +111,7 @@ def source_writing_bytecode(seconds, repeat):
             sys.modules.pop(name)
             os.unlink(cache_from_source(mapping[name]))
         fuer result in bench(name, cleanup, repeat=repeat, seconds=seconds):
-            assert nicht os.path.exists(cache_from_source(mapping[name]))
+            pruefe nicht os.path.exists(cache_from_source(mapping[name]))
             liefere result
 
 
@@ -119,7 +119,7 @@ def _writing_bytecode(module):
     name = module.__name__
     def writing_bytecode_benchmark(seconds, repeat):
         """Source writing bytecode: {}"""
-        assert nicht sys.dont_write_bytecode
+        pruefe nicht sys.dont_write_bytecode
         def cleanup():
             sys.modules.pop(name)
             os.unlink(cache_from_source(module.__file__))
@@ -142,7 +142,7 @@ def source_using_bytecode(seconds, repeat):
                   importlib.machinery.SOURCE_SUFFIXES)
         sys.path_hooks.append(importlib.machinery.FileFinder.path_hook(loader))
         py_compile.compile(mapping[name])
-        assert os.path.exists(cache_from_source(mapping[name]))
+        pruefe os.path.exists(cache_from_source(mapping[name]))
         liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                          seconds=seconds)
 
@@ -204,7 +204,7 @@ def main(import_, options):
             results.append(result)
             drucke(result, end=' ')
             sys.stdout.flush()
-        assert nicht sys.dont_write_bytecode
+        pruefe nicht sys.dont_write_bytecode
         drucke("]", "best is", format(max(results), ',d'))
         new_results[benchmark.__doc__] = results
     wenn prev_results:

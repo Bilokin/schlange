@@ -1257,7 +1257,7 @@ klasse CopyTests(unittest.TestCase):
                         repl = copy.replace(node, **{field: new_value})
                         fuer f in fields:
                             old_value = old_fields[f]
-                            # assert that there ist no side-effect
+                            # pruefe that there ist no side-effect
                             self.assertIs(getattr(node, f), old_value)
                             # check the changes
                             wenn f != field:
@@ -1273,7 +1273,7 @@ klasse CopyTests(unittest.TestCase):
                     repl = copy.replace(node, **{attribute: new_attr})
                     fuer a in attributes:
                         old_attr = old_attrs[a]
-                        # assert that there ist no side-effect
+                        # pruefe that there ist no side-effect
                         self.assertIs(getattr(node, a), old_attr)
                         # check the changes
                         wenn a != attribute:
@@ -1291,7 +1291,7 @@ klasse CopyTests(unittest.TestCase):
 
         new_nid = object()
         repl = copy.replace(node, id=new_nid)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.id, nid)
         self.assertIs(node.ctx, ctx)
         # check the changes
@@ -1306,7 +1306,7 @@ klasse CopyTests(unittest.TestCase):
         # constructor allows any type so replace() should do the same
         lineno = object()
         repl = copy.replace(node, lineno=lineno)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertEqual(node.lineno, 1)
         # check the changes
         self.assertEqual(repl.id, node.id)
@@ -1336,7 +1336,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertIs(node.data, data)
         # check shallow copy
         repl = copy.replace(node)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.name, name)
         self.assertIs(node.data, data)
         # check the shallow copy
@@ -1347,7 +1347,7 @@ klasse CopyTests(unittest.TestCase):
         repl_data = object()
         # replace custom but known field
         repl = copy.replace(node, data=repl_data)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.name, name)
         self.assertIs(node.data, data)
         # check the changes
@@ -1366,7 +1366,7 @@ klasse CopyTests(unittest.TestCase):
 
         y = object()
         repl = copy.replace(node, y=y)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertEqual(node.x, 0)
         self.assertEqual(node.y, 1)
         # check the changes
@@ -1378,13 +1378,13 @@ klasse CopyTests(unittest.TestCase):
         node.extra = extra = object()  # add instance 'extra' field
         context = node.ctx
 
-        # assert initial values
+        # pruefe initial values
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
         # shallow copy, but drops extra fields
         repl = copy.replace(node)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
@@ -1395,7 +1395,7 @@ klasse CopyTests(unittest.TestCase):
 
         # change known native field
         repl = copy.replace(node, id='y')
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
@@ -1415,7 +1415,7 @@ klasse CopyTests(unittest.TestCase):
         msg = "Name.__replace__ missing 1 keyword argument: 'id'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
 
@@ -1427,7 +1427,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         repl = copy.replace(node, id='y')
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         self.assertIs(repl.id, 'y')
@@ -1452,7 +1452,7 @@ klasse CopyTests(unittest.TestCase):
         msg = "Name.__replace__ got an unexpected keyword argument 'extra'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, extra=1)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertIs(node.extra, extra)
@@ -1466,7 +1466,7 @@ klasse CopyTests(unittest.TestCase):
         msg = "Name.__replace__ got an unexpected keyword argument 'unknown'."
         mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, unknown=1)
-        # assert that there ist no side-effect
+        # pruefe that there ist no side-effect
         self.assertIs(node.id, 'x')
         self.assertIs(node.ctx, context)
         self.assertRaises(AttributeError, getattr, node, 'unknown')
@@ -2690,7 +2690,7 @@ klasse ConstantTests(unittest.TestCase):
 
         # Replace expression nodes mit constants
         fuer assign, const in zip(tree.body, consts):
-            assert isinstance(assign, ast.Assign), ast.dump(assign)
+            pruefe isinstance(assign, ast.Assign), ast.dump(assign)
             new_node = ast.Constant(value=const)
             ast.copy_location(new_node, assign.value)
             assign.value = new_node
@@ -2833,7 +2833,7 @@ klasse EndPositionTests(unittest.TestCase):
                 z = Nichts
 
             fuer x, y in stuff:
-                assert Wahr
+                pruefe Wahr
 
             versuch:
                 wirf RuntimeError

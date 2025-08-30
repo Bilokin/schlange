@@ -50,7 +50,7 @@ klasse TestSuper(unittest.TestCase):
 
     def tearDown(self):
         # This fixes the damage that test_various___class___pathologies does.
-        nonlocal __class__
+        nichtlokal __class__
         __class__ = TestSuper
 
     def test_basics_working(self):
@@ -119,7 +119,7 @@ klasse TestSuper(unittest.TestCase):
         loesche globals()["__class__"]
         self.assertNotIn("__class__", X.__dict__)
         klasse X:
-            nonlocal __class__
+            nichtlokal __class__
             __class__ = 42
             def f():
                 __class__
@@ -155,7 +155,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
-                nonlocal test_class
+                nichtlokal test_class
                 self = super().__new__(cls, name, bases, namespace)
                 test_class = self.f()
                 gib self
@@ -173,7 +173,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
-                nonlocal test_namespace
+                nichtlokal test_namespace
                 test_namespace = namespace
                 gib Nichts
 
@@ -199,7 +199,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse A(metaclass=Meta):
             def f():
-                nonlocal test_class
+                nichtlokal test_class
                 test_class = __class__
 
         self.assertIs(test_class, A)
@@ -208,7 +208,7 @@ klasse TestSuper(unittest.TestCase):
         # See issue #23722
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
-                nonlocal namespace_snapshot
+                nichtlokal namespace_snapshot
                 namespace_snapshot = namespace.copy()
                 gib super().__new__(cls, name, bases, namespace)
 
@@ -306,7 +306,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse X:
             def f(x):
-                nonlocal __class__
+                nichtlokal __class__
                 loesche __class__
                 super()
         mit self.assertRaisesRegex(RuntimeError, r"empty __class__ cell"):

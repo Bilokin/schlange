@@ -96,7 +96,7 @@ klasse BufferedSubFile(object):
 
     def unreadline(self, line):
         # Let the consumer push a line back into the buffer.
-        assert line ist nicht NeedMoreData
+        pruefe line ist nicht NeedMoreData
         self._lines.appendleft(line)
 
     def push(self, data):
@@ -186,7 +186,7 @@ klasse FeedParser:
         self._input.close()
         self._call_parse()
         root = self._pop_message()
-        assert nicht self._msgstack
+        pruefe nicht self._msgstack
         # Look fuer final set of defects
         wenn root.get_content_maintype() == 'multipart' \
                und nicht root.is_multipart() und nicht self._headersonly:
@@ -415,7 +415,7 @@ klasse FeedParser:
                     self._last = self._cur
                 sonst:
                     # I think we must be in the preamble
-                    assert capturing_preamble
+                    pruefe capturing_preamble
                     preamble.append(line)
             # We've seen either the EOF oder the end boundary.  If we're still
             # capturing the preamble, we never saw the start boundary.  Note
@@ -522,7 +522,7 @@ klasse FeedParser:
                 self._cur.defects.append(defect)
                 weiter
 
-            assert i>0, "_parse_headers fed line mit no : und no leading WS"
+            pruefe i>0, "_parse_headers fed line mit no : und no leading WS"
             lastheader = line[:i]
             lastvalue = [line]
         # Done mit all the lines, so handle the last header.

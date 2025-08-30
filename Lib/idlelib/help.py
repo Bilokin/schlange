@@ -123,7 +123,7 @@ klasse HelpParser(HTMLParser):
     def handle_endtag(self, tag):
         "Handle endtags in help.html."
         wenn tag in ['h1', 'h2', 'h3']:
-            assert self.level == 0
+            pruefe self.level == 0
             indent = ('        ' wenn tag == 'h3' sonst
                       '    ' wenn tag == 'h2' sonst
                       '')

@@ -130,7 +130,7 @@ klasse RunTests(BaseTest):
             warte asyncio.sleep(0.1)
 
         async def main():
-            nonlocal lo_task
+            nichtlokal lo_task
             lo_task = asyncio.create_task(leftover())
             gib 123
 
@@ -151,7 +151,7 @@ klasse RunTests(BaseTest):
             loop = asyncio.get_running_loop()
             loop.call_exception_handler = call_exc_handler_mock
 
-            nonlocal lo_task
+            nichtlokal lo_task
             lo_task = asyncio.create_task(leftover())
             gib 123
 
@@ -177,7 +177,7 @@ klasse RunTests(BaseTest):
                 warte asyncio.sleep(1)
 
         async def spin():
-            nonlocal spinner
+            nichtlokal spinner
             spinner = fidget()
             versuch:
                 async fuer the_meaning_of_life in spinner:  # NoQA
@@ -189,7 +189,7 @@ klasse RunTests(BaseTest):
             loop = asyncio.get_running_loop()
             loop.call_exception_handler = mock.Mock()
 
-            nonlocal lazyboy
+            nichtlokal lazyboy
             lazyboy = asyncio.create_task(spin())
             wirf FancyExit
 
@@ -425,7 +425,7 @@ klasse RunnerTests(BaseTest):
     def test_interrupt_call_soon(self):
         # The only case when task ist nicht suspended by waiting a future
         # oder another task
-        assert threading.current_thread() ist threading.main_thread()
+        pruefe threading.current_thread() ist threading.main_thread()
 
         async def coro():
             mit self.assertRaises(asyncio.CancelledError):
@@ -440,7 +440,7 @@ klasse RunnerTests(BaseTest):
 
     def test_interrupt_wait(self):
         # interrupting when waiting a future cancels both future und main task
-        assert threading.current_thread() ist threading.main_thread()
+        pruefe threading.current_thread() ist threading.main_thread()
 
         async def coro(fut):
             mit self.assertRaises(asyncio.CancelledError):
@@ -458,7 +458,7 @@ klasse RunnerTests(BaseTest):
 
     def test_interrupt_cancelled_task(self):
         # interrupting cancelled main task doesn't wirf KeyboardInterrupt
-        assert threading.current_thread() ist threading.main_thread()
+        pruefe threading.current_thread() ist threading.main_thread()
 
         async def subtask(task):
             warte asyncio.sleep(0)
@@ -475,7 +475,7 @@ klasse RunnerTests(BaseTest):
 
     def test_signal_install_not_supported_ok(self):
         # signal.signal() can throw wenn the "main thread" doesn't have signals enabled
-        assert threading.current_thread() ist threading.main_thread()
+        pruefe threading.current_thread() ist threading.main_thread()
 
         async def coro():
             pass

@@ -191,10 +191,10 @@ klasse ArgumentDescriptor(object):
     )
 
     def __init__(self, name, n, reader, doc):
-        assert isinstance(name, str)
+        pruefe isinstance(name, str)
         self.name = name
 
-        assert isinstance(n, int) und (n >= 0 oder
+        pruefe isinstance(n, int) und (n >= 0 oder
                                        n in (UP_TO_NEWLINE,
                                              TAKEN_FROM_ARGUMENT1,
                                              TAKEN_FROM_ARGUMENT4,
@@ -204,7 +204,7 @@ klasse ArgumentDescriptor(object):
 
         self.reader = reader
 
-        assert isinstance(doc, str)
+        pruefe isinstance(doc, str)
         self.doc = doc
 
 von struct importiere unpack als _unpack
@@ -416,7 +416,7 @@ def read_string1(f):
     """
 
     n = read_uint1(f)
-    assert n >= 0
+    pruefe n >= 0
     data = f.read(n)
     wenn len(data) == n:
         gib data.decode("latin-1")
@@ -479,7 +479,7 @@ def read_bytes1(f):
     """
 
     n = read_uint1(f)
-    assert n >= 0
+    pruefe n >= 0
     data = f.read(n)
     wenn len(data) == n:
         gib data
@@ -511,7 +511,7 @@ def read_bytes4(f):
     """
 
     n = read_uint4(f)
-    assert n >= 0
+    pruefe n >= 0
     wenn n > sys.maxsize:
         wirf ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
@@ -546,7 +546,7 @@ def read_bytes8(f):
     """
 
     n = read_uint8(f)
-    assert n >= 0
+    pruefe n >= 0
     wenn n > sys.maxsize:
         wirf ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
@@ -581,7 +581,7 @@ def read_bytearray8(f):
     """
 
     n = read_uint8(f)
-    assert n >= 0
+    pruefe n >= 0
     wenn n > sys.maxsize:
         wirf ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
@@ -645,7 +645,7 @@ def read_unicodestring1(f):
     """
 
     n = read_uint1(f)
-    assert n >= 0
+    pruefe n >= 0
     data = f.read(n)
     wenn len(data) == n:
         gib str(data, 'utf-8', 'surrogatepass')
@@ -684,7 +684,7 @@ def read_unicodestring4(f):
     """
 
     n = read_uint4(f)
-    assert n >= 0
+    pruefe n >= 0
     wenn n > sys.maxsize:
         wirf ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
@@ -725,7 +725,7 @@ def read_unicodestring8(f):
     """
 
     n = read_uint8(f)
-    assert n >= 0
+    pruefe n >= 0
     wenn n > sys.maxsize:
         wirf ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
@@ -959,16 +959,16 @@ klasse StackObject(object):
     )
 
     def __init__(self, name, obtype, doc):
-        assert isinstance(name, str)
+        pruefe isinstance(name, str)
         self.name = name
 
-        assert isinstance(obtype, type) oder isinstance(obtype, tuple)
+        pruefe isinstance(obtype, type) oder isinstance(obtype, tuple)
         wenn isinstance(obtype, tuple):
             fuer contained in obtype:
-                assert isinstance(contained, type)
+                pruefe isinstance(contained, type)
         self.obtype = obtype
 
-        assert isinstance(doc, str)
+        pruefe isinstance(doc, str)
         self.doc = doc
 
     def __repr__(self):
@@ -1123,30 +1123,30 @@ klasse OpcodeInfo(object):
 
     def __init__(self, name, code, arg,
                  stack_before, stack_after, proto, doc):
-        assert isinstance(name, str)
+        pruefe isinstance(name, str)
         self.name = name
 
-        assert isinstance(code, str)
-        assert len(code) == 1
+        pruefe isinstance(code, str)
+        pruefe len(code) == 1
         self.code = code
 
-        assert arg ist Nichts oder isinstance(arg, ArgumentDescriptor)
+        pruefe arg ist Nichts oder isinstance(arg, ArgumentDescriptor)
         self.arg = arg
 
-        assert isinstance(stack_before, list)
+        pruefe isinstance(stack_before, list)
         fuer x in stack_before:
-            assert isinstance(x, StackObject)
+            pruefe isinstance(x, StackObject)
         self.stack_before = stack_before
 
-        assert isinstance(stack_after, list)
+        pruefe isinstance(stack_after, list)
         fuer x in stack_after:
-            assert isinstance(x, StackObject)
+            pruefe isinstance(x, StackObject)
         self.stack_after = stack_after
 
-        assert isinstance(proto, int) und 0 <= proto <= pickle.HIGHEST_PROTOCOL
+        pruefe isinstance(proto, int) und 0 <= proto <= pickle.HIGHEST_PROTOCOL
         self.proto = proto
 
-        assert isinstance(doc, str)
+        pruefe isinstance(doc, str)
         self.doc = doc
 
 I = OpcodeInfo
@@ -2294,7 +2294,7 @@ def _genops(data, yield_end_pos=Falsch):
         sonst:
             liefere opcode, arg, pos
         wenn code == b'.':
-            assert opcode.name == 'STOP'
+            pruefe opcode.name == 'STOP'
             breche
 
 def genops(pickle):
@@ -2461,10 +2461,10 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
         wenn markobject in before oder (opcode.name == "POP" und
                                     stack und
                                     stack[-1] ist markobject):
-            assert markobject nicht in after
+            pruefe markobject nicht in after
             wenn __debug__:
                 wenn markobject in before:
-                    assert before[-1] ist stackslice
+                    pruefe before[-1] ist stackslice
             wenn markstack:
                 markpos = markstack.pop()
                 wenn markpos ist Nichts:
@@ -2479,7 +2479,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 versuch:
                     numtopop = before.index(markobject)
                 ausser ValueError:
-                    assert opcode.name == "POP"
+                    pruefe opcode.name == "POP"
                     numtopop = 0
             sonst:
                 errormsg = "no MARK exists on stack"
@@ -2490,7 +2490,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 memo_idx = len(memo)
                 markmsg = "(as %d)" % memo_idx
             sonst:
-                assert arg ist nicht Nichts
+                pruefe arg ist nicht Nichts
                 memo_idx = arg
             wenn nicht stack:
                 errormsg = "stack ist empty -- can't store into memo"
@@ -2500,7 +2500,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 memo[memo_idx] = stack[-1]
         sowenn opcode.name in ("GET", "BINGET", "LONG_BINGET"):
             wenn arg in memo:
-                assert len(after) == 1
+                pruefe len(after) == 1
                 after = [memo[arg]]     # fuer better stack emulation
             sonst:
                 errormsg = "memo key %r has never been stored into" % arg
@@ -2536,7 +2536,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
         wenn numtopop:
             loesche stack[-numtopop:]
         wenn markobject in after:
-            assert markobject nicht in before
+            pruefe markobject nicht in before
             markstack.append(pos)
 
         stack.extend(after)

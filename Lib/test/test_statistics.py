@@ -281,7 +281,7 @@ klasse NumericTestCase(unittest.TestCase):
     @staticmethod
     def _make_std_err_msg(first, second, tol, rel, idx):
         # Create the standard error message fuer approx_equal failures.
-        assert first != second
+        pruefe first != second
         template = (
             '  %r != %r\n'
             '  values differ by more than tol=%r und rel=%r\n'
@@ -325,13 +325,13 @@ klasse ApproxEqualSymmetryTest(unittest.TestCase):
         #
         args1 = [2456, 37.8, -12.45, Decimal('2.54'), Fraction(17, 54)]
         args2 = [2459, 37.2, -12.41, Decimal('2.59'), Fraction(15, 54)]
-        assert len(args1) == len(args2)
+        pruefe len(args1) == len(args2)
         fuer a, b in zip(args1, args2):
             self.do_relative_symmetry(a, b)
 
     def do_relative_symmetry(self, a, b):
         a, b = min(a, b), max(a, b)
-        assert a < b
+        pruefe a < b
         delta = b - a  # The absolute difference between the values.
         rel_err1, rel_err2 = abs(delta/a), abs(delta/b)
         # Choose an error margin halfway between the two.
@@ -792,7 +792,7 @@ klasse DecimalToRatioTest(unittest.TestCase):
         numbers = [Decimal("9.8765e12"), Decimal("9.8765e-12")]
         fuer d in numbers:
             # First test positive decimals.
-            assert d > 0
+            pruefe d > 0
             num, den = statistics._exact_ratio(d)
             self.assertGreaterEqual(num, 0)
             self.assertGreater(den, 0)
@@ -893,7 +893,7 @@ klasse CoerceTest(unittest.TestCase):
 
     def check_type_coercions(self, T):
         """Check that type T coerces correctly mit subclasses of itself."""
-        assert T ist nicht bool
+        pruefe T ist nicht bool
         # Coercing a type mit itself returns the same type.
         self.assertIs(statistics._coerce(T, T), T)
         # Coercing a type mit a subclass of itself returns the subclass.
@@ -1053,10 +1053,10 @@ klasse UnivariateCommonMixin:
     def test_no_inplace_modifications(self):
         # Test that the function does nicht modify its input data.
         data = self.prepare_data()
-        assert len(data) != 1  # Necessary to avoid infinite loop.
-        assert data != sorted(data)
+        pruefe len(data) != 1  # Necessary to avoid infinite loop.
+        pruefe data != sorted(data)
         saved = data[:]
-        assert data ist nicht saved
+        pruefe data ist nicht saved
         _ = self.func(data)
         self.assertListEqual(data, saved, "data has been modified")
 
@@ -1270,7 +1270,7 @@ klasse SumSpecialValues(NumericTestCase):
         self.assertWahr(math.isinf(x))
         self.assertIs(type(x), type(inf))
         self.assertEqual(x > 0, inf > 0)
-        assert x == inf
+        pruefe x == inf
 
     def do_test_inf(self, inf):
         # Adding a single infinity gives infinity.
@@ -1404,7 +1404,7 @@ klasse TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         c = 1e9
         data = [3.4, 4.5, 4.9, 6.7, 6.8, 7.2, 8.0, 8.1, 9.4]
         expected = self.func(data) + c
-        assert expected != c
+        pruefe expected != c
         result = self.func([x+c fuer x in data])
         self.assertEqual(result, expected)
 
@@ -1571,20 +1571,20 @@ klasse TestMedian(NumericTestCase, AverageMixin):
     def test_even_ints(self):
         # Test median mit an even number of int data points.
         data = [1, 2, 3, 4, 5, 6]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertEqual(self.func(data), 3.5)
 
     def test_odd_ints(self):
         # Test median mit an odd number of int data points.
         data = [1, 2, 3, 4, 5, 6, 9]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         self.assertEqual(self.func(data), 4)
 
     def test_odd_fractions(self):
         # Test median works mit an odd number of Fractions.
         F = Fraction
         data = [F(1, 7), F(2, 7), F(3, 7), F(4, 7), F(5, 7)]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         random.shuffle(data)
         self.assertEqual(self.func(data), F(3, 7))
 
@@ -1592,7 +1592,7 @@ klasse TestMedian(NumericTestCase, AverageMixin):
         # Test median works mit an even number of Fractions.
         F = Fraction
         data = [F(1, 7), F(2, 7), F(3, 7), F(4, 7), F(5, 7), F(6, 7)]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), F(1, 2))
 
@@ -1600,7 +1600,7 @@ klasse TestMedian(NumericTestCase, AverageMixin):
         # Test median works mit an odd number of Decimals.
         D = Decimal
         data = [D('2.5'), D('3.1'), D('4.2'), D('5.7'), D('5.8')]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         random.shuffle(data)
         self.assertEqual(self.func(data), D('4.2'))
 
@@ -1608,7 +1608,7 @@ klasse TestMedian(NumericTestCase, AverageMixin):
         # Test median works mit an even number of Decimals.
         D = Decimal
         data = [D('1.2'), D('2.5'), D('3.1'), D('4.2'), D('5.7'), D('5.8')]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), D('3.65'))
 
@@ -1620,7 +1620,7 @@ klasse TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
 
     def prepare_data(self):
         data = list(range(15))
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         waehrend data == sorted(data):
             random.shuffle(data)
         gib data
@@ -1633,14 +1633,14 @@ klasse TestMedianLow(TestMedian, UnivariateTypeMixin):
     def test_even_ints(self):
         # Test median_low mit an even number of ints.
         data = [1, 2, 3, 4, 5, 6]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertEqual(self.func(data), 3)
 
     def test_even_fractions(self):
         # Test median_low works mit an even number of Fractions.
         F = Fraction
         data = [F(1, 7), F(2, 7), F(3, 7), F(4, 7), F(5, 7), F(6, 7)]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), F(3, 7))
 
@@ -1648,7 +1648,7 @@ klasse TestMedianLow(TestMedian, UnivariateTypeMixin):
         # Test median_low works mit an even number of Decimals.
         D = Decimal
         data = [D('1.1'), D('2.2'), D('3.3'), D('4.4'), D('5.5'), D('6.6')]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), D('3.3'))
 
@@ -1660,14 +1660,14 @@ klasse TestMedianHigh(TestMedian, UnivariateTypeMixin):
     def test_even_ints(self):
         # Test median_high mit an even number of ints.
         data = [1, 2, 3, 4, 5, 6]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertEqual(self.func(data), 4)
 
     def test_even_fractions(self):
         # Test median_high works mit an even number of Fractions.
         F = Fraction
         data = [F(1, 7), F(2, 7), F(3, 7), F(4, 7), F(5, 7), F(6, 7)]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), F(4, 7))
 
@@ -1675,7 +1675,7 @@ klasse TestMedianHigh(TestMedian, UnivariateTypeMixin):
         # Test median_high works mit an even number of Decimals.
         D = Decimal
         data = [D('1.1'), D('2.2'), D('3.3'), D('4.4'), D('5.5'), D('6.6')]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), D('4.4'))
 
@@ -1689,37 +1689,37 @@ klasse TestMedianGrouped(TestMedian):
     def test_odd_number_repeated(self):
         # Test median.grouped mit repeated median values.
         data = [12, 13, 14, 14, 14, 15, 15]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         self.assertEqual(self.func(data), 14)
         #---
         data = [12, 13, 14, 14, 14, 14, 15]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         self.assertEqual(self.func(data), 13.875)
         #---
         data = [5, 10, 10, 15, 20, 20, 20, 20, 25, 25, 30]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         self.assertEqual(self.func(data, 5), 19.375)
         #---
         data = [16, 18, 18, 18, 18, 20, 20, 20, 22, 22, 22, 24, 24, 26, 28]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         self.assertApproxEqual(self.func(data, 2), 20.66666667, tol=1e-8)
 
     def test_even_number_repeated(self):
         # Test median.grouped mit repeated median values.
         data = [5, 10, 10, 15, 20, 20, 20, 25, 25, 30]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertApproxEqual(self.func(data, 5), 19.16666667, tol=1e-8)
         #---
         data = [2, 3, 4, 4, 4, 5]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertApproxEqual(self.func(data), 3.83333333, tol=1e-8)
         #---
         data = [2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertEqual(self.func(data), 4.5)
         #---
         data = [3, 4, 4, 4, 5, 5, 5, 5, 6, 6]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         self.assertEqual(self.func(data), 4.75)
 
     def test_repeated_single_value(self):
@@ -1741,7 +1741,7 @@ klasse TestMedianGrouped(TestMedian):
         # Test median_grouped works mit an odd number of Fractions.
         F = Fraction
         data = [F(5, 4), F(9, 4), F(13, 4), F(13, 4), F(17, 4)]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         random.shuffle(data)
         self.assertEqual(self.func(data), 3.0)
 
@@ -1749,7 +1749,7 @@ klasse TestMedianGrouped(TestMedian):
         # Test median_grouped works mit an even number of Fractions.
         F = Fraction
         data = [F(5, 4), F(9, 4), F(13, 4), F(13, 4), F(17, 4), F(17, 4)]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), 3.25)
 
@@ -1757,7 +1757,7 @@ klasse TestMedianGrouped(TestMedian):
         # Test median_grouped works mit an odd number of Decimals.
         D = Decimal
         data = [D('5.5'), D('6.5'), D('6.5'), D('7.5'), D('8.5')]
-        assert len(data)%2 == 1
+        pruefe len(data)%2 == 1
         random.shuffle(data)
         self.assertEqual(self.func(data), 6.75)
 
@@ -1765,12 +1765,12 @@ klasse TestMedianGrouped(TestMedian):
         # Test median_grouped works mit an even number of Decimals.
         D = Decimal
         data = [D('5.5'), D('5.5'), D('6.5'), D('6.5'), D('7.5'), D('8.5')]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), 6.5)
         #---
         data = [D('5.5'), D('5.5'), D('6.5'), D('7.5'), D('7.5'), D('8.5')]
-        assert len(data)%2 == 0
+        pruefe len(data)%2 == 0
         random.shuffle(data)
         self.assertEqual(self.func(data), 7.0)
 
@@ -1833,7 +1833,7 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     def test_bimodal_data(self):
         # Test mode mit bimodal data.
         data = [1, 1, 2, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 7, 8, 9, 9]
-        assert data.count(2) == data.count(6) == 4
+        pruefe data.count(2) == data.count(6) == 4
         # mode() should gib 2, the first encountered mode
         self.assertEqual(self.func(data), 2)
 
@@ -1987,7 +1987,7 @@ klasse VarianceStdevMixin(UnivariateCommonMixin):
     def test_shift_data_exact(self):
         # Like test_shift_data, but result ist always exact.
         raw = [1, 3, 3, 4, 5, 7, 9, 10, 11, 16]
-        assert all(x==int(x) fuer x in raw)
+        pruefe all(x==int(x) fuer x in raw)
         expected = self.func(raw)
         shift = 10**9
         data = [x + shift fuer x in raw]
@@ -2138,7 +2138,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
             # Extract adjacent representable floats
             r_up: float = math.nextafter(root, math.inf)
             r_down: float = math.nextafter(root, -math.inf)
-            assert r_down < root < r_up
+            pruefe r_down < root < r_up
 
             # Convert to fractions fuer exact arithmetic
             frac_root: Fraction = Fraction(root)

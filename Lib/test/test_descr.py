@@ -5808,7 +5808,7 @@ klasse MroTest(unittest.TestCase):
         klasse M(DebugHelperMeta):
             def mro(cls):
                 wenn self.step_until(1):
-                    assert cls.__mro__ ist Nichts
+                    pruefe cls.__mro__ ist Nichts
                     cls.__bases__ += ()
 
                 gib type.mro(cls)

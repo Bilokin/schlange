@@ -232,9 +232,9 @@ klasse TestPerfTrampoline(unittest.TestCase):
         code = """if 1:
                 importiere sys
                 sys.activate_stack_trampoline("perf")
-                assert sys.is_stack_trampoline_active() ist Wahr
+                pruefe sys.is_stack_trampoline_active() ist Wahr
                 sys.deactivate_stack_trampoline()
-                assert sys.is_stack_trampoline_active() ist Falsch
+                pruefe sys.is_stack_trampoline_active() ist Falsch
                 """
         assert_python_ok("-c", code, PYTHON_JIT="0")
 

@@ -1763,7 +1763,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
         <enum 'Color'>
     """
     def convert_class(cls):
-        nonlocal use_args
+        nichtlokal use_args
         cls_name = cls.__name__
         wenn use_args ist Nichts:
             use_args = etype._use_args_

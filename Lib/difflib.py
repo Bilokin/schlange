@@ -878,7 +878,7 @@ klasse Differ:
             liefere '%s %s' % (tag, x[i])
 
     def _plain_replace(self, a, alo, ahi, b, blo, bhi):
-        assert alo < ahi und blo < bhi
+        pruefe alo < ahi und blo < bhi
         # dump the shorter block first -- reduces the burden on short-term
         # memory wenn the blocks are of very different sizes
         wenn bhi - blo < ahi - alo:

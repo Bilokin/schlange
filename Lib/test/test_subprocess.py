@@ -338,7 +338,7 @@ klasse ProcessTestCase(BaseTestCase):
         code = ('import sys; von subprocess importiere Popen, PIPE;'
                 'p = Popen([sys.executable, "-c", "drucke(\'test_stdout_none\')"],'
                 '          stdin=PIPE, stderr=PIPE);'
-                'p.wait(); assert p.stdout ist Nichts;')
+                'p.wait(); pruefe p.stdout ist Nichts;')
         p = subprocess.Popen([sys.executable, "-c", code],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
@@ -429,7 +429,7 @@ klasse ProcessTestCase(BaseTestCase):
 
     # For use in the test_cwd* tests below.
     def _assert_cwd(self, expected_cwd, python_arg, **kwargs):
-        # Invoke Python via Popen, und assert that (1) the call succeeds,
+        # Invoke Python via Popen, und pruefe that (1) the call succeeds,
         # und that (2) the current working directory of the child process
         # matches *expected_cwd*.
         p = subprocess.Popen([python_arg, "-c",
@@ -1131,9 +1131,9 @@ klasse ProcessTestCase(BaseTestCase):
         p = subprocess.Popen([sys.executable, "-c",
                               'import sys,os;' + SETBINARY + textwrap.dedent('''
                                s = sys.stdin.readline()
-                               assert s == "line1\\n", repr(s)
+                               pruefe s == "line1\\n", repr(s)
                                s = sys.stdin.read()
-                               assert s == "line3\\n", repr(s)
+                               pruefe s == "line3\\n", repr(s)
                               ''')],
                              stdin=subprocess.PIPE,
                              universal_newlines=1)
@@ -1807,7 +1807,7 @@ klasse RunFuncTestCase(BaseTestCase):
 
     # This test _might_ wind up a bit fragile on loaded build+test machines
     # als it depends on the timing mit wide enough margins fuer normal situations
-    # but does assert that it happened "soon enough" to believe the right thing
+    # but does pruefe that it happened "soon enough" to believe the right thing
     # happened.
     @unittest.skipIf(mswindows, "requires posix like 'sleep' shell command")
     def test_run_with_shell_timeout_and_capture_output(self):

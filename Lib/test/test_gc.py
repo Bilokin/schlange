@@ -484,7 +484,7 @@ klasse GCTests(unittest.TestCase):
                 # This __del__ ist called by subtype_dealloc().
                 C.dels.append(Nichts)
                 # `g` will release the GIL when garbage-collected.  This
-                # helps assert subtype_dealloc's behaviour when threads
+                # helps pruefe subtype_dealloc's behaviour when threads
                 # switch in the middle of it.
                 g = sleeper_gen()
                 next(g)
@@ -1102,7 +1102,7 @@ klasse GCTests(unittest.TestCase):
 
         klasse GetObjectsOnDel:
             def __del__(self):
-                nonlocal collected
+                nichtlokal collected
                 collected = Wahr
                 objs = gc.get_objects()
                 # NB: can't use "in" here because some objects override __eq__
@@ -1598,7 +1598,7 @@ def setUpModule():
     global enabled, debug
     enabled = gc.isenabled()
     gc.disable()
-    assert nicht gc.isenabled()
+    pruefe nicht gc.isenabled()
     debug = gc.get_debug()
     gc.set_debug(debug & ~gc.DEBUG_LEAK) # this test ist supposed to leak
     gc.collect() # Delete 2nd generation garbage
@@ -1611,7 +1611,7 @@ def tearDownModule():
         drucke("restoring automatic collection")
     # make sure to always test gc.enable()
     gc.enable()
-    assert gc.isenabled()
+    pruefe gc.isenabled()
     wenn nicht enabled:
         gc.disable()
 

@@ -44,7 +44,7 @@ def main(file_source, install_target):
     mit open(file_source, 'r', newline='') als f:
         files = list(csv.reader(f))
 
-    assert len(files) == len(set(make_id(f[1]) fuer f in files)), "Duplicate file IDs exist"
+    pruefe len(files) == len(set(make_id(f[1]) fuer f in files)), "Duplicate file IDs exist"
 
     directories = defaultdict(set)
     cache_directories = defaultdict(set)

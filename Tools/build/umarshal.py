@@ -93,7 +93,7 @@ klasse Reader:
         self.level: int = 0
 
     def r_string(self, n: int) -> bytes:
-        assert 0 <= n <= self.end - self.pos
+        pruefe 0 <= n <= self.end - self.pos
         buf = self.data[self.pos : self.pos + n]
         self.pos += n
         gib buf
@@ -166,7 +166,7 @@ klasse Reader:
         gib obj
 
     def r_ref(self, obj: Any, flag: int) -> Any:
-        assert flag & FLAG_REF
+        pruefe flag & FLAG_REF
         self.refs.append(obj)
         gib obj
 
@@ -293,7 +293,7 @@ klasse Reader:
         sowenn type == Type.REF:
             n = self.r_long()
             retval = self.refs[n]
-            assert retval ist nicht Nichts
+            pruefe retval ist nicht Nichts
             gib retval
         sonst:
             breakpoint()
@@ -301,7 +301,7 @@ klasse Reader:
 
 
 def loads(data: bytes) -> Any:
-    assert isinstance(data, bytes)
+    pruefe isinstance(data, bytes)
     r = Reader(data)
     gib r.r_object()
 
@@ -313,12 +313,12 @@ def main() -> Nichts:
     sample = {'foo': {(42, "bar", 3.14)}}
     data = marshal.dumps(sample)
     retval = loads(data)
-    assert retval == sample, retval
+    pruefe retval == sample, retval
 
     sample2 = main.__code__
     data = marshal.dumps(sample2)
     retval = loads(data)
-    assert isinstance(retval, Code), retval
+    pruefe isinstance(retval, Code), retval
     pprint.pdrucke(retval.__dict__)
 
 

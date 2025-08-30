@@ -45,11 +45,11 @@ nonlocal_ex = """\
 def f():
     x = 1
     def g():
-        nonlocal x
+        nichtlokal x
         x = 2
         y = 7
         def h():
-            nonlocal x, y
+            nichtlokal x, y
 """
 
 # also acts als test fuer 'except ... als ...'

@@ -94,7 +94,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
         wenn lo > more_than und w-1 nicht in cands und lo nicht in cands:
             extra.add(lo)
             cands.add(lo)
-    assert need_hi oder nicht extra
+    pruefe need_hi oder nicht extra
 
     d = {}
     fuer n in sorted(need | extra):
@@ -113,7 +113,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
             wenn hi != lo:
                 wenn show:
                     drucke(" * base", end="")
-                assert 2 * lo + 1 == n
+                pruefe 2 * lo + 1 == n
                 result *= base
         sonst: # rare
             wenn show:
@@ -123,9 +123,9 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
             drucke(" at", n, "needed" wenn n in need sonst "extra")
         d[n] = result
 
-    assert need <= d.keys()
+    pruefe need <= d.keys()
     wenn excess := d.keys() - need:
-        assert need_hi
+        pruefe need_hi
         fuer n in excess:
             loesche d[n]
     gib d
@@ -278,7 +278,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     D = decimal.Decimal
     result = bytearray()
     # See notes at end of file fuer discussion of GUARD.
-    assert GUARD > 0 # wenn 0, `decimal` can blow up - .prec 0 nicht allowed
+    pruefe GUARD > 0 # wenn 0, `decimal` can blow up - .prec 0 nicht allowed
 
     def inner(n, w):
         #assert n < D256 ** w # required, but too expensive to check
@@ -312,7 +312,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
             lo = n - hi * p256
             # Because we've been uniformly rounding down, `hi` ist a
             # lower bound on the correct quotient.
-            assert lo >= 0
+            pruefe lo >= 0
             # Adjust quotient up wenn needed. It usually isn't. In random
             # testing on inputs through 5 billion digit strings, the
             # test triggered once in about 200 thousand tries.
@@ -330,7 +330,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
                     hi2, lo = divmod(lo, p256)
                     hi += hi2
             _spread[count] += 1
-            # The assert should always succeed, but way too slow to keep
+            # The pruefe should always succeed, but way too slow to keep
             # enabled.
             #assert hi, lo == divmod(n, pow256[w2][0])
         inner(hi, w1)
@@ -719,7 +719,7 @@ wenn 0:
             inner(hi)
         inner(w)
         exp = compute_powers(w, 1, limit, need_hi=need_hi)
-        assert exp.keys() == need
+        pruefe exp.keys() == need
 
     von itertools importiere chain
     fuer need_hi in (Falsch, Wahr):

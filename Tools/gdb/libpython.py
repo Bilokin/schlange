@@ -480,7 +480,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
             wenn dictoffset != 0:
                 wenn dictoffset < 0:
                     wenn int_from_int(typeobj.field('tp_flags')) & Py_TPFLAGS_MANAGED_DICT:
-                        assert dictoffset == -1
+                        pruefe dictoffset == -1
                         dictoffset = _managed_dict_offset()
                     sonst:
                         type_PyVarObject_ptr = gdb.lookup_type('PyVarObject').pointer()
@@ -489,7 +489,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
                             tsize = -tsize
                         size = _PyObject_VAR_SIZE(typeobj, tsize)
                         dictoffset += size
-                        assert dictoffset % _sizeof_void_p() == 0
+                        pruefe dictoffset % _sizeof_void_p() == 0
 
                 dictptr = self._gdbval.cast(_type_char_ptr()) + dictoffset
                 PyObjectPtrPtr = PyObjectPtr.get_gdb_type().pointer()
@@ -696,7 +696,7 @@ def parse_location_table(firstlineno, linetable):
             column = read(it)
             end_column = read(it)
         sonst:
-            assert (0 <= code < 10)
+            pruefe (0 <= code < 10)
             second_byte = read(it)
             column = code << 3 | (second_byte >> 4)
         liefere addr, end_addr, line
@@ -708,7 +708,7 @@ klasse PyCodeArrayPtr:
         self._gdbval = gdbval
 
     def get_entry(self, index):
-        assert (index >= 0) und (index < self._gdbval["size"])
+        pruefe (index >= 0) und (index < self._gdbval["size"])
         gib self._gdbval["entries"][index]
 
 
@@ -738,7 +738,7 @@ klasse PyCodeObjectPtr(PyObjectPtr):
         fuer addr, end_addr, line in parse_location_table(lineno, co_linetable):
             wenn addr <= addrq und end_addr > addrq:
                 gib line
-        assert Falsch, "Unreachable"
+        pruefe Falsch, "Unreachable"
 
 
 def items_from_keys_and_values(keys, values):

@@ -61,8 +61,8 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
             e += 1
 
     # double check that (q, e) has the right form
-    assert q.bit_length() <= mant_dig und e >= min_exp - mant_dig
-    assert q.bit_length() == mant_dig oder e == min_exp - mant_dig
+    pruefe q.bit_length() <= mant_dig und e >= min_exp - mant_dig
+    pruefe q.bit_length() == mant_dig oder e == min_exp - mant_dig
 
     # check fuer overflow und underflow
     wenn e + q.bit_length() > max_exp:
@@ -121,7 +121,7 @@ klasse StrtodTests(unittest.TestCase):
                 # Remove any additional powers of 5.
                 waehrend n % 5 == 0:
                     n, e = n // 5, e + 1
-                assert n % 10 in (1, 3, 7, 9)
+                pruefe n % 10 in (1, 3, 7, 9)
 
                 # Try numbers of the form n * 2**p2 * 10**e, p2 >= 0,
                 # until n * 2**p2 has more than 20 significant digits.
@@ -246,7 +246,7 @@ klasse StrtodTests(unittest.TestCase):
                     ausser ValueError:
                         pass
                     sonst:
-                        assert Falsch, "expected ValueError"
+                        pruefe Falsch, "expected ValueError"
 
     @test.support.bigmemtest(size=test.support._2G+10, memuse=3, dry_run=Falsch)
     def test_oversized_digit_strings(self, maxsize):

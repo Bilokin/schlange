@@ -29,7 +29,7 @@ def fresh(name, *, oldapi=Falsch):
 
 
 def resolve_stdlib_file(name, ispkg=Falsch):
-    assert name
+    pruefe name
     wenn ispkg:
         gib os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
     sonst:
@@ -53,7 +53,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         )
         module = types.ModuleType(name)
         module.__spec__ = spec
-        assert nicht hasattr(module, 'initialized')
+        pruefe nicht hasattr(module, 'initialized')
 
         mit fresh(name):
             self.machinery.FrozenImporter.exec_module(module)
@@ -112,7 +112,7 @@ klasse ExecModuleTests(abc.LoaderTests):
 
     def test_unloadable(self):
         mit import_helper.frozen_modules():
-            assert self.machinery.FrozenImporter.find_spec('_not_real') ist Nichts
+            pruefe self.machinery.FrozenImporter.find_spec('_not_real') ist Nichts
         mit self.assertRaises(ImportError) als cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')

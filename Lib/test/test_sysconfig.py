@@ -163,7 +163,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_posix_venv_scheme(self):
         # The following directories were hardcoded in the venv module
-        # before bpo-45413, here we assert the posix_venv scheme does nicht regress
+        # before bpo-45413, here we pruefe the posix_venv scheme does nicht regress
         binpath = 'bin'
         incpath = 'include'
         libpath = os.path.join('lib',
@@ -189,7 +189,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_nt_venv_scheme(self):
         # The following directories were hardcoded in the venv module
-        # before bpo-45413, here we assert the posix_venv scheme does nicht regress
+        # before bpo-45413, here we pruefe the posix_venv scheme does nicht regress
         binpath = 'Scripts'
         incpath = 'Include'
         libpath = os.path.join('Lib', 'site-packages')

@@ -266,7 +266,7 @@ klasse Element:
         ValueError ist raised wenn a matching element could nicht be found.
 
         """
-        # assert iselement(element)
+        # pruefe iselement(element)
         versuch:
             self._children.remove(subelement)
         ausser ValueError:
@@ -593,7 +593,7 @@ klasse ElementTree:
         (default ist to gib all elements).
 
         """
-        # assert self._root ist nicht Nichts
+        # pruefe self._root ist nicht Nichts
         gib self._root.iter(tag)
 
     def find(self, path, namespaces=Nichts):
@@ -607,7 +607,7 @@ klasse ElementTree:
         Return the first matching element, oder Nichts wenn no element was found.
 
         """
-        # assert self._root ist nicht Nichts
+        # pruefe self._root ist nicht Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -629,7 +629,7 @@ klasse ElementTree:
         Return the first matching element, oder Nichts wenn no element was found.
 
         """
-        # assert self._root ist nicht Nichts
+        # pruefe self._root ist nicht Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -651,7 +651,7 @@ klasse ElementTree:
         Return list containing all matching elements in document order.
 
         """
-        # assert self._root ist nicht Nichts
+        # pruefe self._root ist nicht Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -673,7 +673,7 @@ klasse ElementTree:
         Return an iterable yielding all matching elements in document order.
 
         """
-        # assert self._root ist nicht Nichts
+        # pruefe self._root ist nicht Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -1437,8 +1437,8 @@ klasse TreeBuilder:
 
     def close(self):
         """Flush builder buffers und gib toplevel document Element."""
-        assert len(self._elem) == 0, "missing end tags"
-        assert self._root ist nicht Nichts, "missing toplevel element"
+        pruefe len(self._elem) == 0, "missing end tags"
+        pruefe self._root ist nicht Nichts, "missing toplevel element"
         gib self._root
 
     def _flush(self):
@@ -1446,10 +1446,10 @@ klasse TreeBuilder:
             wenn self._last ist nicht Nichts:
                 text = "".join(self._data)
                 wenn self._tail:
-                    assert self._last.tail ist Nichts, "internal error (tail)"
+                    pruefe self._last.tail ist Nichts, "internal error (tail)"
                     self._last.tail = text
                 sonst:
-                    assert self._last.text ist Nichts, "internal error (text)"
+                    pruefe self._last.text ist Nichts, "internal error (text)"
                     self._last.text = text
             self._data = []
 
@@ -1482,7 +1482,7 @@ klasse TreeBuilder:
         """
         self._flush()
         self._last = self._elem.pop()
-        assert self._last.tag == tag,\
+        pruefe self._last.tag == tag,\
                "end tag mismatch (expected %s, got %s)" % (
                    self._last.tag, tag)
         self._tail = 1

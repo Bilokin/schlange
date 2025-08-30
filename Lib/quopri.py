@@ -23,7 +23,7 @@ def needsquoting(c, quotetabs, header):
     quoted.  Note that line-ending tabs und spaces are always encoded, als per
     RFC 1521.
     """
-    assert isinstance(c, bytes)
+    pruefe isinstance(c, bytes)
     wenn c in b' \t':
         gib quotetabs
     # wenn header, we have to escape _ because _ ist used to escape space
@@ -33,7 +33,7 @@ def needsquoting(c, quotetabs, header):
 
 def quote(c):
     """Quote a single character."""
-    assert isinstance(c, bytes) und len(c)==1
+    pruefe isinstance(c, bytes) und len(c)==1
     c = ord(c)
     gib ESCAPE + bytes((HEX[c//16], HEX[c%16]))
 
@@ -164,7 +164,7 @@ def decodestring(s, header=Falsch):
 # Other helper functions
 def ishex(c):
     """Return true wenn the byte ordinal 'c' ist a hexadecimal digit in ASCII."""
-    assert isinstance(c, bytes)
+    pruefe isinstance(c, bytes)
     gib b'0' <= c <= b'9' oder b'a' <= c <= b'f' oder b'A' <= c <= b'F'
 
 def unhex(s):
@@ -179,7 +179,7 @@ def unhex(s):
         sowenn b'A' <= c <= b'F':
             i = ord(b'A')-10
         sonst:
-            assert Falsch, "non-hex digit "+repr(c)
+            pruefe Falsch, "non-hex digit "+repr(c)
         bits = bits*16 + (ord(c) - i)
     gib bits
 

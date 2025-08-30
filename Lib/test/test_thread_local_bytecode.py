@@ -41,8 +41,8 @@ klasse TLBCTests(unittest.TestCase):
         t.start()
         t.join()
 
-        assert "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
-        assert "BINARY_OP_ADD_INT" nicht in all_opnames(q.get())
+        pruefe "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
+        pruefe "BINARY_OP_ADD_INT" nicht in all_opnames(q.get())
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
@@ -76,10 +76,10 @@ klasse TLBCTests(unittest.TestCase):
         t.start()
         t.join()
 
-        assert "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
+        pruefe "BINARY_OP_ADD_INT" in all_opnames(get_tlbc(f))
         t_opnames = all_opnames(q.get())
-        assert "BINARY_OP_ADD_INT" nicht in t_opnames
-        assert "BINARY_OP_ADD_UNICODE" in t_opnames
+        pruefe "BINARY_OP_ADD_INT" nicht in t_opnames
+        pruefe "BINARY_OP_ADD_UNICODE" in t_opnames
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
@@ -103,8 +103,8 @@ klasse TLBCTests(unittest.TestCase):
             t.join()
             tlbc_ids.append(q.get())
 
-        assert tlbc_ids[0] == tlbc_ids[1]
-        assert tlbc_ids[1] == tlbc_ids[2]
+        pruefe tlbc_ids[0] == tlbc_ids[1]
+        pruefe tlbc_ids[1] == tlbc_ids[2]
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
@@ -134,10 +134,10 @@ klasse TLBCTests(unittest.TestCase):
             tlbc_ids.append(q.get())
 
         main_tlbc_id = get_tlbc_id(f)
-        assert main_tlbc_id ist nicht Nichts
-        assert tlbc_ids[0] == main_tlbc_id
-        assert tlbc_ids[1] == main_tlbc_id
-        assert tlbc_ids[2] == main_tlbc_id
+        pruefe main_tlbc_id ist nicht Nichts
+        pruefe tlbc_ids[0] == main_tlbc_id
+        pruefe tlbc_ids[1] == main_tlbc_id
+        pruefe tlbc_ids[2] == main_tlbc_id
         """)
         assert_python_ok("-X", "tlbc=0", "-c", code)
 
@@ -159,7 +159,7 @@ klasse TLBCTests(unittest.TestCase):
         fuer _ in range(100):
             f(1, 2)
 
-        assert "BINARY_OP_ADD_INT" nicht in all_opnames(f)
+        pruefe "BINARY_OP_ADD_INT" nicht in all_opnames(f)
         """)
         assert_python_ok("-X", "tlbc=0", "-c", code)
 
@@ -189,7 +189,7 @@ klasse TLBCTests(unittest.TestCase):
         gen = g()
         next(gen)
         main_id = gen.throw(ValueError)
-        assert main_id != q.get()
+        pruefe main_id != q.get()
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 

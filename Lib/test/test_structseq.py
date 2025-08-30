@@ -123,7 +123,7 @@ klasse StructSeqTest(unittest.TestCase):
             t("1234567890", dict={"error": 0, "tm_zone": "some zone", "tm_mon": 1})
 
     def test_constructor_with_duplicate_unnamed_fields(self):
-        assert os.stat_result.n_unnamed_fields > 0
+        pruefe os.stat_result.n_unnamed_fields > 0
         n_visible_fields = os.stat_result.n_sequence_fields
 
         r = os.stat_result(range(n_visible_fields), {'st_atime': -1.0})
@@ -181,7 +181,7 @@ klasse StructSeqTest(unittest.TestCase):
             self.assertEqual(t2.tm_zone, t.tm_zone)
 
     def test_pickling_with_unnamed_fields(self):
-        assert os.stat_result.n_unnamed_fields > 0
+        pruefe os.stat_result.n_unnamed_fields > 0
 
         r = os.stat_result(range(os.stat_result.n_sequence_fields),
                            {'st_atime': 1.0, 'st_atime_ns': 2.0})
@@ -215,7 +215,7 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertIsNot(t3.tm_year, t.tm_year)
 
     def test_copying_with_unnamed_fields(self):
-        assert os.stat_result.n_unnamed_fields > 0
+        pruefe os.stat_result.n_unnamed_fields > 0
 
         n_sequence_fields = os.stat_result.n_sequence_fields
         r = os.stat_result([[i] fuer i in range(n_sequence_fields)],
@@ -267,8 +267,8 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertEqual(os.stat_result.__match_args__, expected_args)
 
     def test_copy_replace_all_fields_visible(self):
-        assert os.times_result.n_unnamed_fields == 0
-        assert os.times_result.n_sequence_fields == os.times_result.n_fields
+        pruefe os.times_result.n_unnamed_fields == 0
+        pruefe os.times_result.n_sequence_fields == os.times_result.n_fields
 
         t = os.times()
 
@@ -286,8 +286,8 @@ klasse StructSeqTest(unittest.TestCase):
             copy.replace(t, user=1, error=-1)
 
     def test_copy_replace_with_invisible_fields(self):
-        assert time.struct_time.n_unnamed_fields == 0
-        assert time.struct_time.n_sequence_fields < time.struct_time.n_fields
+        pruefe time.struct_time.n_unnamed_fields == 0
+        pruefe time.struct_time.n_sequence_fields < time.struct_time.n_fields
 
         t = time.gmtime(0)
 
@@ -330,7 +330,7 @@ klasse StructSeqTest(unittest.TestCase):
             copy.replace(t, tm_zone='some other zone', error=2)
 
     def test_copy_replace_with_unnamed_fields(self):
-        assert os.stat_result.n_unnamed_fields > 0
+        pruefe os.stat_result.n_unnamed_fields > 0
 
         r = os.stat_result(range(os.stat_result.n_sequence_fields))
 

@@ -352,14 +352,14 @@ klasse TypeCommentTests(unittest.TestCase):
                     sowenn c == 'k':
                         arg = t.args.kwarg
                     sonst:
-                        assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
+                        pruefe 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
                         wenn index < len(t.args.posonlyargs):
                             arg = t.args.posonlyargs[ord(c) - ord('a')]
                         sonst:
                             arg = t.args.args[ord(c) - ord('a') - len(t.args.posonlyargs)]
                     self.assertEqual(arg.arg, c)  # That's the argument name
                     self.assertEqual(arg.type_comment, arg.arg.upper())
-                assert nicht todo
+                pruefe nicht todo
         tree = self.classic_parse(longargs)
         fuer t in tree.body:
             fuer arg in t.args.args + [t.args.vararg, t.args.kwarg]:

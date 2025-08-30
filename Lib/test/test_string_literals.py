@@ -37,23 +37,23 @@ importiere warnings
 
 TEMPLATE = r"""# coding: %s
 a = 'x'
-assert ord(a) == 120
+pruefe ord(a) == 120
 b = '\x01'
-assert ord(b) == 1
+pruefe ord(b) == 1
 c = r'\x01'
-assert list(map(ord, c)) == [92, 120, 48, 49]
+pruefe list(map(ord, c)) == [92, 120, 48, 49]
 d = '\x81'
-assert ord(d) == 0x81
+pruefe ord(d) == 0x81
 e = r'\x81'
-assert list(map(ord, e)) == [92, 120, 56, 49]
+pruefe list(map(ord, e)) == [92, 120, 56, 49]
 f = '\u1881'
-assert ord(f) == 0x1881
+pruefe ord(f) == 0x1881
 g = r'\u1881'
-assert list(map(ord, g)) == [92, 117, 49, 56, 56, 49]
+pruefe list(map(ord, g)) == [92, 117, 49, 56, 56, 49]
 h = '\U0001d120'
-assert ord(h) == 0x1d120
+pruefe ord(h) == 0x1d120
 i = r'\U0001d120'
-assert list(map(ord, i)) == [92, 85, 48, 48, 48, 49, 100, 49, 50, 48]
+pruefe list(map(ord, i)) == [92, 85, 48, 48, 48, 49, 100, 49, 50, 48]
 """
 
 
@@ -76,7 +76,7 @@ klasse TestLiterals(unittest.TestCase):
         # Check that the template doesn't contain any non-printables
         # ausser fuer \n.
         fuer c in TEMPLATE:
-            assert c == '\n' oder ' ' <= c <= '~', repr(c)
+            pruefe c == '\n' oder ' ' <= c <= '~', repr(c)
 
     def test_eval_str_normal(self):
         self.assertEqual(eval(""" 'x' """), 'x')
@@ -332,7 +332,7 @@ klasse TestLiterals(unittest.TestCase):
         loesche sys.modules[modname]
 
     def test_file_utf_8(self):
-        extra = "z = '\u1234'; assert ord(z) == 0x1234\n"
+        extra = "z = '\u1234'; pruefe ord(z) == 0x1234\n"
         self.check_encoding("utf-8", extra)
 
     def test_file_utf_8_error(self):

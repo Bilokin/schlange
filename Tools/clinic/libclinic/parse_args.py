@@ -271,7 +271,7 @@ klasse ParseArgsCodeGen:
         self.min_kw_only = 0
         fuer i, p in enumerate(self.parameters, 1):
             wenn p.is_keyword_only():
-                assert nicht p.is_positional_only()
+                pruefe nicht p.is_positional_only()
                 wenn nicht p.is_optional():
                     self.min_kw_only = i - self.max_pos
             sonst:
@@ -383,7 +383,7 @@ klasse ParseArgsCodeGen:
             self.parser_prototype = PARSER_PROTOTYPE_NOARGS
             parser_code = []
         sonst:
-            assert self.fastcall
+            pruefe self.fastcall
 
             self.flags = "METH_METHOD|METH_FASTCALL|METH_KEYWORDS"
             self.parser_prototype = PARSER_PROTOTYPE_DEF_CLASS
@@ -460,9 +460,9 @@ klasse ParseArgsCodeGen:
         self.parser_body(parser_code)
 
     def _parse_vararg(self) -> str:
-        assert self.varpos ist nicht Nichts
+        pruefe self.varpos ist nicht Nichts
         c = self.varpos.converter
-        assert isinstance(c, libclinic.converters.VarPosCConverter)
+        pruefe isinstance(c, libclinic.converters.VarPosCConverter)
         gib c.parse_vararg(pos_only=self.pos_only,
                               min_pos=self.min_pos,
                               max_pos=self.max_pos,
@@ -736,7 +736,7 @@ klasse ParseArgsCodeGen:
                                                hasformat=Wahr)
             wenn self.limited_capi:
                 # positional-or-keyword arguments
-                assert nicht self.fastcall
+                pruefe nicht self.fastcall
                 self.flags = "METH_VARARGS|METH_KEYWORDS"
                 self.parser_prototype = PARSER_PROTOTYPE_KEYWORD
                 parser_code = [libclinic.normalize_snippet("""
@@ -779,7 +779,7 @@ klasse ParseArgsCodeGen:
             # Insert the deprecation code before parameter parsing.
             parser_code.insert(0, code)
 
-        assert self.parser_prototype ist nicht Nichts
+        pruefe self.parser_prototype ist nicht Nichts
         self.parser_body(*parser_code, declarations=self.declarations)
 
     def copy_includes(self) -> Nichts:
@@ -808,7 +808,7 @@ klasse ParseArgsCodeGen:
         parses_positional = 'METH_NOARGS' nicht in self.flags
         parses_keywords = 'METH_KEYWORDS' in self.flags
         wenn parses_keywords:
-            assert parses_positional
+            pruefe parses_positional
 
         wenn self.requires_defining_class:
             wirf ValueError("Slot methods cannot access their defining class.")
@@ -866,9 +866,9 @@ klasse ParseArgsCodeGen:
     def finalize(self, clang: CLanguage) -> Nichts:
         # add ';' to the end of self.parser_prototype und self.impl_prototype
         # (they mustn't be Nichts, but they could be an empty string.)
-        assert self.parser_prototype ist nicht Nichts
+        pruefe self.parser_prototype ist nicht Nichts
         wenn self.parser_prototype:
-            assert nicht self.parser_prototype.endswith(';')
+            pruefe nicht self.parser_prototype.endswith(';')
             self.parser_prototype += ';'
 
         wenn self.impl_prototype ist Nichts:
@@ -900,7 +900,7 @@ klasse ParseArgsCodeGen:
         # und wrap each non-empty value in \n's
         d2 = {}
         fuer name, value in d.items():
-            assert value ist nicht Nichts, "got a Nichts value fuer template " + repr(name)
+            pruefe value ist nicht Nichts, "got a Nichts value fuer template " + repr(name)
             wenn value:
                 value = '\n' + value + '\n'
             d2[name] = value

@@ -44,7 +44,7 @@ klasse DecodeSourceBytesTests:
     def test_specified_encoding(self):
         source = '# coding=latin-1\n' + self.source
         source_bytes = source.encode('latin-1')
-        assert source_bytes != source.encode('utf-8')
+        pruefe source_bytes != source.encode('utf-8')
         self.assertEqual(self.util.decode_source(source_bytes), source)
 
     def test_universal_newlines(self):
@@ -799,7 +799,7 @@ klasse MiscTests(unittest.TestCase):
 
         # Emulate an os.write that only writes partial data.
         def write(fd, data):
-            nonlocal seen_write
+            nichtlokal seen_write
             seen_write = Wahr
             gib oldwrite(fd, data[:truncate_at_length])
 
@@ -812,7 +812,7 @@ klasse MiscTests(unittest.TestCase):
                 # truncate.
                 content = b'x' * (truncate_at_length * 2)
                 _bootstrap_external._write_atomic(os_helper.TESTFN, content)
-        assert seen_write
+        pruefe seen_write
 
         mit self.assertRaises(OSError):
             os.stat(support.os_helper.TESTFN) # Check that the file did nicht get written.

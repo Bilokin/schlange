@@ -88,7 +88,7 @@ klasse TestFileIOSignalInterrupt:
         infile_setup_code = self._generate_infile_setup_code()
         # Total pipe IO in this function ist smaller than the minimum posix OS
         # pipe buffer size of 512 bytes.  No writer should block.
-        assert len(data_to_write) < 512, 'data_to_write must fit in pipe buf.'
+        pruefe len(data_to_write) < 512, 'data_to_write must fit in pipe buf.'
 
         # Start a subprocess to call our read method waehrend handling a signal.
         self._process = subprocess.Popen(

@@ -359,7 +359,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                                         cls.meth, cls.meth)
 
                 # different objects, value descending fuer ascending identities.
-                # This ist the interesting case to assert that order comparison
+                # This ist the interesting case to pruefe that order comparison
                 # ist performed based on the value und nicht based on the identity.
                 self.assert_total_order(instances[1], instances[2], +1,
                                         cls.meth, cls.meth)

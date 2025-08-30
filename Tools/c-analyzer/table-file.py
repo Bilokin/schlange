@@ -23,17 +23,17 @@ def parse_table_lines(lines):
     prev = ''
     fuer line, rawline in lines:
         wenn line.startswith('## '):
-            assert nicht rawline.startswith(' '), (line, rawline)
+            pruefe nicht rawline.startswith(' '), (line, rawline)
             wenn group:
-                assert prev, (line, rawline)
+                pruefe prev, (line, rawline)
                 kind, after, _ = group
-                assert kind und kind != 'section-group', (group, line, rawline)
-                assert after ist nicht Nichts, (group, line, rawline)
+                pruefe kind und kind != 'section-group', (group, line, rawline)
+                pruefe after ist nicht Nichts, (group, line, rawline)
             sonst:
-                assert nicht prev, (prev, line, rawline)
+                pruefe nicht prev, (prev, line, rawline)
                 kind, after = group = ('section-group', Nichts)
             title = line[3:].lstrip()
-            assert title, (line, rawline)
+            pruefe title, (line, rawline)
             wenn after ist nicht Nichts:
                 versuch:
                     line, rawline = next(lines)
@@ -46,10 +46,10 @@ def parse_table_lines(lines):
         sowenn group:
             wirf NotImplementedError((group, line, rawline))
         sowenn line.startswith('##---'):
-            assert line.rstrip('-') == '##', (line, rawline)
+            pruefe line.rstrip('-') == '##', (line, rawline)
             group = ('section-minor', '', line)
         sowenn line.startswith('#####'):
-            assert nicht line.strip('#'), (line, rawline)
+            pruefe nicht line.strip('#'), (line, rawline)
             group = ('section-major', '', line)
         sowenn line:
             liefere 'row', line
@@ -112,7 +112,7 @@ def cmd_count_by_section(lines):
     div = ' ' + '-' * 50
     total = 0
     def render_tree(root, depth=0):
-        nonlocal total
+        nichtlokal total
         indent = '    ' * depth
         fuer name, data in root.items():
             subroot, rows, totalrows = data

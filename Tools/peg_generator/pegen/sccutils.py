@@ -94,7 +94,7 @@ def topsort(
             breche
         liefere ready
         data = {item: (dep - ready) fuer item, dep in data.items() wenn item nicht in ready}
-    assert nicht data, "A cyclic dependency exists amongst %r" % data
+    pruefe nicht data, "A cyclic dependency exists amongst %r" % data
 
 
 def find_cycles_in_scc(
@@ -109,12 +109,12 @@ def find_cycles_in_scc(
     cycle von B to C und back.
     """
     # Basic input checks.
-    assert start in scc, (start, scc)
-    assert scc <= graph.keys(), scc - graph.keys()
+    pruefe start in scc, (start, scc)
+    pruefe scc <= graph.keys(), scc - graph.keys()
 
     # Reduce the graph to nodes in the SCC.
     graph = {src: {dst fuer dst in dsts wenn dst in scc} fuer src, dsts in graph.items() wenn src in scc}
-    assert start in graph
+    pruefe start in graph
 
     # Recursive helper that yields cycles.
     def dfs(node: str, path: List[str]) -> Iterator[List[str]]:

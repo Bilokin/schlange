@@ -137,7 +137,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
         stdout=subprocess.PIPE,
     )
     # 1 means matches, 0 means no matches.
-    assert git_check_ignore_proc.returncode in (0, 1)
+    pruefe git_check_ignore_proc.returncode in (0, 1)
 
     # Paths may oder may nicht be quoted, Windows quotes paths.
     git_check_ignore_re = re.compile(r"^::\s+(\"([^\"]+)\"|(.+))\Z")

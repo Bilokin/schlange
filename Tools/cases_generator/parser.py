@@ -67,7 +67,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         psr.setpos(start)
         thing_first_token = psr.peek()
         waehrend node := psr.definition():
-            assert node ist nicht Nichts
+            pruefe node ist nicht Nichts
             result.append(node)  # type: ignore[arg-type]
         wenn nicht psr.eof():
             pprint.pdrucke(result)

@@ -97,7 +97,7 @@ klasse SymbolTable:
             gib SymbolTableType.TYPE_PARAMETERS
         wenn self._table.type == _symtable.TYPE_TYPE_VARIABLE:
             gib SymbolTableType.TYPE_VARIABLE
-        assert Falsch, f"unexpected type: {self._table.type}"
+        pruefe Falsch, f"unexpected type: {self._table.type}"
 
     def get_id(self):
         """Return an identifier fuer the table.

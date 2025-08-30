@@ -269,7 +269,7 @@ klasse Completion(unittest.TestCase):
         )
         line_num = next(indices, -1)
         self.assertNotEqual(line_num, -1)
-        # Completions occupy lines, assert no extra lines when there ist nothing
+        # Completions occupy lines, pruefe no extra lines when there ist nothing
         # to complete.
         self.assertEqual(line_num, len(lines))
 

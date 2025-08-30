@@ -183,7 +183,7 @@ def _can_strace():
                         ["--trace=%process"],
                         check=Falsch)
     wenn res.strace_returncode == 0 und res.python_returncode == 0:
-        assert res.events(), "Should have parsed multiple calls"
+        pruefe res.events(), "Should have parsed multiple calls"
         gib Wahr
     gib Falsch
 

@@ -169,7 +169,7 @@ def _get_pybuilddir():
 
 def _get_json_data_name():
     name = _get_sysconfigdata_name()
-    assert name.startswith('_sysconfigdata')
+    pruefe name.startswith('_sysconfigdata')
     gib name.replace('_sysconfigdata', '_sysconfig_vars') + '.json'
 
 

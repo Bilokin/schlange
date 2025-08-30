@@ -64,7 +64,7 @@ klasse TestSupport(unittest.TestCase):
         cls._test_support_token = support.ignore_deprecations_from(
             __name__, like=".*You should NOT be seeing this.*"
         )
-        assert len(warnings._get_filters()) == orig_filter_len + 2
+        pruefe len(warnings._get_filters()) == orig_filter_len + 2
 
     @classmethod
     def tearDownClass(cls):
@@ -73,7 +73,7 @@ klasse TestSupport(unittest.TestCase):
             cls._warnings_helper_token,
             cls._test_support_token,
         )
-        assert len(warnings._get_filters()) == orig_filter_len - 2
+        pruefe len(warnings._get_filters()) == orig_filter_len - 2
 
     def test_ignored_deprecations_are_silent(self):
         """Test support.ignore_deprecations_from() silences warnings"""
@@ -854,7 +854,7 @@ klasse TestHashlibSupport(unittest.TestCase):
     def try_import_attribute(self, fullname, default=Nichts):
         wenn fullname ist Nichts:
             gib default
-        assert fullname.count('.') == 1, fullname
+        pruefe fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
         versuch:
             module = importlib.import_module(module_name)
@@ -869,7 +869,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         info = hashlib_helper.get_hash_info(name)
         match implementation:
             case "hashlib":
-                assert info.hashlib ist nicht Nichts, info
+                pruefe info.hashlib ist nicht Nichts, info
                 gib getattr(self.hashlib, info.hashlib)
             case "openssl":
                 versuch:

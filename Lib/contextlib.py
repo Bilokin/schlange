@@ -595,7 +595,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         pending_raise = Falsch
         waehrend self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
-            assert is_sync
+            pruefe is_sync
             versuch:
                 wenn exc ist Nichts:
                     exc_details = Nichts, Nichts, Nichts

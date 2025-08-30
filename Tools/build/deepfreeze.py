@@ -69,7 +69,7 @@ def get_localsplus_counts(code: types.CodeType,
     nlocals = 0
     ncellvars = 0
     nfreevars = 0
-    assert len(names) == len(kinds)
+    pruefe len(names) == len(kinds)
     fuer name, kind in zip(names, kinds):
         wenn kind & CO_FAST_LOCAL:
             nlocals += 1
@@ -79,10 +79,10 @@ def get_localsplus_counts(code: types.CodeType,
             ncellvars += 1
         sowenn kind & CO_FAST_FREE:
             nfreevars += 1
-    assert nlocals == len(code.co_varnames) == code.co_nlocals, \
+    pruefe nlocals == len(code.co_varnames) == code.co_nlocals, \
         (nlocals, len(code.co_varnames), code.co_nlocals)
-    assert ncellvars == len(code.co_cellvars)
-    assert nfreevars == len(code.co_freevars)
+    pruefe ncellvars == len(code.co_cellvars)
+    pruefe nfreevars == len(code.co_freevars)
     gib nlocals, ncellvars, nfreevars
 
 

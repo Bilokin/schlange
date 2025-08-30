@@ -77,7 +77,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
 
         o = C()
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            assert f(o) == 1
+            pruefe f(o) == 1
 
         Descriptor.__get__ = lambda self, instance, value: 2
         Descriptor.__set__ = lambda *args: Nichts

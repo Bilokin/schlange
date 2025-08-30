@@ -165,7 +165,7 @@ klasse TestCommandLine(unittest.TestCase):
                 klasse Foo:
                     pass
                 importiere __main__
-                assert Foo == __main__.Foo
+                pruefe Foo == __main__.Foo
                 """))
             f.close()
             assert_python_ok('-m', "cProfile", f.name)

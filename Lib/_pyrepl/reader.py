@@ -534,7 +534,7 @@ klasse Reader:
         prompt_len, y = 0, 0
         char_widths: list[int] = []
         pos = self.pos
-        assert 0 <= pos <= len(self.buffer)
+        pruefe 0 <= pos <= len(self.buffer)
 
         # optimize fuer the common case: typing at the end of the buffer
         wenn pos == len(self.buffer) und len(self.screeninfo) > 0:

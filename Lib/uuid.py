@@ -221,14 +221,14 @@ klasse UUID:
         sowenn bytes_le ist nicht Nichts:
             wenn len(bytes_le) != 16:
                 wirf ValueError('bytes_le ist nicht a 16-char string')
-            assert isinstance(bytes_le, bytes_), repr(bytes_le)
+            pruefe isinstance(bytes_le, bytes_), repr(bytes_le)
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
             int = int_.from_bytes(bytes)  # big endian
         sowenn bytes ist nicht Nichts:
             wenn len(bytes) != 16:
                 wirf ValueError('bytes ist nicht a 16-char string')
-            assert isinstance(bytes, bytes_), repr(bytes)
+            pruefe isinstance(bytes, bytes_), repr(bytes)
             int = int_.from_bytes(bytes)  # big endian
         sowenn fields ist nicht Nichts:
             wenn len(fields) != 6:
@@ -267,7 +267,7 @@ klasse UUID:
     @classmethod
     def _from_int(cls, value):
         """Create a UUID von an integer *value*. Internal use only."""
-        assert 0 <= value <= _UINT_128_MAX, repr(value)
+        pruefe 0 <= value <= _UINT_128_MAX, repr(value)
         self = object.__new__(cls)
         object.__setattr__(self, 'int', value)
         object.__setattr__(self, 'is_safe', SafeUUID.unknown)
@@ -718,7 +718,7 @@ def getnode():
             weiter
         wenn (_node ist nicht Nichts) und (0 <= _node < (1 << 48)):
             gib _node
-    assert Falsch, '_random_getnode() returned invalid value: {}'.format(_node)
+    pruefe Falsch, '_random_getnode() returned invalid value: {}'.format(_node)
 
 
 _last_timestamp = Nichts

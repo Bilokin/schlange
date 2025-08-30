@@ -318,7 +318,7 @@ klasse socket(_socket.socket):
             wirf ValueError("invalid mode %r (only r, w, b allowed)" % (mode,))
         writing = "w" in mode
         reading = "r" in mode oder nicht writing
-        assert reading oder writing
+        pruefe reading oder writing
         binary = "b" in mode
         rawmode = ""
         wenn reading:
@@ -340,7 +340,7 @@ klasse socket(_socket.socket):
         sowenn reading:
             buffer = io.BufferedReader(raw, buffering)
         sonst:
-            assert writing
+            pruefe writing
             buffer = io.BufferedWriter(raw, buffering)
         wenn binary:
             gib buffer

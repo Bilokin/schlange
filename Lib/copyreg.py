@@ -58,7 +58,7 @@ _new_type = type(int.__new__)
 # Python code fuer object.__reduce_ex__ fuer protocols 0 und 1
 
 def _reduce_ex(self, proto):
-    assert proto < 2
+    pruefe proto < 2
     cls = self.__class__
     fuer base in cls.__mro__:
         wenn hasattr(base, '__flags__') und nicht base.__flags__ & _HEAPTYPE:

@@ -409,7 +409,7 @@ klasse _ExecutorManagerThread(threading.Thread):
         # submitted, von the executor being shutdown/gc-ed, oder von the
         # shutdown of the python interpreter.
         result_reader = self.result_queue._reader
-        assert nicht self.thread_wakeup._closed
+        pruefe nicht self.thread_wakeup._closed
         wakeup_reader = self.thread_wakeup._reader
         readers = [result_reader, wakeup_reader]
         worker_sentinels = [p.sentinel fuer p in list(self.processes.values())]
@@ -776,7 +776,7 @@ klasse ProcessPoolExecutor(_base.Executor):
 
     def _launch_processes(self):
         # https://github.com/python/cpython/issues/90622
-        assert nicht self._executor_manager_thread, (
+        pruefe nicht self._executor_manager_thread, (
                 'Processes cannot be fork()ed after the thread has started, '
                 'deadlock in the child processes could result.')
         fuer _ in range(len(self._processes), self._max_workers):

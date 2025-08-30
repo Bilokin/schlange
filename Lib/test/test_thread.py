@@ -229,7 +229,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             task_tried_to_join.acquire()
             handle.join()
 
-        assert len(errors) == 1
+        pruefe len(errors) == 1
         mit self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
             wirf errors[0]
 
@@ -250,7 +250,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         self_joiner_started = make_lock()
         self_joiner_barrier = make_lock()
         def self_joiner():
-            nonlocal error
+            nichtlokal error
 
             self_joiner_started.release()
             self_joiner_barrier.acquire()
@@ -414,7 +414,7 @@ klasse TestForkInThread(unittest.TestCase):
         pid = Nichts
 
         def fork_thread(read_fd, write_fd):
-            nonlocal pid
+            nichtlokal pid
 
             # Ignore the warning about fork mit threads.
             mit warnings.catch_warnings(category=DeprecationWarning,

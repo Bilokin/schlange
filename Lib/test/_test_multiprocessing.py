@@ -303,7 +303,7 @@ def get_value(self):
 
 klasse DummyCallable:
     def __call__(self, q, c):
-        assert isinstance(c, DummyCallable)
+        pruefe isinstance(c, DummyCallable)
         q.put(5)
 
 
@@ -856,7 +856,7 @@ klasse _TestProcess(BaseTestCase):
                 stream = io.StringIO()
                 stream.close()
             sonst:
-                assert action == 'remove'
+                pruefe action == 'remove'
                 stream = Nichts
             setattr(sys, stream_name, Nichts)
         evt.set()
@@ -1019,7 +1019,7 @@ klasse _UpperCaser(multiprocessing.Process):
         self.child_conn.close()
 
     def submit(self, s):
-        assert type(s) ist str
+        pruefe type(s) ist str
         self.parent_conn.send(s)
         gib self.parent_conn.recv()
 
@@ -2166,7 +2166,7 @@ klasse Bunch(object):
         schliesslich:
             self.finished.append(pid)
             self._can_exit.wait(30)
-            assert self._can_exit.is_set()
+            pruefe self._can_exit.is_set()
 
     def wait_for_started(self):
         waehrend len(self.started) < self.n:
@@ -2223,19 +2223,19 @@ klasse _TestBarrier(BaseTestCase):
     @classmethod
     def multipass(cls, barrier, results, n):
         m = barrier.parties
-        assert m == cls.N
+        pruefe m == cls.N
         fuer i in range(n):
             results[0].append(Wahr)
-            assert len(results[1]) == i * m
+            pruefe len(results[1]) == i * m
             barrier.wait()
             results[1].append(Wahr)
-            assert len(results[0]) == (i + 1) * m
+            pruefe len(results[0]) == (i + 1) * m
             barrier.wait()
         versuch:
-            assert barrier.n_waiting == 0
+            pruefe barrier.n_waiting == 0
         ausser NotImplementedError:
             pass
-        assert nicht barrier.broken
+        pruefe nicht barrier.broken
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_barrier(self, passes=1):
@@ -5049,7 +5049,7 @@ klasse _TestFinalize(BaseTestCase):
         exc = Nichts
 
         def run_finalizers():
-            nonlocal exc
+            nichtlokal exc
             waehrend nicht finish:
                 time.sleep(random.random() * 1e-1)
                 versuch:
@@ -5060,7 +5060,7 @@ klasse _TestFinalize(BaseTestCase):
                     exc = e
 
         def make_finalizers():
-            nonlocal exc
+            nichtlokal exc
             d = {}
             waehrend nicht finish:
                 versuch:
@@ -5205,7 +5205,7 @@ klasse _TestLogging(BaseTestCase):
 # klasse _TestLoggingProcessName(BaseTestCase):
 #
 #     def handle(self, record):
-#         assert record.processName == multiprocessing.current_process().name
+#         pruefe record.processName == multiprocessing.current_process().name
 #         self.__handled = Wahr
 #
 #     def test_logging(self):
@@ -5219,7 +5219,7 @@ klasse _TestLogging(BaseTestCase):
 #         logger.propagate = Falsch
 #
 #         logger.warn('foo')
-#         assert self.__handled
+#         pruefe self.__handled
 
 #
 # Check that Process.join() retries wenn os.waitpid() fails mit EINTR
@@ -5452,7 +5452,7 @@ klasse TestStdinBadfiledescriptor(unittest.TestCase):
         flike.write('foo')
         proc = multiprocessing.Process(target=lambda: flike.flush())
         flike.flush()
-        assert sio.getvalue() == 'foo'
+        pruefe sio.getvalue() == 'foo'
 
 
 klasse TestWait(unittest.TestCase):
@@ -6346,7 +6346,7 @@ klasse TestPoolNotLeakOnFailure(unittest.TestCase):
                 forked_processes.append(self)
 
             def start(self):
-                nonlocal will_fail_in
+                nichtlokal will_fail_in
                 wenn will_fail_in <= 0:
                     wirf OSError("Manually induced OSError")
                 will_fail_in -= 1
@@ -6384,15 +6384,15 @@ klasse TestSyncManagerTypes(unittest.TestCase):
     # The child.
     @classmethod
     def _test_list(cls, obj):
-        assert obj[0] == 5
-        assert obj.append(6)
+        pruefe obj[0] == 5
+        pruefe obj.append(6)
 
     # The parent.
     def test_list(self):
         o = self.manager.list()
         o.append(5)
         self.run_worker(self._test_list, o)
-        assert o[1] == 6
+        pruefe o[1] == 6
     """
     manager_class = multiprocessing.managers.SyncManager
 
@@ -6443,7 +6443,7 @@ klasse TestSyncManagerTypes(unittest.TestCase):
 
     @classmethod
     def _test_event(cls, obj):
-        assert obj.is_set()
+        pruefe obj.is_set()
         obj.wait()
         obj.clear()
         obj.wait(0.001)
@@ -6453,7 +6453,7 @@ klasse TestSyncManagerTypes(unittest.TestCase):
         o = self.manager.Event()
         o.set()
         self.run_worker(self._test_event, o)
-        assert nicht o.is_set()
+        pruefe nicht o.is_set()
         o.wait(0.001)
 
     @classmethod
@@ -6504,7 +6504,7 @@ klasse TestSyncManagerTypes(unittest.TestCase):
 
     @classmethod
     def _test_barrier(cls, obj):
-        assert obj.parties == 5
+        pruefe obj.parties == 5
         obj.reset()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -6525,13 +6525,13 @@ klasse TestSyncManagerTypes(unittest.TestCase):
 
     @classmethod
     def _test_queue(cls, obj):
-        assert obj.qsize() == 2
-        assert obj.full()
-        assert nicht obj.empty()
-        assert obj.get() == 5
-        assert nicht obj.empty()
-        assert obj.get() == 6
-        assert obj.empty()
+        pruefe obj.qsize() == 2
+        pruefe obj.full()
+        pruefe nicht obj.empty()
+        pruefe obj.get() == 5
+        pruefe nicht obj.empty()
+        pruefe obj.get() == 6
+        pruefe obj.empty()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_queue(self, qname="Queue"):
@@ -6539,8 +6539,8 @@ klasse TestSyncManagerTypes(unittest.TestCase):
         o.put(5)
         o.put(6)
         self.run_worker(self._test_queue, o)
-        assert o.empty()
-        assert nicht o.full()
+        pruefe o.empty()
+        pruefe nicht o.full()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_joinable_queue(self):
@@ -6980,7 +6980,7 @@ klasse MiscTestCase(unittest.TestCase):
             """if 1:
             importiere sys
             sys.executable = Nichts
-            assert "multiprocessing" nicht in sys.modules, "already imported!"
+            pruefe "multiprocessing" nicht in sys.modules, "already imported!"
             importiere multiprocessing
             importiere multiprocessing.spawn  # This should nicht fail\n""",
         )
@@ -7180,7 +7180,7 @@ def install_tests_in_module_dict(remote_globs, start_method,
         wenn issubclass(base, BaseTestCase):
             wenn base ist BaseTestCase:
                 weiter
-            assert set(base.ALLOWED_TYPES) <= ALL_TYPES, base.ALLOWED_TYPES
+            pruefe set(base.ALLOWED_TYPES) <= ALL_TYPES, base.ALLOWED_TYPES
             wenn base.START_METHODS und start_method nicht in base.START_METHODS:
                 weiter  # klasse nicht intended fuer this start method.
             fuer type_ in base.ALLOWED_TYPES:
@@ -7288,7 +7288,7 @@ klasse ForkInThreads(unittest.TestCase):
         t = threading.Thread(target=time.sleep, args=(1,), daemon=Wahr)
         t.start()
 
-        assert threading.active_count() == 2
+        pruefe threading.active_count() == 2
 
         pid = os.fork()
         wenn pid < 0:
@@ -7316,7 +7316,7 @@ klasse ForkInThreads(unittest.TestCase):
         t = threading.Thread(target=time.sleep, args=(1,), daemon=Wahr)
         t.start()
 
-        assert threading.active_count() == 2
+        pruefe threading.active_count() == 2
 
         pid, _ = os.forkpty()
         wenn pid < 0:

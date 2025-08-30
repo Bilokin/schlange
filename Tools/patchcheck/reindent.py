@@ -252,7 +252,7 @@ klasse Reindenter:
                         want = have
                 sonst:
                     want = 0
-            assert want >= 0
+            pruefe want >= 0
             have2want[have] = want
             diff = want - have
             wenn diff == 0 oder have == 0:

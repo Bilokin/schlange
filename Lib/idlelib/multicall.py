@@ -320,7 +320,7 @@ def MultiCallCreator(widget):
         gib _multicall_dict[widget]
 
     klasse MultiCall (widget):
-        assert issubclass(widget, tkinter.Misc)
+        pruefe issubclass(widget, tkinter.Misc)
 
         def __init__(self, *args, **kwargs):
             widget.__init__(self, *args, **kwargs)

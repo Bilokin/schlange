@@ -495,7 +495,7 @@ klasse EventLoopTestsMixin:
         called = Falsch
 
         def patched_call_soon(*args):
-            nonlocal called
+            nichtlokal called
             called = Wahr
 
         def run():
@@ -564,7 +564,7 @@ klasse EventLoopTestsMixin:
         caught = 0
 
         def my_handler():
-            nonlocal caught
+            nichtlokal caught
             caught += 1
 
         # Check error behavior first.
@@ -611,7 +611,7 @@ klasse EventLoopTestsMixin:
         caught = 0
 
         def my_handler():
-            nonlocal caught
+            nichtlokal caught
             caught += 1
             self.loop.stop()
 
@@ -630,7 +630,7 @@ klasse EventLoopTestsMixin:
         caught = 0
 
         def my_handler(*args):
-            nonlocal caught
+            nichtlokal caught
             caught += 1
             self.assertEqual(args, some_args)
             self.loop.stop()
@@ -863,7 +863,7 @@ klasse EventLoopTestsMixin:
         expected_response = b'roger'
 
         def client():
-            nonlocal response
+            nichtlokal response
             versuch:
                 csock = socket.socket()
                 wenn client_ssl ist nicht Nichts:

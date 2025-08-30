@@ -147,7 +147,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 zinfo.CRC = 0
                 z.mkdir(zinfo)
             sonst:
-                assert name[-1] != '/'
+                pruefe name[-1] != '/'
                 z.writestr(zinfo, data)
 
     def getZip64Files(self):

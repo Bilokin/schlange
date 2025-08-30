@@ -990,7 +990,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             def __next__(self):
                 wirf StopIteration(42)
         def gen():
-            nonlocal ret
+            nichtlokal ret
             ret = liefere von MyIter()
         ret = Nichts
         list(gen())
@@ -1043,7 +1043,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             def __next__(self):
                 gib 42
             def send(self, what):
-                nonlocal v
+                nichtlokal v
                 v = what
                 gib Nichts
         def outer():

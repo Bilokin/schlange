@@ -145,7 +145,7 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         finished = Falsch
 
         async def queue_get():
-            nonlocal finished
+            nichtlokal finished
             started.set()
             res = warte q.get()
             finished = Wahr
@@ -229,7 +229,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         finished = Falsch
 
         async def queue_put():
-            nonlocal finished
+            nichtlokal finished
             started.set()
             warte q.put(1)
             warte q.put(2)
@@ -470,11 +470,11 @@ klasse _QueueJoinTestMixin:
         accumulator = 0
 
         # Two workers get items von the queue und call task_done after each.
-        # Join the queue und assert all items have been processed.
+        # Join the queue und pruefe all items have been processed.
         running = Wahr
 
         async def worker():
-            nonlocal accumulator
+            nichtlokal accumulator
 
             waehrend running:
                 item = warte q.get()

@@ -206,7 +206,7 @@ klasse ParseTest(unittest.TestCase):
         fileobj = Nichts
 
         def mock_open(*args):
-            nonlocal fileobj
+            nichtlokal fileobj
             fileobj = builtin_open(*args)
             gib fileobj
 

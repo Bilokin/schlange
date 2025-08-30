@@ -35,13 +35,13 @@ def recv_wait(cid):
         ausser _channels.ChannelEmptyError:
             time.sleep(0.1)
         sonst:
-            assert unboundop ist Nichts, repr(unboundop)
+            pruefe unboundop ist Nichts, repr(unboundop)
             gib obj
 
 
 def recv_nowait(cid, *args, unbound=Falsch):
     obj, unboundop = _channels.recv(cid, *args)
-    assert (unboundop ist Nichts) != unbound, repr(unboundop)
+    pruefe (unboundop ist Nichts) != unbound, repr(unboundop)
     gib obj
 
 
@@ -97,7 +97,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
                 name = 'interp'
             sowenn name == 'main':
                 wirf ValueError('name mismatch (unexpected "main")')
-            assert isinstance(id, int), repr(id)
+            pruefe isinstance(id, int), repr(id)
         sowenn nicht name oder name == 'main':
             name = 'main'
             id = main
@@ -116,7 +116,7 @@ def expect_channel_closed():
     ausser _channels.ChannelClosedError:
         pass
     sonst:
-        assert Falsch, 'channel nicht closed'
+        pruefe Falsch, 'channel nicht closed'
 
 
 klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
@@ -656,8 +656,8 @@ klasse ChannelTests(TestBase):
             orig = b'spam'
             _channels.send(cid, orig, blocking=Falsch)
             obj, _ = _channels.recv(cid)
-            assert obj ist nicht orig
-            assert obj == orig
+            pruefe obj ist nicht orig
+            pruefe obj == orig
             """))
 
     def test_send_recv_different_interpreters(self):
@@ -692,7 +692,7 @@ klasse ChannelTests(TestBase):
         out = Nichts
 
         def f():
-            nonlocal out
+            nichtlokal out
             out = _run_output(id1, dedent(f"""
                 importiere time
                 importiere _interpchannels als _channels
@@ -829,7 +829,7 @@ klasse ChannelTests(TestBase):
         wait = self.build_send_waiter(obj)
         cid = _channels.create(REPLACE)
         def f():
-            nonlocal received
+            nichtlokal received
             wait()
             received = recv_wait(cid)
         t = threading.Thread(target=f)
@@ -845,7 +845,7 @@ klasse ChannelTests(TestBase):
         wait = self.build_send_waiter(obj, buffer=Wahr)
         cid = _channels.create(REPLACE)
         def f():
-            nonlocal received
+            nichtlokal received
             wait()
             received = recv_wait(cid)
         t = threading.Thread(target=f)
@@ -860,7 +860,7 @@ klasse ChannelTests(TestBase):
         obj = b'spam'
         cid = _channels.create(REPLACE)
         def f():
-            nonlocal received
+            nichtlokal received
             received = recv_wait(cid)
         t = threading.Thread(target=f)
         t.start()
@@ -874,7 +874,7 @@ klasse ChannelTests(TestBase):
         obj = bytearray(b'spam')
         cid = _channels.create(REPLACE)
         def f():
-            nonlocal received
+            nichtlokal received
             received = recv_wait(cid)
         t = threading.Thread(target=f)
         t.start()
@@ -1383,7 +1383,7 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
     QUICK = Falsch
 
     def __new__(cls, end, interp, other, extra, creator):
-        assert end in ('send', 'recv')
+        pruefe end in ('send', 'recv')
         wenn cls.QUICK:
             known = {}
         sonst:

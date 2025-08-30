@@ -531,7 +531,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
 
         ran = Falsch
         async def inner():
-            nonlocal ran
+            nichtlokal ran
             ran = Wahr
             gib value
 
@@ -546,7 +546,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
 
         ran = Falsch
         def inner():
-            nonlocal ran
+            nichtlokal ran
             ran = Wahr
             gib value
 
@@ -650,7 +650,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
             cm_mock = mock_type(cm)
 
             async def use_context_manager():
-                nonlocal called
+                nichtlokal called
                 async mit cm_mock als result:
                     called = Wahr
                 gib result
@@ -687,11 +687,11 @@ klasse AsyncContextManagerTest(unittest.TestCase):
         exit_called = Falsch
 
         async def enter_coroutine(*args):
-            nonlocal enter_called
+            nichtlokal enter_called
             enter_called = Wahr
 
         async def exit_coroutine(*args):
-            nonlocal exit_called
+            nichtlokal exit_called
             exit_called = Wahr
 
         instance = self.WithAsyncContextManager()

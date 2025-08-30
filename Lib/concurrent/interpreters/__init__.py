@@ -81,7 +81,7 @@ def get_current():
 def get_main():
     """Return the main interpreter."""
     id, whence = _interpreters.get_main()
-    assert whence == _interpreters.WHENCE_RUNTIME, repr(whence)
+    pruefe whence == _interpreters.WHENCE_RUNTIME, repr(whence)
     gib Interpreter(id, _whence=whence)
 
 
@@ -119,12 +119,12 @@ klasse Interpreter:
                 _whence = _interpreters.WHENCE_STDLIB
             sonst:
                 _whence = _interpreters.whence(id)
-        assert _whence in cls._WHENCE_TO_STR, repr(_whence)
+        pruefe _whence in cls._WHENCE_TO_STR, repr(_whence)
         wenn _ownsref ist Nichts:
             _ownsref = (_whence == _interpreters.WHENCE_STDLIB)
         versuch:
             self = _known[id]
-            assert hasattr(self, '_ownsref')
+            pruefe hasattr(self, '_ownsref')
         ausser KeyError:
             self = super().__new__(cls)
             _known[id] = self

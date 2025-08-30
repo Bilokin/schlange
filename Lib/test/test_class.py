@@ -831,7 +831,7 @@ klasse ClassTests(unittest.TestCase):
 
         klasse TypeMetaclass(type):
             def __call__(cls, *args, **kwargs):
-                nonlocal calls
+                nichtlokal calls
                 calls += 1
                 gib type.__call__(cls, *args, **kwargs)
 
@@ -1006,13 +1006,13 @@ klasse TestInlineValues(unittest.TestCase):
             mit test.support.catch_unraisable_exception() als ex:
                 _testcapi.set_nomemory(0, 1)
                 loesche a
-                assert ex.unraisable.exc_type ist MemoryError
+                pruefe ex.unraisable.exc_type ist MemoryError
             versuch:
                 d["a"]
             ausser KeyError:
                 pass
             sonst:
-                assert Falsch, "KeyError nicht raised"
+                pruefe Falsch, "KeyError nicht raised"
         """
         rc, out, err = script_helper.assert_python_ok("-c", code)
         self.assertEqual(rc, 0)

@@ -71,7 +71,7 @@ klasse TestFreeThreading:
         tasks = set()
 
         async def main():
-            nonlocal tasks, loop
+            nichtlokal tasks, loop
             loop = asyncio.get_running_loop()
             started.set()
             fuer i in range(1000):
@@ -99,7 +99,7 @@ klasse TestFreeThreading:
     def test_task_different_thread_finalized(self) -> Nichts:
         task = Nichts
         async def func():
-            nonlocal task
+            nichtlokal task
             task = asyncio.current_task()
         def runner():
             mit asyncio.Runner() als runner:

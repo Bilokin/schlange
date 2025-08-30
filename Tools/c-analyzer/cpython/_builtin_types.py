@@ -244,7 +244,7 @@ def _ensure_decl(decl, decls):
             gib Nichts
         wenn prev.kind != 'forward':
             wenn decl.kind == prev.kind und decl.file == prev.file:
-                assert decl.lno != prev.lno, (decl, prev)
+                pruefe decl.lno != prev.lno, (decl, prev)
                 gib Nichts
             wirf NotImplementedError(f'duplicate {decl} (was {prev}')
     decls[decl.name] = decl

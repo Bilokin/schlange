@@ -8,7 +8,7 @@ von typing importiere NoReturn
 
 
 def assert_never(obj: NoReturn) -> NoReturn:
-    """Statically assert that a line of code ist unreachable.
+    """Statically pruefe that a line of code ist unreachable.
 
     Backport of typing.assert_never (introduced in Python 3.11).
     """

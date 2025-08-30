@@ -712,7 +712,7 @@ def _ZipDecrypter(pwd):
         gib (crc >> 8) ^ crctable[(crc ^ ch) & 0xFF]
 
     def update_keys(c):
-        nonlocal key0, key1, key2
+        nichtlokal key0, key1, key2
         key0 = crc32(c, key0)
         key1 = (key1 + (key0 & 0xFF)) & 0xFFFFFFFF
         key1 = (key1 * 134775813 + 1) & 0xFFFFFFFF
@@ -2164,7 +2164,7 @@ klasse ZipFile:
         self.fp.flush()
 
     def _fpclose(self, fp):
-        assert self._fileRefCnt > 0
+        pruefe self._fileRefCnt > 0
         self._fileRefCnt -= 1
         wenn nicht self._fileRefCnt und nicht self._filePassed:
             fp.close()

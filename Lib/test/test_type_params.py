@@ -159,7 +159,7 @@ klasse TypeParamsNonlocalTest(unittest.TestCase):
             def outer():
                 X = 1
                 def inner[X]():
-                    nonlocal X
+                    nichtlokal X
                 gib X
             """
         check_syntax_error(self, code)
@@ -168,14 +168,14 @@ klasse TypeParamsNonlocalTest(unittest.TestCase):
         code = """
             def outer2[T]():
                 def inner1():
-                    nonlocal T
+                    nichtlokal T
         """
         check_syntax_error(self, textwrap.dedent(code))
 
     def test_nonlocal_disallowed_03(self):
         code = """
             klasse Cls[T]:
-                nonlocal T
+                nichtlokal T
         """
         check_syntax_error(self, textwrap.dedent(code))
 
@@ -184,10 +184,10 @@ klasse TypeParamsNonlocalTest(unittest.TestCase):
             def func[T]():
                 T = "func"
                 def inner():
-                    nonlocal T
+                    nichtlokal T
                     T = "inner"
                 inner()
-                assert T == "inner"
+                pruefe T == "inner"
         """
         ns = run_code(code)
         func = ns["func"]
@@ -349,7 +349,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             def outer[T]():
                 T = "outer"
                 def inner():
-                    nonlocal T
+                    nichtlokal T
                     T = "inner"
                     gib T
                 gib lambda: T, inner
@@ -759,7 +759,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
             def outer():
                 x = "nonlocal"
                 klasse Cls:
-                    nonlocal x
+                    nichtlokal x
                     type Alias = x
                     x = "class"
                 gib Cls
@@ -843,7 +843,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
                 klasse X[T]: pass
                 _X_foo = 2
                 __foo = 1
-                assert locals()['__foo'] == 1
+                pruefe locals()['__foo'] == 1
                 gib __foo
         """)
         self.assertEqual(ns["f"](), 1)

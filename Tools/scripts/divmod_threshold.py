@@ -27,8 +27,8 @@ def probe_den(nd):
         t2 = now()
         s1 = t1 - t0
         s2 = t2 - t1
-        assert e1 == f1
-        assert e2 == f2
+        pruefe e1 == f1
+        pruefe e2 == f2
         wenn s2 < s1:
             count += 1
             wenn count >= 3:

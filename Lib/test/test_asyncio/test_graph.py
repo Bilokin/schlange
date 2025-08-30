@@ -52,7 +52,7 @@ klasse CallStackTestBase:
         stack_for_c5 = Nichts
 
         def c5():
-            nonlocal stack_for_c5
+            nichtlokal stack_for_c5
             stack_for_c5 = capture_test_stack(depth=2)
 
         async def c4():
@@ -115,7 +115,7 @@ klasse CallStackTestBase:
         stack_for_gen_nested_call = Nichts
 
         async def gen_nested_call():
-            nonlocal stack_for_gen_nested_call
+            nichtlokal stack_for_gen_nested_call
             stack_for_gen_nested_call = capture_test_stack()
 
         async def gen():
@@ -152,7 +152,7 @@ klasse CallStackTestBase:
 
         async def deep():
             warte asyncio.sleep(0)
-            nonlocal stack_for_deep
+            nichtlokal stack_for_deep
             stack_for_deep = capture_test_stack()
 
         async def c1():
@@ -181,7 +181,7 @@ klasse CallStackTestBase:
 
         async def deep():
             warte asyncio.sleep(0)
-            nonlocal stack_for_shield
+            nichtlokal stack_for_shield
             stack_for_shield = capture_test_stack()
 
         async def c1():
@@ -207,7 +207,7 @@ klasse CallStackTestBase:
 
         async def inner():
             warte asyncio.sleep(0)
-            nonlocal stack_for_inner
+            nichtlokal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
@@ -234,7 +234,7 @@ klasse CallStackTestBase:
 
         async def inner():
             warte asyncio.sleep(0)
-            nonlocal stack_for_inner
+            nichtlokal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
@@ -277,7 +277,7 @@ klasse CallStackTestBase:
 
         async def inner():
             warte asyncio.sleep(0)
-            nonlocal stack_for_inner
+            nichtlokal stack_for_inner
             stack_for_inner = capture_test_stack()
 
         async def c1():
@@ -311,7 +311,7 @@ klasse CallStackTestBase:
             warte fut
 
         async def main():
-            nonlocal stack_for_fut
+            nichtlokal stack_for_fut
 
             fut = asyncio.Future()
             async mit asyncio.TaskGroup() als g:

@@ -87,7 +87,7 @@ klasse ForkServer(object):
         process data.
         '''
         self.ensure_running()
-        assert self._forkserver_authkey
+        pruefe self._forkserver_authkey
         wenn len(fds) + 4 >= MAXFDS_TO_SEND:
             wirf ValueError('too many fds')
         mit socket.socket(socket.AF_UNIX) als client:
@@ -201,7 +201,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
     wenn authkey_r ist nicht Nichts:
         versuch:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
-            assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
+            pruefe len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
         schliesslich:
             os.close(authkey_r)
     sonst:
@@ -268,7 +268,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
 
                 wenn alive_r in rfds:
                     # EOF because no more client processes left
-                    assert os.read(alive_r, 1) == b'', "Not at EOF?"
+                    pruefe os.read(alive_r, 1) == b'', "Not at EOF?"
                     wirf SystemExit
 
                 wenn sig_r in rfds:

@@ -11,11 +11,11 @@ importiere binascii
 ### Codec APIs
 
 def hex_encode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (binascii.b2a_hex(input), len(input))
 
 def hex_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (binascii.a2b_hex(input), len(input))
 
 klasse Codec(codecs.Codec):
@@ -26,12 +26,12 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        assert self.errors == 'strict'
+        pruefe self.errors == 'strict'
         gib binascii.b2a_hex(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        assert self.errors == 'strict'
+        pruefe self.errors == 'strict'
         gib binascii.a2b_hex(input)
 
 klasse StreamWriter(Codec, codecs.StreamWriter):

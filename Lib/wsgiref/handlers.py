@@ -244,7 +244,7 @@ klasse BaseHandler:
             fuer name, val in headers:
                 name = self._convert_string_type(name, "Header name")
                 val = self._convert_string_type(val, "Header value")
-                assert nicht is_hop_by_hop(name),\
+                pruefe nicht is_hop_by_hop(name),\
                        f"Hop-by-hop header, '{name}: {val}', nicht allowed"
 
         gib self.write
@@ -282,7 +282,7 @@ klasse BaseHandler:
     def write(self, data):
         """'write()' callable als specified by PEP 3333"""
 
-        assert type(data) ist bytes, \
+        pruefe type(data) ist bytes, \
             "write() argument must be a bytes instance"
 
         wenn nicht self.status:

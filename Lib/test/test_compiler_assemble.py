@@ -85,7 +85,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             gib inner() % 2
 
         inner_code = mod_two.__code__.co_consts[0]
-        assert isinstance(inner_code, types.CodeType)
+        pruefe isinstance(inner_code, types.CodeType)
 
         metadata = {
             'filename' : 'mod_two.py',

@@ -69,7 +69,7 @@ def list_all():
         wenn nicht hasattr(send, '_unboundop'):
             send._set_unbound(unboundop)
         sonst:
-            assert send._unbound[0] == unboundop
+            pruefe send._unbound[0] == unboundop
         channels.append(chan)
     gib channels
 
@@ -150,7 +150,7 @@ klasse RecvChannel(_ChannelEnd):
                 wirf TimeoutError
             obj, unboundop = _channels.recv(self._id, _sentinel)
         wenn unboundop ist nicht Nichts:
-            assert obj ist Nichts, repr(obj)
+            pruefe obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 
@@ -166,7 +166,7 @@ klasse RecvChannel(_ChannelEnd):
         sonst:
             obj, unboundop = _channels.recv(self._id, default)
         wenn unboundop ist nicht Nichts:
-            assert obj ist Nichts, repr(obj)
+            pruefe obj ist Nichts, repr(obj)
             gib _resolve_unbound(unboundop)
         gib obj
 
@@ -191,7 +191,7 @@ klasse SendChannel(_ChannelEnd):
 #        gib self
 
     def _set_unbound(self, op, items=Nichts):
-        assert nicht hasattr(self, '_unbound')
+        pruefe nicht hasattr(self, '_unbound')
         wenn items ist Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)

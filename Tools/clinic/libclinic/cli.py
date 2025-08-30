@@ -76,7 +76,7 @@ def parse_file(
     wenn LIMITED_CAPI_REGEX.search(raw):
         limited_capi = Wahr
 
-    assert isinstance(language, CLanguage)
+    pruefe isinstance(language, CLanguage)
     clinic = Clinic(language,
                     verify=verify,
                     filename=filename,

@@ -122,15 +122,15 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
     make_info = (lambda lno: _common.FileInfo(reqfile, lno))
     last = Nichts
     fuer line in lines:
-        assert last != reqfile, (last,)
+        pruefe last != reqfile, (last,)
         lno, included, flags = _parse_marker_line(line, reqfile)
         wenn nicht included:
             wirf NotImplementedError((line,))
         wenn included == reqfile:
             # This will be the last one.
-            assert nicht flags, (line, flags)
+            pruefe nicht flags, (line, flags)
         sonst:
-            assert 1 in flags, (line, flags)
+            pruefe 1 in flags, (line, flags)
         liefere von _iter_top_include_lines(
             lines,
             _normpath(included, cwd),
@@ -141,7 +141,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
         )
         last = included
     # The last one ist always the requested file.
-    assert included == reqfile, (line,)
+    pruefe included == reqfile, (line,)
 
 
 def _iter_top_include_lines(lines, topfile, cwd,
@@ -170,8 +170,8 @@ def _iter_top_include_lines(lines, topfile, cwd,
                 files.append(included)
             sowenn 2 in flags:
                 # We're returning to a file.
-                assert files und included in files, (line, files)
-                assert included != files[-1], (line, files)
+                pruefe files und included in files, (line, files)
+                pruefe included != files[-1], (line, files)
                 waehrend files[-1] != included:
                     files.pop()
                 # XXX How can a file gib to line 1?
@@ -179,7 +179,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
             sonst:
                 wenn included == files[-1]:
                     # It's the next line von the file.
-                    assert lno > 1, (line, lno)
+                    pruefe lno > 1, (line, lno)
                 sonst:
                     # We ran into a user-added #LINE directive,
                     # which we promptly ignore.
@@ -187,7 +187,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
         sowenn nicht files:
             wirf NotImplementedError((line,))
         sowenn filter_reqfile(files[-1]):
-            assert lno ist nicht Nichts, (line, files[-1])
+            pruefe lno ist nicht Nichts, (line, files[-1])
             wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
                 wenn name != 'pragma':
@@ -211,25 +211,25 @@ def _parse_marker_line(line, reqfile=Nichts):
         gib Nichts, Nichts, Nichts
     lno, origfile, flags = m.groups()
     lno = int(lno)
-    assert origfile nicht in META_FILES, (line,)
-    assert lno > 0, (line, lno)
+    pruefe origfile nicht in META_FILES, (line,)
+    pruefe lno > 0, (line, lno)
     flags = set(int(f) fuer f in flags.split()) wenn flags sonst ()
 
     wenn 1 in flags:
         # We're entering a file.
-        assert lno == 1, (line, lno)
-        assert 2 nicht in flags, (line,)
+        pruefe lno == 1, (line, lno)
+        pruefe 2 nicht in flags, (line,)
     sowenn 2 in flags:
         # We're returning to a file.
         #assert lno > 1, (line, lno)
         pass
     sowenn reqfile und origfile == reqfile:
         # We're starting the requested file.
-        assert lno == 1, (line, lno)
-        assert nicht flags, (line, flags)
+        pruefe lno == 1, (line, lno)
+        pruefe nicht flags, (line, flags)
     sonst:
         # It's the next line von the file.
-        assert lno > 1, (line, lno)
+        pruefe lno > 1, (line, lno)
     gib lno, origfile, flags
 
 
@@ -269,5 +269,5 @@ def _filter_reqfile(current, reqfile, samefiles):
 
 
 def _normpath(filename, cwd):
-    assert cwd
+    pruefe cwd
     gib os.path.normpath(os.path.join(cwd, filename))

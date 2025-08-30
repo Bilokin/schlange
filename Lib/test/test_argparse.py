@@ -2162,8 +2162,8 @@ klasse TestActionUserDefined(ParserTestCase):
         def __call__(self, parser, namespace, value, option_string=Nichts):
             versuch:
                 # check destination und option string
-                assert self.dest == 'spam', 'dest: %s' % self.dest
-                assert option_string == '-s', 'flag: %s' % option_string
+                pruefe self.dest == 'spam', 'dest: %s' % self.dest
+                pruefe option_string == '-s', 'flag: %s' % option_string
                 # when option ist before argument, badger=2, und when
                 # option ist after argument, badger=<whatever was set>
                 expected_ns = NS(spam=0.25)
@@ -2173,7 +2173,7 @@ klasse TestActionUserDefined(ParserTestCase):
                     expected_ns.badger = 84
                 sonst:
                     wirf AssertionError('value: %s' % value)
-                assert expected_ns == namespace, ('expected %s, got %s' %
+                pruefe expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
             ausser AssertionError als e:
                 wirf ArgumentParserError('opt_action failed: %s' % e)
@@ -2183,10 +2183,10 @@ klasse TestActionUserDefined(ParserTestCase):
 
         def __call__(self, parser, namespace, value, option_string=Nichts):
             versuch:
-                assert option_string ist Nichts, ('option_string: %s' %
+                pruefe option_string ist Nichts, ('option_string: %s' %
                                                option_string)
                 # check destination
-                assert self.dest == 'badger', 'dest: %s' % self.dest
+                pruefe self.dest == 'badger', 'dest: %s' % self.dest
                 # when argument ist before option, spam=0.25, und when
                 # option ist after argument, spam=<whatever was set>
                 expected_ns = NS(badger=2)
@@ -2198,7 +2198,7 @@ klasse TestActionUserDefined(ParserTestCase):
                     expected_ns.spam = 0.125
                 sonst:
                     wirf AssertionError('value: %s' % value)
-                assert expected_ns == namespace, ('expected %s, got %s' %
+                pruefe expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
             ausser AssertionError als e:
                 wirf ArgumentParserError('arg_action failed: %s' % e)

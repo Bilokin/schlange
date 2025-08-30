@@ -263,7 +263,7 @@ klasse TestDecorators(unittest.TestCase):
                 sowenn fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
                 sonst:
-                    assert Falsch, "Unknown attrname %s" % fname
+                    pruefe Falsch, "Unknown attrname %s" % fname
                 actions.append('%s%d' % (opname, self.index))
                 gib res
 

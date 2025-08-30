@@ -55,7 +55,7 @@ def iscoroutine(obj):
 
 
 def _format_coroutine(coro):
-    assert iscoroutine(coro)
+    pruefe iscoroutine(coro)
 
     def get_name(coro):
         # Coroutines compiled mit Cython sometimes don't have

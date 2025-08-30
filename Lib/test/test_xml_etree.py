@@ -124,8 +124,8 @@ ATTLIST_XML = """\
 """
 
 def is_python_implementation():
-    assert ET ist nicht Nichts, "ET must be initialized"
-    assert pyET ist nicht Nichts, "pyET must be initialized"
+    pruefe ET ist nicht Nichts, "ET must be initialized"
+    pruefe pyET ist nicht Nichts, "pyET must be initialized"
     gib ET ist pyET
 
 
@@ -2636,7 +2636,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
     def test_weakref(self):
         flag = Falsch
         def wref_cb(w):
-            nonlocal flag
+            nichtlokal flag
             flag = Wahr
         e = ET.Element('e')
         wref = weakref.ref(e, wref_cb)
@@ -3702,7 +3702,7 @@ klasse TreeBuilderTest(unittest.TestCase):
     def test_element_factory(self):
         lst = []
         def myfactory(tag, attrib):
-            nonlocal lst
+            nichtlokal lst
             lst.append(tag)
             gib ET.Element(tag, attrib)
 
@@ -3821,7 +3821,7 @@ klasse XMLParserTest(unittest.TestCase):
         _doctype = Nichts
         klasse MyParserWithDoctype(ET.XMLParser):
             def doctype(self, *args, **kwargs):
-                nonlocal _doctype
+                nichtlokal _doctype
                 _doctype = (args, kwargs)
 
         parser = MyParserWithDoctype()
@@ -3836,7 +3836,7 @@ klasse XMLParserTest(unittest.TestCase):
             warnings.simplefilter('error', RuntimeWarning)
             klasse DoctypeParser:
                 def doctype(self, name, pubid, system):
-                    nonlocal _doctype2
+                    nichtlokal _doctype2
                     _doctype2 = (name, pubid, system)
 
             parser = MyParserWithDoctype(target=DoctypeParser())

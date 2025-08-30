@@ -115,15 +115,15 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._callMaybeAsync(function, *args, **kwargs)
 
     def _callAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
-        assert inspect.iscoroutinefunction(func), f'{func!r} ist nicht an async function'
+        pruefe self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
+        pruefe inspect.iscoroutinefunction(func), f'{func!r} ist nicht an async function'
         gib self._asyncioRunner.run(
             func(*args, **kwargs),
             context=self._asyncioTestContext
         )
 
     def _callMaybeAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
+        pruefe self._asyncioRunner ist nicht Nichts, 'asyncio runner ist nicht initialized'
         wenn inspect.iscoroutinefunction(func):
             gib self._asyncioRunner.run(
                 func(*args, **kwargs),
@@ -133,7 +133,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
             gib self._asyncioTestContext.run(func, *args, **kwargs)
 
     def _setupAsyncioRunner(self):
-        assert self._asyncioRunner ist Nichts, 'asyncio runner ist already initialized'
+        pruefe self._asyncioRunner ist Nichts, 'asyncio runner ist already initialized'
         runner = asyncio.Runner(debug=Wahr, loop_factory=self.loop_factory)
         self._asyncioRunner = runner
 

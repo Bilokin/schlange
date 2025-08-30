@@ -109,7 +109,7 @@ klasse OutputWindow(EditorWindow):
         Return:
             Length of text inserted.
         """
-        assert isinstance(s, str)
+        pruefe isinstance(s, str)
         self.text.insert(mark, s, tags)
         self.text.see(mark)
         self.text.update()

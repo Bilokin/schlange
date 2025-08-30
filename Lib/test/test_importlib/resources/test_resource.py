@@ -109,11 +109,11 @@ klasse ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
 
     def test_as_file_directory(self):
         mit resources.as_file(resources.files('data01')) als data:
-            assert data.name == 'data01'
-            assert data.is_dir()
-            assert data.joinpath('subdirectory').is_dir()
-            assert len(list(data.iterdir()))
-        assert nicht data.parent.exists()
+            pruefe data.name == 'data01'
+            pruefe data.is_dir()
+            pruefe data.joinpath('subdirectory').is_dir()
+            pruefe len(list(data.iterdir()))
+        pruefe nicht data.parent.exists()
 
 
 klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):

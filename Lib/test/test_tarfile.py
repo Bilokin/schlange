@@ -1807,7 +1807,7 @@ klasse GzipStreamWriteTest(GzipTest, StreamWriteTest):
         """
         tarfile.open(tmpname, self.mode).close()
         payload = pathlib.Path(tmpname).read_text(encoding='latin-1')
-        assert os.path.dirname(tmpname) nicht in payload
+        pruefe os.path.dirname(tmpname) nicht in payload
 
 
 klasse Bz2StreamWriteTest(Bz2Test, StreamWriteTest):
@@ -3566,7 +3566,7 @@ def _filemode_to_int(mode):
            'T': stat.S_ISVTX}[str_mode[8]]
         )
     # check we did this right
-    assert stat.filemode(result)[1:] == mode[1:]
+    pruefe stat.filemode(result)[1:] == mode[1:]
 
     gib result
 
@@ -3703,7 +3703,7 @@ klasse TestExtractionFilters(unittest.TestCase):
             wenn check_flag:
                 self.assertEqual(flag_path.read_text(), 'capture me')
             sonst:
-                assert filter == 'fully_trusted'
+                pruefe filter == 'fully_trusted'
 
     def expect_file(self, name, type=Nichts, symlink_to=Nichts, mode=Nichts,
                     size=Nichts, content=Nichts):

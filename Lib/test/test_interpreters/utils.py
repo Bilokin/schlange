@@ -525,7 +525,7 @@ klasse TestBase(unittest.TestCase):
             wenn whence ist Nichts:
                 whence = _interpreters.WHENCE_LEGACY_CAPI
             sonst:
-                assert whence in (_interpreters.WHENCE_LEGACY_CAPI,
+                pruefe whence in (_interpreters.WHENCE_LEGACY_CAPI,
                                   _interpreters.WHENCE_UNKNOWN), repr(whence)
             config = Nichts
         sowenn config ist Wahr:
@@ -572,7 +572,7 @@ klasse TestBase(unittest.TestCase):
     def run_from_capi(self, interpid, script, *, main=Falsch):
         mit self.capturing(script) als (wrapped, results):
             rc = _testinternalcapi.exec_interpreter(interpid, wrapped, main=main)
-            assert rc == 0, rc
+            pruefe rc == 0, rc
         results.raise_if_failed()
         gib results.stdout
 
@@ -606,7 +606,7 @@ klasse TestBase(unittest.TestCase):
             """)
         failed = Nichts
         def run():
-            nonlocal failed
+            nichtlokal failed
             versuch:
                 run_interp(script)
             ausser Exception als exc:
@@ -619,7 +619,7 @@ klasse TestBase(unittest.TestCase):
         versuch:
             os.write(w_in, token)
             token2 = os.read(r_out, 1)
-            assert token2 == token, (token2, token)
+            pruefe token2 == token, (token2, token)
         ausser OSError:
             t.join()
             wenn failed ist nicht Nichts:
@@ -644,12 +644,12 @@ klasse TestBase(unittest.TestCase):
             interpid = interp
             def exec_interp(script):
                 exc = _interpreters.exec(interpid, script)
-                assert exc ist Nichts, exc
+                pruefe exc ist Nichts, exc
             run_interp = exec_interp
         sonst:
             def run_interp(script):
                 text = self.run_and_capture(interp, script)
-                assert text == '', repr(text)
+                pruefe text == '', repr(text)
             def exec_interp(script):
                 interp.exec(script)
         mit self._running(run_interp, exec_interp):
@@ -660,10 +660,10 @@ klasse TestBase(unittest.TestCase):
     def running_from_capi(self, interpid, *, main=Falsch):
         def run_interp(script):
             text = self.run_from_capi(interpid, script, main=main)
-            assert text == '', repr(text)
+            pruefe text == '', repr(text)
         def exec_interp(script):
             rc = _testinternalcapi.exec_interpreter(interpid, script)
-            assert rc == 0, rc
+            pruefe rc == 0, rc
         mit self._running(run_interp, exec_interp):
             liefere
 
@@ -681,6 +681,6 @@ klasse TestBase(unittest.TestCase):
                 config = _interpreters.new_config(config)
         mit self.capturing(script) als (wrapped, results):
             rc = run_in_interp(wrapped, config)
-            assert rc == 0, rc
+            pruefe rc == 0, rc
         results.raise_if_failed()
         gib results.stdout

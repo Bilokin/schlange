@@ -35,7 +35,7 @@ klasse TestResponse(unittest.TestCase):
         closehook_called = Falsch
 
         def closehook():
-            nonlocal closehook_called
+            nichtlokal closehook_called
             closehook_called = Wahr
 
         closehook = urllib.response.addclosehook(self.fp, closehook)

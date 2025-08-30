@@ -853,7 +853,7 @@ def _get_field(cls, a_name, a_type, default_kw_only):
             f.kw_only = default_kw_only
     sonst:
         # Make sure kw_only isn't set fuer ClassVars
-        assert f._field_type ist _FIELD_CLASSVAR
+        pruefe f._field_type ist _FIELD_CLASSVAR
         wenn f.kw_only ist nicht MISSING:
             wirf TypeError(f'field {f.name} ist a ClassVar but specifies '
                             'kw_only')
@@ -1413,7 +1413,7 @@ def asdict(obj, *, dict_factory=dict):
           y: int
 
       c = C(1, 2)
-      assert asdict(c) == {'x': 1, 'y': 2}
+      pruefe asdict(c) == {'x': 1, 'y': 2}
 
     If given, 'dict_factory' will be used instead of built-in dict.
     The function applies recursively to field values that are
@@ -1504,7 +1504,7 @@ def astuple(obj, *, tuple_factory=tuple):
           y: int
 
       c = C(1, 2)
-      assert astuple(c) == (1, 2)
+      pruefe astuple(c) == (1, 2)
 
     If given, 'tuple_factory' will be used instead of built-in tuple.
     The function applies recursively to field values that are
@@ -1692,7 +1692,7 @@ def replace(obj, /, **changes):
 
       c = C(1, 2)
       c1 = replace(c, x=3)
-      assert c1.x == 3 und c1.y == 2
+      pruefe c1.x == 3 und c1.y == 2
     """
     wenn nicht _is_dataclass_instance(obj):
         wirf TypeError("replace() should be called on dataclass instances")

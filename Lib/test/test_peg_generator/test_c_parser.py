@@ -462,7 +462,7 @@ klasse TestCParser(unittest.TestCase):
         """
         grammar = parse_string(grammar_source, GrammarParser)
         parser_source = generate_c_parser_source(grammar)
-        assert "expect_soft_keyword" nicht in parser_source
+        pruefe "expect_soft_keyword" nicht in parser_source
 
     def test_soft_keywords(self) -> Nichts:
         grammar_source = """
@@ -471,7 +471,7 @@ klasse TestCParser(unittest.TestCase):
         """
         grammar = parse_string(grammar_source, GrammarParser)
         parser_source = generate_c_parser_source(grammar)
-        assert "expect_soft_keyword" in parser_source
+        pruefe "expect_soft_keyword" in parser_source
 
     def test_soft_keywords_parse(self) -> Nichts:
         grammar_source = """

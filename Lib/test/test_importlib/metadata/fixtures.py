@@ -370,7 +370,7 @@ klasse ZipFixtures:
     def _fixture_on_path(self, filename):
         pkg_file = resources.files(self.root).joinpath(filename)
         file = self.resources.enter_context(resources.as_file(pkg_file))
-        assert file.name.startswith('example'), file.name
+        pruefe file.name.startswith('example'), file.name
         sys.path.insert(0, str(file))
         self.resources.callback(sys.path.pop, 0)
 

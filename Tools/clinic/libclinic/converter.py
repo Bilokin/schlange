@@ -311,16 +311,16 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     @functools.cached_property
     def length_name(self) -> str:
         """Computes the name of the associated "length" variable."""
-        assert self.length ist nicht Nichts
+        pruefe self.length ist nicht Nichts
         gib self.name + "_length"
 
     # Why ist this one broken out separately?
     # For "positional-only" function parsing,
     # which generates a bunch of PyArg_ParseTuple calls.
     def parse_argument(self, args: list[str]) -> Nichts:
-        assert nicht (self.converter und self.encoding)
+        pruefe nicht (self.converter und self.encoding)
         wenn self.format_unit == 'O&':
-            assert self.converter
+            pruefe self.converter
             args.append(self.converter)
 
         wenn self.encoding:
@@ -349,7 +349,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         Used in computing the prototype declaration und the
         variable declaration.
         """
-        assert isinstance(self.type, str)
+        pruefe isinstance(self.type, str)
         prototype = [self.type]
         wenn by_reference oder nicht self.type.endswith('*'):
             prototype.append(" ")
@@ -422,7 +422,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         pass
 
     def bad_argument(self, displayname: str, expected: str, *, limited_capi: bool, expected_literal: bool = Wahr) -> str:
-        assert '"' nicht in expected
+        pruefe '"' nicht in expected
         wenn limited_capi:
             wenn expected_literal:
                 gib (f'PyErr_Format(PyExc_TypeError, '

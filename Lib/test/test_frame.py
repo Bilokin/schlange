@@ -63,7 +63,7 @@ klasse ClearTest(unittest.TestCase):
 
         wr = Nichts
         def inner():
-            nonlocal wr
+            nichtlokal wr
             c = C()
             wr = weakref.ref(c)
             1/0
@@ -93,7 +93,7 @@ klasse ClearTest(unittest.TestCase):
     def test_clear_generator(self):
         endly = Falsch
         def g():
-            nonlocal endly
+            nichtlokal endly
             versuch:
                 liefere
                 self.inner()
@@ -123,7 +123,7 @@ klasse ClearTest(unittest.TestCase):
         # Attempting to clear an executing generator frame ist forbidden.
         endly = Falsch
         def g():
-            nonlocal endly
+            nichtlokal endly
             versuch:
                 1/0
             ausser ZeroDivisionError als e:
@@ -747,7 +747,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
                 when using a test runner (like pytest). The typical recipe is:
                 ResourceWarning + -Werror + a custom sys.unraisablehook.
                 """
-                nonlocal sneaky_frame_object
+                nichtlokal sneaky_frame_object
                 sneaky_frame_object = sys._getframe()
 
         klasse SneakyThread(threading.Thread):

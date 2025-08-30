@@ -81,7 +81,7 @@ klasse Tier2Emitter(Emitter):
         self.out.emit_at("if ", tkn)
         lparen = next(tkn_iter)
         self.emit(lparen)
-        assert lparen.kind == "LPAREN"
+        pruefe lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         emit_to(self.out, tkn_iter, "RPAREN")
         next(tkn_iter)  # Semi colon
@@ -130,7 +130,7 @@ klasse Tier2Emitter(Emitter):
             self.emit(amp)
             gib Wahr
         one = next(tkn_iter)
-        assert one.text == "1"
+        pruefe one.text == "1"
         self.out.emit_at(uop.name[-1], tkn)
         gib Wahr
 
@@ -141,7 +141,7 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
         emitter.out.start_line()
         wenn uop.properties.oparg:
             emitter.emit("oparg = CURRENT_OPARG();\n")
-            assert uop.properties.const_oparg < 0
+            pruefe uop.properties.const_oparg < 0
         sowenn uop.properties.const_oparg >= 0:
             emitter.emit(f"oparg = {uop.properties.const_oparg};\n")
             emitter.emit(f"assert(oparg == CURRENT_OPARG());\n")

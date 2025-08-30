@@ -902,14 +902,14 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         """Called when the low-level transport's buffer goes over
         the high-water mark.
         """
-        assert nicht self._ssl_writing_paused
+        pruefe nicht self._ssl_writing_paused
         self._ssl_writing_paused = Wahr
 
     def resume_writing(self):
         """Called when the low-level transport's buffer drains below
         the low-water mark.
         """
-        assert self._ssl_writing_paused
+        pruefe self._ssl_writing_paused
         self._ssl_writing_paused = Falsch
         self._process_outgoing()
 

@@ -448,7 +448,7 @@ klasse TestWeakSet(unittest.TestCase):
             self.assertLessEqual(n2, n1)
 
     def test_repr(self):
-        assert repr(self.s) == repr(self.s.data)
+        pruefe repr(self.s) == repr(self.s.data)
 
     def test_abc(self):
         self.assertIsInstance(self.s, Set)

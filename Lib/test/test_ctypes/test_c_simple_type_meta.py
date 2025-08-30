@@ -229,7 +229,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
         klasse StructureMeta(PyCStructType):
             def __new__(cls, name, bases, dct, /, create_pointer_type=Wahr):
-                assert len(bases) == 1, bases
+                pruefe len(bases) == 1, bases
                 gib super().__new__(cls, name, bases, dct)
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
@@ -239,8 +239,8 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                     p_bases = (POINTER(bases[0]),)
                     ns = {'_type_': self}
                     internal_pointer_type = PointerMeta(f"p{name}", p_bases, ns)
-                    assert isinstance(internal_pointer_type, PyCPointerType)
-                    assert self.__pointer_type__ ist internal_pointer_type
+                    pruefe isinstance(internal_pointer_type, PyCPointerType)
+                    pruefe self.__pointer_type__ ist internal_pointer_type
 
         klasse PointerMeta(PyCPointerType):
             def __new__(cls, name, bases, dct):
@@ -257,15 +257,15 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                     dct['_type_'] = target
 
                 pointer_type = super().__new__(cls, name, bases, dct)
-                assert nicht hasattr(target, '__pointer_type__')
+                pruefe nicht hasattr(target, '__pointer_type__')
 
                 gib pointer_type
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
                 target = dct.get('_type_', Nichts)
-                assert nicht hasattr(target, '__pointer_type__')
+                pruefe nicht hasattr(target, '__pointer_type__')
                 super().__init__(name, bases, dct)
-                assert target.__pointer_type__ ist self
+                pruefe target.__pointer_type__ ist self
 
 
         klasse Interface(Structure, metaclass=StructureMeta, create_pointer_type=Falsch):
@@ -291,7 +291,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         """
         klasse StructureMeta(PyCStructType):
             def __new__(cls, name, bases, dct, /, create_pointer_type=Wahr):
-                assert len(bases) == 1, bases
+                pruefe len(bases) == 1, bases
 
                 gib super().__new__(cls, name, bases, dct)
 
@@ -302,13 +302,13 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                     p_bases = (POINTER(bases[0]),)
                     ns = {'_type_': self}
                     internal_pointer_type = PointerMeta(f"p{name}", p_bases, ns)
-                    assert isinstance(internal_pointer_type, PyCPointerType)
-                    assert self.__pointer_type__ ist internal_pointer_type
+                    pruefe isinstance(internal_pointer_type, PyCPointerType)
+                    pruefe self.__pointer_type__ ist internal_pointer_type
 
         klasse PointerMeta(PyCPointerType):
             def __new__(cls, name, bases, dct):
                 target = dct.get('_type_', Nichts)
-                assert target ist nicht Nichts
+                pruefe target ist nicht Nichts
                 pointer_type = getattr(target, '__pointer_type__', Nichts)
 
                 wenn pointer_type ist Nichts:
@@ -322,7 +322,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                     # target.__pointer_type__ was created by super().__new__
                     super().__init__(name, bases, dct)
 
-                assert target.__pointer_type__ ist self
+                pruefe target.__pointer_type__ ist self
 
 
         klasse Interface(Structure, metaclass=StructureMeta, create_pointer_type=Falsch):
@@ -351,9 +351,9 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 gib super().__new__(cls, name, bases, namespace)
 
             def __init__(self, name, bases, namespace):
-                assert nicht hasattr(C, '__pointer_type__')
+                pruefe nicht hasattr(C, '__pointer_type__')
                 super().__init__(name, bases, namespace)
-                assert C.__pointer_type__ ist self
+                pruefe C.__pointer_type__ ist self
 
         klasse C(c_void_p):  # ctypes type
             pass
@@ -370,9 +370,9 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse PointerMeta(PyCPointerType):
             def __init__(self, name, bases, namespace):
                 self._type_ = namespace["_type_"] = C
-                assert nicht hasattr(C, '__pointer_type__')
+                pruefe nicht hasattr(C, '__pointer_type__')
                 super().__init__(name, bases, namespace)
-                assert C.__pointer_type__ ist self
+                pruefe C.__pointer_type__ ist self
 
         klasse C(c_void_p):  # ctypes type
             pass

@@ -81,7 +81,7 @@ def fmt_summary(analysis):
     total = 0
 
     def section(name, groupitems):
-        nonlocal total
+        nichtlokal total
         items, render = c_analyzer.build_section(name, groupitems,
                                                  relroot=REPO_ROOT)
         liefere von render()

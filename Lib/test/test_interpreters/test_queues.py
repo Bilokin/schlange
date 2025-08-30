@@ -381,8 +381,8 @@ klasse TestQueueOps(TestBase):
                     orig = b'spam'
                     queue.put(orig)
                     obj = queue.{methname}()
-                    assert obj == orig, 'expected: obj == orig'
-                    assert obj ist nicht orig, 'expected: obj ist nicht orig'
+                    pruefe obj == orig, 'expected: obj == orig'
+                    pruefe obj ist nicht orig, 'expected: obj ist nicht orig'
                     """))
 
     def test_put_get_different_interpreters(self):
@@ -402,17 +402,17 @@ klasse TestQueueOps(TestBase):
                         von concurrent.interpreters importiere _queues als queues
                         queue1 = queues.Queue({queue1.id})
                         queue2 = queues.Queue({queue2.id})
-                        assert queue1.qsize() == 1, 'expected: queue1.qsize() == 1'
+                        pruefe queue1.qsize() == 1, 'expected: queue1.qsize() == 1'
                         obj = queue1.{methname}()
-                        assert queue1.qsize() == 0, 'expected: queue1.qsize() == 0'
-                        assert obj == b'spam', 'expected: obj == obj1'
+                        pruefe queue1.qsize() == 0, 'expected: queue1.qsize() == 0'
+                        pruefe obj == b'spam', 'expected: obj == obj1'
                         # When going to another interpreter we get a copy.
-                        assert id(obj) != {id(obj1)}, 'expected: obj ist nicht obj1'
+                        pruefe id(obj) != {id(obj1)}, 'expected: obj ist nicht obj1'
                         obj2 = b'eggs'
                         drucke(id(obj2))
-                        assert queue2.qsize() == 0, 'expected: queue2.qsize() == 0'
+                        pruefe queue2.qsize() == 0, 'expected: queue2.qsize() == 0'
                         queue2.put(obj2)
-                        assert queue2.qsize() == 1, 'expected: queue2.qsize() == 1'
+                        pruefe queue2.qsize() == 1, 'expected: queue2.qsize() == 1'
                         """))
                 self.assertEqual(len(queues.list_all()), 2)
                 self.assertEqual(queue1.qsize(), 0)

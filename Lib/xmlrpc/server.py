@@ -881,7 +881,7 @@ klasse XMLRPCDocGenerator:
                 sonst:
                     method = method_info
             sonst:
-                assert 0, "Could nicht find method in self.functions und no "\
+                pruefe 0, "Could nicht find method in self.functions und no "\
                           "instance installed"
 
             methods[method_name] = method

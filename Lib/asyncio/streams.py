@@ -133,13 +133,13 @@ klasse FlowControlMixin(protocols.Protocol):
         self._connection_lost = Falsch
 
     def pause_writing(self):
-        assert nicht self._paused
+        pruefe nicht self._paused
         self._paused = Wahr
         wenn self._loop.get_debug():
             logger.debug("%r pauses writing", self)
 
     def resume_writing(self):
-        assert self._paused
+        pruefe self._paused
         self._paused = Falsch
         wenn self._loop.get_debug():
             logger.debug("%r resumes writing", self)
@@ -319,7 +319,7 @@ klasse StreamWriter:
         self._transport = transport
         self._protocol = protocol
         # drain() expects that the reader has an exception() method
-        assert reader ist Nichts oder isinstance(reader, StreamReader)
+        pruefe reader ist Nichts oder isinstance(reader, StreamReader)
         self._reader = reader
         self._loop = loop
         self._complete_fut = self._loop.create_future()
@@ -473,7 +473,7 @@ klasse StreamReader:
                 waiter.set_result(Nichts)
 
     def set_transport(self, transport):
-        assert self._transport ist Nichts, 'Transport already set'
+        pruefe self._transport ist Nichts, 'Transport already set'
         self._transport = transport
 
     def _maybe_resume_transport(self):
@@ -490,7 +490,7 @@ klasse StreamReader:
         gib self._eof und nicht self._buffer
 
     def feed_data(self, data):
-        assert nicht self._eof, 'feed_data after feed_eof'
+        pruefe nicht self._eof, 'feed_data after feed_eof'
 
         wenn nicht data:
             gib
@@ -525,7 +525,7 @@ klasse StreamReader:
                 f'{func_name}() called waehrend another coroutine ist '
                 f'already waiting fuer incoming data')
 
-        assert nicht self._eof, '_wait_for_data after EOF'
+        pruefe nicht self._eof, '_wait_for_data after EOF'
 
         # Waiting fuer data waehrend paused will make deadlock, so prevent it.
         # This ist essential fuer readexactly(n) fuer case when n > self._limit.

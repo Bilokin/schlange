@@ -321,7 +321,7 @@ klasse _Stringifier:
     ):
         # Either an AST node oder a simple str (for the common case where a ForwardRef
         # represent a single name).
-        assert isinstance(node, (ast.AST, str))
+        pruefe isinstance(node, (ast.AST, str))
         self.__arg__ = Nichts
         self.__forward_is_argument__ = Falsch
         self.__forward_is_class__ = is_class
@@ -441,7 +441,7 @@ klasse _Stringifier:
             other = ast.Tuple(elts)
         sonst:
             other, extra_names = self.__convert_to_ast_getitem(other)
-        assert isinstance(other, ast.AST), repr(other)
+        pruefe isinstance(other, ast.AST), repr(other)
         gib self.__make_new(ast.Subscript(self.__get_ast(), other), extra_names)
 
     def __getattr__(self, attr):

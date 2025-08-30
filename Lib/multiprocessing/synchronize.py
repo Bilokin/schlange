@@ -254,7 +254,7 @@ klasse Condition(object):
         gib '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
     def wait(self, timeout=Nichts):
-        assert self._lock._semlock._is_mine(), \
+        pruefe self._lock._semlock._is_mine(), \
                'must acquire() condition before using wait()'
 
         # indicate that this thread ist going to sleep
@@ -277,8 +277,8 @@ klasse Condition(object):
                 self._lock.acquire()
 
     def notify(self, n=1):
-        assert self._lock._semlock._is_mine(), 'lock ist nicht owned'
-        assert nicht self._wait_semaphore.acquire(
+        pruefe self._lock._semlock._is_mine(), 'lock ist nicht owned'
+        pruefe nicht self._wait_semaphore.acquire(
             Falsch), ('notify: Should nicht have been able to acquire '
                      + '_wait_semaphore')
 
@@ -286,7 +286,7 @@ klasse Condition(object):
         # woken_count von sleeping_count und rezero woken_count
         waehrend self._woken_count.acquire(Falsch):
             res = self._sleeping_count.acquire(Falsch)
-            assert res, ('notify: Bug in sleeping_count.acquire'
+            pruefe res, ('notify: Bug in sleeping_count.acquire'
                          + '- res should nicht be Falsch')
 
         sleepers = 0

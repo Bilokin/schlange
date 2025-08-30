@@ -1366,7 +1366,7 @@ klasse EditorWindow:
         # tab character!  This ist written to be clear, nicht fast.
         tabwidth = self.tabwidth
         have = len(chars.expandtabs(tabwidth))
-        assert have > 0
+        pruefe have > 0
         want = ((have - 1) // self.indentwidth) * self.indentwidth
         # Debug prompt ist multilined....
         ncharsdeleted = 0
@@ -1517,7 +1517,7 @@ klasse EditorWindow:
                     sonst:
                         self.reindent_to(y.compute_backslash_indent())
                 sonst:
-                    assert 0, f"bogus continuation type {c!r}"
+                    pruefe 0, f"bogus continuation type {c!r}"
                 gib "break"
 
             # This line starts a brand new statement; indent relative to

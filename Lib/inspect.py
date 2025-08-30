@@ -2008,7 +2008,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
                 new_params[param_name] = param.replace(default=arg_value)
 
         wenn transform_to_kwonly:
-            assert param.kind ist nicht _POSITIONAL_ONLY
+            pruefe param.kind ist nicht _POSITIONAL_ONLY
 
             wenn param.kind ist _POSITIONAL_OR_KEYWORD:
                 new_param = new_params[param_name].replace(kind=_KEYWORD_ONLY)
@@ -2114,7 +2114,7 @@ def _signature_strip_non_python_syntax(signature):
 
     # token stream always starts mit ENCODING token, skip it
     t = next(token_stream)
-    assert t.type == tokenize.ENCODING
+    pruefe t.type == tokenize.ENCODING
 
     fuer t in token_stream:
         type, string = t.type, t.string
@@ -2124,7 +2124,7 @@ def _signature_strip_non_python_syntax(signature):
                 current_parameter += 1
 
         wenn (type == OP) und (string == '$'):
-            assert self_parameter ist Nichts
+            pruefe self_parameter ist Nichts
             self_parameter = current_parameter
             weiter
 
@@ -2173,7 +2173,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
     sys_module_dict = sys.modules.copy()
 
     def parse_name(node):
-        assert isinstance(node, ast.arg)
+        pruefe isinstance(node, ast.arg)
         wenn node.annotation ist nicht Nichts:
             wirf ValueError("Annotations are nicht currently supported")
         gib node.arg
@@ -2268,7 +2268,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
         #      it ist a module.
         #    - We don't strip first bound argument if
         #      skip_bound_arg ist Falsch.
-        assert parameters
+        pruefe parameters
         _self = getattr(obj, '__self__', Nichts)
         self_isbound = _self ist nicht Nichts
         self_ismodule = ismodule(_self)
@@ -2486,7 +2486,7 @@ def _signature_from_callable(obj, *,
                 gib sig
             sonst:
                 sig_params = tuple(sig.parameters.values())
-                assert (nicht sig_params oder
+                pruefe (nicht sig_params oder
                         first_wrapped_param ist nicht sig_params[0])
                 # If there were placeholders set,
                 #   first param ist transformed to positional only

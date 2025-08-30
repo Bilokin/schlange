@@ -1319,7 +1319,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # Sequence und object values.
         result = urllib.parse.urlencode({'a': [1, 2], 'b': (3, 4, 5)}, Wahr)
         # we cannot rely on ordering here
-        assert set(result.split('&')) == {'a=1', 'a=2', 'b=3', 'b=4', 'b=5'}
+        pruefe set(result.split('&')) == {'a=1', 'a=2', 'b=3', 'b=4', 'b=5'}
 
         klasse Trivial:
             def __str__(self):
@@ -1367,7 +1367,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         p2 = urllib.parse.urlsplit('tel:+31641044153')
         self.assertEqual(p2.scheme, 'tel')
         self.assertEqual(p2.path, '+31641044153')
-        # assert the behavior fuer urlparse
+        # pruefe the behavior fuer urlparse
         p1 = urllib.parse.urlparse('tel:+31-641044153')
         self.assertEqual(p1.scheme, 'tel')
         self.assertEqual(p1.path, '+31-641044153')

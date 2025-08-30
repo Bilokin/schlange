@@ -124,11 +124,11 @@ def setUpModule():
         lst.append(sample)
     global SAMPLES
     SAMPLES = lst
-    assert len(SAMPLES) > 10
+    pruefe len(SAMPLES) > 10
 
     global TRAINED_DICT
     TRAINED_DICT = train_dict(SAMPLES, 3*_1K)
-    assert len(TRAINED_DICT.dict_content) <= 3*_1K
+    pruefe len(TRAINED_DICT.dict_content) <= 3*_1K
 
 
 klasse FunctionsTestCase(unittest.TestCase):

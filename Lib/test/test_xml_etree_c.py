@@ -266,7 +266,7 @@ def install_tests():
                 pass
             Temp.__name__ = Temp.__qualname__ = name
             Temp.__module__ = __name__
-            assert name nicht in globals()
+            pruefe name nicht in globals()
             globals()[name] = Temp
 
 install_tests()

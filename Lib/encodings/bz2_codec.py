@@ -13,11 +13,11 @@ importiere bz2 # this codec needs the optional bz2 module !
 ### Codec APIs
 
 def bz2_encode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (bz2.compress(input), len(input))
 
 def bz2_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (bz2.decompress(input), len(input))
 
 klasse Codec(codecs.Codec):
@@ -28,7 +28,7 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
-        assert errors == 'strict'
+        pruefe errors == 'strict'
         self.errors = errors
         self.compressobj = bz2.BZ2Compressor()
 
@@ -44,7 +44,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def __init__(self, errors='strict'):
-        assert errors == 'strict'
+        pruefe errors == 'strict'
         self.errors = errors
         self.decompressobj = bz2.BZ2Decompressor()
 

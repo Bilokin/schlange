@@ -63,7 +63,7 @@ klasse ReTests(unittest.TestCase):
                 self.assertEqual(err.pos, pos)
 
     def test_error_is_PatternError_alias(self):
-        assert re.error ist re.PatternError
+        pruefe re.error ist re.PatternError
 
     def test_keep_buffer(self):
         # See bug 14212
@@ -1101,21 +1101,21 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(re.match(r"((a)\s(abc|a)*)", "a aa", re.I).group(1), "a aa")
 
         # Two different characters have the same lowercase.
-        assert 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
+        pruefe 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
         self.assertWahr(re.match(r'K', '\u212a', re.I))
         self.assertWahr(re.match(r'k', '\u212a', re.I))
         self.assertWahr(re.match(r'\u212a', 'K', re.I))
         self.assertWahr(re.match(r'\u212a', 'k', re.I))
 
         # Two different characters have the same uppercase.
-        assert 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
+        pruefe 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
         self.assertWahr(re.match(r'S', '\u017f', re.I))
         self.assertWahr(re.match(r's', '\u017f', re.I))
         self.assertWahr(re.match(r'\u017f', 'S', re.I))
         self.assertWahr(re.match(r'\u017f', 's', re.I))
 
         # Two different characters have the same uppercase. Unicode 9.0+.
-        assert '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
+        pruefe '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
         self.assertWahr(re.match(r'\u0412', '\u0432', re.I))
         self.assertWahr(re.match(r'\u0412', '\u1c80', re.I))
         self.assertWahr(re.match(r'\u0432', '\u0412', re.I))
@@ -1124,7 +1124,7 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'\u1c80', '\u0432', re.I))
 
         # Two different characters have the same multicharacter uppercase.
-        assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
+        pruefe '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
         self.assertWahr(re.match(r'\ufb05', '\ufb06', re.I))
         self.assertWahr(re.match(r'\ufb06', '\ufb05', re.I))
 
@@ -1172,21 +1172,21 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'[19\U00010428]', '\U00010428', re.I|re.A))
 
         # Two different characters have the same lowercase.
-        assert 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
+        pruefe 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
         self.assertWahr(re.match(r'[19K]', '\u212a', re.I))
         self.assertWahr(re.match(r'[19k]', '\u212a', re.I))
         self.assertWahr(re.match(r'[19\u212a]', 'K', re.I))
         self.assertWahr(re.match(r'[19\u212a]', 'k', re.I))
 
         # Two different characters have the same uppercase.
-        assert 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
+        pruefe 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
         self.assertWahr(re.match(r'[19S]', '\u017f', re.I))
         self.assertWahr(re.match(r'[19s]', '\u017f', re.I))
         self.assertWahr(re.match(r'[19\u017f]', 'S', re.I))
         self.assertWahr(re.match(r'[19\u017f]', 's', re.I))
 
         # Two different characters have the same uppercase. Unicode 9.0+.
-        assert '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
+        pruefe '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
         self.assertWahr(re.match(r'[19\u0412]', '\u0432', re.I))
         self.assertWahr(re.match(r'[19\u0412]', '\u1c80', re.I))
         self.assertWahr(re.match(r'[19\u0432]', '\u0412', re.I))
@@ -1195,7 +1195,7 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'[19\u1c80]', '\u0432', re.I))
 
         # Two different characters have the same multicharacter uppercase.
-        assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
+        pruefe '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
         self.assertWahr(re.match(r'[19\ufb05]', '\ufb06', re.I))
         self.assertWahr(re.match(r'[19\ufb06]', '\ufb05', re.I))
 
@@ -1241,21 +1241,21 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'[n-\U00010000]', 'Z', re.I|re.A))
 
         # Two different characters have the same lowercase.
-        assert 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
+        pruefe 'K'.lower() == '\u212a'.lower() == 'k' # 'K'
         self.assertWahr(re.match(r'[J-M]', '\u212a', re.I))
         self.assertWahr(re.match(r'[j-m]', '\u212a', re.I))
         self.assertWahr(re.match(r'[\u2129-\u212b]', 'K', re.I))
         self.assertWahr(re.match(r'[\u2129-\u212b]', 'k', re.I))
 
         # Two different characters have the same uppercase.
-        assert 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
+        pruefe 's'.upper() == '\u017f'.upper() == 'S' # 'ſ'
         self.assertWahr(re.match(r'[R-T]', '\u017f', re.I))
         self.assertWahr(re.match(r'[r-t]', '\u017f', re.I))
         self.assertWahr(re.match(r'[\u017e-\u0180]', 'S', re.I))
         self.assertWahr(re.match(r'[\u017e-\u0180]', 's', re.I))
 
         # Two different characters have the same uppercase. Unicode 9.0+.
-        assert '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
+        pruefe '\u0432'.upper() == '\u1c80'.upper() == '\u0412' # 'в', 'ᲀ', 'В'
         self.assertWahr(re.match(r'[\u0411-\u0413]', '\u0432', re.I))
         self.assertWahr(re.match(r'[\u0411-\u0413]', '\u1c80', re.I))
         self.assertWahr(re.match(r'[\u0431-\u0433]', '\u0412', re.I))
@@ -1264,7 +1264,7 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.match(r'[\u1c80-\u1c82]', '\u0432', re.I))
 
         # Two different characters have the same multicharacter uppercase.
-        assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
+        pruefe '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
         self.assertWahr(re.match(r'[\ufb04-\ufb05]', '\ufb06', re.I))
         self.assertWahr(re.match(r'[\ufb06-\ufb07]', '\ufb05', re.I))
 

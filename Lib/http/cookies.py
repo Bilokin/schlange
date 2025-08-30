@@ -574,10 +574,10 @@ klasse BaseCookie(dict):
         M = Nichts         # current morsel
         fuer tp, key, value in parsed_items:
             wenn tp == TYPE_ATTRIBUTE:
-                assert M ist nicht Nichts
+                pruefe M ist nicht Nichts
                 M[key] = value
             sonst:
-                assert tp == TYPE_KEYVALUE
+                pruefe tp == TYPE_KEYVALUE
                 rval, cval = value
                 self.__set(key, rval, cval)
                 M = self[key]

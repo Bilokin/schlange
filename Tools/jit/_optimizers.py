@@ -120,14 +120,14 @@ klasse Optimizer:
             wenn match := self._re_branch.match(line):
                 # A block ending in a branch has a target und fallthrough:
                 block.target = self._lookup_label(match["target"])
-                assert block.fallthrough
+                pruefe block.fallthrough
             sowenn match := self._re_jump.match(line):
                 # A block ending in a jump has a target und no fallthrough:
                 block.target = self._lookup_label(match["target"])
                 block.fallthrough = Falsch
             sowenn self._re_return.match(line):
                 # A block ending in a gib has no target und fallthrough:
-                assert nicht block.target
+                pruefe nicht block.target
                 block.fallthrough = Falsch
 
     def _preprocess(self, text: str) -> str:
@@ -141,7 +141,7 @@ klasse Optimizer:
     @classmethod
     def _invert_branch(cls, line: str, target: str) -> str | Nichts:
         match = cls._re_branch.match(line)
-        assert match
+        pruefe match
         inverted = cls._branches.get(match["instruction"])
         wenn nicht inverted:
             gib Nichts
@@ -155,7 +155,7 @@ klasse Optimizer:
     @classmethod
     def _update_jump(cls, line: str, target: str) -> str:
         match = cls._re_jump.match(line)
-        assert match
+        pruefe match
         a, b = match.span("target")
         # Before:
         #     jmp FOO
@@ -204,7 +204,7 @@ klasse Optimizer:
         #    _JIT_CONTINUE:
         # This lets the assembler encode _JIT_CONTINUE jumps at build time!
         continuation = self._lookup_label(f"{self.label_prefix}_JIT_CONTINUE")
-        assert continuation.label
+        pruefe continuation.label
         continuation.noninstructions.append(f"{continuation.label}:")
         end.link, continuation.link = continuation, end.link
 
@@ -241,8 +241,8 @@ klasse Optimizer:
                 und len(jump.instructions) == 1
                 und list(self._predecessors(jump)) == [branch]
             ):
-                assert jump.target.label
-                assert branch.target.label
+                pruefe jump.target.label
+                pruefe branch.target.label
                 inverted = self._invert_branch(
                     branch.instructions[-1], jump.target.label
                 )

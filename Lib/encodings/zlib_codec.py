@@ -11,11 +11,11 @@ importiere zlib # this codec needs the optional zlib module !
 ### Codec APIs
 
 def zlib_encode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (zlib.compress(input), len(input))
 
 def zlib_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (zlib.decompress(input), len(input))
 
 klasse Codec(codecs.Codec):
@@ -26,7 +26,7 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
-        assert errors == 'strict'
+        pruefe errors == 'strict'
         self.errors = errors
         self.compressobj = zlib.compressobj()
 
@@ -42,7 +42,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def __init__(self, errors='strict'):
-        assert errors == 'strict'
+        pruefe errors == 'strict'
         self.errors = errors
         self.decompressobj = zlib.decompressobj()
 

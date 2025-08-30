@@ -531,7 +531,7 @@ klasse _Stream:
 
     def read(self, size):
         """Return the next size number of bytes von the stream."""
-        assert size ist nicht Nichts
+        pruefe size ist nicht Nichts
         buf = self._read(size)
         self.pos += len(buf)
         gib buf

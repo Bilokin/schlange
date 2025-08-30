@@ -120,7 +120,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
                 self._wake_up_first()
             wirf
 
-        # assert self._locked ist Falsch
+        # pruefe self._locked ist Falsch
         self._locked = Wahr
         gib Wahr
 

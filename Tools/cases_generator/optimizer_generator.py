@@ -79,7 +79,7 @@ def type_name(var: StackItem) -> str:
     gib "JitOptRef "
 
 def stackref_type_name(var: StackItem) -> str:
-    assert nicht var.is_array(), "Unsafe to convert a symbol to an array-like StackRef."
+    pruefe nicht var.is_array(), "Unsafe to convert a symbol to an array-like StackRef."
     gib "_PyStackRef "
 
 def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> Nichts:
@@ -165,7 +165,7 @@ klasse OptimizerEmitter(Emitter):
         storage: Storage,
         inst: Instruction | Nichts,
     ) -> bool:
-        assert isinstance(uop, Uop)
+        pruefe isinstance(uop, Uop)
         input_identifiers = []
         fuer token in tkn_iter:
             wenn token.kind == "IDENTIFIER":
@@ -189,7 +189,7 @@ klasse OptimizerEmitter(Emitter):
                                      input_tkn)
         input_identifiers_as_str = {tkn.text fuer tkn in input_identifiers}
         used_stack_inputs = [inp fuer inp in uop.stack.inputs wenn inp.name in input_identifiers_as_str]
-        assert len(used_stack_inputs) > 0
+        pruefe len(used_stack_inputs) > 0
         emitter = OptimizerConstantEmitter(self.out, {}, self.original_uop, self.stack.copy())
         emitter.emit("if (\n")
         fuer inp in used_stack_inputs[:-1]:
@@ -306,7 +306,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         self.out.start_line()
         self.out.emit("if (")
         lparen = next(tkn_iter)
-        assert lparen.kind == "LPAREN"
+        pruefe lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         self.emit_to_with_replacement(self.out, tkn_iter, "RPAREN", uop, storage, inst)
         self.emit(") {\n")
@@ -329,7 +329,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         inst: Instruction | Nichts,
     ) -> bool:
         lparen = next(tkn_iter)
-        assert lparen.kind == "LPAREN"
+        pruefe lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         unconditional = always_true(first_tkn)
         wenn unconditional:
@@ -445,7 +445,7 @@ def generate_abstract_interpreter(
 def generate_tier2_abstract_from_files(
     filenames: list[str], outfilename: str, debug: bool = Falsch
 ) -> Nichts:
-    assert len(filenames) == 2, "Need a base file und an abstract cases file."
+    pruefe len(filenames) == 2, "Need a base file und an abstract cases file."
     base = analyze_files([filenames[0]])
     abstract = analyze_files([filenames[1]])
     mit open(outfilename, "w") als outfile:

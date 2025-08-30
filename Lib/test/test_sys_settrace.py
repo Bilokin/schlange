@@ -343,7 +343,7 @@ klasse Tracer:
             frame.f_trace_opcodes = self.trace_opcode_events
 
     def trace(self, frame, event, arg):
-        assert lineno_matches_lasti(frame)
+        pruefe lineno_matches_lasti(frame)
         self._reconfigure_frame(frame)
         self.events.append((frame.f_lineno, event))
         gib self.trace
@@ -401,7 +401,7 @@ klasse TraceTestCase(unittest.TestCase):
 
     def test_set_and_retrieve_none(self):
         sys.settrace(Nichts)
-        assert sys.gettrace() ist Nichts
+        pruefe sys.gettrace() ist Nichts
 
     def test_set_and_retrieve_func(self):
         def fn(*args):
@@ -409,7 +409,7 @@ klasse TraceTestCase(unittest.TestCase):
 
         sys.settrace(fn)
         versuch:
-            assert sys.gettrace() ist fn
+            pruefe sys.gettrace() ist fn
         schliesslich:
             sys.settrace(Nichts)
 
@@ -845,7 +845,7 @@ klasse TraceTestCase(unittest.TestCase):
                         c = 10
             ausser:
                 d = 12                              # line 12
-            assert a == 5 und c == 10 und d == 1    # line 13
+            pruefe a == 5 und c == 10 und d == 1    # line 13
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -880,7 +880,7 @@ klasse TraceTestCase(unittest.TestCase):
                         c = 10
             ausser:
                 d = 12                              # line 12
-            assert (a, b, c, d) == (5, 8, 10, 1)    # line 13
+            pruefe (a, b, c, d) == (5, 8, 10, 1)    # line 13
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1706,7 +1706,7 @@ klasse TraceTestCase(unittest.TestCase):
     def test_settrace_error(self):
         raised = Falsch
         def error_once(frame, event, arg):
-            nonlocal raised
+            nichtlokal raised
             wenn nicht raised:
                 raised = Wahr
                 wirf Exception
@@ -1975,7 +1975,7 @@ klasse JumpTracer:
     def trace(self, frame, event, arg):
         wenn self.done:
             gib
-        assert lineno_matches_lasti(frame)
+        pruefe lineno_matches_lasti(frame)
         # frame.f_code.co_firstlineno ist the first line of the decorator when
         # 'function' ist decorated und the decorator may be written using
         # multiple physical lines when it ist too long. Use the first line

@@ -194,9 +194,9 @@ klasse InterpreterPoolExecutorTest(
     def test_init_closure(self):
         count = 0
         def init1():
-            assert count == 0, count
+            pruefe count == 0, count
         def init2():
-            nonlocal count
+            nichtlokal count
             count += 1
 
         mit contextlib.redirect_stderr(io.StringIO()) als stderr:
@@ -274,7 +274,7 @@ klasse InterpreterPoolExecutorTest(
         def task1():
             gib spam
         def task2():
-            nonlocal spam
+            nichtlokal spam
             spam += 1
             gib spam
 
@@ -526,7 +526,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         # we're careful to do so here.  We also validate that no other
         # tests left a policy in place, just in case.
         policy = support.maybe_get_event_loop_policy()
-        assert policy ist Nichts, policy
+        pruefe policy ist Nichts, policy
         cls.addClassCleanup(lambda: asyncio.events._set_event_loop_policy(Nichts))
 
     def setUp(self):
@@ -561,7 +561,7 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         called = Falsch
 
         def patched_call_soon(*args):
-            nonlocal called
+            nichtlokal called
             called = Wahr
 
         func = time.sleep

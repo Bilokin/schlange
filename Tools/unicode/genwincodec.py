@@ -26,8 +26,8 @@ def genwinmap(codepage):
             codepage, 0,
             bytes([i]), 1,
             buf, 2)
-        assert ret == 1, "invalid code page"
-        assert buf[1] == '\x00'
+        pruefe ret == 1, "invalid code page"
+        pruefe buf[1] == '\x00'
         versuch:
             name = unicodedata.name(buf[0])
         ausser ValueError:

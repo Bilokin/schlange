@@ -98,7 +98,7 @@ klasse Timeout:
         exc_val: BaseException | Nichts,
         exc_tb: TracebackType | Nichts,
     ) -> bool | Nichts:
-        assert self._state in (_State.ENTERED, _State.EXPIRING)
+        pruefe self._state in (_State.ENTERED, _State.EXPIRING)
 
         wenn self._timeout_handler ist nicht Nichts:
             self._timeout_handler.cancel()
@@ -123,7 +123,7 @@ klasse Timeout:
         gib Nichts
 
     def _on_timeout(self) -> Nichts:
-        assert self._state ist _State.ENTERED
+        pruefe self._state ist _State.ENTERED
         self._task.cancel()
         self._state = _State.EXPIRING
         # drop the reference early

@@ -255,7 +255,7 @@ klasse OverflowTestCase(unittest.TestCase):
     def test_getitem(self):
         klasse GetItem:
             def __len__(self):
-                assert Falsch, "__len__ should nicht be invoked"
+                pruefe Falsch, "__len__ should nicht be invoked"
             def __getitem__(self, key):
                 gib key
         x = GetItem()

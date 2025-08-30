@@ -23,15 +23,15 @@ klasse FilesTests:
     def test_read_bytes(self):
         files = resources.files(self.data)
         actual = files.joinpath('utf-8.file').read_bytes()
-        assert actual == b'Hello, UTF-8 world!\n'
+        pruefe actual == b'Hello, UTF-8 world!\n'
 
     def test_read_text(self):
         files = resources.files(self.data)
         actual = files.joinpath('utf-8.file').read_text(encoding='utf-8')
-        assert actual == 'Hello, UTF-8 world!\n'
+        pruefe actual == 'Hello, UTF-8 world!\n'
 
     def test_traversable(self):
-        assert isinstance(resources.files(self.data), Traversable)
+        pruefe isinstance(resources.files(self.data), Traversable)
 
     def test_joinpath_with_multiple_args(self):
         files = resources.files(self.data)
@@ -107,7 +107,7 @@ klasse ModulesFiles:
         importiere mod  # type: ignore[import-not-found]
 
         actual = resources.files(mod).joinpath('res.txt').read_text(encoding='utf-8')
-        assert actual == self.spec['res.txt']
+        pruefe actual == self.spec['res.txt']
 
 
 klasse ModuleFilesDiskTests(DirectSpec, util.DiskSetup, ModulesFiles, unittest.TestCase):
@@ -141,13 +141,13 @@ klasse ImplicitContextFiles:
         """
         Without any parameter, files() will infer the location als the caller.
         """
-        assert importlib.import_module('somepkg').val == 'resources are the best'
+        pruefe importlib.import_module('somepkg').val == 'resources are the best'
 
     def test_implicit_files_submodule(self):
         """
         Without any parameter, files() will infer the location als the caller.
         """
-        assert importlib.import_module('somepkg.submod').val == 'resources are the best'
+        pruefe importlib.import_module('somepkg.submod').val == 'resources are the best'
 
     def _compile_importlib(self):
         """
@@ -172,7 +172,7 @@ klasse ImplicitContextFiles:
         python/cpython#123085
         """
         self._compile_importlib()
-        assert importlib.import_module('frozenpkg').val == 'resources are the best'
+        pruefe importlib.import_module('frozenpkg').val == 'resources are the best'
 
 
 klasse ImplicitContextFilesDiskTests(

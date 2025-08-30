@@ -122,7 +122,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
             )
         finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
-        assert self.spec
+        pruefe self.spec
 
         self.loader = self.LoaderClass(self.name, self.spec.origin)
 
@@ -210,7 +210,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             )
         finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
-        assert self.spec
+        pruefe self.spec
         self.loader = self.LoaderClass(self.name, self.spec.origin)
 
     def load_module(self):

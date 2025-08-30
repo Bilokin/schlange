@@ -659,11 +659,11 @@ klasse ScopeTests(unittest.TestCase):
 
         def f(x):
             def inc():
-                nonlocal x
+                nichtlokal x
                 x += 1
                 gib x
             def dec():
-                nonlocal x
+                nichtlokal x
                 x -= 1
                 gib x
             gib inc, dec
@@ -678,11 +678,11 @@ klasse ScopeTests(unittest.TestCase):
         def f(x):
             klasse c:
                 def inc(self):
-                    nonlocal x
+                    nichtlokal x
                     x += 1
                     gib x
                 def dec(self):
-                    nonlocal x
+                    nichtlokal x
                     x -= 1
                     gib x
             gib c()
@@ -720,7 +720,7 @@ klasse ScopeTests(unittest.TestCase):
 
         def f(x):
             klasse c:
-                nonlocal x
+                nichtlokal x
                 x += 1
                 def get(self):
                     gib x
@@ -735,7 +735,7 @@ klasse ScopeTests(unittest.TestCase):
 
         def f(x):
             def g(y):
-                nonlocal x
+                nichtlokal x
                 fuer i in range(y):
                     x += 1
                     liefere x
@@ -748,10 +748,10 @@ klasse ScopeTests(unittest.TestCase):
 
         def f(x):
             def g():
-                nonlocal x
+                nichtlokal x
                 x -= 2
                 def h():
-                    nonlocal x
+                    nichtlokal x
                     x += 4
                     gib x
                 gib h

@@ -37,7 +37,7 @@ klasse InheritanceTests:
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
                                fuer class_name in self.subclass_names]
-        assert self.subclasses oder self.superclasses, self.__class__
+        pruefe self.subclasses oder self.superclasses, self.__class__
         self.__test = getattr(self.abc, self._NAME)
 
     def test_subclasses(self):
@@ -817,7 +817,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
     def test_code_bad_timestamp(self):
         # Bytecode ist only used when the timestamp matches the source EXACTLY.
         fuer source_mtime in (0, 2):
-            assert source_mtime != self.loader.source_mtime
+            pruefe source_mtime != self.loader.source_mtime
             original = self.loader.source_mtime
             self.loader.source_mtime = source_mtime
             # If bytecode ist used then EOFError would be raised by marshal.
@@ -893,7 +893,7 @@ klasse SourceLoaderGetSourceTests:
         name = 'mod'
         mock = self.SourceOnlyLoaderMock("mod.file")
         source = "# coding: Latin-1\nx='ü'"
-        assert source.encode('latin-1') != source.encode('utf-8')
+        pruefe source.encode('latin-1') != source.encode('utf-8')
         mock.source = source.encode('latin-1')
         returned_source = mock.get_source(name)
         self.assertEqual(returned_source, source)

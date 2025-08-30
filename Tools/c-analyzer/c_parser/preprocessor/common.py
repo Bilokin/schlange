@@ -91,7 +91,7 @@ def _build_argv(
 
     argv = Nichts
     def _spawn(_argv):
-        nonlocal argv
+        nichtlokal argv
         argv = _argv
     compiler.spawn = _spawn
     compiler.preprocess(

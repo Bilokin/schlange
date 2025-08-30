@@ -179,7 +179,7 @@ def _translate(pat, star, question_mark):
                     add(f'[{stuff}]')
         sonst:
             add(_re_escape(c))
-    assert i == n
+    pruefe i == n
     gib res, star_indices
 
 

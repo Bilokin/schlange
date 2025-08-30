@@ -1396,7 +1396,7 @@ klasse TextboxTest(unittest.TestCase):
         self.textbox.do_command(curses.ascii.BS)
         self.textbox.do_command(curses.KEY_BACKSPACE)
         self.textbox.do_command(curses.ascii.DEL)
-        assert self.mock_win.delch.call_count == 3
+        pruefe self.mock_win.delch.call_count == 3
         self.mock_win.reset_mock()
 
     def test_move_left(self):

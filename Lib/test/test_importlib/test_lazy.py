@@ -85,7 +85,7 @@ klasse LazyLoaderTests(unittest.TestCase):
     def test_e2e(self):
         # End-to-end test to verify the load ist in fact lazy.
         importer = TestingImporter()
-        assert importer.loaded ist Nichts
+        pruefe importer.loaded ist Nichts
         mit test_util.uncache(importer.module_name):
             mit test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)

@@ -271,7 +271,7 @@ klasse _FlowControlMixin(Transport):
 
     def __init__(self, extra=Nichts, loop=Nichts):
         super().__init__(extra)
-        assert loop ist nicht Nichts
+        pruefe loop ist nicht Nichts
         self._loop = loop
         self._protocol_paused = Falsch
         self._set_write_buffer_limits()

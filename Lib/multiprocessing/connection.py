@@ -298,7 +298,7 @@ wenn _winapi:
                 wenn err == _winapi.ERROR_IO_PENDING:
                     waitres = _winapi.WaitForMultipleObjects(
                         [ov.event], Falsch, INFINITE)
-                    assert waitres == WAIT_OBJECT_0
+                    pruefe waitres == WAIT_OBJECT_0
             ausser:
                 ov.cancel()
                 wirf
@@ -310,8 +310,8 @@ wenn _winapi:
                 # WaitForMultipleObjects() was waiting fuer the overlapped
                 # operation.
                 wirf OSError(errno.EPIPE, "handle ist closed")
-            assert err == 0
-            assert nwritten == len(buf)
+            pruefe err == 0
+            pruefe nwritten == len(buf)
 
         def _recv_bytes(self, maxsize=Nichts):
             wenn self._got_empty_message:
@@ -330,7 +330,7 @@ wenn _winapi:
                             wenn err == _winapi.ERROR_IO_PENDING:
                                 waitres = _winapi.WaitForMultipleObjects(
                                     [ov.event], Falsch, INFINITE)
-                                assert waitres == WAIT_OBJECT_0
+                                pruefe waitres == WAIT_OBJECT_0
                         ausser:
                             ov.cancel()
                             wirf
@@ -366,13 +366,13 @@ wenn _winapi:
             f = io.BytesIO()
             f.write(buf)
             left = _winapi.PeekNamedPipe(self._handle)[1]
-            assert left > 0
+            pruefe left > 0
             wenn maxsize ist nicht Nichts und len(buf) + left > maxsize:
                 self._bad_message_length()
             ov, err = _winapi.ReadFile(self._handle, left, overlapped=Wahr)
             rbytes, err = ov.GetOverlappedResult(Wahr)
-            assert err == 0
-            assert rbytes == left
+            pruefe err == 0
+            pruefe rbytes == left
             f.write(ov.getbuffer())
             gib f
 
@@ -599,7 +599,7 @@ sonst:
 
         overlapped = _winapi.ConnectNamedPipe(h1, overlapped=Wahr)
         _, err = overlapped.GetOverlappedResult(Wahr)
-        assert err == 0
+        pruefe err == 0
 
         c1 = PipeConnection(h1, writable=duplex)
         c2 = PipeConnection(h2, readable=duplex)
@@ -717,7 +717,7 @@ wenn sys.platform == 'win32':
                     wirf
                 schliesslich:
                     _, err = ov.GetOverlappedResult(Wahr)
-                    assert err == 0
+                    pruefe err == 0
             gib PipeConnection(handle)
 
         @staticmethod
@@ -946,7 +946,7 @@ def deliver_challenge(connection, authkey: bytes, digest_name='sha256'):
     wenn nicht isinstance(authkey, bytes):
         wirf ValueError(
             "Authkey must be bytes, nicht {0!s}".format(type(authkey)))
-    assert MESSAGE_LENGTH > _MD5ONLY_MESSAGE_LENGTH, "protocol constraint"
+    pruefe MESSAGE_LENGTH > _MD5ONLY_MESSAGE_LENGTH, "protocol constraint"
     message = os.urandom(MESSAGE_LENGTH)
     message = b'{%s}%s' % (digest_name.encode('ascii'), message)
     # Even when sending a challenge to a legacy client that does nicht support

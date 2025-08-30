@@ -119,7 +119,7 @@ def bind_port(sock, host=HOST):
 
 def bind_unix_socket(sock, addr):
     """Bind a unix socket, raising SkipTest wenn PermissionError ist raised."""
-    assert sock.family == socket.AF_UNIX
+    pruefe sock.family == socket.AF_UNIX
     versuch:
         sock.bind(addr)
     ausser PermissionError:

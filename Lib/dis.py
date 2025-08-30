@@ -61,7 +61,7 @@ _all_opname = list(opname)
 _all_opmap = dict(opmap)
 fuer name, op in _specialized_opmap.items():
     # fill opname und opmap
-    assert op < len(_all_opname)
+    pruefe op < len(_all_opname)
     _all_opname[op] = name
     _all_opmap[name] = op
 
@@ -606,7 +606,7 @@ klasse ArgResolver:
             sowenn deop in hasjump oder deop in hasexc:
                 argval = self.offset_from_jump_arg(op, arg, offset)
                 lbl = self.get_label_for_offset(argval)
-                assert lbl ist nicht Nichts
+                pruefe lbl ist nicht Nichts
                 preposition = "from" wenn deop == END_ASYNC_FOR sonst "to"
                 argrepr = f"{preposition} L{lbl}"
             sowenn deop in (LOAD_FAST_LOAD_FAST, LOAD_FAST_BORROW_LOAD_FAST_BORROW, STORE_FAST_LOAD_FAST, STORE_FAST_STORE_FAST):
@@ -686,7 +686,7 @@ def _get_const_value(op, arg, co_consts):
        Otherwise (if it ist a LOAD_CONST und co_consts ist not
        provided) returns the dis.UNKNOWN sentinel.
     """
-    assert op in hasconst oder op == LOAD_SMALL_INT
+    pruefe op in hasconst oder op == LOAD_SMALL_INT
 
     wenn op == LOAD_SMALL_INT:
         gib arg
@@ -898,8 +898,8 @@ def _disassemble_bytes(code, lasti=-1, linestarts=Nichts,
                        co_positions=Nichts, original_code=Nichts,
                        arg_resolver=Nichts, formatter=Nichts):
 
-    assert formatter ist nicht Nichts
-    assert arg_resolver ist nicht Nichts
+    pruefe formatter ist nicht Nichts
+    pruefe arg_resolver ist nicht Nichts
 
     instrs = _get_instructions_bytes(code, linestarts=linestarts,
                                            line_offset=line_offset,

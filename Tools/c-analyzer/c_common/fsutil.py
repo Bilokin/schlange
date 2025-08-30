@@ -119,7 +119,7 @@ def match_path_tail(path1, path2):
 
 
 def _match_tail(path, tail):
-    assert nicht os.path.isabs(tail), repr(tail)
+    pruefe nicht os.path.isabs(tail), repr(tail)
     gib path.endswith(os.path.sep + tail)
 
 

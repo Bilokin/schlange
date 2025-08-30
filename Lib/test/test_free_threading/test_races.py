@@ -44,7 +44,7 @@ klasse TestRaces(TestBase):
             x = 0
 
             def inner():
-                nonlocal x
+                nichtlokal x
                 x += 1
 
         # This doesn't race because LOAD_DEREF und STORE_DEREF on the
@@ -146,7 +146,7 @@ klasse TestRaces(TestBase):
                 gib 2
 
         def mutate():
-            nonlocal seq
+            nichtlokal seq
             seq = [1]
             time.sleep(0)
             seq = C()
@@ -257,7 +257,7 @@ klasse TestRaces(TestBase):
                 c.x = i
 
         def mutate():
-            nonlocal c
+            nichtlokal c
             c.x = 1
             self.assertWahr(_testinternalcapi.has_inline_values(c))
             fuer i in range(30):

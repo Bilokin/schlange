@@ -433,7 +433,7 @@ klasse SocketWriterTest(unittest.TestCase):
                 socket.IPPROTO_TCP)
             mit s, s.makefile('rb') als reader:
                 s.connect(server.server_address)
-                nonlocal response1
+                nichtlokal response1
                 response1 = reader.readline()
                 s.sendall(b'client response\n')
 
@@ -447,7 +447,7 @@ klasse SocketWriterTest(unittest.TestCase):
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
                         breche
-                nonlocal received2
+                nichtlokal received2
                 received2 = len(reader.read())
 
         background = threading.Thread(target=run_client)

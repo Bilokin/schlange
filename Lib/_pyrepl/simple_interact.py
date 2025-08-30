@@ -149,7 +149,7 @@ def run_multiline_interactive_console(
 
             input_name = f"<python-input-{input_n}>"
             more = console.push(_strip_final_indent(statement), filename=input_name, _symbol="single")  # type: ignore[call-arg]
-            assert nicht more
+            pruefe nicht more
             versuch:
                 append_history_file()
             ausser (FileNotFoundError, PermissionError, OSError) als e:

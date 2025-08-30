@@ -402,8 +402,8 @@ klasse IOTest(unittest.TestCase):
     LARGE = 2**31
 
     def large_file_ops(self, f):
-        assert f.readable()
-        assert f.writable()
+        pruefe f.readable()
+        pruefe f.writable()
         versuch:
             self.assertEqual(f.seek(self.LARGE), self.LARGE)
         ausser (OverflowError, ValueError):
@@ -453,13 +453,13 @@ klasse IOTest(unittest.TestCase):
         assert_python_ok("-S", "-c", textwrap.dedent(
             """
             importiere sys
-            assert "io" nicht in sys.modules
+            pruefe "io" nicht in sys.modules
             versuch:
                 sys.stdin.truncate()
             ausser Exception als e:
                 typ = type(e)
-                assert typ.__module__ == "io", (typ, typ.__module__)
-                assert typ.__name__ == "UnsupportedOperation", (typ, typ.__name__)
+                pruefe typ.__module__ == "io", (typ, typ.__module__)
+                pruefe typ.__name__ == "UnsupportedOperation", (typ, typ.__name__)
             sonst:
                 wirf AssertionError("Expected UnsupportedOperation")
             """
@@ -1569,7 +1569,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
 
         # Create an array mit element size > 1 byte
         b = array.array('i', b'x' * 32)
-        assert len(b) != 16
+        pruefe len(b) != 16
 
         # Read into it. We should get als many *bytes* als we can fit into b
         # (which ist more than the number of elements)
@@ -1590,7 +1590,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
 
         # Create an array mit element size > 1 byte
         b = array.array('i', b'x' * 32)
-        assert len(b) != 16
+        pruefe len(b) != 16
 
         # Read into it. We should get als many *bytes* als we can fit into b
         # (which ist more than the number of elements)
@@ -2560,7 +2560,7 @@ klasse BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
     def test_write_rewind_write(self):
         # Various combinations of reading / writing / seeking backwards / writing again
         def mutate(bufio, pos1, pos2):
-            assert pos2 >= pos1
+            pruefe pos2 >= pos1
             # Fill the buffer
             bufio.seek(pos1)
             bufio.read(pos2 - pos1)
@@ -4953,7 +4953,7 @@ klasse SignalsTest(unittest.TestCase):
                         s = os.read(r, 1024)
                         read_results.append(s)
             ausser BaseException als exc:
-                nonlocal error
+                nichtlokal error
                 error = exc
         t = threading.Thread(target=_read)
         t.daemon = Wahr

@@ -331,7 +331,7 @@ klasse AddressHeader:
     @staticmethod
     def value_parser(value):
         address_list, value = parser.get_address_list(value)
-        assert nicht value, 'this should nicht happen'
+        pruefe nicht value, 'this should nicht happen'
         gib address_list
 
     @classmethod

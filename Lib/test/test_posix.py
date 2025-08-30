@@ -268,13 +268,13 @@ klasse PosixTester(unittest.TestCase):
                     os.close(w)
                     mit open(r, "rb") als f:
                         data = f.read()
-                        assert len(data) == 6, data
+                        pruefe len(data) == 6, data
                         # Check before-fork callbacks
-                        assert data[:2] == b'BA', data
+                        pruefe data[:2] == b'BA', data
                         # Check after-fork callbacks
-                        assert sorted(data[2:]) == list(b'CDEF'), data
-                        assert data.index(b'C') < data.index(b'D'), data
-                        assert data.index(b'E') < data.index(b'F'), data
+                        pruefe sorted(data[2:]) == list(b'CDEF'), data
+                        pruefe data.index(b'C') < data.index(b'D'), data
+                        pruefe data.index(b'E') < data.index(b'F'), data
                 schliesslich:
                     os.write(fin_w, b'!')
             """
@@ -1579,7 +1579,7 @@ klasse TestPosixDirFd(unittest.TestCase):
         posix.mkdir(base_dir)
         self.addCleanup(posix.rmdir, base_dir)
         fullname = os.path.join(base_dir, name)
-        assert nicht os.path.exists(fullname)
+        pruefe nicht os.path.exists(fullname)
         mit os_helper.open_dir_fd(base_dir) als dir_fd:
             liefere (dir_fd, name, fullname)
 

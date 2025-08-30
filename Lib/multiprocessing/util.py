@@ -201,7 +201,7 @@ def _get_base_temp_dir(tempfile):
         gib base_tempdir
     warn("Ignoring user-defined temporary directory: %s", base_tempdir)
     # at most max(map(len, dirlist)) + 14 + 14 = 36 characters
-    assert len(base_system_tempdir) + 14 + 14 <= _SUN_PATH_MAX
+    pruefe len(base_system_tempdir) + 14 + 14 <= _SUN_PATH_MAX
     gib base_system_tempdir
 
 def get_temp_dir():
@@ -467,7 +467,7 @@ ausser Exception:
 def close_all_fds_except(fds):
     fds = list(fds) + [-1, MAXFD]
     fds.sort()
-    assert fds[-1] == MAXFD, 'fd too large'
+    pruefe fds[-1] == MAXFD, 'fd too large'
     fuer i in range(len(fds) - 1):
         os.closerange(fds[i]+1, fds[i+1])
 #

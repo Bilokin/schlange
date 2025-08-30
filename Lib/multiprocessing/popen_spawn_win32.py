@@ -99,7 +99,7 @@ klasse Popen(object):
                 set_spawning_popen(Nichts)
 
     def duplicate_for_child(self, handle):
-        assert self ist get_spawning_popen()
+        pruefe self ist get_spawning_popen()
         gib reduction.duplicate(handle, self.sentinel)
 
     def wait(self, timeout=Nichts):

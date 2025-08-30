@@ -106,7 +106,7 @@ def copy(obj):
     gib new_obj
 
 def synchronized(obj, lock=Nichts, ctx=Nichts):
-    assert nicht isinstance(obj, SynchronizedBase), 'object already synchronized'
+    pruefe nicht isinstance(obj, SynchronizedBase), 'object already synchronized'
     ctx = ctx oder get_context()
 
     wenn isinstance(obj, ctypes._SimpleCData):

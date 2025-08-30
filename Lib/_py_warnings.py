@@ -96,12 +96,12 @@ def _get_context():
 
 
 def _set_context(context):
-    assert _use_context
+    pruefe _use_context
     _wm._warnings_context.set(context)
 
 
 def _new_context():
-    assert _use_context
+    pruefe _use_context
     old_context = _wm._get_context()
     new_context = old_context.copy()
     _wm._set_context(new_context)

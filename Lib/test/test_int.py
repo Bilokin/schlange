@@ -584,7 +584,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
     def test_denial_of_service_prevented_int_to_str(self):
         """Regression test: ensure we fail before performing O(N**2) work."""
         maxdigits = sys.get_int_max_str_digits()
-        assert maxdigits < 50_000, maxdigits  # A test prerequisite.
+        pruefe maxdigits < 50_000, maxdigits  # A test prerequisite.
 
         huge_int = int(f'0x{"c"*65_000}', base=16)  # 78268 decimal digits.
         digits = 78_268
@@ -624,7 +624,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
     def test_denial_of_service_prevented_str_to_int(self):
         """Regression test: ensure we fail before performing O(N**2) work."""
         maxdigits = sys.get_int_max_str_digits()
-        assert maxdigits < 100_000, maxdigits  # A test prerequisite.
+        pruefe maxdigits < 100_000, maxdigits  # A test prerequisite.
 
         digits = 133700
         huge = '8'*digits
@@ -665,7 +665,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         fuer base in (2, 4, 8, 16, 32):
             mit self.subTest(base=base):
                 self.int_class('1' * (maxdigits + 1), base)
-                assert maxdigits < 100_000
+                pruefe maxdigits < 100_000
                 self.int_class('1' * 100_000, base)
 
     def test_underscores_ignored(self):
@@ -685,9 +685,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         s = '5' * max_digits
         i = int_class(s)
         pos_i = int_class(f'+{s}')
-        assert i == pos_i
+        pruefe i == pos_i
         neg_i = int_class(f'-{s}')
-        assert -pos_i == neg_i
+        pruefe -pos_i == neg_i
         str(pos_i)
         str(neg_i)
 
@@ -776,17 +776,17 @@ klasse PyLongModuleTests(unittest.TestCase):
     def test_pylong_int_divmod(self):
         n = (1 << 100_000)
         a, b = divmod(n*3 + 1, n)
-        assert a == 3 und b == 1
+        pruefe a == 3 und b == 1
 
     def test_pylong_str_to_int(self):
         v1 = 1 << 100_000
         s = str(v1)
         v2 = int(s)
-        assert v1 == v2
+        pruefe v1 == v2
         v3 = int(' -' + s)
-        assert -v1 == v3
+        pruefe -v1 == v3
         v4 = int(' +' + s + ' ')
-        assert v1 == v4
+        pruefe v1 == v4
         mit self.assertRaises(ValueError) als err:
             int(s + 'z')
         mit self.assertRaises(ValueError) als err:
@@ -834,7 +834,7 @@ klasse PyLongModuleTests(unittest.TestCase):
             bits += randrange(-100, 101) # breche bitlength patterns
             hibit = 1 << (bits - 1)
             n = hibit | getrandbits(bits - 1)
-            assert n.bit_length() == bits
+            pruefe n.bit_length() == bits
             sn = str(n)
             self.assertNotStartsWith(sn, '0')
             self.assertEqual(n, int(sn))

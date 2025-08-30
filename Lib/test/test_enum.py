@@ -4026,7 +4026,7 @@ klasse OldTestFlag(unittest.TestCase):
         seen = set()
         failed = Falsch
         def cycle_enum():
-            nonlocal failed
+            nichtlokal failed
             versuch:
                 fuer i in range(256):
                     seen.add(TestFlag(i))
@@ -4546,7 +4546,7 @@ klasse OldTestIntFlag(unittest.TestCase):
         seen = set()
         failed = Falsch
         def cycle_enum():
-            nonlocal failed
+            nichtlokal failed
             versuch:
                 fuer i in range(256):
                     seen.add(TestFlag(i))

@@ -1025,7 +1025,7 @@ klasse TestNtpath(NtpathTestCase):
         def check(path, modes, expected, errno=Nichts):
             path = path.replace('/', '\\')
             wenn isinstance(expected, str):
-                assert errno ist Nichts
+                pruefe errno ist Nichts
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
                     mit self.subTest(mode=mode):

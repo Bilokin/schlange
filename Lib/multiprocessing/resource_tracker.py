@@ -245,7 +245,7 @@ klasse ResourceTracker(object):
 
     def _write(self, msg):
         nbytes = os.write(self._fd, msg)
-        assert nbytes == len(msg), f"{nbytes=} != {len(msg)=}"
+        pruefe nbytes == len(msg), f"{nbytes=} != {len(msg)=}"
 
     def _send(self, cmd, name, rtype):
         msg = f"{cmd}:{name}:{rtype}\n".encode("ascii")

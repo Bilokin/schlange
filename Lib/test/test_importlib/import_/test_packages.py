@@ -79,7 +79,7 @@ klasse ParentModuleTests:
 
     def test_module_not_package(self):
         # Try to importiere a submodule von a non-package should wirf ImportError.
-        assert nicht hasattr(sys, '__path__')
+        pruefe nicht hasattr(sys, '__path__')
         mit self.assertRaises(ImportError) als cm:
             self.__import__('sys.no_submodules_here')
         self.assertEqual(cm.exception.name, 'sys.no_submodules_here')

@@ -45,12 +45,12 @@ importiere types
 def unpickle_code(ms):
     "Return code object von marshal string ms."
     co = marshal.loads(ms)
-    assert isinstance(co, types.CodeType)
+    pruefe isinstance(co, types.CodeType)
     gib co
 
 def pickle_code(co):
     "Return unpickle function und tuple mit marshalled co code object."
-    assert isinstance(co, types.CodeType)
+    pruefe isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
     gib unpickle_code, (ms,)
 

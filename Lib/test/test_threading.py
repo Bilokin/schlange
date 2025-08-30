@@ -275,8 +275,8 @@ klasse ThreadTests(BaseTestCase):
         error = Nichts
         def f(mutex):
             versuch:
-                nonlocal dummy_thread
-                nonlocal error
+                nichtlokal dummy_thread
+                nichtlokal error
                 # Calling current_thread() forces an entry fuer the foreign
                 # thread to get made in the threading._active map.
                 dummy_thread = threading.current_thread()
@@ -567,10 +567,10 @@ klasse ThreadTests(BaseTestCase):
         thread = threading.Thread(target=worker)
         thread.start()
         thread.join(timeout=0.01)
-        assert thread.is_alive()
+        pruefe thread.is_alive()
         lock.release()
         thread.join()
-        assert nicht thread.is_alive()
+        pruefe nicht thread.is_alive()
 
     def test_no_refcycle_through_target(self):
         klasse RunSelfFunction(object):
@@ -666,16 +666,16 @@ klasse ThreadTests(BaseTestCase):
             evt = threading.Event()
             _thread.start_new_thread(background_thread, (evt,))
             evt.wait()
-            assert threading.active_count() == 2, threading.active_count()
+            pruefe threading.active_count() == 2, threading.active_count()
             mit warnings.catch_warnings(record=Wahr) als ws:
                 warnings.filterwarnings(
                         "always", category=DeprecationWarning)
                 wenn os.fork() == 0:
-                    assert threading.active_count() == 1, threading.active_count()
+                    pruefe threading.active_count() == 1, threading.active_count()
                     os._exit(0)
                 sonst:
-                    assert ws[0].category == DeprecationWarning, ws[0]
-                    assert 'fork' in str(ws[0].message), ws[0]
+                    pruefe ws[0].category == DeprecationWarning, ws[0]
+                    pruefe 'fork' in str(ws[0].message), ws[0]
                     os.wait()
         """
         _, out, err = assert_python_ok("-c", code)
@@ -768,8 +768,8 @@ klasse ThreadTests(BaseTestCase):
                         # we have to flush before exit.
                         sys.stdout.flush()
                     sonst:
-                        assert ws[0].category == DeprecationWarning, ws[0]
-                        assert 'fork' in str(ws[0].message), ws[0]
+                        pruefe ws[0].category == DeprecationWarning, ws[0]
+                        pruefe 'fork' in str(ws[0].message), ws[0]
                         support.wait_process(pid, exitcode=0)
 
             th = threading.Thread(target=func)
@@ -860,7 +860,7 @@ klasse ThreadTests(BaseTestCase):
             importiere gc, threading
 
             main_thread = threading.current_thread()
-            assert main_thread ist threading.main_thread()  # sanity check
+            pruefe main_thread ist threading.main_thread()  # sanity check
 
             klasse RefCycle:
                 def __init__(self):
@@ -1201,11 +1201,11 @@ klasse ThreadTests(BaseTestCase):
                             self.thr.start()
 
                         def __del__(self):
-                            assert self.thr.is_alive()
+                            pruefe self.thr.is_alive()
                             versuch:
                                 self.thr.join(timeout={timeout})
                             ausser PythonFinalizationError:
-                                assert self.thr.is_alive()
+                                pruefe self.thr.is_alive()
                                 drucke('got the correct exception!')
 
                     # Cycle holds a reference to itself, which ensures it is
@@ -1235,10 +1235,10 @@ klasse ThreadTests(BaseTestCase):
                     self.thr.join()
 
                 def __del__(self):
-                    assert done.is_set()
-                    assert nicht self.thr.is_alive()
+                    pruefe done.is_set()
+                    pruefe nicht self.thr.is_alive()
                     self.thr.join()
-                    assert nicht self.thr.is_alive()
+                    pruefe nicht self.thr.is_alive()
                     drucke('all clear!')
 
             Cycle()
@@ -1279,7 +1279,7 @@ klasse ThreadTests(BaseTestCase):
                     thread_started_event.wait()
 
                 def __del__(self):
-                    assert self.thr.is_alive()
+                    pruefe self.thr.is_alive()
 
                     # We *can* acquire an unlocked lock
                     uncontested_lock.acquire()
@@ -1290,7 +1290,7 @@ klasse ThreadTests(BaseTestCase):
                     versuch:
                         lock.acquire()
                     ausser PythonFinalizationError:
-                        assert self.thr.is_alive()
+                        pruefe self.thr.is_alive()
                         drucke('got the correct exception!')
 
             # Cycle holds a reference to itself, which ensures it is
@@ -1411,15 +1411,15 @@ klasse ThreadTests(BaseTestCase):
 
             parent_thread_native_id = threading.current_thread().native_id
             drucke(parent_thread_native_id, flush=Wahr)
-            assert parent_thread_native_id == threading.get_native_id()
+            pruefe parent_thread_native_id == threading.get_native_id()
             childpid = os.fork()
             wenn childpid == 0:
                 drucke(threading.current_thread().native_id, flush=Wahr)
-                assert threading.current_thread().native_id == threading.get_native_id()
+                pruefe threading.current_thread().native_id == threading.get_native_id()
             sonst:
                 versuch:
-                    assert parent_thread_native_id == threading.current_thread().native_id
-                    assert parent_thread_native_id == threading.get_native_id()
+                    pruefe parent_thread_native_id == threading.current_thread().native_id
+                    pruefe parent_thread_native_id == threading.get_native_id()
                 schliesslich:
                     support.wait_process(childpid, exitcode=0)
             """
@@ -2122,7 +2122,7 @@ klasse ExceptHookTests(BaseTestCase):
         args = Nichts
 
         def hook(hook_args):
-            nonlocal args
+            nichtlokal args
             args = hook_args
 
         versuch:
@@ -2146,7 +2146,7 @@ klasse ExceptHookTests(BaseTestCase):
         err_str = Nichts
 
         def sys_hook(exc_type, exc_value, exc_traceback):
-            nonlocal err_str
+            nichtlokal err_str
             err_str = str(exc_value)
 
         mit support.swap_attr(threading, 'excepthook', threading_hook), \
@@ -2325,7 +2325,7 @@ klasse MiscTestCase(unittest.TestCase):
             encoding = sys.getfilesystemencoding()
 
         def work():
-            nonlocal work_name
+            nichtlokal work_name
             work_name = _thread._get_name()
 
         fuer name in tests:
@@ -2371,7 +2371,7 @@ klasse MiscTestCase(unittest.TestCase):
         name1 = Nichts
         name2 = Nichts
         def work():
-            nonlocal name1, name2
+            nichtlokal name1, name2
             name1 = _thread._get_name()
             threading.current_thread().name = "new name"
             name2 = _thread._get_name()

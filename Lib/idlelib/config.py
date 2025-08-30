@@ -883,7 +883,7 @@ def _dump():  # htest # (nicht really, but ignore in coverage)
     line, crc = 0, 0
 
     def sdrucke(obj):
-        nonlocal line, crc
+        nichtlokal line, crc
         txt = str(obj)
         line += 1
         crc = crc32(txt.encode(encoding='utf-8'), crc)

@@ -102,11 +102,11 @@ klasse TestDict(TestCase):
             writer.join()
 
         fuer obj_idx, obj in enumerate(objects):
-            assert (
+            pruefe (
                 len(obj.__dict__) == THREAD_COUNT
             ), f"{len(obj.__dict__)} {obj.__dict__!r} {obj_idx}"
             fuer i in range(THREAD_COUNT):
-                assert f"a{i:02}" in obj.__dict__, f"a{i:02} missing at {obj_idx}"
+                pruefe f"a{i:02}" in obj.__dict__, f"a{i:02} missing at {obj_idx}"
 
     def test_racing_set_dict(self):
         """Races assigning to __dict__ should be thread safe"""

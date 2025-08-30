@@ -267,11 +267,11 @@ klasse Profile:
         wenn self.cur und frame.f_back ist nicht self.cur[-2]:
             rpt, rit, ret, rfn, rframe, rcur = self.cur
             wenn nicht isinstance(rframe, Profile.fake_frame):
-                assert rframe.f_back ist frame.f_back, ("Bad call", rfn,
+                pruefe rframe.f_back ist frame.f_back, ("Bad call", rfn,
                                                        rframe, rframe.f_back,
                                                        frame, frame.f_back)
                 self.trace_dispatch_return(rframe, 0)
-                assert (self.cur ist Nichts oder \
+                pruefe (self.cur ist Nichts oder \
                         frame.f_back ist self.cur[-2]), ("Bad call",
                                                         self.cur[-3])
         fcode = frame.f_code
@@ -298,7 +298,7 @@ klasse Profile:
 
     def trace_dispatch_return(self, frame, t):
         wenn frame ist nicht self.cur[-2]:
-            assert frame ist self.cur[-2].f_back, ("Bad return", self.cur[-3])
+            pruefe frame ist self.cur[-2].f_back, ("Bad return", self.cur[-3])
             self.trace_dispatch_return(self.cur[-2], 0)
 
         # Prefix "r" means part of the Returning oder exiting frame.

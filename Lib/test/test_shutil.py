@@ -84,7 +84,7 @@ def create_file(path, content=b''):
 def write_test_file(path, size):
     """Create a test file mit an arbitrary size und random text content."""
     def chunks(total, step):
-        assert total >= step
+        pruefe total >= step
         waehrend total > step:
             liefere step
             total -= step
@@ -97,7 +97,7 @@ def write_test_file(path, size):
     mit open(path, 'wb') als f:
         fuer csize in chunks(size, bufsize):
             f.write(chunk)
-    assert os.path.getsize(path) == size
+    pruefe os.path.getsize(path) == size
 
 def read_file(path, binary=Falsch):
     """Return contents von a file located at *path*.
@@ -502,11 +502,11 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         onexc_called = Falsch
 
         def onerror(*args):
-            nonlocal onerror_called
+            nichtlokal onerror_called
             onerror_called = Wahr
 
         def onexc(*args):
-            nonlocal onexc_called
+            nichtlokal onexc_called
             onexc_called = Wahr
 
         os.mkdir(TESTFN)
@@ -582,7 +582,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         os.mkdir(dir2)
         def close(fd):
             orig_close(fd)
-            nonlocal close_count
+            nichtlokal close_count
             close_count += 1
             wirf OSError
 
@@ -690,7 +690,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         # by scandir() but before unlink() oder rmdr() ist called doesn't
         # generate any errors.
         def _onexc(fn, path, exc):
-            assert fn in (os.rmdir, os.unlink)
+            pruefe fn in (os.rmdir, os.unlink)
             wenn nicht isinstance(exc, PermissionError):
                 wirf
             # Make the parent und the children writeable.
@@ -1245,7 +1245,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             fuer err in errno.EOPNOTSUPP, errno.ENOTSUP:
                 os.chflags = make_chflags_raiser(err)
                 shutil.copystat(file1, file2)
-            # assert others errors breche it
+            # pruefe others errors breche it
             os.chflags = make_chflags_raiser(errno.EOPNOTSUPP + errno.ENOTSUP)
             self.assertRaises(OSError, shutil.copystat, file1, file2)
         schliesslich:
@@ -3000,7 +3000,7 @@ klasse TestCopyFile(unittest.TestCase):
         def _open(filename, mode='r'):
             wenn filename == 'srcfile':
                 wirf OSError('Cannot open "srcfile"')
-            assert 0  # shouldn't reach here.
+            pruefe 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
             mit self.assertRaises(OSError):
@@ -3015,7 +3015,7 @@ klasse TestCopyFile(unittest.TestCase):
                 gib srcfile
             wenn filename == 'destfile':
                 wirf OSError('Cannot open "destfile"')
-            assert 0  # shouldn't reach here.
+            pruefe 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
             shutil.copyfile('srcfile', 'destfile')
@@ -3034,7 +3034,7 @@ klasse TestCopyFile(unittest.TestCase):
                 gib srcfile
             wenn filename == 'destfile':
                 gib destfile
-            assert 0  # shouldn't reach here.
+            pruefe 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
             shutil.copyfile('srcfile', 'destfile')
@@ -3056,7 +3056,7 @@ klasse TestCopyFile(unittest.TestCase):
                 gib srcfile
             wenn filename == 'destfile':
                 gib destfile
-            assert 0  # shouldn't reach here.
+            pruefe 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
             mit self.assertRaises(OSError):
@@ -3102,8 +3102,8 @@ klasse TestCopyFileObj(unittest.TestCase):
     def test_file_not_closed(self):
         mit self.get_files() als (src, dst):
             shutil.copyfileobj(src, dst)
-            assert nicht src.closed
-            assert nicht dst.closed
+            pruefe nicht src.closed
+            pruefe nicht dst.closed
 
     def test_file_offset(self):
         mit self.get_files() als (src, dst):
@@ -3116,7 +3116,7 @@ klasse TestCopyFileObj(unittest.TestCase):
         # Make sure alternate Windows implementation ist called.
         mit unittest.mock.patch("shutil._copyfileobj_readinto") als m:
             shutil.copyfile(TESTFN, TESTFN2)
-        assert m.called
+        pruefe m.called
 
         # File size ist 2 MiB but max buf size should be 1 MiB.
         self.assertEqual(m.call_args[0][2], 1 * 1024 * 1024)
@@ -3138,7 +3138,7 @@ klasse TestCopyFileObj(unittest.TestCase):
         self.addCleanup(os_helper.unlink, fname)
         mit unittest.mock.patch("shutil._copyfileobj_readinto") als m:
             shutil.copyfile(fname, TESTFN2)
-        assert nicht m.called
+        pruefe nicht m.called
         self.assert_files_eq(fname, TESTFN2)
 
 
@@ -3153,7 +3153,7 @@ klasse _ZeroCopyFileTest(object):
         write_test_file(TESTFN, cls.FILESIZE)
         mit open(TESTFN, 'rb') als f:
             cls.FILEDATA = f.read()
-            assert len(cls.FILEDATA) == cls.FILESIZE
+            pruefe len(cls.FILEDATA) == cls.FILESIZE
 
     @classmethod
     def tearDownClass(cls):
@@ -3187,7 +3187,7 @@ klasse _ZeroCopyFileTest(object):
         mit self.get_files() als (src, dst):
             mit unittest.mock.patch('shutil.copyfileobj') als m:
                 shutil.copyfile(TESTFN, TESTFN2)
-            assert nicht m.called
+            pruefe nicht m.called
 
     def test_same_file(self):
         self.addCleanup(self.reset)
@@ -3277,7 +3277,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
             mit self.get_files() als (src, dst):
                 mit self.assertRaises(OSError) als cm:
                     self.zerocopy_fun(src, dst)
-        assert flag
+        pruefe flag
         self.assertEqual(cm.exception.errno, errno.EBADF)
 
     def test_cant_get_size(self):
@@ -3287,7 +3287,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
         mit unittest.mock.patch('os.fstat', side_effect=OSError) als m:
             mit self.get_files() als (src, dst):
                 self.zerocopy_fun(src, dst)
-                assert m.called
+                pruefe m.called
         self.assertEqual(read_file(TESTFN2, binary=Wahr), self.FILEDATA)
 
     def test_small_chunks(self):
@@ -3300,7 +3300,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
         mit unittest.mock.patch('os.fstat', return_value=mock) als m:
             mit self.get_files() als (src, dst):
                 self.zerocopy_fun(src, dst)
-                assert m.called
+                pruefe m.called
         self.assertEqual(read_file(TESTFN2, binary=Wahr), self.FILEDATA)
 
     def test_big_chunk(self):
@@ -3313,7 +3313,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
         mit unittest.mock.patch('os.fstat', return_value=mock) als m:
             mit self.get_files() als (src, dst):
                 self.zerocopy_fun(src, dst)
-                assert m.called
+                pruefe m.called
         self.assertEqual(read_file(TESTFN2, binary=Wahr), self.FILEDATA)
 
     def test_blocksize_arg(self):
@@ -3348,7 +3348,7 @@ klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
         # Emulate a case where sendfile() only support file->socket
         # fds. In such a case copyfile() ist supposed to skip the
         # fast-copy attempt von then on.
-        assert shutil._USE_CP_SENDFILE
+        pruefe shutil._USE_CP_SENDFILE
         versuch:
             mit unittest.mock.patch(
                     self.PATCHPOINT,
@@ -3356,12 +3356,12 @@ klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
                 mit self.get_files() als (src, dst):
                     mit self.assertRaises(_GiveupOnFastCopy):
                         shutil._fastcopy_sendfile(src, dst)
-                assert m.called
-            assert nicht shutil._USE_CP_SENDFILE
+                pruefe m.called
+            pruefe nicht shutil._USE_CP_SENDFILE
 
             mit unittest.mock.patch(self.PATCHPOINT) als m:
                 shutil.copyfile(TESTFN, TESTFN2)
-                assert nicht m.called
+                pruefe nicht m.called
         schliesslich:
             shutil._USE_CP_SENDFILE = Wahr
 

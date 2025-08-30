@@ -34,7 +34,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
         # Monkey-patch __build_class__ to get a klasse code object.
         code = Nichts
         def build_class(func, name, /, *bases, **kwds):
-            nonlocal code
+            nichtlokal code
             code = func.__code__
 
         mit swap_attr(builtins, '__build_class__', build_class):

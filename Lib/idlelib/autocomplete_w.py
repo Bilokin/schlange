@@ -391,12 +391,12 @@ klasse AutoCompleteWindow:
                 wenn keysym == "Prior":
                     newsel = max(0, cursel-jump)
                 sonst:
-                    assert keysym == "Next"
+                    pruefe keysym == "Next"
                     newsel = min(len(self.completions)-1, cursel+jump)
             sowenn keysym == "Up":
                 newsel = max(0, cursel-1)
             sonst:
-                assert keysym == "Down"
+                pruefe keysym == "Down"
                 newsel = min(len(self.completions)-1, cursel+1)
             self.listbox.select_clear(cursel)
             self.listbox.select_set(newsel)

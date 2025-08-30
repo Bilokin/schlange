@@ -98,7 +98,7 @@ klasse Tokenizer:
     def reset(self, index: Mark) -> Nichts:
         wenn index == self._index:
             gib
-        assert 0 <= index <= len(self._tokens), (index, len(self._tokens))
+        pruefe 0 <= index <= len(self._tokens), (index, len(self._tokens))
         old_index = self._index
         self._index = index
         wenn self._verbose:

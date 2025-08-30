@@ -240,7 +240,7 @@ klasse TestBasic(unittest.TestCase):
                 d.append(i)
                 l.append(i)
             fuer j in range(1-len(l), len(l)):
-                assert d[j] == l[j]
+                pruefe d[j] == l[j]
 
         d = deque('superman')
         self.assertEqual(d[0], 's')

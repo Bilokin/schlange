@@ -155,7 +155,7 @@ klasse CodeContext:
         The list ist returned ordered by line number.
         Last indent returned ist the smallest indent observed.
         """
-        assert stopline > 0
+        pruefe stopline > 0
         lines = []
         # The indentation level we are currently in.
         lastindent = INFINITY

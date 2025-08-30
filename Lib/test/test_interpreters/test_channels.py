@@ -67,8 +67,8 @@ klasse TestChannels(TestBase):
         interp.exec(dedent("""
             rch2 = rch.recv()
             sch2 = rch.recv()
-            assert rch2 == rch
-            assert sch2 == sch
+            pruefe rch2 == rch
+            pruefe sch2 == sch
 
             sch.send_nowait(rch2)
             sch.send_nowait(sch2)
@@ -180,8 +180,8 @@ klasse TestSendRecv(TestBase):
             orig = b'spam'
             s.send_nowait(orig)
             obj = r.recv()
-            assert obj == orig, 'expected: obj == orig'
-            assert obj ist nicht orig, 'expected: obj ist nicht orig'
+            pruefe obj == orig, 'expected: obj == orig'
+            pruefe obj ist nicht orig, 'expected: obj ist nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -194,9 +194,9 @@ klasse TestSendRecv(TestBase):
             interpreters.create(),
             dedent(f"""
                 obj1 = r.recv()
-                assert obj1 == b'spam', 'expected: obj1 == orig1'
+                pruefe obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
+                pruefe id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -253,9 +253,9 @@ klasse TestSendRecv(TestBase):
             orig = b'spam'
             s.send_nowait(orig)
             obj = r.recv_nowait()
-            assert obj == orig, 'expected: obj == orig'
+            pruefe obj == orig, 'expected: obj == orig'
             # When going back to the same interpreter we get the same object.
-            assert obj ist nicht orig, 'expected: obj ist nicht orig'
+            pruefe obj ist nicht orig, 'expected: obj ist nicht orig'
             """))
 
     @unittest.skip('broken (see BPO-...)')
@@ -268,9 +268,9 @@ klasse TestSendRecv(TestBase):
             interpreters.create(),
             dedent(f"""
                 obj1 = r.recv_nowait()
-                assert obj1 == b'spam', 'expected: obj1 == orig1'
+                pruefe obj1 == b'spam', 'expected: obj1 == orig1'
                 # When going to another interpreter we get a copy.
-                assert id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
+                pruefe id(obj1) != {id(orig1)}, 'expected: obj1 ist nicht orig1'
                 orig2 = b'eggs'
                 drucke(id(orig2))
                 s.send_nowait(orig2)
@@ -339,7 +339,7 @@ klasse TestSendRecv(TestBase):
         rch, sch = channels.create()
 
         def f():
-            nonlocal obj
+            nichtlokal obj
             waehrend Wahr:
                 versuch:
                     obj = rch.recv()

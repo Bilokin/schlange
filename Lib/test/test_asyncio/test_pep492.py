@@ -181,7 +181,7 @@ klasse CoroutineTests(BaseTest):
                 f = Nichts
 
         async def runner():
-            nonlocal T
+            nichtlokal T
             T = asyncio.ensure_future(foo(), loop=self.loop)
             warte T
 

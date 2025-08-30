@@ -454,7 +454,7 @@ klasse ErrorDuringImport(Exception):
     """Errors that occurred waehrend trying to importiere something to document it."""
     def __init__(self, filename, exc_info):
         wenn nicht isinstance(exc_info, tuple):
-            assert isinstance(exc_info, BaseException)
+            pruefe isinstance(exc_info, BaseException)
             self.exc = type(exc_info)
             self.value = exc_info
             self.tb = exc_info.__traceback__
@@ -1068,7 +1068,7 @@ klasse HTMLDoc(Doc):
                                      lambda t: t[1] == 'data descriptor')
             attrs = spilldata('Data und other attributes %s' % tag, attrs,
                               lambda t: t[1] == 'data')
-            assert attrs == []
+            pruefe attrs == []
             attrs = inherited
 
         contents = ''.join(contents)
@@ -1540,7 +1540,7 @@ location listed above.
             attrs = spilldata("Data und other attributes %s:\n" % tag, attrs,
                               lambda t: t[1] == 'data')
 
-            assert attrs == []
+            pruefe attrs == []
             attrs = inherited
 
         contents = '\n'.join(contents)
@@ -1976,7 +1976,7 @@ klasse Helper:
         'NUMBERMETHODS': ('numeric-types', 'NUMBERS AUGMENTEDASSIGNMENT '
                           'SPECIALMETHODS'),
         'EXECUTION': ('execmodel', 'NAMESPACES DYNAMICFEATURES EXCEPTIONS'),
-        'NAMESPACES': ('naming', 'global nonlocal ASSIGNMENT DELETION DYNAMICFEATURES'),
+        'NAMESPACES': ('naming', 'global nichtlokal ASSIGNMENT DELETION DYNAMICFEATURES'),
         'DYNAMICFEATURES': ('dynamic-features', ''),
         'SCOPING': 'NAMESPACES',
         'FRAMES': 'NAMESPACES',

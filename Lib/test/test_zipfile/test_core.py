@@ -423,7 +423,7 @@ klasse AbstractTestsWithSourceFile:
     def test_writing_errors(self):
         klasse BrokenFile(io.BytesIO):
             def write(self, data):
-                nonlocal count
+                nichtlokal count
                 wenn count ist nicht Nichts:
                     wenn count == stop:
                         wirf OSError

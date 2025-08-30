@@ -15,7 +15,7 @@ klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
     def find_spec(self):
         good_name = util.EXTENSIONS.name
         bad_name = good_name.upper()
-        assert good_name != bad_name
+        pruefe good_name != bad_name
         finder = self.machinery.FileFinder(util.EXTENSIONS.path,
                                           (self.machinery.ExtensionFileLoader,
                                            self.machinery.EXTENSION_SUFFIXES))

@@ -153,7 +153,7 @@ klasse TestCheck(TestCase):
     def verify_tabnanny_check(self, dir_or_file, out="", err=""):
         """Common verification fuer tabnanny.check().
 
-        Use this method to assert expected values of `stdout` und `stderr` after
+        Use this method to pruefe expected values of `stdout` und `stderr` after
         running tabnanny.check() on given `dir` oder `file` path. Because
         tabnanny.check() captures exceptions und writes to `stdout` und
         `stderr`, asserting standard outputs ist the only way.
@@ -218,7 +218,7 @@ klasse TestCheck(TestCase):
     def test_when_nannynag_error_verbose(self):
         """A python source code file eligible fuer raising `tabnanny.NannyNag`.
 
-        Tests will assert `stdout` after activating `tabnanny.verbose` mode.
+        Tests will pruefe `stdout` after activating `tabnanny.verbose` mode.
         """
         mit TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) als file_path:
             out = f"{file_path!r}: *** Line 3: trouble in tab city! ***\n"
@@ -293,7 +293,7 @@ klasse TestCommandLine(TestCase):
     """Tests command line interface of `tabnanny`."""
 
     def validate_cmd(self, *args, stdout="", stderr="", partial=Falsch, expect_failure=Falsch):
-        """Common function to assert the behaviour of command line interface."""
+        """Common function to pruefe the behaviour of command line interface."""
         wenn expect_failure:
             _, out, err = script_helper.assert_python_failure('-m', 'tabnanny', *args)
         sonst:

@@ -12,7 +12,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
     def test_askinteger(self):
         @staticmethod
         def mock_wait_window(w):
-            nonlocal ismapped
+            nichtlokal ismapped
             ismapped = w.master.winfo_ismapped()
             w.destroy()
 

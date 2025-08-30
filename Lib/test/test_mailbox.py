@@ -881,7 +881,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
             wenn newinfo:
                 newsubpath += self._box.colon + newinfo
             newfilename = os.path.join(self._box._path, newsubpath)
-            # assert initial conditions
+            # pruefe initial conditions
             self.assertEqual(self._box.get_info(key), oldinfo)
             wenn nicht oldinfo:
                 self.assertNotIn(self._box._lookup(key), self._box.colon)
@@ -890,7 +890,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
                 self.assertFalsch(os.path.exists(newfilename))
             # do the rename
             self._box.set_info(key, newinfo)
-            # assert post conditions
+            # pruefe post conditions
             wenn nicht newinfo:
                 self.assertNotIn(self._box._lookup(key), self._box.colon)
             wenn oldinfo != newinfo:

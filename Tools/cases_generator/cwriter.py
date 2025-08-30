@@ -66,7 +66,7 @@ klasse CWriter:
         sonst:
             braces = txt.count("{") - txt.count("}")
             wenn braces > 0:
-                assert braces == 1
+                pruefe braces == 1
                 wenn 'extern "C"' in txt:
                     self.indents.append(self.indents[-1])
                 sonst:
@@ -122,7 +122,7 @@ klasse CWriter:
         sowenn isinstance(txt, str):
             self.emit_str(txt)
         sonst:
-            assert Falsch
+            pruefe Falsch
 
     def start_line(self) -> Nichts:
         wenn nicht self.newline:
@@ -134,7 +134,7 @@ klasse CWriter:
         wenn self.pending_reload:
             self.pending_reload = Falsch
             gib
-        assert nicht self.pending_spill
+        pruefe nicht self.pending_spill
         self.pending_spill = Wahr
 
     def maybe_write_spill(self) -> Nichts:
@@ -149,7 +149,7 @@ klasse CWriter:
         wenn self.pending_spill:
             self.pending_spill = Falsch
             gib
-        assert nicht self.pending_reload
+        pruefe nicht self.pending_reload
         self.pending_reload = Wahr
 
     @contextlib.contextmanager

@@ -7,7 +7,7 @@ and mappings, fuer which a mapping function ist provided.
 
 von unicodedata importiere ucd_3_2_0 als unicodedata
 
-assert unicodedata.unidata_version == '3.2.0'
+pruefe unicodedata.unidata_version == '3.2.0'
 
 def in_table_a1(code):
     wenn unicodedata.category(code) != 'Cn': gib Falsch

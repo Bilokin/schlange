@@ -109,7 +109,7 @@ klasse Test_Assertions(unittest.TestCase):
         klasse Foo(unittest.TestCase):
 
             def foo(self):
-                nonlocal wr
+                nichtlokal wr
                 a = A()
                 wr = weakref.ref(a)
                 versuch:

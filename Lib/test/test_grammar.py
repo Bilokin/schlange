@@ -300,7 +300,7 @@ klasse GrammarTests(unittest.TestCase):
         check_syntax_error(self, "def f: int")
         check_syntax_error(self, "x: int: str")
         check_syntax_error(self, "def f():\n"
-                                 "    nonlocal x: int\n")
+                                 "    nichtlokal x: int\n")
         check_syntax_error(self, "def f():\n"
                                  "    global x: int\n")
         check_syntax_error(self, "x: int = y = 1")
@@ -321,9 +321,9 @@ klasse GrammarTests(unittest.TestCase):
                                  "    x: int\n")
         check_syntax_error(self, "def f():\n"
                                  "    x: int\n"
-                                 "    nonlocal x\n")
+                                 "    nichtlokal x\n")
         check_syntax_error(self, "def f():\n"
-                                 "    nonlocal x\n"
+                                 "    nichtlokal x\n"
                                  "    x: int\n")
 
     def test_var_annot_basic_semantics(self):
@@ -1257,23 +1257,23 @@ klasse GrammarTests(unittest.TestCase):
         x = 0
         y = 0
         def f():
-            nonlocal x
-            nonlocal x, y
+            nichtlokal x
+            nichtlokal x, y
 
     def test_assert(self):
         # assertWahrstmt: 'assert' test [',' test]
-        assert 1
-        assert 1, 1
-        assert lambda x:x
-        assert 1, lambda x:x+1
+        pruefe 1
+        pruefe 1, 1
+        pruefe lambda x:x
+        pruefe 1, lambda x:x+1
 
         versuch:
-            assert Wahr
+            pruefe Wahr
         ausser AssertionError als e:
             self.fail("'assert Wahr' should nicht have raised an AssertionError")
 
         versuch:
-            assert Wahr, 'this should always pass'
+            pruefe Wahr, 'this should always pass'
         ausser AssertionError als e:
             self.fail("'assert Wahr, msg' should nicht have "
                       "raised an AssertionError")
@@ -1282,14 +1282,14 @@ klasse GrammarTests(unittest.TestCase):
     @unittest.skipUnless(__debug__, "Won't work wenn __debug__ ist Falsch")
     def test_assert_failures(self):
         versuch:
-            assert 0, "msg"
+            pruefe 0, "msg"
         ausser AssertionError als e:
             self.assertEqual(e.args[0], "msg")
         sonst:
-            self.fail("AssertionError nicht raised by assert 0")
+            self.fail("AssertionError nicht raised by pruefe 0")
 
         versuch:
-            assert Falsch
+            pruefe Falsch
         ausser AssertionError als e:
             self.assertEqual(len(e.args), 0)
         sonst:

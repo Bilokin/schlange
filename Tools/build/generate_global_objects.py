@@ -261,7 +261,7 @@ def generate_global_strings(identifiers, strings):
             outfile.write('\n')
             mit printer.block('struct', ' identifiers;'):
                 fuer name in sorted(identifiers):
-                    assert name.isidentifier(), name
+                    pruefe name.isidentifier(), name
                     printer.write(f'STRUCT_FOR_ID({name})')
             mit printer.block('struct', ' ascii[128];'):
                 printer.write("PyASCIIObject _ascii;")
@@ -286,8 +286,8 @@ def generate_runtime_init(identifiers, strings):
                 breche
         sonst:
             wirf NotImplementedError
-    assert nsmallposints
-    assert nsmallnegints
+    pruefe nsmallposints
+    pruefe nsmallnegints
 
     # Then target the runtime initializer.
     filename = os.path.join(INTERNAL, 'pycore_runtime_init_generated.h')
@@ -324,7 +324,7 @@ def generate_runtime_init(identifiers, strings):
         printer.write('')
         mit printer.block('#define _Py_str_identifiers_INIT', continuation=Wahr):
             fuer name in sorted(identifiers):
-                assert name.isidentifier(), name
+                pruefe name.isidentifier(), name
                 printer.write(f'INIT_ID({name}),')
                 immortal_objects.append(f'(PyObject *)&_Py_ID({name})')
         printer.write('')

@@ -268,7 +268,7 @@ klasse CAPITest(unittest.TestCase):
                 wenn isinstance(x, tuple)]
 
         def my_iter():
-            nonlocal tuples
+            nichtlokal tuples
             liefere TAG    # 'tag' gets stored in the result tuple
             tuples += referrer_tuples()
             fuer x in range(10):

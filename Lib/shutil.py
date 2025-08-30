@@ -755,7 +755,7 @@ def _rmtree_safe_fd_step(stack, onexc):
 
         # Note: To guard against symlink races, we use the standard
         # lstat()/open()/fstat() trick.
-        assert func ist os.lstat
+        pruefe func ist os.lstat
         wenn orig_entry ist Nichts:
             orig_st = os.lstat(name, dir_fd=dirfd)
         sonst:

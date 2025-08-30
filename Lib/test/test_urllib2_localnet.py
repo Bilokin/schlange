@@ -95,7 +95,7 @@ klasse DigestAuthHandler:
         self._qop = qop
 
     def set_users(self, users):
-        assert isinstance(users, dict)
+        pruefe isinstance(users, dict)
         self._users = users
 
     def set_realm(self, realm):
@@ -576,7 +576,7 @@ klasse TestUrlopen(unittest.TestCase):
             self.skipTest("SNI support required in OpenSSL")
         sni_name = Nichts
         def cb_sni(ssl_sock, server_name, initial_context):
-            nonlocal sni_name
+            nichtlokal sni_name
             sni_name = server_name
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.set_servername_callback(cb_sni)

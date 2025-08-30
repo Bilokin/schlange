@@ -1008,7 +1008,7 @@ klasse BaseFutureDoneCallbackTests():
 
         klasse evil:
             def __eq__(self, other):
-                nonlocal extra_cbs
+                nichtlokal extra_cbs
                 extra_cbs += 1
                 wenn extra_cbs < max_extra_cbs:
                     fut.add_done_callback(id)
@@ -1023,7 +1023,7 @@ klasse BaseFutureDoneCallbackTests():
         pad = lambda: ...
 
         def evil_call_soon(*args, **kwargs):
-            nonlocal called_on_fut_callback0
+            nichtlokal called_on_fut_callback0
             wenn called_on_fut_callback0:
                 # Called when handling fut->fut_callbacks[0]
                 # und mutates the length fut->fut_callbacks.
@@ -1076,7 +1076,7 @@ klasse BaseFutureDoneCallbackTests():
                 wirf ReachableCode
 
             def __getattribute__(self, name):
-                nonlocal fut_callback_0
+                nichtlokal fut_callback_0
                 wenn name == 'call_soon':
                     fut.remove_done_callback(fut_callback_0)
                     loesche fut_callback_0

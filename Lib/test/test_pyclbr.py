@@ -277,7 +277,7 @@ klasse ReadmoduleTests(TestCase):
 
     def test_module_has_no_spec(self):
         module_name = "doesnotexist"
-        assert module_name nicht in pyclbr._modules
+        pruefe module_name nicht in pyclbr._modules
         mit test_importlib_util.uncache(module_name):
             mit self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)

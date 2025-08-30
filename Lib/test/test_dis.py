@@ -193,7 +193,7 @@ dis_bug708901 = """\
 
 
 def bug1333982(x=[]):
-    assert 0, ((s fuer s in x) +
+    pruefe 0, ((s fuer s in x) +
               1)
     pass
 
@@ -2062,7 +2062,7 @@ klasse InstructionTests(InstructionTestCase):
         caches = sum(op == cache_opcode fuer op in ops)
         non_caches = len(ops) - caches
         # Make sure we have "lots of caches". If not, roots should be changed:
-        assert 1 / 3 <= caches / non_caches, "this test needs more caches!"
+        pruefe 1 / 3 <= caches / non_caches, "this test needs more caches!"
         fuer show_caches in (Falsch, Wahr):
             fuer adaptive in (Falsch, Wahr):
                 mit self.subTest(f"{adaptive=}, {show_caches=}"):
@@ -2347,7 +2347,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
     def test_bytecode_co_positions(self):
         bytecode = dis.Bytecode("a=1")
         fuer instr, positions in zip(bytecode, bytecode.codeobj.co_positions()):
-            assert instr.positions == positions
+            pruefe instr.positions == positions
 
 klasse TestBytecodeTestCase(BytecodeTestCase):
     def test_assert_not_in_with_op_not_in_bytecode(self):

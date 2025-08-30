@@ -1103,7 +1103,7 @@ def _paramspec_prepare_subst(self, alias, args):
         wirf TypeError(f"Too few arguments fuer {alias}")
     # Special case where Z[[int, str, bool]] == Z[int, str, bool] in PEP 612.
     wenn len(params) == 1 und nicht _is_param_expr(args[0]):
-        assert i == 0
+        pruefe i == 0
         args = (args,)
     # Convert lists to tuples to help other libraries cache the results.
     sowenn isinstance(args[i], list):
@@ -1590,7 +1590,7 @@ klasse _SpecialGenericAlias(_NotIterable, _BaseGenericAlias, _root=Wahr):
 
 klasse _CallableGenericAlias(_NotIterable, _GenericAlias, _root=Wahr):
     def __repr__(self):
-        assert self._name == 'Callable'
+        pruefe self._name == 'Callable'
         args = self.__args__
         wenn len(args) == 2 und _is_param_expr(args[0]):
             gib super().__repr__()
@@ -1777,8 +1777,8 @@ klasse _UnpackGenericAlias(_GenericAlias, _root=Wahr):
 
     @property
     def __typing_unpacked_tuple_args__(self):
-        assert self.__origin__ ist Unpack
-        assert len(self.__args__) == 1
+        pruefe self.__origin__ ist Unpack
+        pruefe len(self.__args__) == 1
         arg, = self.__args__
         wenn isinstance(arg, (_GenericAlias, types.GenericAlias)):
             wenn arg.__origin__ ist nicht tuple:
@@ -1788,8 +1788,8 @@ klasse _UnpackGenericAlias(_GenericAlias, _root=Wahr):
 
     @property
     def __typing_is_unpacked_typevartuple__(self):
-        assert self.__origin__ ist Unpack
-        assert len(self.__args__) == 1
+        pruefe self.__origin__ ist Unpack
+        pruefe len(self.__args__) == 1
         gib isinstance(self.__args__[0], TypeVarTuple)
 
 
@@ -2138,7 +2138,7 @@ klasse _AnnotatedAlias(_NotIterable, _GenericAlias, _root=Wahr):
         self.__metadata__ = metadata
 
     def copy_with(self, params):
-        assert len(params) == 1
+        pruefe len(params) == 1
         new_type = params[0]
         gib _AnnotatedAlias(new_type, self.__metadata__)
 
@@ -2188,16 +2188,16 @@ def Annotated(self, *params):
     - It's an error to call `Annotated` mit less than two arguments.
     - Access the metadata via the ``__metadata__`` attribute::
 
-        assert Annotated[int, '$'].__metadata__ == ('$',)
+        pruefe Annotated[int, '$'].__metadata__ == ('$',)
 
     - Nested Annotated types are flattened::
 
-        assert Annotated[Annotated[T, Ann1, Ann2], Ann3] == Annotated[T, Ann1, Ann2, Ann3]
+        pruefe Annotated[Annotated[T, Ann1, Ann2], Ann3] == Annotated[T, Ann1, Ann2, Ann3]
 
     - Instantiating an annotated type ist equivalent to instantiating the
     underlying type::
 
-        assert Annotated[C, Ann1](5) == C(5)
+        pruefe Annotated[C, Ann1](5) == C(5)
 
     - Annotated can be used als a generic type alias::
 
@@ -2247,7 +2247,7 @@ def runtime_checkable(cls):
         klasse Closable(Protocol):
             def close(self): ...
 
-        assert isinstance(open('/some/file'), Closable)
+        pruefe isinstance(open('/some/file'), Closable)
 
     Warning: this will check only the presence of the required methods,
     nicht their type signatures!
@@ -2467,14 +2467,14 @@ def get_origin(tp):
     Examples::
 
         >>> P = ParamSpec('P')
-        >>> assert get_origin(Literal[42]) ist Literal
-        >>> assert get_origin(int) ist Nichts
-        >>> assert get_origin(ClassVar[int]) ist ClassVar
-        >>> assert get_origin(Generic) ist Generic
-        >>> assert get_origin(Generic[T]) ist Generic
-        >>> assert get_origin(Union[T, int]) ist Union
-        >>> assert get_origin(List[Tuple[T, T]][int]) ist list
-        >>> assert get_origin(P.args) ist P
+        >>> pruefe get_origin(Literal[42]) ist Literal
+        >>> pruefe get_origin(int) ist Nichts
+        >>> pruefe get_origin(ClassVar[int]) ist ClassVar
+        >>> pruefe get_origin(Generic) ist Generic
+        >>> pruefe get_origin(Generic[T]) ist Generic
+        >>> pruefe get_origin(Union[T, int]) ist Union
+        >>> pruefe get_origin(List[Tuple[T, T]][int]) ist list
+        >>> pruefe get_origin(P.args) ist P
     """
     wenn isinstance(tp, _AnnotatedAlias):
         gib Annotated
@@ -2496,11 +2496,11 @@ def get_args(tp):
     Examples::
 
         >>> T = TypeVar('T')
-        >>> assert get_args(Dict[str, int]) == (str, int)
-        >>> assert get_args(int) == ()
-        >>> assert get_args(Union[int, Union[T, int], str][int]) == (int, str)
-        >>> assert get_args(Union[int, Tuple[T, int]][str]) == (int, Tuple[str, int])
-        >>> assert get_args(Callable[[], T][int]) == ([], int)
+        >>> pruefe get_args(Dict[str, int]) == (str, int)
+        >>> pruefe get_args(int) == ()
+        >>> pruefe get_args(Union[int, Union[T, int], str][int]) == (int, str)
+        >>> pruefe get_args(Union[int, Tuple[T, int]][str]) == (int, Tuple[str, int])
+        >>> pruefe get_args(Callable[[], T][int]) == ([], int)
     """
     wenn isinstance(tp, _AnnotatedAlias):
         gib (tp.__origin__,) + tp.__metadata__
@@ -2536,7 +2536,7 @@ _ASSERT_NEVER_REPR_MAX_LENGTH = 100
 
 
 def assert_never(arg: Never, /) -> Never:
-    """Statically assert that a line of code ist unreachable.
+    """Statically pruefe that a line of code ist unreachable.
 
     Example::
 
@@ -2938,7 +2938,7 @@ _special = frozenset({'__module__', '__name__', '__annotations__', '__annotate__
 
 klasse NamedTupleMeta(type):
     def __new__(cls, typename, bases, ns):
-        assert _NamedTuple in bases
+        pruefe _NamedTuple in bases
         wenn "__classcell__" in ns:
             wirf TypeError(
                 "uses of super() und __class__ are unsupported in methods of NamedTuple subclasses")
@@ -3043,7 +3043,7 @@ def NamedTuple(typename, fields, /):
 _NamedTuple = type.__new__(NamedTupleMeta, 'NamedTuple', (), {})
 
 def _namedtuple_mro_entries(bases):
-    assert NamedTuple in bases
+    pruefe NamedTuple in bases
     gib (_NamedTuple,)
 
 NamedTuple.__mro_entries__ = _namedtuple_mro_entries
@@ -3156,7 +3156,7 @@ klasse _TypedDictMeta(type):
                 mutable_keys.add(annotation_key)
                 readonly_keys.discard(annotation_key)
 
-        assert required_keys.isdisjoint(optional_keys), (
+        pruefe required_keys.isdisjoint(optional_keys), (
             f"Required keys overlap mit optional keys in {name}:"
             f" {required_keys=}, {optional_keys=}"
         )

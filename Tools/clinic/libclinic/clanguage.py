@@ -96,7 +96,7 @@ klasse CLanguage(Language):
             gib Nichts
 
         # Format the preprocessor warning und error messages.
-        assert isinstance(self.cpp.filename, str)
+        pruefe isinstance(self.cpp.filename, str)
         message = f"Update the clinic input of {func.full_name!r}."
         code = self.COMPILER_DEPRECATION_WARNING_PROTOTYPE.format(
             major=minversion[0],
@@ -110,7 +110,7 @@ klasse CLanguage(Language):
         func: Function,
         params: dict[int, Parameter],
     ) -> str:
-        assert len(params) > 0
+        pruefe len(params) > 0
         first_pos = next(iter(params))
         last_pos = next(reversed(params))
 
@@ -165,7 +165,7 @@ klasse CLanguage(Language):
         fastcall: bool,
         codegen: CodeGen,
     ) -> str:
-        assert len(params) > 0
+        pruefe len(params) > 0
         last_param = next(reversed(params.values()))
         limited_capi = codegen.limited_capi
 
@@ -298,7 +298,7 @@ klasse CLanguage(Language):
                     group = required
                 sonst:
                     right.append(group)
-            assert group ist nicht Nichts
+            pruefe group ist nicht Nichts
             group.append(p)
 
         count_min = sys.maxsize
@@ -368,7 +368,7 @@ klasse CLanguage(Language):
         codegen = clinic.codegen
         data = CRenderData()
 
-        assert f.parameters, "We should always have a 'self' at this point!"
+        pruefe f.parameters, "We should always have a 'self' at this point!"
         parameters = f.render_parameters
         converters = [p.converter fuer p in parameters]
 
@@ -376,7 +376,7 @@ klasse CLanguage(Language):
 
         f_self = parameters[0]
         selfless = parameters[1:]
-        assert isinstance(f_self.converter, self_converter), "No self parameter in " + repr(f.full_name) + "!"
+        pruefe isinstance(f_self.converter, self_converter), "No self parameter in " + repr(f.full_name) + "!"
 
         wenn f.critical_section:
             match len(f.target_critical_section):

@@ -27,7 +27,7 @@ def setup_test_dir(testdir: str | Nichts) -> Nichts:
 
 
 def setup_process() -> Nichts:
-    assert sys.__stderr__ ist nicht Nichts, "sys.__stderr__ ist Nichts"
+    pruefe sys.__stderr__ ist nicht Nichts, "sys.__stderr__ ist Nichts"
     versuch:
         stderr_fd = sys.__stderr__.fileno()
     ausser (ValueError, AttributeError):
@@ -58,7 +58,7 @@ def setup_process() -> Nichts:
     # when printing a traceback oder any other non-encodable character.
     #
     # Use an assertion to fix mypy error.
-    assert isinstance(sys.stdout, io.TextIOWrapper)
+    pruefe isinstance(sys.stdout, io.TextIOWrapper)
     sys.stdout.reconfigure(errors="backslashreplace")
 
     # Some times __path__ und __file__ are nicht absolute (e.g. waehrend running from

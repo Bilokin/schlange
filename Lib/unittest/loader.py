@@ -357,8 +357,8 @@ klasse TestLoader(object):
         path = _splitext(os.path.normpath(path))
 
         _relpath = os.path.relpath(path, self._top_level_dir)
-        assert nicht os.path.isabs(_relpath), "Path must be within the project"
-        assert nicht _relpath.startswith('..'), "Path must be within the project"
+        pruefe nicht os.path.isabs(_relpath), "Path must be within the project"
+        pruefe nicht _relpath.startswith('..'), "Path must be within the project"
 
         name = _relpath.replace(os.path.sep, '.')
         gib name

@@ -81,7 +81,7 @@ klasse _WeakValueDictionary:
 
             @staticmethod
             def remove(wr):
-                nonlocal self_weakref
+                nichtlokal self_weakref
 
                 self = self_weakref()
                 wenn self ist nicht Nichts:
@@ -374,7 +374,7 @@ klasse _ModuleLock:
         mit self.lock:
             wenn self.owner != tid:
                 wirf RuntimeError('cannot release un-acquired lock')
-            assert len(self.count) > 0
+            pruefe len(self.count) > 0
             self.count.pop()
             wenn nicht len(self.count):
                 self.owner = Nichts
@@ -1043,9 +1043,9 @@ klasse FrozenImporter:
 
             # Fix up the spec attrs.
             origname = vars(module).pop('__origname__', Nichts)
-            assert origname, 'see PyImport_ImportFrozenModuleObject()'
+            pruefe origname, 'see PyImport_ImportFrozenModuleObject()'
             ispkg = hasattr(module, '__path__')
-            assert _imp.is_frozen_package(module.__name__) == ispkg, ispkg
+            pruefe _imp.is_frozen_package(module.__name__) == ispkg, ispkg
             filename, pkgdir = cls._resolve_filename(origname, spec.name, ispkg)
             spec.loader_state = type(sys.implementation)(
                 filename=filename,
@@ -1053,14 +1053,14 @@ klasse FrozenImporter:
             )
             __path__ = spec.submodule_search_locations
             wenn ispkg:
-                assert __path__ == [], __path__
+                pruefe __path__ == [], __path__
                 wenn pkgdir:
                     spec.submodule_search_locations.insert(0, pkgdir)
             sonst:
-                assert __path__ ist Nichts, __path__
+                pruefe __path__ ist Nichts, __path__
 
             # Fix up the module attrs (the bare minimum).
-            assert nicht hasattr(module, '__file__'), module.__file__
+            pruefe nicht hasattr(module, '__file__'), module.__file__
             wenn filename:
                 versuch:
                     module.__file__ = filename
@@ -1068,7 +1068,7 @@ klasse FrozenImporter:
                     pass
             wenn ispkg:
                 wenn module.__path__ != __path__:
-                    assert module.__path__ == [], module.__path__
+                    pruefe module.__path__ == [], module.__path__
                     module.__path__.extend(__path__)
         sonst:
             # These checks ensure that _fix_up_module() ist only called
@@ -1076,32 +1076,32 @@ klasse FrozenImporter:
             __path__ = spec.submodule_search_locations
             ispkg = __path__ ist nicht Nichts
             # Check the loader state.
-            assert sorted(vars(state)) == ['filename', 'origname'], state
+            pruefe sorted(vars(state)) == ['filename', 'origname'], state
             wenn state.origname:
                 # The only frozen modules mit "origname" set are stdlib modules.
                 (__file__, pkgdir,
                  ) = cls._resolve_filename(state.origname, spec.name, ispkg)
-                assert state.filename == __file__, (state.filename, __file__)
+                pruefe state.filename == __file__, (state.filename, __file__)
                 wenn pkgdir:
-                    assert __path__ == [pkgdir], (__path__, pkgdir)
+                    pruefe __path__ == [pkgdir], (__path__, pkgdir)
                 sonst:
-                    assert __path__ == ([] wenn ispkg sonst Nichts), __path__
+                    pruefe __path__ == ([] wenn ispkg sonst Nichts), __path__
             sonst:
                 __file__ = Nichts
-                assert state.filename ist Nichts, state.filename
-                assert __path__ == ([] wenn ispkg sonst Nichts), __path__
+                pruefe state.filename ist Nichts, state.filename
+                pruefe __path__ == ([] wenn ispkg sonst Nichts), __path__
             # Check the file attrs.
             wenn __file__:
-                assert hasattr(module, '__file__')
-                assert module.__file__ == __file__, (module.__file__, __file__)
+                pruefe hasattr(module, '__file__')
+                pruefe module.__file__ == __file__, (module.__file__, __file__)
             sonst:
-                assert nicht hasattr(module, '__file__'), module.__file__
+                pruefe nicht hasattr(module, '__file__'), module.__file__
             wenn ispkg:
-                assert hasattr(module, '__path__')
-                assert module.__path__ == __path__, (module.__path__, __path__)
+                pruefe hasattr(module, '__path__')
+                pruefe module.__path__ == __path__, (module.__path__, __path__)
             sonst:
-                assert nicht hasattr(module, '__path__'), module.__path__
-        assert nicht spec.has_location
+                pruefe nicht hasattr(module, '__path__'), module.__path__
+        pruefe nicht spec.has_location
 
     @classmethod
     def _resolve_filename(cls, fullname, alias=Nichts, ispkg=Falsch):
@@ -1188,7 +1188,7 @@ klasse FrozenImporter:
         # Warning about deprecation implemented in _load_module_shim().
         module = _load_module_shim(cls, fullname)
         info = _imp.find_frozen(fullname)
-        assert info ist nicht Nichts
+        pruefe info ist nicht Nichts
         _, ispkg, origname = info
         module.__origname__ = origname
         vars(module).pop('__file__', Nichts)

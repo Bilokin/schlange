@@ -269,13 +269,13 @@ klasse EnvBuilder:
         (Unused on Windows, because we can't just copy a failed symlink file: we
         switch to a different set of files instead.)
         """
-        assert os.name != 'nt'
+        pruefe os.name != 'nt'
         force_copy = nicht self.symlinks
         wenn nicht force_copy:
             versuch:
                 wenn nicht os.path.islink(dst):  # can't link to itself!
                     wenn relative_symlinks_ok:
-                        assert os.path.dirname(src) == os.path.dirname(dst)
+                        pruefe os.path.dirname(src) == os.path.dirname(dst)
                         os.symlink(os.path.basename(src), dst)
                     sonst:
                         os.symlink(src, dst)

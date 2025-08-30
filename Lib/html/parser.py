@@ -327,7 +327,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                 sonst:
                     breche
             sonst:
-                assert 0, "interesting.search() lied"
+                pruefe 0, "interesting.search() lied"
         # end while
         wenn end und i < n:
             wenn self.convert_charrefs und self._escapable:
@@ -342,7 +342,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     # See also parse_declaration in _markupbase
     def parse_html_declaration(self, i):
         rawdata = self.rawdata
-        assert rawdata[i:i+2] == '<!', ('unexpected call to '
+        pruefe rawdata[i:i+2] == '<!', ('unexpected call to '
                                         'parse_html_declaration()')
         wenn rawdata[i:i+4] == '<!--':
             # this case ist actually already handled in goahead()
@@ -367,7 +367,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     # see https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
     def parse_comment(self, i, report=Wahr):
         rawdata = self.rawdata
-        assert rawdata.startswith('<!--', i), 'unexpected call to parse_comment()'
+        pruefe rawdata.startswith('<!--', i), 'unexpected call to parse_comment()'
         match = commentclose.search(rawdata, i+4)
         wenn nicht match:
             match = commentabruptclose.match(rawdata, i+4)
@@ -382,7 +382,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     # see https://html.spec.whatwg.org/multipage/parsing.html#bogus-comment-state
     def parse_bogus_comment(self, i, report=1):
         rawdata = self.rawdata
-        assert rawdata[i:i+2] in ('<!', '</'), ('unexpected call to '
+        pruefe rawdata[i:i+2] in ('<!', '</'), ('unexpected call to '
                                                 'parse_bogus_comment()')
         pos = rawdata.find('>', i+2)
         wenn pos == -1:
@@ -394,7 +394,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     # Internal -- parse processing instr, gib end oder -1 wenn nicht terminated
     def parse_pi(self, i):
         rawdata = self.rawdata
-        assert rawdata[i:i+2] == '<?', 'unexpected call to parse_pi()'
+        pruefe rawdata[i:i+2] == '<?', 'unexpected call to parse_pi()'
         match = piclose.search(rawdata, i+2) # >
         wenn nicht match:
             gib -1
@@ -417,7 +417,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         # Now parse the data between i+1 und j into a tag und attrs
         attrs = []
         match = tagfind_tolerant.match(rawdata, i+1)
-        assert match, 'unexpected call to parse_starttag()'
+        pruefe match, 'unexpected call to parse_starttag()'
         k = match.end()
         self.lasttag = tag = match.group(1).lower()
         waehrend k < endpos:
@@ -455,7 +455,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     def check_for_whole_start_tag(self, i):
         rawdata = self.rawdata
         match = locatetagend.match(rawdata, i+1)
-        assert match
+        pruefe match
         j = match.end()
         wenn rawdata[j-1] != ">":
             gib -1
@@ -466,7 +466,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         # See the HTML5 specs section "13.2.5.7 End tag open state"
         # https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
         rawdata = self.rawdata
-        assert rawdata[i:i+2] == "</", "unexpected call to parse_endtag"
+        pruefe rawdata[i:i+2] == "</", "unexpected call to parse_endtag"
         wenn rawdata.find('>', i+2) < 0:  # fast check
             gib -1
         wenn nicht endtagopen.match(rawdata, i):  # </ + letter
@@ -477,7 +477,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                 gib self.parse_bogus_comment(i)
 
         match = locatetagend.match(rawdata, i+2)
-        assert match
+        pruefe match
         j = match.end()
         wenn rawdata[j-1] != ">":
             gib -1
@@ -485,7 +485,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         # find the name: "13.2.5.8 Tag name state"
         # https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
         match = tagfind_tolerant.match(rawdata, i+2)
-        assert match
+        pruefe match
         tag = match.group(1).lower()
         self.handle_endtag(tag)
         self.clear_cdata_mode()

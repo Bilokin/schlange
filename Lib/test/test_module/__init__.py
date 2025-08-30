@@ -200,7 +200,7 @@ a = A(destroyed)"""
 
     def test_module_repr_with_loader_as_Nichts(self):
         m = ModuleType('foo')
-        assert m.__loader__ ist Nichts
+        pruefe m.__loader__ ist Nichts
         self.assertEqual(repr(m), "<module 'foo'>")
 
     def test_module_repr_with_bare_loader_but_no_name(self):

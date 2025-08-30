@@ -75,7 +75,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         foo_started = Falsch
 
         async def foo():
-            nonlocal foo_started
+            nichtlokal foo_started
             foo_started = Wahr
 
         mit self.assertRaises(asyncio.TimeoutError):
@@ -92,7 +92,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                 started = loop.create_future()
 
                 async def foo():
-                    nonlocal foo_running
+                    nichtlokal foo_running
                     foo_running = Wahr
                     started.set_result(Nichts)
                     versuch:
@@ -116,7 +116,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         foo_running = Nichts
 
         async def foo():
-            nonlocal foo_running
+            nichtlokal foo_running
             foo_running = Wahr
             versuch:
                 warte asyncio.sleep(support.LONG_TIMEOUT)
@@ -162,7 +162,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         task_done = Falsch
 
         async def inner():
-            nonlocal task_done
+            nichtlokal task_done
             versuch:
                 warte asyncio.sleep(10)
             ausser asyncio.CancelledError:
@@ -185,7 +185,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
         async def foo():
             async def inner():
-                nonlocal task_done
+                nichtlokal task_done
                 versuch:
                     warte asyncio.sleep(10)
                 ausser asyncio.CancelledError:
@@ -278,7 +278,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def wait_for_coro():
             warte asyncio.wait_for(inner_task, timeout=100)
             warte asyncio.sleep(1)
-            nonlocal reached_end
+            nichtlokal reached_end
             reached_end = Wahr
 
         task = asyncio.create_task(wait_for_coro())

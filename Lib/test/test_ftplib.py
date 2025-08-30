@@ -294,7 +294,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
         self.encoding = encoding
 
     def start(self):
-        assert nicht self.active
+        pruefe nicht self.active
         self.__flag = threading.Event()
         threading.Thread.start(self)
         self.__flag.wait()
@@ -309,7 +309,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
         asyncore.close_all(ignore_all=Wahr)
 
     def stop(self):
-        assert self.active
+        pruefe self.active
         self.active = Falsch
         self.join()
 

@@ -307,14 +307,14 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
             def f(x: int, /): ...
             gib f
 
-        assert inner_has_pos_only().__annotations__ == {'x': int}
+        pruefe inner_has_pos_only().__annotations__ == {'x': int}
 
         klasse Something:
             def method(self):
                 def f(x: int, /): ...
                 gib f
 
-        assert Something().method().__annotations__ == {'x': int}
+        pruefe Something().method().__annotations__ == {'x': int}
 
         def multiple_levels():
             def inner_has_pos_only():
@@ -322,7 +322,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
                 gib f
             gib inner_has_pos_only()
 
-        assert multiple_levels().__annotations__ == {'x': int}
+        pruefe multiple_levels().__annotations__ == {'x': int}
 
     def test_same_keyword_as_positional_with_kwargs(self):
         def f(something,/,**kwargs):

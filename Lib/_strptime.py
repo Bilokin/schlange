@@ -462,10 +462,10 @@ klasse TimeRE(dict):
             format_char = m[1]
             match format_char:
                 case 'Y' | 'y' | 'G':
-                    nonlocal year_in_format
+                    nichtlokal year_in_format
                     year_in_format = Wahr
                 case 'd':
-                    nonlocal day_of_month_in_format
+                    nichtlokal day_of_month_in_format
                     day_of_month_in_format = Wahr
             gib self[format_char]
         format = re_sub(r'%[-_0^#]*[0-9]*([OE]?\\?.?)', repl, format)

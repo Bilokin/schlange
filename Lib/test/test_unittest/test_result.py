@@ -386,7 +386,7 @@ klasse Test_TestResult(unittest.TestCase):
     def test_addSubTest(self):
         klasse Foo(unittest.TestCase):
             def test_1(self):
-                nonlocal subtest
+                nichtlokal subtest
                 mit self.subTest(foo=1):
                     subtest = self._subtest
                     versuch:

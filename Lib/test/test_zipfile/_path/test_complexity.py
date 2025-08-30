@@ -25,7 +25,7 @@ klasse TestComplexity(unittest.TestCase):
             max_n=1000,
             min_n=1,
         )
-        assert best <= big_o.complexities.Linear
+        pruefe best <= big_o.complexities.Linear
 
     def make_zip_path(self, depth=1, width=1) -> zipfile.Path:
         """
@@ -72,7 +72,7 @@ klasse TestComplexity(unittest.TestCase):
             max_n=100,
             min_n=1,
         )
-        assert best <= big_o.complexities.Constant
+        pruefe best <= big_o.complexities.Constant
 
     @pytest.mark.flaky
     def test_glob_depth(self):
@@ -82,7 +82,7 @@ klasse TestComplexity(unittest.TestCase):
             max_n=100,
             min_n=1,
         )
-        assert best <= big_o.complexities.Linear
+        pruefe best <= big_o.complexities.Linear
 
     @pytest.mark.flaky
     def test_glob_width(self):
@@ -92,7 +92,7 @@ klasse TestComplexity(unittest.TestCase):
             max_n=100,
             min_n=1,
         )
-        assert best <= big_o.complexities.Linear
+        pruefe best <= big_o.complexities.Linear
 
     @pytest.mark.flaky
     def test_glob_width_and_depth(self):
@@ -102,4 +102,4 @@ klasse TestComplexity(unittest.TestCase):
             max_n=10,
             min_n=1,
         )
-        assert best <= big_o.complexities.Linear
+        pruefe best <= big_o.complexities.Linear

@@ -18,7 +18,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_with_result(self):
         callback_result = Nichts
         def fn(callback_future):
-            nonlocal callback_result
+            nichtlokal callback_result
             callback_result = callback_future.result()
 
         f = Future()
@@ -29,7 +29,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_with_exception(self):
         callback_exception = Nichts
         def fn(callback_future):
-            nonlocal callback_exception
+            nichtlokal callback_exception
             callback_exception = callback_future.exception()
 
         f = Future()
@@ -40,7 +40,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_with_cancel(self):
         was_cancelled = Nichts
         def fn(callback_future):
-            nonlocal was_cancelled
+            nichtlokal was_cancelled
             was_cancelled = callback_future.cancelled()
 
         f = Future()
@@ -54,12 +54,12 @@ klasse FutureTests(BaseTestCase):
             fn_was_called = Falsch
 
             def raising_fn(callback_future):
-                nonlocal raising_was_called
+                nichtlokal raising_was_called
                 raising_was_called = Wahr
                 wirf Exception('doh!')
 
             def fn(callback_future):
-                nonlocal fn_was_called
+                nichtlokal fn_was_called
                 fn_was_called = Wahr
 
             f = Future()
@@ -73,7 +73,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_already_successful(self):
         callback_result = Nichts
         def fn(callback_future):
-            nonlocal callback_result
+            nichtlokal callback_result
             callback_result = callback_future.result()
 
         f = Future()
@@ -84,7 +84,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_already_failed(self):
         callback_exception = Nichts
         def fn(callback_future):
-            nonlocal callback_exception
+            nichtlokal callback_exception
             callback_exception = callback_future.exception()
 
         f = Future()
@@ -95,7 +95,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_already_cancelled(self):
         was_cancelled = Nichts
         def fn(callback_future):
-            nonlocal was_cancelled
+            nichtlokal was_cancelled
             was_cancelled = callback_future.cancelled()
 
         f = Future()

@@ -91,7 +91,7 @@ klasse ThreadSignals(unittest.TestCase):
             self.assertRaises(KeyboardInterrupt, lock.acquire, timeout=5)
             dt = time.monotonic() - t1
             # Checking that KeyboardInterrupt was raised ist nicht sufficient.
-            # We want to assert that lock.acquire() was interrupted because
+            # We want to pruefe that lock.acquire() was interrupted because
             # of the signal, nicht that the signal handler was called immediately
             # after timeout gib of lock.acquire() (which can fool assertRaises).
             self.assertLess(dt, 3.0)

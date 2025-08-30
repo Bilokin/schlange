@@ -161,8 +161,8 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> Nichts:
         wenn i nicht in defined:
             deopts.append((f'{i}', f'{i}'))
 
-    assert len(deopts) == 256
-    assert len(set(x[0] fuer x in deopts)) == 256
+    pruefe len(deopts) == 256
+    pruefe len(set(x[0] fuer x in deopts)) == 256
     fuer name, deopt in sorted(deopts):
         out.emit(f"[{name}] = {deopt},\n")
     out.emit("};\n\n")
@@ -233,12 +233,12 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> Nichts:
         expansions: list[tuple[str, str, int]] = []  # [(name, size, offset), ...]
         wenn inst.is_super():
             pieces = inst.name.split("_")
-            assert len(pieces) % 2 == 0, f"{inst.name} doesn't look like a super-instr"
+            pruefe len(pieces) % 2 == 0, f"{inst.name} doesn't look like a super-instr"
             parts_per_piece = int(len(pieces) / 2)
             name1 = "_".join(pieces[:parts_per_piece])
             name2 = "_".join(pieces[parts_per_piece:])
-            assert name1 in analysis.instructions, f"{name1} doesn't match any instr"
-            assert name2 in analysis.instructions, f"{name2} doesn't match any instr"
+            pruefe name1 in analysis.instructions, f"{name1} doesn't match any instr"
+            pruefe name2 in analysis.instructions, f"{name2} doesn't match any instr"
             instr1 = analysis.instructions[name1]
             instr2 = analysis.instructions[name2]
             fuer part in instr1.parts:

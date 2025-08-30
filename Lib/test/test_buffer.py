@@ -4536,7 +4536,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
                 gib self.created_mv
 
             def __release_buffer__(self, buffer):
-                assert buffer ist self.created_mv
+                pruefe buffer ist self.created_mv
                 self.held = Falsch
 
         wr = WhatToRelease()
@@ -4652,7 +4652,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
             def __buffer__(self, flags):
                 gib super().__buffer__(flags)
             def __release_buffer__(self, view):
-                nonlocal rb_call_count
+                nichtlokal rb_call_count
                 rb_call_count += 1
                 super().__release_buffer__(view)
 
@@ -4677,12 +4677,12 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
             def __buffer__(self, flags):
                 gib memoryview(b"hello")
             def __release_buffer__(self, view):
-                nonlocal rb_call_count
+                nichtlokal rb_call_count
                 rb_call_count += 1
                 versuch:
                     super().__release_buffer__(view)
                 ausser ValueError:
-                    nonlocal rb_raised
+                    nichtlokal rb_raised
                     rb_raised = Wahr
 
         b = B(b"hello")
@@ -4716,7 +4716,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
                     buffer[:1]
                 mit self.assertRaises(ValueError):
                     buffer.__buffer__(0)
-                nonlocal smuggled_buffer
+                nichtlokal smuggled_buffer
                 smuggled_buffer = buffer
                 self.assertEqual(buffer.tobytes(), b"hello")
                 super().__release_buffer__(buffer)

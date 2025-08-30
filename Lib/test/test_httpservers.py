@@ -504,7 +504,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         def close_conn():
             """Don't close reader yet so we can check wenn there was leftover
             buffered input"""
-            nonlocal reader
+            nichtlokal reader
             reader = response.fp
             response.fp = Nichts
         reader = Nichts

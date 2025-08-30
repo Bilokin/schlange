@@ -201,8 +201,8 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         call_count = 0
 
         async def lockit():
-            nonlocal lock_count
-            nonlocal call_count
+            nichtlokal lock_count
+            nichtlokal call_count
             call_count += 1
             warte lock.acquire()
             lock_count += 1
@@ -498,7 +498,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         cond = asyncio.Condition()
 
         async def wait_on_cond():
-            nonlocal waited
+            nichtlokal waited
             async mit cond:
                 waited = Wahr  # Make sure this area was reached
                 warte cond.wait()
@@ -766,7 +766,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         cond = asyncio.Condition()
 
         async def func():
-            nonlocal raised
+            nichtlokal raised
             async mit cond:
                 mit self.assertRaises(asyncio.CancelledError) als err:
                     warte cond.wait_for(lambda: wake)
@@ -792,7 +792,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         cond = asyncio.Condition()
 
         async def func():
-            nonlocal raised
+            nichtlokal raised
             async mit cond:
                 mit self.assertRaises(asyncio.CancelledError) als err:
                     warte cond.wait_for(lambda: wake)
@@ -824,7 +824,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         condition = asyncio.Condition()
         state = 0
         async def consumer():
-            nonlocal state
+            nichtlokal state
             async mit condition:
                 waehrend Wahr:
                     warte condition.wait_for(lambda: state != 0)
@@ -868,7 +868,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         condition = asyncio.Condition()
         state = 0
         async def consumer():
-            nonlocal state
+            nichtlokal state
             async mit condition:
                 waehrend Wahr:
                     warte condition.wait_for(lambda: state != 0)
@@ -1207,7 +1207,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             # We should have woken up all waiting tasks now.
             self.assertEqual(sem._value, 0)
             # Create a fourth task.  It should run after c3, nicht c2.
-            nonlocal t4
+            nichtlokal t4
             t4 = asyncio.create_task(c4(result))
             result.append(1)
             gib Wahr
@@ -1470,7 +1470,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         counter = 0
 
         async def coro():
-            nonlocal rewait_n
+            nichtlokal rewait_n
 
             # first time waiting
             warte barrier.wait()
@@ -1595,7 +1595,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         count = 0
 
         async def coro():
-            nonlocal count
+            nichtlokal count
             versuch:
                 warte barrier.wait()
             ausser asyncio.BrokenBarrierError:
@@ -1673,7 +1673,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         count = 0
 
         async def coro():
-            nonlocal count
+            nichtlokal count
 
             i = warte barrier.wait()
             count += 1
@@ -1727,7 +1727,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         count = 0
 
         async def coro():
-            nonlocal count
+            nichtlokal count
             versuch:
                 warte barrier.wait()
             ausser asyncio.BrokenBarrierError:

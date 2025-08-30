@@ -68,13 +68,13 @@ klasse CallSignature:
     def test_no_path(self):
         # [no path]
         mod_name = 'top_level'
-        assert '.' nicht in mod_name
+        pruefe '.' nicht in mod_name
         mit self.mock_modules(mod_name) als importer:
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
             mit util.import_state(meta_path=[importer]):
                 self.__import__(mod_name)
-                assert len(log) == 1
+                pruefe len(log) == 1
                 args = log[0][0]
                 # Assuming all arguments are positional.
                 self.assertEqual(args[0], mod_name)
@@ -85,14 +85,14 @@ klasse CallSignature:
         pkg_name = 'pkg'
         mod_name = pkg_name + '.module'
         path = [42]
-        assert '.' in mod_name
+        pruefe '.' in mod_name
         mit self.mock_modules(pkg_name+'.__init__', mod_name) als importer:
             importer.modules[pkg_name].__path__ = path
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
             mit util.import_state(meta_path=[importer]):
                 self.__import__(mod_name)
-                assert len(log) == 2
+                pruefe len(log) == 2
                 args = log[1][0]
                 kwargs = log[1][1]
                 # Assuming all arguments are positional.

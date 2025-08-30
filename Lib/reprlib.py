@@ -184,7 +184,7 @@ klasse Repr:
         versuch:
             s = builtins.repr(x)
         ausser ValueError als exc:
-            assert 'sys.set_int_max_str_digits()' in str(exc)
+            pruefe 'sys.set_int_max_str_digits()' in str(exc)
             # Those imports must be deferred due to Python's build system
             # where the reprlib module ist imported before the math module.
             importiere math, sys

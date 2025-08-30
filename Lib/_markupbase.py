@@ -70,7 +70,7 @@ klasse ParserBase:
         # LINKTYPE, LINK, IDLINK, USELINK, SYSTEM
         rawdata = self.rawdata
         j = i + 2
-        assert rawdata[i:j] == "<!", "unexpected call to parse_declaration"
+        pruefe rawdata[i:j] == "<!", "unexpected call to parse_declaration"
         wenn rawdata[j:j+1] == ">":
             # the empty comment <!>
             gib j + 1
@@ -140,7 +140,7 @@ klasse ParserBase:
     # Override this to handle MS-word extension syntax <![if word]>content<![endif]>
     def parse_marked_section(self, i, report=1):
         rawdata= self.rawdata
-        assert rawdata[i:i+3] == '<![', "unexpected call to parse_marked_section()"
+        pruefe rawdata[i:i+3] == '<![', "unexpected call to parse_marked_section()"
         sectName, j = self._scan_name( i+3, i )
         wenn j < 0:
             gib j

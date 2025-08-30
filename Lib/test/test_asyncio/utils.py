@@ -595,7 +595,7 @@ async def await_without_task(coro):
             fuer _ in coro.__await__():
                 pass
         ausser BaseException als err:
-            nonlocal exc
+            nichtlokal exc
             exc = err
     asyncio.get_running_loop().call_soon(func)
     warte asyncio.sleep(0)

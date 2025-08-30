@@ -32,7 +32,7 @@ klasse FindSpecTests(abc.FinderTests):
 
     def test_failure(self):
         name = 'importlib'
-        assert name nicht in sys.builtin_module_names
+        pruefe name nicht in sys.builtin_module_names
         spec = self.machinery.BuiltinImporter.find_spec(name)
         self.assertIsNichts(spec)
 

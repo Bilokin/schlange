@@ -37,7 +37,7 @@ def run_in_tk_mainloop(delay=1):
             # harness to capture them.
             exception = Nichts
             def after_callback():
-                nonlocal exception
+                nichtlokal exception
                 versuch:
                     next(test_generator)
                 ausser StopIteration:

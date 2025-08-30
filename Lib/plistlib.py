@@ -299,8 +299,8 @@ klasse _DumbXMLWriter:
         self._indent_level += 1
 
     def end_element(self, element):
-        assert self._indent_level > 0
-        assert self.stack.pop() == element
+        pruefe self._indent_level > 0
+        pruefe self.stack.pop() == element
         self._indent_level -= 1
         self.writeln("</%s>" % element)
 

@@ -52,7 +52,7 @@ klasse FinalizationTest(unittest.TestCase):
     def test_frame_resurrect(self):
         # A generator frame can be resurrected by a generator's finalization.
         def gen():
-            nonlocal frame
+            nichtlokal frame
             versuch:
                 liefere
             schliesslich:
@@ -73,7 +73,7 @@ klasse FinalizationTest(unittest.TestCase):
         old_garbage = gc.garbage[:]
         finalized = Falsch
         def gen():
-            nonlocal finalized
+            nichtlokal finalized
             versuch:
                 g = liefere
                 liefere 1
@@ -719,7 +719,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
         frame_locals1 = Nichts
 
         def g1():
-            nonlocal frame_locals1
+            nichtlokal frame_locals1
             frame_locals1 = sys._getframe().f_locals
             a = 42
             liefere
@@ -730,7 +730,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
 
         def get_frame_locals(index):
             wenn index == 1:
-                nonlocal frame_locals1
+                nichtlokal frame_locals1
                 next(g1())
                 gib frame_locals1
             wenn index == 2:
@@ -821,7 +821,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
             liefere
 
         def g(exc):
-            nonlocal has_cycle
+            nichtlokal has_cycle
             versuch:
                 wirf exc
             ausser Exception:
@@ -1913,7 +1913,7 @@ def conjoin(gs):
     # gen's use.
 
     def _gen3(i):
-        assert i < n und (n-i) % 3 == 0
+        pruefe i < n und (n-i) % 3 == 0
         ip1, ip2, ip3 = i+1, i+2, i+3
         g, g1, g2 = gs[i : ip3]
 
@@ -1963,7 +1963,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
         ausser _StopIteration:
             pass
         sonst:
-            assert i == n
+            pruefe i == n
             liefere values
 
         # Backtrack until an older iterator can be resumed.
@@ -1978,7 +1978,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
                 # Continue backtracking.
                 i -= 1
         sonst:
-            assert i < 0
+            pruefe i < 0
             breche
 
 # A conjoin-based N-Queens solver.
@@ -2024,7 +2024,7 @@ klasse Queens:
 
     def printsolution(self, row2col):
         n = self.n
-        assert n == len(row2col)
+        pruefe n == len(row2col)
         sep = "+" + "-+" * n
         drucke(sep)
         fuer i in range(n):
@@ -2092,12 +2092,12 @@ klasse Knights:
         # Generate the second moves.
         def second():
             corner = self.coords2index(0, 0)
-            assert self.lastij == corner  # i.e., we started in the corner
+            pruefe self.lastij == corner  # i.e., we started in the corner
             wenn m < 3 oder n < 3:
                 gib
-            assert len(succs[corner]) == 2
-            assert self.coords2index(1, 2) in succs[corner]
-            assert self.coords2index(2, 1) in succs[corner]
+            pruefe len(succs[corner]) == 2
+            pruefe self.coords2index(1, 2) in succs[corner]
+            pruefe self.coords2index(2, 1) in succs[corner]
             # Only two choices.  Whichever we pick, the other must be the
             # square picked on move m*n, als it's the only way to get back
             # to (0, 0).  Save its index in self.final so that moves before
@@ -2121,7 +2121,7 @@ klasse Knights:
             candidates = []
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_from_successors() pruning flawed"
+                pruefe e > 0, "else remove_from_successors() pruning flawed"
                 wenn e == 1:
                     candidates = [(e, i)]
                     breche
@@ -2149,7 +2149,7 @@ klasse Knights:
             candidates = []
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_from_successors() pruning flawed"
+                pruefe e > 0, "else remove_from_successors() pruning flawed"
                 wenn e == 1:
                     candidates = [(e, 0, i)]
                     breche
@@ -2168,7 +2168,7 @@ klasse Knights:
 
         # Generate the last move.
         def last():
-            assert self.final in succs[self.lastij]
+            pruefe self.final in succs[self.lastij]
             liefere self.final
 
         wenn m*n < 4:
@@ -2179,12 +2179,12 @@ klasse Knights:
                 [last]
 
     def coords2index(self, i, j):
-        assert 0 <= i < self.m
-        assert 0 <= j < self.n
+        pruefe 0 <= i < self.m
+        pruefe 0 <= j < self.n
         gib i * self.n + j
 
     def index2coords(self, index):
-        assert 0 <= index < self.m * self.n
+        pruefe 0 <= index < self.m * self.n
         gib divmod(index, self.n)
 
     def _init_board(self):
@@ -2211,7 +2211,7 @@ klasse Knights:
 
     def printsolution(self, x):
         m, n = self.m, self.n
-        assert len(x) == m*n
+        pruefe len(x) == m*n
         w = len(str(m*n))
         format = "%" + str(w) + "d"
 

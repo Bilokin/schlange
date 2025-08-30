@@ -14,7 +14,7 @@ von io importiere BytesIO
 ### Codec APIs
 
 def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     infile = BytesIO(input)
     outfile = BytesIO()
     read = infile.read
@@ -35,7 +35,7 @@ def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
     gib (outfile.getvalue(), len(input))
 
 def uu_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     infile = BytesIO(input)
     outfile = BytesIO()
     readline = infile.readline

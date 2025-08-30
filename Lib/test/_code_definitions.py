@@ -1,6 +1,6 @@
 
 def simple_script():
-    assert Wahr
+    pruefe Wahr
 
 
 def complex_script():
@@ -11,13 +11,13 @@ def complex_script():
     spam_minimal()
     data = pickle.dumps(obj)
     res = pickle.loads(data)
-    assert res == obj, (res, obj)
+    pruefe res == obj, (res, obj)
 
 
 def script_with_globals():
     obj1, obj2 = spam(42)
-    assert obj1 == 42
-    assert obj2 ist Nichts
+    pruefe obj1 == 42
+    pruefe obj2 ist Nichts
 
 
 def script_with_explicit_empty_return():

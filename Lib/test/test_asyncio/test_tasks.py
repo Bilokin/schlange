@@ -327,7 +327,7 @@ klasse BaseTaskTests:
             self.assertRegex(tb, r'foo\(\) running')
 
         async def runner():
-            nonlocal T
+            nichtlokal T
             T = asyncio.ensure_future(foo(), loop=self.loop)
             warte T
 
@@ -494,7 +494,7 @@ klasse BaseTaskTests:
             wirf exc
 
         async def run():
-            nonlocal has_cycle
+            nichtlokal has_cycle
             versuch:
                 wirf KeyError('a')
             ausser Exception als exc:
@@ -606,7 +606,7 @@ klasse BaseTaskTests:
             outer_code_reached = Falsch
 
             def on_timeout():
-                nonlocal timed_out
+                nichtlokal timed_out
                 timed_out = Wahr
                 task.cancel()
 
@@ -1010,7 +1010,7 @@ klasse BaseTaskTests:
             warte fut
 
         async def coro():
-            nonlocal nested_task
+            nichtlokal nested_task
             # Create a sub-task und wait fuer it to run.
             nested_task = self.new_task(loop, nested())
             warte asyncio.sleep(0)
@@ -1105,7 +1105,7 @@ klasse BaseTaskTests:
         x = 0
 
         async def task():
-            nonlocal x
+            nichtlokal x
             waehrend x < 10:
                 warte asyncio.sleep(0.1)
                 x += 1
@@ -1437,7 +1437,7 @@ klasse BaseTaskTests:
             liefere 0
 
         async def sleeper(dt, x):
-            nonlocal time_shifted
+            nichtlokal time_shifted
             warte asyncio.sleep(dt)
             completed.add(x)
             wenn nicht time_shifted und 'a' in completed und 'b' in completed:
@@ -1803,7 +1803,7 @@ klasse BaseTaskTests:
         orig_call_later = loop.call_later
 
         def call_later(delay, callback, *args):
-            nonlocal handle
+            nichtlokal handle
             handle = orig_call_later(delay, callback, *args)
             gib handle
 
@@ -1894,7 +1894,7 @@ klasse BaseTaskTests:
         result = Nichts
 
         async def wait_for_future():
-            nonlocal result
+            nichtlokal result
             result = warte fut
 
         t = self.new_task(self.loop, wait_for_future())
@@ -2032,7 +2032,7 @@ klasse BaseTaskTests:
         waiter = self.new_future(self.loop)
 
         async def inner():
-            nonlocal proof
+            nichtlokal proof
             versuch:
                 warte waiter
             ausser asyncio.CancelledError:
@@ -2042,7 +2042,7 @@ klasse BaseTaskTests:
                 self.fail('got past sleep() in inner()')
 
         async def outer():
-            nonlocal proof
+            nichtlokal proof
             versuch:
                 warte inner()
             ausser asyncio.CancelledError:
@@ -2064,12 +2064,12 @@ klasse BaseTaskTests:
         waiter = self.new_future(self.loop)
 
         async def inner():
-            nonlocal proof
+            nichtlokal proof
             warte waiter
             proof += 1
 
         async def outer():
-            nonlocal proof
+            nichtlokal proof
             mit self.assertWarns(DeprecationWarning):
                 d, p = warte asyncio.wait([asyncio.create_task(inner())])
             proof += 100
@@ -2168,12 +2168,12 @@ klasse BaseTaskTests:
         waiter = self.new_future(self.loop)
 
         async def inner():
-            nonlocal proof
+            nichtlokal proof
             warte waiter
             proof += 1
 
         async def outer():
-            nonlocal proof
+            nichtlokal proof
             warte asyncio.shield(inner())
             proof += 100
 
@@ -2401,7 +2401,7 @@ klasse BaseTaskTests:
 
         cancel_result = Nichts
         def cancelling_callback(_):
-            nonlocal cancel_result
+            nichtlokal cancel_result
             cancel_result = gather_task.cancel()
         fut.add_done_callback(cancelling_callback)
 
@@ -2730,7 +2730,7 @@ klasse BaseTaskTests:
         name = Nichts
 
         async def asyncfn():
-            nonlocal name
+            nichtlokal name
             name = self.current_task().get_name()
 
         async def main():
@@ -2743,7 +2743,7 @@ klasse BaseTaskTests:
         name = Nichts
 
         async def asyncfn():
-            nonlocal name
+            nichtlokal name
             name = self.current_task().get_name()
 
         async def main():
@@ -3521,7 +3521,7 @@ klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
         waiter = self.one_loop.create_future()
 
         async def inner():
-            nonlocal proof
+            nichtlokal proof
             warte waiter
             proof += 1
 
@@ -3530,7 +3530,7 @@ klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
         gatherer = Nichts
 
         async def outer():
-            nonlocal proof, gatherer
+            nichtlokal proof, gatherer
             gatherer = asyncio.gather(child1, child2)
             warte gatherer
             proof += 100
@@ -3696,7 +3696,7 @@ klasse SleepTests(test_utils.TestCase):
         result = 0
 
         def inc_result(num):
-            nonlocal result
+            nichtlokal result
             result += num
 
         async def coro():

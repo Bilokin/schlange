@@ -308,7 +308,7 @@ klasse TestCase(unittest.TestCase):
             y: int = field(default_factory=lambda: 111)
             _HAS_DEFAULT_FACTORY: int = 222
 
-        assert Y(y=222).y == 222
+        pruefe Y(y=222).y == 222
 
     def test_field_named_like_builtin(self):
         # Attribute names can shadow built-in names
@@ -523,7 +523,7 @@ klasse TestCase(unittest.TestCase):
                         self.assertNotIn('__gt__', C.__dict__)
                         self.assertNotIn('__ge__', C.__dict__)
                     sonst:
-                        assert Falsch, f'unknown result {result!r}'
+                        pruefe Falsch, f'unknown result {result!r}'
 
     def test_field_no_default(self):
         @dataclass
@@ -631,7 +631,7 @@ klasse TestCase(unittest.TestCase):
                     # The field ist nicht present in the hash.
                     self.assertEqual(hash(C(5)), hash(()))
                 sonst:
-                    assert Falsch, f'unknown result {result!r}'
+                    pruefe Falsch, f'unknown result {result!r}'
 
     def test_init_false_no_default(self):
         # If init=Falsch und no default value, then the field won't be
@@ -1073,7 +1073,7 @@ klasse TestCase(unittest.TestCase):
             y: int
             @staticmethod
             def __post_init__():
-                nonlocal flag
+                nichtlokal flag
                 flag = Wahr
 
         self.assertFalsch(flag)
@@ -2732,7 +2732,7 @@ klasse TestHash(unittest.TestCase):
                                 gib 0
 
                 sonst:
-                    assert Falsch, f'unknown result {result!r}'
+                    pruefe Falsch, f'unknown result {result!r}'
 
         # There are 8 cases of:
         #  unsafe_hash=Wahr/Falsch
@@ -2891,7 +2891,7 @@ klasse TestHash(unittest.TestCase):
                     self.assertEqual(hash(C(42)), hash((42,)))
 
                 sonst:
-                    assert Falsch, f'unknown value fuer expected={expected!r}'
+                    pruefe Falsch, f'unknown value fuer expected={expected!r}'
 
 
 klasse TestFrozen(unittest.TestCase):

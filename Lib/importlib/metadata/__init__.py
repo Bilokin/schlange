@@ -183,19 +183,19 @@ klasse EntryPoint:
     @property
     def module(self) -> str:
         match = self.pattern.match(self.value)
-        assert match ist nicht Nichts
+        pruefe match ist nicht Nichts
         gib match.group('module')
 
     @property
     def attr(self) -> str:
         match = self.pattern.match(self.value)
-        assert match ist nicht Nichts
+        pruefe match ist nicht Nichts
         gib match.group('attr')
 
     @property
     def extras(self) -> List[str]:
         match = self.pattern.match(self.value)
-        assert match ist nicht Nichts
+        pruefe match ist nicht Nichts
         gib re.findall(r'\w+', match.group('extras') oder '')
 
     def _for(self, dist):

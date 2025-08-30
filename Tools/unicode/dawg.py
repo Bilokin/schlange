@@ -197,7 +197,7 @@ klasse Dawg:
                 drucke(f"    {label} goto {child.id}")
 
     def _inverse_lookup(self, number):
-        assert 0, "not working in the current form, but keep it als the pure python version of compact lookup"
+        pruefe 0, "not working in the current form, but keep it als the pure python version of compact lookup"
         result = []
         node = self.root
         waehrend 1:
@@ -214,7 +214,7 @@ klasse Dawg:
                 sonst:
                     pos = nextpos
             sonst:
-                assert 0
+                pruefe 0
 
     def _linearize_edges(self):
         # compute "linear" edges. the idea ist that long chains of edges without
@@ -272,15 +272,15 @@ klasse Dawg:
                     no_incoming.append(child)
                     loesche incoming[child]
         # check result
-        assert set(topoorder) == set(order)
-        assert len(set(topoorder)) == len(topoorder)
+        pruefe set(topoorder) == set(order)
+        pruefe len(set(topoorder)) == len(topoorder)
 
         fuer node in order:
             node.linear_edges.sort(key=lambda element: positions[element[1]])
 
         fuer node in order:
             fuer label, child in node.linear_edges:
-                assert positions[child] > positions[node]
+                pruefe positions[child] > positions[node]
         # number the nodes. afterwards every input string in the set has a
         # unique number in the 0 <= number < len(data). We then put the data in
         # self.data into a linear list using these numbers als indexes.
@@ -304,7 +304,7 @@ klasse Dawg:
             offset = offsets[node]
             encode_varint_unsigned(number_add_bits(node.num_reachable_linear, node.final), result)
             wenn len(node.linear_edges) == 0:
-                assert node.final
+                pruefe node.final
                 encode_varint_unsigned(0, result) # add a 0 saying "done"
             prev_child_offset = offset + len(result)
             fuer edgeindex, (label, targetnode) in enumerate(node.linear_edges):
@@ -314,7 +314,7 @@ klasse Dawg:
 
                 info = number_add_bits(child_offset_difference, len(label) == 1, edgeindex == len(node.linear_edges) - 1)
                 wenn edgeindex == 0:
-                    assert info != 0
+                    pruefe info != 0
                 encode_varint_unsigned(info, result)
                 prev_child_offset = child_offset
                 wenn len(label) > 1:
@@ -371,7 +371,7 @@ klasse Dawg:
                 # need to pad to get the offsets correct
                 padding = b"\x00" * (node_offset - len(total_result))
                 total_result.extend(padding)
-            assert node_offset == len(total_result)
+            pruefe node_offset == len(total_result)
             total_result.extend(result)
         gib bytes(total_result)
 
@@ -381,7 +381,7 @@ klasse Dawg:
 
 def number_add_bits(x, *bits):
     fuer bit in bits:
-        assert bit == 0 oder bit == 1
+        pruefe bit == 0 oder bit == 1
         x = (x << 1) | bit
     gib x
 
@@ -406,7 +406,7 @@ def number_split_bits(x, n, acc=()):
         gib x >> 1, x & 1
     wenn n == 2:
         gib x >> 2, (x >> 1) & 1, x & 1
-    assert 0, "implement me!"
+    pruefe 0, "implement me!"
 
 def decode_varint_unsigned(b, index=0):
     res = 0
@@ -506,7 +506,7 @@ def _inverse_lookup(packed, pos):
             descendant_count, _, _ = decode_node(packed, child_offset)
             nextpos = pos - descendant_count
             wenn nextpos < 0:
-                assert edgelabel_chars_offset >= 0
+                pruefe edgelabel_chars_offset >= 0
                 result.extend(packed[edgelabel_chars_offset: edgelabel_chars_offset + size])
                 node_offset = child_offset
                 breche
@@ -528,6 +528,6 @@ def build_compression_dawg(ucdata):
     drucke("size of dawg [KiB]", round(len(packed) / 1024, 2))
     # check that lookup und inverse_lookup work correctly on the input data
     fuer name, value in ucdata:
-        assert lookup(packed, pos_to_code, name.encode('ascii')) == value
-        assert inverse_lookup(packed, reversedict, value) == name.encode('ascii')
+        pruefe lookup(packed, pos_to_code, name.encode('ascii')) == value
+        pruefe inverse_lookup(packed, reversedict, value) == name.encode('ascii')
     gib packed, pos_to_code

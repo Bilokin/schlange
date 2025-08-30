@@ -38,7 +38,7 @@ klasse TestBase:
         fuer b in self.tstring:
             lines = b.split(b"\n")
             last = lines.pop()
-            assert last == b""
+            pruefe last == b""
             lines = [line + b"\n" fuer line in lines]
             tstring_lines.append(lines)
         fuer native, utf8 in zip(*tstring_lines):

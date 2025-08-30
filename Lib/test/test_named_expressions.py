@@ -652,7 +652,7 @@ drucke(a)"""
     def test_named_expression_scope_24(self):
         a = 10
         def spam():
-            nonlocal a
+            nichtlokal a
             (a := 20)
         spam()
 
@@ -725,7 +725,7 @@ spam()"""
         def f():
             nonlocal_var = Nichts
             def g():
-                nonlocal nonlocal_var
+                nichtlokal nonlocal_var
                 [nonlocal_var := sentinel fuer _ in range(1)]
             g()
             self.assertEqual(nonlocal_var, sentinel)

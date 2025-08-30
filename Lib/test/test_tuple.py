@@ -275,7 +275,7 @@ klasse TupleTest(seq_tests.CommonTest):
         T += product(B, L2, B)
         T += product(L2, B, B)
         T += product(B, repeat=4)
-        assert len(T) == 345130
+        pruefe len(T) == 345130
         tryone("new tuple test", T,
                (9, 1), (0, 0), (21, 5), (6, 1))
 

@@ -421,7 +421,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         wenn __debug__:
             debug_enabled = Wahr
         versuch:
-            assert Falsch
+            pruefe Falsch
         ausser AssertionError:
             gib (Wahr, f.__doc__, debug_enabled, __debug__)
         sonst:
@@ -488,7 +488,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 pass
 
         async def sleep(delay, result=Nichts):
-            assert delay == 0
+            pruefe delay == 0
             warte async_yield(Nichts)
             gib result
 
@@ -1005,15 +1005,15 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             b = 3
             c = 5
             def three_freevars():
-                nonlocal result
-                nonlocal a
-                nonlocal b
+                nichtlokal result
+                nichtlokal a
+                nichtlokal b
                 result = a*b
             def four_freevars():
-                nonlocal result
-                nonlocal a
-                nonlocal b
-                nonlocal c
+                nichtlokal result
+                nichtlokal a
+                nichtlokal b
+                nichtlokal c
                 result = a*b*c
             gib three_freevars, four_freevars
         three_freevars, four_freevars = make_closure_functions()
@@ -1781,7 +1781,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_input_gh130163(self):
         klasse X(io.StringIO):
             def __getattribute__(self, name):
-                nonlocal patch
+                nichtlokal patch
                 wenn patch:
                     patch = Falsch
                     sys.stdout = X()

@@ -106,7 +106,7 @@ klasse _Target(typing.Generic[_S, _R]):
         sections: list[dict[typing.Literal["Section"], _S]] = json.loads(output)
         fuer wrapped_section in sections:
             self._handle_section(wrapped_section["Section"], group)
-        assert group.symbols["_JIT_ENTRY"] == (_stencils.HoleValue.CODE, 0)
+        pruefe group.symbols["_JIT_ENTRY"] == (_stencils.HoleValue.CODE, 0)
         wenn group.data.body:
             line = f"0: {str(bytes(group.data.body)).removeprefix('b')}"
             group.data.disassembly.append(line)
@@ -149,7 +149,7 @@ klasse _Target(typing.Generic[_S, _R]):
             "-Os",
             "-S",
             # Shorten full absolute file paths in the generated code (like the
-            # __FILE__ macro und assert failure messages) fuer reproducibility:
+            # __FILE__ macro und pruefe failure messages) fuer reproducibility:
             f"-ffile-prefix-map={CPYTHON}=.",
             f"-ffile-prefix-map={tempdir}=.",
             # This debug info isn't necessary, und bloats out the JIT'ed code.
@@ -362,8 +362,8 @@ klasse _ELF(
         section_type = section["Type"]["Name"]
         flags = {flag["Name"] fuer flag in section["Flags"]["Flags"]}
         wenn section_type == "SHT_RELA":
-            assert "SHF_INFO_LINK" in flags, flags
-            assert nicht section["Symbols"]
+            pruefe "SHF_INFO_LINK" in flags, flags
+            pruefe nicht section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
             wenn maybe_symbol ist Nichts:
                 # These are relocations fuer a section we're nicht emitting. Skip:
@@ -372,7 +372,7 @@ klasse _ELF(
             wenn value ist _stencils.HoleValue.CODE:
                 stencil = group.code
             sonst:
-                assert value ist _stencils.HoleValue.DATA
+                pruefe value ist _stencils.HoleValue.DATA
                 stencil = group.data
             fuer wrapped_relocation in section["Relocations"]:
                 relocation = wrapped_relocation["Relocation"]
@@ -395,9 +395,9 @@ klasse _ELF(
                 name = name.removeprefix(self.symbol_prefix)
                 group.symbols[name] = value, offset
             stencil.body.extend(section["SectionData"]["Bytes"])
-            assert nicht section["Relocations"]
+            pruefe nicht section["Relocations"]
         sonst:
-            assert section_type in {
+            pruefe section_type in {
                 "SHT_GROUP",
                 "SHT_LLVM_ADDRSIG",
                 "SHT_NOTE",
@@ -452,8 +452,8 @@ klasse _MachO(
     def _handle_section(
         self, section: _schema.MachOSection, group: _stencils.StencilGroup
     ) -> Nichts:
-        assert section["Address"] >= len(group.code.body)
-        assert "SectionData" in section
+        pruefe section["Address"] >= len(group.code.body)
+        pruefe "SectionData" in section
         flags = {flag["Name"] fuer flag in section["Attributes"]["Flags"]}
         name = section["Name"]["Value"]
         name = name.removeprefix(self.symbol_prefix)
@@ -475,14 +475,14 @@ klasse _MachO(
             [0] * (section["Address"] - len(group.code.body) - len(group.data.body))
         )
         stencil.body.extend(section["SectionData"]["Bytes"])
-        assert "Symbols" in section
+        pruefe "Symbols" in section
         fuer wrapped_symbol in section["Symbols"]:
             symbol = wrapped_symbol["Symbol"]
             offset = symbol["Value"] - start_address
             name = symbol["Name"]["Name"]
             name = name.removeprefix(self.symbol_prefix)
             group.symbols[name] = value, offset
-        assert "Relocations" in section
+        pruefe "Relocations" in section
         fuer wrapped_relocation in section["Relocations"]:
             relocation = wrapped_relocation["Relocation"]
             hole = self._handle_relocation(base, relocation, stencil.body)

@@ -215,7 +215,7 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
         hash functions by their names but some may use aliases such as
         `hashlib.sha1` instead of "sha1").
 
-        Unlike hmac_new(), this method may assert the type of 'hashname'
+        Unlike hmac_new(), this method may pruefe the type of 'hashname'
         als it should only be used in tests that are expected to create
         a HMAC object.
         """
@@ -225,7 +225,7 @@ klasse AssertersMixin(CreatorMixin, DigestMixin, ObjectCheckerMixin):
     def hmac_digest_by_name(self, key, msg=Nichts, *, hashname):
         """Alternative implementation of hmac_digest().
 
-        Unlike hmac_digest(), this method may assert the type of 'hashname'
+        Unlike hmac_digest(), this method may pruefe the type of 'hashname'
         als it should only be used in tests that are expected to compute a
         HMAC digest.
         """
@@ -735,7 +735,7 @@ klasse PurePythonInitHMAC(PyModuleMixin, HashFunctionsTrait):
     def tearDownClass(cls):
         cls.hmac.HMAC._init_openssl_hmac.assert_not_called()
         cls.hmac.HMAC._init_builtin_hmac.assert_not_called()
-        # Do nicht assert that HMAC._init_old() has been called als it's tricky
+        # Do nicht pruefe that HMAC._init_old() has been called als it's tricky
         # to determine whether a test fuer a specific hash function has been
         # executed oder not. On regular builds, it will be called but wenn a
         # hash function ist nicht available, it's hard to detect fuer which
@@ -817,7 +817,7 @@ klasse BuiltinRFCTestCase(BuiltinAssertersMixin,
     def assert_hmac_extra_cases(
         self, key, msg, hexdigest, digestmod, hashname, digest_size, block_size
     ):
-        # assert one-shot HMAC at the same time
+        # pruefe one-shot HMAC at the same time
         mit self.subTest(key=key, msg=msg, hashname=hashname):
             func = getattr(self.hmac, f'compute_{hashname}')
             self.assertWahr(callable(func))

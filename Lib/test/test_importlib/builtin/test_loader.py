@@ -49,7 +49,7 @@ klasse LoaderTests(abc.LoaderTests):
 
     def test_unloadable(self):
         name = 'dssdsdfff'
-        assert name nicht in sys.builtin_module_names
+        pruefe name nicht in sys.builtin_module_names
         mit self.assertRaises(ImportError) als cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
@@ -58,7 +58,7 @@ klasse LoaderTests(abc.LoaderTests):
         # Using the name of a module already imported but nicht a built-in should
         # still fail.
         module_name = 'builtin_reload_test'
-        assert module_name nicht in sys.builtin_module_names
+        pruefe module_name nicht in sys.builtin_module_names
         mit util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module

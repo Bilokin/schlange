@@ -65,7 +65,7 @@ klasse Node:
     @property
     def first_token(self) -> lx.Token:
         context = self.context
-        assert context ist nicht Nichts
+        pruefe context ist nicht Nichts
         gib context.owner.tokens[context.begin]
 
 # Statements

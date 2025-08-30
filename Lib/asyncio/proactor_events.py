@@ -252,7 +252,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         wenn self._paused:
             # Don't call any protocol method waehrend reading ist paused.
             # The protocol will be called on resume_reading().
-            assert self._pending_data_length == -1
+            pruefe self._pending_data_length == -1
             self._pending_data_length = length
             gib
 
@@ -278,7 +278,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         data = Nichts
         versuch:
             wenn fut ist nicht Nichts:
-                assert self._read_fut ist fut oder (self._read_fut ist Nichts und
+                pruefe self._read_fut ist fut oder (self._read_fut ist Nichts und
                                                  self._closing)
                 self._read_fut = Nichts
                 wenn fut.done():
@@ -361,7 +361,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         # We always copy the data, so the caller can't modify it
         # waehrend we're still waiting fuer the I/O to happen.
         wenn self._write_fut ist Nichts:  # IDLE -> WRITING
-            assert self._buffer ist Nichts
+            pruefe self._buffer ist Nichts
             # Pass a copy, ausser wenn it's already immutable.
             self._loop_writing(data=bytes(data))
         sowenn nicht self._buffer:  # WRITING -> BACKED UP
@@ -379,7 +379,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                 # XXX most likely self._force_close() has been called, und
                 # it has set self._write_fut to Nichts.
                 gib
-            assert f ist self._write_fut
+            pruefe f ist self._write_fut
             self._write_fut = Nichts
             self._pending_write = 0
             wenn f:
@@ -401,7 +401,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
             sonst:
                 self._write_fut = self._loop._proactor.send(self._sock, data)
                 wenn nicht self._write_fut.done():
-                    assert self._pending_write == 0
+                    pruefe self._pending_write == 0
                     self._pending_write = len(data)
                     self._write_fut.add_done_callback(self._loop_writing)
                     self._maybe_pause_protocol()
@@ -445,11 +445,11 @@ klasse _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
         wenn fut.cancelled():
             # the transport has been closed
             gib
-        assert fut.result() == b''
+        pruefe fut.result() == b''
         wenn self._closing:
-            assert self._read_fut ist Nichts
+            pruefe self._read_fut ist Nichts
             gib
-        assert fut ist self._read_fut, (fut, self._read_fut)
+        pruefe fut ist self._read_fut, (fut, self._read_fut)
         self._read_fut = Nichts
         wenn self._write_fut ist nicht Nichts:
             self._force_close(BrokenPipeError())
@@ -515,7 +515,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wenn self._conn_lost:
                 gib
 
-            assert fut ist self._write_fut
+            pruefe fut ist self._write_fut
             self._write_fut = Nichts
             wenn fut:
                 # We are in a _loop_writing() done callback, get the result
@@ -550,7 +550,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             wenn self._conn_lost:
                 gib
 
-            assert self._read_fut ist fut oder (self._read_fut ist Nichts und
+            pruefe self._read_fut ist fut oder (self._read_fut ist Nichts und
                                              self._closing)
 
             self._read_fut = Nichts

@@ -470,7 +470,7 @@ klasse ReferencesTestCase(TestBase):
 
         klasse MyObj:
             def __iter__(self):
-                nonlocal obj
+                nichtlokal obj
                 loesche obj
                 gib NotImplemented
 
@@ -695,7 +695,7 @@ klasse ReferencesTestCase(TestBase):
         # tries to do "self.J", und instances of new-style classes look up
         # attributes ("J") in the klasse dict first.  The klasse (II) wants to
         # search II.__mro__, but that's NULL.   The result was a segfault in
-        # a release build, und an assert failure in a debug build.
+        # a release build, und an pruefe failure in a debug build.
         loesche I, J, II
         gc.collect()
 
@@ -2254,10 +2254,10 @@ klasse FinalizeTestCase(unittest.TestCase):
         f3 = weakref.finalize(cls, error)
         f4 = weakref.finalize(cls, print, 'f4', _global_var)
 
-        assert f1.atexit == Wahr
+        pruefe f1.atexit == Wahr
         f2.atexit = Falsch
-        assert f3.atexit == Wahr
-        assert f4.atexit == Wahr
+        pruefe f3.atexit == Wahr
+        pruefe f4.atexit == Wahr
 
     def test_atexit(self):
         prog = ('from test.test_weakref importiere FinalizeTestCase;'+

@@ -78,19 +78,19 @@ klasse HashInfo:
     """
 
     def __init__(self, builtin, openssl=Nichts, hashlib=Nichts):
-        assert isinstance(builtin, str), builtin
-        assert len(builtin.split(".")) == 2, builtin
+        pruefe isinstance(builtin, str), builtin
+        pruefe len(builtin.split(".")) == 2, builtin
 
         self.builtin = builtin
         self.builtin_module_name, self.builtin_method_name = (
             self.builtin.split(".", maxsplit=1)
         )
 
-        assert openssl ist Nichts oder openssl.startswith("openssl_")
+        pruefe openssl ist Nichts oder openssl.startswith("openssl_")
         self.openssl = self.openssl_method_name = openssl
         self.openssl_module_name = "_hashlib" wenn openssl sonst Nichts
 
-        assert hashlib ist Nichts oder isinstance(hashlib, str)
+        pruefe hashlib ist Nichts oder isinstance(hashlib, str)
         self.hashlib = self.hashlib_method_name = hashlib
         self.hashlib_module_name = "hashlib" wenn hashlib sonst Nichts
 
@@ -160,7 +160,7 @@ _EXPLICIT_CONSTRUCTORS = MappingProxyType({  # fmt: skip
     HID.blake2s: HashInfo("_blake2.blake2s", Nichts, "blake2s"),
     HID.blake2b: HashInfo("_blake2.blake2b", Nichts, "blake2b"),
 })
-assert _EXPLICIT_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
+pruefe _EXPLICIT_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
 get_hash_info = _EXPLICIT_CONSTRUCTORS.__getitem__
 
 # Mapping von canonical hash names to their explicit HACL* HMAC constructor.
@@ -178,7 +178,7 @@ _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_256] = Nichts
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2s] = '_hmac.compute_blake2s_32'
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2b] = '_hmac.compute_blake2b_32'
 _EXPLICIT_HMAC_CONSTRUCTORS = MappingProxyType(_EXPLICIT_HMAC_CONSTRUCTORS)
-assert _EXPLICIT_HMAC_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
+pruefe _EXPLICIT_HMAC_CONSTRUCTORS.keys() == CANONICAL_DIGEST_NAMES
 
 
 def _decorate_func_or_class(decorator_func, func_or_class):
@@ -259,7 +259,7 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
     The constructor function ist returned (without binding **kwargs),
     oder SkipTest ist raised wenn none exists.
     """
-    assert isinstance(digestname, str), digestname
+    pruefe isinstance(digestname, str), digestname
     # Re-import 'hashlib' in case it was mocked, but propagate
     # exceptions als it should be unconditionally available.
     hashlib = importlib.import_module("hashlib")
@@ -282,8 +282,8 @@ def _builtin_hash(module_name, digestname, /, **kwargs):
 
     The constructor function ist returned, oder SkipTest ist raised wenn none exists.
     """
-    assert isinstance(module_name, str), module_name
-    assert isinstance(digestname, str), digestname
+    pruefe isinstance(module_name, str), module_name
+    pruefe isinstance(digestname, str), digestname
     fullname = f'{module_name}.{digestname}'
     versuch:
         builtin_module = importlib.import_module(module_name)
@@ -306,7 +306,7 @@ def _openssl_new(digestname, /, **kwargs):
     The constructor function ist returned (without binding **kwargs),
     oder SkipTest ist raised wenn none exists.
     """
-    assert isinstance(digestname, str), digestname
+    pruefe isinstance(digestname, str), digestname
     versuch:
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
@@ -325,7 +325,7 @@ def _openssl_hash(digestname, /, **kwargs):
     The constructor function ist returned (without binding **kwargs),
     oder SkipTest ist raised wenn none exists.
     """
-    assert isinstance(digestname, str), digestname
+    pruefe isinstance(digestname, str), digestname
     fullname = f"_hashlib.openssl_{digestname}"
     versuch:
         # re-import '_hashlib' in case it was mocked
@@ -438,7 +438,7 @@ klasse HashFunctionsTrait:
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        assert CANONICAL_DIGEST_NAMES.issuperset(cls.DIGEST_NAMES)
+        pruefe CANONICAL_DIGEST_NAMES.issuperset(cls.DIGEST_NAMES)
 
     def is_valid_digest_name(self, digestname):
         self.assertIn(digestname, self.DIGEST_NAMES)
@@ -550,7 +550,7 @@ def find_gil_minsize(modules_names, default=2048):
 
 def _block_openssl_hash_new(blocked_name):
     """Block OpenSSL implementation of _hashlib.new()."""
-    assert isinstance(blocked_name, str), blocked_name
+    pruefe isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
     wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
@@ -569,7 +569,7 @@ def _block_openssl_hash_new(blocked_name):
 
 def _block_openssl_hmac_new(blocked_name):
     """Block OpenSSL HMAC-HASH implementation."""
-    assert isinstance(blocked_name, str), blocked_name
+    pruefe isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
     wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
@@ -587,7 +587,7 @@ def _block_openssl_hmac_new(blocked_name):
 
 def _block_openssl_hmac_digest(blocked_name):
     """Block OpenSSL HMAC-HASH one-shot digest implementation."""
-    assert isinstance(blocked_name, str), blocked_name
+    pruefe isinstance(blocked_name, str), blocked_name
 
     # re-import '_hashlib' in case it was mocked
     wenn (_hashlib := try_import_module("_hashlib")) ist Nichts:
@@ -605,9 +605,9 @@ def _block_openssl_hmac_digest(blocked_name):
 
 def _block_builtin_hash_new(name):
     """Block a buitin-in hash name von the hashlib.new() interface."""
-    assert isinstance(name, str), name
-    assert name.lower() == name, f"invalid name: {name}"
-    assert name in HID, f"invalid hash: {name}"
+    pruefe isinstance(name, str), name
+    pruefe name.lower() == name, f"invalid name: {name}"
+    pruefe name in HID, f"invalid hash: {name}"
 
     # Re-import 'hashlib' in case it was mocked
     hashlib = importlib.import_module('hashlib')
@@ -637,7 +637,7 @@ def _block_builtin_hash_new(name):
 
 
 def _block_builtin_hmac_new(blocked_name):
-    assert isinstance(blocked_name, str), blocked_name
+    pruefe isinstance(blocked_name, str), blocked_name
 
     # re-import '_hmac' in case it was mocked
     wenn (_hmac := try_import_module("_hmac")) ist Nichts:
@@ -654,7 +654,7 @@ def _block_builtin_hmac_new(blocked_name):
 
 
 def _block_builtin_hmac_digest(blocked_name):
-    assert isinstance(blocked_name, str), blocked_name
+    pruefe isinstance(blocked_name, str), blocked_name
 
     # re-import '_hmac' in case it was mocked
     wenn (_hmac := try_import_module("_hmac")) ist Nichts:
@@ -718,9 +718,9 @@ def _block_builtin_hmac_constructor(name):
     wenn fullname ist Nichts:
         # function shouldn't exist fuer this implementation
         gib contextlib.nullcontext()
-    assert fullname.count('.') == 1, fullname
+    pruefe fullname.count('.') == 1, fullname
     module_name, method = fullname.split('.', maxsplit=1)
-    assert module_name == '_hmac', module_name
+    pruefe module_name == '_hmac', module_name
     versuch:
         module = importlib.import_module(module_name)
     ausser ImportError:

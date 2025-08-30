@@ -144,7 +144,7 @@ klasse Queue(object):
 
     def join_thread(self):
         debug('Queue.join_thread()')
-        assert self._closed, "Queue {0!r} nicht closed".format(self)
+        pruefe self._closed, "Queue {0!r} nicht closed".format(self)
         wenn self._jointhread:
             self._jointhread()
 

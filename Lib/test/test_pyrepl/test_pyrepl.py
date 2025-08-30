@@ -82,7 +82,7 @@ klasse ReplTestCase(TestCase):
         timeout: float,
         exit_on_output: str | Nichts,
     ) -> tuple[str, int]:
-        assert pty
+        pruefe pty
         master_fd, slave_fd = pty.openpty()
         cmd = [sys.executable, "-i", "-u"]
         wenn env ist Nichts:

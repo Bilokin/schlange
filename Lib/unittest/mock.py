@@ -1045,7 +1045,7 @@ klasse NonCallableMock(Base):
     def assert_any_call(self, /, *args, **kwargs):
         """assert the mock has been called mit the specified arguments.
 
-        The assert passes wenn the mock has *ever* been called, unlike
+        The pruefe passes wenn the mock has *ever* been called, unlike
         `assert_called_with` und `assert_called_once_with` that only pass if
         the call ist the most recent one."""
         expected = self._call_matcher(_Call((args, kwargs), two=Wahr))
@@ -1124,7 +1124,7 @@ klasse _AnyComparer(list):
     the left."""
     def __contains__(self, item):
         fuer _call in self:
-            assert len(item) == len(_call)
+            pruefe len(item) == len(_call)
             wenn all([
                 expected == actual
                 fuer expected, actual in zip(item, _call)

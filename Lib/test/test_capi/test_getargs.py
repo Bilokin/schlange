@@ -1447,7 +1447,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                 check_multi_interp_extensions=Wahr,
             )
             rc = support.run_in_subinterp_with_config(script, **config)
-            assert rc == 0
+            pruefe rc == 0
 
             # The crash ist different wenn the interpreter was nicht destroyed first.
             #interpid = _testinternalcapi.create_interpreter()

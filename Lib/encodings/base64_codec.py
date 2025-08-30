@@ -11,11 +11,11 @@ importiere base64
 ### Codec APIs
 
 def base64_encode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (base64.encodebytes(input), len(input))
 
 def base64_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     gib (base64.decodebytes(input), len(input))
 
 klasse Codec(codecs.Codec):
@@ -26,12 +26,12 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        assert self.errors == 'strict'
+        pruefe self.errors == 'strict'
         gib base64.encodebytes(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        assert self.errors == 'strict'
+        pruefe self.errors == 'strict'
         gib base64.decodebytes(input)
 
 klasse StreamWriter(Codec, codecs.StreamWriter):

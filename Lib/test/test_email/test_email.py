@@ -4709,7 +4709,7 @@ klasse TestQuopri(unittest.TestCase):
         # Set of characters (as byte integers) that do need to be encoded in
         # headers.
         self.hnon = [c fuer c in range(256) wenn c nicht in self.hlit]
-        assert len(self.hlit) + len(self.hnon) == 256
+        pruefe len(self.hlit) + len(self.hnon) == 256
         # Set of characters (as byte integers) that don't need to be encoded
         # in bodies.
         self.blit = list(range(ord(' '), ord('~') + 1))
@@ -4718,7 +4718,7 @@ klasse TestQuopri(unittest.TestCase):
         # Set of characters (as byte integers) that do need to be encoded in
         # bodies.
         self.bnon = [c fuer c in range(256) wenn c nicht in self.blit]
-        assert len(self.blit) + len(self.bnon) == 256
+        pruefe len(self.blit) + len(self.bnon) == 256
 
     def test_quopri_header_check(self):
         fuer c in self.hlit:

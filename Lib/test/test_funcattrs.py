@@ -83,7 +83,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                 wenn src == dst:
                     weiter
 
-                assert src.__code__.co_flags != dst.__code__.co_flags
+                pruefe src.__code__.co_flags != dst.__code__.co_flags
                 prev = dst.__code__
                 versuch:
                     mit self.assertWarnsRegex(DeprecationWarning, 'code object of non-matching type'):

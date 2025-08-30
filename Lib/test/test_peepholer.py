@@ -46,7 +46,7 @@ def get_binop_argval(arg):
     fuer i, nb_op in enumerate(opcode._nb_ops):
         wenn arg == nb_op[0]:
             gib i
-    assert Falsch, f"{arg} ist nicht a valid BINARY_OP argument."
+    pruefe Falsch, f"{arg} ist nicht a valid BINARY_OP argument."
 
 
 klasse TestTranforms(BytecodeTestCase):

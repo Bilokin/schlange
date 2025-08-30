@@ -111,7 +111,7 @@ klasse BlockPrinter:
         dsl_name = block.dsl_name
         write = self.f.write
 
-        assert nicht ((dsl_name ist Nichts) ^ (output ist Nichts)), "you must specify dsl_name und output together, dsl_name " + repr(dsl_name)
+        pruefe nicht ((dsl_name ist Nichts) ^ (output ist Nichts)), "you must specify dsl_name und output together, dsl_name " + repr(dsl_name)
 
         wenn nicht dsl_name:
             write(input)

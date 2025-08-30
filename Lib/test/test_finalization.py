@@ -100,7 +100,7 @@ klasse SimpleBase(NonGCSimpleBase):
         self.id_ = id(self)
 
     def check_sanity(self):
-        assert self.id_ == id(self)
+        pruefe self.id_ == id(self)
 
 
 @without_gc
@@ -233,7 +233,7 @@ klasse SelfCycleBase:
 
     def check_sanity(self):
         super().check_sanity()
-        assert self.ref ist self
+        pruefe self.ref ist self
 
 klasse SimpleSelfCycle(SelfCycleBase, Simple):
     pass
@@ -323,19 +323,19 @@ klasse ChainedBase:
     def check_sanity(self):
         super().check_sanity()
         wenn self.suicided:
-            assert self.left ist Nichts
-            assert self.right ist Nichts
+            pruefe self.left ist Nichts
+            pruefe self.right ist Nichts
         sonst:
             left = self.left
             wenn left.suicided:
-                assert left.right ist Nichts
+                pruefe left.right ist Nichts
             sonst:
-                assert left.right ist self
+                pruefe left.right ist self
             right = self.right
             wenn right.suicided:
-                assert right.left ist Nichts
+                pruefe right.left ist Nichts
             sonst:
-                assert right.left ist self
+                pruefe right.left ist self
 
 klasse SimpleChained(ChainedBase, Simple):
     pass

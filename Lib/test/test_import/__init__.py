@@ -89,7 +89,7 @@ def _require_loader(module, loader, skip):
     }
 
     expected = loader
-    assert isinstance(expected, type), expected
+    pruefe isinstance(expected, type), expected
     expected = MODULE_KINDS[expected]
 
     actual = module.__spec__.loader
@@ -106,7 +106,7 @@ def _require_loader(module, loader, skip):
 
 def require_builtin(module, *, skip=Falsch):
     module = _require_loader(module, BuiltinImporter, skip)
-    assert module.__spec__.origin == 'built-in', module.__spec__
+    pruefe module.__spec__.origin == 'built-in', module.__spec__
 
 def require_extension(module, *, skip=Falsch):
     # Apple extensions must be distributed als frameworks. This requires
@@ -118,7 +118,7 @@ def require_extension(module, *, skip=Falsch):
 
 def require_frozen(module, *, skip=Wahr):
     module = _require_loader(module, FrozenImporter, skip)
-    assert module.__spec__.origin == 'frozen', module.__spec__
+    pruefe module.__spec__.origin == 'frozen', module.__spec__
 
 def require_pure_python(module, *, skip=Falsch):
     _require_loader(module, SourceFileLoader, skip)
@@ -282,7 +282,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
             prescript += textwrap.dedent(f'''
 
                 # Now importiere the module.
-                assert name nicht in sys.modules
+                pruefe name nicht in sys.modules
                 importiere {name}''')
 
         gib cls.SCRIPT.format(
@@ -750,7 +750,7 @@ klasse ImportTests(unittest.TestCase):
                 versuch:
                     importiere package
                 ausser BaseException als e:
-                    nonlocal exc
+                    nichtlokal exc
                     exc = e
                 sys.settrace(Nichts)
 
@@ -1194,7 +1194,7 @@ ausser ImportError als e:
             mit open(os.path.join(subtmp, "main.py"), "w", encoding='utf-8') als f:
                 f.write(f"""
 importiere sys
-assert sys.path[0] == ''
+pruefe sys.path[0] == ''
 
 importiere os
 importiere shutil
@@ -1617,7 +1617,7 @@ klasse PycacheTests(unittest.TestCase):
         importlib.invalidate_caches()
 
     def tearDown(self):
-        assert sys.path[0] == os.curdir, 'Unexpected sys.path[0]'
+        pruefe sys.path[0] == os.curdir, 'Unexpected sys.path[0]'
         loesche sys.path[0]
         self._clean()
 
@@ -1777,7 +1777,7 @@ klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.tagged)
         init_file = os.path.join(self.tagged, '__init__.py')
         os_helper.create_empty_file(init_file)
-        assert os.path.exists(init_file)
+        pruefe os.path.exists(init_file)
 
         # now create a symlink to the tagged package
         # sample -> sample-tagged
@@ -1787,7 +1787,7 @@ klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
 
         self.assertEqual(os.path.isdir(self.package_name), Wahr)
 
-        assert os.path.isfile(os.path.join(self.package_name, '__init__.py'))
+        pruefe os.path.isfile(os.path.join(self.package_name, '__init__.py'))
 
     def tearDown(self):
         sys.path[:] = self.orig_sys_path
@@ -1801,8 +1801,8 @@ klasse TestSymbolicallyLinkedPackage(unittest.TestCase):
     def test_symlinked_dir_importable(self):
         # make sure sample can only be imported von the current directory.
         sys.path[:] = ['.']
-        assert os.path.exists(self.package_name)
-        assert os.path.exists(os.path.join(self.package_name, '__init__.py'))
+        pruefe os.path.exists(self.package_name)
+        pruefe os.path.exists(os.path.join(self.package_name, '__init__.py'))
 
         # Try to importiere the package
         importlib.import_module(self.package_name)
@@ -2327,7 +2327,7 @@ klasse SubinterpImportTests(unittest.TestCase):
             'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
             importiere _testinternalcapi, sys
-            assert (
+            pruefe (
                 {name!r} in sys.builtin_module_names oder
                 {name!r} nicht in sys.modules
             ), repr({name!r})
@@ -2336,7 +2336,7 @@ klasse SubinterpImportTests(unittest.TestCase):
                 {self.import_script(name, "sys.stdout.fileno()")!r},
                 config,
             )
-            assert ret == 0, ret
+            pruefe ret == 0, ret
             '''))
         self.assertEqual(err, b'')
         self.assertEqual(out, b'okay')
@@ -2355,13 +2355,13 @@ klasse SubinterpImportTests(unittest.TestCase):
             'shared' wenn gil == 1 sonst 'own' wenn gil == 2 sonst gil)
         _, out, err = script_helper.assert_python_ok('-c', textwrap.dedent(f'''
             importiere _testinternalcapi, sys
-            assert {name!r} nicht in sys.modules, {name!r}
+            pruefe {name!r} nicht in sys.modules, {name!r}
             config = type(sys.implementation)(**{kwargs})
             ret = _testinternalcapi.run_in_subinterp_with_config(
                 {self.import_script(name, "sys.stdout.fileno()")!r},
                 config,
             )
-            assert ret == 0, ret
+            pruefe ret == 0, ret
             '''))
         self.assertEqual(err, b'')
         self.assertEqual(
@@ -2693,7 +2693,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         # a specialist loader, und we need to differentiate between the
         # spec.origin und the original file location.
         wenn is_apple_mobile:
-            assert cls.LOADER ist AppleFrameworkLoader
+            pruefe cls.LOADER ist AppleFrameworkLoader
 
             cls.ORIGIN = spec.origin
             mit open(spec.origin + ".origin", "r") als f:
@@ -2702,7 +2702,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
                     f.read().strip()
                 )
         sonst:
-            assert cls.LOADER ist ExtensionFileLoader
+            pruefe cls.LOADER ist ExtensionFileLoader
 
             cls.ORIGIN = spec.origin
             cls.FILE = spec.origin
@@ -2719,7 +2719,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         name = cls.NAME
         wenn name in sys.modules:
             wenn hasattr(sys.modules[name], '_clear_globals'):
-                assert sys.modules[name].__file__ == cls.FILE, \
+                pruefe sys.modules[name].__file__ == cls.FILE, \
                     f"{sys.modules[name].__file__} != {cls.FILE}"
 
                 sys.modules[name]._clear_globals()
@@ -2755,7 +2755,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
             already_loaded = self.already_loaded
         ausser AttributeError:
             already_loaded = self.already_loaded = {}
-        assert name nicht in already_loaded
+        pruefe name nicht in already_loaded
         mod = self._load_dynamic(name, self.ORIGIN)
         self.assertNotIn(mod, already_loaded.values())
         already_loaded[name] = mod
@@ -2766,8 +2766,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
         )
 
     def re_load(self, name, mod):
-        assert sys.modules[name] ist mod
-        assert mod.__dict__ == mod.__dict__
+        pruefe sys.modules[name] ist mod
+        pruefe mod.__dict__ == mod.__dict__
         reloaded = self._load_dynamic(name, self.ORIGIN)
         gib types.SimpleNamespace(
             name=name,
@@ -2880,8 +2880,8 @@ klasse SinglephaseInitTests(unittest.TestCase):
 
     def check_indirect(self, loaded, orig):
         # The module re-uses another's PyModuleDef, mit a different name.
-        assert orig ist nicht loaded.module
-        assert orig.__name__ != loaded.name
+        pruefe orig ist nicht loaded.module
+        pruefe orig.__name__ != loaded.name
         self.assertNotEqual(loaded.module.__name__, loaded.name)
         self.assertIs(loaded.snapshot.lookedup, loaded.module)
 

@@ -500,7 +500,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         sowenn action == _fwalk_yield:
             liefere value
             gib
-        assert action == _fwalk_walk
+        pruefe action == _fwalk_walk
         isroot, dirfd, toppath, topname, entry = value
         versuch:
             wenn nicht follow_symlinks:

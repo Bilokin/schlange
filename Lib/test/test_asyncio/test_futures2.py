@@ -35,7 +35,7 @@ klasse FutureTests:
 
         def exc_handler(*args):
             self.assertEqual(name.get(), 'bar')
-            nonlocal exc_handler_called
+            nichtlokal exc_handler_called
             exc_handler_called = Wahr
 
         async def task():
@@ -55,7 +55,7 @@ klasse FutureTests:
 
         def exc_handler(*args):
             self.assertEqual(name.get(), 'bar')
-            nonlocal exc_handler_called
+            nichtlokal exc_handler_called
             exc_handler_called = Wahr
 
         def callback():

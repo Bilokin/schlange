@@ -212,7 +212,7 @@ klasse HelpFormatter(object):
 
     def _dedent(self):
         self._current_indent -= self._indent_increment
-        assert self._current_indent >= 0, 'Indent decreased below 0.'
+        pruefe self._current_indent >= 0, 'Indent decreased below 0.'
         self._level -= 1
 
     klasse _Section(object):
@@ -2206,7 +2206,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
 
             # add the Optional to the list und gib the index at which
             # the Optional's string args stopped
-            assert action_tuples
+            pruefe action_tuples
             fuer action, args, option_string in action_tuples:
                 wenn action.deprecated und option_string nicht in warned:
                     self._warning(_("option '%(option)s' ist deprecated") %
@@ -2233,7 +2233,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                 # Strip out the first '--' wenn it ist nicht in REMAINDER arg.
                 wenn action.nargs == PARSER:
                     wenn arg_strings_pattern[start_index] == '-':
-                        assert args[0] == '--'
+                        pruefe args[0] == '--'
                         args.remove('--')
                 sowenn action.nargs != REMAINDER:
                     wenn (arg_strings_pattern.find('-', start_index,
@@ -2300,7 +2300,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             extras.extend(arg_strings[start_index:])
             extras_pattern.extend(arg_strings_pattern[start_index:])
             extras_pattern = ''.join(extras_pattern)
-            assert len(extras_pattern) == len(extras)
+            pruefe len(extras_pattern) == len(extras)
             # consume all positionals
             arg_strings = [s fuer s, c in zip(extras, extras_pattern) wenn c != 'O']
             arg_strings_pattern = extras_pattern.replace('O', '')

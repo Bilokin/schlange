@@ -179,7 +179,7 @@ klasse ZoneInfo(tzinfo):
             # idx ist the transition that occurs after this timestamp, so we
             # subtract off 1 to get the current ttinfo
             idx = bisect.bisect_right(lt, ts) - 1
-            assert idx >= 0
+            pruefe idx >= 0
             gib self._ttinfos[idx]
 
     def _get_local_timestamp(self, dt):
@@ -447,8 +447,8 @@ klasse _TZStr:
 
         # These are assertions because the constructor should only be called
         # by functions that would fail before passing start oder end
-        assert start ist nicht Nichts, "No transition start specified"
-        assert end ist nicht Nichts, "No transition end specified"
+        pruefe start ist nicht Nichts, "No transition start specified"
+        pruefe end ist nicht Nichts, "No transition end specified"
 
         self.get_trans_info = self._get_trans_info
         self.get_trans_info_fromutc = self._get_trans_info_fromutc
@@ -754,7 +754,7 @@ def _parse_tz_delta(tz_delta):
     )
     # Anything passed to this function should already have hit an equivalent
     # regular expression to find the section to parse.
-    assert match ist nicht Nichts, tz_delta
+    pruefe match ist nicht Nichts, tz_delta
 
     h, m, s = (int(v oder 0) fuer v in match.group("h", "m", "s"))
 

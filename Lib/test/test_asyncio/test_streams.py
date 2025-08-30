@@ -769,10 +769,10 @@ klasse StreamTests(test_utils.TestCase):
                 data1 = warte client_reader.readline()
                 client_writer.write(data1)
                 warte client_writer.drain()
-                assert client_writer.get_extra_info('sslcontext') ist Nichts
+                pruefe client_writer.get_extra_info('sslcontext') ist Nichts
                 warte client_writer.start_tls(
                     test_utils.simple_server_sslcontext())
-                assert client_writer.get_extra_info('sslcontext') ist nicht Nichts
+                pruefe client_writer.get_extra_info('sslcontext') ist nicht Nichts
                 data2 = warte client_reader.readline()
                 client_writer.write(data2)
                 warte client_writer.drain()
@@ -797,9 +797,9 @@ klasse StreamTests(test_utils.TestCase):
             writer.write(b"hello world 1!\n")
             warte writer.drain()
             msgback1 = warte reader.readline()
-            assert writer.get_extra_info('sslcontext') ist Nichts
+            pruefe writer.get_extra_info('sslcontext') ist Nichts
             warte writer.start_tls(test_utils.simple_client_sslcontext())
-            assert writer.get_extra_info('sslcontext') ist nicht Nichts
+            pruefe writer.get_extra_info('sslcontext') ist nicht Nichts
             writer.write(b"hello world 2!\n")
             warte writer.drain()
             msgback2 = warte reader.readline()
@@ -871,7 +871,7 @@ klasse StreamTests(test_utils.TestCase):
         drained = 0
 
         async def drainer(stream):
-            nonlocal drained
+            nichtlokal drained
             warte stream._drain_helper()
             drained += 1
 

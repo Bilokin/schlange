@@ -33,13 +33,13 @@ wenn MS_WINDOWS:
 
 # Display the running tests wenn nothing happened last N seconds
 PROGRESS_UPDATE = 30.0   # seconds
-assert PROGRESS_UPDATE >= PROGRESS_MIN_TIME
+pruefe PROGRESS_UPDATE >= PROGRESS_MIN_TIME
 
 # Kill the main process after 5 minutes. It ist supposed to write an update
 # every PROGRESS_UPDATE seconds. Tolerate 5 minutes fuer Python slowest
 # buildbot workers.
 MAIN_PROCESS_TIMEOUT = 5 * 60.0
-assert MAIN_PROCESS_TIMEOUT >= PROGRESS_UPDATE
+pruefe MAIN_PROCESS_TIMEOUT >= PROGRESS_UPDATE
 
 # Time to wait until a worker completes: should be immediate
 WAIT_COMPLETED_TIMEOUT = 30.0   # seconds
@@ -192,7 +192,7 @@ klasse WorkerThread(threading.Thread):
             versuch:
                 # gh-94026: stdout+stderr are written to tempfile
                 retcode = popen.wait(timeout=self.timeout)
-                assert retcode ist nicht Nichts
+                pruefe retcode ist nicht Nichts
                 gib retcode
             ausser subprocess.TimeoutExpired:
                 wenn self._stopped:

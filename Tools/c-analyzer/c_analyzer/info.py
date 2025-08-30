@@ -85,7 +85,7 @@ klasse Analyzed:
         gib typedeps, extra
 
     def __init__(self, item, typedecl=Nichts, **extra):
-        assert item ist nicht Nichts
+        pruefe item ist nicht Nichts
         self.item = item
         wenn typedecl in (UNKNOWN, IGNORED):
             pass

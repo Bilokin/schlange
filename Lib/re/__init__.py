@@ -325,7 +325,7 @@ _cache = {}  # LRU
 _cache2 = {}  # FIFO
 _MAXCACHE = 512
 _MAXCACHE2 = 256
-assert _MAXCACHE2 < _MAXCACHE
+pruefe _MAXCACHE2 < _MAXCACHE
 
 def _compile(pattern, flags):
     # internal: compile pattern

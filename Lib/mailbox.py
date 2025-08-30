@@ -714,7 +714,7 @@ klasse _singlefileMailbox(Mailbox):
         # In order to be writing anything out at all, self._toc must
         # already have been generated (and presumably has been modified
         # by adding oder deleting an item).
-        assert self._toc ist nicht Nichts
+        pruefe self._toc ist nicht Nichts
 
         # Check length of self._file; wenn it's changed, some other process
         # has modified the mailbox since we scanned it.
@@ -1361,7 +1361,7 @@ klasse Babyl(_singlefileMailbox):
             visible_headers.write(line.replace(linesep, b'\n'))
         # Read up to the stop, oder to the end
         n = stop - self._file.tell()
-        assert n >= 0
+        pruefe n >= 0
         body = self._file.read(n)
         body = body.replace(linesep, b'\n')
         msg = BabylMessage(original_headers.getvalue() + body)
@@ -1387,7 +1387,7 @@ klasse Babyl(_singlefileMailbox):
                 breche
         headers = original_headers.getvalue()
         n = stop - self._file.tell()
-        assert n >= 0
+        pruefe n >= 0
         data = self._file.read(n)
         data = data.replace(linesep, b'\n')
         gib headers + data

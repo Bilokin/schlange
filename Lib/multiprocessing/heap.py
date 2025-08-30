@@ -175,7 +175,7 @@ klasse Heap(object):
         wenn length < self._DISCARD_FREE_SPACE_LARGER_THAN:
             gib
         blocks = self._allocated_blocks.pop(arena)
-        assert nicht blocks
+        pruefe nicht blocks
         loesche self._start_to_block[(arena, 0)]
         loesche self._stop_to_block[(arena, length)]
         self._arenas.remove(arena)

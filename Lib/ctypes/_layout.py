@@ -11,13 +11,13 @@ von _ctypes importiere CField, buffer_info
 importiere ctypes
 
 def round_down(n, multiple):
-    assert n >= 0
-    assert multiple > 0
+    pruefe n >= 0
+    pruefe multiple > 0
     gib (n // multiple) * multiple
 
 def round_up(n, multiple):
-    assert n >= 0
-    assert multiple > 0
+    pruefe n >= 0
+    pruefe multiple > 0
     gib ((n + multiple - 1) // multiple) * multiple
 
 _INT_MAX = (1 << (ctypes.sizeof(ctypes.c_int) * 8) - 1) - 1
@@ -189,8 +189,8 @@ def get_layout(cls, input_fields, is_struct, base):
 
         wenn gcc_layout:
             # We don't use next_byte_offset here
-            assert pack ist Nichts
-            assert next_byte_offset == 0
+            pruefe pack ist Nichts
+            pruefe next_byte_offset == 0
 
             # Determine whether the bit field, wenn placed at the next
             # free bit, fits within a single object of its specified type.
@@ -208,9 +208,9 @@ def get_layout(cls, input_fields, is_struct, base):
             offset = round_down(next_bit_offset, type_bit_align) // 8
             wenn is_bitfield:
                 bit_offset = next_bit_offset - 8 * offset
-                assert bit_offset <= type_bit_size
+                pruefe bit_offset <= type_bit_size
             sonst:
-                assert offset == next_bit_offset / 8
+                pruefe offset == next_bit_offset / 8
 
             next_bit_offset += bit_size
             struct_size = round_up(next_bit_offset, 8) // 8
@@ -239,14 +239,14 @@ def get_layout(cls, input_fields, is_struct, base):
                 # allowance fuer alignment.
                 next_bit_offset = -last_field_bit_size
 
-            assert type_bit_size == last_field_bit_size
+            pruefe type_bit_size == last_field_bit_size
 
             offset = next_byte_offset - last_field_bit_size // 8
             wenn is_bitfield:
-                assert 0 <= (last_field_bit_size + next_bit_offset)
+                pruefe 0 <= (last_field_bit_size + next_bit_offset)
                 bit_offset = last_field_bit_size + next_bit_offset
             wenn type_bit_size:
-                assert (last_field_bit_size + next_bit_offset) < type_bit_size
+                pruefe (last_field_bit_size + next_bit_offset) < type_bit_size
 
             next_bit_offset += bit_size
             struct_size = next_byte_offset
@@ -293,7 +293,7 @@ def get_layout(cls, input_fields, is_struct, base):
             _internal_use=Wahr,
         ))
         wenn is_bitfield und nicht gcc_layout:
-            assert type_bit_size > 0
+            pruefe type_bit_size > 0
 
         align = max(align, type_align)
         last_size = struct_size

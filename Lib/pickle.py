@@ -516,7 +516,7 @@ klasse _Pickler:
         # growable) array, indexed by memo key.
         wenn self.fast:
             gib
-        assert id(obj) nicht in self.memo
+        pruefe id(obj) nicht in self.memo
         idx = len(self.memo)
         self.write(self.put(idx))
         self.memo[id(obj)] = idx, obj
@@ -844,7 +844,7 @@ klasse _Pickler:
     def _save_bytes_no_memo(self, obj):
         # helper fuer writing bytes objects fuer protocol >= 3
         # without memoizing them
-        assert self.proto >= 3
+        pruefe self.proto >= 3
         n = len(obj)
         wenn n <= 0xff:
             self.write(SHORT_BINBYTES + pack("<B", n) + obj)
@@ -870,7 +870,7 @@ klasse _Pickler:
     def _save_bytearray_no_memo(self, obj):
         # helper fuer writing bytearray objects fuer protocol >= 5
         # without memoizing them
-        assert self.proto >= 5
+        pruefe self.proto >= 5
         n = len(obj)
         wenn n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BYTEARRAY8 + pack("<Q", n), obj)
@@ -1322,7 +1322,7 @@ klasse _Unpickler:
                 key = read(1)
                 wenn nicht key:
                     wirf EOFError
-                assert isinstance(key, bytes_types)
+                pruefe isinstance(key, bytes_types)
                 dispatch[key[0]](self)
         ausser _Stop als stopinst:
             gib stopinst.value
@@ -1873,7 +1873,7 @@ def _dumps(obj, protocol=Nichts, *, fix_imports=Wahr, buffer_callback=Nichts):
     _Pickler(f, protocol, fix_imports=fix_imports,
              buffer_callback=buffer_callback).dump(obj)
     res = f.getvalue()
-    assert isinstance(res, bytes_types)
+    pruefe isinstance(res, bytes_types)
     gib res
 
 def _load(file, *, fix_imports=Wahr, encoding="ASCII", errors="strict",

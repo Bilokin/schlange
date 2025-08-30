@@ -2362,7 +2362,7 @@ klasse CANTest(ThreadedCANSocketTest):
         ival1_seconds = ival1_usec = ival2_seconds = ival2_usec = 0
         bcm_can_id = 0x0222
         nframes = 1
-        assert len(self.cf) == 16
+        pruefe len(self.cf) == 16
         header = struct.pack(self.bcm_cmd_msg_fmt,
                     opcode,
                     flags,
@@ -5263,7 +5263,7 @@ klasse PurePythonSocketPairTest(SocketPairTest):
         inject_sock = Nichts
 
         def inject_getsocketname(self):
-            nonlocal inject_sock
+            nichtlokal inject_sock
             sockname = orig_getsockname(self)
             # Connect to the listening socket ahead of the
             # client socket.
@@ -5884,7 +5884,7 @@ klasse NetworkConnectionNoServer(unittest.TestCase):
 
         addresses = socket.getaddrinfo(
             'localhost', port, 0, socket.SOCK_STREAM)
-        # assert that we got an exception fuer each address
+        # pruefe that we got an exception fuer each address
         self.assertEqual(len(addresses), len(eg.exceptions))
 
     def test_create_connection_timeout(self):
@@ -6727,7 +6727,7 @@ klasse SendfileUsingSendTest(ThreadedTCPSocketTest):
     @classmethod
     def setUpClass(cls):
         def chunks(total, step):
-            assert total >= step
+            pruefe total >= step
             waehrend total > step:
                 liefere step
                 total -= step
@@ -6741,7 +6741,7 @@ klasse SendfileUsingSendTest(ThreadedTCPSocketTest):
                 f.write(chunk)
         mit open(os_helper.TESTFN, 'rb') als f:
             cls.FILEDATA = f.read()
-            assert len(cls.FILEDATA) == cls.FILESIZE
+            pruefe len(cls.FILEDATA) == cls.FILESIZE
 
     @classmethod
     def tearDownClass(cls):
@@ -7282,7 +7282,7 @@ klasse CreateServerTest(unittest.TestCase):
     @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'IPv6 required fuer this test')
     def test_ipv6_only_default(self):
         mit socket.create_server(("::1", 0), family=socket.AF_INET6) als sock:
-            assert sock.getsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY)
+            pruefe sock.getsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY)
 
     @unittest.skipIf(nicht socket.has_dualstack_ipv6(),
                      "dualstack_ipv6 nicht supported")

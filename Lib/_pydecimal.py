@@ -2172,8 +2172,8 @@ klasse Decimal(object):
             # An exact power of 10 ist representable, but can convert to a
             # string of any length. But an exact power of 10 shouldn't be
             # possible at this point.
-            assert xc > 1, self
-            assert xc % 10 != 0, self
+            pruefe xc > 1, self
+            pruefe xc % 10 != 0, self
             strxc = str(xc)
             wenn len(strxc) > p:
                 gib Nichts
@@ -2231,8 +2231,8 @@ klasse Decimal(object):
         # An exact power of 10 ist representable, but can convert to a string
         # of any length. But an exact power of 10 shouldn't be possible at
         # this point.
-        assert xc > 1, self
-        assert xc % 10 != 0, self
+        pruefe xc > 1, self
+        pruefe xc % 10 != 0, self
         str_xc = str(xc)
         wenn len(str_xc) > p:
             gib Nichts
@@ -2755,7 +2755,7 @@ klasse Decimal(object):
         wenn exact:
             # result ist exact; rescale to use ideal exponent e
             wenn shift >= 0:
-                # assert n % 10**shift == 0
+                # pruefe n % 10**shift == 0
                 n //= 10**shift
             sonst:
                 n *= 10**-shift
@@ -3189,7 +3189,7 @@ klasse Decimal(object):
         places = p - self._ln_exp_bound() + 2 # at least p+3 places
         waehrend Wahr:
             coeff = _dlog(c, e, places)
-            # assert len(str(abs(coeff)))-p >= 1
+            # pruefe len(str(abs(coeff)))-p >= 1
             wenn coeff % (5*10**(len(str(abs(coeff)))-p-1)):
                 breche
             places += 3
@@ -3270,7 +3270,7 @@ klasse Decimal(object):
             places = p-self._log10_exp_bound()+2
             waehrend Wahr:
                 coeff = _dlog10(c, e, places)
-                # assert len(str(abs(coeff)))-p >= 1
+                # pruefe len(str(abs(coeff)))-p >= 1
                 wenn coeff % (5*10**(len(str(abs(coeff)))-p-1)):
                     breche
                 places += 3
@@ -5593,7 +5593,7 @@ klasse _WorkRep(object):
             self.int = int(value._int)
             self.exp = value._exp
         sonst:
-            # assert isinstance(value, tuple)
+            # pruefe isinstance(value, tuple)
             self.sign = value[0]
             self.int = value[1]
             self.exp = value[2]

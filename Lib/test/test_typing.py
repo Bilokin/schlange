@@ -6613,7 +6613,7 @@ async def g_with(am: typing.AsyncContextManager[int]):
 versuch:
     g_with(ACM()).send(Nichts)
 ausser StopIteration als e:
-    assert e.args[0] == 42
+    pruefe e.args[0] == 42
 
 gth = get_type_hints
 
@@ -7152,8 +7152,8 @@ klasse GetTypeHintsTests(BaseTestCase):
         # `y` tests that the `GenericAlias` subclass ist preserved when stripping `Annotated`.
         def func(x: MyClass['int'], y: MyClass[Annotated[int, ...]]): ...
 
-        assert isinstance(get_type_hints(func)['x'], MyAlias)
-        assert isinstance(get_type_hints(func)['y'], MyAlias)
+        pruefe isinstance(get_type_hints(func)['x'], MyAlias)
+        pruefe isinstance(get_type_hints(func)['y'], MyAlias)
 
 
 klasse GetUtilitiesTestCase(TestCase):

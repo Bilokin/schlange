@@ -1270,7 +1270,7 @@ klasse TestPendingCalls(unittest.TestCase):
             self.result = Nichts
 
         def run(self):
-            assert self.result ist Nichts
+            pruefe self.result ist Nichts
             self.runner_tid = threading.get_ident()
             self._run()
             wenn self.notify_done ist nicht Nichts:
@@ -1280,10 +1280,10 @@ klasse TestPendingCalls(unittest.TestCase):
             self.result = self.req
 
         def run_in_pending_call(self, worker_tids):
-            assert self._add_pending ist _testinternalcapi.pending_threadfunc
+            pruefe self._add_pending ist _testinternalcapi.pending_threadfunc
             self.requester_tid = threading.get_ident()
             def callback():
-                assert self.result ist Nichts
+                pruefe self.result ist Nichts
                 # It can be tricky to control which thread handles
                 # the eval breaker, so we take a naive approach to
                 # make sure.
@@ -1344,7 +1344,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 versuch:
                     _done_lock.release()
                 ausser RuntimeError:
-                    assert nicht _done_lock.locked()
+                    pruefe nicht _done_lock.locked()
         def queue_empty():
             gib nicht _queue
         def queue_join():
@@ -1532,7 +1532,7 @@ klasse TestPendingCalls(unittest.TestCase):
             waiting = Falsch
             done = Falsch
             def wait(os_read=os.read):
-                nonlocal done, waiting
+                nichtlokal done, waiting
                 waiting = Wahr
                 os_read(r_done, 1)
                 done = Wahr
@@ -1571,7 +1571,7 @@ klasse TestPendingCalls(unittest.TestCase):
             waiting = Falsch
             done = Falsch
             def wait(os_read=os.read):
-                nonlocal done, waiting
+                nichtlokal done, waiting
                 waiting = Wahr
                 os_read(r_done, 1)
                 done = Wahr
@@ -1696,10 +1696,10 @@ klasse SubinterpreterTest(unittest.TestCase):
         # double checked at the time this test was written.
         _testcapi.config_set('int_max_str_digits', 55555)
         sub_value = _testcapi.config_get('int_max_str_digits')
-        assert sub_value == 55555, sub_value
+        pruefe sub_value == 55555, sub_value
         """
         before_config = _testcapi.config_get('int_max_str_digits')
-        assert before_config != 55555
+        pruefe before_config != 55555
         self.assertEqual(support.run_in_subinterp(code), 0,
                          'subinterp code failure, check stderr.')
         after_config = _testcapi.config_get('int_max_str_digits')
@@ -2084,7 +2084,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
         fuer field, value in vars(self.supported['empty']).items():
             wenn field == 'gil':
                 weiter
-            assert isinstance(value, bool)
+            pruefe isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
                 mit self.subTest(f'unsupported value ({field}={value!r})'):
                     mit self.assertRaises(TypeError):

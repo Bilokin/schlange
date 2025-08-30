@@ -17,7 +17,7 @@ importiere tempfile
 
 
 CHECKOUT = pathlib.Path(__file__).parent.parent.parent.parent
-assert (CHECKOUT / "configure").is_file(), "Please update the location of the file"
+pruefe (CHECKOUT / "configure").is_file(), "Please update the location of the file"
 
 CROSS_BUILD_DIR = CHECKOUT / "cross-build"
 # Build platform can also be found via `config.guess`.
@@ -66,7 +66,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(context):
-            nonlocal working_dir
+            nichtlokal working_dir
 
             wenn callable(working_dir):
                 working_dir = working_dir(context)
@@ -241,7 +241,7 @@ def configure_wasi_python(context, working_dir):
 
     python_build_dir = BUILD_DIR / "build"
     lib_dirs = list(python_build_dir.glob("lib.*"))
-    assert len(lib_dirs) == 1, f"Expected a single lib.* directory in {python_build_dir}"
+    pruefe len(lib_dirs) == 1, f"Expected a single lib.* directory in {python_build_dir}"
     lib_dir = os.fsdecode(lib_dirs[0])
     python_version = lib_dir.rpartition("-")[-1]
     sysconfig_data_dir = f"{wasi_build_dir}/build/lib.wasi-wasm32-{python_version}"

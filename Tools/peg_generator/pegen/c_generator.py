@@ -195,7 +195,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             sonst:
                 gib self.soft_keyword_helper(node.value)
         sonst:
-            assert val in self.exact_tokens, f"{node.value} ist nicht a known literal"
+            pruefe val in self.exact_tokens, f"{node.value} ist nicht a known literal"
             type = self.exact_tokens[val]
             gib FunctionCall(
                 assigned_variable="_literal",
@@ -232,7 +232,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         sowenn call.nodetype ist NodeTypes.STRING_TOKEN:
             # _PyPegen_string_token() returns 'void *' instead of 'Token *';
             # in addition, the overall function call would gib 'expr_ty'.
-            assert call.function == "_PyPegen_string_token"
+            pruefe call.function == "_PyPegen_string_token"
             function = "_PyPegen_lookahead"
             self.assert_no_undefined_behavior(call, function, "expr_ty")
         sowenn call.nodetype == NodeTypes.SOFT_KEYWORD:
@@ -265,9 +265,9 @@ klasse CCallMakerVisitor(GrammarVisitor):
     def visit_Forced(self, node: Forced) -> FunctionCall:
         call = self.generate_call(node.node)
         wenn isinstance(node.node, Leaf):
-            assert isinstance(node.node, Leaf)
+            pruefe isinstance(node.node, Leaf)
             val = ast.literal_eval(node.node.value)
-            assert val in self.exact_tokens, f"{node.node.value} ist nicht a known literal"
+            pruefe val in self.exact_tokens, f"{node.node.value} ist nicht a known literal"
             type = self.exact_tokens[val]
             gib FunctionCall(
                 assigned_variable="_literal",
@@ -718,7 +718,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self, node: Rhs, is_loop: bool, is_gather: bool, rulename: Optional[str]
     ) -> Nichts:
         wenn is_loop:
-            assert len(node.alts) == 1
+            pruefe len(node.alts) == 1
         fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather, rulename=rulename)
 
@@ -753,7 +753,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def emit_default_action(self, is_gather: bool, node: Alt) -> Nichts:
         wenn len(self.local_variable_names) > 1:
             wenn is_gather:
-                assert len(self.local_variable_names) == 2
+                pruefe len(self.local_variable_names) == 2
                 self.drucke(
                     f"_res = _PyPegen_seq_insert_in_front(p, "
                     f"{self.local_variable_names[0]}, {self.local_variable_names[1]});"

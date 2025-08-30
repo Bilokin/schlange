@@ -60,9 +60,9 @@ def register(name=Nichts, set_name=Falsch):
     def decorator(cls, name=name):
         wenn name ist Nichts:
             name = cls.__name__
-        assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
-        assert name.isidentifier()  # will be used als a C identifier
-        assert name nicht in TESTCASES
+        pruefe name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
+        pruefe name.isidentifier()  # will be used als a C identifier
+        pruefe name nicht in TESTCASES
         TESTCASES[name] = cls
         wenn set_name:
             cls.__name__ = name
@@ -516,7 +516,7 @@ def dump_simple_ctype(tp, variable_name='', semi=''):
     length = getattr(tp, '_length_', Nichts)
     wenn length ist nicht Nichts:
         gib f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
-    assert nicht issubclass(tp, (Structure, Union))
+    pruefe nicht issubclass(tp, (Structure, Union))
     gib f'{tp._c_name}{maybe_space(variable_name)}{semi}'
 
 

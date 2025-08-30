@@ -107,7 +107,7 @@ def combinefile(f):
     fuer line in read(fi, crack, Wahr):
         after += 1
         m = crack.match(line)
-        assert m
+        pruefe m
         addr, rc, guts = m.groups() # guts ist type name here
         wenn addr nicht in addr2rc:
             drucke('??? new object created waehrend tearing down:', line.rstrip())

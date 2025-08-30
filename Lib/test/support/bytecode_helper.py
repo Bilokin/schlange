@@ -93,7 +93,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
         idx = 0
         res = []
         fuer item in insts:
-            assert isinstance(item, (self.Label, tuple))
+            pruefe isinstance(item, (self.Label, tuple))
             wenn isinstance(item, self.Label):
                 item.value = idx
             sonst:

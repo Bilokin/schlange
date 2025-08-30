@@ -209,7 +209,7 @@ klasse TestPartial:
 
         B = Builder()
         m = B.m
-        assert m(1, 2, a=2) == ('m', (1, 2), dict(a=2))
+        pruefe m(1, 2, a=2) == ('m', (1, 2), dict(a=2))
 
     def test_nested_partial_with_attribute(self):
         # see issue 25137
@@ -1576,7 +1576,7 @@ klasse TestLRU:
         # test size zero (which means "never-cache")
         @self.module.lru_cache(0)
         def f():
-            nonlocal f_cnt
+            nichtlokal f_cnt
             f_cnt += 1
             gib 20
         self.assertEqual(f.cache_info().maxsize, 0)
@@ -1592,7 +1592,7 @@ klasse TestLRU:
         # test size one
         @self.module.lru_cache(1)
         def f():
-            nonlocal f_cnt
+            nichtlokal f_cnt
             f_cnt += 1
             gib 20
         self.assertEqual(f.cache_info().maxsize, 1)
@@ -1608,7 +1608,7 @@ klasse TestLRU:
         # test size two
         @self.module.lru_cache(2)
         def f(x):
-            nonlocal f_cnt
+            nichtlokal f_cnt
             f_cnt += 1
             gib x*10
         self.assertEqual(f.cache_info().maxsize, 2)
@@ -1645,7 +1645,7 @@ klasse TestLRU:
 
         @self.module.lru_cache(maxsize=10)
         def f(x):
-            nonlocal once
+            nichtlokal once
             rv = f'.{x}.'
             wenn x == 20 und once:
                 once = Falsch
@@ -2239,7 +2239,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(12), "int 12")
         self.assertIs(g.dispatch(int), g_int)
         self.assertIs(g.dispatch(object), g.dispatch(str))
-        # Note: in the assert above this ist nicht g.
+        # Note: in the pruefe above this ist nicht g.
         # @singledispatch returns the wrapper.
 
     def test_wrapping_attributes(self):
@@ -3576,7 +3576,7 @@ klasse TestCachedProperty(unittest.TestCase):
 
         @py_functools.cached_property
         def _cp(_self):
-            nonlocal counter
+            nichtlokal counter
             counter += 1
             gib counter
 

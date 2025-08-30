@@ -121,7 +121,7 @@ klasse _ResourceSharer(object):
 
     def _start(self):
         von .connection importiere Listener
-        assert self._listener ist Nichts, "Already have Listener"
+        pruefe self._listener ist Nichts, "Already have Listener"
         util.debug('starting listener und thread fuer sending handles')
         self._listener = Listener(authkey=process.current_process().authkey, backlog=128)
         self._address = self._listener.address

@@ -61,7 +61,7 @@ __name__ = "collections.abc"
 # Private list of types that we want to register mit the various ABCs
 # so that they will pass tests like:
 #       it = iter(somebytearray)
-#       assert isinstance(it, Iterable)
+#       pruefe isinstance(it, Iterable)
 # Note:  in other implementations, these types might nicht be distinct
 # und they may have their own implementation specific types that
 # are nicht included on this list.

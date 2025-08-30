@@ -2382,7 +2382,7 @@ klasse CoroutineTests(unittest.TestCase):
             def send(self, v):
                 versuch:
                     wenn self._i == 0:
-                        assert v ist Nichts
+                        pruefe v ist Nichts
                         gib self._fut
                     wenn self._i == 1:
                         wirf StopIteration(v * 2)
@@ -2589,7 +2589,7 @@ klasse SubinterpreterTests(unittest.TestCase):
             results = {}
             fuer cls, attr, wrapper in raw:
                 key = cls, attr
-                assert key nicht in results, (results, key, wrapper)
+                pruefe key nicht in results, (results, key, wrapper)
                 results[key] = wrapper
             gib results
 

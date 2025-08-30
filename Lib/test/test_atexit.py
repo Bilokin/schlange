@@ -37,7 +37,7 @@ klasse FunctionalTest(unittest.TestCase):
             importiere atexit als atexit2
             loesche sys.modules['atexit']
 
-            assert atexit2 ist nicht atexit1
+            pruefe atexit2 ist nicht atexit1
 
             atexit1.register(print, "atexit1")
             atexit2.register(print, "atexit2")

@@ -235,7 +235,7 @@ klasse IndentStack:
         """
         Dedents a line by the currently defined margin.
         """
-        assert self.margin ist nicht Nichts, "Cannot call .dedent() before calling .infer()"
+        pruefe self.margin ist nicht Nichts, "Cannot call .dedent() before calling .infer()"
         margin = self.margin
         indent = self.indents[-1]
         wenn nicht line.startswith(margin):
@@ -611,7 +611,7 @@ klasse DSLParser:
             ausser SyntaxError:
                 fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
             function_node = module_node.body[0]
-            assert isinstance(function_node, ast.FunctionDef)
+            pruefe isinstance(function_node, ast.FunctionDef)
             versuch:
                 name, legacy, kwargs = self.parse_converter(function_node.returns)
                 wenn legacy:
@@ -686,7 +686,7 @@ klasse DSLParser:
         # this line ist permitted to start mit whitespace.
         # we'll call this number of spaces F (for "function").
 
-        assert self.valid_line(line)
+        pruefe self.valid_line(line)
         self.indent.infer(line)
 
         # are we cloning?
@@ -809,7 +809,7 @@ klasse DSLParser:
         wenn nicht self.indent.infer(line):
             gib self.next(self.state_function_docstring, line)
 
-        assert self.function ist nicht Nichts
+        pruefe self.function ist nicht Nichts
         wenn self.function.kind in {GETTER, SETTER}:
             getset = self.function.kind.name.lower()
             fail(f"@{getset} methods cannot define parameters")
@@ -824,12 +824,12 @@ klasse DSLParser:
         """
         wenn self.parameter_state ist nicht ParamState.REQUIRED:
             self.parameter_state = ParamState.REQUIRED
-            assert self.function ist nicht Nichts
+            pruefe self.function ist nicht Nichts
             fuer p in self.function.parameters.values():
                 p.group = -p.group
 
     def state_parameter(self, line: str) -> Nichts:
-        assert isinstance(self.function, Function)
+        pruefe isinstance(self.function, Function)
 
         wenn nicht self.valid_line(line):
             gib
@@ -838,7 +838,7 @@ klasse DSLParser:
             line = self.parameter_continuation + ' ' + line.lstrip()
             self.parameter_continuation = ''
 
-        assert self.indent.depth == 2
+        pruefe self.indent.depth == 2
         indent = self.indent.infer(line)
         wenn indent == -1:
             # we outdented, must be to definition column
@@ -874,7 +874,7 @@ klasse DSLParser:
                 self.parse_parameter(param)
 
     def parse_parameter(self, line: str) -> Nichts:
-        assert self.function ist nicht Nichts
+        pruefe self.function ist nicht Nichts
 
         match self.parameter_state:
             case ParamState.START | ParamState.REQUIRED:
@@ -903,7 +903,7 @@ klasse DSLParser:
             fail(f"Function {self.function.name!r} has an invalid parameter declaration: {line!r}")
 
         function = module.body[0]
-        assert isinstance(function, ast.FunctionDef)
+        pruefe isinstance(function, ast.FunctionDef)
         function_args = function.args
 
         wenn len(function_args.args) > 1:
@@ -1142,7 +1142,7 @@ klasse DSLParser:
 
     def parse_version(self, thenceforth: str) -> VersionTuple:
         """Parse Python version in `[from ...]` marker."""
-        assert isinstance(self.function, Function)
+        pruefe isinstance(self.function, Function)
 
         versuch:
             major, minor = thenceforth.split(".")
@@ -1266,9 +1266,9 @@ klasse DSLParser:
                     p.deprecated_keyword = version
 
     def state_parameter_docstring_start(self, line: str) -> Nichts:
-        assert self.indent.margin ist nicht Nichts, "self.margin.infer() has nicht yet been called to set the margin"
+        pruefe self.indent.margin ist nicht Nichts, "self.margin.infer() has nicht yet been called to set the margin"
         self.parameter_docstring_indent = len(self.indent.margin)
-        assert self.indent.depth == 3
+        pruefe self.indent.depth == 3
         gib self.next(self.state_parameter_docstring, line)
 
     def docstring_append(self, obj: Function | Parameter, line: str) -> Nichts:
@@ -1300,20 +1300,20 @@ klasse DSLParser:
         indent = self.indent.measure(line)
         wenn indent < self.parameter_docstring_indent:
             self.indent.infer(line)
-            assert self.indent.depth < 3
+            pruefe self.indent.depth < 3
             wenn self.indent.depth == 2:
                 # back to a parameter
                 gib self.next(self.state_parameter, line)
-            assert self.indent.depth == 1
+            pruefe self.indent.depth == 1
             gib self.next(self.state_function_docstring, line)
 
-        assert self.function und self.function.parameters
+        pruefe self.function und self.function.parameters
         last_param = next(reversed(self.function.parameters.values()))
         self.docstring_append(last_param, line)
 
     # the final stanza of the DSL ist the docstring.
     def state_function_docstring(self, line: str) -> Nichts:
-        assert self.function ist nicht Nichts
+        pruefe self.function ist nicht Nichts
 
         wenn self.group:
             fail(f"Function {self.function.name!r} has a ']' without a matching '['.")
@@ -1338,17 +1338,17 @@ klasse DSLParser:
             lines.append('(')
 
             # populate "right_bracket_count" field fuer every parameter
-            assert parameters, "We should always have a self parameter. " + repr(f)
-            assert isinstance(parameters[0].converter, self_converter)
+            pruefe parameters, "We should always have a self parameter. " + repr(f)
+            pruefe isinstance(parameters[0].converter, self_converter)
             # self ist always positional-only.
-            assert parameters[0].is_positional_only()
-            assert parameters[0].right_bracket_count == 0
+            pruefe parameters[0].is_positional_only()
+            pruefe parameters[0].right_bracket_count == 0
             positional_only = Wahr
             fuer p in parameters[1:]:
                 wenn nicht p.is_positional_only():
                     positional_only = Falsch
                 sonst:
-                    assert positional_only
+                    pruefe positional_only
                 wenn positional_only:
                     p.right_bracket_count = abs(p.group)
                 sonst:
@@ -1358,7 +1358,7 @@ klasse DSLParser:
             right_bracket_count = 0
 
             def fix_right_bracket_count(desired: int) -> str:
-                nonlocal right_bracket_count
+                nichtlokal right_bracket_count
                 s = ''
                 waehrend right_bracket_count < desired:
                     s += '['
@@ -1392,8 +1392,8 @@ klasse DSLParser:
             line_length = len(''.join(lines))
             indent = " " * line_length
             def add_parameter(text: str) -> Nichts:
-                nonlocal line_length
-                nonlocal first_parameter
+                nichtlokal line_length
+                nichtlokal first_parameter
                 wenn first_parameter:
                     s = text
                     first_parameter = Falsch
@@ -1409,7 +1409,7 @@ klasse DSLParser:
             fuer p in parameters:
                 wenn nicht p.converter.show_in_signature:
                     weiter
-                assert p.name
+                pruefe p.name
 
                 is_self = isinstance(p.converter, self_converter)
                 wenn is_self und f.docstring_only:
@@ -1499,7 +1499,7 @@ klasse DSLParser:
         gib "".join(p.render_docstring() + "\n" fuer p in params wenn p.docstring)
 
     def format_docstring(self) -> str:
-        assert self.function ist nicht Nichts
+        pruefe self.function ist nicht Nichts
         f = self.function
         # For the following special cases, it does nicht make sense to render a docstring.
         wenn f.kind in {METHOD_INIT, METHOD_NEW, GETTER, SETTER} und nicht f.docstring:
@@ -1572,7 +1572,7 @@ klasse DSLParser:
                                        parameters=parameters).rstrip()
 
     def check_remaining_star(self, lineno: int | Nichts = Nichts) -> Nichts:
-        assert isinstance(self.function, Function)
+        pruefe isinstance(self.function, Function)
 
         wenn self.keyword_only:
             symbol = '*'
@@ -1595,7 +1595,7 @@ klasse DSLParser:
              f"without following parameters.", line_number=lineno)
 
     def check_previous_star(self) -> Nichts:
-        assert isinstance(self.function, Function)
+        pruefe isinstance(self.function, Function)
 
         wenn self.keyword_only:
             fail(f"Function {self.function.name!r} uses '*' more than once.")

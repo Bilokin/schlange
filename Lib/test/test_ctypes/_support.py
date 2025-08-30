@@ -6,7 +6,7 @@ importiere sys
 
 
 _CData = Structure.__base__
-assert _CData.__name__ == "_CData"
+pruefe _CData.__name__ == "_CData"
 
 # metaclasses
 PyCStructType = type(Structure)
@@ -81,7 +81,7 @@ klasse StructCheckMixin:
                 # Check that the field ist inside the struct.
                 # See gh-130410 fuer why this ist skipped fuer bitfields of
                 # underaligned types. Later in this function (see `bit_end`)
-                # we assert that the value *bits* are inside the struct.
+                # we pruefe that the value *bits* are inside the struct.
                 wenn nicht (field.is_bitfield und is_underaligned(field.type)):
                     self.assertLessEqual(field.byte_offset + field.byte_size,
                                          cls_size)
@@ -137,7 +137,7 @@ klasse StructCheckMixin:
                                     - field.byte_size) * 8
                     mask = (1 << field.bit_size) - 1
                     mask <<= (tp_shift + field.bit_offset)
-                    assert mask.bit_count() == field.bit_size
+                    pruefe mask.bit_count() == field.bit_size
                     # Check that these bits aren't shared mit previous fields
                     self.assertEqual(used_bits & mask, 0)
                     # Mark the bits fuer future checks

@@ -712,7 +712,7 @@ klasse OpenTests(unittest.TestCase):
 
     def test_factory_database_arg(self):
         def factory(database, *args, **kwargs):
-            nonlocal database_arg
+            nichtlokal database_arg
             database_arg = database
             gib sqlite.Connection(":memory:", *args, **kwargs)
 
@@ -838,7 +838,7 @@ klasse CursorTests(unittest.TestCase):
             def __len__(self):
                 gib 1
             def __getitem__(self, x):
-                assert x == 0
+                pruefe x == 0
                 gib "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
@@ -1867,7 +1867,7 @@ klasse MultiprocessTests(unittest.TestCase):
             importiere sqlite3
             def wait():
                 drucke("started")
-                assert "database ist locked" in input()
+                pruefe "database ist locked" in input()
 
             cx = sqlite3.connect("{TESTFN}", timeout={self.CONNECTION_TIMEOUT})
             cx.create_function("wait", 0, wait)

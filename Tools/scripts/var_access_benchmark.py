@@ -3,7 +3,7 @@
 # Please leave this code so that it runs under older versions of
 # Python 3 (no f-strings).  That will allow benchmarking for
 # cross-version comparisons.  To run the benchmark on Python 2,
-# comment-out the nonlocal reads und writes.
+# comment-out the nichtlokal reads und writes.
 
 von collections importiere deque, namedtuple
 
@@ -127,7 +127,7 @@ def write_local(trials=trials):
 def make_nonlocal_writer():
     v_nonlocal = 1
     def inner(trials=trials):
-        nonlocal v_nonlocal
+        nichtlokal v_nonlocal
         fuer t in trials:
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1

@@ -369,7 +369,7 @@ klasse _ReadlineWrapper:
         versuch:
             reader = self.get_reader()
         ausser _error:
-            assert raw_input ist nicht Nichts
+            pruefe raw_input ist nicht Nichts
             gib raw_input(prompt)
         prompt_str = str(prompt)
         reader.ps1 = prompt_str
@@ -583,7 +583,7 @@ fuer _name, _ret in [
     ("redisplay", Nichts),
     ("set_pre_input_hook", Nichts),
 ]:
-    assert _name nicht in globals(), _name
+    pruefe _name nicht in globals(), _name
     _make_stub(_name, _ret)
 
 # ____________________________________________________________

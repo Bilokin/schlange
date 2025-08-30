@@ -62,7 +62,7 @@ def setup_module(machinery, name, path=Nichts):
                       sys_version='%d.%d' % sys.version_info[:2])
     base_key = "Software\\Python\\PythonCore\\{}.{}".format(
         sys.version_info.major, sys.version_info.minor)
-    assert key.casefold().startswith(base_key.casefold()), (
+    pruefe key.casefold().startswith(base_key.casefold()), (
         "expected key '{}' to start mit '{}'".format(key, base_key))
     versuch:
         mit temp_module(name, "a = 1") als location:

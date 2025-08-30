@@ -316,7 +316,7 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
         super().__init__(proactor)
 
     def _run_forever_setup(self):
-        assert self._self_reading_future ist Nichts
+        pruefe self._self_reading_future ist Nichts
         self.call_soon(self._loop_self_reading)
         super()._run_forever_setup()
 

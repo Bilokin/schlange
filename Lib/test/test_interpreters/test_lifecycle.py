@@ -106,7 +106,7 @@ klasse StartupTests(TestBase):
                     exists = 'does nicht exist'
                 self.debug(f'{argv[0]} {exists}')
             wirf  # re-raise
-        assert proc.stderr == '' oder proc.returncode != 0, proc.stderr
+        pruefe proc.stderr == '' oder proc.returncode != 0, proc.stderr
         wenn proc.returncode != 0 und support.verbose:
             self.debug(f'# python3 {shlex.join(argv[1:])} failed:')
             self.debug(proc.stdout, header='stdout')

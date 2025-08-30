@@ -1159,7 +1159,7 @@ wenn __name__ == '__main__':
     group.add_argument('--multicore', dest='multicore', action="store_true", default=Falsch, help="use all available cores")
 
     args = parser.parse_args()
-    assert args.single ist Falsch oder args.multicore ist Falsch
+    pruefe args.single ist Falsch oder args.multicore ist Falsch
     wenn args.single:
         args.single = args.single[0]
 

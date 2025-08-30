@@ -40,7 +40,7 @@ async def asynciter(iterable):
 
 
 def run_async(coro):
-    assert coro.__class__ in {types.GeneratorType, types.CoroutineType}
+    pruefe coro.__class__ in {types.GeneratorType, types.CoroutineType}
 
     buffer = []
     result = Nichts
@@ -54,7 +54,7 @@ def run_async(coro):
 
 
 def run_async__await__(coro):
-    assert coro.__class__ ist types.CoroutineType
+    pruefe coro.__class__ ist types.CoroutineType
     aw = coro.__await__()
     buffer = []
     result = Nichts
@@ -686,7 +686,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         @types.coroutine
         def gen():
-            nonlocal N
+            nichtlokal N
             versuch:
                 a = liefere
                 liefere (a ** 2)
@@ -885,7 +885,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         @types.coroutine
         def foo():
-            nonlocal CHK
+            nichtlokal CHK
             liefere
             versuch:
                 liefere
@@ -1128,7 +1128,7 @@ klasse CoroutineTest(unittest.TestCase):
         klasse Wrapper:
             # Forces the interpreter to use CoroutineType.__await__
             def __init__(self, coro):
-                assert coro.__class__ ist types.CoroutineType
+                pruefe coro.__class__ ist types.CoroutineType
                 self.coro = coro
             def __await__(self):
                 gib self.coro.__await__()
@@ -1249,7 +1249,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         body_executed = Nichts
         async def foo():
-            nonlocal body_executed
+            nichtlokal body_executed
             body_executed = Falsch
             async mit CM():
                 body_executed = Wahr
@@ -1265,7 +1265,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         body_executed = Nichts
         async def foo():
-            nonlocal body_executed
+            nichtlokal body_executed
             body_executed = Falsch
             async mit CM():
                 body_executed = Wahr
@@ -1280,7 +1280,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         body_executed = Nichts
         async def foo():
-            nonlocal body_executed
+            nichtlokal body_executed
             body_executed = Falsch
             async mit CM():
                 body_executed = Wahr
@@ -1365,7 +1365,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         # Normal exit
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM():
                 CNT += 1
         mit self.assertRaisesRegex(
@@ -1377,7 +1377,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         # Exit mit 'break'
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             fuer i in range(2):
                 async mit CM():
                     CNT += 1
@@ -1391,7 +1391,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         # Exit mit 'continue'
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             fuer i in range(2):
                 async mit CM():
                     CNT += 1
@@ -1405,7 +1405,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         # Exit mit 'return'
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM():
                 CNT += 1
                 gib
@@ -1428,7 +1428,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
 
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM():
                 CNT += 1
 
@@ -1448,7 +1448,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
 
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM():
                 async mit CM():
                     wirf RuntimeError
@@ -1474,7 +1474,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
 
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM():
                 wirf RuntimeError
 
@@ -1496,7 +1496,7 @@ klasse CoroutineTest(unittest.TestCase):
                 gib Wahr
 
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async mit CM() als cm:
                 self.assertIs(cm.__class__, CM)
                 wirf RuntimeError
@@ -1514,7 +1514,7 @@ klasse CoroutineTest(unittest.TestCase):
                 gib Wahr
 
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             CNT += 1
             async mit CM():
                 CNT += 1000
@@ -1532,7 +1532,7 @@ klasse CoroutineTest(unittest.TestCase):
                 self.i = 0
 
             def __aiter__(self):
-                nonlocal aiter_calls
+                nichtlokal aiter_calls
                 aiter_calls += 1
                 gib self
 
@@ -1562,7 +1562,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         buffer = []
         async def test2():
-            nonlocal buffer
+            nichtlokal buffer
             async fuer i in AsyncIter():
                 buffer.append(i[0])
                 wenn i[0] == 20:
@@ -1580,7 +1580,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         buffer = []
         async def test3():
-            nonlocal buffer
+            nichtlokal buffer
             async fuer i in AsyncIter():
                 wenn i[0] > 20:
                     weiter
@@ -1659,11 +1659,11 @@ klasse CoroutineTest(unittest.TestCase):
 
         klasse Manager:
             async def __aenter__(self):
-                nonlocal I
+                nichtlokal I
                 I += 10000
 
             async def __aexit__(self, *args):
-                nonlocal I
+                nichtlokal I
                 I += 100000
 
         klasse Iterable:
@@ -1687,7 +1687,7 @@ klasse CoroutineTest(unittest.TestCase):
         irefs_before = sys.getrefcount(iterable)
 
         async def main():
-            nonlocal I
+            nichtlokal I
 
             async mit manager:
                 async fuer i in iterable:
@@ -1707,7 +1707,7 @@ klasse CoroutineTest(unittest.TestCase):
         ##############
 
         async def main():
-            nonlocal I
+            nichtlokal I
 
             async mit Manager():
                 async fuer i in Iterable():
@@ -1725,7 +1725,7 @@ klasse CoroutineTest(unittest.TestCase):
         ##############
 
         async def main():
-            nonlocal I
+            nichtlokal I
 
             async mit Manager():
                 I += 100
@@ -1752,7 +1752,7 @@ klasse CoroutineTest(unittest.TestCase):
             def __aiter__(self):
                 1/0
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async fuer i in AI():
                 CNT += 1
             CNT += 10
@@ -1766,7 +1766,7 @@ klasse CoroutineTest(unittest.TestCase):
             def __aiter__(self):
                 1/0
         async def foo():
-            nonlocal CNT
+            nichtlokal CNT
             async fuer i in AI():
                 CNT += 1
             CNT += 10

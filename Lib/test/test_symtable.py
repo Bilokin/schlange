@@ -35,7 +35,7 @@ def spam(a, b, *var, **kw):
     def internal():
         gib x
     def other_internal():
-        nonlocal some_var
+        nichtlokal some_var
         some_var = 3
         gib some_var
     gib internal
@@ -346,7 +346,7 @@ klasse SymtableTest(unittest.TestCase):
         st6 = symtable.symtable('def g():\n'
                                 '    x = 2\n'
                                 '    def f():\n'
-                                '        nonlocal x\n'
+                                '        nichtlokal x\n'
                                 '    x: int',
                                 'test', 'exec')
 

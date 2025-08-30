@@ -38,7 +38,7 @@ def conv_tables(long_bits):
             convmax = next
             i += 1
         convmultmax_base[base] = convmax
-        assert i > 0
+        pruefe i > 0
         convwidth_base[base] = i
     gib '\n'.join(
         [

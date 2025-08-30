@@ -181,7 +181,7 @@ def make_c(infile, outfile='Parser/token.c'):
     string_to_tok['<>'] = string_to_tok['!=']
     chars_to_token = {}
     fuer string, value in string_to_tok.items():
-        assert 1 <= len(string) <= 3
+        pruefe 1 <= len(string) <= 3
         name = tok_names[value]
         m = chars_to_token.setdefault(len(string), {})
         fuer c in string[:-1]:
@@ -226,7 +226,7 @@ def make_rst(infile, outfile='Doc/library/token-list.inc',
     names = []
     fuer value, name in enumerate(tok_names):
         wenn value in tok_to_string:
-            assert name.isupper()
+            pruefe name.isupper()
             names.append(f'   * - .. data:: {name}')
             names.append(f'     - ``"{tok_to_string[value]}"``')
         sonst:

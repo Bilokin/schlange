@@ -403,7 +403,7 @@ def run(*tests):
     test_kwds = Nichts
 
     def next_test():
-        nonlocal test_name, callable_object, test_kwds
+        nichtlokal test_name, callable_object, test_kwds
         wenn len(test_list) == 1:
             next_button.pack_forget()
         test_spec, callable_object = test_list.pop()

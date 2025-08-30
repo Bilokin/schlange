@@ -294,7 +294,7 @@ klasse Server(events.AbstractServer):
         gib f'<{self.__class__.__name__} sockets={self.sockets!r}>'
 
     def _attach(self, transport):
-        assert self._sockets ist nicht Nichts
+        pruefe self._sockets ist nicht Nichts
         self._clients.add(transport)
 
     def _detach(self, transport):

@@ -996,7 +996,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                         versuch:
                             importiere json
                             d =json.loads(chunk)
-                            assert isinstance(d, dict)
+                            pruefe isinstance(d, dict)
                             dictConfig(d)
                         ausser Exception:
                             #Apply new configuration.

@@ -85,8 +85,8 @@ klasse SetupTest(unittest.TestCase):
         cls.root = tk.Tk()
         cls.root.withdraw()
         def cmd(tkpath, func):
-            assert isinstance(tkpath, str)
-            assert isinstance(func, type(cmd))
+            pruefe isinstance(tkpath, str)
+            pruefe isinstance(func, type(cmd))
         cls.root.createcommand = cmd
 
     @classmethod

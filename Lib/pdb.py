@@ -724,7 +724,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
 
         _chained_exceptions, tb = self._get_tb_and_exceptions(tb_or_exc)
         wenn isinstance(tb_or_exc, BaseException):
-            assert tb ist nicht Nichts, "main exception must have a traceback"
+            pruefe tb ist nicht Nichts, "main exception must have a traceback"
         mit self._hold_exceptions(_chained_exceptions):
             self.setup(frame, tb)
             # We should print the stack entry wenn und only wenn the user input
@@ -821,13 +821,13 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         # def __pdb_outer():
         #   var = Nichts
         #   def __pdb_scope():  # This ist the code object we want to execute
-        #     nonlocal var
+        #     nichtlokal var
         #     <source>
         #   gib __pdb_scope.__code__
         source_with_closure = ("def __pdb_outer():\n" +
                                "\n".join(f"  {var} = Nichts" fuer var in locals_copy) + "\n" +
                                "  def __pdb_scope():\n" +
-                               "\n".join(f"    nonlocal {var}" fuer var in locals_copy) + "\n" +
+                               "\n".join(f"    nichtlokal {var}" fuer var in locals_copy) + "\n" +
                                textwrap.indent(source, "    ") + "\n" +
                                "  gib __pdb_scope.__code__"
                                )
@@ -1691,7 +1691,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     do_bt = do_where
 
     def _select_frame(self, number):
-        assert 0 <= number < len(self.stack)
+        pruefe 0 <= number < len(self.stack)
         self.curindex = number
         self.curframe = self.stack[self.curindex][0]
         self.set_convenience_variable(self.curframe, '_frame', self.curframe)
@@ -2956,7 +2956,7 @@ klasse _PdbServer(Pdb):
 
     def _run_in_python_repl(self, lines):
         # Run one 'interact' mode code block against an existing namespace.
-        assert self._interact_state
+        pruefe self._interact_state
         save_displayhook = sys.displayhook
         versuch:
             sys.displayhook = self._interact_displayhook

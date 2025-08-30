@@ -569,7 +569,7 @@ klasse SubprocessMixin:
 
             kill_called = Falsch
             def kill():
-                nonlocal kill_called
+                nichtlokal kill_called
                 kill_called = Wahr
                 orig_kill()
 

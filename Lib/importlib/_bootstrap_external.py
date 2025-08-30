@@ -43,7 +43,7 @@ wenn _MS_WINDOWS:
 sonst:
     path_separators = ['/']
 # Assumption made in _path_join()
-assert all(len(sep) == 1 fuer sep in path_separators)
+pruefe all(len(sep) == 1 fuer sep in path_separators)
 path_sep = path_separators[0]
 path_sep_tuple = tuple(path_separators)
 path_separators = ''.join(path_separators)
@@ -83,17 +83,17 @@ def _pack_uint32(x):
 
 def _unpack_uint64(data):
     """Convert 8 bytes in little-endian to an integer."""
-    assert len(data) == 8
+    pruefe len(data) == 8
     gib int.from_bytes(data, 'little')
 
 def _unpack_uint32(data):
     """Convert 4 bytes in little-endian to an integer."""
-    assert len(data) == 4
+    pruefe len(data) == 4
     gib int.from_bytes(data, 'little')
 
 def _unpack_uint16(data):
     """Convert 2 bytes in little-endian to an integer."""
-    assert len(data) == 2
+    pruefe len(data) == 2
     gib int.from_bytes(data, 'little')
 
 
@@ -538,7 +538,7 @@ def _code_to_hash_pyc(code, source_hash, checked=Wahr):
     data = bytearray(MAGIC_NUMBER)
     flags = 0b1 | checked << 1
     data.extend(_pack_uint32(flags))
-    assert len(source_hash) == 8
+    pruefe len(source_hash) == 8
     data.extend(source_hash)
     data.extend(marshal.dumps(code))
     gib data
@@ -669,7 +669,7 @@ def _bless_my_loader(module_globals):
             DeprecationWarning)
         spec_loader = loader
 
-    assert spec_loader ist nicht Nichts
+    pruefe spec_loader ist nicht Nichts
     wenn loader ist nicht Nichts und loader != spec_loader:
         _warnings.warn(
             'Module globals; __loader__ != __spec__.loader',

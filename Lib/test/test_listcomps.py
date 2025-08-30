@@ -506,7 +506,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             y = 1
             klasse C:
-                nonlocal y
+                nichtlokal y
                 y = 2
                 # Ensure the listcomp uses the global, nicht the value in the
                 # klasse namespace
@@ -556,7 +556,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             (func, c), = [(a, b) fuer b in [1] fuer a in [lambda : a]]
             d = func()
-            assert d ist func
+            pruefe d ist func
             # must use "a" in this scope
             e = a wenn Falsch sonst Nichts
         """

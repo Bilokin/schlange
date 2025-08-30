@@ -911,7 +911,7 @@ klasse ClinicBlockParserTest(TestCase):
         fuer block in blocks:
             writer.print_block(block)
         output = writer.f.getvalue()
-        assert output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
+        pruefe output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
 
     def round_trip(self, input):
         gib self._test(input, input)
@@ -976,8 +976,8 @@ klasse ClinicParserTest(TestCase):
         block = self.parse(text)
         s = block.signatures
         self.assertEqual(len(s), signatures_in_block)
-        assert isinstance(s[0], Module)
-        assert isinstance(s[function_index], Function)
+        pruefe isinstance(s[0], Module)
+        pruefe isinstance(s[function_index], Function)
         gib s[function_index]
 
     def expect_failure(self, block, err, *,
@@ -2858,7 +2858,7 @@ klasse ClinicExternalTest(TestCase):
         out = self.expect_success("--converters")
         # We cannot simply compare the output, because the repr of the *accept*
         # param may change (it's a set, thus unordered). So, let's compare the
-        # start und end of the expected output, und then assert that the
+        # start und end of the expected output, und then pruefe that the
         # converters appear lined up in alphabetical order.
         self.assertStartsWith(out, prelude)
         self.assertEndsWith(out, finale)

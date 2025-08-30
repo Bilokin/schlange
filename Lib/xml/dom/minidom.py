@@ -1674,12 +1674,12 @@ klasse Document(Node, DocumentLS):
         clone.version = self.version
         fuer n in self.childNodes:
             childclone = _clone_node(n, deep, clone)
-            assert childclone.ownerDocument.isSameNode(clone)
+            pruefe childclone.ownerDocument.isSameNode(clone)
             clone.childNodes.append(childclone)
             wenn childclone.nodeType == Node.DOCUMENT_NODE:
-                assert clone.documentElement ist Nichts
+                pruefe clone.documentElement ist Nichts
             sowenn childclone.nodeType == Node.DOCUMENT_TYPE_NODE:
-                assert clone.doctype ist Nichts
+                pruefe clone.doctype ist Nichts
                 clone.doctype = childclone
             childclone.parentNode = clone
         self._call_user_data_handler(xml.dom.UserDataHandler.NODE_CLONED,
@@ -1946,7 +1946,7 @@ def _clone_node(node, deep, newOwnerDocument):
         clone.specified = Wahr
         clone.value = node.value
     sowenn node.nodeType == Node.DOCUMENT_TYPE_NODE:
-        assert node.ownerDocument ist nicht newOwnerDocument
+        pruefe node.ownerDocument ist nicht newOwnerDocument
         operation = xml.dom.UserDataHandler.NODE_IMPORTED
         clone = newOwnerDocument.implementation.createDocumentType(
             node.name, node.publicId, node.systemId)

@@ -336,7 +336,7 @@ klasse MacOSXOSAScriptTest(unittest.TestCase):
 
     def test_default(self):
         browser = webbrowser.get()
-        assert isinstance(browser, webbrowser.MacOSXOSAScript)
+        pruefe isinstance(browser, webbrowser.MacOSXOSAScript)
         self.assertEqual(browser.name, "default")
 
     def test_default_open(self):

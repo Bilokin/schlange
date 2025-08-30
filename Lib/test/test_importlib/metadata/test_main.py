@@ -30,8 +30,8 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
 
     def test_retrieves_version_of_self(self):
         dist = Distribution.from_name('distinfo-pkg')
-        assert isinstance(dist.version, str)
-        assert re.match(self.version_pattern, dist.version)
+        pruefe isinstance(dist.version, str)
+        pruefe re.match(self.version_pattern, dist.version)
 
     def test_for_name_does_not_exist(self):
         mit self.assertRaises(PackageNotFoundError):
@@ -47,7 +47,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
         mit self.assertRaises(PackageNotFoundError) als ctx:
             Distribution.from_name('does-not-exist')
 
-        assert "metadata" in str(ctx.exception)
+        pruefe "metadata" in str(ctx.exception)
 
     def test_abc_enforced(self):
         mit self.assertRaises(TypeError):
@@ -83,7 +83,7 @@ klasse ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
             value='importlib.metadata',
             group='grp',
         )
-        assert ep.load() ist importlib.metadata
+        pruefe ep.load() ist importlib.metadata
 
 
 klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
@@ -105,7 +105,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
         uses underscores in the name. Ensure the metadata loads.
         """
         fixtures.build_files(self.make_pkg('my_pkg'), self.site_dir)
-        assert version('my-pkg') == '1.0'
+        pruefe version('my-pkg') == '1.0'
 
     def test_dist_name_found_as_any_case(self):
         """
@@ -113,9 +113,9 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
         """
         pkg_name = 'CherryPy'
         fixtures.build_files(self.make_pkg(pkg_name), self.site_dir)
-        assert version(pkg_name) == '1.0'
-        assert version(pkg_name.lower()) == '1.0'
-        assert version(pkg_name.upper()) == '1.0'
+        pruefe version(pkg_name) == '1.0'
+        pruefe version(pkg_name.lower()) == '1.0'
+        pruefe version(pkg_name.upper()) == '1.0'
 
     def test_unique_distributions(self):
         """
@@ -130,7 +130,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
         fixtures.build_files(self.make_pkg('ABC'), alt_site_dir)
         after = list(_unique(distributions()))
 
-        assert len(after) == len(before)
+        pruefe len(after) == len(before)
 
 
 klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
@@ -155,7 +155,7 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
         fixtures.build_files(self.make_pkg('foo-4.1'), self.site_dir)
         fixtures.build_files(self.make_pkg('foo-4.2', files={}), self.site_dir)
         dist = Distribution.from_name('foo')
-        assert dist.version == "1.0"
+        pruefe dist.version == "1.0"
 
 
 klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
@@ -193,12 +193,12 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     def test_metadata_loads(self):
         pkg_name = self.pkg_with_non_ascii_description(self.site_dir)
         meta = metadata(pkg_name)
-        assert meta['Description'] == 'pôrˈtend'
+        pruefe meta['Description'] == 'pôrˈtend'
 
     def test_metadata_loads_egg_info(self):
         pkg_name = self.pkg_with_non_ascii_description_egg_info(self.site_dir)
         meta = metadata(pkg_name)
-        assert meta['Description'] == 'pôrˈtend'
+        pruefe meta['Description'] == 'pôrˈtend'
 
 
 klasse DiscoveryTests(
@@ -211,12 +211,12 @@ klasse DiscoveryTests(
 ):
     def test_package_discovery(self):
         dists = list(distributions())
-        assert all(isinstance(dist, Distribution) fuer dist in dists)
-        assert any(dist.metadata['Name'] == 'egginfo-pkg' fuer dist in dists)
-        assert any(dist.metadata['Name'] == 'egg_with_module-pkg' fuer dist in dists)
-        assert any(dist.metadata['Name'] == 'egg_with_no_modules-pkg' fuer dist in dists)
-        assert any(dist.metadata['Name'] == 'sources_fallback-pkg' fuer dist in dists)
-        assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
+        pruefe all(isinstance(dist, Distribution) fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'egginfo-pkg' fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'egg_with_module-pkg' fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'egg_with_no_modules-pkg' fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'sources_fallback-pkg' fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_invalid_usage(self):
         mit self.assertRaises(ValueError):
@@ -289,7 +289,7 @@ klasse TestEntryPoints(unittest.TestCase):
 
     def test_entry_point_pickleable(self):
         revived = pickle.loads(pickle.dumps(self.ep))
-        assert revived == self.ep
+        pruefe revived == self.ep
 
     def test_positional_args(self):
         """
@@ -303,19 +303,19 @@ klasse TestEntryPoints(unittest.TestCase):
             self.ep.name = 'badactor'
 
     def test_repr(self):
-        assert 'EntryPoint' in repr(self.ep)
-        assert 'name=' in repr(self.ep)
-        assert "'name'" in repr(self.ep)
+        pruefe 'EntryPoint' in repr(self.ep)
+        pruefe 'name=' in repr(self.ep)
+        pruefe "'name'" in repr(self.ep)
 
     def test_hashable(self):
         """EntryPoints should be hashable"""
         hash(self.ep)
 
     def test_module(self):
-        assert self.ep.module == 'value'
+        pruefe self.ep.module == 'value'
 
     def test_attr(self):
-        assert self.ep.attr ist Nichts
+        pruefe self.ep.attr ist Nichts
 
     def test_sortable(self):
         """
@@ -345,7 +345,7 @@ klasse FileSystem(
 klasse PackagesDistributionsPrebuiltTest(fixtures.ZipFixtures, unittest.TestCase):
     def test_packages_distributions_example(self):
         self._fixture_on_path('example-21.12-py3-none-any.whl')
-        assert packages_distributions()['example'] == ['example']
+        pruefe packages_distributions()['example'] == ['example']
 
     def test_packages_distributions_example2(self):
         """
@@ -353,7 +353,7 @@ klasse PackagesDistributionsPrebuiltTest(fixtures.ZipFixtures, unittest.TestCase
         by trampolim.
         """
         self._fixture_on_path('example2-1.0.0-py3-none-any.whl')
-        assert packages_distributions()['example2'] == ['example2']
+        pruefe packages_distributions()['example2'] == ['example2']
 
 
 klasse PackagesDistributionsTest(
@@ -407,11 +407,11 @@ klasse PackagesDistributionsTest(
         distributions = packages_distributions()
 
         fuer i in range(len(suffixes)):
-            assert distributions[f'importable-name {i}'] == ['all_distributions']
-            assert distributions[f'in_namespace_{i}'] == ['all_distributions']
-            assert distributions[f'in_package_{i}'] == ['all_distributions']
+            pruefe distributions[f'importable-name {i}'] == ['all_distributions']
+            pruefe distributions[f'in_namespace_{i}'] == ['all_distributions']
+            pruefe distributions[f'in_package_{i}'] == ['all_distributions']
 
-        assert nicht any(name.endswith('.dist-info') fuer name in distributions)
+        pruefe nicht any(name.endswith('.dist-info') fuer name in distributions)
 
     @os_helper.skip_unless_symlink
     def test_packages_distributions_symlinked_top_level(self) -> Nichts:
@@ -433,7 +433,7 @@ klasse PackagesDistributionsTest(
         }
 
         fixtures.build_files(files, self.site_dir)
-        assert packages_distributions()['symlinked'] == ['symlinked-pkg']
+        pruefe packages_distributions()['symlinked'] == ['symlinked-pkg']
 
 
 klasse PackagesDistributionsEggTest(
@@ -458,23 +458,23 @@ klasse PackagesDistributionsEggTest(
             }
 
         # egginfo-pkg declares one importiere ('mod') via top_level.txt
-        assert import_names_from_package('egginfo-pkg') == {'mod'}
+        pruefe import_names_from_package('egginfo-pkg') == {'mod'}
 
         # egg_with_module-pkg has one importiere ('egg_with_module') inferred from
         # installed-files.txt (top_level.txt ist missing)
-        assert import_names_from_package('egg_with_module-pkg') == {'egg_with_module'}
+        pruefe import_names_from_package('egg_with_module-pkg') == {'egg_with_module'}
 
         # egg_with_no_modules-pkg should nicht be associated mit any importiere names
         # (top_level.txt ist empty, und installed-files.txt has no .py files)
-        assert import_names_from_package('egg_with_no_modules-pkg') == set()
+        pruefe import_names_from_package('egg_with_no_modules-pkg') == set()
 
         # sources_fallback-pkg has one importiere ('sources_fallback') inferred from
         # SOURCES.txt (top_level.txt und installed-files.txt ist missing)
-        assert import_names_from_package('sources_fallback-pkg') == {'sources_fallback'}
+        pruefe import_names_from_package('sources_fallback-pkg') == {'sources_fallback'}
 
 
 klasse EditableDistributionTest(fixtures.DistInfoPkgEditable, unittest.TestCase):
     def test_origin(self):
         dist = Distribution.from_name('distinfo-pkg')
-        assert dist.origin.url.endswith('.whl')
-        assert dist.origin.archive_info.hashes.sha256
+        pruefe dist.origin.url.endswith('.whl')
+        pruefe dist.origin.archive_info.hashes.sha256

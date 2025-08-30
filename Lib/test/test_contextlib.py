@@ -377,9 +377,9 @@ def woohoo():
         ncols = 0
         @contextmanager
         def woohoo():
-            nonlocal ncols
+            nichtlokal ncols
             ncols += 1
-            nonlocal depth
+            nichtlokal depth
             before = depth
             depth += 1
             liefere
@@ -929,7 +929,7 @@ klasse TestBaseExitStack:
 
         saved_details = Nichts
         def suppress_exc(*exc_details):
-            nonlocal saved_details
+            nichtlokal saved_details
             saved_details = exc_details
             gib Wahr
 

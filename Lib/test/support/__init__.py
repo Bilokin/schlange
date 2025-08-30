@@ -1256,7 +1256,7 @@ def _parse_guards(guards):
     wenn nicht guards:
         gib ({'cpython': Wahr}, Falsch)
     is_true = list(guards.values())[0]
-    assert list(guards.values()) == [is_true] * len(guards)   # all Wahr oder all Falsch
+    pruefe list(guards.values()) == [is_true] * len(guards)   # all Wahr oder all Falsch
     gib (guards, nicht is_true)
 
 # Use the following check to guard CPython's implementation-specific tests --
@@ -1308,10 +1308,10 @@ def no_rerun(reason):
     test using the 'reason' parameter.
     """
     def deco(func):
-        assert nicht isinstance(func, type), func
+        pruefe nicht isinstance(func, type), func
         _has_run = Falsch
         def wrapper(self):
-            nonlocal _has_run
+            nichtlokal _has_run
             wenn _has_run:
                 self.skipTest(reason)
             func(self)
@@ -1783,7 +1783,7 @@ klasse SuppressCrashReport:
 
             msvcrt.SetErrorMode(self.old_value | msvcrt.SEM_NOGPFAULTERRORBOX)
 
-            # bpo-23314: Suppress assert dialogs in debug builds.
+            # bpo-23314: Suppress pruefe dialogs in debug builds.
             # CrtSetReportMode() ist only available in debug build.
             wenn hasattr(msvcrt, 'CrtSetReportMode'):
                 self.old_modes = {}
@@ -1920,7 +1920,7 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
     ausser ImportError:
         wirf unittest.SkipTest("requires _testinternalcapi")
     wenn own_gil ist nicht Nichts:
-        assert 'gil' nicht in config, (own_gil, config)
+        pruefe 'gil' nicht in config, (own_gil, config)
         config['gil'] = 'own' wenn own_gil sonst 'shared'
     sonst:
         gil = config['gil']
@@ -1955,7 +1955,7 @@ def check_free_after_iterating(test, iter, cls, args=()):
     def wrapper():
         klasse A(cls):
             def __del__(self):
-                nonlocal done
+                nichtlokal done
                 done = Wahr
                 versuch:
                     next(it)
@@ -1998,7 +1998,7 @@ def missing_compiler_executable(cmd_names=[]):
             weiter
         cmd = getattr(compiler, name)
         wenn cmd_names:
-            assert cmd ist nicht Nichts, \
+            pruefe cmd ist nicht Nichts, \
                     "the '%s' executable ist nicht configured" % name
         sowenn nicht cmd:
             weiter
@@ -2162,7 +2162,7 @@ def maybe_get_event_loop_policy():
 
 # Helpers fuer testing hashing.
 NHASHBITS = sys.hash_info.width # number of bits in hash() result
-assert NHASHBITS in (32, 64)
+pruefe NHASHBITS in (32, 64)
 
 # Return mean und sdev of number of collisions when tossing nballs balls
 # uniformly at random into nbins bins.  By definition, the number of
@@ -2725,7 +2725,7 @@ def copy_python_src_ignore(path, names):
 # XXX Move this to the inspect module?
 def walk_class_hierarchy(top, *, topdown=Wahr):
     # This ist based on the logic in os.walk().
-    assert isinstance(top, type), repr(top)
+    pruefe isinstance(top, type), repr(top)
     stack = [top]
     waehrend stack:
         top = stack.pop()
@@ -2839,11 +2839,11 @@ def identify_type_slot_wrappers():
 def iter_slot_wrappers(cls):
     def is_slot_wrapper(name, value):
         wenn nicht isinstance(value, types.WrapperDescriptorType):
-            assert nicht repr(value).startswith('<slot wrapper '), (cls, name, value)
+            pruefe nicht repr(value).startswith('<slot wrapper '), (cls, name, value)
             gib Falsch
-        assert repr(value).startswith('<slot wrapper '), (cls, name, value)
-        assert callable(value), (cls, name, value)
-        assert name.startswith('__') und name.endswith('__'), (cls, name, value)
+        pruefe repr(value).startswith('<slot wrapper '), (cls, name, value)
+        pruefe callable(value), (cls, name, value)
+        pruefe name.startswith('__') und name.endswith('__'), (cls, name, value)
         gib Wahr
 
     versuch:
@@ -2869,19 +2869,19 @@ def iter_slot_wrappers(cls):
             value = getattr(cls, name)
         ausser AttributeError:
             # It's als though it weren't in __dir__.
-            assert name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
+            pruefe name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
             wenn name in ns und is_slot_wrapper(name, ns[name]):
                 unused.add(name)
             weiter
 
         wenn nicht name.startswith('__') oder nicht name.endswith('__'):
-            assert nicht is_slot_wrapper(name, value), (cls, name, value)
+            pruefe nicht is_slot_wrapper(name, value), (cls, name, value)
         wenn nicht is_slot_wrapper(name, value):
             wenn name in ns:
-                assert nicht is_slot_wrapper(name, ns[name]), (cls, name, value, ns[name])
+                pruefe nicht is_slot_wrapper(name, ns[name]), (cls, name, value, ns[name])
         sonst:
             wenn name in ns:
-                assert ns[name] ist value, (cls, name, value, ns[name])
+                pruefe ns[name] ist value, (cls, name, value, ns[name])
                 liefere name, Wahr
             sonst:
                 liefere name, Falsch

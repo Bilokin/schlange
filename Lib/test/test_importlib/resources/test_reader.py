@@ -72,9 +72,9 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
             os.path.join('namespacedata01', 'binary.file'),
         )
         sub = path.joinpath('subdirectory')
-        assert isinstance(sub, MultiplexedPath)
-        assert 'namespacedata01' in str(sub)
-        assert 'data01' in str(sub)
+        pruefe isinstance(sub, MultiplexedPath)
+        pruefe 'namespacedata01' in str(sub)
+        pruefe 'data01' in str(sub)
         self.assertEqual(
             str(path.joinpath('imaginary'))[len(prefix) + 1 :],
             os.path.join('namespacedata01', 'imaginary'),
@@ -83,7 +83,7 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
 
     def test_join_path_compound(self):
         path = MultiplexedPath(self.folder)
-        assert nicht path.joinpath('imaginary/foo.py').exists()
+        pruefe nicht path.joinpath('imaginary/foo.py').exists()
 
     def test_join_path_common_subdir(self):
         prefix = str(self.data02.parent)

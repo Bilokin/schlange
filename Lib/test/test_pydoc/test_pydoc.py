@@ -1501,7 +1501,7 @@ klasse TestDescriptions(unittest.TestCase):
     def _get_summary_line(o):
         text = pydoc.plain(pydoc.render_doc(o))
         lines = text.split('\n')
-        assert len(lines) >= 2
+        pruefe len(lines) >= 2
         gib lines[2]
 
     @staticmethod

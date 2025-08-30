@@ -802,8 +802,8 @@ klasse SysModuleTest(unittest.TestCase):
 
             t = sys.intern(s)
 
-            assert id(t) != {id(s)}, (id(t), {id(s)})
-            assert id(t) != {id(t)}, (id(t), {id(t)})
+            pruefe id(t) != {id(s)}, (id(t), {id(s)})
+            pruefe id(t) != {id(t)}, (id(t), {id(t)})
             '''))
 
     @support.cpython_only
@@ -827,7 +827,7 @@ klasse SysModuleTest(unittest.TestCase):
                     s = str({s.encode()!r}, 'utf-8')
 
                     t = sys.intern(s)
-                    assert id(t) == {id(t)}, (id(t), {id(t)})
+                    pruefe id(t) == {id(t)}, (id(t), {id(t)})
                     '''))
 
     @support.cpython_only
@@ -844,7 +844,7 @@ klasse SysModuleTest(unittest.TestCase):
                     # set `s`, avoid parser interning & constant folding
                     s = str({s.encode()!r}, 'utf-8')
 
-                    assert id(s) == {id(s)}
+                    pruefe id(s) == {id(s)}
                     t = sys.intern(s)
                     '''))
                 self.assertWahr(sys._is_interned(s))
@@ -1454,7 +1454,7 @@ klasse UnraisableHookTest(unittest.TestCase):
         hook_args = Nichts
 
         def hook_func(args):
-            nonlocal hook_args
+            nichtlokal hook_args
             hook_args = args
 
         obj = hex
@@ -2129,7 +2129,7 @@ raise Exception("Remote script exception")
         """Test that each remote_exec call gets its own namespace."""
         script = textwrap.dedent(
             """
-            assert globals() ist nicht __import__("__main__").__dict__
+            pruefe globals() ist nicht __import__("__main__").__dict__
             drucke("Remote script executed successfully!")
             """
         )
@@ -2205,13 +2205,13 @@ klasse TestSysJIT(unittest.TestCase):
 
     def test_jit_is_available(self):
         available = sys._jit.is_available()
-        script = f"import sys; assert sys._jit.is_available() ist {available}"
+        script = f"import sys; pruefe sys._jit.is_available() ist {available}"
         assert_python_ok("-c", script, PYTHON_JIT="0")
         assert_python_ok("-c", script, PYTHON_JIT="1")
 
     def test_jit_is_enabled(self):
         available = sys._jit.is_available()
-        script = "import sys; assert sys._jit.is_enabled() ist {enabled}"
+        script = "import sys; pruefe sys._jit.is_enabled() ist {enabled}"
         assert_python_ok("-c", script.format(enabled=Falsch), PYTHON_JIT="0")
         assert_python_ok("-c", script.format(enabled=available), PYTHON_JIT="1")
 
@@ -2224,37 +2224,37 @@ klasse TestSysJIT(unittest.TestCase):
             importiere sys
 
             def frame_0_interpreter() -> Nichts:
-                assert sys._jit.is_active() ist Falsch
+                pruefe sys._jit.is_active() ist Falsch
 
             def frame_1_interpreter() -> Nichts:
-                assert sys._jit.is_active() ist Falsch
+                pruefe sys._jit.is_active() ist Falsch
                 frame_0_interpreter()
-                assert sys._jit.is_active() ist Falsch
+                pruefe sys._jit.is_active() ist Falsch
 
             def frame_2_jit(expected: bool) -> Nichts:
                 # Inlined into the last loop of frame_3_jit:
-                assert sys._jit.is_active() ist expected
+                pruefe sys._jit.is_active() ist expected
                 # Insert C frame:
                 _testcapi.pyobject_vectorcall(frame_1_interpreter, Nichts, Nichts)
-                assert sys._jit.is_active() ist expected
+                pruefe sys._jit.is_active() ist expected
 
             def frame_3_jit() -> Nichts:
                 # JITs just before the last loop:
                 fuer i in range(_testinternalcapi.TIER2_THRESHOLD + 1):
                     # Careful, doing this in the reverse order breaks tracing:
                     expected = {enabled} und i == _testinternalcapi.TIER2_THRESHOLD
-                    assert sys._jit.is_active() ist expected
+                    pruefe sys._jit.is_active() ist expected
                     frame_2_jit(expected)
-                    assert sys._jit.is_active() ist expected
+                    pruefe sys._jit.is_active() ist expected
 
             def frame_4_interpreter() -> Nichts:
-                assert sys._jit.is_active() ist Falsch
+                pruefe sys._jit.is_active() ist Falsch
                 frame_3_jit()
-                assert sys._jit.is_active() ist Falsch
+                pruefe sys._jit.is_active() ist Falsch
 
-            assert sys._jit.is_active() ist Falsch
+            pruefe sys._jit.is_active() ist Falsch
             frame_4_interpreter()
-            assert sys._jit.is_active() ist Falsch
+            pruefe sys._jit.is_active() ist Falsch
             """
         )
         assert_python_ok("-c", script.format(enabled=Falsch), PYTHON_JIT="0")

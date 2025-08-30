@@ -65,7 +65,7 @@ klasse StressTests(TestBase):
                 ausser interpreters.ExecutionFailed als exc:
                     wenn exc.excinfo.msg != 'interpreter already running':
                         wirf  # re-raise
-                    assert exc.excinfo.type.__name__ == 'InterpreterError'
+                    pruefe exc.excinfo.type.__name__ == 'InterpreterError'
                 sonst:
                     success = Wahr
 

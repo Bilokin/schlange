@@ -73,7 +73,7 @@ klasse TestConsoleIO(unittest.TestCase):
     def test_kbhit(self):
         code = dedent('''
             importiere msvcrt
-            assert msvcrt.kbhit() == 0
+            pruefe msvcrt.kbhit() == 0
         ''')
         self.run_in_separated_process(code)
 
@@ -87,7 +87,7 @@ klasse TestConsoleIO(unittest.TestCase):
             von _testconsole importiere write_input
             mit open("CONIN$", "rb", buffering=0) als stdin:
                 write_input(stdin, {ascii(c_encoded)})
-                assert msvcrt.{funcname}() == "{c}"
+                pruefe msvcrt.{funcname}() == "{c}"
         ''')
         self.run_in_separated_process(code)
 

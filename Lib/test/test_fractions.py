@@ -44,11 +44,11 @@ klasse DummyFloat(object):
 
     # shouldn't be calling __float__ at all when doing comparisons
     def __float__(self):
-        assert Falsch, "__float__ should nicht be invoked fuer comparisons"
+        pruefe Falsch, "__float__ should nicht be invoked fuer comparisons"
 
     # same goes fuer subtraction
     def __sub__(self, other):
-        assert Falsch, "__sub__ should nicht be invoked fuer comparisons"
+        pruefe Falsch, "__sub__ should nicht be invoked fuer comparisons"
     __rsub__ = __sub__
 
 
@@ -82,7 +82,7 @@ klasse DummyRational(object):
     # this klasse ist fuer testing comparisons; conversion to float
     # should never be used fuer a comparison, since it loses accuracy
     def __float__(self):
-        assert Falsch, "__float__ should nicht be invoked"
+        pruefe Falsch, "__float__ should nicht be invoked"
 
 klasse DummyFraction(fractions.Fraction):
     """Dummy Fraction subclass fuer copy und deepcopy testing."""

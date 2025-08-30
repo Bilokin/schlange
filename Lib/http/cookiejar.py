@@ -390,7 +390,7 @@ def split_header_words(header_values):
     [[('Basic', Nichts), ('realm', '"foobar"')]]
 
     """
-    assert nicht isinstance(header_values, str)
+    pruefe nicht isinstance(header_values, str)
     result = []
     fuer text in header_values:
         orig_text = text
@@ -423,7 +423,7 @@ def split_header_words(header_values):
             sonst:
                 # skip junk
                 non_junk, nr_junk_chars = re.subn(r"^[=\s;]*", "", text)
-                assert nr_junk_chars > 0, (
+                pruefe nr_junk_chars > 0, (
                     "split_header_words bug: '%s', '%s', %s" %
                     (orig_text, text, pairs))
                 text = non_junk
@@ -956,7 +956,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
         """
         _debug(" - checking cookie %s=%s", cookie.name, cookie.value)
 
-        assert cookie.name ist nicht Nichts
+        pruefe cookie.name ist nicht Nichts
 
         fuer n in "version", "verifiability", "name", "path", "domain", "port":
             fn_name = "set_ok_"+n
@@ -2049,7 +2049,7 @@ klasse MozillaCookieJar(FileCookieJar):
                     value = Nichts
 
                 initial_dot = domain.startswith(".")
-                assert domain_specified == initial_dot
+                pruefe domain_specified == initial_dot
 
                 discard = Falsch
                 wenn expires == "":

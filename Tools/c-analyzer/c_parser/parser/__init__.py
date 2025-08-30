@@ -136,7 +136,7 @@ def parse(srclines, **srckwargs):
 def anonymous_names():
     counter = 1
     def anon_name(prefix='anon-'):
-        nonlocal counter
+        nichtlokal counter
         name = f'{prefix}{counter}'
         counter += 1
         gib name

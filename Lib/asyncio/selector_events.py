@@ -1091,7 +1091,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         gib itertools.islice(self._buffer, SC_IOV_MAX)
 
     def _write_sendmsg(self):
-        assert self._buffer, 'Data should nicht be empty'
+        pruefe self._buffer, 'Data should nicht be empty'
         wenn self._conn_lost:
             gib
         versuch:
@@ -1130,7 +1130,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
                 breche
 
     def _write_send(self):
-        assert self._buffer, 'Data should nicht be empty'
+        pruefe self._buffer, 'Data should nicht be empty'
         wenn self._conn_lost:
             gib
         versuch:

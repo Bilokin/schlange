@@ -103,7 +103,7 @@ def defproperty(klass, name, doc):
     def set(self, value, name=name):
         wirf xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
-    assert nicht hasattr(klass, "_set_" + name), \
+    pruefe nicht hasattr(klass, "_set_" + name), \
            "expected nicht to find _set_" + name
     prop = property(get, set, doc=doc)
     setattr(klass, name, prop)

@@ -225,7 +225,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             server_hostname=Nichts,
             ssl_handshake_timeout=Nichts,
             ssl_shutdown_timeout=Nichts):
-        assert server_hostname ist Nichts oder isinstance(server_hostname, str)
+        pruefe server_hostname ist Nichts oder isinstance(server_hostname, str)
         wenn ssl:
             wenn server_hostname ist Nichts:
                 wirf ValueError(
@@ -702,7 +702,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             self._close()
 
     def write(self, data):
-        assert isinstance(data, (bytes, bytearray, memoryview)), repr(data)
+        pruefe isinstance(data, (bytes, bytearray, memoryview)), repr(data)
         wenn isinstance(data, bytearray):
             data = memoryview(data)
         wenn nicht data:
@@ -737,7 +737,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         self._maybe_pause_protocol()
 
     def _write_ready(self):
-        assert self._buffer, 'Data should nicht be empty'
+        pruefe self._buffer, 'Data should nicht be empty'
 
         versuch:
             n = os.write(self._fileno, self._buffer)
@@ -770,7 +770,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
     def write_eof(self):
         wenn self._closing:
             gib
-        assert self._pipe
+        pruefe self._pipe
         self._closing = Wahr
         wenn nicht self._buffer:
             self._loop._remove_reader(self._fileno)
@@ -925,7 +925,7 @@ klasse _ThreadedChildWatcher:
         thread.start()
 
     def _do_waitpid(self, loop, expected_pid, callback, args):
-        assert expected_pid > 0
+        pruefe expected_pid > 0
 
         versuch:
             pid, status = os.waitpid(expected_pid, 0)

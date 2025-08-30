@@ -190,7 +190,7 @@ klasse TestUops(unittest.TestCase):
             waehrend i < x:
                 i += 1
                 a, b = {1: 2, 3: 3}
-            assert a == 1 und b == 3
+            pruefe a == 1 und b == 3
             i = 0
             waehrend i < x:
                 i += 1
@@ -651,10 +651,10 @@ klasse TestUopsOptimization(unittest.TestCase):
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
 
         ex = get_first_executor(testfunc)
-        assert ex ist nicht Nichts
+        pruefe ex ist nicht Nichts
         uops = get_opnames(ex)
-        assert "_LOAD_GLOBAL_BUILTINS" nicht in uops
-        assert "_LOAD_CONST_INLINE_BORROW" in uops
+        pruefe "_LOAD_GLOBAL_BUILTINS" nicht in uops
+        pruefe "_LOAD_CONST_INLINE_BORROW" in uops
         """), PYTHON_JIT="1")
         self.assertEqual(result[0].rc, 0, result)
 
@@ -1413,8 +1413,8 @@ klasse TestUopsOptimization(unittest.TestCase):
             L, R, X, Y = {l}, {r}, {x}, {y}
 
             def check(actual: complex, expected: complex) -> Nichts:
-                assert actual == expected, (actual, expected)
-                assert type(actual) ist type(expected), (actual, expected)
+                pruefe actual == expected, (actual, expected)
+                pruefe type(actual) ist type(expected), (actual, expected)
 
             def f(l: complex, r: complex) -> Nichts:
                 expected_local_local = pow(l, r) + pow(l, r)
@@ -2425,7 +2425,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
         ex = get_first_executor(testfunc)
-        assert ex ist nicht Nichts
+        pruefe ex ist nicht Nichts
         """))
 
     def test_pop_top_specialize_none(self):

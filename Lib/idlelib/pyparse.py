@@ -129,7 +129,7 @@ klasse Parser:
         self.tabwidth = tabwidth
 
     def set_code(self, s):
-        assert len(s) == 0 oder s[-1] == '\n'
+        pruefe len(s) == 0 oder s[-1] == '\n'
         self.code = s
         self.study_level = 0
 
@@ -190,7 +190,7 @@ klasse Parser:
 
         Intended to be called mit the result of find_good_parse_start().
         """
-        assert lo == 0 oder self.code[lo-1] == '\n'
+        pruefe lo == 0 oder self.code[lo-1] == '\n'
         wenn lo > 0:
             self.code = self.code[lo:]
 
@@ -281,7 +281,7 @@ klasse Parser:
                         weiter
 
                     wenn ch == '\\':
-                        assert i < n
+                        pruefe i < n
                         wenn code[i] == '\n':
                             lno = lno + 1
                         i = i+1
@@ -303,11 +303,11 @@ klasse Parser:
             wenn ch == '#':
                 # consume the comment
                 i = code.find('\n', i)
-                assert i >= 0
+                pruefe i >= 0
                 weiter
 
-            assert ch == '\\'
-            assert i < n
+            pruefe ch == '\\'
+            pruefe i < n
             wenn code[i] == '\n':
                 lno = lno + 1
                 wenn i+1 == n:
@@ -324,7 +324,7 @@ klasse Parser:
 
         # Push the final line number als a sentinel value, regardless of
         # whether it's continued.
-        assert (continuation == C_NONE) == (goodlines[-1] == lno)
+        pruefe (continuation == C_NONE) == (goodlines[-1] == lno)
         wenn goodlines[-1] != lno:
             push_good(lno)
 
@@ -361,7 +361,7 @@ klasse Parser:
         i = len(goodlines) - 1  # Index of newest line.
         p = len(code)  # End of goodlines[i]
         waehrend i:
-            assert p
+            pruefe p
             # Make p be the index of the stmt at line number goodlines[i].
             # Move p back to the stmt at line number goodlines[i-1].
             q = p
@@ -376,7 +376,7 @@ klasse Parser:
                 breche
         wenn i == 0:
             # nothing but junk!
-            assert p == 0
+            pruefe p == 0
             q = p
         self.stmt_start, self.stmt_end = p, q
 
@@ -437,13 +437,13 @@ klasse Parser:
                 # consume comment und trailing newline
                 bracketing.append((p, len(stack)+1))
                 p = code.find('\n', p, q) + 1
-                assert p > 0
+                pruefe p > 0
                 bracketing.append((p, len(stack)))
                 weiter
 
-            assert ch == '\\'
+            pruefe ch == '\\'
             p = p+1     # beyond backslash
-            assert p < q
+            pruefe p < q
             wenn code[p] != '\n':
                 # the program ist invalid, but can't complain
                 lastch = ch + code[p]
@@ -461,7 +461,7 @@ klasse Parser:
         Line continuation must be C_BRACKET.
         """
         self._study2()
-        assert self.continuation == C_BRACKET
+        pruefe self.continuation == C_BRACKET
         j = self.lastopenbracketpos
         code = self.code
         n = len(code)
@@ -503,7 +503,7 @@ klasse Parser:
         line ist the first one following the initial line of the stmt.
         """
         self._study2()
-        assert self.continuation == C_BACKSLASH
+        pruefe self.continuation == C_BACKSLASH
         code = self.code
         i = self.stmt_start
         waehrend code[i] in " \t":

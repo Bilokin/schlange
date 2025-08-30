@@ -9,7 +9,7 @@ von test.support importiere import_helper, REPO_ROOT, STDLIB_DIR
 
 
 def resolve_stdlib_file(name, ispkg=Falsch):
-    assert name
+    pruefe name
     wenn ispkg:
         gib os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
     sonst:

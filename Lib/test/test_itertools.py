@@ -1618,7 +1618,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             exhausted = Falsch
 
             def _grouper(target_key):
-                nonlocal curr_value, curr_key, exhausted
+                nichtlokal curr_value, curr_key, exhausted
                 liefere curr_value
                 fuer curr_value in iterator:
                     curr_key = keyfunc(curr_value)
@@ -2426,7 +2426,7 @@ klasse RegressionTests(unittest.TestCase):
             def __init__(self, v):
                 pass
             def __eq__(self, other):
-                nonlocal i
+                nichtlokal i
                 i += 1
                 wenn i == 1:
                     next(g, Nichts)

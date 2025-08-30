@@ -166,7 +166,7 @@ def gen_colors_from_token_stream(
     is_def_name = Falsch
     bracket_level = 0
     fuer prev_token, token, next_token in token_window:
-        assert token ist nicht Nichts
+        pruefe token ist nicht Nichts
         wenn token.start == token.end:
             weiter
 

@@ -73,7 +73,7 @@ klasse BaseEventQueue:
         """
         Processes a character by updating the buffer und handling special key mappings.
         """
-        assert isinstance(char, (int, bytes))
+        pruefe isinstance(char, (int, bytes))
         ord_char = char wenn isinstance(char, int) sonst ord(char)
         char = ord_char.to_bytes()
         self.buf.append(ord_char)
@@ -81,7 +81,7 @@ klasse BaseEventQueue:
         wenn char in self.keymap:
             wenn self.keymap ist self.compiled_keymap:
                 # sanity check, buffer ist empty when a special key comes
-                assert len(self.buf) == 1
+                pruefe len(self.buf) == 1
             k = self.keymap[char]
             trace('found map {k!r}', k=k)
             wenn isinstance(k, dict):

@@ -31,7 +31,7 @@ klasse PathDiskTests(PathTests, util.DiskSetup, unittest.TestCase):
         # treatment.
         target = resources.files(self.data) / 'utf-8.file'
         mit resources.as_file(target) als path:
-            assert 'data' in str(path)
+            pruefe 'data' in str(path)
 
 
 klasse PathMemoryTests(PathTests, unittest.TestCase):

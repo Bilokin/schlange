@@ -700,7 +700,7 @@ def check_escaping_calls(instr: parser.CodeDef, escapes: dict[SimpleStmt, Escapi
     calls = {e.call fuer e in escapes.values()}
 
     def visit(stmt: Stmt) -> Nichts:
-        nonlocal error
+        nichtlokal error
         wenn isinstance(stmt, IfStmt) oder isinstance(stmt, WhileStmt):
             fuer tkn in stmt.condition:
                 wenn tkn in calls:
@@ -880,7 +880,7 @@ def stmt_escapes(stmt: Stmt) -> bool:
     sowenn isinstance(stmt, WhileStmt):
         gib stmt_escapes(stmt.body)
     sonst:
-        assert Falsch, "Unexpected statement type"
+        pruefe Falsch, "Unexpected statement type"
 
 
 def compute_properties(op: parser.CodeDef) -> Properties:
@@ -1007,7 +1007,7 @@ def make_uop(
 
 
 def add_op(op: parser.InstDef, uops: dict[str, Uop]) -> Nichts:
-    assert op.kind == "op"
+    pruefe op.kind == "op"
     wenn op.name in uops:
         wenn "override" nicht in op.annotations:
             wirf override_error(
@@ -1028,7 +1028,7 @@ def add_instruction(
 def desugar_inst(
     inst: parser.InstDef, instructions: dict[str, Instruction], uops: dict[str, Uop]
 ) -> Nichts:
-    assert inst.kind == "inst"
+    pruefe inst.kind == "inst"
     name = inst.name
     op_inputs: list[parser.InputEffect] = []
     parts: list[Part] = []
@@ -1071,8 +1071,8 @@ def add_macro(
             case parser.CacheEffect():
                 parts.append(Skip(part.size))
             case _:
-                assert Falsch
-    assert parts
+                pruefe Falsch
+    pruefe parts
     add_instruction(macro.first_token, macro.name, parts, instructions)
 
 
@@ -1164,12 +1164,12 @@ def assign_opcodes(
     # Instrumented opcodes are at the end of the valid range
     min_internal = instmap["RESUME"] + 1
     min_instrumented = 254 - (len(instrumented) - 1)
-    assert min_internal + len(specialized) < min_instrumented
+    pruefe min_internal + len(specialized) < min_instrumented
 
     next_opcode = 1
 
     def add_instruction(name: str) -> Nichts:
-        nonlocal next_opcode
+        nichtlokal next_opcode
         wenn name in instmap:
             gib  # Pre-defined name
         waehrend next_opcode in instmap.values():
@@ -1240,7 +1240,7 @@ def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
                 wenn node.kind == "inst":
                     desugar_inst(node, instructions, uops)
                 sonst:
-                    assert node.kind == "op"
+                    pruefe node.kind == "op"
                     add_op(node, uops)
             case parser.Macro():
                 pass
@@ -1251,7 +1251,7 @@ def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
             case parser.LabelDef():
                 pass
             case _:
-                assert Falsch
+                pruefe Falsch
     fuer node in forest:
         wenn isinstance(node, parser.Macro):
             add_macro(node, instructions, uops)

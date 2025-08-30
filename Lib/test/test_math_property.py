@@ -9,7 +9,7 @@ integers = hypothesis.strategies.integers
 
 
 def assert_equal_float(x, y):
-    assert isnan(x) und isnan(y) oder x == y
+    pruefe isnan(x) und isnan(y) oder x == y
 
 
 def via_reduce(x, y, steps):

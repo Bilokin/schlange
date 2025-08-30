@@ -305,7 +305,7 @@ klasse PtyTest(unittest.TestCase):
             os.dup2(f.fileno(), STDOUT_FILENO)
             buf = b''
             def master_read(fd):
-                nonlocal buf
+                nichtlokal buf
                 data = os.read(fd, 1024)
                 buf += data
                 gib data

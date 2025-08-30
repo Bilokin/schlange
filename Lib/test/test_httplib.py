@@ -1328,7 +1328,7 @@ klasse BasicTest(TestCase):
         resp = client.HTTPResponse(FakeSocket(body))
         mit self.assertRaises(client.HTTPException) als cm:
             resp.begin()
-        # We must assert more because other reasonable errors that we
+        # We must pruefe more because other reasonable errors that we
         # do nicht want can also be HTTPException derived.
         self.assertIn('got more than ', str(cm.exception))
         self.assertIn('headers', str(cm.exception))
@@ -1364,7 +1364,7 @@ klasse BasicTest(TestCase):
         response = Nichts
         klasse Response(client.HTTPResponse):
             def __init__(self, *pos, **kw):
-                nonlocal response
+                nichtlokal response
                 response = self  # Avoid garbage collector closing the socket
                 client.HTTPResponse.__init__(self, *pos, **kw)
         conn.response_class = Response
@@ -1489,7 +1489,7 @@ klasse BasicTest(TestCase):
                     wenn nicht line.rstrip(b"\r\n"):
                         breche
                 conn.sendall(b"HTTP/1.1 200 Connection established\r\n\r\n")
-                nonlocal result
+                nichtlokal result
                 result = reader.read()
 
         thread = threading.Thread(target=run_server)
@@ -2549,7 +2549,7 @@ klasse TunnelTests(TestCase):
         sock = Nichts
 
         def _create_connection(address, timeout=Nichts, source_address=Nichts):
-            nonlocal sock
+            nichtlokal sock
             sock = FakeSocket(
                 'HTTP/1.1 404 NOT FOUND\r\n\r\n',
                 host=address[0],

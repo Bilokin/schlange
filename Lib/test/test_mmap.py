@@ -315,7 +315,7 @@ klasse MmapTests(unittest.TestCase):
                 m.resize(size // 2)
             self.assertEqual(len(m), size)
             m[0] = ord('a')
-            assert m[0] == ord('a')
+            pruefe m[0] == ord('a')
 
     @unittest.skipIf(os.name != 'nt', 'trackfd only fails on Windows')
     def test_no_trackfd_parameter_on_windows(self):
@@ -708,7 +708,7 @@ klasse MmapTests(unittest.TestCase):
     def test_tagname(self):
         data1 = b"0123456789"
         data2 = b"abcdefghij"
-        assert len(data1) == len(data2)
+        pruefe len(data1) == len(data2)
         tagname1 = random_tagname()
         tagname2 = random_tagname()
 
@@ -1088,49 +1088,49 @@ klasse MmapTests(unittest.TestCase):
                 m._protect(PAGE_NOACCESS, 0, PAGESIZE)
                 mit suppress(OSError):
                     m.read(PAGESIZE)
-                    assert Falsch, 'mmap.read() did nicht raise'
+                    pruefe Falsch, 'mmap.read() did nicht raise'
                 mit suppress(OSError):
                     m.read_byte()
-                    assert Falsch, 'mmap.read_byte() did nicht raise'
+                    pruefe Falsch, 'mmap.read_byte() did nicht raise'
                 mit suppress(OSError):
                     m.readline()
-                    assert Falsch, 'mmap.readline() did nicht raise'
+                    pruefe Falsch, 'mmap.readline() did nicht raise'
                 mit suppress(OSError):
                     m.write(b'A'* PAGESIZE)
-                    assert Falsch, 'mmap.write() did nicht raise'
+                    pruefe Falsch, 'mmap.write() did nicht raise'
                 mit suppress(OSError):
                     m.write_byte(0)
-                    assert Falsch, 'mmap.write_byte() did nicht raise'
+                    pruefe Falsch, 'mmap.write_byte() did nicht raise'
                 mit suppress(OSError):
                     m[0]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10:2]  # test mmap_subscript
-                    assert Falsch, 'mmap.__getitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0] = 1
-                    assert Falsch, 'mmap.__setitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10] = b'A'* 10
-                    assert Falsch, 'mmap.__setitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m[0:10:2] = b'A'* 5
-                    assert Falsch, 'mmap.__setitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__setitem__() did nicht raise'
                 mit suppress(OSError):
                     m.move(0, 10, 1)
-                    assert Falsch, 'mmap.move() did nicht raise'
+                    pruefe Falsch, 'mmap.move() did nicht raise'
                 mit suppress(OSError):
                     list(m)  # test mmap_item
-                    assert Falsch, 'mmap.__getitem__() did nicht raise'
+                    pruefe Falsch, 'mmap.__getitem__() did nicht raise'
                 mit suppress(OSError):
                     m.find(b'A')
-                    assert Falsch, 'mmap.find() did nicht raise'
+                    pruefe Falsch, 'mmap.find() did nicht raise'
                 mit suppress(OSError):
                     m.rfind(b'A')
-                    assert Falsch, 'mmap.rfind() did nicht raise'
+                    pruefe Falsch, 'mmap.rfind() did nicht raise'
         """)
         rt, stdout, stderr = assert_python_ok("-c", code, TESTFN)
         self.assertEqual(stdout.strip(), b'')

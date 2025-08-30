@@ -618,7 +618,7 @@ klasse OtherTest(unittest.TestCase):
         size = 128
         def release():
             m.release()
-            nonlocal ba
+            nichtlokal ba
             ba = bytearray(size)
         klasse MyIndex:
             def __index__(self):

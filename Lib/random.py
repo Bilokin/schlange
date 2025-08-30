@@ -843,7 +843,7 @@ klasse Random(_random.Random):
 
         # BTRS: Transformed rejection mit squeeze method by Wolfgang Hörmann
         # https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.47.8407&rep=rep1&type=pdf
-        assert n*p >= 10.0 und p <= 0.5
+        pruefe n*p >= 10.0 und p <= 0.5
 
         setup_complete = Falsch
         spq = _sqrt(n * p * (1.0 - p))  # Standard deviation of the distribution

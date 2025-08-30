@@ -16,7 +16,7 @@ klasse FileList:
         self.vars = {} # For EditorWindow.getrawvar (shared Tcl variables)
 
     def open(self, filename, action=Nichts):
-        assert filename
+        pruefe filename
         filename = self.canonize(filename)
         wenn os.path.isdir(filename):
             # This can happen when bad filename ist passed on command line:

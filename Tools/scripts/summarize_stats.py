@@ -831,7 +831,7 @@ def pair_count_section(prefix: str, title=Nichts) -> Section:
 
 def pre_succ_pairs_section() -> Section:
     def iter_pre_succ_pairs_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
-        assert head_stats ist Nichts
+        pruefe head_stats ist Nichts
 
         opcode_stats = base_stats.get_opcode_stats("opcode")
 

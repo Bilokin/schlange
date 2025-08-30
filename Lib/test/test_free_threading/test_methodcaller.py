@@ -25,7 +25,7 @@ klasse TestMethodcaller(unittest.TestCase):
         fuer t in worker_threads:
             t.join()
         fuer l in lists:
-            assert len(l) == size
+            pruefe len(l) == size
 
 
 wenn __name__ == "__main__":

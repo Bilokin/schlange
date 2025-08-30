@@ -259,7 +259,7 @@ klasse OtherFileTests:
         # various read* methods.
         dataoffset = 16384
         filler = b"ham\n"
-        assert nicht dataoffset % len(filler), \
+        pruefe nicht dataoffset % len(filler), \
             "dataoffset must be multiple of len(filler)"
         nchunks = dataoffset // len(filler)
         testlines = [

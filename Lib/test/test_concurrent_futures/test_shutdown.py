@@ -88,7 +88,7 @@ klasse ExecutorShutdownTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_cancel_futures(self):
-        assert self.worker_count <= 5, "test needs few workers"
+        pruefe self.worker_count <= 5, "test needs few workers"
         fs = [self.executor.submit(time.sleep, .1) fuer _ in range(50)]
         self.executor.shutdown(cancel_futures=Wahr)
         # We can't guarantee the exact number of cancellations, but we can
@@ -198,7 +198,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
+        pruefe all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
@@ -213,7 +213,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
+        pruefe all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_thread_names_assigned(self):
@@ -318,7 +318,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
+        pruefe all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
@@ -341,7 +341,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
 
         # Make sure the results were all computed before the executor got
         # shutdown.
-        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
+        pruefe all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @classmethod
     def _failing_task_gh_132969(cls, n):

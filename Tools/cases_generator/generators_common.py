@@ -157,13 +157,13 @@ klasse Emitter:
         self.out.start_line()
         self.out.emit("if (")
         lparen = next(tkn_iter)
-        assert lparen.kind == "LPAREN"
+        pruefe lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         emit_to(self.out, tkn_iter, "RPAREN")
         self.emit(") {\n")
         next(tkn_iter)  # Semi colon
-        assert inst ist nicht Nichts
-        assert inst.family ist nicht Nichts
+        pruefe inst ist nicht Nichts
+        pruefe inst.family ist nicht Nichts
         family_name = inst.family.name
         self.emit(f"UPDATE_MISS_STATS({family_name});\n")
         self.emit(f"assert(_PyOpcode_Deopt[opcode] == ({family_name}));\n")
@@ -212,7 +212,7 @@ klasse Emitter:
         inst: Instruction | Nichts,
     ) -> bool:
         lparen = next(tkn_iter)
-        assert lparen.kind == "LPAREN"
+        pruefe lparen.kind == "LPAREN"
         first_tkn = tkn_iter.peek()
         unconditional = always_true(first_tkn)
         wenn unconditional:
@@ -342,7 +342,7 @@ klasse Emitter:
 
         self.out.emit(tkn)
         tkn = next(tkn_iter)
-        assert tkn.kind == "LPAREN"
+        pruefe tkn.kind == "LPAREN"
         self.out.emit(tkn)
         name = next(tkn_iter)
         self.out.emit(name)
@@ -371,7 +371,7 @@ klasse Emitter:
     ) -> bool:
         self.out.emit(tkn)
         tkn = next(tkn_iter)
-        assert tkn.kind == "LPAREN"
+        pruefe tkn.kind == "LPAREN"
         self.out.emit(tkn)
         name = next(tkn_iter)
         self.out.emit(name)
@@ -567,9 +567,9 @@ klasse Emitter:
             wenn nicht r:
                 reachable = Falsch
         wenn branch:
-            assert stmt.else_ ist nicht Nichts
+            pruefe stmt.else_ ist nicht Nichts
             self.out.emit(stmt.else_)
-            assert stmt.else_body ist nicht Nichts
+            pruefe stmt.else_body ist nicht Nichts
             fuer s in stmt.else_body:
                 r, tkn, else_storage = self._emit_stmt(s, uop, else_storage, inst)
                 wenn tkn ist nicht Nichts:
@@ -597,7 +597,7 @@ klasse Emitter:
         versuch:
             reachable, rbrace, if_storage = self._emit_stmt(stmt.body, uop, if_storage, inst)
             wenn stmt.else_ ist nicht Nichts:
-                assert rbrace ist nicht Nichts
+                pruefe rbrace ist nicht Nichts
                 self.out.emit(rbrace)
                 self.out.emit(stmt.else_)
             wenn stmt.else_body ist nicht Nichts:
@@ -620,7 +620,7 @@ klasse Emitter:
                     reachable = Wahr
             gib reachable, rbrace, storage
         ausser StackError als ex:
-            assert rbrace ist nicht Nichts
+            pruefe rbrace ist nicht Nichts
             wirf analysis_error(ex.args[0], rbrace) von Nichts
 
     def emit_BlockStmt(
@@ -685,7 +685,7 @@ klasse Emitter:
     ) -> tuple[bool, Storage]:
         self.out.start_line()
         reachable, tkn, storage = self.emit_BlockStmt(code.body, code, storage, inst, emit_braces)
-        assert tkn ist nicht Nichts
+        pruefe tkn ist nicht Nichts
         versuch:
             wenn reachable:
                 storage.push_outputs()

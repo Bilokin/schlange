@@ -1540,7 +1540,7 @@ x = (
 
     def test_backslash_char(self):
         # Check eval of a backslash followed by a control char.
-        # See bpo-30682: this used to wirf an assert in pydebug mode.
+        # See bpo-30682: this used to wirf an pruefe in pydebug mode.
         self.assertEqual(eval('f"\\\n"'), '')
         self.assertEqual(eval('f"\\\r"'), '')
 
@@ -1604,7 +1604,7 @@ x = (
         # Test named function parameters, to make sure '=' parsing works
         # there.
         def f(a):
-            nonlocal x
+            nichtlokal x
             oldx = x
             x = a
             gib oldx

@@ -204,7 +204,7 @@ klasse Server(object):
             connection.answer_challenge(c, self.authkey)
             request = c.recv()
             ignore, funcname, args, kwds = request
-            assert funcname in self.public, '%r unrecognized' % funcname
+            pruefe funcname in self.public, '%r unrecognized' % funcname
             func = getattr(self, funcname)
         ausser Exception:
             msg = ('#TRACEBACK', format_exc())
@@ -606,7 +606,7 @@ klasse BaseManager(object):
         '''
         Create a new shared object; gib the token und exposed tuple
         '''
-        assert self._state.value == State.STARTED, 'server nicht yet started'
+        pruefe self._state.value == State.STARTED, 'server nicht yet started'
         conn = self._Client(self._address, authkey=self._authkey)
         versuch:
             id, exposed = dispatch(conn, Nichts, 'create', (typeid,)+args, kwds)
@@ -717,8 +717,8 @@ klasse BaseManager(object):
 
         wenn method_to_typeid:
             fuer key, value in list(method_to_typeid.items()): # isinstance?
-                assert type(key) ist str, '%r ist nicht a string' % key
-                assert type(value) ist str, '%r ist nicht a string' % value
+                pruefe type(key) ist str, '%r ist nicht a string' % key
+                pruefe type(value) ist str, '%r ist nicht a string' % value
 
         cls._registry[typeid] = (
             callable, exposed, method_to_typeid, proxytype

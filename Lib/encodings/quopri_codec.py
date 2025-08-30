@@ -8,14 +8,14 @@ importiere quopri
 von io importiere BytesIO
 
 def quopri_encode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     f = BytesIO(input)
     g = BytesIO()
     quopri.encode(f, g, quotetabs=Wahr)
     gib (g.getvalue(), len(input))
 
 def quopri_decode(input, errors='strict'):
-    assert errors == 'strict'
+    pruefe errors == 'strict'
     f = BytesIO(input)
     g = BytesIO()
     quopri.decode(f, g)

@@ -38,7 +38,7 @@ def _main():
     __file__ = os.path.abspath(__file__)
 
     # sanity check
-    assert __file__ == os.path.abspath(sys.argv[0])
+    pruefe __file__ == os.path.abspath(sys.argv[0])
 
     main()
 

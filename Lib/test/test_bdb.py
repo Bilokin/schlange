@@ -453,7 +453,7 @@ klasse TracerRun():
                 sonst:
                     self.test_case.fail(err_msg)
             sonst:
-                assert Falsch, 'BdbNotExpectedError mit empty args'
+                pruefe Falsch, 'BdbNotExpectedError mit empty args'
 
         wenn not_empty:
             wenn self.dry_run:

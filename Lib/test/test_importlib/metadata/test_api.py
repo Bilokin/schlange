@@ -31,13 +31,13 @@ klasse APITests(
 
     def test_retrieves_version_of_self(self):
         pkg_version = version('egginfo-pkg')
-        assert isinstance(pkg_version, str)
-        assert re.match(self.version_pattern, pkg_version)
+        pruefe isinstance(pkg_version, str)
+        pruefe re.match(self.version_pattern, pkg_version)
 
     def test_retrieves_version_of_distinfo_pkg(self):
         pkg_version = version('distinfo-pkg')
-        assert isinstance(pkg_version, str)
-        assert re.match(self.version_pattern, pkg_version)
+        pruefe isinstance(pkg_version, str)
+        pruefe re.match(self.version_pattern, pkg_version)
 
     def test_for_name_does_not_exist(self):
         mit self.assertRaises(PackageNotFoundError):
@@ -47,7 +47,7 @@ klasse APITests(
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
         fuer name in names:
             mit self.subTest(name):
-                assert distribution(name).metadata['Name'] == 'pkg.dot'
+                pruefe distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_prefix_not_matched(self):
         prefixes = 'p', 'pkg', 'pkg.'
@@ -82,9 +82,9 @@ klasse APITests(
 
     def test_entry_points(self):
         eps = entry_points()
-        assert 'entries' in eps.groups
+        pruefe 'entries' in eps.groups
         entries = eps.select(group='entries')
-        assert 'main' in entries.names
+        pruefe 'main' in entries.names
         ep = entries['main']
         self.assertEqual(ep.value, 'mod:main')
         self.assertEqual(ep.extras, [])
@@ -117,19 +117,19 @@ klasse APITests(
         }
         fixtures.build_files(alt_pkg, alt_site_dir)
         entries = entry_points(group='entries')
-        assert nicht any(
+        pruefe nicht any(
             ep.dist.name == 'distinfo-pkg' und ep.dist.version == '1.0.0'
             fuer ep in entries
         )
         # ns:sub doesn't exist in alt_pkg
-        assert 'ns:sub' nicht in entries.names
+        pruefe 'ns:sub' nicht in entries.names
 
     def test_entry_points_missing_name(self):
         mit self.assertRaises(KeyError):
             entry_points(group='entries')['missing']
 
     def test_entry_points_missing_group(self):
-        assert entry_points(group='missing') == ()
+        pruefe entry_points(group='missing') == ()
 
     def test_entry_points_allows_no_attributes(self):
         ep = entry_points().select(group='entries', name='main')
@@ -138,11 +138,11 @@ klasse APITests(
 
     def test_metadata_for_this_package(self):
         md = metadata('egginfo-pkg')
-        assert md['author'] == 'Steven Ma'
-        assert md['LICENSE'] == 'Unknown'
-        assert md['Name'] == 'egginfo-pkg'
+        pruefe md['author'] == 'Steven Ma'
+        pruefe md['LICENSE'] == 'Unknown'
+        pruefe md['Name'] == 'egginfo-pkg'
         classifiers = md.get_all('Classifier')
-        assert 'Topic :: Software Development :: Libraries' in classifiers
+        pruefe 'Topic :: Software Development :: Libraries' in classifiers
 
     def test_missing_key(self):
         """
@@ -157,25 +157,25 @@ klasse APITests(
         Getting a key gets the key.
         """
         md = metadata('egginfo-pkg')
-        assert md.get('Name') == 'egginfo-pkg'
+        pruefe md.get('Name') == 'egginfo-pkg'
 
     def test_get_missing_key(self):
         """
         Requesting a missing key will gib Nichts.
         """
         md = metadata('distinfo-pkg')
-        assert md.get('does-not-exist') ist Nichts
+        pruefe md.get('does-not-exist') ist Nichts
 
     @staticmethod
     def _test_files(files):
         root = files[0].root
         fuer file in files:
-            assert file.root == root
-            assert nicht file.hash oder file.hash.value
-            assert nicht file.hash oder file.hash.mode == 'sha256'
-            assert nicht file.size oder file.size >= 0
-            assert file.locate().exists()
-            assert isinstance(file.read_binary(), bytes)
+            pruefe file.root == root
+            pruefe nicht file.hash oder file.hash.value
+            pruefe nicht file.hash oder file.hash.mode == 'sha256'
+            pruefe nicht file.size oder file.size >= 0
+            pruefe file.locate().exists()
+            pruefe isinstance(file.read_binary(), bytes)
             wenn file.name.endswith('.py'):
                 file.read_text()
 
@@ -201,8 +201,8 @@ klasse APITests(
 
     def test_requires_egg_info(self):
         deps = requires('egginfo-pkg')
-        assert len(deps) == 2
-        assert any(dep == 'wheel >= 1.0; python_version >= "2.7"' fuer dep in deps)
+        pruefe len(deps) == 2
+        pruefe any(dep == 'wheel >= 1.0; python_version >= "2.7"' fuer dep in deps)
 
     def test_requires_egg_info_empty(self):
         fixtures.build_files(
@@ -212,14 +212,14 @@ klasse APITests(
             self.site_dir.joinpath('egginfo_pkg.egg-info'),
         )
         deps = requires('egginfo-pkg')
-        assert deps == []
+        pruefe deps == []
 
     def test_requires_dist_info(self):
         deps = requires('distinfo-pkg')
-        assert len(deps) == 2
-        assert all(deps)
-        assert 'wheel >= 1.0' in deps
-        assert "pytest; extra == 'test'" in deps
+        pruefe len(deps) == 2
+        pruefe all(deps)
+        pruefe 'wheel >= 1.0' in deps
+        pruefe "pytest; extra == 'test'" in deps
 
     def test_more_complex_deps_requires_text(self):
         requires = textwrap.dedent(
@@ -251,30 +251,30 @@ klasse APITests(
         # wrapped in parentheses to avoid the following 'and' binding more
         # tightly than some other part of the environment expression.
 
-        assert deps == expected
+        pruefe deps == expected
 
     def test_as_json(self):
         md = metadata('distinfo-pkg').json
-        assert 'name' in md
-        assert md['keywords'] == ['sample', 'package']
+        pruefe 'name' in md
+        pruefe md['keywords'] == ['sample', 'package']
         desc = md['description']
-        assert desc.startswith('Once upon a time\nThere was')
-        assert len(md['requires_dist']) == 2
+        pruefe desc.startswith('Once upon a time\nThere was')
+        pruefe len(md['requires_dist']) == 2
 
     def test_as_json_egg_info(self):
         md = metadata('egginfo-pkg').json
-        assert 'name' in md
-        assert md['keywords'] == ['sample', 'package']
+        pruefe 'name' in md
+        pruefe md['keywords'] == ['sample', 'package']
         desc = md['description']
-        assert desc.startswith('Once upon a time\nThere was')
-        assert len(md['classifier']) == 2
+        pruefe desc.startswith('Once upon a time\nThere was')
+        pruefe len(md['classifier']) == 2
 
     def test_as_json_odd_case(self):
         self.make_uppercase()
         md = metadata('distinfo-pkg').json
-        assert 'name' in md
-        assert len(md['requires_dist']) == 2
-        assert md['keywords'] == ['SAMPLE', 'PACKAGE']
+        pruefe 'name' in md
+        pruefe len(md['requires_dist']) == 2
+        pruefe md['keywords'] == ['SAMPLE', 'PACKAGE']
 
 
 klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
@@ -282,30 +282,30 @@ klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
         fuer name in names:
             mit self.subTest(name):
-                assert distribution(name).metadata['Name'] == 'pkg.dot'
+                pruefe distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_name_normalization_versionless_egg_info(self):
         names = 'pkg.lot', 'pkg_lot', 'pkg-lot', 'pkg..lot', 'Pkg.Lot'
         fuer name in names:
             mit self.subTest(name):
-                assert distribution(name).metadata['Name'] == 'pkg.lot'
+                pruefe distribution(name).metadata['Name'] == 'pkg.lot'
 
 
 klasse OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
     def test_find_distributions_specified_path(self):
         dists = Distribution.discover(path=[str(self.site_dir)])
-        assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
+        pruefe any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_distribution_at_pathlib(self):
         """Demonstrate how to load metadata direct von a directory."""
         dist_info_path = self.site_dir / 'distinfo_pkg-1.0.0.dist-info'
         dist = Distribution.at(dist_info_path)
-        assert dist.version == '1.0.0'
+        pruefe dist.version == '1.0.0'
 
     def test_distribution_at_str(self):
         dist_info_path = self.site_dir / 'distinfo_pkg-1.0.0.dist-info'
         dist = Distribution.at(str(dist_info_path))
-        assert dist.version == '1.0.0'
+        pruefe dist.version == '1.0.0'
 
 
 klasse InvalidateCache(unittest.TestCase):

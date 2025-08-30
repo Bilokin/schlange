@@ -745,7 +745,7 @@ klasse Barrier:
         #see wenn the barrier ist in a broken state
         wenn self._state < 0:
             wirf BrokenBarrierError
-        assert self._state == 0
+        pruefe self._state == 0
 
     # Optionally run the 'action' und release the threads waiting
     # in the barrier.
@@ -770,7 +770,7 @@ klasse Barrier:
             wirf BrokenBarrierError
         wenn self._state < 0:
             wirf BrokenBarrierError
-        assert self._state == 1
+        pruefe self._state == 1
 
     # If we are the last thread to exit the barrier, signal any threads
     # waiting fuer the barrier to drain.
@@ -900,7 +900,7 @@ klasse Thread:
         sonst to the thread.
 
         """
-        assert group ist Nichts, "group argument must be Nichts fuer now"
+        pruefe group ist Nichts, "group argument must be Nichts fuer now"
         wenn kwargs ist Nichts:
             kwargs = {}
         wenn name:
@@ -943,7 +943,7 @@ klasse Thread:
         wenn new_ident ist nicht Nichts:
             # This thread ist alive.
             self._ident = new_ident
-            assert self._os_thread_handle.ident == new_ident
+            pruefe self._os_thread_handle.ident == new_ident
             wenn _HAVE_THREAD_NATIVE_ID:
                 self._set_native_id()
         sonst:
@@ -952,7 +952,7 @@ klasse Thread:
             pass
 
     def __repr__(self):
-        assert self._initialized, "Thread.__init__() was nicht called"
+        pruefe self._initialized, "Thread.__init__() was nicht called"
         status = "initial"
         wenn self._started.is_set():
             status = "started"
@@ -1132,12 +1132,12 @@ klasse Thread:
         initial name ist set by the constructor.
 
         """
-        assert self._initialized, "Thread.__init__() nicht called"
+        pruefe self._initialized, "Thread.__init__() nicht called"
         gib self._name
 
     @name.setter
     def name(self, name):
-        assert self._initialized, "Thread.__init__() nicht called"
+        pruefe self._initialized, "Thread.__init__() nicht called"
         self._name = str(name)
         wenn get_ident() == self._ident:
             self._set_os_name()
@@ -1151,7 +1151,7 @@ klasse Thread:
         created. The identifier ist available even after the thread has exited.
 
         """
-        assert self._initialized, "Thread.__init__() nicht called"
+        pruefe self._initialized, "Thread.__init__() nicht called"
         gib self._ident
 
     wenn _HAVE_THREAD_NATIVE_ID:
@@ -1163,7 +1163,7 @@ klasse Thread:
             This represents the Thread ID als reported by the kernel.
 
             """
-            assert self._initialized, "Thread.__init__() nicht called"
+            pruefe self._initialized, "Thread.__init__() nicht called"
             gib self._native_id
 
     def is_alive(self):
@@ -1174,7 +1174,7 @@ klasse Thread:
         enumerate().
 
         """
-        assert self._initialized, "Thread.__init__() nicht called"
+        pruefe self._initialized, "Thread.__init__() nicht called"
         gib self._started.is_set() und nicht self._os_thread_handle.is_done()
 
     @property
@@ -1189,7 +1189,7 @@ klasse Thread:
         The entire Python program exits when only daemon threads are left.
 
         """
-        assert self._initialized, "Thread.__init__() nicht called"
+        pruefe self._initialized, "Thread.__init__() nicht called"
         gib self._daemonic
 
     @daemon.setter
@@ -1627,7 +1627,7 @@ def _after_fork():
         _limbo.clear()
         _active.clear()
         _active.update(new_active)
-        assert len(_active) == 1
+        pruefe len(_active) == 1
 
 
 wenn hasattr(_os, "register_at_fork"):

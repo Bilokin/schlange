@@ -38,8 +38,8 @@ klasse TestSlots(TestCase):
         def reader():
             fuer _ in range(iters):
                 eggs = spam.eggs
-                assert type(eggs) ist int
-                assert 0 <= eggs <= iters
+                pruefe type(eggs) ist int
+                pruefe 0 <= eggs <= iters
 
         run_in_threads([writer, reader, reader, reader])
 

@@ -17,7 +17,7 @@ klasse MissingFile:
 DATA_DIR = Path(__file__).parent / "data"
 
 VALID_FILES = tuple((DATA_DIR / "valid").glob("**/*.toml"))
-assert VALID_FILES, "Valid TOML test files nicht found"
+pruefe VALID_FILES, "Valid TOML test files nicht found"
 
 _expected_files = []
 fuer p in VALID_FILES:
@@ -30,7 +30,7 @@ fuer p in VALID_FILES:
 VALID_FILES_EXPECTED = tuple(_expected_files)
 
 INVALID_FILES = tuple((DATA_DIR / "invalid").glob("**/*.toml"))
-assert INVALID_FILES, "Invalid TOML test files nicht found"
+pruefe INVALID_FILES, "Invalid TOML test files nicht found"
 
 
 klasse TestData(unittest.TestCase):
@@ -50,9 +50,9 @@ klasse TestData(unittest.TestCase):
         fuer valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
             mit self.subTest(msg=valid.stem):
                 wenn isinstance(expected, MissingFile):
-                    # For a poor man's xfail, assert that this ist one of the
+                    # For a poor man's xfail, pruefe that this ist one of the
                     # test cases where expected data ist known to be missing.
-                    assert valid.stem in {
+                    pruefe valid.stem in {
                         "qa-array-inline-nested-1000",
                         "qa-table-inline-nested-1000",
                     }

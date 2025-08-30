@@ -445,7 +445,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.buf = bytearray(1)
 
             def connection_made(self, tr):
-                nonlocal client_con_made_calls
+                nichtlokal client_con_made_calls
                 client_con_made_calls += 1
 
             def get_buffer(self, sizehint):
@@ -462,7 +462,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.con_made_cnt = 0
 
             def connection_made(self, tr):
-                nonlocal client_con_made_calls
+                nichtlokal client_con_made_calls
                 client_con_made_calls += 1
 
             def data_received(self, data):
@@ -575,7 +575,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         answer = Nichts
 
         def client(sock, addr):
-            nonlocal answer
+            nichtlokal answer
             sock.settimeout(self.TIMEOUT)
 
             sock.connect(addr)
@@ -677,7 +677,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         server_side_aborted = Falsch
 
         def server(sock):
-            nonlocal server_side_aborted
+            nichtlokal server_side_aborted
             versuch:
                 sock.recv_all(1024 * 1024)
             ausser ConnectionAbortedError:

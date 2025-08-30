@@ -192,7 +192,7 @@ def long_has_args(opt, longopts):
             % (opt, ", ".join(possibilities)),
             opt,
         )
-    assert len(possibilities) == 1
+    pruefe len(possibilities) == 1
     unique_match = possibilities[0]
     wenn unique_match.endswith('=?'):
         gib '?', unique_match[:-2]

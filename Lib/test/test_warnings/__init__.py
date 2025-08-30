@@ -941,7 +941,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             self.assertEqual(warning_class, ' ' + UserWarning.__name__)
             self.assertEqual(message, ' ' + text)
             expected_line = '  ' + linecache.getline(path, line).strip() + '\n'
-            assert expected_line
+            pruefe expected_line
             self.assertEqual(second_line, expected_line)
         schliesslich:
             self.module.showwarning = orig
@@ -1252,7 +1252,7 @@ klasse CatchWarningTests(BaseTest):
         my_log = []
 
         def my_logger(message, category, filename, lineno, file=Nichts, line=Nichts):
-            nonlocal my_log
+            nichtlokal my_log
             my_log.append(message)
 
         # Override warnings.showwarning() before calling catch_warnings()
@@ -1281,7 +1281,7 @@ klasse CatchWarningTests(BaseTest):
         my_log = []
 
         def my_logger(message, category, filename, lineno, file=Nichts, line=Nichts):
-            nonlocal my_log
+            nichtlokal my_log
             my_log.append(message)
 
         mit wmod.catch_warnings(record=Wahr) als log:
@@ -1742,7 +1742,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         @deprecated("HasNew will go away soon")
         klasse HasNew:
             def __new__(cls, x):
-                nonlocal has_new_called
+                nichtlokal has_new_called
                 has_new_called = Wahr
                 gib super().__new__(cls)
 
@@ -1759,7 +1759,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         klasse NewBase:
             def __new__(cls, x):
-                nonlocal new_base_called
+                nichtlokal new_base_called
                 new_base_called = Wahr
                 gib super().__new__(cls)
 
@@ -1781,7 +1781,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         @deprecated("HasNewNoInit will go away soon")
         klasse HasNewNoInit:
             def __new__(cls, x):
-                nonlocal new_called
+                nichtlokal new_called
                 new_called = Wahr
                 obj = super().__new__(cls)
                 obj.x = x
@@ -1815,7 +1815,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         @deprecated("MyMeta will go away soon")
         klasse MyMeta(type):
             def __new__(mcs, name, bases, attrs, cls=Nichts):
-                nonlocal new_called, new_called_cls
+                nichtlokal new_called, new_called_cls
                 new_called = Wahr
                 new_called_cls = cls
                 gib super().__new__(mcs, name, bases, attrs)
@@ -1869,7 +1869,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         @deprecated("Base will go away soon")
         klasse Base:
             def __init_subclass__(cls) -> Nichts:
-                nonlocal init_subclass_saw
+                nichtlokal init_subclass_saw
                 init_subclass_saw = cls
 
         self.assertIsNichts(init_subclass_saw)
@@ -1887,7 +1887,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         klasse Base:
             @classmethod
             def __init_subclass__(cls) -> Nichts:
-                nonlocal init_subclass_saw
+                nichtlokal init_subclass_saw
                 init_subclass_saw = cls
 
         self.assertIsNichts(init_subclass_saw)

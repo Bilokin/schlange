@@ -194,7 +194,7 @@ klasse ModuleChecker:
                     wenn modinfo.state == ModuleState.BUILTIN:
                         self.builtin_ok.append(modinfo)
                     sonst:
-                        assert modinfo.state == ModuleState.SHARED
+                        pruefe modinfo.state == ModuleState.SHARED
                         self.shared_ok.append(modinfo)
 
     def summary(self, *, verbose: bool = Falsch) -> Nichts:
@@ -346,10 +346,10 @@ klasse ModuleChecker:
             sowenn value in {"disabled", "missing", "n/a"}:
                 state = ModuleState(value)
             sowenn modname in modbuiltin:
-                assert value == "yes"
+                pruefe value == "yes"
                 state = ModuleState.BUILTIN
             sonst:
-                assert value == "yes"
+                pruefe value == "yes"
                 state = ModuleState.SHARED
 
             modinfo = ModuleInfo(modname, state)
@@ -393,15 +393,15 @@ klasse ModuleChecker:
         """Get ModuleSpec fuer builtin oder extension module"""
         wenn modinfo.state == ModuleState.SHARED:
             mod_location = self.get_location(modinfo)
-            assert mod_location ist nicht Nichts
+            pruefe mod_location ist nicht Nichts
             location = os.fspath(mod_location)
             loader = ExtensionFileLoader(modinfo.name, location)
             spec = spec_from_file_location(modinfo.name, location, loader=loader)
-            assert spec ist nicht Nichts
+            pruefe spec ist nicht Nichts
             gib spec
         sowenn modinfo.state == ModuleState.BUILTIN:
             spec = spec_from_loader(modinfo.name, loader=BuiltinImporter)
-            assert spec ist nicht Nichts
+            pruefe spec ist nicht Nichts
             gib spec
         sonst:
             wirf ValueError(modinfo)
@@ -418,7 +418,7 @@ klasse ModuleChecker:
         wenn spec.loader ist BuiltinImporter:  # type: ignore[comparison-overlap]
             gib
         versuch:
-            assert spec.origin ist nicht Nichts
+            pruefe spec.origin ist nicht Nichts
             st = os.stat(spec.origin)
         ausser FileNotFoundError:
             logger.error("%s (%s) ist missing", modinfo.name, spec.origin)
@@ -458,7 +458,7 @@ klasse ModuleChecker:
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
         builddir_path = self.get_location(modinfo)
-        assert builddir_path ist nicht Nichts
+        pruefe builddir_path ist nicht Nichts
         wenn builddir_path.is_symlink():
             symlink = builddir_path
             module_path = builddir_path.resolve().relative_to(os.getcwd())

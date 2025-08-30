@@ -255,7 +255,7 @@ klasse Charset:
         Returns "base64" wenn self.body_encoding ist BASE64.
         Returns conversion function otherwise.
         """
-        assert self.body_encoding != SHORTEST
+        pruefe self.body_encoding != SHORTEST
         wenn self.body_encoding == QP:
             gib 'quoted-printable'
         sowenn self.body_encoding == BASE64:

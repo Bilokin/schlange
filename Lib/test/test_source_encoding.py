@@ -261,7 +261,7 @@ klasse UTF8ValidatorTest(unittest.TestCase):
 
         # Each example ist put inside a string at the top of the file so
         # it's an otherwise valid Python source file. Put some newlines
-        # beforehand so we can assert that the error ist reported on the
+        # beforehand so we can pruefe that the error ist reported on the
         # correct line.
         template = b'\n\n\n"%s"\n'
 
@@ -272,7 +272,7 @@ klasse UTF8ValidatorTest(unittest.TestCase):
             mit open(fn, 'wb') als fp:
                 fp.write(template % content)
             rc, stdout, stderr = script_helper.assert_python_failure(fn)
-            # We want to assert that the python subprocess failed gracefully,
+            # We want to pruefe that the python subprocess failed gracefully,
             # nicht via a signal.
             self.assertGreaterEqual(rc, 1)
             self.assertIn(b"Non-UTF-8 code starting with", stderr)

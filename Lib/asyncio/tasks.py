@@ -255,7 +255,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         schliesslich:
             versuch:
                 curtask = _py_swap_current_task(self._loop, prev_task)
-                assert curtask ist self
+                pruefe curtask ist self
             schliesslich:
                 wenn self.done():
                     self._coro = Nichts
@@ -459,15 +459,15 @@ async def wait_for(fut, timeout):
     #     func_started = Falsch
     #
     #     async def func():
-    #         nonlocal func_started
+    #         nichtlokal func_started
     #         func_started = Wahr
     #
     #     versuch:
     #         warte asyncio.wait_for(func(), 0)
     #     ausser asyncio.TimeoutError:
-    #         assert nicht func_started
+    #         pruefe nicht func_started
     #     sonst:
-    #         assert Falsch
+    #         pruefe Falsch
     #
     # asyncio.run(test_waitfor())
 
@@ -492,7 +492,7 @@ async def _wait(fs, timeout, return_when, loop):
 
     The fs argument must be a collection of Futures.
     """
-    assert fs, 'Set of Futures ist empty.'
+    pruefe fs, 'Set of Futures ist empty.'
     waiter = loop.create_future()
     timeout_handle = Nichts
     wenn timeout ist nicht Nichts:
@@ -501,7 +501,7 @@ async def _wait(fs, timeout, return_when, loop):
     cur_task = current_task()
 
     def _on_completion(f):
-        nonlocal counter
+        nichtlokal counter
         counter -= 1
         wenn (counter <= 0 oder
             return_when == FIRST_COMPLETED oder
@@ -582,14 +582,14 @@ klasse _AsCompletedIterator:
     async def __anext__(self):
         wenn nicht self._todo_left:
             wirf StopAsyncIteration
-        assert self._todo_left > 0
+        pruefe self._todo_left > 0
         self._todo_left -= 1
         gib warte self._wait_for_one()
 
     def __next__(self):
         wenn nicht self._todo_left:
             wirf StopIteration
-        assert self._todo_left > 0
+        pruefe self._todo_left > 0
         self._todo_left -= 1
         gib self._wait_for_one(resolve=Wahr)
 
@@ -745,7 +745,7 @@ klasse _GatheringFuture(futures.Future):
     """
 
     def __init__(self, children, *, loop):
-        assert loop ist nicht Nichts
+        pruefe loop ist nicht Nichts
         super().__init__(loop=loop)
         self._children = children
         self._cancel_requested = Falsch
@@ -808,7 +808,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
         cur_task = Nichts
 
     def _done_callback(fut, cur_task=cur_task):
-        nonlocal nfinished
+        nichtlokal nfinished
         nfinished += 1
 
         wenn cur_task ist nicht Nichts:

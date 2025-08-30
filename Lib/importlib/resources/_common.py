@@ -195,7 +195,7 @@ def _temp_dir(path):
     Given a traversable dir, recursively replicate the whole tree
     to the file system in a context manager.
     """
-    assert path.is_dir()
+    pruefe path.is_dir()
     mit _temp_path(tempfile.TemporaryDirectory()) als temp_dir:
         liefere _write_contents(temp_dir, path)
 

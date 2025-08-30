@@ -125,7 +125,7 @@ drucke("assert unicodedata.unidata_version == %r" % (unicodedata.unidata_version
 # XXX Plane 15 PUA ist listed als unassigned in Python.
 name, table = tables[0]
 loesche tables[0]
-assert name == "A.1"
+pruefe name == "A.1"
 table = set(table.keys())
 Cn = set(gen_category(["Cn"]))
 
@@ -135,7 +135,7 @@ Cn -= set(range(0xFDD0, 0xFDF0))
 Cn -= set(range(0xFFFE, 0x110000, 0x10000))
 Cn -= set(range(0xFFFF, 0x110000, 0x10000))
 
-# assert table == Cn
+# pruefe table == Cn
 
 drucke("""
 def in_table_a1(code):
@@ -148,7 +148,7 @@ def in_table_a1(code):
 # B.1 cannot easily be derived
 name, table = tables[0]
 loesche tables[0]
-assert name == "B.1"
+pruefe name == "B.1"
 table = sorted(table.keys())
 drucke("""
 b1_set = """ + compact_set(table) + """
@@ -164,11 +164,11 @@ def in_table_b1(code):
 
 name, table_b2 = tables[0]
 loesche tables[0]
-assert name == "B.2"
+pruefe name == "B.2"
 
 name, table_b3 = tables[0]
 loesche tables[0]
-assert name == "B.3"
+pruefe name == "B.3"
 
 # B.3 ist mostly Python's .lower, ausser fuer a number
 # of special cases, e.g. considering canonical forms.
@@ -221,7 +221,7 @@ fuer k,v in table_b2.items():
         specials[k] = v
 
 # B.3 should nicht add any additional special cases
-assert specials == {}
+pruefe specials == {}
 
 drucke("""
 def map_table_b2(a):
@@ -238,8 +238,8 @@ def map_table_b2(a):
 # C.1.1 ist a table mit a single character
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.1.1"
-assert table == {0x20:0x20}
+pruefe name == "C.1.1"
+pruefe table == {0x20:0x20}
 
 drucke("""
 def in_table_c11(code):
@@ -249,11 +249,11 @@ def in_table_c11(code):
 # C.1.2 ist the rest of all space characters
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.1.2"
+pruefe name == "C.1.2"
 
 # table = set(table.keys())
 # Zs = set(gen_category(["Zs"])) - {0x20}
-# assert Zs == table
+# pruefe Zs == table
 
 drucke("""
 def in_table_c12(code):
@@ -266,12 +266,12 @@ def in_table_c11_c12(code):
 # C.2.1 ASCII control characters
 name, table_c21 = tables[0]
 loesche tables[0]
-assert name == "C.2.1"
+pruefe name == "C.2.1"
 
 Cc = set(gen_category(["Cc"]))
 Cc_ascii = Cc & set(range(128))
 table_c21 = set(table_c21.keys())
-assert Cc_ascii == table_c21
+pruefe Cc_ascii == table_c21
 
 drucke("""
 def in_table_c21(code):
@@ -282,11 +282,11 @@ def in_table_c21(code):
 # a number of characters in category Cf.
 name, table_c22 = tables[0]
 loesche tables[0]
-assert name == "C.2.2"
+pruefe name == "C.2.2"
 
 Cc_nonascii = Cc - Cc_ascii
 table_c22 = set(table_c22.keys())
-assert len(Cc_nonascii - table_c22) == 0
+pruefe len(Cc_nonascii - table_c22) == 0
 
 specials = list(table_c22 - Cc_nonascii)
 specials.sort()
@@ -306,10 +306,10 @@ def in_table_c21_c22(code):
 # C.3 Private use
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.3"
+pruefe name == "C.3"
 
 Co = set(gen_category(["Co"]))
-assert set(table.keys()) == Co
+pruefe set(table.keys()) == Co
 
 drucke("""
 def in_table_c3(code):
@@ -320,13 +320,13 @@ def in_table_c3(code):
 # plus process internal codes
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.4"
+pruefe name == "C.4"
 
 nonchar = set(range(0xFDD0,0xFDF0))
 nonchar.update(range(0xFFFE,0x110000,0x10000))
 nonchar.update(range(0xFFFF,0x110000,0x10000))
 table = set(table.keys())
-assert table == nonchar
+pruefe table == nonchar
 
 drucke("""
 def in_table_c4(code):
@@ -339,10 +339,10 @@ def in_table_c4(code):
 # C.5 Surrogate codes
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.5"
+pruefe name == "C.5"
 
 Cs = set(gen_category(["Cs"]))
-assert set(table.keys()) == Cs
+pruefe set(table.keys()) == Cs
 
 drucke("""
 def in_table_c5(code):
@@ -352,7 +352,7 @@ def in_table_c5(code):
 # C.6 Inappropriate fuer plain text
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.6"
+pruefe name == "C.6"
 
 table = sorted(table.keys())
 
@@ -365,7 +365,7 @@ def in_table_c6(code):
 # C.7 Inappropriate fuer canonical representation
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.7"
+pruefe name == "C.7"
 
 table = sorted(table.keys())
 
@@ -378,7 +378,7 @@ def in_table_c7(code):
 # C.8 Change display properties oder are deprecated
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.8"
+pruefe name == "C.8"
 
 table = sorted(table.keys())
 
@@ -391,7 +391,7 @@ def in_table_c8(code):
 # C.9 Tagging characters
 name, table = tables[0]
 loesche tables[0]
-assert name == "C.9"
+pruefe name == "C.9"
 
 table = sorted(table.keys())
 
@@ -404,10 +404,10 @@ def in_table_c9(code):
 # D.1 Characters mit bidirectional property "R" oder "AL"
 name, table = tables[0]
 loesche tables[0]
-assert name == "D.1"
+pruefe name == "D.1"
 
 RandAL = set(gen_bidirectional(["R","AL"]))
-assert set(table.keys()) == RandAL
+pruefe set(table.keys()) == RandAL
 
 drucke("""
 def in_table_d1(code):
@@ -417,10 +417,10 @@ def in_table_d1(code):
 # D.2 Characters mit bidirectional property "L"
 name, table = tables[0]
 loesche tables[0]
-assert name == "D.2"
+pruefe name == "D.2"
 
 L = set(gen_bidirectional(["L"]))
-assert set(table.keys()) == L
+pruefe set(table.keys()) == L
 
 drucke("""
 def in_table_d2(code):

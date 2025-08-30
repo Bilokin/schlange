@@ -363,10 +363,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         @asynccontextmanager
         async def woohoo():
-            nonlocal ncols
+            nichtlokal ncols
             ncols += 1
 
-            nonlocal depth
+            nichtlokal depth
             before = depth
             depth += 1
             liefere
@@ -389,7 +389,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         @asynccontextmanager
         async def context():
-            nonlocal entered
+            nichtlokal entered
             entered = Wahr
             liefere
             entered = Falsch
@@ -408,7 +408,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         @asynccontextmanager
         async def context():
-            nonlocal entered
+            nichtlokal entered
             versuch:
                 entered = Wahr
                 liefere
@@ -669,7 +669,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         saved_details = Nichts
         async def suppress_exc(*exc_details):
-            nonlocal saved_details
+            nichtlokal saved_details
             saved_details = exc_details
             gib Wahr
 

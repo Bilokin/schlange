@@ -2230,7 +2230,7 @@ klasse URandomFDTests(unittest.TestCase):
             versuch:
                 os.urandom(16)
             ausser OSError als e:
-                assert e.errno == errno.EMFILE, e.errno
+                pruefe e.errno == errno.EMFILE, e.errno
             sonst:
                 wirf AssertionError("OSError nicht raised")
             """
@@ -3088,11 +3088,11 @@ klasse Win32SymlinkTests(unittest.TestCase):
     missing_link = 'missing link'
 
     def setUp(self):
-        assert os.path.exists(self.dirlink_target)
-        assert os.path.exists(self.filelink_target)
-        assert nicht os.path.exists(self.dirlink)
-        assert nicht os.path.exists(self.filelink)
-        assert nicht os.path.exists(self.missing_link)
+        pruefe os.path.exists(self.dirlink_target)
+        pruefe os.path.exists(self.filelink_target)
+        pruefe nicht os.path.exists(self.dirlink)
+        pruefe nicht os.path.exists(self.filelink)
+        pruefe nicht os.path.exists(self.missing_link)
 
     def tearDown(self):
         wenn os.path.exists(self.filelink):
@@ -3122,7 +3122,7 @@ klasse Win32SymlinkTests(unittest.TestCase):
         wenn os.path.lexists(linkname):
             os.remove(linkname)
         target = r'c:\\target does nicht exist.29r3c740'
-        assert nicht os.path.exists(target)
+        pruefe nicht os.path.exists(target)
         target_is_dir = Wahr
         os.symlink(target, linkname, target_is_dir)
 
@@ -3262,8 +3262,8 @@ klasse Win32JunctionTests(unittest.TestCase):
     junction_target = os.path.dirname(os.path.abspath(__file__))
 
     def setUp(self):
-        assert os.path.exists(self.junction_target)
-        assert nicht os.path.lexists(self.junction)
+        pruefe os.path.exists(self.junction_target)
+        pruefe nicht os.path.lexists(self.junction)
 
     def tearDown(self):
         wenn os.path.lexists(self.junction):
@@ -3377,7 +3377,7 @@ klasse Win32NtTests(unittest.TestCase):
                 versuch:
                     os.stat(filename)
                 ausser FileNotFoundError als e:
-                    assert e.winerror == 2  # ERROR_FILE_NOT_FOUND
+                    pruefe e.winerror == 2  # ERROR_FILE_NOT_FOUND
             versuch:
                 proc.wait(1)
             ausser subprocess.TimeoutExpired:
@@ -3471,7 +3471,7 @@ klasse NonLocalSymlinkTests(unittest.TestCase):
         """
         src = os.path.join('base', 'some_link')
         os.symlink('some_dir', src)
-        assert os.path.isdir(src)
+        pruefe os.path.isdir(src)
 
 
 klasse FSEncodingTests(unittest.TestCase):
@@ -3480,7 +3480,7 @@ klasse FSEncodingTests(unittest.TestCase):
         self.assertEqual(os.fsdecode('abc\u0141'), 'abc\u0141')
 
     def test_identity(self):
-        # assert fsdecode(fsencode(x)) == x
+        # pruefe fsdecode(fsencode(x)) == x
         fuer fn in ('unicode\u0141', 'latin\xe9', 'ascii'):
             versuch:
                 bytesfn = os.fsencode(fn)
@@ -5571,15 +5571,15 @@ klasse ForkTests(unittest.TestCase):
                     warnings.filterwarnings(
                             "always", category=DeprecationWarning)
                     wenn os.fork() == 0:
-                        assert nicht ws, f"unexpected warnings in child: {ws}"
+                        pruefe nicht ws, f"unexpected warnings in child: {ws}"
                         os._exit(0)  # child
                     sonst:
-                        assert ws[0].category == DeprecationWarning, ws[0]
-                        assert 'fork' in str(ws[0].message), ws[0]
+                        pruefe ws[0].category == DeprecationWarning, ws[0]
+                        pruefe 'fork' in str(ws[0].message), ws[0]
                         # Waiting allows an error in the child to hit stderr.
                         exitcode = os.wait()[1]
-                        assert exitcode == 0, f"child exited {exitcode}"
-                assert threading.active_count() == 1, threading.enumerate()
+                        pruefe exitcode == 0, f"child exited {exitcode}"
+                pruefe threading.active_count() == 1, threading.enumerate()
             schliesslich:
                 _end_spawned_pthread()
         """

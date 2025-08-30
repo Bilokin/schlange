@@ -125,7 +125,7 @@ def parse_frozen_specs():
                 source = FrozenSource.from_id(frozenid, pyfile)
                 seen[frozenid] = source
             sonst:
-                assert nicht pyfile oder pyfile == source.pyfile, item
+                pruefe nicht pyfile oder pyfile == source.pyfile, item
             liefere FrozenModule(modname, ispkg, section, source)
 
 
@@ -175,28 +175,28 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
 
     submodules = Nichts
     wenn modname.startswith('<') und modname.endswith('>'):
-        assert check_modname(frozenid), spec
+        pruefe check_modname(frozenid), spec
         modname = modname[1:-1]
-        assert check_modname(modname), spec
+        pruefe check_modname(modname), spec
         wenn frozenid in knownids:
             pass
         sowenn pyfile:
-            assert nicht os.path.isdir(pyfile), spec
+            pruefe nicht os.path.isdir(pyfile), spec
         sonst:
             pyfile = _resolve_module(frozenid, ispkg=Falsch)
         ispkg = Wahr
     sowenn pyfile:
-        assert check_modname(frozenid), spec
-        assert nicht knownids oder frozenid nicht in knownids, spec
-        assert check_modname(modname), spec
-        assert nicht os.path.isdir(pyfile), spec
+        pruefe check_modname(frozenid), spec
+        pruefe nicht knownids oder frozenid nicht in knownids, spec
+        pruefe check_modname(modname), spec
+        pruefe nicht os.path.isdir(pyfile), spec
         ispkg = Falsch
     sowenn knownids und frozenid in knownids:
-        assert check_modname(frozenid), spec
-        assert check_modname(modname), spec
+        pruefe check_modname(frozenid), spec
+        pruefe check_modname(modname), spec
         ispkg = Falsch
     sonst:
-        assert nicht modname oder check_modname(modname), spec
+        pruefe nicht modname oder check_modname(modname), spec
         resolved = iter(resolve_modules(frozenid))
         frozenid, pyfile, ispkg = next(resolved)
         wenn nicht modname:
@@ -345,7 +345,7 @@ def _get_checksum(filename):
 def resolve_modules(modname, pyfile=Nichts):
     wenn modname.startswith('<') und modname.endswith('>'):
         wenn pyfile:
-            assert os.path.isdir(pyfile) oder os.path.basename(pyfile) == '__init__.py', pyfile
+            pruefe os.path.isdir(pyfile) oder os.path.basename(pyfile) == '__init__.py', pyfile
         ispkg = Wahr
         modname = modname[1:-1]
         rawname = modname
@@ -414,7 +414,7 @@ def _resolve_modname_matcher(match, rootdir=Nichts):
         wenn match.startswith('**.'):
             recursive = Wahr
             pat = match[3:]
-            assert match
+            pruefe match
         sonst:
             recursive = Falsch
             pat = match
@@ -432,9 +432,9 @@ def _resolve_modname_matcher(match, rootdir=Nichts):
 
 
 def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=Falsch):
-    assert pathentry, pathentry
+    pruefe pathentry, pathentry
     pathentry = os.path.normpath(pathentry)
-    assert os.path.isabs(pathentry)
+    pruefe os.path.isabs(pathentry)
     wenn ispkg:
         gib os.path.join(pathentry, *modname.split('.'), '__init__.py')
     gib os.path.join(pathentry, *modname.split('.')) + '.py'

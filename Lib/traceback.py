@@ -866,7 +866,7 @@ def _extract_caret_anchors_from_line_segment(segment):
         waehrend lineno < len(lines) und col >= len(lines[lineno]):
             col = 0
             lineno += 1
-        assert lineno < len(lines) und col < len(lines[lineno])
+        pruefe lineno < len(lines) und col < len(lines[lineno])
         gib lineno, col
 
     def increment(lineno, col):
@@ -1290,7 +1290,7 @@ klasse TracebackException:
                 liefere von ex.format_exception_only(show_group=show_group, _depth=_depth+1, colorize=colorize)
 
     def _find_keyword_typos(self):
-        assert self._is_syntax_error
+        pruefe self._is_syntax_error
         versuch:
             importiere _suggestions
         ausser ImportError:
@@ -1574,7 +1574,7 @@ klasse TracebackException:
                     _ctx.exception_group_depth -= 1
 
                 wenn is_toplevel:
-                    assert _ctx.exception_group_depth == 1
+                    pruefe _ctx.exception_group_depth == 1
                     _ctx.exception_group_depth = 0
 
 
@@ -1664,7 +1664,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         ausser Exception:
             gib Nichts
     sonst:
-        assert isinstance(exc_value, NameError)
+        pruefe isinstance(exc_value, NameError)
         # find most recent frame
         wenn tb ist Nichts:
             gib Nichts

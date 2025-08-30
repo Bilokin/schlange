@@ -557,10 +557,10 @@ klasse BaseFileInputGlobalMethodsTest(unittest.TestCase):
         fileinput._state = self._orig_state
 
     def assertExactlyOneInvocation(self, mock_file_input, method_name):
-        # assert that the method mit the given name was invoked once
+        # pruefe that the method mit the given name was invoked once
         actual_count = mock_file_input.invocation_counts[method_name]
         self.assertEqual(actual_count, 1, method_name)
-        # assert that no other unexpected methods were invoked
+        # pruefe that no other unexpected methods were invoked
         actual_total_count = len(mock_file_input.invocation_counts)
         self.assertEqual(actual_total_count, 1)
 

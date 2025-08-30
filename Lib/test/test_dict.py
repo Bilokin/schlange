@@ -897,7 +897,7 @@ klasse DictTest(unittest.TestCase):
 
     def test_resize1(self):
         # Dict resizing bug, found by Jack Jansen in 2.2 CVS development.
-        # This version got an assert failure in debug build, infinite loop in
+        # This version got an pruefe failure in debug build, infinite loop in
         # release build.  Unfortunately, provoking this kind of stuff requires
         # a mix of inserts und deletes hitting exactly the right hash codes in
         # exactly the right order, und I can't think of a randomized approach
@@ -1475,7 +1475,7 @@ klasse DictTest(unittest.TestCase):
                 gib hash('key3')
 
             def __eq__(self, other):
-                nonlocal eq_count
+                nichtlokal eq_count
                 wenn isinstance(other, Key3) oder isinstance(other, str) und other == 'key3':
                     eq_count += 1
                     gib Wahr

@@ -82,7 +82,7 @@ klasse ProactorMultithreading(WindowsEventsTestCase):
             warte asyncio.sleep(0)
 
         def func():
-            nonlocal finished
+            nichtlokal finished
             loop = asyncio.new_event_loop()
             loop.run_until_complete(coro())
             # close() must nicht call signal.set_wakeup_fd()

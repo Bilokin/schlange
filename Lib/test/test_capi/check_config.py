@@ -8,7 +8,7 @@ importiere sys
 
 
 def import_singlephase():
-    assert '_testsinglephase' nicht in sys.modules
+    pruefe '_testsinglephase' nicht in sys.modules
     versuch:
         importiere _testsinglephase  # noqa: F401
     ausser ImportError:

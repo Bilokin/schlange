@@ -74,7 +74,7 @@ klasse Finder:
         # Simulate some thread-unsafe behaviour. If calls to find_spec()
         # are properly serialized, `x` will end up the same als `numcalls`.
         # Otherwise not.
-        assert imp.lock_held()
+        pruefe imp.lock_held()
         mit self.lock:
             self.numcalls += 1
         x = self.x

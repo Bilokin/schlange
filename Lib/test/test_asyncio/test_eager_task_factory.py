@@ -63,7 +63,7 @@ klasse EagerTaskFactoryLoopTests:
         async def run():
             fut = self.loop.create_future()
             t = self.loop.create_task(set_result(fut, 'my message'))
-            # assert the eager step completed the task
+            # pruefe the eager step completed the task
             self.assertWahr(t.done())
             gib warte fut
 
@@ -76,7 +76,7 @@ klasse EagerTaskFactoryLoopTests:
 
         async def run():
             t = self.loop.create_task(coro())
-            # assert the eager step completed the task
+            # pruefe the eager step completed the task
             self.assertWahr(t.done())
             gib warte t
 
@@ -133,7 +133,7 @@ klasse EagerTaskFactoryLoopTests:
         captured_current_task = Nichts
 
         async def coro():
-            nonlocal captured_current_task
+            nichtlokal captured_current_task
             captured_current_task = asyncio.current_task()
             # verify the task before und after blocking ist identical
             warte asyncio.sleep(0.1)
@@ -151,7 +151,7 @@ klasse EagerTaskFactoryLoopTests:
         captured_all_tasks = Nichts
 
         async def coro():
-            nonlocal captured_all_tasks
+            nichtlokal captured_all_tasks
             captured_all_tasks = asyncio.all_tasks()
 
         async def run():
@@ -165,7 +165,7 @@ klasse EagerTaskFactoryLoopTests:
         captured_eager_all_tasks = Nichts
 
         async def coro(fut1, fut2):
-            nonlocal captured_eager_all_tasks
+            nichtlokal captured_eager_all_tasks
             captured_eager_all_tasks = asyncio.all_tasks()
             warte fut1
             fut2.set_result(Nichts)
@@ -189,8 +189,8 @@ klasse EagerTaskFactoryLoopTests:
         coro_second_step_ran = Falsch
 
         async def coro():
-            nonlocal coro_first_step_ran
-            nonlocal coro_second_step_ran
+            nichtlokal coro_first_step_ran
+            nichtlokal coro_second_step_ran
             self.assertEqual(cv.get(), 1)
             cv.set(2)
             self.assertEqual(cv.get(), 2)
@@ -267,7 +267,7 @@ klasse EagerTaskFactoryLoopTests:
         name = Nichts
 
         async def asyncfn():
-            nonlocal name
+            nichtlokal name
             name = asyncio.current_task().get_name()
 
         async def main():
@@ -350,7 +350,7 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
     def test_name(self):
         name = Nichts
         async def coro():
-            nonlocal name
+            nichtlokal name
             name = asyncio.current_task().get_name()
 
         async def main():
@@ -529,7 +529,7 @@ klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
         name = Nichts
 
         async def asyncfn():
-            nonlocal name
+            nichtlokal name
             name = asyncio.current_task().get_name()
 
         async def main():

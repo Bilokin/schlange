@@ -1063,7 +1063,7 @@ klasse IMAP4:
             sonst:
                 # We are continuing a fragmented response; append the fragment
                 response = self._idle_responses[-1]
-                assert response[0] == typ
+                pruefe response[0] == typ
                 response[1].append(dat)
             wenn __debug__ und self.debug >= 5:
                 self._mesg(f'idle: queue untagged {typ} {dat!r}')
@@ -1202,7 +1202,7 @@ klasse IMAP4:
         # _responsetimeout wenn one doesn't arrive. (Used by Idler.)
 
         wenn start_timeout ist nicht Falsch und self.sock:
-            assert start_timeout ist Nichts oder start_timeout > 0
+            pruefe start_timeout ist Nichts oder start_timeout > 0
             saved_timeout = self.sock.gettimeout()
             self.sock.settimeout(start_timeout)
             versuch:
@@ -1441,8 +1441,8 @@ klasse Idler:
 
     def __enter__(self):
         imap = self._imap
-        assert nicht imap._idle_responses
-        assert nicht imap._idle_capture
+        pruefe nicht imap._idle_responses
+        pruefe nicht imap._idle_capture
 
         wenn __debug__ und imap.debug >= 4:
             imap._mesg(f'idle start duration={self._duration}')

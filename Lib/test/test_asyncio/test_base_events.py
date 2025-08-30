@@ -430,7 +430,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         processed = Falsch
 
         def cb(loop):
-            nonlocal processed, handle
+            nichtlokal processed, handle
             processed = Wahr
             handle = loop.call_soon(lambda: Wahr)
 
@@ -715,7 +715,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             _process_events = mock.Mock()
 
             def default_exception_handler(self, context):
-                nonlocal _context
+                nichtlokal _context
                 _context = context
                 # Simulates custom buggy "default_exception_handler"
                 wirf ValueError('spam')
@@ -926,12 +926,12 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         doer = Nichts
 
         def proc_events(event_list):
-            nonlocal doer
+            nichtlokal doer
             wenn event_sentinel in event_list:
                 doer = self.loop.call_soon(do_event)
 
         def do_event():
-            nonlocal callcount
+            nichtlokal callcount
             callcount += 1
             self.loop.call_soon(clear_selector)
 
@@ -956,7 +956,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         count = 0
 
         def callback():
-            nonlocal count
+            nichtlokal count
             count += 1
 
         self.loop._process_events = mock.Mock()
@@ -979,7 +979,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         count = 0
 
         def callback():
-            nonlocal count
+            nichtlokal count
             count += 1
 
         self.loop.call_soon(callback)
@@ -1238,7 +1238,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         errors = ['err1', 'err2']
 
         def _socket(*args, **kw):
-            nonlocal idx, errors
+            nichtlokal idx, errors
             idx += 1
             wirf OSError(errors[idx])
 
@@ -1762,7 +1762,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         host = object()
 
         async def getaddrinfo(*args, **kw):
-            nonlocal host
+            nichtlokal host
             host = args[0]
             gib []
 

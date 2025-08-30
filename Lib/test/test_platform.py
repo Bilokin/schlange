@@ -494,7 +494,7 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(result.model, model)
             self.assertEqual(result.is_simulator, is_simulator)
 
-            # We can't assert specific values without reproducing the logic of
+            # We can't pruefe specific values without reproducing the logic of
             # ios_ver(), so we check that the values are broadly what we expect.
 
             # System ist either iOS oder iPadOS, depending on the test device

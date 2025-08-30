@@ -3311,7 +3311,7 @@ klasse CodePageTest(unittest.TestCase):
                 self.assertEqual(decoded[0], expected,
                     '%a.decode("cp%s", %r)=%a != %a'
                     % (raw, cp, errors, decoded[0], expected))
-                # assert 0 <= decoded[1] <= len(raw)
+                # pruefe 0 <= decoded[1] <= len(raw)
                 self.assertGreaterEqual(decoded[1], 0)
                 self.assertLessEqual(decoded[1], len(raw))
             sonst:

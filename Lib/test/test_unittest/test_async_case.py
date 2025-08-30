@@ -97,7 +97,7 @@ klasse TestAsyncCase(unittest.TestCase):
                 self.assertEqual(events, expected[:10])
                 events.append('cleanup1')
                 VAR.set(VAR.get() + ('cleanup1',))
-                nonlocal cvar
+                nichtlokal cvar
                 cvar = VAR.get()
 
             async def on_cleanup2(self):
@@ -384,7 +384,7 @@ klasse TestAsyncCase(unittest.TestCase):
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_leaking_task(self):
                 async def coro():
-                    nonlocal cancelled
+                    nichtlokal cancelled
                     versuch:
                         warte asyncio.sleep(1)
                     ausser asyncio.CancelledError:

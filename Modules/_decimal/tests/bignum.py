@@ -39,4 +39,4 @@ d = Decimal('9' * 425000000 + 'e-849999999')
 h1 = xhash(coeff, -849999999)
 h2 = hash(d)
 
-assert h2 == h1
+pruefe h2 == h1

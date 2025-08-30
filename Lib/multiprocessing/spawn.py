@@ -99,7 +99,7 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
     '''
     Run code specified by data received over pipe
     '''
-    assert is_forking(sys.argv), "Not forking"
+    pruefe is_forking(sys.argv), "Not forking"
     wenn sys.platform == 'win32':
         importiere msvcrt
         importiere _winapi

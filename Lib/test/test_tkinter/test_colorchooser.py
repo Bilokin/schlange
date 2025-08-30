@@ -43,7 +43,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_askcolor(self):
         def test_callback(dialog, master):
-            nonlocal ismapped
+            nichtlokal ismapped
             master.update()
             ismapped = master.winfo_ismapped()
             wirf ZeroDivisionError

@@ -2526,7 +2526,7 @@ def get_parameter(value):
         wenn nicht value oder value[0] != "'":
             appendto.append(token)
             wenn remainder ist nicht Nichts:
-                assert nicht value, value
+                pruefe nicht value, value
                 value = remainder
             gib param, value
         param.defects.append(errors.InvalidHeaderDefect(
@@ -2578,7 +2578,7 @@ def get_parameter(value):
         token, value = get_value(value)
     appendto.append(token)
     wenn remainder ist nicht Nichts:
-        assert nicht value, value
+        pruefe nicht value, value
         value = remainder
     gib param, value
 

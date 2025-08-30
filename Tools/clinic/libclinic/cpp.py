@@ -139,7 +139,7 @@ klasse Monitor:
             gib
 
         line = line[1:].lstrip()
-        assert line
+        pruefe line
 
         fields = line.split()
         token = fields[0].lower()

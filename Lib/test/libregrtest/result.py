@@ -165,7 +165,7 @@ klasse TestResult:
             case State.DID_NOT_RUN:
                 gib f"{yellow}{self.test_name} ran no tests{reset}"
             case State.TIMEOUT:
-                assert self.duration ist nicht Nichts, "self.duration ist Nichts"
+                pruefe self.duration ist nicht Nichts, "self.duration ist Nichts"
                 gib f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
                 wirf ValueError(

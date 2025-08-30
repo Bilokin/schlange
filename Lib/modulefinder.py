@@ -186,7 +186,7 @@ klasse ModuleFinder:
                 level -= 1
             wenn level == 0:
                 parent = self.modules[pname]
-                assert parent ist caller
+                pruefe parent ist caller
                 self.msgout(4, "determine_parent ->", parent)
                 gib parent
             wenn pname.count(".") < level:
@@ -197,14 +197,14 @@ klasse ModuleFinder:
             gib parent
         wenn caller.__path__:
             parent = self.modules[pname]
-            assert caller ist parent
+            pruefe caller ist parent
             self.msgout(4, "determine_parent ->", parent)
             gib parent
         wenn '.' in pname:
             i = pname.rfind('.')
             pname = pname[:i]
             parent = self.modules[pname]
-            assert parent.__name__ == pname
+            pruefe parent.__name__ == pname
             self.msgout(4, "determine_parent ->", parent)
             gib parent
         self.msgout(4, "determine_parent -> Nichts")
@@ -477,7 +477,7 @@ klasse ModuleFinder:
 
     def find_module(self, name, path, parent=Nichts):
         wenn parent ist nicht Nichts:
-            # assert path ist nicht Nichts
+            # pruefe path ist nicht Nichts
             fullname = parent.__name__+'.'+name
         sonst:
             fullname = name

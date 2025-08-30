@@ -906,7 +906,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             os.kill(os.getpid(), signum)
             pending = signal.sigpending()
             fuer sig in pending:
-                assert isinstance(sig, signal.Signals), repr(pending)
+                pruefe isinstance(sig, signal.Signals), repr(pending)
             wenn pending != {signum}:
                 wirf Exception('%s != {%s}' % (pending, signum))
             versuch:
@@ -997,7 +997,7 @@ klasse PendingSignalsTests(unittest.TestCase):
         def test(signum):
             signal.alarm(1)
             received = signal.sigwait([signum])
-            assert isinstance(received, signal.Signals), received
+            pruefe isinstance(received, signal.Signals), received
             wenn received != signum:
                 wirf Exception('received %s, nicht %s' % (received, signum))
         ''')
@@ -1127,7 +1127,7 @@ klasse PendingSignalsTests(unittest.TestCase):
 
         def check_mask(mask):
             fuer sig in mask:
-                assert isinstance(sig, signal.Signals), repr(sig)
+                pruefe isinstance(sig, signal.Signals), repr(sig)
 
         def read_sigmask():
             sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, [])
@@ -1359,11 +1359,11 @@ klasse StressTest(unittest.TestCase):
         do_stop = Falsch
 
         def custom_handler(signum, frame):
-            nonlocal num_received_signals
+            nichtlokal num_received_signals
             num_received_signals += 1
 
         def set_interrupts():
-            nonlocal num_sent_signals
+            nichtlokal num_sent_signals
             waehrend nicht do_stop:
                 signal.raise_signal(signum)
                 num_sent_signals += 1
@@ -1429,7 +1429,7 @@ klasse RaiseSignalTest(unittest.TestCase):
     def test_handler(self):
         is_ok = Falsch
         def handler(a, b):
-            nonlocal is_ok
+            nichtlokal is_ok
             is_ok = Wahr
         old_signal = signal.signal(signal.SIGINT, handler)
         self.addCleanup(signal.signal, signal.SIGINT, old_signal)

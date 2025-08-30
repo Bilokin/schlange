@@ -100,7 +100,7 @@ def get_builddir(args: argparse.Namespace) -> pathlib.Path:
 
 def get_sysconfigdata(args: argparse.Namespace) -> pathlib.Path:
     """Get path to sysconfigdata relative to build root"""
-    assert isinstance(args.builddir, pathlib.Path)
+    pruefe isinstance(args.builddir, pathlib.Path)
     data_name: str = sysconfig._get_sysconfigdata_name()  # type: ignore[attr-defined]
     filename = data_name + ".py"
     gib args.builddir / filename

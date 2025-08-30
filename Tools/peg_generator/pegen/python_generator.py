@@ -120,7 +120,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
     def lookahead_call_helper(self, node: Lookahead) -> Tuple[str, str]:
         name, call = self.visit(node.node)
         head, tail = call.split("(", 1)
-        assert tail[-1] == ")"
+        pruefe tail[-1] == ")"
         tail = tail[:-1]
         gib head, tail
 
@@ -308,7 +308,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
 
     def visit_Rhs(self, node: Rhs, is_loop: bool = Falsch, is_gather: bool = Falsch) -> Nichts:
         wenn is_loop:
-            assert len(node.alts) == 1
+            pruefe len(node.alts) == 1
         fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather)
 
@@ -337,7 +337,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                 action = node.action
                 wenn nicht action:
                     wenn is_gather:
-                        assert len(self.local_variable_names) == 2
+                        pruefe len(self.local_variable_names) == 2
                         action = (
                             f"[{self.local_variable_names[0]}] + {self.local_variable_names[1]}"
                         )

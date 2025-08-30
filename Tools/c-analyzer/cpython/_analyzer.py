@@ -272,7 +272,7 @@ def _is_kwlist(decl):
         wenn decl.name == name:
             wenn relpath == '*':
                 breche
-            assert os.path.isabs(decl.file.filename)
+            pruefe os.path.isabs(decl.file.filename)
             relpath = os.path.normpath(relpath)
             wenn decl.file.filename.endswith(os.path.sep + relpath):
                 breche
@@ -294,7 +294,7 @@ def _is_local_static_mutex(decl):
 
 def _has_other_supported_type(decl):
     wenn hasattr(decl, 'file') und decl.file.filename.endswith('.c.h'):
-        assert 'clinic' in decl.file.filename, (decl,)
+        pruefe 'clinic' in decl.file.filename, (decl,)
         wenn decl.name == '_kwtuple':
             gib Wahr
     wenn _is_local_static_mutex(decl):

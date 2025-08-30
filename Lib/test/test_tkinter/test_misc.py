@@ -133,7 +133,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root = self.root
 
         def callback(start=0, step=1, *, end=0):
-            nonlocal count
+            nichtlokal count
             count = start + step + end
 
         # Without function, sleeps fuer ms.
@@ -180,7 +180,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root = self.root
 
         def callback(start=0, step=1, *, end=0):
-            nonlocal count
+            nichtlokal count
             count = start + step + end
 
         # Set up mit callback mit no args.
@@ -218,7 +218,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root = self.root
 
         def callback():
-            nonlocal count
+            nichtlokal count
             count += 1
 
         timer1 = root.after(5000, callback)

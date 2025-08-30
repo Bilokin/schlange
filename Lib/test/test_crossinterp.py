@@ -82,7 +82,7 @@ BUILTIN_FUNCTIONS = [
     sys.exit,
     _testinternalcapi.get_crossinterp_data,
 ]
-assert 'emptymod' nicht in sys.modules
+pruefe 'emptymod' nicht in sys.modules
 with import_helper.ready_to_import('emptymod', ''):
     importiere emptymod als EMPTYMOD
 MODULES = [
@@ -286,7 +286,7 @@ PICKLEABLE = [
     METHOD_WRAPPER,
     WRAPPER_DESCRIPTOR,
 ]
-assert nicht any(isinstance(o, types.MappingProxyType) fuer o in PICKLEABLE)
+pruefe nicht any(isinstance(o, types.MappingProxyType) fuer o in PICKLEABLE)
 
 
 # helpers
@@ -338,7 +338,7 @@ def load_defs(module=Nichts):
         fuer name, value in defs.__dict__.items():
             wenn name.startswith('_'):
                 weiter
-            assert nicht hasattr(module, name), (name, getattr(module, name))
+            pruefe nicht hasattr(module, name), (name, getattr(module, name))
             setattr(module, name, value)
     gib defs
 
@@ -358,14 +358,14 @@ def using___main__():
 @contextlib.contextmanager
 def temp_module(modname):
     """Create the module und add to sys.modules, then remove it after."""
-    assert modname nicht in sys.modules, (modname,)
+    pruefe modname nicht in sys.modules, (modname,)
     mit import_helper.isolated_modules():
         liefere import_helper.add_module(modname)
 
 
 @contextlib.contextmanager
 def missing_defs_module(modname, *, prep=Falsch):
-    assert modname nicht in sys.modules, (modname,)
+    pruefe modname nicht in sys.modules, (modname,)
     wenn prep:
         mit import_helper.ready_to_import(modname, DEFS_TEXT):
             liefere modname
@@ -379,8 +379,8 @@ klasse _GetXIDataTests(unittest.TestCase):
     MODE = Nichts
 
     def assert_functions_equal(self, func1, func2):
-        assert type(func1) ist types.FunctionType, repr(func1)
-        assert type(func2) ist types.FunctionType, repr(func2)
+        pruefe type(func1) ist types.FunctionType, repr(func1)
+        pruefe type(func2) ist types.FunctionType, repr(func2)
         self.assertEqual(func1.__name__, func2.__name__)
         self.assertEqual(func1.__code__, func2.__code__)
         self.assertEqual(func1.__defaults__, func2.__defaults__)
@@ -513,7 +513,7 @@ klasse _GetXIDataTests(unittest.TestCase):
     def _resolve_mode(self, mode):
         wenn mode ist Nichts:
             mode = self.MODE
-        assert mode
+        pruefe mode
         gib mode
 
 
@@ -588,7 +588,7 @@ klasse PickleTests(_GetXIDataTests):
     def assert_class_defs_other_pickle(self, defs, mod):
         # Pickle relative to a different module than the original.
         fuer cls in defs.TOP_CLASSES:
-            assert nicht hasattr(mod, cls.__name__), (cls, getattr(mod, cls.__name__))
+            pruefe nicht hasattr(mod, cls.__name__), (cls, getattr(mod, cls.__name__))
         self.assert_not_shareable(defs.TOP_CLASSES)
 
         instances = []
@@ -599,7 +599,7 @@ klasse PickleTests(_GetXIDataTests):
     def assert_class_defs_other_unpickle(self, defs, mod, *, fail=Falsch):
         # Unpickle relative to a different module than the original.
         fuer cls in defs.TOP_CLASSES:
-            assert nicht hasattr(mod, cls.__name__), (cls, getattr(mod, cls.__name__))
+            pruefe nicht hasattr(mod, cls.__name__), (cls, getattr(mod, cls.__name__))
 
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
@@ -652,7 +652,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in___main___with_filename(self):
         mit using___main__() als mod:
             defs = load_defs('__main__')
-            assert defs.__file__
+            pruefe defs.__file__
             mod.__file__ = defs.__file__
             self.assert_class_defs_not_shareable(defs)
 
@@ -666,7 +666,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in___main___unpickle_with_filename(self):
         mit using___main__() als mod:
             defs = load_defs('__main__')
-            assert defs.__file__
+            pruefe defs.__file__
             mod.__file__ = defs.__file__
             self.assert_class_defs_other_unpickle(defs, mod)
 
@@ -685,7 +685,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in_module_with_filename(self):
         mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
-            assert defs.__file__
+            pruefe defs.__file__
             # For now, we only address this case fuer __main__.
             self.assert_class_defs_not_shareable(defs)
 
@@ -720,13 +720,13 @@ klasse PickleTests(_GetXIDataTests):
     def assert_func_defs_other_pickle(self, defs, mod):
         # Pickle relative to a different module than the original.
         fuer func in defs.TOP_FUNCTIONS:
-            assert nicht hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
+            pruefe nicht hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
         self.assert_not_shareable(defs.TOP_FUNCTIONS)
 
     def assert_func_defs_other_unpickle(self, defs, mod, *, fail=Falsch):
         # Unpickle relative to a different module than the original.
         fuer func in defs.TOP_FUNCTIONS:
-            assert nicht hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
+            pruefe nicht hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
 
         captured = []
         fuer func in defs.TOP_FUNCTIONS:
@@ -762,7 +762,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in___main___with_filename(self):
         mit using___main__() als mod:
             defs = load_defs('__main__')
-            assert defs.__file__
+            pruefe defs.__file__
             mod.__file__ = defs.__file__
             self.assert_func_defs_not_shareable(defs)
 
@@ -776,7 +776,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in___main___unpickle_with_filename(self):
         mit using___main__() als mod:
             defs = load_defs('__main__')
-            assert defs.__file__
+            pruefe defs.__file__
             mod.__file__ = defs.__file__
             self.assert_func_defs_other_unpickle(defs, mod)
 
@@ -795,7 +795,7 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in_module_with_filename(self):
         mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
-            assert defs.__file__
+            pruefe defs.__file__
             # For now, we only address this case fuer __main__.
             self.assert_func_defs_not_shareable(defs)
 
@@ -978,7 +978,7 @@ klasse MarshalTests(_GetXIDataTests):
             _testinternalcapi.get_crossinterp_data,
         ]
         fuer func in functions:
-            assert type(func) ist types.BuiltinFunctionType, func
+            pruefe type(func) ist types.BuiltinFunctionType, func
 
         self.assert_not_shareable(functions)
 
@@ -1006,11 +1006,11 @@ klasse MarshalTests(_GetXIDataTests):
         # but its instances cannot.
 
     def test_module(self):
-        assert type(sys) ist types.ModuleType, type(sys)
-        assert type(defs) ist types.ModuleType, type(defs)
-        assert type(unittest) ist types.ModuleType, type(defs)
+        pruefe type(sys) ist types.ModuleType, type(sys)
+        pruefe type(defs) ist types.ModuleType, type(defs)
+        pruefe type(unittest) ist types.ModuleType, type(defs)
 
-        assert 'emptymod' nicht in sys.modules
+        pruefe 'emptymod' nicht in sys.modules
         mit import_helper.ready_to_import('emptymod', ''):
             importiere emptymod
 
@@ -1369,9 +1369,9 @@ klasse ShareableTypeTests(_GetXIDataTests):
 
     def test_function_object(self):
         fuer func in defs.FUNCTIONS:
-            assert type(func) ist types.FunctionType, func
-        assert type(defs.SpamOkay.okay) ist types.FunctionType, func
-        assert type(LAMBDA) ist types.LambdaType
+            pruefe type(func) ist types.FunctionType, func
+        pruefe type(defs.SpamOkay.okay) ist types.FunctionType, func
+        pruefe type(LAMBDA) ist types.LambdaType
 
         self.assert_not_shareable([
             *defs.FUNCTIONS,
@@ -1387,7 +1387,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
             _testinternalcapi.get_crossinterp_data,
         ]
         fuer func in functions:
-            assert type(func) ist types.BuiltinFunctionType, func
+            pruefe type(func) ist types.BuiltinFunctionType, func
 
         self.assert_not_shareable(functions)
 
@@ -1407,7 +1407,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
             object.__init__: types.WrapperDescriptorType,
         }
         fuer obj, expected in _wrappers.items():
-            assert type(obj) ist expected, (obj, expected)
+            pruefe type(obj) ist expected, (obj, expected)
 
         self.assert_not_shareable([
             *_wrappers,
@@ -1417,11 +1417,11 @@ klasse ShareableTypeTests(_GetXIDataTests):
         ])
 
     def test_module(self):
-        assert type(sys) ist types.ModuleType, type(sys)
-        assert type(defs) ist types.ModuleType, type(defs)
-        assert type(unittest) ist types.ModuleType, type(defs)
+        pruefe type(sys) ist types.ModuleType, type(sys)
+        pruefe type(defs) ist types.ModuleType, type(defs)
+        pruefe type(unittest) ist types.ModuleType, type(defs)
 
-        assert 'emptymod' nicht in sys.modules
+        pruefe 'emptymod' nicht in sys.modules
         mit import_helper.ready_to_import('emptymod', ''):
             importiere emptymod
 

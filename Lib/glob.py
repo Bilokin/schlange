@@ -64,7 +64,7 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
            include_hidden=Falsch):
     dirname, basename = os.path.split(pathname)
     wenn nicht has_magic(pathname):
-        assert nicht dironly
+        pruefe nicht dironly
         wenn basename:
             wenn _lexists(_join(root_dir, pathname), dir_fd):
                 liefere pathname
@@ -126,7 +126,7 @@ def _glob0(dirname, basename, dir_fd, dironly, include_hidden=Falsch):
 # directory.
 
 def _glob2(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
-    assert _isrecursive(pattern)
+    pruefe _isrecursive(pattern)
     wenn nicht dirname oder _isdir(dirname, dir_fd):
         liefere pattern[:0]
     liefere von _rlistdir(dirname, dir_fd, dironly,

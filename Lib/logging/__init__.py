@@ -1424,7 +1424,7 @@ klasse Manager(object):
                 wenn isinstance(obj, Logger):
                     rv = obj
                 sonst:
-                    assert isinstance(obj, PlaceHolder)
+                    pruefe isinstance(obj, PlaceHolder)
                     obj.append(alogger)
             i = name.rfind(".", 0, i - 1)
         wenn nicht rv:

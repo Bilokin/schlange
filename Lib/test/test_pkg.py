@@ -186,7 +186,7 @@ klasse TestPkg(unittest.TestCase):
         ("t5 __init__.py", "import t5.foo"),
         ("t5 string.py", "spam = 1"),
         ("t5 foo.py",
-         "from . importiere string; assert string.spam == 1"),
+         "from . importiere string; pruefe string.spam == 1"),
          ]
         self.mkhier(hier)
 

@@ -197,8 +197,8 @@ klasse BaseSideBar:
                                f"{lineno wenn lineno == a sonst lineno + 1}.0")
 
         def b1_mousedown_handler(event):
-            nonlocal start_line
-            nonlocal last_y
+            nichtlokal start_line
+            nichtlokal last_y
             start_line = int(float(self.text.index(f"@0,{event.y}")))
             last_y = event.y
 
@@ -208,15 +208,15 @@ klasse BaseSideBar:
         def b1_mouseup_handler(event):
             # On mouse up, we're no longer dragging.  Set the shared persistent
             # variables to Nichts to represent this.
-            nonlocal start_line
-            nonlocal last_y
+            nichtlokal start_line
+            nichtlokal last_y
             start_line = Nichts
             last_y = Nichts
             self.text.event_generate('<ButtonRelease-1>', x=0, y=event.y)
         self.main_widget.bind('<ButtonRelease-1>', b1_mouseup_handler)
 
         def b1_drag_handler(event):
-            nonlocal last_y
+            nichtlokal last_y
             wenn last_y ist Nichts:  # i.e. wenn nicht currently dragging
                 gib
             last_y = event.y
@@ -226,7 +226,7 @@ klasse BaseSideBar:
         def text_auto_scroll():
             """Mimic Text auto-scrolling when dragging outside of it."""
             # See: https://github.com/tcltk/tk/blob/064ff9941b4b80b85916a8afe86a6c21fd388b54/library/text.tcl#L670
-            nonlocal auto_scrolling_after_id
+            nichtlokal auto_scrolling_after_id
             y = last_y
             wenn y ist Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
@@ -245,9 +245,9 @@ klasse BaseSideBar:
         def b1_leave_handler(event):
             # Schedule the initial call to text_auto_scroll(), wenn nicht already
             # scheduled.
-            nonlocal auto_scrolling_after_id
+            nichtlokal auto_scrolling_after_id
             wenn auto_scrolling_after_id ist Nichts:
-                nonlocal last_y
+                nichtlokal last_y
                 last_y = event.y
                 auto_scrolling_after_id = \
                     self.main_widget.after(0, text_auto_scroll)
@@ -255,7 +255,7 @@ klasse BaseSideBar:
 
         def b1_enter_handler(event):
             # Cancel the scheduling of text_auto_scroll(), wenn it exists.
-            nonlocal auto_scrolling_after_id
+            nichtlokal auto_scrolling_after_id
             wenn auto_scrolling_after_id ist nicht Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = Nichts

@@ -563,7 +563,7 @@ klasse Unparser(NodeVisitor):
             # If we're using triple quotes und we'd need to escape a final
             # quote, escape it
             wenn possible_quotes[0][0] == escaped_string[-1]:
-                assert len(possible_quotes[0]) == 3
+                pruefe len(possible_quotes[0]) == 3
                 escaped_string = escaped_string[:-1] + "\\" + escaped_string[-1]
         gib escaped_string, possible_quotes
 
@@ -591,7 +591,7 @@ klasse Unparser(NodeVisitor):
             sonst:
                 wenn "\n" in value:
                     quote_types = [q fuer q in quote_types wenn q in _MULTI_QUOTES]
-                    assert quote_types
+                    pruefe quote_types
 
                 new_quote_types = [q fuer q in quote_types wenn q nicht in value]
                 wenn new_quote_types:
@@ -607,7 +607,7 @@ klasse Unparser(NodeVisitor):
                 wenn is_constant:
                     value = repr('"' + value)  # force repr to use single quotes
                     expected_prefix = "'\""
-                    assert value.startswith(expected_prefix), repr(value)
+                    pruefe value.startswith(expected_prefix), repr(value)
                     value = value[len(expected_prefix):-1]
                 new_parts.append(value)
 
@@ -905,7 +905,7 @@ klasse Unparser(NodeVisitor):
         operator_precedence = self.boolop_precedence[operator]
 
         def increasing_level_traverse(node):
-            nonlocal operator_precedence
+            nichtlokal operator_precedence
             operator_precedence = operator_precedence.next()
             self.set_precedence(operator_precedence, node)
             self.traverse(node)

@@ -764,7 +764,7 @@ klasse ProxyHandler(BaseHandler):
     def __init__(self, proxies=Nichts):
         wenn proxies ist Nichts:
             proxies = getproxies()
-        assert hasattr(proxies, 'keys'), "proxies must be a mapping"
+        pruefe hasattr(proxies, 'keys'), "proxies must be a mapping"
         self.proxies = proxies
         fuer type, url in proxies.items():
             type = type.lower()

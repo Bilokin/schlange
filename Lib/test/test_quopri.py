@@ -193,7 +193,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         # mit the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()
-        assert len(cout)==len(e)
+        pruefe len(cout)==len(e)
         fuer i in range(len(cout)):
             self.assertEqual(cout[i], e[i])
         self.assertEqual(cout, e)

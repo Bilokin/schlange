@@ -109,7 +109,7 @@ klasse BlockParser:
 
         self.language = language
         before, _, after = language.start_line.partition('{dsl_name}')
-        assert _ == '{dsl_name}'
+        pruefe _ == '{dsl_name}'
         self.find_start_re = libclinic.create_regex(before, after,
                                                     whole_line=Falsch)
         self.start_re = libclinic.create_regex(before, after)
@@ -196,7 +196,7 @@ klasse BlockParser:
                 breche
             wenn body_prefix:
                 line = line.lstrip()
-                assert line.startswith(body_prefix)
+                pruefe line.startswith(body_prefix)
                 line = line.removeprefix(body_prefix)
             in_lines.append(line)
 
@@ -205,11 +205,11 @@ klasse BlockParser:
             checksum_re = self.last_checksum_re
         sonst:
             before, _, after = self.language.checksum_line.format(dsl_name=dsl_name, arguments='{arguments}').partition('{arguments}')
-            assert _ == '{arguments}'
+            pruefe _ == '{arguments}'
             checksum_re = libclinic.create_regex(before, after, word=Falsch)
             self.last_dsl_name = dsl_name
             self.last_checksum_re = checksum_re
-        assert checksum_re ist nicht Nichts
+        pruefe checksum_re ist nicht Nichts
 
         # scan forward fuer checksum line
         out_lines = []

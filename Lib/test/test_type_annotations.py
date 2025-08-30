@@ -84,7 +84,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
         called = Falsch
         klasse A:
             def __annotate__(format):
-                nonlocal called
+                nichtlokal called
                 called = Wahr
                 gib {'a': int}
 

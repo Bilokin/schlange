@@ -134,7 +134,7 @@ klasse TaskGroup:
 
             self._on_completed_fut = Nichts
 
-        assert nicht self._tasks
+        pruefe nicht self._tasks
 
         wenn self._base_error ist nicht Nichts:
             versuch:
@@ -215,7 +215,7 @@ klasse TaskGroup:
     # still considered special.
 
     def _is_base_error(self, exc: BaseException) -> bool:
-        assert isinstance(exc, BaseException)
+        pruefe isinstance(exc, BaseException)
         gib isinstance(exc, (SystemExit, KeyboardInterrupt))
 
     def _abort(self):

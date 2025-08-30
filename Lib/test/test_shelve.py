@@ -439,7 +439,7 @@ fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                            {'_args': {'protocol': proto}})
     bases = (TestShelveFileBase, mapping_tests.BasicTestMappingProtocol)
     fuer dbm_mod in dbm_iterator():
-        assert dbm_mod.__name__.startswith('dbm.')
+        pruefe dbm_mod.__name__.startswith('dbm.')
         suffix = dbm_mod.__name__[4:]
         name = f'TestProto{proto}File_{suffix}Shelve'
         globals()[name] = type(name, bases,

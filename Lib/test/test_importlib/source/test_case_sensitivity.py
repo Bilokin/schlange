@@ -19,7 +19,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
     variable ist set."""
 
     name = 'MoDuLe'
-    assert name != name.lower()
+    pruefe name != name.lower()
 
     def finder(self, path):
         gib self.machinery.FileFinder(path,

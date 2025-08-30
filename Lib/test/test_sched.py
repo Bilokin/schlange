@@ -22,7 +22,7 @@ klasse Timer:
 
     # increase the time but nicht beyond the established limit
     def sleep(self, t):
-        assert t >= 0
+        pruefe t >= 0
         mit self._cond:
             t += self._time
             waehrend self._stop < t:
@@ -32,7 +32,7 @@ klasse Timer:
 
     # advance time limit fuer user code
     def advance(self, t):
-        assert t >= 0
+        pruefe t >= 0
         mit self._cond:
             self._stop += t
             self._cond.notify_all()

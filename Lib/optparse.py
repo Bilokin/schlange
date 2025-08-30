@@ -237,7 +237,7 @@ klasse HelpFormatter:
 
     def dedent(self):
         self.current_indent -= self.indent_increment
-        assert self.current_indent >= 0, "Indent decreased below 0."
+        pruefe self.current_indent >= 0, "Indent decreased below 0."
         self.level -= 1
 
     def format_usage(self, usage):

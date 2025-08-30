@@ -22,7 +22,7 @@ ausser ImportError:
     def _cell_factory():
         a = 1
         def f():
-            nonlocal a
+            nichtlokal a
         gib f.__closure__[0]
     CellType = type(_cell_factory())
 
@@ -175,11 +175,11 @@ def get_original_bases(cls, /):
         Eggs = NamedTuple("Eggs", [("a", int), ("b", str)])
         Spam = TypedDict("Spam", {"a": int, "b": str})
 
-        assert get_original_bases(Bar) == (Foo[int], float)
-        assert get_original_bases(Baz) == (list[str],)
-        assert get_original_bases(Eggs) == (NamedTuple,)
-        assert get_original_bases(Spam) == (TypedDict,)
-        assert get_original_bases(int) == (object,)
+        pruefe get_original_bases(Bar) == (Foo[int], float)
+        pruefe get_original_bases(Baz) == (list[str],)
+        pruefe get_original_bases(Eggs) == (NamedTuple,)
+        pruefe get_original_bases(Spam) == (TypedDict,)
+        pruefe get_original_bases(int) == (object,)
     """
     versuch:
         gib cls.__dict__.get("__orig_bases__", cls.__bases__)

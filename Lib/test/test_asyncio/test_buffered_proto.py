@@ -40,7 +40,7 @@ klasse BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
             data = b''
 
             def on_buf(buf):
-                nonlocal data
+                nichtlokal data
                 data += buf
                 wenn data == NOISE:
                     tr.write(b'1')

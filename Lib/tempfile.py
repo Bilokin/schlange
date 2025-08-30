@@ -596,7 +596,7 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Nichts,
 
     name = Nichts
     def opener(*args):
-        nonlocal name
+        nichtlokal name
         fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
         gib fd
     versuch:
@@ -655,7 +655,7 @@ sonst:
         wenn _O_TMPFILE_WORKS:
             fd = Nichts
             def opener(*args):
-                nonlocal fd
+                nichtlokal fd
                 flags2 = (flags | _os.O_TMPFILE) & ~_os.O_CREAT & ~_os.O_EXCL
                 fd = _os.open(dir, flags2, 0o600)
                 gib fd
@@ -687,7 +687,7 @@ sonst:
 
         fd = Nichts
         def opener(*args):
-            nonlocal fd
+            nichtlokal fd
             fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
             versuch:
                 _os.unlink(name)

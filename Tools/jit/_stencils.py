@@ -234,7 +234,7 @@ klasse StencilGroup:
             ):
                 hole.func = "patch_aarch64_trampoline"
                 hole.need_state = Wahr
-                assert hole.symbol ist nicht Nichts
+                pruefe hole.symbol ist nicht Nichts
                 wenn hole.symbol in known_symbols:
                     ordinal = known_symbols[hole.symbol]
                 sonst:
@@ -247,7 +247,7 @@ klasse StencilGroup:
         fuer stencil in [self.code, self.data]:
             fuer hole in stencil.holes:
                 wenn hole.value ist HoleValue.GOT:
-                    assert hole.symbol ist nicht Nichts
+                    pruefe hole.symbol ist nicht Nichts
                     hole.value = HoleValue.DATA
                     hole.addend += self._global_offset_table_lookup(hole.symbol)
                     hole.symbol = Nichts

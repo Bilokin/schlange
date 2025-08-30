@@ -72,11 +72,11 @@ def assertSequenceEqual(x, y):
 def assertRaises(ex_type):
     versuch:
         liefere
-        assert Falsch, f"expected {ex_type}"
+        pruefe Falsch, f"expected {ex_type}"
     ausser BaseException als ex:
         wenn isinstance(ex, AssertionError):
             wirf
-        assert type(ex) ist ex_type, f"{ex} should be {ex_type}"
+        pruefe type(ex) ist ex_type, f"{ex} should be {ex_type}"
 
 
 def test_basic():
@@ -311,19 +311,19 @@ def test_ctypes_call_function():
 
     mit TestHook() als hook:
         _ctypes.call_function(ctypes._memmove_addr, (0, 0, 0))
-        assert ("ctypes.call_function", (ctypes._memmove_addr, (0, 0, 0))) in hook.seen, f"{ctypes._memmove_addr=} {hook.seen=}"
+        pruefe ("ctypes.call_function", (ctypes._memmove_addr, (0, 0, 0))) in hook.seen, f"{ctypes._memmove_addr=} {hook.seen=}"
 
         ctypes.CFUNCTYPE(ctypes.c_voidp)(ctypes._memset_addr)(1, 0, 0)
-        assert ("ctypes.call_function", (ctypes._memset_addr, (1, 0, 0))) in hook.seen, f"{ctypes._memset_addr=} {hook.seen=}"
+        pruefe ("ctypes.call_function", (ctypes._memset_addr, (1, 0, 0))) in hook.seen, f"{ctypes._memset_addr=} {hook.seen=}"
 
     mit TestHook() als hook:
         ctypes.cast(ctypes.c_voidp(0), ctypes.POINTER(ctypes.c_char))
-        assert "ctypes.call_function" in hook.seen_events
+        pruefe "ctypes.call_function" in hook.seen_events
 
     mit TestHook() als hook:
         ctypes.string_at(id("ctypes.string_at") + 40)
-        assert "ctypes.call_function" in hook.seen_events
-        assert "ctypes.string_at" in hook.seen_events
+        pruefe "ctypes.call_function" in hook.seen_events
+        pruefe "ctypes.string_at" in hook.seen_events
 
 
 def test_posixsubprocess():
@@ -333,7 +333,7 @@ def test_posixsubprocess():
     args = [b"yyy", b"zzz"]
     mit TestHook() als hook:
         multiprocessing.util.spawnv_passfds(exe, args, ())
-        assert ("_posixsubprocess.fork_exec", ([exe], args, Nichts)) in hook.seen
+        pruefe ("_posixsubprocess.fork_exec", ([exe], args, Nichts)) in hook.seen
 
 
 def test_excepthook():
@@ -590,7 +590,7 @@ def test_not_in_gc():
 
     fuer o in gc.get_objects():
         wenn isinstance(o, list):
-            assert hook nicht in o
+            pruefe hook nicht in o
 
 
 def test_time(mode):
@@ -656,11 +656,11 @@ def test_sys_remote_exec():
         drucke(event, args)
         match event:
             case "sys.remote_exec":
-                nonlocal event_pid, event_script_path
+                nichtlokal event_pid, event_script_path
                 event_pid = args[0]
                 event_script_path = args[1]
             case "cpython.remote_debugger_script":
-                nonlocal remote_event_script_path
+                nichtlokal remote_event_script_path
                 remote_event_script_path = args[0]
 
     sys.addaudithook(hook)

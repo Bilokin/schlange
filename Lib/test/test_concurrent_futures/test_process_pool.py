@@ -142,7 +142,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     @support.requires_gil_enabled("gh-117344: test ist flaky without the GIL")
     def test_idle_process_reuse_one(self):
         executor = self.executor
-        assert executor._max_workers >= 4
+        pruefe executor._max_workers >= 4
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
             wirf unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 21, 2).result()
@@ -152,7 +152,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_idle_process_reuse_multiple(self):
         executor = self.executor
-        assert executor._max_workers <= 5
+        pruefe executor._max_workers <= 5
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
             wirf unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 12, 7).result()
@@ -227,7 +227,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         orig_start_new_thread = threading._start_joinable_thread
         nthread = 0
         def mock_start_new_thread(func, *args, **kwargs):
-            nonlocal nthread
+            nichtlokal nthread
             wenn nthread >= 1:
                 wirf RuntimeError("can't create new thread at "
                                    "interpreter shutdown")

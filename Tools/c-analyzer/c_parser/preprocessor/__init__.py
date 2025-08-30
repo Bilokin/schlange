@@ -162,8 +162,8 @@ def _parse_incldirs(incldirs):
 
 
 def _resolve_samefiles(filename, file_same):
-    assert '*' nicht in filename, (filename,)
-    assert os.path.normpath(filename) == filename, (filename,)
+    pruefe '*' nicht in filename, (filename,)
+    pruefe os.path.normpath(filename) == filename, (filename,)
     _, suffix = os.path.splitext(filename)
     samefiles = []
     fuer patterns, in _resolve_file_values(filename, file_same.items()):
@@ -180,7 +180,7 @@ def _resolve_samefile(filename, pattern, suffix):
         gib Nichts
     wenn pattern.endswith(os.path.sep):
         pattern += f'*{suffix}'
-    assert os.path.normpath(pattern) == pattern, (pattern,)
+    pruefe os.path.normpath(pattern) == pattern, (pattern,)
     wenn '*' in os.path.dirname(pattern):
         wirf NotImplementedError((filename, pattern))
     wenn '*' nicht in os.path.basename(pattern):

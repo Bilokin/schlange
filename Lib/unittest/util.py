@@ -13,7 +13,7 @@ _MIN_COMMON_LEN = 5
 _MIN_DIFF_LEN = _MAX_LENGTH - \
                (_MIN_BEGIN_LEN + _PLACEHOLDER_LEN + _MIN_COMMON_LEN +
                 _PLACEHOLDER_LEN + _MIN_END_LEN)
-assert _MIN_DIFF_LEN >= 0
+pruefe _MIN_DIFF_LEN >= 0
 
 def _shorten(s, prefixlen, suffixlen):
     skip = len(s) - prefixlen - suffixlen
@@ -33,7 +33,7 @@ def _common_shorten_repr(*args):
     common_len = _MAX_LENGTH - \
                  (maxlen - prefixlen + _MIN_BEGIN_LEN + _PLACEHOLDER_LEN)
     wenn common_len > _MIN_COMMON_LEN:
-        assert _MIN_BEGIN_LEN + _PLACEHOLDER_LEN + _MIN_COMMON_LEN + \
+        pruefe _MIN_BEGIN_LEN + _PLACEHOLDER_LEN + _MIN_COMMON_LEN + \
                (maxlen - prefixlen) < _MAX_LENGTH
         prefix = _shorten(prefix, _MIN_BEGIN_LEN, common_len)
         gib tuple(prefix + s[prefixlen:] fuer s in args)

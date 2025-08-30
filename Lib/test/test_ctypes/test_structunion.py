@@ -213,7 +213,7 @@ klasse StructUnionTestBase:
             b=c_int8,
             c=c_int8,
         )
-        assert set(expected_types) == set(field_names)
+        pruefe set(expected_types) == set(field_names)
         fuer name, tp in expected_types.items():
             mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).type, tp)
@@ -229,7 +229,7 @@ klasse StructUnionTestBase:
             b=(2, 8),
             c=(2, 8),
         )
-        assert set(expected_offsets) == set(field_names)
+        pruefe set(expected_offsets) == set(field_names)
         fuer name, (union_offset, struct_offset) in expected_offsets.items():
             mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).offset,

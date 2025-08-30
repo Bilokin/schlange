@@ -116,7 +116,7 @@ def load_data(fobj):
         fobj.seek(skip_bytes, 1)
 
         c = fobj.read(1)  # Should be \n
-        assert c == b"\n", c
+        pruefe c == b"\n", c
 
         tz_bytes = b""
         waehrend (c := fobj.read(1)) != b"\n":

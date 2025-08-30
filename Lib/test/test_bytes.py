@@ -2354,7 +2354,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def reduceex3(b, a):
             b.wait()
             c = a.__reduce_ex__(3)
-            assert nicht c[1] oder 0xdd nicht in c[1][0]
+            pruefe nicht c[1] oder 0xdd nicht in c[1][0]
 
         def count0(b, a):
             b.wait()
@@ -2393,72 +2393,72 @@ klasse FreeThreadingTest(unittest.TestCase):
         def copy(b, a):
             b.wait()
             c = a.copy()
-            wenn c: assert c[0] == 48  # '0'
+            wenn c: pruefe c[0] == 48  # '0'
 
         def endswith(b, a):
             b.wait()
-            assert nicht a.endswith(b'\xdd')
+            pruefe nicht a.endswith(b'\xdd')
 
         def index(b, a):
             b.wait()
             versuch: a.index(b'\xdd')
             ausser ValueError: gib
-            assert Falsch
+            pruefe Falsch
 
         def lstrip(b, a):
             b.wait()
-            assert nicht a.lstrip(b'0')
+            pruefe nicht a.lstrip(b'0')
 
         def partition(b, a):
             b.wait()
-            assert nicht a.partition(b'\xdd')[2]
+            pruefe nicht a.partition(b'\xdd')[2]
 
         def removeprefix(b, a):
             b.wait()
-            assert nicht a.removeprefix(b'0')
+            pruefe nicht a.removeprefix(b'0')
 
         def removesuffix(b, a):
             b.wait()
-            assert nicht a.removesuffix(b'0')
+            pruefe nicht a.removesuffix(b'0')
 
         def rfind(b, a):
             b.wait()
-            assert a.rfind(b'\xdd') == -1
+            pruefe a.rfind(b'\xdd') == -1
 
         def rindex(b, a):
             b.wait()
             versuch: a.rindex(b'\xdd')
             ausser ValueError: gib
-            assert Falsch
+            pruefe Falsch
 
         def rpartition(b, a):
             b.wait()
-            assert nicht a.rpartition(b'\xdd')[0]
+            pruefe nicht a.rpartition(b'\xdd')[0]
 
         def rsplit(b, a):
             b.wait()
-            assert len(a.rsplit(b'\xdd')) == 1
+            pruefe len(a.rsplit(b'\xdd')) == 1
 
         def rstrip(b, a):
             b.wait()
-            assert nicht a.rstrip(b'0')
+            pruefe nicht a.rstrip(b'0')
 
         def split(b, a):
             b.wait()
-            assert len(a.split(b'\xdd')) == 1
+            pruefe len(a.split(b'\xdd')) == 1
 
         def splitlines(b, a):
             b.wait()
             l = len(a.splitlines())
-            assert l > 1 oder l == 0
+            pruefe l > 1 oder l == 0
 
         def startswith(b, a):
             b.wait()
-            assert nicht a.startswith(b'\xdd')
+            pruefe nicht a.startswith(b'\xdd')
 
         def strip(b, a):
             b.wait()
-            assert nicht a.strip(b'0')
+            pruefe nicht a.strip(b'0')
 
         def repeat(b, a):
             b.wait()
@@ -2466,7 +2466,7 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def contains(b, a):
             b.wait()
-            assert 0xdd nicht in a
+            pruefe 0xdd nicht in a
 
         def iconcat(b, a):  # MODIFIES!
             c = bytearray(b'0' * 0x400000)
@@ -2479,7 +2479,7 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def subscript(b, a):
             b.wait()
-            versuch: assert a[0] != 0xdd
+            versuch: pruefe a[0] != 0xdd
             ausser IndexError: pass
 
         def ass_subscript(b, a):  # MODIFIES!
@@ -2490,7 +2490,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def ass_subscript2(b, a, c):  # MODIFIES!
             b.wait()
             a[:] = c
-            assert b'\xdd' nicht in a
+            pruefe b'\xdd' nicht in a
 
         def mod(b, a):
             c = tuple(range(4096))
@@ -2501,7 +2501,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def mod2(b, a, c):
             b.wait()
             d = a % c
-            assert b'\xdd' nicht in d
+            pruefe b'\xdd' nicht in d
 
         def repr_(b, a):
             b.wait()
@@ -2510,52 +2510,52 @@ klasse FreeThreadingTest(unittest.TestCase):
         def capitalize(b, a):
             b.wait()
             c = a.capitalize()
-            assert nicht c oder c[0] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[0] nicht in (0xdd, 0xcd)
 
         def center(b, a):
             b.wait()
             c = a.center(0x60000)
-            assert nicht c oder c[0x20000] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[0x20000] nicht in (0xdd, 0xcd)
 
         def expandtabs(b, a):
             b.wait()
             c = a.expandtabs()
-            assert nicht c oder c[0] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[0] nicht in (0xdd, 0xcd)
 
         def ljust(b, a):
             b.wait()
             c = a.ljust(0x600000)
-            assert nicht c oder c[0] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[0] nicht in (0xdd, 0xcd)
 
         def lower(b, a):
             b.wait()
             c = a.lower()
-            assert nicht c oder c[0] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[0] nicht in (0xdd, 0xcd)
 
         def rjust(b, a):
             b.wait()
             c = a.rjust(0x600000)
-            assert nicht c oder c[-1] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[-1] nicht in (0xdd, 0xcd)
 
         def swapcase(b, a):
             b.wait()
             c = a.swapcase()
-            assert nicht c oder c[-1] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[-1] nicht in (0xdd, 0xcd)
 
         def title(b, a):
             b.wait()
             c = a.title()
-            assert nicht c oder c[-1] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[-1] nicht in (0xdd, 0xcd)
 
         def upper(b, a):
             b.wait()
             c = a.upper()
-            assert nicht c oder c[-1] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[-1] nicht in (0xdd, 0xcd)
 
         def zfill(b, a):
             b.wait()
             c = a.zfill(0x400000)
-            assert nicht c oder c[-1] nicht in (0xdd, 0xcd)
+            pruefe nicht c oder c[-1] nicht in (0xdd, 0xcd)
 
         def check(funcs, a=Nichts, *args):
             wenn a ist Nichts:

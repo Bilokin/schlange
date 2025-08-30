@@ -2449,8 +2449,8 @@ klasse AbstractPicklingErrorTests:
         # und the value of the extension code ist checked in copyreg.add_extension().
         key = (__name__, 'MyList')
         def check(code, exc):
-            assert key nicht in copyreg._extension_registry
-            assert code nicht in copyreg._inverted_registry
+            pruefe key nicht in copyreg._extension_registry
+            pruefe code nicht in copyreg._inverted_registry
             mit (support.swap_item(copyreg._extension_registry, key, code),
                   support.swap_item(copyreg._inverted_registry, code, key)):
                 fuer proto in protocols[2:]:
@@ -3817,10 +3817,10 @@ klasse AbstractPickleTests:
                 gib "cheese"
             @classmethod
             def wine(cls):
-                assert cls ist PyMethodsTest
+                pruefe cls ist PyMethodsTest
                 gib "wine"
             def biscuits(self):
-                assert isinstance(self, PyMethodsTest)
+                pruefe isinstance(self, PyMethodsTest)
                 gib "biscuits"
             klasse Nested:
                 "Nested class"
@@ -3829,10 +3829,10 @@ klasse AbstractPickleTests:
                     gib "ketchup"
                 @classmethod
                 def maple(cls):
-                    assert cls ist PyMethodsTest.Nested
+                    pruefe cls ist PyMethodsTest.Nested
                     gib "maple"
                 def pie(self):
-                    assert isinstance(self, PyMethodsTest.Nested)
+                    pruefe isinstance(self, PyMethodsTest.Nested)
                     gib "pie"
 
         py_methods = (
@@ -4660,7 +4660,7 @@ klasse AbstractPersistentPicklerTests:
         sonst:
             self.load_count += 1
             object = int(oid)
-            assert object % 2 == 0
+            pruefe object % 2 == 0
             gib object
 
     def test_persistence(self):
@@ -4718,8 +4718,8 @@ klasse AbstractPicklerUnpicklerObjectTests:
     unpickler_class = Nichts
 
     def setUp(self):
-        assert self.pickler_class
-        assert self.unpickler_class
+        pruefe self.pickler_class
+        pruefe self.unpickler_class
 
     def test_clear_pickler_memo(self):
         # To test whether clear_memo() has any effect, we pickle an object,
@@ -5006,7 +5006,7 @@ klasse AbstractHookTests:
                 p = self.pickler_class(bio, proto)
                 p.dump(f)
                 new_f = pickle.loads(bio.getvalue())
-                assert new_f == 5
+                pruefe new_f == 5
 
                 loesche p
                 loesche f

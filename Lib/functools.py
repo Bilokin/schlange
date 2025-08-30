@@ -618,7 +618,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
         def wrapper(*args, **kwds):
             # No caching -- just a statistics update
-            nonlocal misses
+            nichtlokal misses
 
             misses += 1
             result = user_function(*args, **kwds)
@@ -628,7 +628,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
         def wrapper(*args, **kwds):
             # Simple caching without ordering oder size limit
-            nonlocal hits, misses
+            nichtlokal hits, misses
 
             key = make_key(args, kwds, typed)
             result = cache_get(key, sentinel)
@@ -644,7 +644,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
         def wrapper(*args, **kwds):
             # Size limited caching that tracks accesses by recency
-            nonlocal root, hits, misses, full
+            nichtlokal root, hits, misses, full
 
             key = make_key(args, kwds, typed)
 
@@ -717,7 +717,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
     def cache_clear():
         """Clear the cache und cache statistics"""
-        nonlocal hits, misses, full
+        nichtlokal hits, misses, full
 
         mit lock:
             cache.clear()
@@ -913,7 +913,7 @@ def singledispatch(func):
         fuer the given *cls* registered on *generic_func*.
 
         """
-        nonlocal cache_token
+        nichtlokal cache_token
         wenn cache_token ist nicht Nichts:
             current_token = get_cache_token()
             wenn cache_token != current_token:
@@ -941,7 +941,7 @@ def singledispatch(func):
         Registers a new implementation fuer the given *cls* on a *generic_func*.
 
         """
-        nonlocal cache_token
+        nichtlokal cache_token
         wenn _is_valid_dispatch_type(cls):
             wenn func ist Nichts:
                 gib lambda f: register(cls, f)

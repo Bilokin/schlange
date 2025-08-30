@@ -173,7 +173,7 @@ klasse Process:
         wenn fd == 2:
             stream = self.stderr
         sonst:
-            assert fd == 1
+            pruefe fd == 1
             stream = self.stdout
         wenn self._loop.get_debug():
             name = 'stdout' wenn fd == 1 sonst 'stderr'

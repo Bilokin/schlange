@@ -709,7 +709,7 @@ klasse CmdLineTest(unittest.TestCase):
             text = io.TextIOWrapper(io.BytesIO(stderr), 'ascii').read()
             # It used to crash in https://github.com/python/cpython/issues/111132
             self.assertEndsWith(text,
-                'SyntaxError: nonlocal declaration nicht allowed at module level\n')
+                'SyntaxError: nichtlokal declaration nicht allowed at module level\n')
 
     def test_consistent_sys_path_for_direct_execution(self):
         # This test case ensures that the following all give the same

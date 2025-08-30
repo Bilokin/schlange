@@ -589,7 +589,7 @@ klasse Wave_write:
             self._write_header(datasize)
 
     def _write_header(self, initlength):
-        assert nicht self._headerwritten
+        pruefe nicht self._headerwritten
         self._file.write(b'RIFF')
         wenn nicht self._nframes:
             self._nframes = initlength // (self._nchannels * self._sampwidth)
@@ -610,7 +610,7 @@ klasse Wave_write:
         self._headerwritten = Wahr
 
     def _patchheader(self):
-        assert self._headerwritten
+        pruefe self._headerwritten
         wenn self._datawritten == self._datalength:
             gib
         curpos = self._file.tell()

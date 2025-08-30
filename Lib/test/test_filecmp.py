@@ -18,8 +18,8 @@ def _create_file_shallow_equal(template_path, new_path):
         f.seek(0)
         f.write(next_char)
     shutil.copystat(template_path, new_path)
-    assert os.stat(new_path).st_size == os.stat(template_path).st_size
-    assert os.stat(new_path).st_mtime == os.stat(template_path).st_mtime
+    pruefe os.stat(new_path).st_size == os.stat(template_path).st_size
+    pruefe os.stat(new_path).st_mtime == os.stat(template_path).st_mtime
 
 klasse FileCompareTestCase(unittest.TestCase):
     def setUp(self):
