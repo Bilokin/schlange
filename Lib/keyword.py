@@ -22,12 +22,11 @@ kwlist = [
     'als',
     'assert',
     'async',
+    'ausser',
     'await',
     'breche',
     'def',
     'del',
-    'except',
-    'finally',
     'fuer',
     'gib',
     'global',
@@ -42,15 +41,16 @@ kwlist = [
     'nonlocal',
     'oder',
     'pass',
-    'raise',
+    'schliesslich',
     'sonst',
     'sowenn',
-    'try',
     'und',
+    'versuch',
     'von',
     'waehrend',
     'weiter',
-    'wenn'
+    'wenn',
+    'wirf'
 ]
 
 softkwlist = [

@@ -124,7 +124,7 @@ simple_stmt[stmt_ty] (memo):
     | e=star_expressions { _PyAST_Expr(e, EXTRA) }
     | &'gib' return_stmt
     | &('importiere' | 'von') import_stmt
-    | &'raise' raise_stmt
+    | &'wirf' raise_stmt
     | &'pass' pass_stmt
     | &'del' del_stmt
     | &'liefere' yield_stmt
@@ -140,7 +140,7 @@ compound_stmt[stmt_ty]:
     | &('klasse' | '@') class_def
     | &('mit' | 'async') with_stmt
     | &('fuer' | 'async') for_stmt
-    | &'try' try_stmt
+    | &'versuch' try_stmt
     | &'waehrend' while_stmt
     | match_stmt
 
@@ -186,10 +186,10 @@ return_stmt[stmt_ty]:
     | 'gib' a=[star_expressions] { _PyAST_Return(a, EXTRA) }
 
 raise_stmt[stmt_ty]:
-    | 'raise' a=expression 'von' b=expression { _PyAST_Raise(a, b, EXTRA) }
+    | 'wirf' a=expression 'von' b=expression { _PyAST_Raise(a, b, EXTRA) }
     | invalid_raise_stmt
-    | 'raise' a=expression { _PyAST_Raise(a, NULL, EXTRA) }
-    | 'raise' { _PyAST_Raise(NULL, NULL, EXTRA) }
+    | 'wirf' a=expression { _PyAST_Raise(a, NULL, EXTRA) }
+    | 'wirf' { _PyAST_Raise(NULL, NULL, EXTRA) }
 
 pass_stmt[stmt_ty]:
     | 'pass' { _PyAST_Pass(EXTRA) }
@@ -435,9 +435,9 @@ with_item[withitem_ty]:
 
 try_stmt[stmt_ty]:
     | invalid_try_stmt
-    | 'try' &&':' b=block f=finally_block { _PyAST_Try(b, NULL, NULL, f, EXTRA) }
-    | 'try' &&':' b=block ex[asdl_excepthandler_seq*]=except_block+ el=[else_block] f=[finally_block] { _PyAST_Try(b, ex, el, f, EXTRA) }
-    | 'try' &&':' b=block ex[asdl_excepthandler_seq*]=except_star_block+ el=[else_block] f=[finally_block] {
+    | 'versuch' &&':' b=block f=finally_block { _PyAST_Try(b, NULL, NULL, f, EXTRA) }
+    | 'versuch' &&':' b=block ex[asdl_excepthandler_seq*]=except_block+ el=[else_block] f=[finally_block] { _PyAST_Try(b, ex, el, f, EXTRA) }
+    | 'versuch' &&':' b=block ex[asdl_excepthandler_seq*]=except_star_block+ el=[else_block] f=[finally_block] {
         CHECK_VERSION(stmt_ty, 11, "Exception groups are",
                       _PyAST_TryStar(b, ex, el, f, EXTRA)) }
 
@@ -447,25 +447,25 @@ try_stmt[stmt_ty]:
 
 except_block[excepthandler_ty]:
     | invalid_except_stmt_indent
-    | 'except' e=expression ':' b=block {
+    | 'ausser' e=expression ':' b=block {
         _PyAST_ExceptHandler(e, NULL, b, EXTRA) }
-    | 'except' e=expression 'als' t=NAME ':' b=block {
+    | 'ausser' e=expression 'als' t=NAME ':' b=block {
         _PyAST_ExceptHandler(e, ((expr_ty) t)->v.Name.id, b, EXTRA) }
-    | 'except' e=expressions ':' b=block {
+    | 'ausser' e=expressions ':' b=block {
         CHECK_VERSION(
             excepthandler_ty,
             14,
             "except expressions without parentheses are",
             _PyAST_ExceptHandler(e, NULL, b, EXTRA)) }
-    | 'except' ':' b=block { _PyAST_ExceptHandler(NULL, NULL, b, EXTRA) }
+    | 'ausser' ':' b=block { _PyAST_ExceptHandler(NULL, NULL, b, EXTRA) }
     | invalid_except_stmt
 except_star_block[excepthandler_ty]:
     | invalid_except_star_stmt_indent
-    | 'except' '*' e=expression ':' b=block {
+    | 'ausser' '*' e=expression ':' b=block {
         _PyAST_ExceptHandler(e, NULL, b, EXTRA) }
-    | 'except' '*' e=expression 'als' t=NAME ':' b=block {
+    | 'ausser' '*' e=expression 'als' t=NAME ':' b=block {
         _PyAST_ExceptHandler(e, ((expr_ty) t)->v.Name.id, b, EXTRA) }
-    | 'except' '*' e=expressions ':' b=block {
+    | 'ausser' '*' e=expressions ':' b=block {
         CHECK_VERSION(
             excepthandler_ty,
             14,
@@ -474,7 +474,7 @@ except_star_block[excepthandler_ty]:
     | invalid_except_star_stmt
 finally_block[asdl_stmt_seq*]:
     | invalid_finally_stmt
-    | 'finally' &&':' a=block { a }
+    | 'schliesslich' &&':' a=block { a }
 
 # Match statement
 # ---------------
@@ -1295,9 +1295,9 @@ invalid_ann_assign_target[expr_ty]:
     | tuple
     | '(' a=invalid_ann_assign_target ')' { a }
 invalid_raise_stmt:
-    | a='raise' b='von' {
-        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "did you forget an expression between 'raise' and 'von'?") }
-    | 'raise' expression a='von' {
+    | a='wirf' b='von' {
+        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "did you forget an expression between 'wirf' and 'von'?") }
+    | 'wirf' expression a='von' {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "did you forget an expression after 'von'?") }
 invalid_del_stmt:
     | 'del' a=star_expressions {
@@ -1418,38 +1418,38 @@ invalid_with_stmt_indent:
         RAISE_INDENTATION_ERROR("expected an indented block after 'mit' statement on line %d", a->lineno) }
 
 invalid_try_stmt:
-    | a='try' ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'try' statement on line %d", a->lineno) }
-    | 'try' ':' block !('except' | 'finally') { RAISE_SYNTAX_ERROR("expected 'except' or 'finally' block") }
-    | 'try' ':' block* except_block+ a='except' b='*' expression ['als' NAME] ':' {
-        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "cannot have both 'except' and 'except*' on the same 'try'") }
-    | 'try' ':' block* except_star_block+ a='except' [expression ['als' NAME]] ':' {
-        RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot have both 'except' and 'except*' on the same 'try'") }
+    | a='versuch' ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'versuch' statement on line %d", a->lineno) }
+    | 'versuch' ':' block !('ausser' | 'schliesslich') { RAISE_SYNTAX_ERROR("expected 'ausser' or 'schliesslich' block") }
+    | 'versuch' ':' block* except_block+ a='ausser' b='*' expression ['als' NAME] ':' {
+        RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "cannot have both 'ausser' and 'except*' on the same 'versuch'") }
+    | 'versuch' ':' block* except_star_block+ a='ausser' [expression ['als' NAME]] ':' {
+        RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot have both 'ausser' and 'except*' on the same 'versuch'") }
 invalid_except_stmt:
-    | 'except' a=expression ',' expressions 'als' NAME  ':' {
+    | 'ausser' a=expression ',' expressions 'als' NAME  ':' {
         RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'als'") }
-    | a='except' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | a='except' NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | 'except' expression 'als' a=expression ':' block {
+    | a='ausser' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | a='ausser' NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | 'ausser' expression 'als' a=expression ':' block {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
             a, "cannot use except statement with %s", _PyPegen_get_expr_name(a)) }
 invalid_except_star_stmt:
-    | 'except' '*' a=expression ',' expressions 'als' NAME  ':' {
+    | 'ausser' '*' a=expression ',' expressions 'als' NAME  ':' {
         RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'als'") }
-    | a='except' '*' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | a='except' '*' (NEWLINE | ':') { RAISE_SYNTAX_ERROR("expected one or more exception types") }
-    | 'except' '*' expression 'als' a=expression ':' block {
+    | a='ausser' '*' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | a='ausser' '*' (NEWLINE | ':') { RAISE_SYNTAX_ERROR("expected one or more exception types") }
+    | 'ausser' '*' expression 'als' a=expression ':' block {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
             a, "cannot use except* statement with %s", _PyPegen_get_expr_name(a)) }
 invalid_finally_stmt:
-    | a='finally' ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'finally' statement on line %d", a->lineno) }
+    | a='schliesslich' ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'schliesslich' statement on line %d", a->lineno) }
 invalid_except_stmt_indent:
-    | a='except' expression ['als' NAME ] ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'except' statement on line %d", a->lineno) }
-    | a='except' ':' NEWLINE !INDENT { RAISE_INDENTATION_ERROR("expected an indented block after 'except' statement on line %d", a->lineno) }
+    | a='ausser' expression ['als' NAME ] ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'ausser' statement on line %d", a->lineno) }
+    | a='ausser' ':' NEWLINE !INDENT { RAISE_INDENTATION_ERROR("expected an indented block after 'ausser' statement on line %d", a->lineno) }
 invalid_except_star_stmt_indent:
-    | a='except' '*' expression ['als' NAME ] ':' NEWLINE !INDENT {
+    | a='ausser' '*' expression ['als' NAME ] ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'except*' statement on line %d", a->lineno) }
 invalid_match_stmt:
     | "match" subject_expr NEWLINE { CHECK_VERSION(void*, 10, "Pattern matching is", RAISE_SYNTAX_ERROR("expected ':'") ) }
