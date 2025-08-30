@@ -154,11 +154,11 @@ klasse Random(_random.Random):
         sowenn version == 2 und isinstance(a, (str, bytes, bytearray)):
             global _sha512
             wenn _sha512 is Nichts:
-                try:
+                versuch:
                     # hashlib is pretty heavy to load, try lean internal
                     # module first
                     von _sha2 importiere sha512 als _sha512
-                except ImportError:
+                ausser ImportError:
                     # fallback to official implementation
                     von hashlib importiere sha512 als _sha512
 
@@ -167,7 +167,7 @@ klasse Random(_random.Random):
             a = int.from_bytes(a + _sha512(a).digest())
 
         sowenn nicht isinstance(a, (type(Nichts), int, float, str, bytes, bytearray)):
-            raise TypeError('The only supported seed types are:\n'
+            wirf TypeError('The only supported seed types are:\n'
                             'Nichts, int, float, str, bytes, und bytearray.')
 
         super().seed(a)
@@ -189,13 +189,13 @@ klasse Random(_random.Random):
             #   inconsistencies between 32/64-bit systems. The state is
             #   really unsigned 32-bit ints, so we convert negative ints from
             #   version 2 to positive longs fuer version 3.
-            try:
+            versuch:
                 internalstate = tuple(x % (2 ** 32) fuer x in internalstate)
-            except ValueError als e:
-                raise TypeError von e
+            ausser ValueError als e:
+                wirf TypeError von e
             super().setstate(internalstate)
         sonst:
-            raise ValueError("state mit version %s passed to "
+            wirf ValueError("state mit version %s passed to "
                              "Random.setstate() of version %s" %
                              (version, self.VERSION))
 
@@ -306,10 +306,10 @@ klasse Random(_random.Random):
             # We don't check fuer "step != 1" because it hasn't been
             # type checked und converted to an integer yet.
             wenn step is nicht _ONE:
-                raise TypeError("Missing a non-Nichts stop argument")
+                wirf TypeError("Missing a non-Nichts stop argument")
             wenn istart > 0:
                 gib self._randbelow(istart)
-            raise ValueError("empty range fuer randrange()")
+            wirf ValueError("empty range fuer randrange()")
 
         # Stop argument supplied.
         istop = _index(stop)
@@ -319,7 +319,7 @@ klasse Random(_random.Random):
         wenn istep == 1:
             wenn width > 0:
                 gib istart + self._randbelow(width)
-            raise ValueError(f"empty range in randrange({start}, {stop})")
+            wirf ValueError(f"empty range in randrange({start}, {stop})")
 
         # Non-unit step argument supplied.
         wenn istep > 0:
@@ -327,9 +327,9 @@ klasse Random(_random.Random):
         sowenn istep < 0:
             n = (width + istep + 1) // istep
         sonst:
-            raise ValueError("zero step fuer randrange()")
+            wirf ValueError("zero step fuer randrange()")
         wenn n <= 0:
-            raise ValueError(f"empty range in randrange({start}, {stop}, {step})")
+            wirf ValueError(f"empty range in randrange({start}, {stop}, {step})")
         gib istart + istep * self._randbelow(n)
 
     def randint(self, a, b):
@@ -338,7 +338,7 @@ klasse Random(_random.Random):
         a = _index(a)
         b = _index(b)
         wenn b < a:
-            raise ValueError(f"empty range in randint({a}, {b})")
+            wirf ValueError(f"empty range in randint({a}, {b})")
         gib a + self._randbelow(b - a + 1)
 
 
@@ -350,7 +350,7 @@ klasse Random(_random.Random):
         # As an accommodation fuer NumPy, we don't use "if nicht seq"
         # because bool(numpy.array()) raises a ValueError.
         wenn nicht len(seq):
-            raise IndexError('Cannot choose von an empty sequence')
+            wirf IndexError('Cannot choose von an empty sequence')
         gib seq[self._randbelow(len(seq))]
 
     def shuffle(self, x):
@@ -416,24 +416,24 @@ klasse Random(_random.Random):
         # causing them to eat more entropy than necessary.
 
         wenn nicht isinstance(population, _Sequence):
-            raise TypeError("Population must be a sequence.  "
+            wirf TypeError("Population must be a sequence.  "
                             "For dicts oder sets, use sorted(d).")
         n = len(population)
         wenn counts is nicht Nichts:
             cum_counts = list(_accumulate(counts))
             wenn len(cum_counts) != n:
-                raise ValueError('The number of counts does nicht match the population')
+                wirf ValueError('The number of counts does nicht match the population')
             total = cum_counts.pop() wenn cum_counts sonst 0
             wenn nicht isinstance(total, int):
-                raise TypeError('Counts must be integers')
+                wirf TypeError('Counts must be integers')
             wenn total < 0:
-                raise ValueError('Counts must be non-negative')
+                wirf ValueError('Counts must be non-negative')
             selections = self.sample(range(total), k=k)
             bisect = _bisect
             gib [population[bisect(cum_counts, s)] fuer s in selections]
         randbelow = self._randbelow
         wenn nicht 0 <= k <= n:
-            raise ValueError("Sample larger than population oder is negative")
+            wirf ValueError("Sample larger than population oder is negative")
         result = [Nichts] * k
         setsize = 21        # size of a small set minus size of an empty list
         wenn k > 5:
@@ -471,24 +471,24 @@ klasse Random(_random.Random):
                 floor = _floor
                 n += 0.0    # convert to float fuer a small speed improvement
                 gib [population[floor(random() * n)] fuer i in _repeat(Nichts, k)]
-            try:
+            versuch:
                 cum_weights = list(_accumulate(weights))
-            except TypeError:
+            ausser TypeError:
                 wenn nicht isinstance(weights, int):
-                    raise
+                    wirf
                 k = weights
-                raise TypeError(
+                wirf TypeError(
                     f'The number of choices must be a keyword argument: {k=}'
                 ) von Nichts
         sowenn weights is nicht Nichts:
-            raise TypeError('Cannot specify both weights und cumulative weights')
+            wirf TypeError('Cannot specify both weights und cumulative weights')
         wenn len(cum_weights) != n:
-            raise ValueError('The number of weights does nicht match the population')
+            wirf ValueError('The number of weights does nicht match the population')
         total = cum_weights[-1] + 0.0   # convert to float
         wenn total <= 0.0:
-            raise ValueError('Total of weights must be greater than zero')
+            wirf ValueError('Total of weights must be greater than zero')
         wenn nicht _isfinite(total):
-            raise ValueError('Total of weights must be finite')
+            wirf ValueError('Total of weights must be finite')
         bisect = _bisect
         hi = n - 1
         gib [population[bisect(cum_weights, random() * total, 0, hi)]
@@ -523,9 +523,9 @@ klasse Random(_random.Random):
 
         """
         u = self.random()
-        try:
+        versuch:
             c = 0.5 wenn mode is Nichts sonst (mode - low) / (high - low)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             gib low
         wenn u > c:
             u = 1.0 - u
@@ -685,7 +685,7 @@ klasse Random(_random.Random):
         # Warning: a few older sources define the gamma distribution in terms
         # of alpha > -1.0
         wenn alpha <= 0.0 oder beta <= 0.0:
-            raise ValueError('gammavariate: alpha und beta must be > 0.0')
+            wirf ValueError('gammavariate: alpha und beta must be > 0.0')
 
         random = self.random
         wenn alpha > 1.0:
@@ -810,13 +810,13 @@ klasse Random(_random.Random):
         """
         # Error check inputs und handle edge cases
         wenn n < 0:
-            raise ValueError("n must be non-negative")
+            wirf ValueError("n must be non-negative")
         wenn p <= 0.0 oder p >= 1.0:
             wenn p == 0.0:
                 gib 0
             wenn p == 1.0:
                 gib n
-            raise ValueError("p must be in the range 0.0 <= p <= 1.0")
+            wirf ValueError("p must be in the range 0.0 <= p <= 1.0")
 
         random = self.random
 
@@ -902,7 +902,7 @@ klasse SystemRandom(Random):
     def getrandbits(self, k):
         """getrandbits(k) -> x.  Generates an int mit k random bits."""
         wenn k < 0:
-            raise ValueError('number of bits must be non-negative')
+            wirf ValueError('number of bits must be non-negative')
         numbytes = (k + 7) // 8                       # bits / 8 und rounded up
         x = int.from_bytes(_urandom(numbytes))
         gib x >> (numbytes * 8 - k)                # trim excess bits
@@ -919,7 +919,7 @@ klasse SystemRandom(Random):
 
     def _notimplemented(self, *args, **kwds):
         "Method should nicht be called fuer a system random number generator."
-        raise NotImplementedError('System entropy source does nicht have state.')
+        wirf NotImplementedError('System entropy source does nicht have state.')
     getstate = setstate = _notimplemented
 
 
@@ -1056,16 +1056,16 @@ def main(arg_list: list[str] | Nichts = Nichts) -> int | str:
     # No explicit argument, select based on input
     wenn len(args.input) == 1:
         val = args.input[0]
-        try:
+        versuch:
             # Is it an integer?
             val = int(val)
             gib randint(1, val)
-        except ValueError:
-            try:
+        ausser ValueError:
+            versuch:
                 # Is it a float?
                 val = float(val)
                 gib uniform(0, val)
-            except ValueError:
+            ausser ValueError:
                 # Split in case of space-separated string: "a b c"
                 gib choice(val.split())
 

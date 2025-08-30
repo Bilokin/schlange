@@ -18,9 +18,9 @@ importiere weakref
 von textwrap importiere dedent
 von http.cookies importiere SimpleCookie
 
-try:
+versuch:
     importiere _testbuffer
-except ImportError:
+ausser ImportError:
     _testbuffer = Nichts
 
 von test importiere support
@@ -39,10 +39,10 @@ von pickle importiere bytes_types
 
 # bpo-41003: Save/restore warnings filters to leave them unchanged.
 # Ignore filters installed by numpy.
-try:
+versuch:
     mit save_restore_warnings_filters():
         importiere numpy als np
-except ImportError:
+ausser ImportError:
     np = Nichts
 
 
@@ -77,16 +77,16 @@ def identity(x):
 
 klasse UnseekableIO(io.BytesIO):
     def peek(self, *args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def seekable(self):
         gib Falsch
 
     def seek(self, *args):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
     def tell(self):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
 
 klasse MinimalIO(object):
@@ -106,9 +106,9 @@ klasse MinimalIO(object):
 # should do this:
 #
 #     e = ExtensionSaver(extension_code)
-#     try:
+#     versuch:
 #         fiddle w/ the extension registry's stuff fuer extension_code
-#     finally:
+#     schliesslich:
 #         e.restore()
 
 klasse ExtensionSaver:
@@ -304,7 +304,7 @@ wenn _testbuffer is nicht Nichts:
 
         def __reduce_ex__(self, protocol):
             wenn nicht self.array.contiguous:
-                raise NotImplementedError("Reconstructing a non-contiguous "
+                wirf NotImplementedError("Reconstructing a non-contiguous "
                                           "ndarray does nicht seem possible")
             ndarray_kwargs = {"shape": self.array.shape,
                               "strides": self.array.strides,
@@ -856,13 +856,13 @@ klasse AbstractUnpickleTests:
     def check_unpickling_error(self, errors, data):
         mit self.subTest(data=data), \
              self.assertRaises(errors):
-            try:
+            versuch:
                 self.loads(data)
-            except BaseException als exc:
+            ausser BaseException als exc:
                 wenn support.verbose > 1:
                     drucke('%-32r - %s: %s' %
                           (data, exc.__class__.__name__, exc))
-                raise
+                wirf
 
     def test_load_from_data0(self):
         self.assert_is_copy(self._testdata, self.loads(DATA0))
@@ -1420,7 +1420,7 @@ klasse AbstractUnpickleTests:
             count = 1
             def __hash__(self):
                 wenn nicht self.count:
-                    raise CustomError
+                    wirf CustomError
                 self.count -= 1
                 gib 42
         __main__.BadKey1 = BadKey1
@@ -2410,7 +2410,7 @@ klasse AbstractPicklingErrorTests:
 
     def test_buffer_callback_error(self):
         def buffer_callback(buffers):
-            raise CustomError
+            wirf CustomError
         pb = pickle.PickleBuffer(b"foobar")
         mit self.assertRaises(CustomError):
             self.dumps(pb, 5, buffer_callback=buffer_callback)
@@ -2428,9 +2428,9 @@ klasse AbstractPicklingErrorTests:
                         collection.clear()
                     gib Nichts
             pickler = EvilPickler(io.BytesIO(), proto)
-            try:
+            versuch:
                 pickler.dump(collection)
-            except RuntimeError als e:
+            ausser RuntimeError als e:
                 expected = "changed size during iteration"
                 self.assertIn(expected, str(e))
 
@@ -3090,12 +3090,12 @@ klasse AbstractPickleTests:
         oob = protocols[-1] + 1     # a future protocol
         build_none = pickle.NONE + pickle.STOP
         badpickle = pickle.PROTO + bytes([oob]) + build_none
-        try:
+        versuch:
             self.loads(badpickle)
-        except ValueError als err:
+        ausser ValueError als err:
             self.assertIn("unsupported pickle protocol", str(err))
         sonst:
-            self.fail("expected bad protocol number to raise ValueError")
+            self.fail("expected bad protocol number to wirf ValueError")
 
     def test_long1(self):
         x = 12345678910111213141516178920
@@ -3244,10 +3244,10 @@ klasse AbstractPickleTests:
         save = SimpleNewObj
         o = SimpleNewObj.__new__(SimpleNewObj)
         b = self.dumps(o, 4)
-        try:
+        versuch:
             SimpleNewObj = 42
             self.assertRaises((TypeError, pickle.UnpicklingError), self.loads, b)
-        finally:
+        schliesslich:
             SimpleNewObj = save
 
     # Register a type mit copyreg, mit extension code extcode.  Pickle
@@ -3256,7 +3256,7 @@ klasse AbstractPickleTests:
 
     def produce_global_ext(self, extcode, opcode):
         e = ExtensionSaver(extcode)
-        try:
+        versuch:
             copyreg.add_extension(__name__, "MyList", extcode)
             x = MyList([1, 2, 3])
             x.foo = 42
@@ -3279,7 +3279,7 @@ klasse AbstractPickleTests:
 
             y = self.loads(s2)
             self.assert_is_copy(x, y)
-        finally:
+        schliesslich:
             e.restore()
 
     def test_global_ext1(self):
@@ -3379,7 +3379,7 @@ klasse AbstractPickleTests:
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ, s),
                                  2 <= proto)
                 self.assertFalsch(opcode_in_pickle(pickle.NEWOBJ_EX, s))
-                y = self.loads(s)   # will raise TypeError wenn __init__ called
+                y = self.loads(s)   # will wirf TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_complex_newobj(self):
@@ -3399,7 +3399,7 @@ klasse AbstractPickleTests:
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ, s),
                                  2 <= proto)
                 self.assertFalsch(opcode_in_pickle(pickle.NEWOBJ_EX, s))
-                y = self.loads(s)   # will raise TypeError wenn __init__ called
+                y = self.loads(s)   # will wirf TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_complex_newobj_ex(self):
@@ -3419,7 +3419,7 @@ klasse AbstractPickleTests:
                 self.assertFalsch(opcode_in_pickle(pickle.NEWOBJ, s))
                 self.assertEqual(opcode_in_pickle(pickle.NEWOBJ_EX, s),
                                  4 <= proto)
-                y = self.loads(s)   # will raise TypeError wenn __init__ called
+                y = self.loads(s)   # will wirf TypeError wenn __init__ called
                 self.assert_is_copy(x, y)
 
     def test_newobj_list_slots(self):
@@ -4123,10 +4123,10 @@ klasse AbstractPickleTests:
                     bad.bad = bad
                     bad.collection = collection
                 ENABLED = Wahr
-                try:
+                versuch:
                     data = self.dumps(collection, proto)
                     self.loads(data)
-                except RuntimeError als e:
+                ausser RuntimeError als e:
                     expected = "changed size during iteration"
                     self.assertIn(expected, str(e))
 
@@ -4138,14 +4138,14 @@ klasse BigmemPickleTests:
     @bigmemtest(size=_2G, memuse=3.6, dry_run=Falsch)
     def test_huge_long_32b(self, size):
         data = 1 << (8 * size)
-        try:
+        versuch:
             fuer proto in protocols:
                 wenn proto < 2:
                     weiter
                 mit self.subTest(proto=proto):
                     mit self.assertRaises((ValueError, OverflowError)):
                         self.dumps(data, protocol=proto)
-        finally:
+        schliesslich:
             data = Nichts
 
     # Protocol 3 can serialize up to 4 GiB-1 als a bytes object
@@ -4155,12 +4155,12 @@ klasse BigmemPickleTests:
     @bigmemtest(size=_2G, memuse=2.5, dry_run=Falsch)
     def test_huge_bytes_32b(self, size):
         data = b"abcd" * (size // 4)
-        try:
+        versuch:
             fuer proto in protocols:
                 wenn proto < 3:
                     weiter
                 mit self.subTest(proto=proto):
-                    try:
+                    versuch:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINBYTES +
                                   struct.pack("<I", len(data)))
@@ -4168,15 +4168,15 @@ klasse BigmemPickleTests:
                         self.assertEqual(
                             header,
                             pickled[data_start-len(header):data_start])
-                    finally:
+                    schliesslich:
                         pickled = Nichts
-        finally:
+        schliesslich:
             data = Nichts
 
     @bigmemtest(size=_4G, memuse=2.5, dry_run=Falsch)
     def test_huge_bytes_64b(self, size):
         data = b"acbd" * (size // 4)
-        try:
+        versuch:
             fuer proto in protocols:
                 wenn proto < 3:
                     weiter
@@ -4187,7 +4187,7 @@ klasse BigmemPickleTests:
                         mit self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
                         weiter
-                    try:
+                    versuch:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINBYTES8 +
                                   struct.pack("<Q", len(data)))
@@ -4195,9 +4195,9 @@ klasse BigmemPickleTests:
                         self.assertEqual(
                             header,
                             pickled[data_start-len(header):data_start])
-                    finally:
+                    schliesslich:
                         pickled = Nichts
-        finally:
+        schliesslich:
             data = Nichts
 
     # All protocols use 1-byte per printable ASCII character; we add another
@@ -4206,12 +4206,12 @@ klasse BigmemPickleTests:
     @bigmemtest(size=_2G, memuse=8, dry_run=Falsch)
     def test_huge_str_32b(self, size):
         data = "abcd" * (size // 4)
-        try:
+        versuch:
             fuer proto in protocols:
                 wenn proto == 0:
                     weiter
                 mit self.subTest(proto=proto):
-                    try:
+                    versuch:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINUNICODE +
                                   struct.pack("<I", len(data)))
@@ -4221,9 +4221,9 @@ klasse BigmemPickleTests:
                             pickled[data_start-len(header):data_start])
                         self.assertEqual((pickled.rindex(b"abcd") + len(b"abcd") -
                                           pickled.index(b"abcd")), len(data))
-                    finally:
+                    schliesslich:
                         pickled = Nichts
-        finally:
+        schliesslich:
             data = Nichts
 
     # BINUNICODE (protocols 1, 2 und 3) cannot carry more than 2**32 - 1 bytes
@@ -4233,7 +4233,7 @@ klasse BigmemPickleTests:
     @bigmemtest(size=_4G, memuse=8, dry_run=Falsch)
     def test_huge_str_64b(self, size):
         data = "abcd" * (size // 4)
-        try:
+        versuch:
             fuer proto in protocols:
                 wenn proto == 0:
                     weiter
@@ -4242,7 +4242,7 @@ klasse BigmemPickleTests:
                         mit self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
                         weiter
-                    try:
+                    versuch:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINUNICODE8 +
                                   struct.pack("<Q", len(data)))
@@ -4252,9 +4252,9 @@ klasse BigmemPickleTests:
                             pickled[data_start-len(header):data_start])
                         self.assertEqual((pickled.rindex(b"abcd") + len(b"abcd") -
                                           pickled.index(b"abcd")), len(data))
-                    finally:
+                    schliesslich:
                         pickled = Nichts
-        finally:
+        schliesslich:
             data = Nichts
 
 
@@ -4292,7 +4292,7 @@ klasse REX_three(object):
         self._proto = proto
         gib REX_two, ()
     def __reduce__(self):
-        raise TestFailed("This __reduce__ shouldn't be called")
+        wirf TestFailed("This __reduce__ shouldn't be called")
 
 klasse REX_four(object):
     """Calling base klasse method should succeed"""
@@ -4367,7 +4367,7 @@ klasse CustomError(Exception):
 
 klasse Unpickleable:
     def __reduce__(self):
-        raise CustomError
+        wirf CustomError
 
 UNPICKLEABLE = Unpickleable()
 
@@ -4415,7 +4415,7 @@ myclasses = [MyInt, MyFloat,
 
 klasse MyIntWithNew(int):
     def __new__(cls, value):
-        raise AssertionError
+        wirf AssertionError
 
 klasse MyIntWithNew2(MyIntWithNew):
     __new__ = int.__new__
@@ -4428,8 +4428,8 @@ klasse SlotList(MyList):
 # being assigned (and then restored) von within test methods earlier in the file
 klasse SimpleNewObj(int):  # noqa: F811
     def __init__(self, *args, **kwargs):
-        # raise an error, to make sure this isn't called
-        raise TypeError("SimpleNewObj.__init__() didn't expect to get called")
+        # wirf an error, to make sure this isn't called
+        wirf TypeError("SimpleNewObj.__init__() didn't expect to get called")
     def __eq__(self, other):
         gib int(self) == int(other) und self.__dict__ == other.__dict__
 
@@ -4448,7 +4448,7 @@ klasse BadGetattr:
 klasse NoNew:
     def __getattribute__(self, name):
         wenn name == '__new__':
-            raise AttributeError
+            wirf AttributeError
         gib super().__getattribute__(name)
 
 
@@ -4456,18 +4456,18 @@ klasse AbstractPickleModuleTests:
 
     def test_dump_closed_file(self):
         f = open(TESTFN, "wb")
-        try:
+        versuch:
             f.close()
             self.assertRaises(ValueError, self.dump, 123, f)
-        finally:
+        schliesslich:
             os_helper.unlink(TESTFN)
 
     def test_load_closed_file(self):
         f = open(TESTFN, "wb")
-        try:
+        versuch:
             f.close()
             self.assertRaises(ValueError, self.dump, 123, f)
-        finally:
+        schliesslich:
             os_helper.unlink(TESTFN)
 
     def test_load_from_and_dump_to_file(self):
@@ -4494,10 +4494,10 @@ klasse AbstractPickleModuleTests:
 
     def test_dump_text_file(self):
         f = open(TESTFN, "w")
-        try:
+        versuch:
             fuer proto in protocols:
                 self.assertRaises(TypeError, self.dump, 123, f, proto)
-        finally:
+        schliesslich:
             f.close()
             os_helper.unlink(TESTFN)
 
@@ -4520,10 +4520,10 @@ klasse AbstractPickleModuleTests:
     def test_unpickler_bad_file(self):
         # bpo-38384: Crash in _pickle wenn the read attribute raises an error.
         def raises_oserror(self, *args, **kwargs):
-            raise OSError
+            wirf OSError
         @property
         def bad_property(self):
-            raise CustomError
+            wirf CustomError
 
         # File without read und readline
         klasse F:
@@ -4567,9 +4567,9 @@ klasse AbstractPickleModuleTests:
             peek = bad_property
             read = raises_oserror
             readline = raises_oserror
-        try:
+        versuch:
             self.Unpickler(F())
-        except CustomError:
+        ausser CustomError:
             pass
 
         # File mit bad readinto
@@ -4577,9 +4577,9 @@ klasse AbstractPickleModuleTests:
             readinto = bad_property
             read = raises_oserror
             readline = raises_oserror
-        try:
+        versuch:
             self.Unpickler(F())
-        except CustomError:
+        ausser CustomError:
             pass
 
     def test_pickler_bad_file(self):
@@ -4592,7 +4592,7 @@ klasse AbstractPickleModuleTests:
         klasse F:
             @property
             def write(self):
-                raise CustomError
+                wirf CustomError
         self.assertRaises(CustomError, self.Pickler, F())
 
     def check_dumps_loads_oob_buffers(self, dumps, loads):
@@ -4935,13 +4935,13 @@ klasse AbstractCustomPicklerClass:
 
         sowenn obj_name == 'g':
             # in this case, the callback returns an invalid result (nicht a 2-5
-            # tuple oder a string), the pickler should raise a proper error.
+            # tuple oder a string), the pickler should wirf a proper error.
             gib Falsch
 
         sowenn obj_name == 'h':
             # Simulate a case when the reducer fails. The error should
             # be propagated to the original ``dump`` call.
-            raise ValueError('The reducer just failed')
+            wirf ValueError('The reducer just failed')
 
         gib NotImplemented
 

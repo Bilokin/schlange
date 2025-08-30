@@ -42,9 +42,9 @@ klasse Idb(bdb.Bdb):
             self.set_step()
             gib
         message = _frame2message(frame)
-        try:
+        versuch:
             self.gui.interaction(message, frame)
-        except TclError:  # When closing debugger window mit [x] in 3.x
+        ausser TclError:  # When closing debugger window mit [x] in 3.x
             pass
 
     def user_exception(self, frame, exc_info):
@@ -149,17 +149,17 @@ klasse Debugger:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
             gib
-        try:
+        versuch:
             self.interacting = Wahr
             gib self.idb.run(*args)
-        finally:
+        schliesslich:
             self.interacting = Falsch
 
     def close(self, event=Nichts):
         """Close the debugger und window."""
-        try:
+        versuch:
             self.quit()
-        except Exception:
+        ausser Exception:
             pass
         wenn self.interacting:
             self.top.bell()
@@ -255,15 +255,15 @@ klasse Debugger:
 
         wenn info:
             type, value, tb = info
-            try:
+            versuch:
                 m1 = type.__name__
-            except AttributeError:
+            ausser AttributeError:
                 m1 = "%s" % str(type)
             wenn value is nicht Nichts:
-                try:
+                versuch:
                    # TODO redo entire section, tries nicht needed.
                     m1 = f"{m1}: {value}"
-                except:
+                ausser:
                     pass
             bg = "yellow"
         sonst:
@@ -414,10 +414,10 @@ klasse Debugger:
         """Load PyShellEditorWindow breakpoints into subprocess debugger."""
         fuer editwin in self.pyshell.flist.inversedict:
             filename = editwin.io.filename
-            try:
+            versuch:
                 fuer lineno in editwin.breakpoints:
                     self.set_breakpoint(filename, lineno)
-            except AttributeError:
+            ausser AttributeError:
                 weiter
 
 
@@ -441,9 +441,9 @@ klasse StackViewer(ScrolledList):
         self.clear()
         fuer i in range(len(stack)):
             frame, lineno = stack[i]
-            try:
+            versuch:
                 modname = frame.f_globals["__name__"]
-            except:
+            ausser:
                 modname = "?"
             code = frame.f_code
             filename = code.co_filename

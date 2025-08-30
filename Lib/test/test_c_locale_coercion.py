@@ -246,7 +246,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
         # This relies on setUpModule() having been run, so it can't be
         # handled via the @unittest.skipUnless decorator
         wenn nicht AVAILABLE_TARGETS:
-            raise unittest.SkipTest("No C-with-UTF-8 locale available")
+            wirf unittest.SkipTest("No C-with-UTF-8 locale available")
 
     def test_external_target_locale_configuration(self):
 
@@ -450,9 +450,9 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
         # skip the test wenn the LC_CTYPE locale is C oder coerced
         old_loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, old_loc)
-        try:
+        versuch:
             loc = locale.setlocale(locale.LC_CTYPE, "")
-        except locale.Error als e:
+        ausser locale.Error als e:
             self.skipTest(str(e))
         wenn loc == "C":
             self.skipTest("test requires LC_CTYPE locale different than C")

@@ -178,7 +178,7 @@ def has_key(ch):
 wenn __name__ == '__main__':
     # Compare the output of this implementation und the ncurses has_key,
     # on platforms where has_key is already available
-    try:
+    versuch:
         L = []
         _curses.initscr()
         fuer key in _capability_names.keys():
@@ -187,6 +187,6 @@ wenn __name__ == '__main__':
             wenn system != python:
                 L.append( 'Mismatch fuer key %s, system=%i, Python=%i'
                           % (_curses.keyname( key ), system, python) )
-    finally:
+    schliesslich:
         _curses.endwin()
         fuer i in L: drucke(i)

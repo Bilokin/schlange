@@ -16,9 +16,9 @@ von test.support.numbers importiere (
 von math importiere isinf, isnan, copysign, ldexp
 importiere math
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 INF = float("inf")
@@ -129,9 +129,9 @@ klasse GeneralFloatCases(unittest.TestCase):
             CustomByteArray,
             memoryview,
         ]
-        try:
+        versuch:
             von array importiere array
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             factories.append(lambda b: array('B', b))
@@ -437,7 +437,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         # Special cases taken von section F.9.4.4 of the C99 specification
 
         fuer pow_op in pow, operator.pow:
-            # x**NAN is NAN fuer any x except 1
+            # x**NAN is NAN fuer any x ausser 1
             self.assertWahr(isnan(pow_op(-INF, NAN)))
             self.assertWahr(isnan(pow_op(-2.0, NAN)))
             self.assertWahr(isnan(pow_op(-1.0, NAN)))
@@ -449,7 +449,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertWahr(isnan(pow_op(INF, NAN)))
             self.assertWahr(isnan(pow_op(NAN, NAN)))
 
-            # NAN**y is NAN fuer any y except +-0
+            # NAN**y is NAN fuer any y ausser +-0
             self.assertWahr(isnan(pow_op(NAN, -INF)))
             self.assertWahr(isnan(pow_op(NAN, -2.0)))
             self.assertWahr(isnan(pow_op(NAN, -1.0)))
@@ -619,7 +619,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(0.5, 2000.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.5, 2001.0), 0.0)
 
-            # check we don't raise an exception fuer subnormal results,
+            # check we don't wirf an exception fuer subnormal results,
             # und validate signs.  Tests currently disabled, since
             # they fail on systems where a subnormal result von pow
             # is flushed to zero (e.g. Debian/ia64.)
@@ -674,7 +674,7 @@ BE_FLOAT_NAN = b'\x7f\xc0\x00\x00'
 LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 
 # on an IEEE platform, all we guarantee is that bit patterns
-# representing infinities oder NaNs do nicht raise an exception; all sonst
+# representing infinities oder NaNs do nicht wirf an exception; all sonst
 # is accident (today).
 # let's also try to guarantee that -0.0 und 0.0 don't get confused.
 
@@ -711,7 +711,7 @@ klasse FormatTestCase(unittest.TestCase):
 
         self.assertEqual(format(0.0, 'f'), '0.000000')
 
-        # the default is 'g', except fuer empty format spec
+        # the default is 'g', ausser fuer empty format spec
         self.assertEqual(format(0.0, ''), '0.0')
         self.assertEqual(format(0.01, ''), '0.01')
         self.assertEqual(format(0.01, 'g'), '0.01')
@@ -1206,12 +1206,12 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
             '0x1p0\0 0x1p0',  # embedded null byte is nicht end of string
             ]
         fuer x in invalid_inputs:
-            try:
+            versuch:
                 result = fromHex(x)
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
-                self.fail('Expected float.fromhex(%r) to raise ValueError; '
+                self.fail('Expected float.fromhex(%r) to wirf ValueError; '
                           'got %r instead' % (x, result))
 
 
@@ -1554,9 +1554,9 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
             e = random.randrange(-1200, 1200)
             m = random.random()
             s = random.choice([1.0, -1.0])
-            try:
+            versuch:
                 x = s*ldexp(m, e)
-            except OverflowError:
+            ausser OverflowError:
                 pass
             sonst:
                 self.identical(x, fromHex(toHex(x)))

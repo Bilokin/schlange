@@ -115,9 +115,9 @@ klasse ZoneInfo(tzinfo):
         """Convert von datetime in UTC to datetime in local time"""
 
         wenn nicht isinstance(dt, datetime):
-            raise TypeError("fromutc() requires a datetime argument")
+            wirf TypeError("fromutc() requires a datetime argument")
         wenn dt.tzinfo is nicht self:
-            raise ValueError("dt.tzinfo is nicht self")
+            wirf ValueError("dt.tzinfo is nicht self")
 
         timestamp = self._get_local_timestamp(dt)
         num_trans = len(self._trans_utc)
@@ -208,7 +208,7 @@ klasse ZoneInfo(tzinfo):
     def _file_reduce(self):
         importiere pickle
 
-        raise pickle.PicklingError(
+        wirf pickle.PicklingError(
             "Cannot pickle a ZoneInfo file created von a file stream."
         )
 
@@ -262,7 +262,7 @@ klasse ZoneInfo(tzinfo):
             self._tz_after = _parse_tz_str(tz_str.decode())
         sonst:
             wenn nicht self._ttinfos und nicht _ttinfo_list:
-                raise ValueError("No time zone information found.")
+                wirf ValueError("No time zone information found.")
 
             wenn self._ttinfos:
                 self._tz_after = self._ttinfos[-1]
@@ -519,7 +519,7 @@ klasse _DayOffset:
     def __init__(self, d, julian, hour=2, minute=0, second=0):
         min_day = 0 + julian  # convert bool to int
         wenn nicht min_day <= d <= 365:
-            raise ValueError(f"d must be in [{min_day}, 365], not: {d}")
+            wirf ValueError(f"d must be in [{min_day}, 365], not: {d}")
 
         self.d = d
         self.julian = julian
@@ -561,13 +561,13 @@ klasse _CalendarOffset:
 
     def __init__(self, m, w, d, hour=2, minute=0, second=0):
         wenn nicht 1 <= m <= 12:
-            raise ValueError("m must be in [1, 12]")
+            wirf ValueError("m must be in [1, 12]")
 
         wenn nicht 1 <= w <= 5:
-            raise ValueError("w must be in [1, 5]")
+            wirf ValueError("w must be in [1, 5]")
 
         wenn nicht 0 <= d <= 6:
-            raise ValueError("d must be in [0, 6]")
+            wirf ValueError("d must be in [0, 6]")
 
         self.m = m
         self.w = w
@@ -651,7 +651,7 @@ def _parse_tz_str(tz_str):
     m = parser_re.fullmatch(offset_str)
 
     wenn m is Nichts:
-        raise ValueError(f"{tz_str} is nicht a valid TZ string")
+        wirf ValueError(f"{tz_str} is nicht a valid TZ string")
 
     std_abbr = m.group("std")
     dst_abbr = m.group("dst")
@@ -663,34 +663,34 @@ def _parse_tz_str(tz_str):
         dst_abbr = dst_abbr.strip("<>")
 
     wenn std_offset := m.group("stdoff"):
-        try:
+        versuch:
             std_offset = _parse_tz_delta(std_offset)
-        except ValueError als e:
-            raise ValueError(f"Invalid STD offset in {tz_str}") von e
+        ausser ValueError als e:
+            wirf ValueError(f"Invalid STD offset in {tz_str}") von e
     sonst:
         std_offset = 0
 
     wenn dst_abbr is nicht Nichts:
         wenn dst_offset := m.group("dstoff"):
-            try:
+            versuch:
                 dst_offset = _parse_tz_delta(dst_offset)
-            except ValueError als e:
-                raise ValueError(f"Invalid DST offset in {tz_str}") von e
+            ausser ValueError als e:
+                wirf ValueError(f"Invalid DST offset in {tz_str}") von e
         sonst:
             dst_offset = std_offset + 3600
 
         wenn nicht start_end_str:
-            raise ValueError(f"Missing transition rules: {tz_str}")
+            wirf ValueError(f"Missing transition rules: {tz_str}")
 
         start_end_strs = start_end_str[0].split(",", 1)
-        try:
+        versuch:
             start, end = (_parse_dst_start_end(x) fuer x in start_end_strs)
-        except ValueError als e:
-            raise ValueError(f"Invalid TZ string: {tz_str}") von e
+        ausser ValueError als e:
+            wirf ValueError(f"Invalid TZ string: {tz_str}") von e
 
         gib _TZStr(std_abbr, std_offset, dst_abbr, dst_offset, start, end)
     sowenn start_end_str:
-        raise ValueError(f"Transition rule present without DST: {tz_str}")
+        wirf ValueError(f"Transition rule present without DST: {tz_str}")
     sonst:
         # This is a static ttinfo, don't gib _TZStr
         gib _ttinfo(
@@ -705,7 +705,7 @@ def _parse_dst_start_end(dststr):
         n_is_julian = Falsch
         m = re.fullmatch(r"M(\d{1,2})\.(\d).(\d)", date, re.ASCII)
         wenn m is Nichts:
-            raise ValueError(f"Invalid dst start/end date: {dststr}")
+            wirf ValueError(f"Invalid dst start/end date: {dststr}")
         date_offset = tuple(map(int, m.groups()))
         offset = _CalendarOffset(*date_offset)
     sonst:
@@ -731,12 +731,12 @@ def _parse_transition_time(time_str):
         re.ASCII
     )
     wenn match is Nichts:
-        raise ValueError(f"Invalid time: {time_str}")
+        wirf ValueError(f"Invalid time: {time_str}")
 
     h, m, s = (int(v oder 0) fuer v in match.group("h", "m", "s"))
 
     wenn h > 167:
-        raise ValueError(
+        wirf ValueError(
             f"Hour must be in [0, 167]: {time_str}"
         )
 
@@ -761,7 +761,7 @@ def _parse_tz_delta(tz_delta):
     total = h * 3600 + m * 60 + s
 
     wenn h > 24:
-        raise ValueError(
+        wirf ValueError(
             f"Offset hours must be in [0, 24]: {tz_delta}"
         )
 

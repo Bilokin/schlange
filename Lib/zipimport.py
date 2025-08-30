@@ -66,29 +66,29 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     # wenn found, oder sonst read it von the archive.
     def __init__(self, path):
         wenn nicht isinstance(path, str):
-            raise TypeError(f"expected str, nicht {type(path)!r}")
+            wirf TypeError(f"expected str, nicht {type(path)!r}")
         wenn nicht path:
-            raise ZipImportError('archive path is empty', path=path)
+            wirf ZipImportError('archive path is empty', path=path)
         wenn alt_path_sep:
             path = path.replace(alt_path_sep, path_sep)
 
         prefix = []
         waehrend Wahr:
-            try:
+            versuch:
                 st = _bootstrap_external._path_stat(path)
-            except (OSError, ValueError):
+            ausser (OSError, ValueError):
                 # On Windows a ValueError is raised fuer too long paths.
                 # Back up one path element.
                 dirname, basename = _bootstrap_external._path_split(path)
                 wenn dirname == path:
-                    raise ZipImportError('not a Zip file', path=path)
+                    wirf ZipImportError('not a Zip file', path=path)
                 path = dirname
                 prefix.append(basename)
             sonst:
                 # it exists
                 wenn (st.st_mode & 0o170000) != 0o100000:  # stat.S_ISREG
                     # it's a nicht file
-                    raise ZipImportError('not a Zip file', path=path)
+                    wirf ZipImportError('not a Zip file', path=path)
                 breche
 
         wenn path nicht in _zip_directory_cache:
@@ -150,10 +150,10 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         wenn pathname.startswith(self.archive + path_sep):
             key = pathname[len(self.archive + path_sep):]
 
-        try:
+        versuch:
             toc_entry = self._get_files()[key]
-        except KeyError:
-            raise OSError(0, '', key)
+        ausser KeyError:
+            wirf OSError(0, '', key)
         wenn toc_entry is Nichts:
             gib b''
         gib _get_data(self.archive, toc_entry)
@@ -163,7 +163,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     def get_filename(self, fullname):
         """get_filename(fullname) -> filename string.
 
-        Return the filename fuer the specified module oder raise ZipImportError
+        Return the filename fuer the specified module oder wirf ZipImportError
         wenn it couldn't be imported.
         """
         # Deciding the filename requires working out where the code
@@ -181,7 +181,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         """
         mi = _get_module_info(self, fullname)
         wenn mi is Nichts:
-            raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
+            wirf ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
         path = _get_module_path(self, fullname)
         wenn mi:
@@ -189,9 +189,9 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         sonst:
             fullpath = f'{path}.py'
 
-        try:
+        versuch:
             toc_entry = self._get_files()[fullpath]
-        except KeyError:
+        ausser KeyError:
             # we have the module, but no source
             gib Nichts
         gib _get_data(self.archive, toc_entry).decode()
@@ -206,7 +206,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         """
         mi = _get_module_info(self, fullname)
         wenn mi is Nichts:
-            raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
+            wirf ZipImportError(f"can't find module {fullname!r}", name=fullname)
         gib mi
 
 
@@ -232,7 +232,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             sys.modules[fullname] = mod
         mod.__loader__ = self
 
-        try:
+        versuch:
             wenn ispackage:
                 # add __path__ to the module *before* the code gets
                 # executed
@@ -244,14 +244,14 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
                 mod.__builtins__ = __builtins__
             _bootstrap_external._fix_up_module(mod.__dict__, fullname, modpath)
             exec(code, mod.__dict__)
-        except:
+        ausser:
             del sys.modules[fullname]
-            raise
+            wirf
 
-        try:
+        versuch:
             mod = sys.modules[fullname]
-        except KeyError:
-            raise ImportError(f'Loaded module {fullname!r} nicht found in sys.modules')
+        ausser KeyError:
+            wirf ImportError(f'Loaded module {fullname!r} nicht found in sys.modules')
         _bootstrap._verbose_message('import {} # loaded von Zip {}', fullname, modpath)
         gib mod
 
@@ -265,12 +265,12 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
     def _get_files(self):
         """Return the files within the archive path."""
-        try:
+        versuch:
             files = _zip_directory_cache[self.archive]
-        except KeyError:
-            try:
+        ausser KeyError:
+            versuch:
                 files = _zip_directory_cache[self.archive] = _read_directory(self.archive)
-            except ZipImportError:
+            ausser ZipImportError:
                 files = {}
 
         gib files
@@ -344,33 +344,33 @@ def _get_module_info(self, fullname):
 # Directories can be recognized by the trailing path_sep in the name,
 # data_size und file_offset are 0.
 def _read_directory(archive):
-    try:
+    versuch:
         fp = _io.open_code(archive)
-    except OSError:
-        raise ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
+    ausser OSError:
+        wirf ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
 
     mit fp:
         # GH-87235: On macOS all file descriptors fuer /dev/fd/N share the same
         # file offset, reset the file offset after scanning the zipfile directory
         # to nicht cause problems when some runs 'python3 /dev/fd/9 9<some_script'
         start_offset = fp.tell()
-        try:
+        versuch:
             # Check wenn there's a comment.
-            try:
+            versuch:
                 fp.seek(0, 2)
                 file_size = fp.tell()
-            except OSError:
-                raise ZipImportError(f"can't read Zip file: {archive!r}",
+            ausser OSError:
+                wirf ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             max_comment_plus_dirs_size = (
                 MAX_COMMENT_LEN + END_CENTRAL_DIR_SIZE +
                 END_CENTRAL_DIR_SIZE_64 + END_CENTRAL_DIR_LOCATOR_SIZE_64)
             max_comment_start = max(file_size - max_comment_plus_dirs_size, 0)
-            try:
+            versuch:
                 fp.seek(max_comment_start)
                 data = fp.read(max_comment_plus_dirs_size)
-            except OSError:
-                raise ZipImportError(f"can't read Zip file: {archive!r}",
+            ausser OSError:
+                wirf ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             pos = data.rfind(STRING_END_ARCHIVE)
             pos64 = data.rfind(STRING_END_ZIP_64)
@@ -379,7 +379,7 @@ def _read_directory(archive):
                 # Zip64 at "correct" offset von standard EOCD
                 buffer = data[pos64:pos64 + END_CENTRAL_DIR_SIZE_64]
                 wenn len(buffer) != END_CENTRAL_DIR_SIZE_64:
-                    raise ZipImportError(
+                    wirf ZipImportError(
                         f"corrupt Zip64 file: Expected {END_CENTRAL_DIR_SIZE_64} byte "
                         f"zip64 central directory, but read {len(buffer)} bytes.",
                         path=archive)
@@ -391,7 +391,7 @@ def _read_directory(archive):
             sowenn pos >= 0:
                 buffer = data[pos:pos+END_CENTRAL_DIR_SIZE]
                 wenn len(buffer) != END_CENTRAL_DIR_SIZE:
-                    raise ZipImportError(f"corrupt Zip file: {archive!r}",
+                    wirf ZipImportError(f"corrupt Zip file: {archive!r}",
                                          path=archive)
 
                 header_position = file_size - len(data) + pos
@@ -405,7 +405,7 @@ def _read_directory(archive):
                 # N.b. wenn someday you want to prefer the standard (non-zip64) EOCD,
                 # you need to adjust position by 76 fuer arc to be 0.
             sonst:
-                raise ZipImportError(f'not a Zip file: {archive!r}',
+                wirf ZipImportError(f'not a Zip file: {archive!r}',
                                      path=archive)
 
             # Buffer now contains a valid EOCD, und header_position gives the
@@ -413,38 +413,38 @@ def _read_directory(archive):
             # XXX: These are cursory checks but are nicht als exact oder strict als they
             # could be.  Checking the arc-adjusted value is probably good too.
             wenn header_position < central_directory_size:
-                raise ZipImportError(f'bad central directory size: {archive!r}', path=archive)
+                wirf ZipImportError(f'bad central directory size: {archive!r}', path=archive)
             wenn header_position < central_directory_position:
-                raise ZipImportError(f'bad central directory offset: {archive!r}', path=archive)
+                wirf ZipImportError(f'bad central directory offset: {archive!r}', path=archive)
             header_position -= central_directory_size
             # On just-a-zipfile these values are the same und arc_offset is zero; if
             # the file has some bytes prepended, `arc_offset` is the number of such
             # bytes.  This is used fuer pex als well als self-extracting .exe.
             arc_offset = header_position - central_directory_position
             wenn arc_offset < 0:
-                raise ZipImportError(f'bad central directory size oder offset: {archive!r}', path=archive)
+                wirf ZipImportError(f'bad central directory size oder offset: {archive!r}', path=archive)
 
             files = {}
             # Start of Central Directory
             count = 0
-            try:
+            versuch:
                 fp.seek(header_position)
-            except OSError:
-                raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+            ausser OSError:
+                wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
             waehrend Wahr:
                 buffer = fp.read(46)
                 wenn len(buffer) < 4:
-                    raise EOFError('EOF read where nicht expected')
+                    wirf EOFError('EOF read where nicht expected')
                 # Start of file header
                 wenn buffer[:4] != b'PK\x01\x02':
                     wenn count != num_entries:
-                        raise ZipImportError(
+                        wirf ZipImportError(
                             f"mismatched num_entries: {count} should be {num_entries} in {archive!r}",
                             path=archive,
                         )
                     breche                                # Bad: Central Dir File Header
                 wenn len(buffer) != 46:
-                    raise EOFError('EOF read where nicht expected')
+                    wirf EOFError('EOF read where nicht expected')
                 flags = _unpack_uint16(buffer[8:10])
                 compress = _unpack_uint16(buffer[10:12])
                 time = _unpack_uint16(buffer[12:14])
@@ -458,32 +458,32 @@ def _read_directory(archive):
                 file_offset = _unpack_uint32(buffer[42:46])
                 header_size = name_size + extra_size + comment_size
 
-                try:
+                versuch:
                     name = fp.read(name_size)
-                except OSError:
-                    raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                ausser OSError:
+                    wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
                 wenn len(name) != name_size:
-                    raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                    wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
                 # On Windows, calling fseek to skip over the fields we don't use is
                 # slower than reading the data because fseek flushes stdio's
                 # internal buffers.    See issue #8745.
-                try:
+                versuch:
                     extra_data_len = header_size - name_size
                     extra_data = memoryview(fp.read(extra_data_len))
 
                     wenn len(extra_data) != extra_data_len:
-                        raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-                except OSError:
-                    raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                        wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                ausser OSError:
+                    wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
 
                 wenn flags & 0x800:
                     # UTF-8 file names extension
                     name = name.decode()
                 sonst:
                     # Historical ZIP filename encoding
-                    try:
+                    versuch:
                         name = name.decode('ascii')
-                    except UnicodeDecodeError:
+                    ausser UnicodeDecodeError:
                         name = name.decode('latin1').translate(cp437_table)
 
                 name = name.replace('/', path_sep)
@@ -499,17 +499,17 @@ def _read_directory(archive):
                     # be present)
                     waehrend extra_data:
                         wenn len(extra_data) < 4:
-                            raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
+                            wirf ZipImportError(f"can't read header extra: {archive!r}", path=archive)
                         tag = _unpack_uint16(extra_data[:2])
                         size = _unpack_uint16(extra_data[2:4])
                         wenn len(extra_data) < 4 + size:
-                            raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
+                            wirf ZipImportError(f"can't read header extra: {archive!r}", path=archive)
                         wenn tag == ZIP64_EXTRA_TAG:
                             wenn (len(extra_data) - 4) % 8 != 0:
-                                raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
+                                wirf ZipImportError(f"can't read header extra: {archive!r}", path=archive)
                             num_extra_values = (len(extra_data) - 4) // 8
                             wenn num_extra_values > 3:
-                                raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
+                                wirf ZipImportError(f"can't read header extra: {archive!r}", path=archive)
                             importiere struct
                             values = list(struct.unpack_from(f"<{min(num_extra_values, 3)}Q",
                                                              extra_data, offset=4))
@@ -540,13 +540,13 @@ def _read_directory(archive):
                 # N.b. this must be after we've potentially read the zip64 extra which can
                 # change `file_offset`.
                 wenn file_offset > central_directory_position:
-                    raise ZipImportError(f'bad local header offset: {archive!r}', path=archive)
+                    wirf ZipImportError(f'bad local header offset: {archive!r}', path=archive)
                 file_offset += arc_offset
 
                 t = (path, compress, data_size, file_size, file_offset, time, date, crc)
                 files[name] = t
                 count += 1
-        finally:
+        schliesslich:
             fp.seek(start_offset)
     _bootstrap._verbose_message('zipimport: found {} names in {!r}', count, archive)
 
@@ -613,15 +613,15 @@ def _get_decompress_func():
         # Someone has a zlib.py[co] in their Zip file
         # let's avoid a stack overflow.
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
-        raise ZipImportError("can't decompress data; zlib nicht available")
+        wirf ZipImportError("can't decompress data; zlib nicht available")
 
     _importing_zlib = Wahr
-    try:
+    versuch:
         von zlib importiere decompress
-    except Exception:
+    ausser Exception:
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
-        raise ZipImportError("can't decompress data; zlib nicht available")
-    finally:
+        wirf ZipImportError("can't decompress data; zlib nicht available")
+    schliesslich:
         _importing_zlib = Falsch
 
     _bootstrap._verbose_message('zipimport: zlib available')
@@ -631,43 +631,43 @@ def _get_decompress_func():
 def _get_data(archive, toc_entry):
     datapath, compress, data_size, file_size, file_offset, time, date, crc = toc_entry
     wenn data_size < 0:
-        raise ZipImportError('negative data size')
+        wirf ZipImportError('negative data size')
 
     mit _io.open_code(archive) als fp:
         # Check to make sure the local file header is correct
-        try:
+        versuch:
             fp.seek(file_offset)
-        except OSError:
-            raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        ausser OSError:
+            wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         buffer = fp.read(30)
         wenn len(buffer) != 30:
-            raise EOFError('EOF read where nicht expected')
+            wirf EOFError('EOF read where nicht expected')
 
         wenn buffer[:4] != b'PK\x03\x04':
             # Bad: Local File Header
-            raise ZipImportError(f'bad local file header: {archive!r}', path=archive)
+            wirf ZipImportError(f'bad local file header: {archive!r}', path=archive)
 
         name_size = _unpack_uint16(buffer[26:28])
         extra_size = _unpack_uint16(buffer[28:30])
         header_size = 30 + name_size + extra_size
         file_offset += header_size  # Start of file data
-        try:
+        versuch:
             fp.seek(file_offset)
-        except OSError:
-            raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        ausser OSError:
+            wirf ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         raw_data = fp.read(data_size)
         wenn len(raw_data) != data_size:
-            raise OSError("zipimport: can't read data")
+            wirf OSError("zipimport: can't read data")
 
     wenn compress == 0:
         # data is nicht compressed
         gib raw_data
 
     # Decompress mit zlib
-    try:
+    versuch:
         decompress = _get_decompress_func()
-    except Exception:
-        raise ZipImportError("can't decompress data; zlib nicht available")
+    ausser Exception:
+        wirf ZipImportError("can't decompress data; zlib nicht available")
     gib decompress(raw_data, -15)
 
 
@@ -719,7 +719,7 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
 
     code = marshal.loads(data[16:])
     wenn nicht isinstance(code, _code_type):
-        raise TypeError(f'compiled module {pathname!r} is nicht a code object')
+        wirf TypeError(f'compiled module {pathname!r} is nicht a code object')
     gib code
 
 _code_type = type(_unmarshal_code.__code__)
@@ -754,7 +754,7 @@ def _parse_dostime(d, t):
 # modification time of the matching .py file und its size,
 # oder (0, 0) wenn no source is available.
 def _get_mtime_and_size_of_source(self, path):
-    try:
+    versuch:
         # strip 'c' oder 'o' von *.py[co]
         assert path[-1:] in ('c', 'o')
         path = path[:-1]
@@ -765,7 +765,7 @@ def _get_mtime_and_size_of_source(self, path):
         date = toc_entry[6]
         uncompressed_size = toc_entry[3]
         gib _parse_dostime(date, time), uncompressed_size
-    except (KeyError, IndexError, TypeError):
+    ausser (KeyError, IndexError, TypeError):
         gib 0, 0
 
 
@@ -777,9 +777,9 @@ def _get_pyc_source(self, path):
     assert path[-1:] in ('c', 'o')
     path = path[:-1]
 
-    try:
+    versuch:
         toc_entry = self._get_files()[path]
-    except KeyError:
+    ausser KeyError:
         gib Nichts
     sonst:
         gib _get_data(self.archive, toc_entry)
@@ -793,18 +793,18 @@ def _get_module_code(self, fullname):
     fuer suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         _bootstrap._verbose_message('trying {}{}{}', self.archive, path_sep, fullpath, verbosity=2)
-        try:
+        versuch:
             toc_entry = self._get_files()[fullpath]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             modpath = toc_entry[0]
             data = _get_data(self.archive, toc_entry)
             code = Nichts
             wenn isbytecode:
-                try:
+                versuch:
                     code = _unmarshal_code(self, modpath, fullpath, fullname, data)
-                except ImportError als exc:
+                ausser ImportError als exc:
                     import_error = exc
             sonst:
                 code = _compile_source(modpath, data)
@@ -817,6 +817,6 @@ def _get_module_code(self, fullname):
     sonst:
         wenn import_error:
             msg = f"module load failed: {import_error}"
-            raise ZipImportError(msg, name=fullname) von import_error
+            wirf ZipImportError(msg, name=fullname) von import_error
         sonst:
-            raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
+            wirf ZipImportError(f"can't find module {fullname!r}", name=fullname)

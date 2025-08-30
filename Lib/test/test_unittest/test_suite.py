@@ -206,12 +206,12 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     def test_run__requires_result(self):
         suite = unittest.TestSuite()
 
-        try:
+        versuch:
             suite.run()
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("Failed to raise TypeError")
+            self.fail("Failed to wirf TypeError")
 
     # "Run the tests associated mit this suite, collecting the result into
     # the test result object passed als result."
@@ -303,12 +303,12 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     def test_addTest__noniterable(self):
         suite = unittest.TestSuite()
 
-        try:
+        versuch:
             suite.addTests(5)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("Failed to raise TypeError")
+            self.fail("Failed to wirf TypeError")
 
     def test_addTest__noncallable(self):
         suite = unittest.TestSuite()
@@ -334,7 +334,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def test_remove_test_at_index(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup is disabled")
 
         suite = unittest.TestSuite()
 
@@ -345,7 +345,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def test_remove_test_at_index_not_indexable(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup is disabled")
 
         suite = unittest.TestSuite()
         suite._tests = Nichts
@@ -355,7 +355,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def assert_garbage_collect_test_after_run(self, TestSuiteClass):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup is disabled")
 
         klasse Foo(unittest.TestCase):
             def test_nothing(self):

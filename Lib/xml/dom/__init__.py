@@ -65,7 +65,7 @@ klasse DOMException(Exception):
 
     def __init__(self, *args, **kw):
         wenn self.__class__ is DOMException:
-            raise RuntimeError(
+            wirf RuntimeError(
                 "DOMException should nicht be instantiated directly")
         Exception.__init__(self, *args, **kw)
 

@@ -10,9 +10,9 @@ importiere platform
 importiere re
 importiere signal
 importiere socket
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 importiere subprocess
 importiere sys
@@ -89,7 +89,7 @@ klasse MyBaseProto(asyncio.Protocol):
 
     def _assert_state(self, *expected):
         wenn self.state nicht in expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -130,7 +130,7 @@ klasse MyDatagramProto(asyncio.DatagramProtocol):
 
     def _assert_state(self, expected):
         wenn self.state != expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -163,7 +163,7 @@ klasse MyReadPipeProto(asyncio.Protocol):
 
     def _assert_state(self, expected):
         wenn self.state != expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -198,7 +198,7 @@ klasse MyWritePipeProto(asyncio.BaseProtocol):
 
     def _assert_state(self, expected):
         wenn self.state != expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -227,7 +227,7 @@ klasse MySubprocessProtocol(asyncio.SubprocessProtocol):
 
     def _assert_state(self, expected):
         wenn self.state != expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -517,9 +517,9 @@ klasse EventLoopTestsMixin:
         bytes_read = bytearray()
 
         def reader():
-            try:
+            versuch:
                 data = r.recv(1024)
-            except BlockingIOError:
+            ausser BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
                 gib
@@ -864,7 +864,7 @@ klasse EventLoopTestsMixin:
 
         def client():
             nonlocal response
-            try:
+            versuch:
                 csock = socket.socket()
                 wenn client_ssl is nicht Nichts:
                     csock = client_ssl.wrap_socket(csock)
@@ -872,7 +872,7 @@ klasse EventLoopTestsMixin:
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            except Exception als exc:
+            ausser Exception als exc:
                 drucke(
                     "Failure in client thread in test_connect_accepted_socket",
                     exc)
@@ -1365,17 +1365,17 @@ klasse EventLoopTestsMixin:
 
         try_count = 0
         waehrend Wahr:
-            try:
+            versuch:
                 port = socket_helper.find_unused_port()
                 f = self.loop.create_server(TestMyProto, host=Nichts, port=port)
                 server = self.loop.run_until_complete(f)
-            except OSError als ex:
+            ausser OSError als ex:
                 wenn ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
                     weiter
                 sonst:
-                    raise
+                    wirf
             sonst:
                 breche
         client = socket.socket()
@@ -1476,11 +1476,11 @@ klasse EventLoopTestsMixin:
             self.loop.getaddrinfo(
                 *local_address, type=socket.SOCK_DGRAM))
         fuer family, type, proto, cname, address in infos:
-            try:
+            versuch:
                 sock = socket.socket(family=family, type=type, proto=proto)
                 sock.setblocking(Falsch)
                 sock.bind(address)
-            except:
+            ausser:
                 pass
             sonst:
                 breche
@@ -1638,7 +1638,7 @@ klasse EventLoopTestsMixin:
         read_transport, write_transport = loop.run_until_complete(connect())
         loop.close()
 
-        # These 'repr' calls used to raise an AttributeError
+        # These 'repr' calls used to wirf an AttributeError
         # See Issue #314 on GitHub
         self.assertIn('open', repr(read_transport))
         self.assertIn('open', repr(write_transport))
@@ -1877,14 +1877,14 @@ klasse EventLoopTestsMixin:
             self.assertWahr(ov.pending)
 
         async def main():
-            try:
+            versuch:
                 self.loop.call_soon(f.cancel)
                 await f
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 res = 'cancelled'
             sonst:
                 res = Nichts
-            finally:
+            schliesslich:
                 self.loop.stop()
             gib res
 
@@ -2145,7 +2145,7 @@ klasse SubprocessTestsMixin:
         # the process). The parent process may have decided to ignore SIGHUP,
         # und signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
-        try:
+        versuch:
             prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
             connect = self.loop.subprocess_exec(
@@ -2161,7 +2161,7 @@ klasse SubprocessTestsMixin:
             self.loop.run_until_complete(proto.completed)
             self.assertEqual(-signal.SIGHUP, proto.returncode)
             transp.close()
-        finally:
+        schliesslich:
             signal.signal(signal.SIGHUP, old_handler)
 
     @support.requires_subprocess()
@@ -2309,19 +2309,19 @@ wenn sys.platform == 'win32':
             gib asyncio.ProactorEventLoop()
 
         def test_reader_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
+            wirf unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 
         def test_reader_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
+            wirf unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 
         def test_writer_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
+            wirf unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
 
         def test_writer_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
+            wirf unittest.SkipTest("IocpEventLoop does nicht have add_writer()")
 
         def test_remove_fds_after_closing(self):
-            raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
+            wirf unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
 sonst:
     importiere selectors
 
@@ -2401,7 +2401,7 @@ klasse HandleTests(test_utils.TestCase):
 
     def test_callback_with_exception(self):
         def callback():
-            raise ValueError()
+            wirf ValueError()
 
         self.loop = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
@@ -2969,9 +2969,9 @@ klasse GetEventLoopTestsMixin:
         asyncio.set_event_loop(self.loop)
 
     def tearDown(self):
-        try:
+        versuch:
             super().tearDown()
-        finally:
+        schliesslich:
             self.loop.close()
             asyncio.set_event_loop(Nichts)
 
@@ -3018,9 +3018,9 @@ klasse GetEventLoopTestsMixin:
         async def main():
             running_loop = asyncio.get_running_loop()
             mit contextlib.closing(asyncio.new_event_loop()) als loop:
-                try:
+                versuch:
                     loop.run_forever()
-                except RuntimeError:
+                ausser RuntimeError:
                     pass
                 sonst:
                     self.fail("RuntimeError nicht raised")
@@ -3036,10 +3036,10 @@ klasse GetEventLoopTestsMixin:
 
         klasse Policy(test_utils.DefaultEventLoopPolicy):
             def get_event_loop(self):
-                raise TestError
+                wirf TestError
 
         old_policy = asyncio.events._get_event_loop_policy()
-        try:
+        versuch:
             asyncio.events._set_event_loop_policy(Policy())
             loop = asyncio.new_event_loop()
 
@@ -3067,7 +3067,7 @@ klasse GetEventLoopTestsMixin:
             mit self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
-        finally:
+        schliesslich:
             asyncio.events._set_event_loop_policy(old_policy)
             wenn loop is nicht Nichts:
                 loop.close()
@@ -3079,7 +3079,7 @@ klasse GetEventLoopTestsMixin:
 
     def test_get_event_loop_returns_running_loop2(self):
         old_policy = asyncio.events._get_event_loop_policy()
-        try:
+        versuch:
             asyncio.events._set_event_loop_policy(test_utils.DefaultEventLoopPolicy())
             loop = asyncio.new_event_loop()
             self.addCleanup(loop.close)
@@ -3105,7 +3105,7 @@ klasse GetEventLoopTestsMixin:
             mit self.assertRaisesRegex(RuntimeError, 'no current'):
                 asyncio.get_event_loop()
 
-        finally:
+        schliesslich:
             asyncio.events._set_event_loop_policy(old_policy)
             wenn loop is nicht Nichts:
                 loop.close()
@@ -3126,9 +3126,9 @@ klasse TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
     Task = asyncio.tasks._PyTask
     Future = asyncio.futures._PyFuture
 
-try:
+versuch:
     importiere _asyncio  # NoQA
-except ImportError:
+ausser ImportError:
     pass
 sonst:
 

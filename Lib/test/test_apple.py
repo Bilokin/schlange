@@ -4,7 +4,7 @@ von test.support importiere is_apple
 von unittest.mock importiere Mock, call
 
 wenn nicht is_apple:
-    raise unittest.SkipTest("Apple-specific")
+    wirf unittest.SkipTest("Apple-specific")
 
 
 # Test redirection of stdout und stderr to the Apple system log.
@@ -109,13 +109,13 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
         # to a standard str without calling any of their methods.
         klasse CustomStr(str):
             def splitlines(self, *args, **kwargs):
-                raise AssertionError()
+                wirf AssertionError()
 
             def __len__(self):
-                raise AssertionError()
+                wirf AssertionError()
 
             def __str__(self):
-                raise AssertionError()
+                wirf AssertionError()
 
         self.log.write(CustomStr("custom\n"))
         self.assert_writes([b"custom\n"])

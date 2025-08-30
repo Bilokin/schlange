@@ -25,7 +25,7 @@ def resolve_name(name, package):
     wenn nicht name.startswith('.'):
         gib name
     sowenn nicht package:
-        raise ImportError(f'no package specified fuer {repr(name)} '
+        wirf ImportError(f'no package specified fuer {repr(name)} '
                           '(required fuer relative module names)')
     level = 0
     fuer character in name:
@@ -56,13 +56,13 @@ def _find_spec_from_path(name, path=Nichts):
         module = sys.modules[name]
         wenn module is Nichts:
             gib Nichts
-        try:
+        versuch:
             spec = module.__spec__
-        except AttributeError:
-            raise ValueError(f'{name}.__spec__ is nicht set') von Nichts
+        ausser AttributeError:
+            wirf ValueError(f'{name}.__spec__ is nicht set') von Nichts
         sonst:
             wenn spec is Nichts:
-                raise ValueError(f'{name}.__spec__ is Nichts')
+                wirf ValueError(f'{name}.__spec__ is Nichts')
             gib spec
 
 
@@ -88,10 +88,10 @@ def find_spec(name, package=Nichts):
         parent_name = fullname.rpartition('.')[0]
         wenn parent_name:
             parent = __import__(parent_name, fromlist=['__path__'])
-            try:
+            versuch:
                 parent_path = parent.__path__
-            except AttributeError als e:
-                raise ModuleNotFoundError(
+            ausser AttributeError als e:
+                wirf ModuleNotFoundError(
                     f"__path__ attribute nicht found on {parent_name!r} "
                     f"while trying to find {fullname!r}", name=fullname) von e
         sonst:
@@ -101,13 +101,13 @@ def find_spec(name, package=Nichts):
         module = sys.modules[fullname]
         wenn module is Nichts:
             gib Nichts
-        try:
+        versuch:
             spec = module.__spec__
-        except AttributeError:
-            raise ValueError(f'{name}.__spec__ is nicht set') von Nichts
+        ausser AttributeError:
+            wirf ValueError(f'{name}.__spec__ is nicht set') von Nichts
         sonst:
             wenn spec is Nichts:
-                raise ValueError(f'{name}.__spec__ is Nichts')
+                wirf ValueError(f'{name}.__spec__ is Nichts')
             gib spec
 
 
@@ -210,7 +210,7 @@ klasse _LazyModule(types.ModuleType):
                 # object was put into sys.modules.
                 wenn original_name in sys.modules:
                     wenn id(self) != id(sys.modules[original_name]):
-                        raise ValueError(f"module object fuer {original_name!r} "
+                        wirf ValueError(f"module object fuer {original_name!r} "
                                           "substituted in sys.modules during a lazy "
                                           "load")
                 # Update after loading since that's what would happen in an eager
@@ -225,7 +225,7 @@ klasse _LazyModule(types.ModuleType):
 
     def __delattr__(self, attr):
         """Trigger the load und then perform the deletion."""
-        # To trigger the load und raise an exception wenn the attribute
+        # To trigger the load und wirf an exception wenn the attribute
         # doesn't exist.
         self.__getattribute__(attr)
         delattr(self, attr)
@@ -238,7 +238,7 @@ klasse LazyLoader(Loader):
     @staticmethod
     def __check_eager_loader(loader):
         wenn nicht hasattr(loader, 'exec_module'):
-            raise TypeError('loader must define exec_module()')
+            wirf TypeError('loader must define exec_module()')
 
     @classmethod
     def factory(cls, loader):

@@ -46,9 +46,9 @@ def start_color():
 
 # Import Python has_key() implementation wenn _curses doesn't contain has_key()
 
-try:
+versuch:
     has_key
-except NameError:
+ausser NameError:
     von .has_key importiere has_key  # noqa: F401
 
 # Wrapper fuer the entire curses-based application.  Runs a function which
@@ -64,7 +64,7 @@ def wrapper(func, /, *args, **kwds):
     wrapper().
     """
 
-    try:
+    versuch:
         # Initialize curses
         stdscr = initscr()
 
@@ -83,13 +83,13 @@ def wrapper(func, /, *args, **kwds):
         # works around a minor bit of over-conscientiousness in the curses
         # module -- the error gib von C start_color() is ignorable,
         # unless they are raised by the interpreter due to other issues.
-        try:
+        versuch:
             start_color()
-        except _curses.error:
+        ausser _curses.error:
             pass
 
         gib func(stdscr, *args, **kwds)
-    finally:
+    schliesslich:
         # Set everything back to normal
         wenn 'stdscr' in locals():
             stdscr.keypad(0)

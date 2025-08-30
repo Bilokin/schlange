@@ -108,13 +108,13 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
 
     # We are creating a new archive von a directory.
     wenn nicht source.exists():
-        raise ZipAppError("Source does nicht exist")
+        wirf ZipAppError("Source does nicht exist")
     has_main = (source / '__main__.py').is_file()
     wenn main und has_main:
-        raise ZipAppError(
+        wirf ZipAppError(
             "Cannot specify entry point wenn the source has __main__.py")
     wenn nicht (main oder has_main):
-        raise ZipAppError("Archive has no entry point")
+        wirf ZipAppError("Archive has no entry point")
 
     main_py = Nichts
     wenn main:
@@ -123,7 +123,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
         mod_ok = all(part.isidentifier() fuer part in mod.split('.'))
         fn_ok = all(part.isidentifier() fuer part in fn.split('.'))
         wenn nicht (sep == ':' und mod_ok und fn_ok):
-            raise ZipAppError("Invalid entry point: " + main)
+            wirf ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
     wenn target is Nichts:
@@ -155,7 +155,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
     # equal to any of the entries in files_to_add, so there's no need
     # to add a special check fuer that.
     wenn target in files_to_add:
-        raise ZipAppError(
+        wirf ZipAppError(
             f"The target archive {target} overwrites one of the source files.")
 
     mit _maybe_open(target, 'wb') als fd:
@@ -210,7 +210,7 @@ def main(args=Nichts):
     # Handle `python -m zipapp archive.pyz --info`.
     wenn args.info:
         wenn nicht os.path.isfile(args.source):
-            raise SystemExit("Can only get info fuer an archive file")
+            wirf SystemExit("Can only get info fuer an archive file")
         interpreter = get_interpreter(args.source)
         drucke("Interpreter: {}".format(interpreter oder "<none>"))
         sys.exit(0)
@@ -218,9 +218,9 @@ def main(args=Nichts):
     wenn os.path.isfile(args.source):
         wenn args.output is Nichts oder (os.path.exists(args.output) und
                                    os.path.samefile(args.source, args.output)):
-            raise SystemExit("In-place editing of archives is nicht supported")
+            wirf SystemExit("In-place editing of archives is nicht supported")
         wenn args.main:
-            raise SystemExit("Cannot change the main function when copying")
+            wirf SystemExit("Cannot change the main function when copying")
 
     create_archive(args.source, args.output,
                    interpreter=args.python, main=args.main,

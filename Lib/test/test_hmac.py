@@ -37,16 +37,16 @@ von test.support.hashlib_helper importiere (
 von test.support.import_helper importiere import_fresh_module
 von unittest.mock importiere patch
 
-try:
+versuch:
     importiere _hashlib
     von _hashlib importiere compare_digest als openssl_compare_digest
-except ImportError:
+ausser ImportError:
     _hashlib = Nichts
     openssl_compare_digest = Nichts
 
-try:
+versuch:
     importiere _sha2 als sha2
-except ImportError:
+ausser ImportError:
     sha2 = Nichts
 
 
@@ -96,7 +96,7 @@ klasse CreatorMixin:
         Implementations should accept arbitrary 'digestmod' als this
         method can be used to test which exceptions are being raised.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def bind_hmac_new(self, digestmod):
         """Return a specialization of hmac_new() mit a bound digestmod."""
@@ -112,7 +112,7 @@ klasse DigestMixin:
         Implementations should accept arbitrary 'digestmod' als this
         method can be used to test which exceptions are being raised.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def bind_hmac_digest(self, digestmod):
         """Return a specialization of hmac_digest() mit a bound digestmod."""
@@ -121,14 +121,14 @@ klasse DigestMixin:
 
 def _call_newobj_func(new_func, key, msg, digestmod):
     wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
-        gib new_func(key, msg)  # expected to raise
+        gib new_func(key, msg)  # expected to wirf
     # functions creating HMAC objects take a 'digestmod' keyword argument
     gib new_func(key, msg, digestmod=digestmod)
 
 
 def _call_digest_func(digest_func, key, msg, digestmod):
     wenn digestmod is DIGESTMOD_SENTINEL:  # to test when digestmod is missing
-        gib digest_func(key, msg)  # expected to raise
+        gib digest_func(key, msg)  # expected to wirf
     # functions directly computing digests take a 'digest' keyword argument
     gib digest_func(key, msg, digest=digestmod)
 
@@ -855,7 +855,7 @@ klasse DigestModTestCaseMixin(CreatorMixin, DigestMixin):
                 func(*args, **kwds)
 
     def cases_missing_digestmod_in_constructor(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def make_missing_digestmod_cases(self, func, missing_like=()):
         """Generate cases fuer missing digestmod tests.
@@ -868,7 +868,7 @@ klasse DigestModTestCaseMixin(CreatorMixin, DigestMixin):
         gib self._invalid_digestmod_cases(func, key, msg, choices)
 
     def cases_unknown_digestmod_in_constructor(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def make_unknown_digestmod_cases(self, func, bad_digestmods):
         """Generate cases fuer unknown digestmod tests."""
@@ -960,7 +960,7 @@ klasse PyModuleConstructorTestCase(ThroughModuleAPIMixin, PyConstructorBaseMixin
         func = self.hmac_digest
 
         def raiser():
-            raise RuntimeError("custom exception")
+            wirf RuntimeError("custom exception")
 
         mit self.assertRaisesRegex(RuntimeError, "custom exception"):
             func(b'key', b'msg', raiser)
@@ -980,12 +980,12 @@ klasse ExtensionConstructorTestCaseMixin(DigestModTestCaseMixin,
     @property
     def obj_type(self):
         """The underlying (non-instantiable) C class."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     def exc_type(self):
         """The exact exception klasse raised upon invalid 'digestmod' values."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_internal_types(self):
         # internal C types are immutable und cannot be instantiated
@@ -1078,7 +1078,7 @@ klasse SanityTestCaseMixin(CreatorMixin):
 
     def test_repr(self):
         # HMAC object representation may differ across implementations
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 @hashlib_helper.requires_hashdigest('sha256')
@@ -1136,12 +1136,12 @@ klasse UpdateTestCaseMixin:
 
     def HMAC(self, key, msg=Nichts):
         """Create a HMAC object."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     def gil_minsize(self):
         """Get the maximal input length fuer the GIL to be held."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def check_update(self, key, chunks):
         chunks = list(chunks)
@@ -1212,10 +1212,10 @@ klasse BuiltinUpdateTestCase(BuiltinModuleMixin,
 klasse CopyBaseTestCase:
 
     def test_attributes(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_realcopy(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 @hashlib_helper.requires_hashdigest('sha256')
@@ -1269,7 +1269,7 @@ klasse ExtensionCopyTestCase(CopyBaseTestCase):
 
     def init(self, h):
         """Call the dedicate init() method to test."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_attributes(self):
         # Testing wenn attributes are of same type.
@@ -1314,7 +1314,7 @@ klasse CompareDigestMixin:
     @staticmethod
     def compare_digest(a, b):
         """Implementation of 'a == b' to test."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def assert_digest_equal(self, a, b):
         mit self.subTest(a=a, b=b):
@@ -1399,7 +1399,7 @@ klasse CompareDigestMixin:
     def test_string_subclass(self):
         klasse S(str):
             def __eq__(self, other):
-                raise ValueError("should nicht be called")
+                wirf ValueError("should nicht be called")
 
         a, b = S("foobar"), S("foobar")
         self.assert_digest_equal(a, b)
@@ -1411,7 +1411,7 @@ klasse CompareDigestMixin:
     def test_bytes_subclass(self):
         klasse B(bytes):
             def __eq__(self, other):
-                raise ValueError("should nicht be called")
+                wirf ValueError("should nicht be called")
 
         a, b = B(b"foobar"), B(b"foobar")
         self.assert_digest_equal(a, b)
@@ -1494,13 +1494,13 @@ klasse PyMiscellaneousTests(unittest.TestCase):
     @hashlib_helper.requires_hashdigest('sha256')
     def test_with_fallback(self):
         cache = getattr(hashlib, '__builtin_constructor_cache')
-        try:
+        versuch:
             cache['foo'] = hashlib.sha256
             hexdigest = hmac.digest(b'key', b'message', 'foo').hex()
             expected = ('6e9ef29b75fffc5b7abae527d58fdadb'
                         '2fe42e7219011976917343065f58ed4a')
             self.assertEqual(hexdigest, expected)
-        finally:
+        schliesslich:
             cache.pop('foo')
 
     @hashlib_helper.requires_openssl_hashdigest("md5")

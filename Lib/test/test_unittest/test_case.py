@@ -87,7 +87,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # thing.
     def test_init__no_test_name(self):
         klasse Test(unittest.TestCase):
-            def runTest(self): raise MyException()
+            def runTest(self): wirf MyException()
             def test(self): pass
 
         self.assertEndsWith(Test().id(), '.Test.runTest')
@@ -108,7 +108,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # method named methodName."
     def test_init__test_name__valid(self):
         klasse Test(unittest.TestCase):
-            def runTest(self): raise MyException()
+            def runTest(self): wirf MyException()
             def test(self): pass
 
         self.assertEndsWith(Test('test').id(), '.Test.test')
@@ -119,15 +119,15 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # method named methodName."
     def test_init__test_name__invalid(self):
         klasse Test(unittest.TestCase):
-            def runTest(self): raise MyException()
+            def runTest(self): wirf MyException()
             def test(self): pass
 
-        try:
+        versuch:
             Test('testfoo')
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
-            self.fail("Failed to raise ValueError")
+            self.fail("Failed to wirf ValueError")
 
     # "Return the number of tests represented by the this test object. For
     # TestCase instances, this will always be 1"
@@ -163,7 +163,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def setUp(self):
                 super(Foo, self).setUp()
-                raise RuntimeError('raised by Foo.setUp')
+                wirf RuntimeError('raised by Foo.setUp')
 
         Foo(events).run(result)
         expected = ['startTest', 'setUp', 'addError', 'stopTest']
@@ -179,7 +179,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
             def setUp(self):
                 super(Foo, self).setUp()
-                raise RuntimeError('raised by Foo.setUp')
+                wirf RuntimeError('raised by Foo.setUp')
 
         Foo(events).run()
         expected = ['startTestRun', 'startTest', 'setUp', 'addError',
@@ -200,7 +200,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
-                raise RuntimeError('raised by Foo.test')
+                wirf RuntimeError('raised by Foo.test')
 
         expected = ['startTest', 'setUp', 'test',
                     'addError', 'tearDown', 'stopTest']
@@ -218,7 +218,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
             def test(self):
                 super(Foo, self).test()
-                raise RuntimeError('raised by Foo.test')
+                wirf RuntimeError('raised by Foo.test')
 
         expected = ['startTestRun', 'startTest', 'setUp', 'test',
                     'addError', 'tearDown', 'stopTest', 'stopTestRun']
@@ -276,7 +276,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def tearDown(self):
                 super(Foo, self).tearDown()
-                raise RuntimeError('raised by Foo.tearDown')
+                wirf RuntimeError('raised by Foo.tearDown')
 
         Foo(events).run(result)
         expected = ['startTest', 'setUp', 'test', 'tearDown', 'addError',
@@ -291,7 +291,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 gib LoggingResult(self.events)
             def tearDown(self):
                 super(Foo, self).tearDown()
-                raise RuntimeError('raised by Foo.tearDown')
+                wirf RuntimeError('raised by Foo.tearDown')
 
         events = []
         Foo(events).run()
@@ -376,7 +376,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                         fuer j in [2, 3]:
                             mit self.subTest(j=j):
                                 wenn i * j == 6:
-                                    raise RuntimeError('raised by Foo.test')
+                                    wirf RuntimeError('raised by Foo.test')
                 1 / 0
 
         # Order is the following:
@@ -523,7 +523,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(unittest.TestCase):
             def test(self):
-                raise RuntimeError()
+                wirf RuntimeError()
 
             failureException = RuntimeError
 
@@ -867,17 +867,17 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         fuer a, b in equal_pairs:
             # This mess of try excepts is to test the assertEqual behavior
             # itself.
-            try:
+            versuch:
                 self.assertEqual(a, b)
-            except self.failureException:
+            ausser self.failureException:
                 self.fail('assertEqual(%r, %r) failed' % (a, b))
-            try:
+            versuch:
                 self.assertEqual(a, b, msg='foo')
-            except self.failureException:
+            ausser self.failureException:
                 self.fail('assertEqual(%r, %r) mit msg= failed' % (a, b))
-            try:
+            versuch:
                 self.assertEqual(a, b, 'foo')
-            except self.failureException:
+            ausser self.failureException:
                 self.fail('assertEqual(%r, %r) mit third parameter failed' %
                           (a, b))
 
@@ -956,10 +956,10 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         omitted = unittest.case.DIFF_OMITTED % (len(diff) + 1,)
 
         self.maxDiff = len(diff)//2
-        try:
+        versuch:
 
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException als e:
+        ausser self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did nicht fail.')
@@ -967,9 +967,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIn(omitted, msg)
 
         self.maxDiff = len(diff) * 2
-        try:
+        versuch:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException als e:
+        ausser self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did nicht fail.')
@@ -977,9 +977,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertNotIn(omitted, msg)
 
         self.maxDiff = Nichts
-        try:
+        versuch:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException als e:
+        ausser self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did nicht fail.')
@@ -1005,9 +1005,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         def truncate(msg, diff):
             gib 'foo'
         test._truncateMessage = truncate
-        try:
+        versuch:
             test.assertDictEqual({}, {1: 0})
-        except self.failureException als e:
+        ausser self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
             self.fail('assertDictEqual did nicht fail')
@@ -1017,9 +1017,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         def truncate(msg, diff):
             gib 'foo'
         test._truncateMessage = truncate
-        try:
+        versuch:
             test.assertMultiLineEqual('foo', 'bar')
-        except self.failureException als e:
+        ausser self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
             self.fail('assertMultiLineEqual did nicht fail')
@@ -1048,7 +1048,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # called -- replace it mit explodingTruncation to verify that this
         # doesn't happen
         def explodingTruncation(message, diff):
-            raise SystemError('this should nicht be raised')
+            wirf SystemError('this should nicht be raised')
         old_truncate = self._truncateMessage
         self._truncateMessage = explodingTruncation
         self.addCleanup(lambda: setattr(self, '_truncateMessage', old_truncate))
@@ -1273,9 +1273,9 @@ test case
 +     own implementation that does nicht subclass von TestCase, of course.
 """
         self.maxDiff = Nichts
-        try:
+        versuch:
             self.assertMultiLineEqual(sample_text, revised_sample_text)
-        except self.failureException als e:
+        ausser self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1291,9 +1291,9 @@ test case
 + unladen swallows fly quickly
 ? ++                   ^^^^^
 """
-        try:
+        versuch:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException als e:
+        ausser self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1310,9 +1310,9 @@ test case
         sample_text_error = '''\
 + unladen swallows fly quickly
 '''
-        try:
+        versuch:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException als e:
+        ausser self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1332,9 +1332,9 @@ test case
 + fly slowly
 ?        ^
 '''
-        try:
+        versuch:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException als e:
+        ausser self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1357,9 +1357,9 @@ test case
 ?        ^
 -\x20
 '''
-        try:
+        versuch:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException als e:
+        ausser self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1457,7 +1457,7 @@ test case
         klasse ExceptionMock(Exception):
             pass
         def Stub():
-            raise ExceptionMock('We expect')
+            wirf ExceptionMock('We expect')
         self.assertRaises(ExceptionMock, Stub)
         # A tuple of exception classes is accepted
         self.assertRaises((ValueError, ExceptionMock), Stub)
@@ -1477,7 +1477,7 @@ test case
         klasse ExceptionMock(Exception):
             pass
         def Stub():
-            raise ExceptionMock('We expect')
+            wirf ExceptionMock('We expect')
         mit self.assertRaises(ExceptionMock):
             Stub()
         # A tuple of exception classes is accepted
@@ -1521,10 +1521,10 @@ test case
         # bpo-23890: assertRaises() must nicht keep objects alive longer
         # than expected
         def func() :
-            try:
-                raise ValueError
-            except ValueError:
-                raise ValueError
+            versuch:
+                wirf ValueError
+            ausser ValueError:
+                wirf ValueError
 
         refcount = sys.getrefcount(func)
         self.assertRaises(ValueError, func)
@@ -1535,7 +1535,7 @@ test case
             pass
 
         def Stub():
-            raise ExceptionMock('We expect')
+            wirf ExceptionMock('We expect')
 
         self.assertRaisesRegex(ExceptionMock, re.compile('expect$'), Stub)
         self.assertRaisesRegex(ExceptionMock, 'expect$', Stub)
@@ -1580,15 +1580,15 @@ test case
                 sys.modules['@bar@'] = 'bar'
 
         sys.modules['@foo@'] = Foo('foo')
-        try:
+        versuch:
             self.assertWarns(UserWarning, warnings.warn, 'expected')
-        finally:
+        schliesslich:
             del sys.modules['@foo@']
             del sys.modules['@bar@']
 
     def testAssertRaisesRegexMismatch(self):
         def Stub():
-            raise Exception('Unexpected')
+            wirf Exception('Unexpected')
 
         self.assertRaisesRegex(
                 self.failureException,
@@ -1606,7 +1606,7 @@ test case
             pass
 
         def Stub(foo):
-            raise ExceptionMock(foo)
+            wirf ExceptionMock(foo)
         v = "particular value"
 
         ctx = self.assertRaises(ExceptionMock)
@@ -1899,11 +1899,11 @@ test case
         mit self.assertNoStderr():
             oldLevel = log_foo.level
             log_foo.setLevel(logging.INFO)
-            try:
+            versuch:
                 mit self.assertRaises(self.failureException):
                     mit self.assertLogs(level='WARNING'):
                         log_foo.info("1")
-            finally:
+            schliesslich:
                 log_foo.setLevel(oldLevel)
 
     def testAssertLogsFailureMismatchingLogger(self):
@@ -1918,7 +1918,7 @@ test case
         # Check unexpected exception will go through.
         mit self.assertRaises(ZeroDivisionError):
             mit self.assertLogs():
-                raise ZeroDivisionError("Unexpected")
+                wirf ZeroDivisionError("Unexpected")
 
     def testAssertLogsWithFormatter(self):
         # Check alternative formats will be respected
@@ -1998,7 +1998,7 @@ test case
         # Check unexpected exception will go through.
         mit self.assertRaises(ZeroDivisionError):
             mit self.assertNoLogs():
-                raise ZeroDivisionError("Unexpected")
+                wirf ZeroDivisionError("Unexpected")
 
     def testAssertNoLogsYieldsNichts(self):
         mit self.assertNoLogs() als value:
@@ -2228,7 +2228,7 @@ test case
 
     def testKeyboardInterrupt(self):
         def _raise(self=Nichts):
-            raise KeyboardInterrupt
+            wirf KeyboardInterrupt
         def nothing(self):
             pass
 
@@ -2253,7 +2253,7 @@ test case
 
     def testSkippingEverywhere(self):
         def _skip(self=Nichts):
-            raise unittest.SkipTest('some reason')
+            wirf unittest.SkipTest('some reason')
         def nothing(self):
             pass
 
@@ -2280,7 +2280,7 @@ test case
 
     def testSystemExit(self):
         def _raise(self=Nichts):
-            raise SystemExit
+            wirf SystemExit
         def nothing(self):
             pass
 
@@ -2328,11 +2328,11 @@ test case
 
         klasse TestCase(unittest.TestCase):
             def test1(self):
-                raise MyException()
+                wirf MyException()
 
             @unittest.expectedFailure
             def test2(self):
-                raise MyException()
+                wirf MyException()
 
         fuer method_name in ('test1', 'test2'):
             testcase = TestCase(method_name)

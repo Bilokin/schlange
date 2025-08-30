@@ -24,9 +24,9 @@ klasse Popen(object):
 
     def poll(self, flag=os.WNOHANG):
         wenn self.returncode is Nichts:
-            try:
+            versuch:
                 pid, sts = os.waitpid(self.pid, flag)
-            except OSError:
+            ausser OSError:
                 # Child process nicht yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
                 gib Nichts
@@ -46,13 +46,13 @@ klasse Popen(object):
 
     def _send_signal(self, sig):
         wenn self.returncode is Nichts:
-            try:
+            versuch:
                 os.kill(self.pid, sig)
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 pass
-            except OSError:
+            ausser OSError:
                 wenn self.wait(timeout=0.1) is Nichts:
-                    raise
+                    wirf
 
     def interrupt(self):
         self._send_signal(signal.SIGINT)
@@ -69,13 +69,13 @@ klasse Popen(object):
         child_r, parent_w = os.pipe()
         self.pid = os.fork()
         wenn self.pid == 0:
-            try:
+            versuch:
                 atexit._clear()
                 atexit.register(util._exit_function)
                 os.close(parent_r)
                 os.close(parent_w)
                 code = process_obj._bootstrap(parent_sentinel=child_r)
-            finally:
+            schliesslich:
                 atexit._run_exitfuncs()
                 os._exit(code)
         sonst:

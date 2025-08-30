@@ -20,18 +20,18 @@ von pdb importiere _PdbServer, _PdbClient
 
 
 wenn nicht sys.is_remote_debug_enabled():
-    raise unittest.SkipTest('remote debugging is disabled')
+    wirf unittest.SkipTest('remote debugging is disabled')
 
 
 @contextmanager
 def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
     mit proc:
-        try:
+        versuch:
             liefere proc
-        except:
+        ausser:
             proc.kill()
-            raise
+            wirf
 
 
 klasse MockSocketFile:
@@ -68,9 +68,9 @@ klasse MockSocketFile:
         results = []
         fuer data in self.output_buffer:
             wenn isinstance(data, bytes) und data.endswith(b"\n"):
-                try:
+                versuch:
                     results.append(json.loads(data.decode().strip()))
-                except json.JSONDecodeError:
+                ausser json.JSONDecodeError:
                     pass  # Ignore non-JSON output
         self.output_buffer = []
         gib results
@@ -113,7 +113,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         def mock_input(prompt):
             message = next(input_iter, Nichts)
             wenn message is Nichts:
-                raise EOFError
+                wirf EOFError
 
             wenn req := message.get("completion_request"):
                 readline_mock = unittest.mock.Mock()
@@ -131,7 +131,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
             reply = message["input"]
             wenn isinstance(reply, BaseException):
-                raise reply
+                wirf reply
             wenn isinstance(reply, str):
                 gib reply
             gib reply()
@@ -1067,9 +1067,9 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.server_sock.close()
-        try:
+        versuch:
             unlink(self.script_path)
-        except OSError:
+        ausser OSError:
             pass
 
     def _connect_and_get_client_file(self):
@@ -1445,9 +1445,9 @@ klasse PdbConnectTestCase(unittest.TestCase):
 def _supports_remote_attaching():
     PROCESS_VM_READV_SUPPORTED = Falsch
 
-    try:
+    versuch:
         von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
-    except ImportError:
+    ausser ImportError:
         pass
 
     gib PROCESS_VM_READV_SUPPORTED
@@ -1505,9 +1505,9 @@ klasse PdbAttachTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.sock.close()
-        try:
+        versuch:
             unlink(self.script_path)
-        except OSError:
+        ausser OSError:
             pass
 
     def do_integration_test(self, client_stdin):
@@ -1540,9 +1540,9 @@ klasse PdbAttachTestCase(unittest.TestCase):
             redirect_stderr(client_stderr),
             unittest.mock.patch("sys.argv", ["pdb", "-p", str(process.pid)]),
         ):
-            try:
+            versuch:
                 pdb.main()
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions fuer remote execution")
 
         process.wait()

@@ -5,11 +5,11 @@ SCRIPT_NAME = 'Tools/build/generate_sre_constants.py'
 
 
 def update_file(file, content):
-    try:
+    versuch:
         mit open(file) als fobj:
             wenn fobj.read() == content:
                 gib Falsch
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         pass
     mit open(file, 'w') als fobj:
         fobj.write(content)

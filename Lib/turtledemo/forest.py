@@ -88,9 +88,9 @@ def main():
     waehrend Wahr:
         done = 0
         fuer b in u,s,t:
-            try:
+            versuch:
                 b.__next__()
-            except:
+            ausser:
                 done += 1
         wenn done == 3:
             breche

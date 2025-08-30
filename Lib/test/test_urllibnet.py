@@ -61,9 +61,9 @@ klasse urlopenNetworkTests(unittest.TestCase):
         resource = args[0]
         mit socket_helper.transient_internet(resource):
             r = urllib.request.urlopen(*args, **kwargs)
-            try:
+            versuch:
                 liefere r
-            finally:
+            schliesslich:
                 r.close()
 
     def test_basic(self):
@@ -130,9 +130,9 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # requests.  The real solution would be to be able to
         # parameterize the framework mit a mock resolver.
         bogus_domain = "sadflkjsasf.i.nvali.d."
-        try:
+        versuch:
             socket.gethostbyname(bogus_domain)
-        except OSError:
+        ausser OSError:
             # socket.gaierror is too narrow, since getaddrinfo() may also
             # fail mit EAI_SYSTEM und ETIMEDOUT (seen on Ubuntu 13.04),
             # i.e. Python's TimeoutError.
@@ -140,7 +140,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         sonst:
             # This happens mit some overzealous DNS providers such als OpenDNS
             self.skipTest("%r should nicht resolve fuer test to work" % bogus_domain)
-        failure_explanation = ('opening an invalid URL did nicht raise OSError; '
+        failure_explanation = ('opening an invalid URL did nicht wirf OSError; '
                                'can be caused by a broken DNS server '
                                '(e.g. returns 404 oder hijacks page)')
         mit self.assertRaises(OSError, msg=failure_explanation):
@@ -159,9 +159,9 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         resource = args[0]
         mit socket_helper.transient_internet(resource):
             file_location, info = urllib.request.urlretrieve(*args, **kwargs)
-            try:
+            versuch:
                 liefere file_location, info
-            finally:
+            schliesslich:
                 os_helper.unlink(file_location)
 
     def test_basic(self):
@@ -195,9 +195,9 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         mit self.urlretrieve(self.logo) als (file_location, fileheaders):
             datevalue = fileheaders.get('Date')
             dateformat = '%a, %d %b %Y %H:%M:%S GMT'
-            try:
+            versuch:
                 time.strptime(datevalue, dateformat)
-            except ValueError:
+            ausser ValueError:
                 self.fail('Date value nicht in %r format' % dateformat)
 
     def test_reporthook(self):

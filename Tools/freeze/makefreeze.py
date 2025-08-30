@@ -61,7 +61,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
         outfp.write('\n')
         # The following modules have a NULL code pointer, indicating
         # that the frozen program should nicht search fuer them on the host
-        # system. Importing them will *always* raise an ImportError.
+        # system. Importing them will *always* wirf an ImportError.
         # The zero value size is never used.
         fuer mod in fail_import:
             outfp.write('\t{"%s", NULL, 0},\n' % (mod,))

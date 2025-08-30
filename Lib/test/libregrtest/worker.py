@@ -99,7 +99,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
                 flush=Wahr,
             )
         sonst:
-            raise LookupError(
+            wirf LookupError(
                 "`test.cov` nicht found in sys.modules but coverage wanted"
             )
 

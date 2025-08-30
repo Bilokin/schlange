@@ -13,9 +13,9 @@ klasse NetrcTestCase(unittest.TestCase):
             mode += 't'
         mit open(temp_filename, mode, encoding="utf-8") als fp:
             fp.write(test_data)
-        try:
+        versuch:
             nrc = netrc.netrc(temp_filename)
-        finally:
+        schliesslich:
             os.unlink(temp_filename)
         gib nrc
 

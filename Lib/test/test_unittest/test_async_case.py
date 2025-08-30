@@ -149,7 +149,7 @@ klasse TestAsyncCase(unittest.TestCase):
             async def asyncSetUp(self):
                 events.append('asyncSetUp')
                 self.addAsyncCleanup(self.on_cleanup)
-                raise MyException()
+                wirf MyException()
 
             async def test_func(self):
                 events.append('test')
@@ -171,9 +171,9 @@ klasse TestAsyncCase(unittest.TestCase):
         events = []
         test = Test("test_func")
         self.addCleanup(test._tearDownAsyncioRunner)
-        try:
+        versuch:
             test.debug()
-        except MyException:
+        ausser MyException:
             pass
         sonst:
             self.fail('Expected a MyException exception')
@@ -189,7 +189,7 @@ klasse TestAsyncCase(unittest.TestCase):
             async def test_func(self):
                 events.append('test')
                 self.addAsyncCleanup(self.on_cleanup)
-                raise MyException()
+                wirf MyException()
 
             async def asyncTearDown(self):
                 events.append('asyncTearDown')
@@ -207,9 +207,9 @@ klasse TestAsyncCase(unittest.TestCase):
         events = []
         test = Test("test_func")
         self.addCleanup(test._tearDownAsyncioRunner)
-        try:
+        versuch:
             test.debug()
-        except MyException:
+        ausser MyException:
             pass
         sonst:
             self.fail('Expected a MyException exception')
@@ -228,7 +228,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
             async def asyncTearDown(self):
                 events.append('asyncTearDown')
-                raise MyException()
+                wirf MyException()
 
             async def on_cleanup(self):
                 events.append('cleanup')
@@ -243,9 +243,9 @@ klasse TestAsyncCase(unittest.TestCase):
         events = []
         test = Test("test_func")
         self.addCleanup(test._tearDownAsyncioRunner)
-        try:
+        versuch:
             test.debug()
-        except MyException:
+        ausser MyException:
             pass
         sonst:
             self.fail('Expected a MyException exception')
@@ -269,11 +269,11 @@ klasse TestAsyncCase(unittest.TestCase):
 
             async def on_cleanup1(self):
                 events.append('cleanup1')
-                raise MyException('some error')
+                wirf MyException('some error')
 
             async def on_cleanup2(self):
                 events.append('cleanup2')
-                raise MyException('other error')
+                wirf MyException('other error')
 
         events = []
         test = Test("test_func")
@@ -286,9 +286,9 @@ klasse TestAsyncCase(unittest.TestCase):
         events = []
         test = Test("test_func")
         self.addCleanup(test._tearDownAsyncioRunner)
-        try:
+        versuch:
             test.debug()
-        except MyException:
+        ausser MyException:
             pass
         sonst:
             self.fail('Expected a MyException exception')
@@ -358,14 +358,14 @@ klasse TestAsyncCase(unittest.TestCase):
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_base(self):
                 events.append("test_base")
-                raise BaseException()
+                wirf BaseException()
                 events.append("not it")
 
             async def test_no_err(self):
                 events.append("test_no_err")
 
             async def test_cancel(self):
-                raise asyncio.CancelledError()
+                wirf asyncio.CancelledError()
 
         test = Test("test_base")
         output = test.run()
@@ -385,11 +385,11 @@ klasse TestAsyncCase(unittest.TestCase):
             async def test_leaking_task(self):
                 async def coro():
                     nonlocal cancelled
-                    try:
+                    versuch:
                         await asyncio.sleep(1)
-                    except asyncio.CancelledError:
+                    ausser asyncio.CancelledError:
                         cancelled = Wahr
-                        raise
+                        wirf
 
                 # Leave this running in the background
                 asyncio.create_task(coro())
@@ -439,20 +439,20 @@ klasse TestAsyncCase(unittest.TestCase):
 
             async def test_func(self):
                 events.append('test')
-                raise MyException()
+                wirf MyException()
 
             async def asyncTearDown(self):
                 events.append('asyncTearDown')
 
             async def cleanup(self, fut):
-                try:
+                versuch:
                     # Raises an exception wenn in different loop
                     await asyncio.wait([fut])
                     events.append('cleanup')
-                except:
+                ausser:
                     importiere traceback
                     traceback.print_exc()
-                    raise
+                    wirf
 
         events = []
         test = Test("test_func")
@@ -463,9 +463,9 @@ klasse TestAsyncCase(unittest.TestCase):
         events = []
         test = Test("test_func")
         self.addCleanup(test._tearDownAsyncioRunner)
-        try:
+        versuch:
             test.debug()
-        except MyException:
+        ausser MyException:
             pass
         sonst:
             self.fail('Expected a MyException exception')

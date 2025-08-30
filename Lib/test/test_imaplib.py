@@ -16,9 +16,9 @@ von test.support importiere hashlib_helper, threading_helper
 importiere unittest
 von unittest importiere mock
 von datetime importiere datetime, timezone, timedelta
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 support.requires_working_socket(module=Wahr)
@@ -78,11 +78,11 @@ klasse TestImaplib(unittest.TestCase):
     def test_imap4_host_default_value(self):
         # Check whether the IMAP4_PORT is truly unavailable.
         mit socket.socket() als s:
-            try:
+            versuch:
                 s.connect(('', imaplib.IMAP4_PORT))
                 self.skipTest(
                     "Cannot run the test mit local IMAP server running.")
-            except socket.error:
+            ausser socket.error:
                 pass
 
         # This is the exception that should be raised.
@@ -145,14 +145,14 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
             # between naked sockets und SSL sockets.
             line = b''
             waehrend 1:
-                try:
+                versuch:
                     part = self.rfile.read(1)
                     wenn part == b'':
                         # Naked sockets gib empty strings..
                         gib
                     line += part
-                except OSError:
-                    # ..but SSLSockets raise exceptions.
+                ausser OSError:
+                    # ..but SSLSockets wirf exceptions.
                     gib
                 wenn line.endswith(b'\r\n'):
                     breche
@@ -160,9 +160,9 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
             wenn verbose:
                 drucke('GOT: %r' % line.strip())
             wenn self.continuation:
-                try:
+                versuch:
                     self.continuation.send(line)
-                except StopIteration:
+                ausser StopIteration:
                     self.continuation = Nichts
                 weiter
             splitline = line.decode('ASCII').split()
@@ -281,11 +281,11 @@ klasse NewIMAPTestsMixin:
         klasse TestTCPServer(self.server_class):
             def handle_error(self, request, client_address):
                 """
-                End request und raise the error wenn one occurs.
+                End request und wirf the error wenn one occurs.
                 """
                 self.close_request(request)
                 self.server_close()
-                raise
+                wirf
 
         self.addCleanup(self._cleanup)
         self.server = self.server_class((socket_helper.HOST, 0), imap_handler)
@@ -309,7 +309,7 @@ klasse NewIMAPTestsMixin:
         Cleans up the test server. This method should nicht be called manually,
         it is added to the cleanup queue in the _setup method already.
         """
-        # wenn logout was called already we'd raise an exception trying to
+        # wenn logout was called already we'd wirf an exception trying to
         # shutdown the client once again
         wenn self.client is nicht Nichts und self.client.state != 'LOGOUT':
             self.client.shutdown()
@@ -604,10 +604,10 @@ klasse NewIMAPTestsMixin:
         # If our readline() implementation fails to preserve line fragments
         # when idle timeouts trigger, a response spanning delayed packets
         # can be corrupted, leaving the protocol stream in a bad state.
-        try:
+        versuch:
             mit client.idle(0.5) als idler:
                 self.assertRaises(StopIteration, next, idler)
-        except client.abort als err:
+        ausser client.abort als err:
             self.fail('multi-packet response was corrupted by idle timeout')
 
     def test_login(self):
@@ -706,7 +706,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
             def handle_error(self, request, client_address):
                 self.close_request(request)
                 self.server_close()
-                raise
+                wirf
 
         wenn verbose:
             drucke("creating server")
@@ -744,18 +744,18 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
     @contextmanager
     def reaped_server(self, hdlr):
         server, thread = self.make_server((socket_helper.HOST, 0), hdlr)
-        try:
+        versuch:
             liefere server
-        finally:
+        schliesslich:
             self.reap_server(server, thread)
 
     @contextmanager
     def reaped_pair(self, hdlr):
         mit self.reaped_server(hdlr) als server:
             client = self.imap_class(*server.server_address)
-            try:
+            versuch:
                 liefere server, client
-            finally:
+            schliesslich:
                 client.logout()
 
     @threading_helper.reap_threads

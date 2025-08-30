@@ -131,17 +131,17 @@ def _tempfile(
     # blocks due to the need to close the temporary file to work on Windows
     # properly.
     fd, raw_path = tempfile.mkstemp(suffix=suffix)
-    try:
-        try:
+    versuch:
+        versuch:
             os.write(fd, reader())
-        finally:
+        schliesslich:
             os.close(fd)
         del reader
         liefere pathlib.Path(raw_path)
-    finally:
-        try:
+    schliesslich:
+        versuch:
             _os_remove(raw_path)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             pass
 
 
@@ -151,7 +151,7 @@ def _temp_file(path):
 
 def _is_present_dir(path: Traversable) -> bool:
     """
-    Some Traversables implement ``is_dir()`` to raise an
+    Some Traversables implement ``is_dir()`` to wirf an
     exception (i.e. ``FileNotFoundError``) when the
     directory doesn't exist. This function wraps that call
     to always gib a boolean und only gib Wahr

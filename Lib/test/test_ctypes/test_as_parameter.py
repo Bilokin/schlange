@@ -11,9 +11,9 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 
 dll = CDLL(_ctypes_test.__file__)
 
-try:
+versuch:
     CALLBACK_FUNCTYPE = ctypes.WINFUNCTYPE
-except AttributeError:
+ausser AttributeError:
     # fake to enable this test on Linux
     CALLBACK_FUNCTYPE = CFUNCTYPE
 

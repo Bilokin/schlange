@@ -35,7 +35,7 @@ def run_unittest(test_mod, runtests: RunTests):
     fuer error in loader.errors:
         drucke(error, file=sys.stderr)
     wenn loader.errors:
-        raise Exception("errors waehrend loading tests")
+        wirf Exception("errors waehrend loading tests")
     _filter_suite(tests, match_test)
     wenn runtests.parallel_threads:
         _parallelize_tests(tests, runtests.parallel_threads)
@@ -90,7 +90,7 @@ def _run_suite(suite):
         support.junit_xml_list.append(xml_str)
 
     wenn nicht result.testsRun und nicht result.skipped und nicht result.errors:
-        raise support.TestDidNotRun
+        wirf support.TestDidNotRun
     wenn nicht result.wasSuccessful():
         stats = TestStats.from_unittest(result)
         wenn len(result.errors) == 1 und nicht result.failures:
@@ -102,7 +102,7 @@ def _run_suite(suite):
             wenn nicht support.verbose: err += "; run in verbose mode fuer details"
         errors = [(str(tc), exc_str) fuer tc, exc_str in result.errors]
         failures = [(str(tc), exc_str) fuer tc, exc_str in result.failures]
-        raise support.TestFailedWithDetails(err, errors, failures, stats=stats)
+        wirf support.TestFailedWithDetails(err, errors, failures, stats=stats)
     gib result
 
 
@@ -156,14 +156,14 @@ def _load_run_test(result: TestResult, runtests: RunTests) -> Nichts:
 
     wenn hasattr(test_mod, "test_main"):
         # https://github.com/python/cpython/issues/89392
-        raise Exception(f"Module {test_name} defines test_main() which "
+        wirf Exception(f"Module {test_name} defines test_main() which "
                         f"is no longer supported by regrtest")
     def test_func():
         gib run_unittest(test_mod, runtests)
 
-    try:
+    versuch:
         regrtest_runner(result, test_func, runtests)
-    finally:
+    schliesslich:
         # First kill any dangling references to open files etc.
         # This can also issue some ResourceWarnings which would otherwise get
         # triggered during the following test run, und possibly produce
@@ -201,14 +201,14 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
     quiet = runtests.quiet
 
     test_name = result.test_name
-    try:
+    versuch:
         clear_caches()
         support.gc_collect()
 
         mit saved_test_environment(test_name,
                                     runtests.verbose, quiet, pgo=pgo):
             _load_run_test(result, runtests)
-    except support.ResourceDenied als exc:
+    ausser support.ResourceDenied als exc:
         wenn nicht quiet und nicht pgo:
             drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
@@ -216,7 +216,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
             )
         result.state = State.RESOURCE_DENIED
         gib
-    except unittest.SkipTest als exc:
+    ausser unittest.SkipTest als exc:
         wenn nicht quiet und nicht pgo:
             drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
@@ -224,7 +224,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
             )
         result.state = State.SKIPPED
         gib
-    except support.TestFailedWithDetails als exc:
+    ausser support.TestFailedWithDetails als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
@@ -234,7 +234,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.failures = exc.failures
         result.stats = exc.stats
         gib
-    except support.TestFailed als exc:
+    ausser support.TestFailed als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
@@ -242,14 +242,14 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.state = State.FAILED
         result.stats = exc.stats
         gib
-    except support.TestDidNotRun:
+    ausser support.TestDidNotRun:
         result.state = State.DID_NOT_RUN
         gib
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke()
         result.state = State.INTERRUPTED
         gib
-    except:
+    ausser:
         wenn nicht pgo:
             msg = traceback.format_exc()
             drucke(
@@ -280,7 +280,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
     sonst:
         use_timeout = Falsch
 
-    try:
+    versuch:
         setup_tests(runtests)
 
         wenn output_on_failure oder runtests.pgo:
@@ -293,7 +293,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
             orig_print_warnings_stderr = print_warning.orig_stderr
 
             output = Nichts
-            try:
+            versuch:
                 sys.stdout = stream
                 sys.stderr = stream
                 # print_warning() writes into the temporary stream to preserve
@@ -305,7 +305,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
                 # Ignore output wenn the test passed successfully
                 wenn result.state != State.PASSED:
                     output = stream.getvalue()
-            finally:
+            schliesslich:
                 sys.stdout = orig_stdout
                 sys.stderr = orig_stderr
                 print_warning.orig_stderr = orig_print_warnings_stderr
@@ -322,7 +322,7 @@ def _runtest(result: TestResult, runtests: RunTests) -> Nichts:
         xml_list = support.junit_xml_list
         wenn xml_list:
             result.xml_data = xml_list
-    finally:
+    schliesslich:
         wenn use_timeout:
             faulthandler.cancel_dump_traceback_later()
         support.junit_xml_list = Nichts
@@ -344,9 +344,9 @@ def run_single_test(test_name: TestName, runtests: RunTests) -> TestResult:
     start_time = time.perf_counter()
     result = TestResult(test_name)
     pgo = runtests.pgo
-    try:
+    versuch:
         _runtest(result, runtests)
-    except:
+    ausser:
         wenn nicht pgo:
             msg = traceback.format_exc()
             drucke(f"{red}test {test_name} crashed -- {msg}{reset}",

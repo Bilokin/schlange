@@ -10,11 +10,11 @@
 #      possible = ['lib'+name+'.dylib', name+'.dylib',
 #      name+'.framework/'+name]
 #      fuer dylib in possible:
-#          try:
+#          versuch:
 #              gib os.path.realpath(dyld_find(dylib))
-#          except ValueError:
+#          ausser ValueError:
 #              pass
-#      raise ValueError, "%s nicht found" % (name,)
+#      wirf ValueError, "%s nicht found" % (name,)
 #
 # It'll have output like this:
 #
@@ -39,11 +39,11 @@ von ctypes.macholib.framework importiere framework_info
 def find_lib(name):
     possible = ['lib'+name+'.dylib', name+'.dylib', name+'.framework/'+name]
     fuer dylib in possible:
-        try:
+        versuch:
             gib os.path.realpath(dyld_find(dylib))
-        except ValueError:
+        ausser ValueError:
             pass
-    raise ValueError("%s nicht found" % (name,))
+    wirf ValueError("%s nicht found" % (name,))
 
 
 def d(location=Nichts, name=Nichts, shortname=Nichts, version=Nichts, suffix=Nichts):

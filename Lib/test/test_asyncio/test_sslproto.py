@@ -7,9 +7,9 @@ importiere weakref
 von test importiere support
 von test.support importiere socket_helper
 von unittest importiere mock
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 importiere asyncio
@@ -90,9 +90,9 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         # Temporarily turn off error logging so als nicht to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
-        try:
+        versuch:
             ssl_proto._fatal_error(Nichts)
-        finally:
+        schliesslich:
             # Restore error logging.
             log.logger.setLevel(log_level)
 
@@ -173,11 +173,11 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_close_during_ssl_over_ssl(self):
         # gh-113214: passing exceptions von the inner wrapped SSL protocol to the
-        # shim transport provided by the outer SSL protocol should nicht raise
+        # shim transport provided by the outer SSL protocol should nicht wirf
         # attribute errors
         outer = self.ssl_protocol(proto=self.ssl_protocol())
         self.connection_made(outer)
-        # Closing the outer app transport should nicht raise an exception
+        # Closing the outer app transport should nicht wirf an exception
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
         outer._app_transport.close()
@@ -209,7 +209,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
         transp.close()
 
-        # should nicht raise
+        # should nicht wirf
         self.assertIsNichts(ssl_proto.buffer_updated(5))
 
     def test_write_after_closing(self):
@@ -218,7 +218,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         transp = ssl_proto._app_transport
         transp.close()
 
-        # should nicht raise
+        # should nicht wirf
         self.assertIsNichts(transp.write(b'data'))
 
 
@@ -233,7 +233,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
     TIMEOUT = support.LONG_TIMEOUT
 
     def new_loop(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_buf_feed_data(self):
 
@@ -516,13 +516,13 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             data = sock.recv_all(len(HELLO_MSG))
             self.assertEqual(len(data), len(HELLO_MSG))
 
-            try:
+            versuch:
                 self.loop.call_soon_threadsafe(
                     server_waits_on_handshake.set_result, Nichts)
                 data = sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         klasse ClientProto(asyncio.Protocol):
@@ -678,11 +678,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         def server(sock):
             nonlocal server_side_aborted
-            try:
+            versuch:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 server_side_aborted = Wahr
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -704,7 +704,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.assertWahr(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must nicht raise an
+        # Python issue #23197: cancelling a handshake must nicht wirf an
         # exception oder log an error, even wenn the handshake failed
         self.assertEqual(messages, [])
 
@@ -721,11 +721,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
         def server(sock):
-            try:
+            versuch:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -755,15 +755,15 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             disable_verify=Falsch)
 
         def server(sock):
-            try:
+            versuch:
                 sock.start_tls(
                     sslctx,
                     server_side=Wahr)
-            except ssl.SSLError:
+            ausser ssl.SSLError:
                 pass
-            except OSError:
+            ausser OSError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -788,16 +788,16 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         def server(sock):
             orig_sock = sock.dup()
-            try:
+            versuch:
                 sock.start_tls(
                     sslctx,
                     server_side=Wahr)
                 sock.sendall(b'A\n')
                 sock.recv_all(1)
                 orig_sock.send(b'please corrupt the SSL connection')
-            except ssl.SSLError:
+            ausser ssl.SSLError:
                 pass
-            finally:
+            schliesslich:
                 orig_sock.close()
                 sock.close()
 

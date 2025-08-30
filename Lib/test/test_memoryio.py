@@ -116,7 +116,7 @@ klasse MemoryTestMixin:
         memio = self.ioclass()
         def error_gen():
             liefere self.buftype('spam')
-            raise KeyboardInterrupt
+            wirf KeyboardInterrupt
 
         self.assertRaises(KeyboardInterrupt, memio.writelines, error_gen())
 
@@ -719,7 +719,7 @@ klasse TextIOTestMixin:
     def test_newline_argument(self):
         self.assertRaises(TypeError, self.ioclass, newline=b"\n")
         self.assertRaises(ValueError, self.ioclass, newline="error")
-        # These should nicht raise an error
+        # These should nicht wirf an error
         fuer newline in (Nichts, "", "\n", "\r", "\r\n"):
             self.ioclass(newline=newline)
 

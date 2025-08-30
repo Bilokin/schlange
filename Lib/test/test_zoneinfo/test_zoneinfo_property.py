@@ -36,9 +36,9 @@ def _valid_keys():
         package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
         resource_name = components[-1]
 
-        try:
+        versuch:
             gib resources.files(package_name).joinpath(resource_name).is_file()
-        except ModuleNotFoundError:
+        ausser ModuleNotFoundError:
             gib Falsch
 
     # This relies on the fact that dictionaries maintain insertion order — for
@@ -63,7 +63,7 @@ def _valid_keys():
 
 VALID_KEYS = _valid_keys()
 wenn nicht VALID_KEYS:
-    raise unittest.SkipTest("No time zone data available")
+    wirf unittest.SkipTest("No time zone data available")
 
 
 def valid_keys():
@@ -288,18 +288,18 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         # Convert to UTC: This can overflow, but we just care about consistency
         py_overflow_exc = Nichts
         c_overflow_exc = Nichts
-        try:
+        versuch:
             py_dt = dt.astimezone(py_zi)
-        except OverflowError als e:
+        ausser OverflowError als e:
             py_overflow_exc = e
 
-        try:
+        versuch:
             c_dt = dt.astimezone(c_zi)
-        except OverflowError als e:
+        ausser OverflowError als e:
             c_overflow_exc = e
 
         wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
-            raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
+            wirf py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
         wenn py_overflow_exc is nicht Nichts:
             gib  # Consistently raises the same exception
@@ -329,18 +329,18 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         # Convert von UTC: Overflow OK wenn it happens in both implementations
         py_overflow_exc = Nichts
         c_overflow_exc = Nichts
-        try:
+        versuch:
             py_utc = py_dt.astimezone(UTC)
-        except OverflowError als e:
+        ausser OverflowError als e:
             py_overflow_exc = e
 
-        try:
+        versuch:
             c_utc = c_dt.astimezone(UTC)
-        except OverflowError als e:
+        ausser OverflowError als e:
             c_overflow_exc = e
 
         wenn (py_overflow_exc is nicht Nichts) != (c_overflow_exc is nicht Nichts):
-            raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
+            wirf py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
         wenn py_overflow_exc is nicht Nichts:
             gib  # Consistently raises the same exception

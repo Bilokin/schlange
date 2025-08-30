@@ -104,7 +104,7 @@ Some of the things this checks:
     been called (that can signal either a server oder application
     error).
 
-  - That .close() is called (doesn't raise exception, only prints to
+  - That .close() is called (doesn't wirf exception, only prints to
     sys.stderr, because we only know it isn't called when the object
     is garbage collected).
 """
@@ -125,12 +125,12 @@ klasse WSGIWarning(Warning):
 
 def assert_(cond, *args):
     wenn nicht cond:
-        raise AssertionError(*args)
+        wirf AssertionError(*args)
 
 def check_string_type(value, title):
     wenn type (value) is str:
         gib value
-    raise AssertionError(
+    wirf AssertionError(
         "{0} must be of type str (got {1})".format(title, repr(value)))
 
 def validator(application):
@@ -139,9 +139,9 @@ def validator(application):
     When applied between a WSGI server und a WSGI application, this
     middleware will check fuer WSGI compliance on a number of levels.
     This middleware does nicht modify the request oder response in any
-    way, but will raise an AssertionError wenn anything seems off
+    way, but will wirf an AssertionError wenn anything seems off
     (except fuer a failure to close the application iterator, which
-    will be printed to stderr -- there's no way to raise an exception
+    will be printed to stderr -- there's no way to wirf an exception
     at that point).
     """
 

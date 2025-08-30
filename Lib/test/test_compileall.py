@@ -14,7 +14,7 @@ importiere time
 importiere unittest
 
 von unittest importiere mock, skipUnless
-try:
+versuch:
     # compileall relies on ProcessPoolExecutor wenn ProcessPoolExecutor exists
     # und it can function.
     von multiprocessing.util importiere _cleanup_tests als multiprocessing_cleanup_tests
@@ -22,7 +22,7 @@ try:
     von concurrent.futures.process importiere _check_system_limits
     _check_system_limits()
     _have_multiprocessing = Wahr
-except (NotImplementedError, ModuleNotFoundError):
+ausser (NotImplementedError, ModuleNotFoundError):
     _have_multiprocessing = Falsch
 
 von test importiere support
@@ -85,9 +85,9 @@ klasse CompileallTestsBase:
     def test_year_2038_mtime_compilation(self):
         # Test to make sure we can handle mtimes larger than what a 32-bit
         # signed number can hold als part of bpo-34990
-        try:
+        versuch:
             os.utime(self.source_path, (2**32 - 1, 2**32 - 1))
-        except (OverflowError, OSError):
+        ausser (OverflowError, OSError):
             self.skipTest("filesystem doesn't support timestamps near 2**32")
         mit contextlib.redirect_stdout(io.StringIO()):
             self.assertWahr(compileall.compile_file(self.source_path))
@@ -95,9 +95,9 @@ klasse CompileallTestsBase:
     def test_larger_than_32_bit_times(self):
         # This is similar to the test above but we skip it wenn the OS doesn't
         # support modification times larger than 32-bits.
-        try:
+        versuch:
             os.utime(self.source_path, (2**35, 2**35))
-        except (OverflowError, OSError):
+        ausser (OverflowError, OSError):
             self.skipTest("filesystem doesn't support large timestamps")
         mit contextlib.redirect_stdout(io.StringIO()):
             self.assertWahr(compileall.compile_file(self.source_path))
@@ -106,7 +106,7 @@ klasse CompileallTestsBase:
         """Check that compileall recreates bytecode when the new metadata is
         used."""
         wenn os.environ.get('SOURCE_DATE_EPOCH'):
-            raise unittest.SkipTest('SOURCE_DATE_EPOCH is set')
+            wirf unittest.SkipTest('SOURCE_DATE_EPOCH is set')
         py_compile.compile(self.source_path)
         self.assertEqual(*self.timestamp_metadata())
         mit open(self.bc_path, 'rb') als file:
@@ -130,9 +130,9 @@ klasse CompileallTestsBase:
     def test_compile_files(self):
         # Test compiling a single file, und complete directory
         fuer fn in (self.bc_path, self.bc_path2):
-            try:
+            versuch:
                 os.unlink(fn)
-            except:
+            ausser:
                 pass
         self.assertWahr(compileall.compile_file(self.source_path,
                                                 force=Falsch, quiet=Wahr))
@@ -446,9 +446,9 @@ klasse CompileallTestsBase:
                                     optimize=opt_combination)
             fuer opt_level in opt_combination:
                 self.assertWahr(os.path.isfile(bc[opt_level]))
-                try:
+                versuch:
                     os.unlink(bc[opt_level])
-                except Exception:
+                ausser Exception:
                     pass
 
     @os_helper.skip_unless_symlink
@@ -541,13 +541,13 @@ klasse CommandLineTestsBase:
         """Adjust und restore sys.pycache_prefix."""
         old_prefix = sys.pycache_prefix
         new_prefix = os.path.join(self.directory, '__testcache__')
-        try:
+        versuch:
             sys.pycache_prefix = new_prefix
             liefere {
                 'PYTHONPATH': self.directory,
                 'PYTHONPYCACHEPREFIX': new_prefix,
             }
-        finally:
+        schliesslich:
             sys.pycache_prefix = old_prefix
 
     def _get_run_args(self, args):
@@ -912,9 +912,9 @@ klasse CommandLineTestsBase:
             self.assertRunOK(path, *("-o" + str(n) fuer n in opt_combination))
             fuer opt_level in opt_combination:
                 self.assertWahr(os.path.isfile(bc[int(opt_level)]))
-                try:
+                versuch:
                     os.unlink(bc[opt_level])
-                except Exception:
+                ausser Exception:
                     pass
 
     @os_helper.skip_unless_symlink

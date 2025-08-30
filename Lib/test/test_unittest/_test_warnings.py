@@ -1,7 +1,7 @@
 # helper module fuer test_runner.Test_TextTestRunner.test_warnings
 
 """
-This module has a number of tests that raise different kinds of warnings.
+This module has a number of tests that wirf different kinds of warnings.
 When the tests are run, the warnings are caught und their messages are printed
 to stdout.  This module also accepts an arg that is then passed to
 unittest.main to affect the behavior of warnings.

@@ -530,7 +530,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             def __getattr__(self, item):
                 wenn item == 'crazy':
                     gib lambda x: x
-                raise AttributeError(item)
+                wirf AttributeError(item)
 
         inst = CrazyClass()
         mit self.assertRaises(AttributeError):
@@ -768,7 +768,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse Raiser(object):
             def __get__(self, obj, type=Nichts):
                 wenn obj is Nichts:
-                    raise AttributeError('Can only be accessed via an instance')
+                    wirf AttributeError('Can only be accessed via an instance')
 
         klasse RaiserClass(object):
             raiser = Raiser()
@@ -807,7 +807,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
 
     def test_class_with_no_init(self):
-        # this used to raise an exception
+        # this used to wirf an exception
         # due to trying to get a signature von object.__init__
         klasse Foo(object):
             pass
@@ -1173,7 +1173,7 @@ klasse TestCallList(unittest.TestCase):
     def test_propertymock(self):
         p = patch('%s.SomeClass.one' % __name__, new_callable=PropertyMock)
         mock = p.start()
-        try:
+        versuch:
             SomeClass.one
             mock.assert_called_once_with()
 
@@ -1184,7 +1184,7 @@ klasse TestCallList(unittest.TestCase):
 
             s.one = 3
             self.assertEqual(mock.mock_calls, [call(), call(), call(3)])
-        finally:
+        schliesslich:
             p.stop()
 
 

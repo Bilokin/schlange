@@ -253,13 +253,13 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             console,
             readline_completer=rlcompleter.Completer(namespace).complete,
         )
-        try:
+        versuch:
             # we're nicht using handle_all_events() here to be able to
             # follow the KeyboardInterrupt sequence of events. Normally this
             # happens in simple_interact.run_multiline_interactive_console.
             waehrend Wahr:
                 reader.handle1()
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             # at this point the completions are still visible
             self.assertWahr(len(reader.screen) > 2)
             reader.refresh()

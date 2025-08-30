@@ -111,12 +111,12 @@ def main(file_source, install_target):
 
     # Check wenn the file matches. If so, we don't want to touch it so
     # that we can skip rebuilding.
-    try:
+    versuch:
         mit open(install_target, 'r') als f:
             wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
                 drucke('File is up to date')
                 gib
-    except IOError:
+    ausser IOError:
         pass
 
     mit open(install_target, 'w') als f:

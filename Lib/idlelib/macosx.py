@@ -27,9 +27,9 @@ def _init_tk_type():
         von idlelib.__init__ importiere testing
         wenn testing:
             von test.support importiere requires, ResourceDenied
-            try:
+            versuch:
                 requires('gui')
-            except ResourceDenied:
+            ausser ResourceDenied:
                 _tk_type = "cocoa"
                 gib
 
@@ -90,10 +90,10 @@ def readSystemPreferences():
         gib Nichts
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
-    try:
+    versuch:
         mit open(plist_path, 'rb') als plist_file:
             gib plistlib.load(plist_file)
-    except OSError:
+    ausser OSError:
         gib Nichts
 
 
@@ -132,9 +132,9 @@ def addOpenEventSupport(root, flist):
     root.createcommand("::tk::mac::OpenDocument", doOpenFile)
 
 def hideTkConsole(root):
-    try:
+    versuch:
         root.tk.call('console', 'hide')
-    except tkinter.TclError:
+    ausser tkinter.TclError:
         # Some versions of the Tk framework don't have a console object
         pass
 

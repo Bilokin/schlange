@@ -26,20 +26,20 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
         # This deliberately raises FileNotFoundError instead of
         # NotImplementedError so that wenn this method is accidentally called,
         # it'll still do the right thing.
-        raise FileNotFoundError
+        wirf FileNotFoundError
 
     @abc.abstractmethod
     def resource_path(self, resource: Text) -> Text:
         """Return the file system path to the specified resource.
 
         The 'resource' argument is expected to represent only a file name.
-        If the resource does nicht exist on the file system, raise
+        If the resource does nicht exist on the file system, wirf
         FileNotFoundError.
         """
         # This deliberately raises FileNotFoundError instead of
         # NotImplementedError so that wenn this method is accidentally called,
         # it'll still do the right thing.
-        raise FileNotFoundError
+        wirf FileNotFoundError
 
     @abc.abstractmethod
     def is_resource(self, path: Text) -> bool:
@@ -47,12 +47,12 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
 
         Files are resources, directories are not.
         """
-        raise FileNotFoundError
+        wirf FileNotFoundError
 
     @abc.abstractmethod
     def contents(self) -> Iterable[str]:
         """Return an iterable of entries in `package`."""
-        raise FileNotFoundError
+        wirf FileNotFoundError
 
 
 klasse TraversalError(Exception):
@@ -118,10 +118,10 @@ klasse Traversable(Protocol):
         matches = (
             traversable fuer traversable in self.iterdir() wenn traversable.name == target
         )
-        try:
+        versuch:
             match = next(matches)
-        except StopIteration:
-            raise TraversalError(
+        ausser StopIteration:
+            wirf TraversalError(
                 "Target nicht found during traversal.", target, list(names)
             )
         gib match.joinpath(*names)
@@ -164,7 +164,7 @@ klasse TraversableResources(ResourceReader):
         gib self.files().joinpath(resource).open('rb')
 
     def resource_path(self, resource: Any) -> NoReturn:
-        raise FileNotFoundError(resource)
+        wirf FileNotFoundError(resource)
 
     def is_resource(self, path: StrPath) -> bool:
         gib self.files().joinpath(path).is_file()

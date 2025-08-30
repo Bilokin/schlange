@@ -48,9 +48,9 @@ def update_wrapper(wrapper,
        function (defaults to functools.WRAPPER_UPDATES)
     """
     fuer attr in assigned:
-        try:
+        versuch:
             value = getattr(wrapped, attr)
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             setattr(wrapper, attr, value)
@@ -190,7 +190,7 @@ def total_ordering(cls):
     # Find user-defined comparisons (nicht those inherited von object).
     roots = {op fuer op in _convert wenn getattr(cls, op, Nichts) is nicht getattr(object, op, Nichts)}
     wenn nicht roots:
-        raise ValueError('must define at least one ordering operation: < > <= >=')
+        wirf ValueError('must define at least one ordering operation: < > <= >=')
     root = max(roots)       # prefer __lt__ to __le__ to __gt__ to __ge__
     fuer opname, opfunc in _convert[root]:
         wenn opname nicht in roots:
@@ -222,9 +222,9 @@ def cmp_to_key(mycmp):
         __hash__ = Nichts
     gib K
 
-try:
+versuch:
     von _functools importiere cmp_to_key
-except ImportError:
+ausser ImportError:
     pass
 
 
@@ -251,10 +251,10 @@ def reduce(function, sequence, initial=_initial_missing):
     it = iter(sequence)
 
     wenn initial is _initial_missing:
-        try:
+        versuch:
             value = next(it)
-        except StopIteration:
-            raise TypeError(
+        ausser StopIteration:
+            wirf TypeError(
                 "reduce() of empty iterable mit no initial value") von Nichts
     sonst:
         value = initial
@@ -279,7 +279,7 @@ klasse _PlaceholderType:
     __slots__ = ()
 
     def __init_subclass__(cls, *args, **kwargs):
-        raise TypeError(f"type '{cls.__name__}' is nicht an acceptable base type")
+        wirf TypeError(f"type '{cls.__name__}' is nicht an acceptable base type")
 
     def __new__(cls):
         wenn cls.__instance is Nichts:
@@ -314,18 +314,18 @@ def _partial_new(cls, func, /, *args, **keywords):
     wenn issubclass(cls, partial):
         base_cls = partial
         wenn nicht callable(func):
-            raise TypeError("the first argument must be callable")
+            wirf TypeError("the first argument must be callable")
     sonst:
         base_cls = partialmethod
         # func could be a descriptor like classmethod which isn't callable
         wenn nicht callable(func) und nicht hasattr(func, "__get__"):
-            raise TypeError(f"the first argument {func!r} must be a callable "
+            wirf TypeError(f"the first argument {func!r} must be a callable "
                             "or a descriptor")
     wenn args und args[-1] is Placeholder:
-        raise TypeError("trailing Placeholders are nicht allowed")
+        wirf TypeError("trailing Placeholders are nicht allowed")
     fuer value in keywords.values():
         wenn value is Placeholder:
-            raise TypeError("Placeholder cannot be passed als a keyword argument")
+            wirf TypeError("Placeholder cannot be passed als a keyword argument")
     wenn isinstance(func, base_cls):
         pto_phcount = func._phcount
         tot_args = func.args
@@ -380,11 +380,11 @@ klasse partial:
     def __call__(self, /, *args, **keywords):
         phcount = self._phcount
         wenn phcount:
-            try:
+            versuch:
                 pto_args = self._merger(self.args + args)
                 args = args[phcount:]
-            except IndexError:
-                raise TypeError("missing positional arguments "
+            ausser IndexError:
+                wirf TypeError("missing positional arguments "
                                 "in 'partial' call; expected "
                                 f"at least {phcount}, got {len(args)}")
         sonst:
@@ -403,17 +403,17 @@ klasse partial:
 
     def __setstate__(self, state):
         wenn nicht isinstance(state, tuple):
-            raise TypeError("argument to __setstate__ must be a tuple")
+            wirf TypeError("argument to __setstate__ must be a tuple")
         wenn len(state) != 4:
-            raise TypeError(f"expected 4 items in state, got {len(state)}")
+            wirf TypeError(f"expected 4 items in state, got {len(state)}")
         func, args, kwds, namespace = state
         wenn (nicht callable(func) oder nicht isinstance(args, tuple) oder
            (kwds is nicht Nichts und nicht isinstance(kwds, dict)) oder
            (namespace is nicht Nichts und nicht isinstance(namespace, dict))):
-            raise TypeError("invalid partial state")
+            wirf TypeError("invalid partial state")
 
         wenn args und args[-1] is Placeholder:
-            raise TypeError("trailing Placeholders are nicht allowed")
+            wirf TypeError("trailing Placeholders are nicht allowed")
         phcount, merger = _partial_prepare_merger(args)
 
         args = tuple(args) # just in case it's a subclass
@@ -434,9 +434,9 @@ klasse partial:
     __class_getitem__ = classmethod(GenericAlias)
 
 
-try:
+versuch:
     von _functools importiere partial, Placeholder, _PlaceholderType
-except ImportError:
+ausser ImportError:
     pass
 
 # Descriptor version
@@ -454,11 +454,11 @@ klasse partialmethod:
         def _method(cls_or_self, /, *args, **keywords):
             phcount = self._phcount
             wenn phcount:
-                try:
+                versuch:
                     pto_args = self._merger(self.args + args)
                     args = args[phcount:]
-                except IndexError:
-                    raise TypeError("missing positional arguments "
+                ausser IndexError:
+                    wirf TypeError("missing positional arguments "
                                     "in 'partialmethod' call; expected "
                                     f"at least {phcount}, got {len(args)}")
             sonst:
@@ -478,9 +478,9 @@ klasse partialmethod:
                 # Assume __get__ returning something new indicates the
                 # creation of an appropriate callable
                 result = partial(new_func, *self.args, **self.keywords)
-                try:
+                versuch:
                     result.__self__ = new_func.__self__
-                except AttributeError:
+                ausser AttributeError:
                     pass
         wenn result is Nichts:
             # If the underlying descriptor didn't do anything, treat this
@@ -589,7 +589,7 @@ def lru_cache(maxsize=128, typed=Falsch):
         gib update_wrapper(wrapper, user_function)
 
     sowenn maxsize is nicht Nichts:
-        raise TypeError(
+        wirf TypeError(
             'Expected first argument to be an integer, a callable, oder Nichts')
 
     def decorating_function(user_function):
@@ -729,9 +729,9 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     wrapper.cache_clear = cache_clear
     gib wrapper
 
-try:
+versuch:
     von _functools importiere _lru_cache_wrapper
-except ImportError:
+ausser ImportError:
     pass
 
 
@@ -768,7 +768,7 @@ def _c3_merge(sequences):
             sonst:
                 breche
         wenn candidate is Nichts:
-            raise RuntimeError("Inconsistent hierarchy")
+            wirf RuntimeError("Inconsistent hierarchy")
         result.append(candidate)
         # remove the chosen candidate
         fuer seq in sequences:
@@ -881,7 +881,7 @@ def _find_impl(cls, registry):
             wenn (t in registry und t nicht in cls.__mro__
                               und match nicht in cls.__mro__
                               und nicht issubclass(match, t)):
-                raise RuntimeError("Ambiguous dispatch: {} oder {}".format(
+                wirf RuntimeError("Ambiguous dispatch: {} oder {}".format(
                     match, t))
             breche
         wenn t in registry:
@@ -919,12 +919,12 @@ def singledispatch(func):
             wenn cache_token != current_token:
                 dispatch_cache.clear()
                 cache_token = current_token
-        try:
+        versuch:
             impl = dispatch_cache[cls]
-        except KeyError:
-            try:
+        ausser KeyError:
+            versuch:
                 impl = registry[cls]
-            except KeyError:
+            ausser KeyError:
                 impl = _find_impl(cls, registry)
             dispatch_cache[cls] = impl
         gib impl
@@ -947,13 +947,13 @@ def singledispatch(func):
                 gib lambda f: register(cls, f)
         sonst:
             wenn func is nicht Nichts:
-                raise TypeError(
+                wirf TypeError(
                     f"Invalid first argument to `register()`. "
                     f"{cls!r} is nicht a klasse oder union type."
                 )
             ann = getattr(cls, '__annotate__', Nichts)
             wenn ann is Nichts:
-                raise TypeError(
+                wirf TypeError(
                     f"Invalid first argument to `register()`: {cls!r}. "
                     f"Use either `@register(some_class)` oder plain `@register` "
                     f"on an annotated function."
@@ -966,17 +966,17 @@ def singledispatch(func):
             argname, cls = next(iter(get_type_hints(func, format=Format.FORWARDREF).items()))
             wenn nicht _is_valid_dispatch_type(cls):
                 wenn isinstance(cls, UnionType):
-                    raise TypeError(
+                    wirf TypeError(
                         f"Invalid annotation fuer {argname!r}. "
                         f"{cls!r} nicht all arguments are classes."
                     )
                 sowenn isinstance(cls, ForwardRef):
-                    raise TypeError(
+                    wirf TypeError(
                         f"Invalid annotation fuer {argname!r}. "
                         f"{cls!r} is an unresolved forward reference."
                     )
                 sonst:
-                    raise TypeError(
+                    wirf TypeError(
                         f"Invalid annotation fuer {argname!r}. "
                         f"{cls!r} is nicht a class."
                     )
@@ -993,7 +993,7 @@ def singledispatch(func):
 
     def wrapper(*args, **kw):
         wenn nicht args:
-            raise TypeError(f'{funcname} requires at least '
+            wirf TypeError(f'{funcname} requires at least '
                             '1 positional argument')
         gib dispatch(args[0].__class__)(*args, **kw)
 
@@ -1017,7 +1017,7 @@ klasse singledispatchmethod:
 
     def __init__(self, func):
         wenn nicht callable(func) und nicht hasattr(func, "__get__"):
-            raise TypeError(f"{func!r} is nicht callable oder a descriptor")
+            wirf TypeError(f"{func!r} is nicht callable oder a descriptor")
 
         self.dispatcher = singledispatch(func)
         self.func = func
@@ -1037,12 +1037,12 @@ klasse singledispatchmethod:
         gib getattr(self.func, '__isabstractmethod__', Falsch)
 
     def __repr__(self):
-        try:
+        versuch:
             name = self.func.__qualname__
-        except AttributeError:
-            try:
+        ausser AttributeError:
+            versuch:
                 name = self.func.__name__
-            except AttributeError:
+            ausser AttributeError:
                 name = '?'
         gib f'<single dispatch method descriptor {name}>'
 
@@ -1055,22 +1055,22 @@ klasse _singledispatchmethod_get:
         # Set instance attributes which cannot be handled in __getattr__()
         # because they conflict mit type descriptors.
         func = unbound.func
-        try:
+        versuch:
             self.__module__ = func.__module__
-        except AttributeError:
+        ausser AttributeError:
             pass
-        try:
+        versuch:
             self.__doc__ = func.__doc__
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def __repr__(self):
-        try:
+        versuch:
             name = self.__qualname__
-        except AttributeError:
-            try:
+        ausser AttributeError:
+            versuch:
                 name = self.__name__
-            except AttributeError:
+            ausser AttributeError:
                 name = '?'
         wenn self._obj is nicht Nichts:
             gib f'<bound single dispatch method {name} of {self._obj!r}>'
@@ -1081,7 +1081,7 @@ klasse _singledispatchmethod_get:
         wenn nicht args:
             funcname = getattr(self._unbound.func, '__name__',
                                'singledispatchmethod method')
-            raise TypeError(f'{funcname} requires at least '
+            wirf TypeError(f'{funcname} requires at least '
                             '1 positional argument')
         gib self._dispatch(args[0].__class__).__get__(self._obj, self._cls)(*args, **kwargs)
 
@@ -1090,7 +1090,7 @@ klasse _singledispatchmethod_get:
         # the _singledispatchmethod_get instance.
         wenn name nicht in {'__name__', '__qualname__', '__isabstractmethod__',
                         '__annotations__', '__type_params__'}:
-            raise AttributeError
+            wirf AttributeError
         gib getattr(self._unbound.func, name)
 
     @property
@@ -1119,7 +1119,7 @@ klasse cached_property:
         wenn self.attrname is Nichts:
             self.attrname = name
         sowenn name != self.attrname:
-            raise TypeError(
+            wirf TypeError(
                 "Cannot assign the same cached_property to two different names "
                 f"({self.attrname!r} und {name!r})."
             )
@@ -1128,27 +1128,27 @@ klasse cached_property:
         wenn instance is Nichts:
             gib self
         wenn self.attrname is Nichts:
-            raise TypeError(
+            wirf TypeError(
                 "Cannot use cached_property instance without calling __set_name__ on it.")
-        try:
+        versuch:
             cache = instance.__dict__
-        except AttributeError:  # nicht all objects have __dict__ (e.g. klasse defines slots)
+        ausser AttributeError:  # nicht all objects have __dict__ (e.g. klasse defines slots)
             msg = (
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
             )
-            raise TypeError(msg) von Nichts
+            wirf TypeError(msg) von Nichts
         val = cache.get(self.attrname, _NOT_FOUND)
         wenn val is _NOT_FOUND:
             val = self.func(instance)
-            try:
+            versuch:
                 cache[self.attrname] = val
-            except TypeError:
+            ausser TypeError:
                 msg = (
                     f"The '__dict__' attribute on {type(instance).__name__!r} instance "
                     f"does nicht support item assignment fuer caching {self.attrname!r} property."
                 )
-                raise TypeError(msg) von Nichts
+                wirf TypeError(msg) von Nichts
         gib val
 
     __class_getitem__ = classmethod(GenericAlias)
@@ -1176,7 +1176,7 @@ del _warn_python_reduce_kwargs
 # here due to gh-121676. In Python 3.16, _warn_python_reduce_kwargs()
 # should be removed und the importiere block should be moved back right
 # after the definition of reduce().
-try:
+versuch:
     von _functools importiere reduce
-except ImportError:
+ausser ImportError:
     pass

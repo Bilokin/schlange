@@ -26,31 +26,31 @@ von decimal importiere Decimal
 von fractions importiere Fraction
 von test.support importiere warnings_helper
 
-try:
+versuch:
     von _testbuffer importiere *
-except ImportError:
+ausser ImportError:
     ndarray = Nichts
 
-try:
+versuch:
     importiere struct
-except ImportError:
+ausser ImportError:
     struct = Nichts
 
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     ctypes = Nichts
 
-try:
+versuch:
     mit os_helper.EnvironmentVarGuard() als os.environ, \
          warnings.catch_warnings():
         von numpy importiere ndarray als numpy_array
-except ImportError:
+ausser ImportError:
     numpy_array = Nichts
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 
@@ -75,12 +75,12 @@ wenn numpy_array:
     del NATIVE['N']
 
 wenn struct:
-    try:
+    versuch:
         # Add "qQ" wenn present in native mode.
         struct.pack('Q', 2**64-1)
         NATIVE['q'] = 0
         NATIVE['Q'] = 0
-    except struct.error:
+    ausser struct.error:
         pass
 
 # Standard format chars und their ranges.
@@ -109,10 +109,10 @@ def native_type_range(fmt):
         lh = (-(1<<1023), 1<<1023)
     sonst:
         fuer exp in (128, 127, 64, 63, 32, 31, 16, 15, 8, 7):
-            try:
+            versuch:
                 struct.pack(fmt, (1<<exp)-1)
                 breche
-            except struct.error:
+            ausser struct.error:
                 pass
         lh = (-(1<<exp), 1<<exp) wenn exp & 1 sonst (0, 1<<exp)
     gib lh
@@ -313,12 +313,12 @@ def _fa(items, s):
 
 def carray(items, shape):
     wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
-        raise ValueError("prod(shape) != len(items)")
+        wirf ValueError("prod(shape) != len(items)")
     gib _ca(items, shape)
 
 def farray(items, shape):
     wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
-        raise ValueError("prod(shape) != len(items)")
+        wirf ValueError("prod(shape) != len(items)")
     gib _fa(items, shape)
 
 def indices(shape):
@@ -413,7 +413,7 @@ def cmp_structure(llst, rlst, lslices, rslices):
 def multislice_assign(llst, rlst, lslices, rslices):
     """Return llst after assigning: llst[lslices] = rlst[rslices]"""
     wenn cmp_structure(llst, rlst, lslices, rslices) < 0:
-        raise ValueError("lvalue und rvalue have different structures")
+        wirf ValueError("lvalue und rvalue have different structures")
     gib m_assign(llst, rlst, lslices, rslices)
 
 
@@ -566,7 +566,7 @@ def randslice_from_slicelen(slicelen, listlen):
     s = slice(start, stop, step)
     _, _, _, control = slice_indices(s, listlen)
     wenn control != slicelen:
-        raise RuntimeError
+        wirf RuntimeError
     gib s
 
 def randslice_from_shape(ndim, shape):
@@ -739,9 +739,9 @@ def rpermutation(iterable, r=Nichts):
 
 def ndarray_drucke(nd):
     """Print ndarray fuer debugging."""
-    try:
+    versuch:
         x = nd.tolist()
-    except (TypeError, NotImplementedError):
+    ausser (TypeError, NotImplementedError):
         x = nd.tobytes()
     wenn isinstance(nd, ndarray):
         offset = nd.offset
@@ -839,7 +839,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             b = bytearray()
             buf_err = Nichts
             fuer ind in indices(shape):
-                try:
+                versuch:
                     item1 = get_pointer(result, ind)
                     item2 = get_item(lst, ind)
                     wenn isinstance(item2, tuple):
@@ -847,7 +847,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     sonst:
                         x = struct.pack(fmt, item2)
                     b.extend(x)
-                except BufferError:
+                ausser BufferError:
                     buf_err = Wahr # re-exporter does nicht provide full buffer
                     breche
                 self.assertEqual(item1, item2)
@@ -949,9 +949,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                     self.assertEqual(contig_bytes, contig)
 
         wenn is_memoryview_format(fmt):
-            try:
+            versuch:
                 m = memoryview(result)
-            except BufferError: # re-exporter does nicht provide full information
+            ausser BufferError: # re-exporter does nicht provide full information
                 gib
             ex = result.obj wenn isinstance(result, memoryview) sonst result
 
@@ -1746,15 +1746,15 @@ klasse TestBufferProtocol(unittest.TestCase):
                 fuer slices in rslices_ndim(ndim, shape):
 
                     listerr = Nichts
-                    try:
+                    versuch:
                         sliced = multislice(lst, slices)
-                    except Exception als e:
+                    ausser Exception als e:
                         listerr = e.__class__
 
                     nderr = Nichts
-                    try:
+                    versuch:
                         ndsliced = nd[slices]
-                    except Exception als e:
+                    ausser Exception als e:
                         nderr = e.__class__
 
                     wenn nderr oder listerr:
@@ -1781,15 +1781,15 @@ klasse TestBufferProtocol(unittest.TestCase):
             fuer slices in rslices_ndim(ndim, shape):
 
                 listerr = Nichts
-                try:
+                versuch:
                     sliced = multislice(lst, slices)
-                except Exception als e:
+                ausser Exception als e:
                     listerr = e.__class__
 
                 nderr = Nichts
-                try:
+                versuch:
                     ndsliced = nd[slices]
-                except Exception als e:
+                ausser Exception als e:
                     nderr = e.__class__
 
                 wenn nderr oder listerr:
@@ -1811,18 +1811,18 @@ klasse TestBufferProtocol(unittest.TestCase):
                         lsterr = Nichts
                         diff_structure = Nichts
                         lst = items[:]
-                        try:
+                        versuch:
                             lval = lst[lslice]
                             rval = lst[rslice]
                             lst[lslice] = lst[rslice]
                             diff_structure = len(lval) != len(rval)
-                        except Exception als e:
+                        ausser Exception als e:
                             lsterr = e.__class__
 
                         nderr = Nichts
-                        try:
+                        versuch:
                             nd[lslice] = nd[rslice]
-                        except Exception als e:
+                        ausser Exception als e:
                             nderr = e.__class__
 
                         wenn diff_structure: # ndarray cannot change shape
@@ -1835,9 +1835,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                             weiter
 
                         mverr = Nichts
-                        try:
+                        versuch:
                             mv[lslice] = mv[rslice]
-                        except Exception als e:
+                        ausser Exception als e:
                             mverr = e.__class__
 
                         wenn diff_structure: # memoryview cannot change shape
@@ -1868,15 +1868,15 @@ klasse TestBufferProtocol(unittest.TestCase):
                     lst = carray(items, shape)
 
                     listerr = Nichts
-                    try:
+                    versuch:
                         result = multislice_assign(lst, lst, lslices, rslices)
-                    except Exception als e:
+                    ausser Exception als e:
                         listerr = e.__class__
 
                     nderr = Nichts
-                    try:
+                    versuch:
                         nd[lslices] = nd[rslices]
-                    except Exception als e:
+                    ausser Exception als e:
                         nderr = e.__class__
 
                     wenn nderr oder listerr:
@@ -1937,17 +1937,17 @@ klasse TestBufferProtocol(unittest.TestCase):
                 items = randitems_from_structure(fmt, t)
 
                 nderr = Falsch
-                try:
+                versuch:
                     x = ndarray_from_structure(items, fmt, t)
-                except Exception als e:
+                ausser Exception als e:
                     nderr = e.__class__
                 self.assertWahr(nderr)
 
                 wenn numpy_array:
                     numpy_err = Falsch
-                    try:
+                    versuch:
                         y = numpy_array_from_structure(items, fmt, t)
-                    except Exception als e:
+                    ausser Exception als e:
                         numpy_err = e.__class__
 
                     wenn 0: # https://github.com/numpy/numpy/issues/2503
@@ -2201,9 +2201,9 @@ klasse TestBufferProtocol(unittest.TestCase):
         ndbytes = nd.tobytes()
         fuer order in ['C', 'F', 'A']:
             fuer request in requests:
-                try:
+                versuch:
                     b = py_buffer_to_contiguous(nd, order, request)
-                except BufferError:
+                ausser BufferError:
                     weiter
                 self.assertEqual(b, ndbytes)
 
@@ -2287,9 +2287,9 @@ klasse TestBufferProtocol(unittest.TestCase):
             sonst:
                 expected = nd.tobytes()
             fuer request in requests:
-                try:
+                versuch:
                     b = py_buffer_to_contiguous(nd, 'C', request)
-                except BufferError:
+                ausser BufferError:
                     weiter
 
                 self.assertEqual(b, expected)
@@ -2311,9 +2311,9 @@ klasse TestBufferProtocol(unittest.TestCase):
             expected = x.tobytes()
             fuer request in [PyBUF_FULL, PyBUF_FULL_RO, PyBUF_INDIRECT,
                             PyBUF_STRIDES, PyBUF_ND]:
-                try:
+                versuch:
                     b = py_buffer_to_contiguous(nd, 'F', request)
-                except BufferError:
+                ausser BufferError:
                     weiter
                 self.assertEqual(b, expected)
 
@@ -2333,9 +2333,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                 expected = nd.tobytes()
             fuer request in [PyBUF_FULL, PyBUF_FULL_RO, PyBUF_INDIRECT,
                             PyBUF_STRIDES, PyBUF_ND]:
-                try:
+                versuch:
                     b = py_buffer_to_contiguous(nd, 'A', request)
-                except BufferError:
+                ausser BufferError:
                     weiter
 
                 self.assertEqual(b, expected)
@@ -2560,15 +2560,15 @@ klasse TestBufferProtocol(unittest.TestCase):
 
             fuer v in values:
                 struct_err = Nichts
-                try:
+                versuch:
                     struct.pack_into(fmt, nd, itemsize, v)
-                except struct.error:
+                ausser struct.error:
                     struct_err = struct.error
 
                 mv_err = Nichts
-                try:
+                versuch:
                     m[1] = v
-                except (TypeError, ValueError) als e:
+                ausser (TypeError, ValueError) als e:
                     mv_err = e.__class__
 
                 wenn struct_err oder mv_err:
@@ -3162,18 +3162,18 @@ klasse TestBufferProtocol(unittest.TestCase):
 
                         array_err = Nichts
                         have_resize = Nichts
-                        try:
+                        versuch:
                             al = a[lslice]
                             ar = a[rslice]
                             a[lslice] = a[rslice]
                             have_resize = len(al) != len(ar)
-                        except Exception als e:
+                        ausser Exception als e:
                             array_err = e.__class__
 
                         m_err = Nichts
-                        try:
+                        versuch:
                             m[lslice] = m[rslice]
-                        except Exception als e:
+                        ausser Exception als e:
                             m_err = e.__class__
 
                         wenn have_resize: # memoryview cannot change shape
@@ -4457,9 +4457,9 @@ klasse TestBufferProtocol(unittest.TestCase):
     @support.cpython_only
     def test_flags_overflow(self):
         # gh-126594: Check fuer integer overlow on large flags
-        try:
+        versuch:
             von _testcapi importiere INT_MIN, INT_MAX
-        except ImportError:
+        ausser ImportError:
             INT_MIN = -(2 ** 31)
             INT_MAX = 2 ** 31 - 1
 
@@ -4507,7 +4507,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
             def __buffer__(self, flags):
                 wenn self.held:
-                    raise TypeError("already held")
+                    wirf TypeError("already held")
                 self.held = Wahr
                 gib memoryview(self.ba)
 
@@ -4530,7 +4530,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
             def __buffer__(self, flags):
                 wenn self.held:
-                    raise TypeError("already held")
+                    wirf TypeError("already held")
                 self.held = Wahr
                 self.created_mv = memoryview(self.ba)
                 gib self.created_mv
@@ -4555,7 +4555,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
             def __buffer__(self, flags):
                 wenn flags & inspect.BufferFlags.WRITABLE:
                     wenn nicht self._mutable:
-                        raise RuntimeError("not mutable")
+                        wirf RuntimeError("not mutable")
                     gib memoryview(self._data)
                 sonst:
                     gib memoryview(bytes(self._data))
@@ -4679,9 +4679,9 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
             def __release_buffer__(self, view):
                 nonlocal rb_call_count
                 rb_call_count += 1
-                try:
+                versuch:
                     super().__release_buffer__(view)
-                except ValueError:
+                ausser ValueError:
                     nonlocal rb_raised
                     rb_raised = Wahr
 
@@ -4779,10 +4779,10 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_multiple_inheritance_buffer_last_raising(self):
         klasse A:
             def __buffer__(self, flags):
-                raise RuntimeError("should nicht be called")
+                wirf RuntimeError("should nicht be called")
 
             def __release_buffer__(self, buffer):
-                raise RuntimeError("should nicht be called")
+                wirf RuntimeError("should nicht be called")
 
         klasse B(bytearray, A):
             def __buffer__(self, flags):
@@ -4816,7 +4816,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
         b = bytearray(8)
         mit memoryview(b):
-            # now b.extend will raise an exception due to exports
+            # now b.extend will wirf an exception due to exports
             mit self.assertRaises(BufferError):
                 b.extend(A())
 

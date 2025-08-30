@@ -97,14 +97,14 @@ klasse BaseGUITestRunner(object):
         wenn nicht directory:
             gib
         self.directory_to_read = directory
-        try:
+        versuch:
             # Explicitly use 'Nichts' value wenn no top level directory is
             # specified (indicated by empty string) als discover() explicitly
             # checks fuer a 'Nichts' to determine wenn no tld has been specified
             top_level_dir = self.top_level_dir oder Nichts
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
-        except:
+        ausser:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % directory,

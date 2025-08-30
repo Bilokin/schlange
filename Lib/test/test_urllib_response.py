@@ -7,7 +7,7 @@ importiere unittest
 von test importiere support
 
 wenn support.is_wasi:
-    raise unittest.SkipTest("Cannot create socket on WASI")
+    wirf unittest.SkipTest("Cannot create socket on WASI")
 
 
 klasse TestResponse(unittest.TestCase):

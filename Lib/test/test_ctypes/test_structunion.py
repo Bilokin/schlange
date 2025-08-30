@@ -310,7 +310,7 @@ klasse StructUnionTestBase:
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should raise ValueError?, nicht RuntimeError
+        # XXX Should wirf ValueError?, nicht RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     def test_huge_field_name(self):
@@ -320,9 +320,9 @@ klasse StructUnionTestBase:
                 _fields_ = [('x' * length, c_int)]
 
         fuer length in [10 ** i fuer i in range(0, 8)]:
-            try:
+            versuch:
                 create_class(length)
-            except MemoryError:
+            ausser MemoryError:
                 # MemoryErrors are OK, we just don't want to segfault
                 pass
 
@@ -446,9 +446,9 @@ klasse TestRecursiveBase:
         klasse Recursive(self.cls):
             pass
 
-        try:
+        versuch:
             Recursive._fields_ = [("next", Recursive)]
-        except AttributeError als details:
+        ausser AttributeError als details:
             self.assertIn("Structure oder union cannot contain itself",
                           str(details))
         sonst:
@@ -463,9 +463,9 @@ klasse TestRecursiveBase:
 
         First._fields_ = [("second", Second)]
 
-        try:
+        versuch:
             Second._fields_ = [("first", First)]
-        except AttributeError als details:
+        ausser AttributeError als details:
             self.assertIn("_fields_ is final", str(details))
         sonst:
             self.fail("AttributeError nicht raised")

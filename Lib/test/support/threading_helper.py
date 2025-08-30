@@ -62,9 +62,9 @@ def reap_threads(func):
     @functools.wraps(func)
     def decorator(*args):
         key = threading_setup()
-        try:
+        versuch:
             gib func(*args)
-        finally:
+        schliesslich:
             threading_cleanup(*key)
     gib decorator
 
@@ -87,9 +87,9 @@ def wait_threads_exit(timeout=Nichts):
     wenn timeout is Nichts:
         timeout = support.SHORT_TIMEOUT
     old_count = _thread._count()
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         start_time = time.monotonic()
         fuer _ in support.sleeping_retry(timeout, error=Falsch):
             support.gc_collect()
@@ -101,7 +101,7 @@ def wait_threads_exit(timeout=Nichts):
             msg = (f"wait_threads() failed to cleanup {count - old_count} "
                    f"threads after {dt:.1f} seconds "
                    f"(count: {count}, old count: {old_count})")
-            raise AssertionError(msg)
+            wirf AssertionError(msg)
 
 
 def join_thread(thread, timeout=Nichts):
@@ -113,31 +113,31 @@ def join_thread(thread, timeout=Nichts):
     thread.join(timeout)
     wenn thread.is_alive():
         msg = f"failed to join the thread in {timeout:.1f} seconds"
-        raise AssertionError(msg)
+        wirf AssertionError(msg)
 
 
 @contextlib.contextmanager
 def start_threads(threads, unlock=Nichts):
-    try:
+    versuch:
         importiere faulthandler
-    except ImportError:
+    ausser ImportError:
         # It isn't supported on subinterpreters yet.
         faulthandler = Nichts
     threads = list(threads)
     started = []
-    try:
-        try:
+    versuch:
+        versuch:
             fuer t in threads:
                 t.start()
                 started.append(t)
-        except:
+        ausser:
             wenn support.verbose:
                 drucke("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
-            raise
+            wirf
         liefere
-    finally:
-        try:
+    schliesslich:
+        versuch:
             wenn unlock:
                 unlock()
             endtime = time.monotonic()
@@ -151,12 +151,12 @@ def start_threads(threads, unlock=Nichts):
                 wenn support.verbose:
                     drucke('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))
-        finally:
+        schliesslich:
             started = [t fuer t in started wenn t.is_alive()]
             wenn started:
                 wenn faulthandler is nicht Nichts:
                     faulthandler.dump_traceback(sys.stdout)
-                raise AssertionError('Unable to join %d threads' % len(started))
+                wirf AssertionError('Unable to join %d threads' % len(started))
 
 
 klasse catch_threading_exception:
@@ -245,7 +245,7 @@ def requires_working_threading(*, module=Falsch):
     msg = "requires threading support"
     wenn module:
         wenn nicht can_start_thread:
-            raise unittest.SkipTest(msg)
+            wirf unittest.SkipTest(msg)
     sonst:
         gib unittest.skipUnless(can_start_thread, msg)
 
@@ -271,4 +271,4 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
 
         # If a worker thread raises an exception, re-raise it.
         wenn cm.exc_value is nicht Nichts:
-            raise cm.exc_value
+            wirf cm.exc_value

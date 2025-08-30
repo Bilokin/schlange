@@ -24,4 +24,4 @@ klasse NodeFilter:
     SHOW_NOTATION               = 0x00000800
 
     def acceptNode(self, node):
-        raise NotImplementedError
+        wirf NotImplementedError

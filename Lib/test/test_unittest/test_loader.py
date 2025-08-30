@@ -56,12 +56,12 @@ klasse Test_TestLoader(unittest.TestCase):
             pass
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             loader.loadTestsFromTestCase(NotATestCase)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail('Should raise TypeError')
+            self.fail('Should wirf TypeError')
 
     # "Return a suite of all test cases contained in the TestCase-derived
     # klasse testCaseClass"
@@ -165,7 +165,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # XXX Currently, it succeeds anyway. This flexibility
     # should either be documented oder loadTestsFromModule() should
-    # raise a TypeError
+    # wirf a TypeError
     #
     # XXX Certain people are using this behaviour. We'll add a test fuer it
     def test_loadTestsFromModule__not_a_module(self):
@@ -234,7 +234,7 @@ klasse Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
 
         def load_tests(loader, tests, pattern):
-            raise TypeError('some failure')
+            wirf TypeError('some failure')
         m.load_tests = load_tests
 
         loader = unittest.TestLoader()
@@ -267,12 +267,12 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromName__empty_name(self):
         loader = unittest.TestLoader()
 
-        try:
+        versuch:
             loader.loadTestsFromName('')
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(str(e), "Empty module name")
         sonst:
-            self.fail("TestLoader.loadTestsFromName failed to raise ValueError")
+            self.fail("TestLoader.loadTestsFromName failed to wirf ValueError")
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
@@ -367,10 +367,10 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # Does loadTestsFromName raise ValueError when passed an empty
+    # Does loadTestsFromName wirf ValueError when passed an empty
     # name relative to a provided module?
     #
-    # XXX Should probably raise a ValueError instead of an AttributeError
+    # XXX Should probably wirf a ValueError instead of an AttributeError
     def test_loadTestsFromName__relative_empty_name(self):
         loader = unittest.TestLoader()
 
@@ -394,7 +394,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromName__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise AttributeError oder ValueError?
+        # XXX Should this wirf AttributeError oder ValueError?
         suite = loader.loadTestsFromName('abc () //', unittest)
         error, test = self.check_deferred_error(loader, suite)
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -407,11 +407,11 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The method optionally resolves name relative to the given module"
     #
-    # Does loadTestsFromName raise TypeError when the `module` argument
+    # Does loadTestsFromName wirf TypeError when the `module` argument
     # isn't a module object?
     #
     # XXX Accepts the not-a-module object, ignoring the object's type
-    # This should raise an exception oder the method name should be changed
+    # This should wirf an exception oder the method name should be changed
     #
     # XXX Some people are relying on this, so keep it fuer now
     def test_loadTestsFromName__relative_not_a_module(self):
@@ -433,16 +433,16 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     #
-    # Does it raise an exception wenn the name resolves to an invalid
+    # Does it wirf an exception wenn the name resolves to an invalid
     # object?
     def test_loadTestsFromName__relative_bad_object(self):
         m = types.ModuleType('m')
         m.testcase_1 = object()
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             loader.loadTestsFromName('testcase_1', m)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("Should have raised TypeError")
@@ -498,7 +498,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     #
-    # Does loadTestsFromName() raise the proper exception when trying to
+    # Does loadTestsFromName() wirf the proper exception when trying to
     # resolve "a test method within a test case class" that doesn't exist
     # fuer the given name (relative to a provided module)?
     def test_loadTestsFromName__relative_invalid_testmethod(self):
@@ -598,12 +598,12 @@ klasse Test_TestLoader(unittest.TestCase):
         m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             suite = loader.loadTestsFromName('return_wrong', m)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("TestLoader.loadTestsFromName failed to raise TypeError")
+            self.fail("TestLoader.loadTestsFromName failed to wirf TypeError")
 
     # "The specifier can refer to modules und packages which have nicht been
     # imported; they will be imported als a side-effect"
@@ -615,7 +615,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sys.modules.pop(module_name, Nichts)
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             suite = loader.loadTestsFromName(module_name)
 
             self.assertIsInstance(suite, loader.suiteClass)
@@ -623,7 +623,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
             # module should now be loaded, thanks to loadTestsFromName()
             self.assertIn(module_name, sys.modules)
-        finally:
+        schliesslich:
             wenn module_name in sys.modules:
                 del sys.modules[module_name]
 
@@ -668,7 +668,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # What happens wenn that sequence of names is empty?
     #
-    # XXX Should this raise a ValueError oder just gib an empty TestSuite?
+    # XXX Should this wirf a ValueError oder just gib an empty TestSuite?
     def test_loadTestsFromNames__relative_empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -685,12 +685,12 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromNames__empty_name(self):
         loader = unittest.TestLoader()
 
-        try:
+        versuch:
             loader.loadTestsFromNames([''])
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(str(e), "Empty module name")
         sonst:
-            self.fail("TestLoader.loadTestsFromNames failed to raise ValueError")
+            self.fail("TestLoader.loadTestsFromNames failed to wirf ValueError")
 
     # "The specifier name is a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
@@ -701,7 +701,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromNames__malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise ValueError oder ImportError?
+        # XXX Should this wirf ValueError oder ImportError?
         suite = loader.loadTestsFromNames(['abc () //'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "Failed to importiere test module: abc () //"
@@ -774,7 +774,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # Do unknown attributes (relative to a provided module) still raise an
+    # Do unknown attributes (relative to a provided module) still wirf an
     # exception even in the presence of valid attribute names?
     def test_loadTestsFromNames__unknown_name_relative_2(self):
         loader = unittest.TestLoader()
@@ -820,7 +820,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromNames__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this raise AttributeError oder ValueError?
+        # XXX Should this wirf AttributeError oder ValueError?
         suite = loader.loadTestsFromNames(['abc () //'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -857,16 +857,16 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, oder a callable object which returns a
     # TestCase oder TestSuite instance."
     #
-    # Does it raise an exception wenn the name resolves to an invalid
+    # Does it wirf an exception wenn the name resolves to an invalid
     # object?
     def test_loadTestsFromNames__relative_bad_object(self):
         m = types.ModuleType('m')
         m.testcase_1 = object()
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             loader.loadTestsFromNames(['testcase_1'], m)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("Should have raised TypeError")
@@ -1023,12 +1023,12 @@ klasse Test_TestLoader(unittest.TestCase):
         m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             suite = loader.loadTestsFromNames(['return_wrong'], m)
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("TestLoader.loadTestsFromNames failed to raise TypeError")
+            self.fail("TestLoader.loadTestsFromNames failed to wirf TypeError")
 
     # "The specifier can refer to modules und packages which have nicht been
     # imported; they will be imported als a side-effect"
@@ -1040,7 +1040,7 @@ klasse Test_TestLoader(unittest.TestCase):
         sys.modules.pop(module_name, Nichts)
 
         loader = unittest.TestLoader()
-        try:
+        versuch:
             suite = loader.loadTestsFromNames([module_name])
 
             self.assertIsInstance(suite, loader.suiteClass)
@@ -1048,7 +1048,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
             # module should now be loaded, thanks to loadTestsFromName()
             self.assertIn(module_name, sys.modules)
-        finally:
+        schliesslich:
             wenn module_name in sys.modules:
                 del sys.modules[module_name]
 
@@ -1087,7 +1087,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Are not-TestCases handled gracefully?
     #
-    # XXX This should raise a TypeError, nicht gib a list
+    # XXX This should wirf a TypeError, nicht gib a list
     #
     # XXX It's too late in the 2.5 release cycle to fix this, but it should
     # probably be revisited fuer 2.6

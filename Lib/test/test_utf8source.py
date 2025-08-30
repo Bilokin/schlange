@@ -13,9 +13,9 @@ klasse PEP3120Test(unittest.TestCase):
         )
 
     def test_badsyntax(self):
-        try:
+        versuch:
             importiere test.tokenizedata.badsyntax_pep3120  # noqa: F401
-        except SyntaxError als msg:
+        ausser SyntaxError als msg:
             msg = str(msg).lower()
             self.assertWahr('utf-8' in msg)
         sonst:
@@ -28,9 +28,9 @@ klasse BuiltinCompileTests(unittest.TestCase):
     def test_latin1(self):
         # Allow compile() to read Latin-1 source.
         source_code = '# coding: Latin-1\nu = "Ç"\n'.encode("Latin-1")
-        try:
+        versuch:
             code = compile(source_code, '<dummy>', 'exec')
-        except SyntaxError:
+        ausser SyntaxError:
             self.fail("compile() cannot handle Latin-1 source")
         ns = {}
         exec(code, ns)

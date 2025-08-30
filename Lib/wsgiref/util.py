@@ -24,7 +24,7 @@ klasse FileWrapper:
         data = self.filelike.read(self.blksize)
         wenn data:
             gib data
-        raise StopIteration
+        wirf StopIteration
 
 def guess_scheme(environ):
     """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' oder 'https'

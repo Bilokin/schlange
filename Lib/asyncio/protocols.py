@@ -68,7 +68,7 @@ klasse Protocol(BaseProtocol):
 
     The user should implement this interface.  They can inherit from
     this klasse but don't need to.  The implementations here do
-    nothing (they don't raise exceptions).
+    nothing (they don't wirf exceptions).
 
     When the user wants to requests a transport, they pass a protocol
     factory to a utility function (e.g., EventLoop.create_connection()).
@@ -203,7 +203,7 @@ def _feed_data_to_buffered_proto(proto, data):
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
         wenn nicht buf_len:
-            raise RuntimeError('get_buffer() returned an empty buffer')
+            wirf RuntimeError('get_buffer() returned an empty buffer')
 
         wenn buf_len >= data_len:
             buf[:data_len] = data

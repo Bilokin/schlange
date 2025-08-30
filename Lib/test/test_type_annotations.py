@@ -115,13 +115,13 @@ klasse TypeAnnotationTests(unittest.TestCase):
             @__annotations__.setter
             def __annotations__(self, value):
                 wenn nicht isinstance(value, dict):
-                    raise ValueError("can only set __annotations__ to a dict")
+                    wirf ValueError("can only set __annotations__ to a dict")
                 self.my_annotations = value
 
             @__annotations__.deleter
             def __annotations__(self):
                 wenn getattr(self, 'my_annotations', Falsch) is Nichts:
-                    raise AttributeError('__annotations__')
+                    wirf AttributeError('__annotations__')
                 self.my_annotations = Nichts
 
         c = C()
@@ -219,43 +219,43 @@ klasse TestSetupAnnotations(unittest.TestCase):
 
     def test_try(self):
         self.check("""
-            try:
+            versuch:
                 x: int = 1
-            except:
+            ausser:
                 pass
         """)
         self.check("""
-            try:
+            versuch:
                 pass
-            except:
+            ausser:
                 pass
             sonst:
                 x: int = 1
         """)
         self.check("""
-            try:
+            versuch:
                 pass
-            except:
+            ausser:
                 pass
-            finally:
+            schliesslich:
                 x: int = 1
         """)
         self.check("""
-            try:
+            versuch:
                 1/0
-            except:
+            ausser:
                 x: int = 1
         """)
 
     def test_try_star(self):
         self.check("""
-            try:
+            versuch:
                 x: int = 1
             except* Exception:
                 pass
         """)
         self.check("""
-            try:
+            versuch:
                 pass
             except* Exception:
                 pass
@@ -263,15 +263,15 @@ klasse TestSetupAnnotations(unittest.TestCase):
                 x: int = 1
         """)
         self.check("""
-            try:
+            versuch:
                 pass
             except* Exception:
                 pass
-            finally:
+            schliesslich:
                 x: int = 1
         """)
         self.check("""
-            try:
+            versuch:
                 1/0
             except* Exception:
                 x: int = 1
@@ -607,7 +607,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
             mit Swallower():
                 wenn {cond}:
                     about_to_raise: int
-                    raise Exception
+                    wirf Exception
                 in_with: "with"
         """
         self.check_scopes(code, {"about_to_raise": int}, {"in_with": "with"})
@@ -638,13 +638,13 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_try(self):
         code = """
-            try:
+            versuch:
                 wenn {cond}:
-                    raise Exception
+                    wirf Exception
                 in_try: "try"
-            except Exception:
+            ausser Exception:
                 in_except: "except"
-            finally:
+            schliesslich:
                 in_finally: "finally"
         """
         self.check_scopes(
@@ -655,13 +655,13 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_try_star(self):
         code = """
-            try:
+            versuch:
                 wenn {cond}:
-                    raise Exception
+                    wirf Exception
                 in_try_star: "try"
             except* Exception:
                 in_except_star: "except"
-            finally:
+            schliesslich:
                 in_finally: "finally"
         """
         self.check_scopes(

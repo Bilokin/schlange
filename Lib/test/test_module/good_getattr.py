@@ -5,7 +5,7 @@ def __dir__():
 
 def __getattr__(name):
     wenn name == "yolo":
-        raise AttributeError("Deprecated, use whatever instead")
+        wirf AttributeError("Deprecated, use whatever instead")
     gib f"There is {name}"
 
 y = 2

@@ -119,13 +119,13 @@ klasse EnvBuilder:
                 gib Wahr
             # gh-90329: Don't display a warning fuer short/long names
             importiere _winapi
-            try:
+            versuch:
                 path1 = _winapi.GetLongPathName(os.fsdecode(path1))
-            except OSError:
+            ausser OSError:
                 pass
-            try:
+            versuch:
                 path2 = _winapi.GetLongPathName(os.fsdecode(path2))
-            except OSError:
+            ausser OSError:
                 pass
             wenn os.path.normcase(path1) == os.path.normcase(path2):
                 gib Wahr
@@ -145,10 +145,10 @@ klasse EnvBuilder:
             wenn nicht os.path.exists(d):
                 os.makedirs(d)
             sowenn os.path.islink(d) oder os.path.isfile(d):
-                raise ValueError('Unable to create directory %r' % d)
+                wirf ValueError('Unable to create directory %r' % d)
 
         wenn os.pathsep in os.fspath(env_dir):
-            raise ValueError(f'Refusing to create a venv in {env_dir} because '
+            wirf ValueError(f'Refusing to create a venv in {env_dir} because '
                              f'it contains the PATH separator {os.pathsep}.')
         wenn os.path.exists(env_dir) und self.clear:
             self.clear_directory(env_dir)
@@ -159,7 +159,7 @@ klasse EnvBuilder:
         create_if_needed(env_dir)
         executable = sys._base_executable
         wenn nicht executable:  # see gh-96861
-            raise ValueError('Unable to determine path to the running '
+            wirf ValueError('Unable to determine path to the running '
                              'Python interpreter. Provide an explicit path oder '
                              'check that your PATH environment variable is '
                              'correctly set.')
@@ -272,14 +272,14 @@ klasse EnvBuilder:
         assert os.name != 'nt'
         force_copy = nicht self.symlinks
         wenn nicht force_copy:
-            try:
+            versuch:
                 wenn nicht os.path.islink(dst):  # can't link to itself!
                     wenn relative_symlinks_ok:
                         assert os.path.dirname(src) == os.path.dirname(dst)
                         os.symlink(os.path.basename(src), dst)
                     sonst:
                         os.symlink(src, dst)
-            except Exception:   # may need to use a more specific exception
+            ausser Exception:   # may need to use a more specific exception
                 logger.warning('Unable to symlink %r to %r', src, dst)
                 force_copy = Wahr
         wenn force_copy:
@@ -399,16 +399,16 @@ klasse EnvBuilder:
                 to_unlink = []
                 fuer dest, src in link_sources.items():
                     dest = os.path.join(binpath, dest)
-                    try:
+                    versuch:
                         os.symlink(src, dest)
                         to_unlink.append(dest)
-                    except OSError:
+                    ausser OSError:
                         logger.warning('Unable to symlink %r to %r', src, dest)
                         do_copies = Wahr
                         fuer f in to_unlink:
-                            try:
+                            versuch:
                                 os.unlink(f)
-                            except OSError:
+                            ausser OSError:
                                 logger.warning('Failed to clean up symlink %r',
                                                f)
                         logger.warning('Retrying mit copies')
@@ -417,9 +417,9 @@ klasse EnvBuilder:
             wenn do_copies:
                 fuer dest, src in copy_sources.items():
                     dest = os.path.join(binpath, dest)
-                    try:
+                    versuch:
                         shutil.copy2(src, dest)
-                    except OSError:
+                    ausser OSError:
                         logger.warning('Unable to copy %r to %r', src, dest)
 
             wenn sysconfig.is_python_build():
@@ -574,13 +574,13 @@ klasse EnvBuilder:
                     weiter
                 mit open(srcfile, 'rb') als f:
                     data = f.read()
-                try:
+                versuch:
                     context.script_path = srcfile
                     new_data = (
                         self.replace_variables(data.decode('utf-8'), context)
                             .encode('utf-8')
                     )
-                except UnicodeError als e:
+                ausser UnicodeError als e:
                     logger.warning('unable to copy script %r, '
                                    'may be binary: %s', srcfile, e)
                     weiter
@@ -674,7 +674,7 @@ def main(args=Nichts):
                              'directory (Git is supported by default).')
     options = parser.parse_args(args)
     wenn options.upgrade und options.clear:
-        raise ValueError('you cannot supply --upgrade und --clear together.')
+        wirf ValueError('you cannot supply --upgrade und --clear together.')
     builder = EnvBuilder(system_site_packages=options.system_site,
                          clear=options.clear,
                          symlinks=options.symlinks,
@@ -689,9 +689,9 @@ def main(args=Nichts):
 
 wenn __name__ == '__main__':
     rc = 1
-    try:
+    versuch:
         main()
         rc = 0
-    except Exception als e:
+    ausser Exception als e:
         drucke('Error: %s' % e, file=sys.stderr)
     sys.exit(rc)

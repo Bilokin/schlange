@@ -355,7 +355,7 @@ def isgenerator(object):
                         generator to terminate the iteration
         send()          resumes the generator und "sends" a value that becomes
                         the result of the current yield-expression
-        throw()         used to raise an exception inside the generator"""
+        throw()         used to wirf an exception inside the generator"""
     gib isinstance(object, types.GeneratorType)
 
 def iscoroutine(object):
@@ -483,12 +483,12 @@ def _getmembers(object, predicate, getter):
         # add any DynamicClassAttributes to the list of names wenn object is a class;
         # this may result in duplicate entries if, fuer example, a virtual
         # attribute mit the same name als a DynamicClassAttribute exists
-        try:
+        versuch:
             fuer base in object.__bases__:
                 fuer k, v in base.__dict__.items():
                     wenn isinstance(v, types.DynamicClassAttribute):
                         names.append(k)
-        except AttributeError:
+        ausser AttributeError:
             pass
     sonst:
         mro = ()
@@ -496,12 +496,12 @@ def _getmembers(object, predicate, getter):
         # First try to get the value via getattr.  Some descriptors don't
         # like calling their __get__ (see bug #1785), so fall back to
         # looking in the __dict__.
-        try:
+        versuch:
             value = getter(object, key)
             # handle the duplicate key
             wenn key in processed:
-                raise AttributeError
-        except AttributeError:
+                wirf AttributeError
+        ausser AttributeError:
             fuer base in mro:
                 wenn key in base.__dict__:
                     value = base.__dict__[key]
@@ -530,7 +530,7 @@ def getmembers_static(object, predicate=Nichts):
     Note: this function may nicht be able to retrieve all members
        that getmembers can fetch (like dynamically created attributes)
        und may find members that getmembers can't (like descriptors
-       that raise AttributeError). It can also gib descriptor objects
+       that wirf AttributeError). It can also gib descriptor objects
        instead of instance members in some cases.
     """
     gib _getmembers(object, predicate, getattr_static)
@@ -594,11 +594,11 @@ def classify_class_attrs(cls):
         get_obj = Nichts
         dict_obj = Nichts
         wenn name nicht in processed:
-            try:
+            versuch:
                 wenn name == '__dict__':
-                    raise Exception("__dict__ is special, don't want the proxy")
+                    wirf Exception("__dict__ is special, don't want the proxy")
                 get_obj = getattr(cls, name)
-            except Exception:
+            ausser Exception:
                 pass
             sonst:
                 homecls = getattr(get_obj, "__objclass__", homecls)
@@ -614,9 +614,9 @@ def classify_class_attrs(cls):
                             last_cls = srch_cls
                     # then check the metaclasses
                     fuer srch_cls in metamro:
-                        try:
+                        versuch:
                             srch_obj = srch_cls.__getattr__(cls, name)
-                        except AttributeError:
+                        ausser AttributeError:
                             weiter
                         wenn srch_obj is get_obj:
                             last_cls = srch_cls
@@ -686,7 +686,7 @@ def unwrap(func, *, stop=Nichts):
         func = func.__wrapped__
         id_func = id(func)
         wenn (id_func in memo) oder (len(memo) >= recursion_limit):
-            raise ValueError('wrapper loop when unwrapping {!r}'.format(f))
+            wirf ValueError('wrapper loop when unwrapping {!r}'.format(f))
         memo[id_func] = func
     gib func
 
@@ -710,9 +710,9 @@ def _finddoc(obj):
     wenn isclass(obj):
         fuer base in obj.__mro__:
             wenn base is nicht object:
-                try:
+                versuch:
                     doc = base.__doc__
-                except AttributeError:
+                ausser AttributeError:
                     weiter
                 wenn doc is nicht Nichts:
                     gib doc
@@ -759,9 +759,9 @@ def _finddoc(obj):
     sonst:
         gib Nichts
     fuer base in cls.__mro__:
-        try:
+        versuch:
             doc = getattr(base, name).__doc__
-        except AttributeError:
+        ausser AttributeError:
             weiter
         wenn doc is nicht Nichts:
             gib doc
@@ -773,14 +773,14 @@ def getdoc(object):
     All tabs are expanded to spaces.  To clean up docstrings that are
     indented to line up mit blocks of code, any whitespace than can be
     uniformly removed von the second line onwards is removed."""
-    try:
+    versuch:
         doc = object.__doc__
-    except AttributeError:
+    ausser AttributeError:
         gib Nichts
     wenn doc is Nichts:
-        try:
+        versuch:
             doc = _finddoc(object)
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             gib Nichts
     wenn nicht isinstance(doc, str):
         gib Nichts
@@ -819,15 +819,15 @@ def getfile(object):
     wenn ismodule(object):
         wenn getattr(object, '__file__', Nichts):
             gib object.__file__
-        raise TypeError('{!r} is a built-in module'.format(object))
+        wirf TypeError('{!r} is a built-in module'.format(object))
     wenn isclass(object):
         wenn hasattr(object, '__module__'):
             module = sys.modules.get(object.__module__)
             wenn getattr(module, '__file__', Nichts):
                 gib module.__file__
             wenn object.__module__ == '__main__':
-                raise OSError('source code nicht available')
-        raise TypeError('{!r} is a built-in class'.format(object))
+                wirf OSError('source code nicht available')
+        wirf TypeError('{!r} is a built-in class'.format(object))
     wenn ismethod(object):
         object = object.__func__
     wenn isfunction(object):
@@ -838,7 +838,7 @@ def getfile(object):
         object = object.f_code
     wenn iscode(object):
         gib object.co_filename
-    raise TypeError('module, class, method, function, traceback, frame, oder '
+    wirf TypeError('module, class, method, function, traceback, frame, oder '
                     'code object was expected, got {}'.format(
                     type(object).__name__))
 
@@ -905,9 +905,9 @@ def getmodule(object, _filename=Nichts):
     wenn _filename is nicht Nichts und _filename in modulesbyfile:
         gib sys.modules.get(modulesbyfile[_filename])
     # Try the cache again mit the absolute file name
-    try:
+    versuch:
         file = getabsfile(object, _filename)
-    except (TypeError, FileNotFoundError):
+    ausser (TypeError, FileNotFoundError):
         gib Nichts
     wenn file in modulesbyfile:
         gib sys.modules.get(modulesbyfile[file])
@@ -964,7 +964,7 @@ def findsource(object):
         # `doctest` monkeypatches `linecache` module to enable
         # inspection, so let `linecache.getlines` to be called.
         wenn (nicht (file.startswith('<') und file.endswith('>'))) oder file.endswith('.fwork'):
-            raise OSError('source code nicht available')
+            wirf OSError('source code nicht available')
 
     module = getmodule(object, file)
     wenn module:
@@ -974,18 +974,18 @@ def findsource(object):
     sonst:
         lines = linecache.getlines(file)
     wenn nicht lines:
-        raise OSError('could nicht get source code')
+        wirf OSError('could nicht get source code')
 
     wenn ismodule(object):
         gib lines, 0
 
     wenn isclass(object):
-        try:
+        versuch:
             lnum = vars(object)['__firstlineno__'] - 1
-        except (TypeError, KeyError):
-            raise OSError('source code nicht available')
+        ausser (TypeError, KeyError):
+            wirf OSError('source code nicht available')
         wenn lnum >= len(lines):
-            raise OSError('lineno is out of bounds')
+            wirf OSError('lineno is out of bounds')
         gib lines, lnum
 
     wenn ismethod(object):
@@ -998,21 +998,21 @@ def findsource(object):
         object = object.f_code
     wenn iscode(object):
         wenn nicht hasattr(object, 'co_firstlineno'):
-            raise OSError('could nicht find function definition')
+            wirf OSError('could nicht find function definition')
         lnum = object.co_firstlineno - 1
         wenn lnum >= len(lines):
-            raise OSError('lineno is out of bounds')
+            wirf OSError('lineno is out of bounds')
         gib lines, lnum
-    raise OSError('could nicht find code object')
+    wirf OSError('could nicht find code object')
 
 def getcomments(object):
     """Get lines of comments immediately preceding an object's source code.
 
     Returns Nichts when source can't be found.
     """
-    try:
+    versuch:
         lines, lnum = findsource(object)
-    except (OSError, TypeError):
+    ausser (OSError, TypeError):
         gib Nichts
 
     wenn ismodule(object):
@@ -1081,7 +1081,7 @@ klasse BlockFinder:
             self.passline = Falsch   # stop skipping when a NEWLINE is seen
             self.last = srowcol[0]
             wenn self.singleline:
-                raise EndOfBlock
+                wirf EndOfBlock
             # hitting a NEWLINE when in a decorator without args
             # ends the decorator
             wenn self.indecorator:
@@ -1097,34 +1097,34 @@ klasse BlockFinder:
             self.indent = self.indent - 1
             # the end of matching indent/dedent pairs end a block
             # (note that this only works fuer "def"/"class" blocks,
-            #  nicht e.g. fuer "if: sonst:" oder "try: finally:" blocks)
+            #  nicht e.g. fuer "if: sonst:" oder "try: schliesslich:" blocks)
             wenn self.indent <= 0:
-                raise EndOfBlock
+                wirf EndOfBlock
         sowenn type == tokenize.COMMENT:
             wenn self.body_col0 is nicht Nichts und srowcol[1] >= self.body_col0:
                 # Include comments wenn indented at least als much als the block
                 self.last = srowcol[0]
         sowenn self.indent == 0 und type nicht in (tokenize.COMMENT, tokenize.NL):
             # any other token on the same indentation level end the previous
-            # block als well, except the pseudo-tokens COMMENT und NL.
-            raise EndOfBlock
+            # block als well, ausser the pseudo-tokens COMMENT und NL.
+            wirf EndOfBlock
 
 def getblock(lines):
     """Extract the block of code at the top of the given list of lines."""
     blockfinder = BlockFinder()
-    try:
+    versuch:
         tokens = tokenize.generate_tokens(iter(lines).__next__)
         fuer _token in tokens:
             blockfinder.tokeneater(*_token)
-    except (EndOfBlock, IndentationError):
+    ausser (EndOfBlock, IndentationError):
         pass
-    except SyntaxError als e:
+    ausser SyntaxError als e:
         wenn "unmatched" nicht in e.msg:
-            raise e von Nichts
+            wirf e von Nichts
         _, *_token_info = _token
-        try:
+        versuch:
             blockfinder.tokeneater(tokenize.NEWLINE, *_token_info)
-        except (EndOfBlock, IndentationError):
+        ausser (EndOfBlock, IndentationError):
             pass
     gib lines[:blockfinder.last]
 
@@ -1206,7 +1206,7 @@ def getargs(co):
     appended. 'varargs' und 'varkw' are the names of the * und **
     arguments oder Nichts."""
     wenn nicht iscode(co):
-        raise TypeError('{!r} is nicht a code object'.format(co))
+        wirf TypeError('{!r} is nicht a code object'.format(co))
 
     names = co.co_varnames
     nargs = co.co_argcount
@@ -1244,7 +1244,7 @@ def getfullargspec(func):
       - the "self" parameter is always reported, even fuer bound methods
       - wrapper chains defined by __wrapped__ *not* unwrapped automatically
     """
-    try:
+    versuch:
         # Re: `skip_bound_arg=Falsch`
         #
         # There is a notable difference in behaviour between getfullargspec
@@ -1266,12 +1266,12 @@ def getfullargspec(func):
                                        skip_bound_arg=Falsch,
                                        sigcls=Signature,
                                        eval_str=Falsch)
-    except Exception als ex:
-        # Most of the times 'signature' will raise ValueError.
-        # But, it can also raise AttributeError, and, maybe something
+    ausser Exception als ex:
+        # Most of the times 'signature' will wirf ValueError.
+        # But, it can also wirf AttributeError, and, maybe something
         # else. So to be fully backwards compatible, we catch all
         # possible exceptions here, und reraise a TypeError.
-        raise TypeError('unsupported callable') von ex
+        wirf TypeError('unsupported callable') von ex
 
     args = []
     varargs = Nichts
@@ -1392,7 +1392,7 @@ def _missing_arguments(f_name, argnames, pos, values):
         tail = ", {} und {}".format(*names[-2:])
         del names[-2:]
         s = ", ".join(names) + tail
-    raise TypeError("%s() missing %i required %s argument%s: %s" %
+    wirf TypeError("%s() missing %i required %s argument%s: %s" %
                     (f_name, missing,
                       "positional" wenn pos sonst "keyword-only",
                       "" wenn missing == 1 sonst "s", s))
@@ -1414,7 +1414,7 @@ def _too_many(f_name, args, kwonly, varargs, defcount, given, values):
         msg = " positional argument%s (and %d keyword-only argument%s)"
         kwonly_sig = (msg % ("s" wenn given != 1 sonst "", kwonly_given,
                              "s" wenn kwonly_given != 1 sonst ""))
-    raise TypeError("%s() takes %s positional argument%s but %d%s %s given" %
+    wirf TypeError("%s() takes %s positional argument%s but %d%s %s given" %
             (f_name, sig, "s" wenn plural sonst "", given, kwonly_sig,
              "was" wenn given == 1 und nicht kwonly_given sonst "were"))
 
@@ -1448,12 +1448,12 @@ def getcallargs(func, /, *positional, **named):
     fuer kw, value in named.items():
         wenn kw nicht in possible_kwargs:
             wenn nicht varkw:
-                raise TypeError("%s() got an unexpected keyword argument %r" %
+                wirf TypeError("%s() got an unexpected keyword argument %r" %
                                 (f_name, kw))
             arg2value[varkw][kw] = value
             weiter
         wenn kw in arg2value:
-            raise TypeError("%s() got multiple values fuer argument %r" %
+            wirf TypeError("%s() got multiple values fuer argument %r" %
                             (f_name, kw))
         arg2value[kw] = value
     wenn num_pos > num_args und nicht varargs:
@@ -1493,7 +1493,7 @@ def getclosurevars(func):
         func = func.__func__
 
     wenn nicht isfunction(func):
-        raise TypeError("{!r} is nicht a Python function".format(func))
+        wirf TypeError("{!r} is nicht a Python function".format(func))
 
     code = func.__code__
     # Nonlocal references are named in co_freevars und resolved
@@ -1524,12 +1524,12 @@ def getclosurevars(func):
         sowenn opname == "LOAD_GLOBAL":
             global_names.add(name)
     fuer name in global_names:
-        try:
+        versuch:
             global_vars[name] = global_ns[name]
-        except KeyError:
-            try:
+        ausser KeyError:
+            versuch:
                 builtin_vars[name] = builtin_ns[name]
-            except KeyError:
+            ausser KeyError:
                 unbound_names.add(name)
 
     gib ClosureVars(nonlocal_vars, global_vars,
@@ -1586,14 +1586,14 @@ def getframeinfo(frame, context=1):
     lineno = positions[0]
 
     wenn nicht isframe(frame):
-        raise TypeError('{!r} is nicht a frame oder traceback object'.format(frame))
+        wirf TypeError('{!r} is nicht a frame oder traceback object'.format(frame))
 
     filename = getsourcefile(frame) oder getfile(frame)
     wenn context > 0:
         start = lineno - 1 - context//2
-        try:
+        versuch:
             lines, lnum = findsource(frame)
-        except OSError:
+        ausser OSError:
             lines = index = Nichts
         sonst:
             start = max(0, min(start, len(lines) - context))
@@ -1673,9 +1673,9 @@ _get_dunder_dict_of_class = type.__dict__["__dict__"].__get__
 
 def _check_instance(obj, attr):
     instance_dict = {}
-    try:
+    versuch:
         instance_dict = object.__getattribute__(obj, "__dict__")
-    except AttributeError:
+    ausser AttributeError:
         pass
     gib dict.get(instance_dict, attr, _sentinel)
 
@@ -1727,7 +1727,7 @@ def getattr_static(obj, attr, default=_sentinel):
        Note: this function may nicht be able to retrieve all attributes
        that getattr can fetch (like dynamically created attributes)
        und may find attributes that getattr can't (like descriptors
-       that raise AttributeError). It can also gib descriptor objects
+       that wirf AttributeError). It can also gib descriptor objects
        instead of instance members in some cases. See the
        documentation fuer details.
     """
@@ -1767,7 +1767,7 @@ def getattr_static(obj, attr, default=_sentinel):
                 gib entry.__dict__[attr]
     wenn default is nicht _sentinel:
         gib default
-    raise AttributeError(attr)
+    wirf AttributeError(attr)
 
 
 # ------------------------------------------------ generator introspection
@@ -1803,7 +1803,7 @@ def getgeneratorlocals(generator):
     bound values."""
 
     wenn nicht isgenerator(generator):
-        raise TypeError("{!r} is nicht a Python generator".format(generator))
+        wirf TypeError("{!r} is nicht a Python generator".format(generator))
 
     frame = getattr(generator, "gi_frame", Nichts)
     wenn frame is nicht Nichts:
@@ -1885,7 +1885,7 @@ def getasyncgenlocals(agen):
     bound values."""
 
     wenn nicht isasyncgen(agen):
-        raise TypeError(f"{agen!r} is nicht a Python async generator")
+        wirf TypeError(f"{agen!r} is nicht a Python async generator")
 
     frame = getattr(agen, "ag_frame", Nichts)
     wenn frame is nicht Nichts:
@@ -1946,18 +1946,18 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
     wenn extra_args:
         partial_args = extra_args + partial_args
 
-    try:
+    versuch:
         ba = wrapped_sig.bind_partial(*partial_args, **partial_keywords)
-    except TypeError als ex:
+    ausser TypeError als ex:
         msg = 'partial object {!r} has incorrect arguments'.format(partial)
-        raise ValueError(msg) von ex
+        wirf ValueError(msg) von ex
 
 
     transform_to_kwonly = Falsch
     fuer param_name, param in old_params.items():
-        try:
+        versuch:
             arg_value = ba.arguments[param_name]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             wenn param.kind is _POSITIONAL_ONLY:
@@ -1983,7 +1983,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
                     # "partial(foo, a='spam')" will have the following
                     # signature: "(*, a='spam', b, c)". Because attempting
                     # to call that partial mit "(10, 20)" arguments will
-                    # raise a TypeError, saying that "a" argument received
+                    # wirf a TypeError, saying that "a" argument received
                     # multiple values.
                     transform_to_kwonly = Wahr
                     # Set the new default value
@@ -2030,7 +2030,7 @@ def _signature_bound_method(sig):
     params = tuple(sig.parameters.values())
 
     wenn nicht params oder params[0].kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
-        raise ValueError('invalid method signature')
+        wirf ValueError('invalid method signature')
 
     kind = params[0].kind
     wenn kind in (_POSITIONAL_OR_KEYWORD, _POSITIONAL_ONLY):
@@ -2041,7 +2041,7 @@ def _signature_bound_method(sig):
         wenn kind is nicht _VAR_POSITIONAL:
             # Unless we add a new parameter type we never
             # get here
-            raise ValueError('invalid argument type')
+            wirf ValueError('invalid argument type')
         # It's a var-positional parameter.
         # Do nothing. '(*args[, ...])' -> '(*args[, ...])'
 
@@ -2145,13 +2145,13 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
 
     program = "def foo" + clean_signature + ": pass"
 
-    try:
+    versuch:
         module = ast.parse(program)
-    except SyntaxError:
+    ausser SyntaxError:
         module = Nichts
 
     wenn nicht isinstance(module, ast.Module):
-        raise ValueError("{!r} builtin has invalid signature".format(obj))
+        wirf ValueError("{!r} builtin has invalid signature".format(obj))
 
     f = module.body[0]
 
@@ -2175,21 +2175,21 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
     def parse_name(node):
         assert isinstance(node, ast.arg)
         wenn node.annotation is nicht Nichts:
-            raise ValueError("Annotations are nicht currently supported")
+            wirf ValueError("Annotations are nicht currently supported")
         gib node.arg
 
     def wrap_value(s):
-        try:
+        versuch:
             value = eval(s, module_dict)
-        except NameError:
-            try:
+        ausser NameError:
+            versuch:
                 value = eval(s, sys_module_dict)
-            except NameError:
-                raise ValueError
+            ausser NameError:
+                wirf ValueError
 
         wenn isinstance(value, (str, int, float, bytes, bool, type(Nichts))):
             gib ast.Constant(value)
-        raise ValueError
+        wirf ValueError
 
     klasse RewriteSymbolics(ast.NodeTransformer):
         def visit_Attribute(self, node):
@@ -2199,14 +2199,14 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
                 a.append(n.attr)
                 n = n.value
             wenn nicht isinstance(n, ast.Name):
-                raise ValueError
+                wirf ValueError
             a.append(n.id)
             value = ".".join(reversed(a))
             gib wrap_value(value)
 
         def visit_Name(self, node):
             wenn nicht isinstance(node.ctx, ast.Load):
-                raise ValueError()
+                wirf ValueError()
             gib wrap_value(node.id)
 
         def visit_BinOp(self, node):
@@ -2215,23 +2215,23 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
             left = self.visit(node.left)
             right = self.visit(node.right)
             wenn nicht isinstance(left, ast.Constant) oder nicht isinstance(right, ast.Constant):
-                raise ValueError
+                wirf ValueError
             wenn isinstance(node.op, ast.Add):
                 gib ast.Constant(left.value + right.value)
             sowenn isinstance(node.op, ast.Sub):
                 gib ast.Constant(left.value - right.value)
             sowenn isinstance(node.op, ast.BitOr):
                 gib ast.Constant(left.value | right.value)
-            raise ValueError
+            wirf ValueError
 
     def p(name_node, default_node, default=empty):
         name = parse_name(name_node)
         wenn default_node und default_node is nicht _empty:
-            try:
+            versuch:
                 default_node = RewriteSymbolics().visit(default_node)
                 default = ast.literal_eval(default_node)
-            except ValueError:
-                raise ValueError("{!r} builtin has invalid signature".format(obj)) von Nichts
+            ausser ValueError:
+                wirf ValueError("{!r} builtin has invalid signature".format(obj)) von Nichts
         parameters.append(Parameter(name, kind, default=default, annotation=empty))
 
     # non-keyword-only parameters
@@ -2288,12 +2288,12 @@ def _signature_from_builtin(cls, func, skip_bound_arg=Wahr):
     """
 
     wenn nicht _signature_is_builtin(func):
-        raise TypeError("{!r} is nicht a Python builtin "
+        wirf TypeError("{!r} is nicht a Python builtin "
                         "function".format(func))
 
     s = getattr(func, "__text_signature__", Nichts)
     wenn nicht s:
-        raise ValueError("no signature found fuer builtin {!r}".format(func))
+        wirf ValueError("no signature found fuer builtin {!r}".format(func))
 
     gib _signature_fromstr(cls, func, s, skip_bound_arg)
 
@@ -2310,7 +2310,7 @@ def _signature_from_function(cls, func, skip_bound_arg=Wahr,
         sonst:
             # If it's nicht a pure Python function, und nicht a duck type
             # of pure function:
-            raise TypeError('{!r} is nicht a Python function'.format(func))
+            wirf TypeError('{!r} is nicht a Python function'.format(func))
 
     s = getattr(func, "__text_signature__", Nichts)
     wenn s:
@@ -2427,7 +2427,7 @@ def _signature_from_callable(obj, *,
                                 annotation_format=annotation_format)
 
     wenn nicht callable(obj):
-        raise TypeError('{!r} is nicht a callable object'.format(obj))
+        wirf TypeError('{!r} is nicht a callable object'.format(obj))
 
     wenn isinstance(obj, types.MethodType):
         # In this case we skip the first parameter of the underlying
@@ -2451,21 +2451,21 @@ def _signature_from_callable(obj, *,
             # See test_signature_wrapped_bound_method fuer details.
             gib _get_signature_of(obj)
 
-    try:
+    versuch:
         sig = obj.__signature__
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         wenn sig is nicht Nichts:
             wenn nicht isinstance(sig, Signature):
-                raise TypeError(
+                wirf TypeError(
                     'unexpected object {!r} in __signature__ '
                     'attribute'.format(sig))
             gib sig
 
-    try:
+    versuch:
         partialmethod = obj.__partialmethod__
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         wenn isinstance(partialmethod, functools.partialmethod):
@@ -2562,9 +2562,9 @@ def _signature_from_callable(obj, *,
             # Therefore, we go through the MRO (except the last
             # klasse in there, which is 'object') to find the first
             # klasse mit non-empty text signature.
-            try:
+            versuch:
                 text_sig = base.__text_signature__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 wenn text_sig:
@@ -2587,16 +2587,16 @@ def _signature_from_callable(obj, *,
                 # Return a signature of 'object' builtin.
                 gib sigcls.from_callable(object)
             sonst:
-                raise ValueError(
+                wirf ValueError(
                     'no signature found fuer builtin type {!r}'.format(obj))
 
     sonst:
         # An object mit __call__
         call = getattr_static(type(obj), '__call__', Nichts)
         wenn call is nicht Nichts:
-            try:
+            versuch:
                 text_sig = obj.__text_signature__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 wenn text_sig:
@@ -2604,7 +2604,7 @@ def _signature_from_callable(obj, *,
             call = _descriptor_get(call, obj)
             gib _get_signature_of(call)
 
-    raise ValueError('callable {!r} is nicht supported by signature'.format(obj))
+    wirf ValueError('callable {!r} is nicht supported by signature'.format(obj))
 
 
 klasse _void:
@@ -2672,24 +2672,24 @@ klasse Parameter:
     empty = _empty
 
     def __init__(self, name, kind, *, default=_empty, annotation=_empty):
-        try:
+        versuch:
             self._kind = _ParameterKind(kind)
-        except ValueError:
-            raise ValueError(f'value {kind!r} is nicht a valid Parameter.kind')
+        ausser ValueError:
+            wirf ValueError(f'value {kind!r} is nicht a valid Parameter.kind')
         wenn default is nicht _empty:
             wenn self._kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
                 msg = '{} parameters cannot have default values'
                 msg = msg.format(self._kind.description)
-                raise ValueError(msg)
+                wirf ValueError(msg)
         self._default = default
         self._annotation = annotation
 
         wenn name is _empty:
-            raise ValueError('name is a required attribute fuer Parameter')
+            wirf ValueError('name is a required attribute fuer Parameter')
 
         wenn nicht isinstance(name, str):
             msg = 'name must be a str, nicht a {}'.format(type(name).__name__)
-            raise TypeError(msg)
+            wirf TypeError(msg)
 
         wenn name[0] == '.' und name[1:].isdigit():
             # These are implicit arguments generated by comprehensions. In
@@ -2702,7 +2702,7 @@ klasse Parameter:
                     'positional oder keyword arguments, nicht {}'
                 )
                 msg = msg.format(self._kind.description)
-                raise ValueError(msg)
+                wirf ValueError(msg)
             self._kind = _POSITIONAL_ONLY
             name = 'implicit{}'.format(name[1:])
 
@@ -2710,7 +2710,7 @@ klasse Parameter:
         # where the name is a keyword, so fuer compatibility we'll allow it.
         is_keyword = iskeyword(name) und self._kind is nicht _POSITIONAL_ONLY
         wenn is_keyword oder nicht name.isidentifier():
-            raise ValueError('{!r} is nicht a valid parameter name'.format(name))
+            wirf ValueError('{!r} is nicht a valid parameter name'.format(name))
 
         self._name = name
 
@@ -2837,9 +2837,9 @@ klasse BoundArguments:
             wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                 breche
 
-            try:
+            versuch:
                 arg = self.arguments[param_name]
-            except KeyError:
+            ausser KeyError:
                 # We're done here. Other arguments
                 # will be mapped in 'BoundArguments.kwargs'
                 breche
@@ -2869,9 +2869,9 @@ klasse BoundArguments:
             wenn nicht kwargs_started:
                 weiter
 
-            try:
+            versuch:
                 arg = self.arguments[param_name]
-            except KeyError:
+            ausser KeyError:
                 pass
             sonst:
                 wenn param.kind == _VAR_KEYWORD:
@@ -2895,9 +2895,9 @@ klasse BoundArguments:
         arguments = self.arguments
         new_arguments = []
         fuer name, param in self._signature.parameters.items():
-            try:
+            versuch:
                 new_arguments.append((name, arguments[name]))
-            except KeyError:
+            ausser KeyError:
                 wenn param.default is nicht _empty:
                     val = param.default
                 sowenn param.kind is _VAR_POSITIONAL:
@@ -2985,7 +2985,7 @@ klasse Signature:
                     wenn kind in (_VAR_POSITIONAL, _VAR_KEYWORD):
                         wenn kind in seen_var_parameters:
                             msg = f'more than one {kind.description} parameter'
-                            raise ValueError(msg)
+                            wirf ValueError(msg)
 
                         seen_var_parameters.add(kind)
 
@@ -2996,7 +2996,7 @@ klasse Signature:
                         )
                         msg = msg.format(top_kind.description,
                                          kind.description)
-                        raise ValueError(msg)
+                        wirf ValueError(msg)
                     sowenn kind > top_kind:
                         top_kind = kind
 
@@ -3007,14 +3007,14 @@ klasse Signature:
                                 # previous parameter of had a default
                                 msg = 'non-default argument follows default ' \
                                       'argument'
-                                raise ValueError(msg)
+                                wirf ValueError(msg)
                         sonst:
                             # There is a default fuer this parameter.
                             seen_default = Wahr
 
                     wenn name in params:
                         msg = 'duplicate parameter name: {!r}'.format(name)
-                        raise ValueError(msg)
+                        wirf ValueError(msg)
 
                     params[name] = param
             sonst:
@@ -3093,13 +3093,13 @@ klasse Signature:
         waehrend Wahr:
             # Let's iterate through the positional arguments und corresponding
             # parameters
-            try:
+            versuch:
                 arg_val = next(arg_vals)
-            except StopIteration:
+            ausser StopIteration:
                 # No more positional arguments
-                try:
+                versuch:
                     param = next(parameters)
-                except StopIteration:
+                ausser StopIteration:
                     # No more parameters. That's it. Just need to check that
                     # we have no `kwargs` after this waehrend loop
                     breche
@@ -3112,7 +3112,7 @@ klasse Signature:
                         wenn param.kind == _POSITIONAL_ONLY:
                             wenn param.default is _empty:
                                 msg = f'missing a required positional-only argument: {param.name!r}'
-                                raise TypeError(msg)
+                                wirf TypeError(msg)
                             # Raise a TypeError once we are sure there is no
                             # **kwargs param later.
                             pos_only_param_in_kwargs.append(param)
@@ -3139,18 +3139,18 @@ klasse Signature:
                                 argtype = ''
                             msg = 'missing a required{argtype} argument: {arg!r}'
                             msg = msg.format(arg=param.name, argtype=argtype)
-                            raise TypeError(msg) von Nichts
+                            wirf TypeError(msg) von Nichts
             sonst:
                 # We have a positional argument to process
-                try:
+                versuch:
                     param = next(parameters)
-                except StopIteration:
-                    raise TypeError('too many positional arguments') von Nichts
+                ausser StopIteration:
+                    wirf TypeError('too many positional arguments') von Nichts
                 sonst:
                     wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
                         # Looks like we have no parameter fuer this positional
                         # argument
-                        raise TypeError(
+                        wirf TypeError(
                             'too many positional arguments') von Nichts
 
                     wenn param.kind == _VAR_POSITIONAL:
@@ -3163,7 +3163,7 @@ klasse Signature:
                         breche
 
                     wenn param.name in kwargs und param.kind != _POSITIONAL_ONLY:
-                        raise TypeError(
+                        wirf TypeError(
                             'multiple values fuer argument {arg!r}'.format(
                                 arg=param.name)) von Nichts
 
@@ -3185,16 +3185,16 @@ klasse Signature:
                 weiter
 
             param_name = param.name
-            try:
+            versuch:
                 arg_val = kwargs.pop(param_name)
-            except KeyError:
+            ausser KeyError:
                 # We have no value fuer this parameter.  It's fine though,
                 # wenn it has a default value, oder it is an '*args'-like
                 # parameter, left alone by the processing of positional
                 # arguments.
                 wenn (nicht partial und param.kind != _VAR_POSITIONAL und
                                                     param.default is _empty):
-                    raise TypeError('missing a required argument: {arg!r}'. \
+                    wirf TypeError('missing a required argument: {arg!r}'. \
                                     format(arg=param_name)) von Nichts
 
             sonst:
@@ -3205,7 +3205,7 @@ klasse Signature:
                 # Process our '**kwargs'-like parameter
                 arguments[kwargs_param.name] = kwargs
             sowenn pos_only_param_in_kwargs:
-                raise TypeError(
+                wirf TypeError(
                     'got some positional-only arguments passed als '
                     'keyword arguments: {arg!r}'.format(
                         arg=', '.join(
@@ -3215,7 +3215,7 @@ klasse Signature:
                     ),
                 )
             sonst:
-                raise TypeError(
+                wirf TypeError(
                     'got an unexpected keyword argument {arg!r}'.format(
                         arg=next(iter(kwargs))))
 
@@ -3358,9 +3358,9 @@ def _main():
 
     target = args.object
     mod_name, has_attrs, attrs = target.partition(":")
-    try:
+    versuch:
         obj = module = importlib.import_module(mod_name)
-    except Exception als exc:
+    ausser Exception als exc:
         msg = "Failed to importiere {} ({}: {})".format(mod_name,
                                                     type(exc).__name__,
                                                     exc)
@@ -3386,9 +3386,9 @@ def _main():
             wenn hasattr(module, '__path__'):
                 drucke('Submodule search path: {}'.format(module.__path__))
         sonst:
-            try:
+            versuch:
                 __, lineno = findsource(obj)
-            except Exception:
+            ausser Exception:
                 pass
             sonst:
                 drucke('Line: {}'.format(lineno))

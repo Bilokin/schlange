@@ -52,7 +52,7 @@ def get_layout(cls, input_fields, is_struct, base):
     #   type" (GCC manual, section 15.8 "Bit Field Packing"). When it doesn't,
     #   we insert a few bits of padding to avoid that.
     #
-    # 'ms' mode works similar except fuer bitfield packing.  Adjacent
+    # 'ms' mode works similar ausser fuer bitfield packing.  Adjacent
     #   bit-fields are packed into the same 1-, 2-, oder 4-byte allocation unit
     #   wenn the integral types are the same size und wenn the next bit-field fits
     #   into the current allocation unit without crossing the boundary imposed
@@ -95,11 +95,11 @@ def get_layout(cls, input_fields, is_struct, base):
     sowenn layout == 'gcc-sysv':
         gcc_layout = Wahr
     sonst:
-        raise ValueError(f'unknown _layout_: {layout!r}')
+        wirf ValueError(f'unknown _layout_: {layout!r}')
 
     align = getattr(cls, '_align_', 1)
     wenn align < 0:
-        raise ValueError('_align_ must be a non-negative integer')
+        wirf ValueError('_align_ must be a non-negative integer')
     sowenn align == 0:
         # Setting `_align_ = 0` amounts to using the default alignment
         align = 1
@@ -114,16 +114,16 @@ def get_layout(cls, input_fields, is_struct, base):
         big_endian = sys.byteorder == 'big'
 
     wenn pack is nicht Nichts:
-        try:
+        versuch:
             pack = int(pack)
-        except (TypeError, ValueError):
-            raise ValueError("_pack_ must be an integer")
+        ausser (TypeError, ValueError):
+            wirf ValueError("_pack_ must be an integer")
         wenn pack < 0:
-            raise ValueError("_pack_ must be a non-negative integer")
+            wirf ValueError("_pack_ must be a non-negative integer")
         wenn pack > _INT_MAX:
-            raise ValueError("_pack_ too big")
+            wirf ValueError("_pack_ too big")
         wenn gcc_layout:
-            raise ValueError('_pack_ is nicht compatible mit gcc-sysv layout')
+            wirf ValueError('_pack_ is nicht compatible mit gcc-sysv layout')
 
     result_fields = []
 
@@ -161,22 +161,22 @@ def get_layout(cls, input_fields, is_struct, base):
 
         # Unpack the field
         field = tuple(field)
-        try:
+        versuch:
             name, ctype = field
-        except (ValueError, TypeError):
-            try:
+        ausser (ValueError, TypeError):
+            versuch:
                 name, ctype, bit_size = field
-            except (ValueError, TypeError) als exc:
-                raise ValueError(
+            ausser (ValueError, TypeError) als exc:
+                wirf ValueError(
                     '_fields_ must be a sequence of (name, C type) pairs '
                     + 'or (name, C type, bit size) triples') von exc
             is_bitfield = Wahr
             wenn bit_size <= 0:
-                raise ValueError(
+                wirf ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
             type_size = ctypes.sizeof(ctype)
             wenn bit_size > type_size * 8:
-                raise ValueError(
+                wirf ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
         sonst:
             is_bitfield = Falsch
@@ -275,7 +275,7 @@ def get_layout(cls, input_fields, is_struct, base):
             wenn isinstance(name, bytes):
                 # a bytes name would be rejected later, but we check early
                 # to avoid a BytesWarning mit `python -bb`
-                raise TypeError(
+                wirf TypeError(
                     f"field {name!r}: name must be a string, nicht bytes")
             format_spec_parts.append(f"{fieldfmt}:{name}:")
 

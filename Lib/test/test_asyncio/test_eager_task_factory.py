@@ -218,7 +218,7 @@ klasse EagerTaskFactoryLoopTests:
 
         async def fail():
             await asyncio.sleep(0)
-            raise ValueError("no good")
+            wirf ValueError("no good")
 
         async def blocked():
             fut = asyncio.Future()
@@ -244,7 +244,7 @@ klasse EagerTaskFactoryLoopTests:
     def test_staggered_race_with_eager_tasks_no_delay(self):
         # See https://github.com/python/cpython/issues/124309
         async def fail():
-            raise ValueError("no good")
+            wirf ValueError("no good")
 
         async def run():
             winner, index, excs = await asyncio.staggered.staggered_race(

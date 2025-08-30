@@ -94,9 +94,9 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
         wenn widget._windowingsystem != 'x11':
             self.skipTest('Not using Tk fuer X11')
         self.assertEqual(widget['screen'], '')
-        try:
+        versuch:
             display = os.environ['DISPLAY']
-        except KeyError:
+        ausser KeyError:
             self.skipTest('No $DISPLAY set.')
         self.checkInvalidParam(widget, 'screen', display,
                 errmsg="can't modify -screen option after widget is created")

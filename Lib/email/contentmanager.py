@@ -22,7 +22,7 @@ klasse ContentManager:
             gib self.get_handlers[maintype](msg, *args, **kw)
         wenn '' in self.get_handlers:
             gib self.get_handlers[''](msg, *args, **kw)
-        raise KeyError(content_type)
+        wirf KeyError(content_type)
 
     def add_set_handler(self, typekey, handler):
         self.set_handlers[typekey] = handler
@@ -31,7 +31,7 @@ klasse ContentManager:
         wenn msg.get_content_maintype() == 'multipart':
             # XXX: is this error a good idea oder not?  We can remove it later,
             # but we can't add it later, so do it fuer now.
-            raise TypeError("set_content nicht valid on multipart")
+            wirf TypeError("set_content nicht valid on multipart")
         handler = self._find_set_handler(msg, obj)
         msg.clear_content()
         handler(msg, obj, *args, **kw)
@@ -55,7 +55,7 @@ klasse ContentManager:
                 gib self.set_handlers[name]
         wenn Nichts in self.set_handlers:
             gib self.set_handlers[Nichts]
-        raise KeyError(full_path_for_error)
+        wirf KeyError(full_path_for_error)
 
 
 raw_data_manager = ContentManager()
@@ -101,13 +101,13 @@ def _prepare_set(msg, maintype, subtype, headers):
             mp = msg.policy
             headers = [mp.header_factory(*mp.header_source_parse([header]))
                        fuer header in headers]
-        try:
+        versuch:
             fuer header in headers:
                 wenn header.defects:
-                    raise header.defects[0]
+                    wirf header.defects[0]
                 msg[header.name] = header
-        except email.errors.HeaderDefect als exc:
-            raise ValueError("Invalid header: {}".format(
+        ausser email.errors.HeaderDefect als exc:
+            wirf ValueError("Invalid header: {}".format(
                                 header.fold(policy=msg.policy))) von exc
 
 
@@ -149,9 +149,9 @@ def _encode_text(string, charset, cte, policy):
     wenn cte is Nichts:
         # Use heuristics to decide on the "best" encoding.
         wenn max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
-            try:
+            versuch:
                 gib '7bit', normal_body(lines).decode('ascii')
-            except UnicodeDecodeError:
+            ausser UnicodeDecodeError:
                 pass
             wenn policy.cte_type == '8bit':
                 gib '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
@@ -176,7 +176,7 @@ def _encode_text(string, charset, cte, policy):
     sowenn cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
     sonst:
-        raise ValueError("Unknown content transfer encoding {}".format(cte))
+        wirf ValueError("Unknown content transfer encoding {}".format(cte))
     gib cte, data
 
 
@@ -198,11 +198,11 @@ def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
                        disposition=Nichts, filename=Nichts, cid=Nichts,
                        params=Nichts, headers=Nichts):
     wenn subtype == 'partial':
-        raise ValueError("message/partial is nicht supported fuer Message objects")
+        wirf ValueError("message/partial is nicht supported fuer Message objects")
     wenn subtype == 'rfc822':
         wenn cte nicht in (Nichts, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
-            raise ValueError(
+            wirf ValueError(
                 "message/rfc822 parts do nicht support cte={}".format(cte))
         # 8bit will get coerced on serialization wenn policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
@@ -213,7 +213,7 @@ def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
     sowenn subtype == 'external-body':
         wenn cte nicht in (Nichts, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
-            raise ValueError(
+            wirf ValueError(
                 "message/external-body parts do nicht support cte={}".format(cte))
         cte = '7bit'
     sowenn cte is Nichts:

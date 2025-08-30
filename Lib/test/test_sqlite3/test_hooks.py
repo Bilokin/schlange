@@ -229,11 +229,11 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
 
     @contextlib.contextmanager
     def check_stmt_trace(self, cx, expected):
-        try:
+        versuch:
             traced = []
             cx.set_trace_callback(lambda stmt: traced.append(stmt))
             liefere
-        finally:
+        schliesslich:
             self.assertEqual(traced, expected)
             cx.set_trace_callback(Nichts)
 
@@ -290,13 +290,13 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         con1 = sqlite.connect(TESTFN, isolation_level=Nichts)
         con2 = sqlite.connect(TESTFN)
-        try:
+        versuch:
             con1.set_trace_callback(trace)
             cur = con1.cursor()
             cur.execute(queries[0])
             con2.execute("create table bar(x)")
             cur.execute(queries[1])
-        finally:
+        schliesslich:
             con1.close()
             con2.close()
         self.assertEqual(traced_statements, queries)

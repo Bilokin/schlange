@@ -31,7 +31,7 @@ klasse StressTests(TestBase):
         def task():
             # try to create all interpreters simultaneously
             wenn nicht start.wait(support.SHORT_TIMEOUT):
-                raise TimeoutError
+                wirf TimeoutError
             interp = interpreters.create()
             alive.append(interp)
         threads = [threading.Thread(target=task) fuer _ in range(size)]
@@ -57,14 +57,14 @@ klasse StressTests(TestBase):
                               'interpreter already running')
             # try to run all interpreters simultaneously
             wenn nicht start.wait(support.SHORT_TIMEOUT):
-                raise TimeoutError
+                wirf TimeoutError
             success = Falsch
             waehrend nicht success:
-                try:
+                versuch:
                     interp.exec(script)
-                except interpreters.ExecutionFailed als exc:
+                ausser interpreters.ExecutionFailed als exc:
                     wenn exc.excinfo.msg != 'interpreter already running':
-                        raise  # re-raise
+                        wirf  # re-raise
                     assert exc.excinfo.type.__name__ == 'InterpreterError'
                 sonst:
                     success = Wahr

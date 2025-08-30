@@ -81,9 +81,9 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
                     breche
             sonst:
                 namei = namei + 1
-                try:
+                versuch:
                     fakename = allnames[namei]
-                except IndexError:
+                ausser IndexError:
                     # should never happen... wenn so, just forget it
                     breche
             fakename = ''.join(chars)

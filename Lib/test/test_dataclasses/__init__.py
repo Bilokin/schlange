@@ -992,7 +992,7 @@ klasse TestCase(unittest.TestCase):
         @dataclass
         klasse C:
             def __post_init__(self):
-                raise CustomError()
+                wirf CustomError()
         mit self.assertRaises(CustomError):
             C()
 
@@ -1001,7 +1001,7 @@ klasse TestCase(unittest.TestCase):
             i: int = 10
             def __post_init__(self):
                 wenn self.i == 10:
-                    raise CustomError()
+                    wirf CustomError()
         mit self.assertRaises(CustomError):
             C()
         # post-init gets called, but doesn't raise. This is just
@@ -1012,8 +1012,8 @@ klasse TestCase(unittest.TestCase):
         @dataclass(init=Falsch)
         klasse C:
             def __post_init__(self):
-                raise CustomError()
-        # Creating the klasse won't raise
+                wirf CustomError()
+        # Creating the klasse won't wirf
         C()
 
         @dataclass
@@ -1038,7 +1038,7 @@ klasse TestCase(unittest.TestCase):
         # Make sure super() post-init isn't called by default.
         klasse B:
             def __post_init__(self):
-                raise CustomError()
+                wirf CustomError()
 
         @dataclass
         klasse C(B):
@@ -1127,7 +1127,7 @@ klasse TestCase(unittest.TestCase):
         self.assertWahr(c.c_called)
 
         ######################################
-        # Now, the same thing, except A1 defines __post_init__.
+        # Now, the same thing, ausser A1 defines __post_init__.
         @dataclass
         klasse A1:
             def __post_init__(self):
@@ -1596,9 +1596,9 @@ klasse TestCase(unittest.TestCase):
 
     def test_clean_traceback_from_fields_exception(self):
         stdout = io.StringIO()
-        try:
+        versuch:
             fields(object)
-        except TypeError als exc:
+        ausser TypeError als exc:
             traceback.print_exception(exc, file=stdout)
         printed_traceback = stdout.getvalue()
         self.assertNotIn("AttributeError", printed_traceback)
@@ -1620,7 +1620,7 @@ klasse TestCase(unittest.TestCase):
         self.assertIs(type(asdict(c)), dict)
 
     def test_helper_asdict_raises_on_classes(self):
-        # asdict() should raise on a klasse object.
+        # asdict() should wirf on a klasse object.
         @dataclass
         klasse C:
             x: int
@@ -1812,7 +1812,7 @@ klasse TestCase(unittest.TestCase):
         self.assertIs(type(astuple(c)), tuple)
 
     def test_helper_astuple_raises_on_classes(self):
-        # astuple() should raise on a klasse object.
+        # astuple() should wirf on a klasse object.
         @dataclass
         klasse C:
             x: int
@@ -2392,7 +2392,7 @@ klasse TestInit(unittest.TestCase):
             def __init__(self):
                 self.z = 100
 
-        # Make sure that declaring this klasse doesn't raise an error.
+        # Make sure that declaring this klasse doesn't wirf an error.
         #  The issue is that we can't override __init__ in our class,
         #  but it should be okay to add __init__ to us wenn our base has
         #  an __init__.
@@ -4007,7 +4007,7 @@ klasse TestDescriptors(unittest.TestCase):
         klasse D:
             def __get__(self, instance: Any, owner: object) -> int:
                 wenn instance is Nichts:
-                    raise AttributeError()
+                    wirf AttributeError()
 
                 gib instance._x
 
@@ -4983,7 +4983,7 @@ klasse TestKeywordArgs(unittest.TestCase):
             c: int
             d: InitVar[int]
             def __post_init__(self, b, d):
-                raise CustomError(f'{b=} {d=}')
+                wirf CustomError(f'{b=} {d=}')
         mit self.assertRaisesRegex(CustomError, 'b=3 d=4'):
             A(1, c=2, b=3, d=4)
 

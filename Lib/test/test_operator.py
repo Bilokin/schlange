@@ -44,7 +44,7 @@ klasse Seq2(object):
 
 klasse BadIterable:
     def __iter__(self):
-        raise ZeroDivisionError
+        wirf ZeroDivisionError
 
 
 klasse OperatorTestCase:
@@ -86,7 +86,7 @@ klasse OperatorTestCase:
         operator = self.module
         klasse C(object):
             def __eq__(self, other):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(TypeError, operator.eq)
         self.assertRaises(SyntaxError, operator.eq, C(), C())
         self.assertFalsch(operator.eq(1, 0))
@@ -100,7 +100,7 @@ klasse OperatorTestCase:
         operator = self.module
         klasse C(object):
             def __ne__(self, other):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(TypeError, operator.ne)
         self.assertRaises(SyntaxError, operator.ne, C(), C())
         self.assertWahr(operator.ne(1, 0))
@@ -317,7 +317,7 @@ klasse OperatorTestCase:
         operator = self.module
         klasse C(object):
             def __bool__(self):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(TypeError, operator.truth)
         self.assertRaises(SyntaxError, operator.truth, C())
         self.assertWahr(operator.truth(5))
@@ -393,7 +393,7 @@ klasse OperatorTestCase:
 
         klasse C(object):
             def __getattr__(self, name):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(SyntaxError, operator.attrgetter('foo'), C())
 
         # recursive gets
@@ -433,7 +433,7 @@ klasse OperatorTestCase:
 
         klasse C(object):
             def __getitem__(self, name):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(SyntaxError, operator.itemgetter(42), C())
 
         f = operator.itemgetter('name')
@@ -574,7 +574,7 @@ klasse OperatorTestCase:
         operator = self.module
         klasse C:
             def __bool__(self):
-                raise SyntaxError
+                wirf SyntaxError
         self.assertRaises(TypeError, operator.not_)
         self.assertRaises(SyntaxError, operator.not_, C())
         self.assertFalsch(operator.not_(5))
@@ -590,7 +590,7 @@ klasse OperatorTestCase:
 
             def __length_hint__(self):
                 wenn type(self.value) is type:
-                    raise self.value
+                    wirf self.value
                 sonst:
                     gib self.value
 

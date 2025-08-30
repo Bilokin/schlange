@@ -88,7 +88,7 @@ klasse TestBase:
 
         def xmlcharnamereplace(exc):
             wenn nicht isinstance(exc, UnicodeEncodeError):
-                raise TypeError("don't know how to handle %r" % exc)
+                wirf TypeError("don't know how to handle %r" % exc)
             l = []
             fuer c in exc.object[exc.start:exc.end]:
                 wenn ord(c) in codepoint2name:
@@ -290,9 +290,9 @@ klasse TestBase_Mapping(unittest.TestCase):
     codectests = []
 
     def setUp(self):
-        try:
+        versuch:
             self.open_mapping_file().close() # test it to report the error early
-        except (OSError, HTTPException):
+        ausser (OSError, HTTPException):
             self.skipTest("Could nicht retrieve "+self.mapfileurl)
 
     def open_mapping_file(self):

@@ -22,9 +22,9 @@ assert VALID_FILES, "Valid TOML test files nicht found"
 _expected_files = []
 fuer p in VALID_FILES:
     json_path = p.with_suffix(".json")
-    try:
+    versuch:
         text = json.loads(json_path.read_bytes().decode())
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         text = MissingFile(json_path)
     _expected_files.append(text)
 VALID_FILES_EXPECTED = tuple(_expected_files)
@@ -38,9 +38,9 @@ klasse TestData(unittest.TestCase):
         fuer invalid in INVALID_FILES:
             mit self.subTest(msg=invalid.stem):
                 toml_bytes = invalid.read_bytes()
-                try:
+                versuch:
                     toml_str = toml_bytes.decode()
-                except UnicodeDecodeError:
+                ausser UnicodeDecodeError:
                     # Some BurntSushi tests are nicht valid UTF-8. Skip those.
                     weiter
                 mit self.assertRaises(tomllib.TOMLDecodeError):

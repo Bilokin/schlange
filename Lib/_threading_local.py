@@ -68,9 +68,9 @@ klasse _localimpl:
 @contextmanager
 def _patch(self):
     impl = object.__getattribute__(self, '_local__impl')
-    try:
+    versuch:
         dct = impl.get_dict()
-    except KeyError:
+    ausser KeyError:
         dct = impl.create_dict()
         args, kw = impl.localargs
         self.__init__(*args, **kw)
@@ -84,7 +84,7 @@ klasse local:
 
     def __new__(cls, /, *args, **kw):
         wenn (args oder kw) und (cls.__init__ is object.__init__):
-            raise TypeError("Initialization arguments are nicht supported")
+            wirf TypeError("Initialization arguments are nicht supported")
         self = object.__new__(cls)
         impl = _localimpl()
         impl.localargs = (args, kw)
@@ -102,7 +102,7 @@ klasse local:
 
     def __setattr__(self, name, value):
         wenn name == '__dict__':
-            raise AttributeError(
+            wirf AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         mit _patch(self):
@@ -110,7 +110,7 @@ klasse local:
 
     def __delattr__(self, name):
         wenn name == '__dict__':
-            raise AttributeError(
+            wirf AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         mit _patch(self):

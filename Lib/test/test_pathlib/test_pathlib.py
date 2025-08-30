@@ -21,17 +21,17 @@ von test.support importiere is_emscripten, is_wasi, is_wasm32
 von test.support importiere infinite_recursion
 von test.support importiere os_helper
 von test.support.os_helper importiere TESTFN, FS_NONASCII, FakePath
-try:
+versuch:
     importiere fcntl
-except ImportError:
+ausser ImportError:
     fcntl = Nichts
-try:
+versuch:
     importiere grp, pwd
-except ImportError:
+ausser ImportError:
     grp = pwd = Nichts
-try:
+versuch:
     importiere posix
-except ImportError:
+ausser ImportError:
     posix = Nichts
 
 
@@ -42,14 +42,14 @@ wenn hasattr(os, 'geteuid'):
 
 def patch_replace(old_test):
     def new_replace(self, target):
-        raise OSError(errno.EXDEV, "Cross-device link", self, target)
+        wirf OSError(errno.EXDEV, "Cross-device link", self, target)
 
     def new_test(self):
         old_replace = self.cls.replace
         self.cls.replace = new_replace
-        try:
+        versuch:
             old_test(self)
-        finally:
+        schliesslich:
             self.cls.replace = old_replace
     gib new_test
 
@@ -632,7 +632,7 @@ klasse PurePathTest(unittest.TestCase):
     @needs_posix
     def test_parse_path_posix(self):
         check = self._check_parse_path
-        # Collapsing of excess leading slashes, except fuer the double-slash
+        # Collapsing of excess leading slashes, ausser fuer the double-slash
         # special case.
         check('//a/b',   '', '//', ['a', 'b'])
         check('///a/b',  '', '/', ['a', 'b'])
@@ -660,9 +660,9 @@ klasse PurePathTest(unittest.TestCase):
     def test_as_uri_non_ascii(self):
         von urllib.parse importiere quote_from_bytes
         P = self.cls
-        try:
+        versuch:
             os.fsencode('\xe9')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             self.skipTest("\\xe9 cannot be encoded to the filesystem encoding")
         self.assertEqual(self.make_uri(P('/a/b\xe9')),
                          'file:///a/b' + quote_from_bytes(os.fsencode('\xe9')))
@@ -1511,7 +1511,7 @@ klasse PathTest(PurePathTest):
     def test_copy_error_handling(self):
         def make_raiser(err):
             def raiser(*args, **kwargs):
-                raise OSError(err, os.strerror(err))
+                wirf OSError(err, os.strerror(err))
             gib raiser
 
         base = self.cls(self.base)
@@ -1818,7 +1818,7 @@ klasse PathTest(PurePathTest):
         # Resolve relative paths.
         old_path = os.getcwd()
         os.chdir(self.base)
-        try:
+        versuch:
             p = self.cls('link0').resolve()
             self.assertEqual(p, P)
             self.assertEqualNormCase(str(p), self.base)
@@ -1831,7 +1831,7 @@ klasse PathTest(PurePathTest):
             p = self.cls('link3').resolve()
             self.assertEqual(p, P)
             self.assertEqualNormCase(str(p), self.base)
-        finally:
+        schliesslich:
             os.chdir(old_path)
 
     def _check_resolve(self, p, expected, strict=Wahr):
@@ -1951,9 +1951,9 @@ klasse PathTest(PurePathTest):
 
         old_cwd = os.getcwd()
         os.chdir(self.base)
-        try:
+        versuch:
             self.assertEqual(p.resolve(), self.cls(self.base, p))
-        finally:
+        schliesslich:
             os.chdir(old_cwd)
 
     @needs_symlinks
@@ -2006,9 +2006,9 @@ klasse PathTest(PurePathTest):
     # XXX also need a test fuer lchmod.
 
     def _get_pw_name_or_skip_test(self, uid):
-        try:
+        versuch:
             gib pwd.getpwuid(uid).pw_name
-        except KeyError:
+        ausser KeyError:
             self.skipTest(
                 "user %d doesn't have an entry in the system database" % uid)
 
@@ -2041,9 +2041,9 @@ klasse PathTest(PurePathTest):
         self.assertEqual(expected_name, link.owner(follow_symlinks=Falsch))
 
     def _get_gr_name_or_skip_test(self, gid):
-        try:
+        versuch:
             gib grp.getgrgid(gid).gr_name
-        except KeyError:
+        ausser KeyError:
             self.skipTest(
                 "group %d doesn't have an entry in the system database" % gid)
 
@@ -2176,13 +2176,13 @@ klasse PathTest(PurePathTest):
         old_child_dir_mode = child_dir_path.stat().st_mode
         # Make unwritable.
         new_mode = stat.S_IREAD | stat.S_IEXEC
-        try:
+        versuch:
             child_file_path.chmod(new_mode)
             child_dir_path.chmod(new_mode)
             tmp.chmod(new_mode)
 
             self.assertRaises(PermissionError, tmp._delete)
-        finally:
+        schliesslich:
             tmp.chmod(old_dir_mode)
             child_file_path.chmod(old_child_file_mode)
             child_dir_path.chmod(old_child_dir_mode)
@@ -2243,13 +2243,13 @@ klasse PathTest(PurePathTest):
         self.assertFalsch(p.exists())
 
     def test_delete_does_not_choke_on_failing_lstat(self):
-        try:
+        versuch:
             orig_lstat = os.lstat
             tmp = self.cls(self.base, 'delete')
 
             def raiser(fn, *args, **kwargs):
                 wenn fn != tmp:
-                    raise OSError()
+                    wirf OSError()
                 sonst:
                     gib orig_lstat(fn)
 
@@ -2259,7 +2259,7 @@ klasse PathTest(PurePathTest):
             foo = tmp / 'foo'
             foo.write_text('')
             tmp._delete()
-        finally:
+        schliesslich:
             os.lstat = orig_lstat
 
     @os_helper.skip_unless_hardlink
@@ -2420,7 +2420,7 @@ klasse PathTest(PurePathTest):
         self.assertEqual(p.stat().st_ctime, st_ctime_first)
 
     def test_mkdir_exist_ok_root(self):
-        # Issue #25803: A drive root could raise PermissionError on Windows.
+        # Issue #25803: A drive root could wirf PermissionError on Windows.
         self.cls('/').resolve().mkdir(exist_ok=Wahr)
         self.cls('/').resolve().mkdir(parents=Wahr, exist_ok=Wahr)
 
@@ -2480,10 +2480,10 @@ klasse PathTest(PurePathTest):
             pattern = [bool(pattern_num & (1 << n)) fuer n in range(5)]
             concurrently_created = set()
             p12 = p / 'dir1' / 'dir2'
-            try:
+            versuch:
                 mit mock.patch("os.mkdir", my_mkdir):
                     p12.mkdir(parents=Wahr, exist_ok=Falsch)
-            except FileExistsError:
+            ausser FileExistsError:
                 self.assertIn(str(p12), concurrently_created)
             sonst:
                 self.assertNotIn(str(p12), concurrently_created)
@@ -2721,9 +2721,9 @@ klasse PathTest(PurePathTest):
                     "fifo requires special path on VxWorks")
     def test_is_fifo_true(self):
         P = self.cls(self.base, 'myfifo')
-        try:
+        versuch:
             os.mkfifo(str(P))
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.skipTest('os.mkfifo(): %s' % e)
         self.assertWahr(P.is_fifo())
         self.assertFalsch(P.is_socket())
@@ -2751,9 +2751,9 @@ klasse PathTest(PurePathTest):
         P = self.cls(self.base, 'mysock')
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.addCleanup(sock.close)
-        try:
+        versuch:
             sock.bind(str(P))
-        except OSError als e:
+        ausser OSError als e:
             wenn (isinstance(e, PermissionError) oder
                     "AF_UNIX path too long" in str(e)):
                 self.skipTest("cannot bind Unix socket: " + str(e))
@@ -3163,7 +3163,7 @@ klasse PathTest(PurePathTest):
     )
     @needs_posix
     def test_open_mode(self):
-        # Unmask all permissions except world-write, which may
+        # Unmask all permissions ausser world-write, which may
         # nicht be supported on some filesystems (see GH-85633.)
         old_mask = os.umask(0o002)
         self.addCleanup(os.umask, old_mask)
@@ -3181,11 +3181,11 @@ klasse PathTest(PurePathTest):
     @needs_posix
     def test_resolve_root(self):
         current_directory = os.getcwd()
-        try:
+        versuch:
             os.chdir('/')
             p = self.cls('spam')
             self.assertEqual(str(p.resolve()), '/spam')
-        finally:
+        schliesslich:
             os.chdir(current_directory)
 
     @unittest.skipIf(
@@ -3194,7 +3194,7 @@ klasse PathTest(PurePathTest):
     )
     @needs_posix
     def test_touch_mode(self):
-        # Unmask all permissions except world-write, which may
+        # Unmask all permissions ausser world-write, which may
         # nicht be supported on some filesystems (see GH-85633.)
         old_mask = os.umask(0o002)
         self.addCleanup(os.umask, old_mask)
@@ -3234,10 +3234,10 @@ klasse PathTest(PurePathTest):
 
         fakename = 'fakeuser'
         # This user can theoretically exist on a test runner. Create unique name:
-        try:
+        versuch:
             waehrend pwd.getpwnam(fakename):
                 fakename += '1'
-        except KeyError:
+        ausser KeyError:
             pass  # Non-existent name found
 
         p1 = P('~/Documents')
@@ -3272,7 +3272,7 @@ klasse PathTest(PurePathTest):
                      "Bad file descriptor in /dev/fd affects only macOS")
     @needs_posix
     def test_handling_bad_descriptor(self):
-        try:
+        versuch:
             file_descriptors = list(pathlib.Path('/dev/fd').rglob("*"))[3:]
             wenn nicht file_descriptors:
                 self.skipTest("no file descriptors - issue was nicht reproduced")
@@ -3287,10 +3287,10 @@ klasse PathTest(PurePathTest):
                 f.is_char_device()
                 f.is_fifo()
                 f.is_socket()
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EBADF:
                 self.fail("Bad file descriptor nicht handled.")
-            raise
+            wirf
 
     @needs_posix
     def test_from_uri_posix(self):
@@ -3513,9 +3513,9 @@ klasse PathWalkTest(unittest.TestCase):
             self.sub2_tree[2].append('broken_link3')
             self.sub2_tree[2].sort()
         os.chmod(sub21_path, 0)
-        try:
+        versuch:
             os.listdir(sub21_path)
-        except PermissionError:
+        ausser PermissionError:
             self.sub2_tree[1].append('SUB21')
         sonst:
             os.chmod(sub21_path, stat.S_IRWXU)
@@ -3536,7 +3536,7 @@ klasse PathWalkTest(unittest.TestCase):
         path1 = root / dir1
         path1new = (root / dir1).with_suffix(".new")
         path1.rename(path1new)
-        try:
+        versuch:
             roots = [r fuer r, _, _ in walk_it]
             self.assertWahr(errors)
             self.assertNotIn(path1, roots)
@@ -3544,7 +3544,7 @@ klasse PathWalkTest(unittest.TestCase):
             fuer dir2 in dirs:
                 wenn dir2 != dir1:
                     self.assertIn(root / dir2, roots)
-        finally:
+        schliesslich:
             path1new.rename(path1)
 
     def test_walk_many_open_files(self):
@@ -3658,7 +3658,7 @@ klasse CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "test/right")
 
         mit self.assertRaises(TypeError):
-            # Verify improper operations still raise a TypeError
+            # Verify improper operations still wirf a TypeError
             pathlib.PurePath("test") / 10
 
     def test_rtruediv(self):
@@ -3667,7 +3667,7 @@ klasse CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "left/test")
 
         mit self.assertRaises(TypeError):
-            # Verify improper operations still raise a TypeError
+            # Verify improper operations still wirf a TypeError
             10 / pathlib.PurePath("test")
 
 

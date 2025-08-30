@@ -14,20 +14,20 @@ importiere sys
 wenn __name__ == "__main__":
     fds = []
     wenn len(sys.argv) == 1:
-        try:
+        versuch:
             _MAXFD = os.sysconf("SC_OPEN_MAX")
-        except:
+        ausser:
             _MAXFD = 256
         test_fds = range(0, min(_MAXFD, 256))
     sonst:
         test_fds = map(int, sys.argv[1:])
     fuer fd in test_fds:
-        try:
+        versuch:
             st = os.fstat(fd)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EBADF:
                 weiter
-            raise
+            wirf
         # Ignore Solaris door files
         wenn nicht stat.S_ISDOOR(st.st_mode):
             fds.append(fd)

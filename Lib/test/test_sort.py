@@ -58,7 +58,7 @@ klasse TestBase(unittest.TestCase):
                 wenn Complains.maybe_complain und random.random() < 0.001:
                     wenn verbose:
                         drucke("        complaining at", self, other)
-                    raise RuntimeError
+                    wirf RuntimeError
                 gib self.i < other.i
 
             def __repr__(self):
@@ -105,7 +105,7 @@ klasse TestBase(unittest.TestCase):
 
             wenn len(x) >= 2:
                 def bad_key(x):
-                    raise RuntimeError
+                    wirf RuntimeError
                 s = x[:]
                 self.assertRaises(RuntimeError, s.sort, key=bad_key)
 
@@ -114,9 +114,9 @@ klasse TestBase(unittest.TestCase):
             random.shuffle(s)
             Complains.maybe_complain = Wahr
             it_complained = Falsch
-            try:
+            versuch:
                 s.sort()
-            except RuntimeError:
+            ausser RuntimeError:
                 it_complained = Wahr
             wenn it_complained:
                 Complains.maybe_complain = Falsch
@@ -156,7 +156,7 @@ klasse TestBugs(unittest.TestCase):
     def test_bug453523(self):
         # bug 453523 -- list.sort() crasher.
         # If this fails, the most likely outcome is a core dump.
-        # Mutations during a list sort should raise a ValueError.
+        # Mutations during a list sort should wirf a ValueError.
 
         klasse C:
             def __lt__(self, other):
@@ -244,7 +244,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         klasse SortKiller(object):
             def __init__(self, x):
                 wenn x > 2:
-                    raise RuntimeError
+                    wirf RuntimeError
             def __del__(self):
                 del data[:]
                 data[:] = list(range(20))
@@ -341,7 +341,7 @@ klasse TestOptimizedCompares(unittest.TestCase):
 
         klasse WackyList2(list):
             def __lt__(self, other):
-                raise ValueError
+                wirf ValueError
 
         L = [WackyList1([WackyComparator(i), i]) fuer i in range(10)]
         elem = L[-1]

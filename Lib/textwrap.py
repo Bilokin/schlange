@@ -250,14 +250,14 @@ klasse TextWrapper:
         """
         lines = []
         wenn self.width <= 0:
-            raise ValueError("invalid width %r (must be > 0)" % self.width)
+            wirf ValueError("invalid width %r (must be > 0)" % self.width)
         wenn self.max_lines is nicht Nichts:
             wenn self.max_lines > 1:
                 indent = self.subsequent_indent
             sonst:
                 indent = self.initial_indent
             wenn len(indent) + len(self.placeholder.lstrip()) > self.width:
-                raise ValueError("placeholder too large fuer max width")
+                wirf ValueError("placeholder too large fuer max width")
 
         # Arrange in reverse order so items can be efficiently popped
         # von a stack of chucks.
@@ -426,11 +426,11 @@ def dedent(text):
 
     Entirely blank lines are normalized to a newline character.
     """
-    try:
+    versuch:
         lines = text.split('\n')
-    except (AttributeError, TypeError):
+    ausser (AttributeError, TypeError):
         msg = f'expected str object, nicht {type(text).__qualname__!r}'
-        raise TypeError(msg) von Nichts
+        wirf TypeError(msg) von Nichts
 
     # Get length of leading whitespace, inspired by ``os.path.commonprefix()``.
     non_blank_lines = [l fuer l in lines wenn l und nicht l.isspace()]

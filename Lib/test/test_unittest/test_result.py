@@ -25,12 +25,12 @@ def restore_traceback():
 
 def bad_cleanup1():
     drucke('do cleanup1')
-    raise TypeError('bad cleanup1')
+    wirf TypeError('bad cleanup1')
 
 
 def bad_cleanup2():
     drucke('do cleanup2')
-    raise ValueError('bad cleanup2')
+    wirf ValueError('bad cleanup2')
 
 
 @force_not_colorized_test_class
@@ -184,9 +184,9 @@ klasse Test_TestResult(unittest.TestCase):
                 pass
 
         test = Foo('test_1')
-        try:
+        versuch:
             test.fail("foo")
-        except AssertionError:
+        ausser AssertionError:
             exc_info_tuple = sys.exc_info()
 
         result = unittest.TestResult()
@@ -212,9 +212,9 @@ klasse Test_TestResult(unittest.TestCase):
 
         test = Foo('test_1')
         def get_exc_info():
-            try:
+            versuch:
                 test.fail("foo")
-            except AssertionError:
+            ausser AssertionError:
                 gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
@@ -238,12 +238,12 @@ klasse Test_TestResult(unittest.TestCase):
 
         test = Foo('test_1')
         def get_exc_info():
-            try:
-                try:
+            versuch:
+                versuch:
                     test.fail("foo")
-                except AssertionError:
-                    raise ValueError(42)
-            except ValueError:
+                ausser AssertionError:
+                    wirf ValueError(42)
+            ausser ValueError:
                 gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
@@ -266,12 +266,12 @@ klasse Test_TestResult(unittest.TestCase):
                 pass
 
         def get_exc_info():
-            try:
+            versuch:
                 loop = Exception("Loop")
                 loop.__cause__ = loop
                 loop.__context__ = loop
-                raise loop
-            except Exception:
+                wirf loop
+            ausser Exception:
                 gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
@@ -291,7 +291,7 @@ klasse Test_TestResult(unittest.TestCase):
                 pass
 
         def get_exc_info():
-            try:
+            versuch:
                 # Create two directionally opposed cycles
                 # __cause__ in one direction, __context__ in the other
                 A, B, C = Exception("A"), Exception("B"), Exception("C")
@@ -299,8 +299,8 @@ klasse Test_TestResult(unittest.TestCase):
                 fuer ex1, ex2 in edges:
                     ex1.__cause__ = ex2
                     ex2.__context__ = ex1
-                raise C
-            except Exception:
+                wirf C
+            ausser Exception:
                 gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
@@ -343,9 +343,9 @@ klasse Test_TestResult(unittest.TestCase):
                 pass
 
         test = Foo('test_1')
-        try:
-            raise TypeError()
-        except TypeError:
+        versuch:
+            wirf TypeError()
+        ausser TypeError:
             exc_info_tuple = sys.exc_info()
 
         result = unittest.TestResult()
@@ -389,9 +389,9 @@ klasse Test_TestResult(unittest.TestCase):
                 nonlocal subtest
                 mit self.subTest(foo=1):
                     subtest = self._subtest
-                    try:
+                    versuch:
                         1/0
-                    except ZeroDivisionError:
+                    ausser ZeroDivisionError:
                         exc_info_tuple = sys.exc_info()
                     # Register an error by hand (to check the API)
                     result.addSubTest(test, subtest, exc_info_tuple)
@@ -584,7 +584,7 @@ klasse Test_TextTestResult(unittest.TestCase):
         def testFail(self):
             self.fail('fail')
         def testError(self):
-            raise Exception('error')
+            wirf Exception('error')
         @unittest.expectedFailure
         def testExpectedFailure(self):
             self.fail('fail')
@@ -604,12 +604,12 @@ klasse Test_TextTestResult(unittest.TestCase):
             mit self.subTest('fail', c=3):
                 self.fail('fail')
             mit self.subTest('error', d=4):
-                raise Exception('error')
+                wirf Exception('error')
 
         tearDownError = Nichts
         def tearDown(self):
             wenn self.tearDownError is nicht Nichts:
-                raise self.tearDownError
+                wirf self.tearDownError
 
     def _run_test(self, test_name, verbosity, tearDownError=Nichts):
         stream = BufferedWriter()
@@ -722,7 +722,7 @@ klasse Test_OldTestResult(unittest.TestCase):
                 self.skipTest('foobar')
             @unittest.expectedFailure
             def testExpectedFail(self):
-                raise TypeError
+                wirf TypeError
             @unittest.expectedFailure
             def testUnexpectedSuccess(self):
                 pass
@@ -754,7 +754,7 @@ klasse Test_OldTestResult(unittest.TestCase):
                 pass
         runner = unittest.TextTestRunner(resultclass=OldResult,
                                           stream=io.StringIO())
-        # This will raise an exception wenn TextTestRunner can't handle old
+        # This will wirf an exception wenn TextTestRunner can't handle old
         # test result objects
         runner.run(Test('testFoo'))
 

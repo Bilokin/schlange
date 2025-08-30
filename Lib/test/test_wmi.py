@@ -13,14 +13,14 @@ _wmi = import_helper.import_module('_wmi', required_on=['win'])
 def wmi_exec_query(query):
     # gh-112278: WMI maybe slow response when first call.
     fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
-        try:
+        versuch:
             gib _wmi.exec_query(query)
-        except BrokenPipeError:
+        ausser BrokenPipeError:
             pass
             # retry on pipe error
-        except WindowsError als exc:
+        ausser WindowsError als exc:
             wenn exc.winerror != 258:
-                raise
+                wirf
             # retry on timeout
 
 
@@ -42,9 +42,9 @@ klasse WmiTests(unittest.TestCase):
 
     def test_wmi_query_error(self):
         # Invalid queries fail mit OSError
-        try:
+        versuch:
             wmi_exec_query("SELECT InvalidColumnName FROM InvalidTableName")
-        except OSError als ex:
+        ausser OSError als ex:
             wenn ex.winerror & 0xFFFFFFFF == 0x80041010:
                 # This is the expected error code. All others should fail the test
                 gib
@@ -73,11 +73,11 @@ klasse WmiTests(unittest.TestCase):
         self.assertNotStartsWith(r, "\0")
         self.assertNotEndsWith(r, "\0")
         it = iter(r.split("\0"))
-        try:
+        versuch:
             waehrend Wahr:
                 self.assertRegex(next(it), r"ProcessId=\d+")
                 self.assertEqual("", next(it))
-        except StopIteration:
+        ausser StopIteration:
             pass
 
     def test_wmi_query_threads(self):

@@ -8,10 +8,10 @@ importiere os
 klasse BoolTest(unittest.TestCase):
 
     def test_subclass(self):
-        try:
+        versuch:
             klasse C(bool):
                 pass
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("bool should nicht be subclassable")
@@ -253,11 +253,11 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(Wahr ^ Wahr, Falsch)
 
     def test_fileclosed(self):
-        try:
+        versuch:
             mit open(os_helper.TESTFN, "w", encoding="utf-8") als f:
                 self.assertIs(f.closed, Falsch)
             self.assertIs(f.closed, Wahr)
-        finally:
+        schliesslich:
             os.remove(os_helper.TESTFN)
 
     def test_types(self):
@@ -336,7 +336,7 @@ klasse BoolTest(unittest.TestCase):
     def test_interpreter_convert_to_bool_raises(self):
         klasse SymbolicBool:
             def __bool__(self):
-                raise TypeError
+                wirf TypeError
 
         klasse Symbol:
             def __gt__(self, other):
@@ -364,12 +364,12 @@ klasse BoolTest(unittest.TestCase):
             klasse A:
                 def __len__(self):
                     gib badval
-            try:
+            versuch:
                 bool(A())
-            except (Exception) als e_bool:
-                try:
+            ausser (Exception) als e_bool:
+                versuch:
                     len(A())
-                except (Exception) als e_len:
+                ausser (Exception) als e_len:
                     self.assertEqual(str(e_bool), str(e_len))
 
     def test_blocked(self):

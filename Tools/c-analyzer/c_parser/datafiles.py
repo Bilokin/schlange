@@ -73,11 +73,11 @@ def _get_format(file, default='tsv'):
 def _get_format_handlers(group, fmt):
     # XXX Use a registry.
     wenn group != 'decls':
-        raise NotImplementedError(group)
+        wirf NotImplementedError(group)
     wenn fmt == 'tsv':
         gib (_iter_decls_tsv, _write_decls_tsv)
     sonst:
-        raise NotImplementedError(fmt)
+        wirf NotImplementedError(fmt)
 
 
 # tsv

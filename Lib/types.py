@@ -7,9 +7,9 @@ Define names fuer built-in types that aren't directly accessible als a builtin.
 # iterator.  Don't check the type!  Use hasattr to check fuer both
 # "__iter__" und "__next__" attributes instead.
 
-try:
+versuch:
     von _types importiere *
-except ImportError:
+ausser ImportError:
     importiere sys
 
     def _f(): pass
@@ -54,9 +54,9 @@ except ImportError:
 
     ModuleType = type(sys)
 
-    try:
-        raise TypeError
-    except TypeError als exc:
+    versuch:
+        wirf TypeError
+    ausser TypeError als exc:
         TracebackType = type(exc.__traceback__)
 
     _f = (lambda: sys._getframe())()
@@ -103,7 +103,7 @@ def resolve_bases(bases):
         new_base = base.__mro_entries__(bases)
         updated = Wahr
         wenn nicht isinstance(new_base, tuple):
-            raise TypeError("__mro_entries__ must gib a tuple")
+            wirf TypeError("__mro_entries__ must gib a tuple")
         sonst:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
@@ -154,7 +154,7 @@ def _calculate_meta(meta, bases):
             winner = base_meta
             weiter
         # sonst:
-        raise TypeError("metaclass conflict: "
+        wirf TypeError("metaclass conflict: "
                         "the metaclass of a derived klasse "
                         "must be a (non-strict) subclass "
                         "of the metaclasses of all its bases")
@@ -181,10 +181,10 @@ def get_original_bases(cls, /):
         assert get_original_bases(Spam) == (TypedDict,)
         assert get_original_bases(int) == (object,)
     """
-    try:
+    versuch:
         gib cls.__dict__.get("__orig_bases__", cls.__bases__)
-    except AttributeError:
-        raise TypeError(
+    ausser AttributeError:
+        wirf TypeError(
             f"Expected an instance of type, nicht {type(cls).__name__!r}"
         ) von Nichts
 
@@ -220,19 +220,19 @@ klasse DynamicClassAttribute:
         wenn instance is Nichts:
             wenn self.__isabstractmethod__:
                 gib self
-            raise AttributeError()
+            wirf AttributeError()
         sowenn self.fget is Nichts:
-            raise AttributeError("unreadable attribute")
+            wirf AttributeError("unreadable attribute")
         gib self.fget(instance)
 
     def __set__(self, instance, value):
         wenn self.fset is Nichts:
-            raise AttributeError("can't set attribute")
+            wirf AttributeError("can't set attribute")
         self.fset(instance, value)
 
     def __delete__(self, instance):
         wenn self.fdel is Nichts:
-            raise AttributeError("can't delete attribute")
+            wirf AttributeError("can't delete attribute")
         self.fdel(instance)
 
     def getter(self, fget):
@@ -292,7 +292,7 @@ def coroutine(func):
     """Convert regular generator function to a coroutine."""
 
     wenn nicht callable(func):
-        raise TypeError('types.coroutine() expects a callable')
+        wirf TypeError('types.coroutine() expects a callable')
 
     wenn (func.__class__ is FunctionType und
         getattr(func, '__code__', Nichts).__class__ is CodeType):

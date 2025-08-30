@@ -106,7 +106,7 @@ def tick():
     sekunde = t.second + t.microsecond*0.000001
     minute = t.minute + sekunde/60.0
     stunde = t.hour + minute/60.0
-    try:
+    versuch:
         tracer(Falsch)  # Terminator can occur here
         second_hand.setheading(6*sekunde)  # oder here
         minute_hand.setheading(6*minute)
@@ -115,7 +115,7 @@ def tick():
             display_date_time()
         tracer(Wahr)
         ontimer(tick, 100)
-    except Terminator:
+    ausser Terminator:
         pass  # turtledemo user pressed STOP
 
 def main():

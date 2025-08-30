@@ -20,9 +20,9 @@ klasse AbstractWidgetTest(AbstractTkTest):
 
     @property
     def scaling(self):
-        try:
+        versuch:
             gib self._scaling
-        except AttributeError:
+        ausser AttributeError:
             self._scaling = float(self.root.call('tk', 'scaling'))
             gib self._scaling
 
@@ -581,7 +581,7 @@ def add_configure_tests(*source_classes):
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
-                        raise AssertionError('Option "%s" is nicht tested in %s' %
+                        wirf AssertionError('Option "%s" is nicht tested in %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

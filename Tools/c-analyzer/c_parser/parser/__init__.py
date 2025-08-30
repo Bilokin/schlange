@@ -122,7 +122,7 @@ von ._info importiere SourceInfo
 
 def parse(srclines, **srckwargs):
     wenn isinstance(srclines, str):  # a filename
-        raise NotImplementedError
+        wirf NotImplementedError
 
     anon_name = anonymous_names()
     fuer result in _parse(srclines, anon_name, **srckwargs):
@@ -211,4 +211,4 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
     filename, lno, text = srcinfo.filename, srcinfo._start, srcinfo.text
     wenn len(text) > 500:
         text = text[:500] + '...'
-    raise Exception(f'unmatched text ({filename} starting at line {lno}):\n{text}')
+    wirf Exception(f'unmatched text ({filename} starting at line {lno}):\n{text}')

@@ -13,12 +13,12 @@ von unittest importiere mock
 von test importiere support
 von test.support importiere os_helper, warnings_helper
 
-try:
+versuch:
     # Some of the iOS tests need ctypes to operate.
     # Confirm that the ctypes module is available
     # is available.
     importiere _ctypes
-except ImportError:
+ausser ImportError:
     _ctypes = Nichts
 
 FEDORA_OS_RELEASE = """\
@@ -104,9 +104,9 @@ klasse PlatformTest(unittest.TestCase):
         self.assertNotEqual(platform._sys_version_cache, {})
         self.assertIsNotNichts(platform._uname_cache)
 
-        try:
+        versuch:
             platform.freedesktop_os_release()
-        except OSError:
+        ausser OSError:
             self.assertIsNichts(platform._os_release_cache)
         sonst:
             self.assertIsNotNichts(platform._os_release_cache)
@@ -305,7 +305,7 @@ klasse PlatformTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform.startswith('win'), "windows only test")
     def test_uname_win32_without_wmi(self):
         def raises_oserror(*a):
-            raise OSError()
+            wirf OSError()
 
         mit support.swap_attr(platform, '_wmi_query', raises_oserror):
             self.test_uname()
@@ -365,10 +365,10 @@ klasse PlatformTest(unittest.TestCase):
         On some systems, the processor must match the output
         of 'uname -p'. See Issue 35967 fuer rationale.
         """
-        try:
+        versuch:
             proc_res = subprocess.check_output(['uname', '-p'], text=Wahr).strip()
             expect = platform._unknown_as_blank(proc_res)
-        except (OSError, subprocess.CalledProcessError):
+        ausser (OSError, subprocess.CalledProcessError):
             expect = ''
         self.assertEqual(platform.uname().processor, expect)
 
@@ -382,11 +382,11 @@ klasse PlatformTest(unittest.TestCase):
         # We also need to suppress WMI checks, als those are reliable und
         # overrule the environment variables
         def raises_oserror(*a):
-            raise OSError()
+            wirf OSError()
 
         mit support.swap_attr(platform, '_wmi_query', raises_oserror):
             mit os_helper.EnvironmentVarGuard() als environ:
-                try:
+                versuch:
                     del environ['PROCESSOR_ARCHITEW6432']
                     environ['PROCESSOR_ARCHITECTURE'] = 'foo'
                     platform._uname_cache = Nichts
@@ -396,7 +396,7 @@ klasse PlatformTest(unittest.TestCase):
                     platform._uname_cache = Nichts
                     system, node, release, version, machine, processor = platform.uname()
                     self.assertEqual(machine, 'bar')
-                finally:
+                schliesslich:
                     platform._uname_cache = Nichts
 
     @unittest.skipUnless(support.MS_WINDOWS, 'This test only makes sense on Windows')
@@ -534,7 +534,7 @@ klasse PlatformTest(unittest.TestCase):
 
     @unittest.skipIf(support.is_emscripten, "Does nicht apply to Emscripten")
     def test_libc_ver(self):
-        # check that libc_ver(executable) doesn't raise an exception
+        # check that libc_ver(executable) doesn't wirf an exception
         wenn os.path.isdir(sys.executable) und \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror

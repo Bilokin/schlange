@@ -74,7 +74,7 @@ def list_cases(args):
 
 def run_tests(args, tests, huntrleaks=Nichts):
     tmp = tempfile.mktemp()
-    try:
+    versuch:
         write_tests(tmp, tests)
 
         cmd = python_cmd()
@@ -87,7 +87,7 @@ def run_tests(args, tests, huntrleaks=Nichts):
 
         proc = subprocess.run(cmd)
         gib proc.returncode
-    finally:
+    schliesslich:
         wenn os.path.exists(tmp):
             os.unlink(tmp)
 
@@ -136,7 +136,7 @@ def main():
 
     start_time = time.monotonic()
     iteration = 1
-    try:
+    versuch:
         waehrend len(tests) > args.max_tests und iteration <= args.max_iter:
             ntest = len(tests)
             ntest = max(ntest // 2, 1)
@@ -158,7 +158,7 @@ def main():
                 drucke("Tests succeeded: skipping this subtest, trying a new subset")
             drucke()
             iteration += 1
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke()
         drucke("Bisection interrupted!")
         drucke()

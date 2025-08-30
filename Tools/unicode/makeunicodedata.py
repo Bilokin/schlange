@@ -204,15 +204,15 @@ def makeunicodedata(unicode, trace):
             wenn record.decomposition_type:
                 decomp = record.decomposition_type.split()
                 wenn len(decomp) > 19:
-                    raise Exception("character %x has a decomposition too large fuer nfd_nfkd" % char)
+                    wirf Exception("character %x has a decomposition too large fuer nfd_nfkd" % char)
                 # prefix
                 wenn decomp[0][0] == "<":
                     prefix = decomp.pop(0)
                 sonst:
                     prefix = ""
-                try:
+                versuch:
                     i = decomp_prefix.index(prefix)
-                except ValueError:
+                ausser ValueError:
                     i = len(decomp_prefix)
                     decomp_prefix.append(prefix)
                 prefix = i
@@ -374,9 +374,9 @@ def makeunicodedata(unicode, trace):
             cache = {table[0]:0}
             index = [0] * len(table)
             fuer i, record in enumerate(table):
-                try:
+                versuch:
                     index[i] = cache[record]
-                except KeyError:
+                ausser KeyError:
                     index[i] = cache[record] = len(records)
                     records.append(record)
             index1, index2, shift = splitbins(index, trace)
@@ -702,7 +702,7 @@ def makeunicodename(unicode, trace):
 def merge_old_version(version, new, old):
     # Changes to exclusion file nicht implemented yet
     wenn old.exclusions != new.exclusions:
-        raise NotImplementedError("exclusions differ")
+        wirf NotImplementedError("exclusions differ")
 
     # In these change records, 0xFF means "no change"
     bidir_changes = [0xFF]*0x110000
@@ -784,7 +784,7 @@ def merge_old_version(version, new, old):
                         pass
                     sonst:
                         klasse Difference(Exception):pass
-                        raise Difference(hex(i), k, old.table[i], new.table[i])
+                        wirf Difference(hex(i), k, old.table[i], new.table[i])
     new.changed.append((version, list(zip(bidir_changes, category_changes,
                                           decimal_changes, mirrored_changes,
                                           east_asian_width_changes,
@@ -934,7 +934,7 @@ klasse UnicodeData:
             sowenn field:
                 table[i] = from_row(('%X' % i,) + field[1:])
         wenn cjk_check und cjk_ranges != cjk_ranges_found:
-            raise ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
+            wirf ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
 
         # public attributes
         self.filename = UNICODE_DATA % ''
@@ -1051,7 +1051,7 @@ klasse UnicodeData:
         fuer data in UcdFile(SPECIAL_CASING, version):
             wenn data[4]:
                 # We ignore all conditionals (since they depend on
-                # languages) except fuer one, which is hardcoded. See
+                # languages) ausser fuer one, which is hardcoded. See
                 # handle_capital_sigma in unicodeobject.c.
                 weiter
             c = int(data[0], 16)

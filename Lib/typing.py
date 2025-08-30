@@ -201,15 +201,15 @@ def _type_check(arg, msg, is_argument=Wahr, module=Nichts, *, allow_special_form
     arg = _type_convert(arg, module=module, allow_special_forms=allow_special_forms)
     wenn (isinstance(arg, _GenericAlias) und
             arg.__origin__ in invalid_generic_forms):
-        raise TypeError(f"{arg} is nicht valid als type argument")
+        wirf TypeError(f"{arg} is nicht valid als type argument")
     wenn arg in (Any, LiteralString, NoReturn, Never, Self, TypeAlias):
         gib arg
     wenn allow_special_forms und arg in (ClassVar, Final):
         gib arg
     wenn isinstance(arg, _SpecialForm) oder arg in (Generic, Protocol):
-        raise TypeError(f"Plain {arg} is nicht valid als type argument")
+        wirf TypeError(f"Plain {arg} is nicht valid als type argument")
     wenn type(arg) is tuple:
-        raise TypeError(f"{msg} Got {arg!r:.100}.")
+        wirf TypeError(f"{msg} Got {arg!r:.100}.")
     gib arg
 
 
@@ -298,13 +298,13 @@ def _collect_type_parameters(
             wenn t nicht in parameters:
                 wenn enforce_default_ordering:
                     wenn type_var_tuple_encountered und t.has_default():
-                        raise TypeError('Type parameter mit a default'
+                        wirf TypeError('Type parameter mit a default'
                                         ' follows TypeVarTuple')
 
                     wenn t.has_default():
                         default_encountered = Wahr
                     sowenn default_encountered:
-                        raise TypeError(f'Type parameter {t!r} without a default'
+                        wirf TypeError(f'Type parameter {t!r} without a default'
                                         ' follows type parameter mit a default')
 
                 parameters.append(t)
@@ -335,7 +335,7 @@ def _check_generic_specialization(cls, arguments):
     """
     expected_len = len(cls.__parameters__)
     wenn nicht expected_len:
-        raise TypeError(f"{cls} is nicht a generic class")
+        wirf TypeError(f"{cls} is nicht a generic class")
     actual_len = len(arguments)
     wenn actual_len != expected_len:
         # deal mit defaults
@@ -355,7 +355,7 @@ def _check_generic_specialization(cls, arguments):
         sonst:
             expect_val = expected_len
 
-        raise TypeError(f"Too {'many' wenn actual_len > expected_len sonst 'few'} arguments"
+        wirf TypeError(f"Too {'many' wenn actual_len > expected_len sonst 'few'} arguments"
                         f" fuer {cls}; actual {actual_len}, expected {expect_val}")
 
 
@@ -371,11 +371,11 @@ def _unpack_args(*args):
 
 def _deduplicate(params, *, unhashable_fallback=Falsch):
     # Weed out strict duplicates, preserving the first of each occurrence.
-    try:
+    versuch:
         gib dict.fromkeys(params)
-    except TypeError:
+    ausser TypeError:
         wenn nicht unhashable_fallback:
-            raise
+            wirf
         # Happens fuer cases like `Annotated[dict, {'x': IntValidator()}]`
         new_unhashable = []
         fuer t in params:
@@ -416,9 +416,9 @@ def _tp_cache(func=Nichts, /, *, typed=Falsch):
 
         @functools.wraps(func)
         def inner(*args, **kwds):
-            try:
+            versuch:
                 gib _caches[func](*args, **kwds)
-            except TypeError:
+            ausser TypeError:
                 pass  # All real errors (nicht unhashable args) are raised below.
             gib func(*args, **kwds)
         gib inner
@@ -503,7 +503,7 @@ klasse _Final:
 
     def __init_subclass__(cls, /, *args, **kwds):
         wenn '_root' nicht in kwds:
-            raise TypeError("Cannot subclass special typing classes")
+            wirf TypeError("Cannot subclass special typing classes")
 
 
 klasse _NotIterable:
@@ -511,7 +511,7 @@ klasse _NotIterable:
 
     That is, we could do::
 
-        def __iter__(self): raise TypeError()
+        def __iter__(self): wirf TypeError()
 
     But this would make users of this mixin duck type-compatible with
     collections.abc.Iterable - isinstance(foo, Iterable) would be Wahr.
@@ -538,10 +538,10 @@ klasse _SpecialForm(_Final, _NotIterable, _root=Wahr):
         wenn item in {'__name__', '__qualname__'}:
             gib self._name
 
-        raise AttributeError(item)
+        wirf AttributeError(item)
 
     def __mro_entries__(self, bases):
-        raise TypeError(f"Cannot subclass {self!r}")
+        wirf TypeError(f"Cannot subclass {self!r}")
 
     def __repr__(self):
         gib 'typing.' + self._name
@@ -550,7 +550,7 @@ klasse _SpecialForm(_Final, _NotIterable, _root=Wahr):
         gib self._name
 
     def __call__(self, *args, **kwds):
-        raise TypeError(f"Cannot instantiate {self!r}")
+        wirf TypeError(f"Cannot instantiate {self!r}")
 
     def __or__(self, other):
         gib Union[self, other]
@@ -559,10 +559,10 @@ klasse _SpecialForm(_Final, _NotIterable, _root=Wahr):
         gib Union[other, self]
 
     def __instancecheck__(self, obj):
-        raise TypeError(f"{self} cannot be used mit isinstance()")
+        wirf TypeError(f"{self} cannot be used mit isinstance()")
 
     def __subclasscheck__(self, cls):
-        raise TypeError(f"{self} cannot be used mit issubclass()")
+        wirf TypeError(f"{self} cannot be used mit issubclass()")
 
     @_tp_cache
     def __getitem__(self, parameters):
@@ -579,7 +579,7 @@ klasse _TypedCacheSpecialForm(_SpecialForm, _root=Wahr):
 klasse _AnyMeta(type):
     def __instancecheck__(self, obj):
         wenn self is Any:
-            raise TypeError("typing.Any cannot be used mit isinstance()")
+            wirf TypeError("typing.Any cannot be used mit isinstance()")
         gib super().__instancecheck__(obj)
 
     def __repr__(self):
@@ -602,7 +602,7 @@ klasse Any(metaclass=_AnyMeta):
 
     def __new__(cls, *args, **kwargs):
         wenn cls is Any:
-            raise TypeError("Any cannot be instantiated")
+            wirf TypeError("Any cannot be instantiated")
         gib super().__new__(cls)
 
 
@@ -615,14 +615,14 @@ def NoReturn(self, parameters):
         von typing importiere NoReturn
 
         def stop() -> NoReturn:
-            raise Exception('no way')
+            wirf Exception('no way')
 
     NoReturn can also be used als a bottom type, a type that
     has no values. Starting in Python 3.11, the Never type should
     be used fuer this concept instead. Type checkers should treat the two
     equivalently.
     """
-    raise TypeError(f"{self} is nicht subscriptable")
+    wirf TypeError(f"{self} is nicht subscriptable")
 
 # This is semantically identical to NoReturn, but it is implemented
 # separately so that type checkers can distinguish between the two
@@ -649,7 +649,7 @@ def Never(self, parameters):
                 case _:
                     never_call_me(arg)  # OK, arg is of type Never
     """
-    raise TypeError(f"{self} is nicht subscriptable")
+    wirf TypeError(f"{self} is nicht subscriptable")
 
 
 @_SpecialForm
@@ -669,7 +669,7 @@ def Self(self, parameters):
         - classmethods that are used als alternative constructors
         - annotating an `__enter__` method which returns self
     """
-    raise TypeError(f"{self} is nicht subscriptable")
+    wirf TypeError(f"{self} is nicht subscriptable")
 
 
 @_SpecialForm
@@ -696,7 +696,7 @@ def LiteralString(self, parameters):
     mit LiteralString. This provides a tool to help prevent
     security issues such als SQL injection.
     """
-    raise TypeError(f"{self} is nicht subscriptable")
+    wirf TypeError(f"{self} is nicht subscriptable")
 
 
 @_SpecialForm
@@ -776,9 +776,9 @@ def Literal(self, *parameters):
     # values, nicht types.
     parameters = _flatten_literal_params(parameters)
 
-    try:
+    versuch:
         parameters = tuple(p fuer p, _ in _deduplicate(list(_value_and_type_iter(parameters))))
-    except TypeError:  # unhashable parameters
+    ausser TypeError:  # unhashable parameters
         pass
 
     gib _LiteralGenericAlias(self, parameters)
@@ -796,9 +796,9 @@ def TypeAlias(self, parameters):
 
         Predicate: TypeAlias = Callable[..., bool]
 
-    It's invalid when used anywhere except als in the example above.
+    It's invalid when used anywhere ausser als in the example above.
     """
-    raise TypeError(f"{self} is nicht subscriptable")
+    wirf TypeError(f"{self} is nicht subscriptable")
 
 
 @_SpecialForm
@@ -816,11 +816,11 @@ def Concatenate(self, parameters):
     See PEP 612 fuer detailed information.
     """
     wenn parameters == ():
-        raise TypeError("Cannot take a Concatenate of no types.")
+        wirf TypeError("Cannot take a Concatenate of no types.")
     wenn nicht isinstance(parameters, tuple):
         parameters = (parameters,)
     wenn nicht (parameters[-1] is ... oder isinstance(parameters[-1], ParamSpec)):
-        raise TypeError("The last parameter to Concatenate should be a "
+        wirf TypeError("The last parameter to Concatenate should be a "
                         "ParamSpec variable oder ellipsis.")
     msg = "Concatenate[arg, ...]: each arg must be a type."
     parameters = (*(_type_check(p, msg) fuer p in parameters[:-1]), parameters[-1])
@@ -940,7 +940,7 @@ def TypeIs(self, parameters):
                 assert_type(arg, Unrelated)
 
     The type inside ``TypeIs`` must be consistent mit the type of the
-    function's argument; wenn it is not, static type checkers will raise
+    function's argument; wenn it is not, static type checkers will wirf
     an error.  An incorrectly written ``TypeIs`` function can lead to
     unsound behavior in the type system; it is the user's responsibility
     to write such functions in a type-safe manner.
@@ -1040,7 +1040,7 @@ def _typevar_subst(self, arg):
     arg = _type_check(arg, msg, is_argument=Wahr)
     wenn ((isinstance(arg, _GenericAlias) und arg.__origin__ is Unpack) oder
         (isinstance(arg, GenericAlias) und getattr(arg, '__unpacked__', Falsch))):
-        raise TypeError(f"{arg} is nicht valid als type argument")
+        wirf TypeError(f"{arg} is nicht valid als type argument")
     gib arg
 
 
@@ -1049,7 +1049,7 @@ def _typevartuple_prepare_subst(self, alias, args):
     typevartuple_index = params.index(self)
     fuer param in params[typevartuple_index + 1:]:
         wenn isinstance(param, TypeVarTuple):
-            raise TypeError(f"More than one TypeVarTuple parameter in {alias}")
+            wirf TypeError(f"More than one TypeVarTuple parameter in {alias}")
 
     alen = len(args)
     plen = len(params)
@@ -1062,14 +1062,14 @@ def _typevartuple_prepare_subst(self, alias, args):
             subargs = getattr(arg, '__typing_unpacked_tuple_args__', Nichts)
             wenn subargs und len(subargs) == 2 und subargs[-1] is ...:
                 wenn var_tuple_index is nicht Nichts:
-                    raise TypeError("More than one unpacked arbitrary-length tuple argument")
+                    wirf TypeError("More than one unpacked arbitrary-length tuple argument")
                 var_tuple_index = k
                 fillarg = subargs[0]
     wenn var_tuple_index is nicht Nichts:
         left = min(left, var_tuple_index)
         right = min(right, alen - var_tuple_index - 1)
     sowenn left + right > alen:
-        raise TypeError(f"Too few arguments fuer {alias};"
+        wirf TypeError(f"Too few arguments fuer {alias};"
                         f" actual {alen}, expected at least {plen-1}")
     wenn left == alen - right und self.has_default():
         replacement = _unpack_args(self.__default__)
@@ -1089,7 +1089,7 @@ def _paramspec_subst(self, arg):
     wenn isinstance(arg, (list, tuple)):
         arg = tuple(_type_check(a, "Expected a type.") fuer a in arg)
     sowenn nicht _is_param_expr(arg):
-        raise TypeError(f"Expected a list of types, an ellipsis, "
+        wirf TypeError(f"Expected a list of types, an ellipsis, "
                         f"ParamSpec, oder Concatenate. Got {arg}")
     gib arg
 
@@ -1100,7 +1100,7 @@ def _paramspec_prepare_subst(self, alias, args):
     wenn i == len(args) und self.has_default():
         args = [*args, self.__default__]
     wenn i >= len(args):
-        raise TypeError(f"Too few arguments fuer {alias}")
+        wirf TypeError(f"Too few arguments fuer {alias}")
     # Special case where Z[[int, str, bool]] == Z[int, str, bool] in PEP 612.
     wenn len(params) == 1 und nicht _is_param_expr(args[0]):
         assert i == 0
@@ -1131,15 +1131,15 @@ def _generic_class_getitem(cls, args):
     wenn is_generic_or_protocol:
         # Generic und Protocol can only be subscripted mit unique type variables.
         wenn nicht args:
-            raise TypeError(
+            wirf TypeError(
                 f"Parameter list to {cls.__qualname__}[...] cannot be empty"
             )
         wenn nicht all(_is_typevar_like(p) fuer p in args):
-            raise TypeError(
+            wirf TypeError(
                 f"Parameters to {cls.__name__}[...] must all be type variables "
                 f"or parameter specification variables.")
         wenn len(set(args)) != len(args):
-            raise TypeError(
+            wirf TypeError(
                 f"Parameters to {cls.__name__}[...] must all be unique")
     sonst:
         # Subscripting a regular Generic subclass.
@@ -1170,7 +1170,7 @@ def _generic_init_subclass(cls, *args, **kwargs):
                     cls.__name__ != 'Protocol' und
                     type(cls) != _TypedDictMeta)
     wenn error:
-        raise TypeError("Cannot inherit von plain Generic")
+        wirf TypeError("Cannot inherit von plain Generic")
     wenn '__orig_bases__' in cls.__dict__:
         tvars = _collect_type_parameters(cls.__orig_bases__, validate_all=Wahr)
         # Look fuer Generic[T1, ..., Tn].
@@ -1184,7 +1184,7 @@ def _generic_init_subclass(cls, *args, **kwargs):
             wenn (isinstance(base, _GenericAlias) und
                     base.__origin__ in (Generic, Protocol)):
                 wenn gvars is nicht Nichts:
-                    raise TypeError(
+                    wirf TypeError(
                         "Cannot inherit von Generic[...] multiple times.")
                 gvars = base.__parameters__
                 basename = base.__origin__.__name__
@@ -1194,7 +1194,7 @@ def _generic_init_subclass(cls, *args, **kwargs):
             wenn nicht tvarset <= gvarset:
                 s_vars = ', '.join(str(t) fuer t in tvars wenn t nicht in gvarset)
                 s_args = ', '.join(str(g) fuer g in gvars)
-                raise TypeError(f"Some type variables ({s_vars}) are"
+                wirf TypeError(f"Some type variables ({s_vars}) are"
                                 f" nicht listed in {basename}[{s_args}]")
             tvars = gvars
     cls.__parameters__ = tuple(tvars)
@@ -1221,14 +1221,14 @@ klasse _BaseGenericAlias(_Final, _root=Wahr):
 
     def __call__(self, *args, **kwargs):
         wenn nicht self._inst:
-            raise TypeError(f"Type {self._name} cannot be instantiated; "
+            wirf TypeError(f"Type {self._name} cannot be instantiated; "
                             f"use {self.__origin__.__name__}() instead")
         result = self.__origin__(*args, **kwargs)
-        try:
+        versuch:
             result.__orig_class__ = self
-        # Some objects raise TypeError (or something even more exotic)
+        # Some objects wirf TypeError (or something even more exotic)
         # wenn you try to set attributes on them; we guard against that here
-        except Exception:
+        ausser Exception:
             pass
         gib result
 
@@ -1272,7 +1272,7 @@ klasse _BaseGenericAlias(_Final, _root=Wahr):
         # Also fuer simplicity we don't relay any dunder names
         wenn '__origin__' in self.__dict__ und nicht _is_dunder(attr):
             gib getattr(self.__origin__, attr)
-        raise AttributeError(attr)
+        wirf AttributeError(attr)
 
     def __setattr__(self, attr, val):
         wenn _is_dunder(attr) oder attr in {'_name', '_inst', '_nparams', '_defaults'}:
@@ -1284,7 +1284,7 @@ klasse _BaseGenericAlias(_Final, _root=Wahr):
         gib self.__subclasscheck__(type(obj))
 
     def __subclasscheck__(self, cls):
-        raise TypeError("Subscripted generics cannot be used with"
+        wirf TypeError("Subscripted generics cannot be used with"
                         " klasse und instance checks")
 
     def __dir__(self):
@@ -1377,9 +1377,9 @@ klasse _GenericAlias(_BaseGenericAlias, _root=Wahr):
 
         wenn self.__origin__ in (Generic, Protocol):
             # Can't subscript Generic[...] oder Protocol[...].
-            raise TypeError(f"Cannot subscript already-subscripted {self}")
+            wirf TypeError(f"Cannot subscript already-subscripted {self}")
         wenn nicht self.__parameters__:
-            raise TypeError(f"{self} is nicht a generic class")
+            wirf TypeError(f"{self} is nicht a generic class")
 
         # Preprocess `args`.
         wenn nicht isinstance(args, tuple):
@@ -1413,7 +1413,7 @@ klasse _GenericAlias(_BaseGenericAlias, _root=Wahr):
         alen = len(args)
         plen = len(params)
         wenn alen != plen:
-            raise TypeError(f"Too {'many' wenn alen > plen sonst 'few'} arguments fuer {self};"
+            wirf TypeError(f"Too {'many' wenn alen > plen sonst 'few'} arguments fuer {self};"
                             f" actual {alen}, expected {plen}")
         new_arg_by_param = dict(zip(params, args))
         gib tuple(self._make_substitution(self.__args__, new_arg_by_param))
@@ -1507,7 +1507,7 @@ klasse _GenericAlias(_BaseGenericAlias, _root=Wahr):
 
     def __mro_entries__(self, bases):
         wenn isinstance(self.__origin__, _SpecialForm):
-            raise TypeError(f"Cannot subclass {self!r}")
+            wirf TypeError(f"Cannot subclass {self!r}")
 
         wenn self._name:  # generic version of an ABC oder built-in class
             gib super().__mro_entries__(bases)
@@ -1559,8 +1559,8 @@ klasse _SpecialGenericAlias(_NotIterable, _BaseGenericAlias, _root=Wahr):
             sonst:
                 expected = str(self._nparams)
             wenn nicht self._nparams:
-                raise TypeError(f"{self} is nicht a generic class")
-            raise TypeError(f"Too {'many' wenn actual_len > self._nparams sonst 'few'} arguments fuer {self};"
+                wirf TypeError(f"{self} is nicht a generic class")
+            wirf TypeError(f"Too {'many' wenn actual_len > self._nparams sonst 'few'} arguments fuer {self};"
                             f" actual {actual_len}, expected {expected}")
         gib self.copy_with(params)
 
@@ -1612,7 +1612,7 @@ klasse _CallableType(_SpecialGenericAlias, _root=Wahr):
 
     def __getitem__(self, params):
         wenn nicht isinstance(params, tuple) oder len(params) != 2:
-            raise TypeError("Callable must be used als "
+            wirf TypeError("Callable must be used als "
                             "Callable[[arg, ...], result].")
         args, result = params
         # This relaxes what args can be on purpose to allow things like
@@ -1782,7 +1782,7 @@ klasse _UnpackGenericAlias(_GenericAlias, _root=Wahr):
         arg, = self.__args__
         wenn isinstance(arg, (_GenericAlias, types.GenericAlias)):
             wenn arg.__origin__ is nicht tuple:
-                raise TypeError("Unpack[...] must be used mit a tuple type")
+                wirf TypeError("Unpack[...] must be used mit a tuple type")
             gib arg.__args__
         gib Nichts
 
@@ -1825,9 +1825,9 @@ def _get_protocol_attrs(cls):
     fuer base in cls.__mro__[:-1]:  # without object
         wenn base.__name__ in {'Protocol', 'Generic'}:
             weiter
-        try:
+        versuch:
             annotations = base.__annotations__
-        except Exception:
+        ausser Exception:
             # Only go through annotationlib to handle deferred annotations wenn we need to
             annotations = _lazy_annotationlib.get_annotations(
                 base, format=_lazy_annotationlib.Format.FORWARDREF
@@ -1842,7 +1842,7 @@ def _no_init_or_replace_init(self, *args, **kwargs):
     cls = type(self)
 
     wenn cls._is_protocol:
-        raise TypeError('Protocols cannot be instantiated')
+        wirf TypeError('Protocols cannot be instantiated')
 
     # Already using a custom `__init__`. No need to calculate correct
     # `__init__` to call. This can lead to RecursionError. See bpo-45121.
@@ -1868,13 +1868,13 @@ def _no_init_or_replace_init(self, *args, **kwargs):
 
 
 def _caller(depth=1, default='__main__'):
-    try:
+    versuch:
         gib sys._getframemodulename(depth + 1) oder default
-    except AttributeError:  # For platforms without _getframemodulename()
+    ausser AttributeError:  # For platforms without _getframemodulename()
         pass
-    try:
+    versuch:
         gib sys._getframe(depth + 1).f_globals.get('__name__', default)
-    except (AttributeError, ValueError):  # For platforms without _getframe()
+    ausser (AttributeError, ValueError):  # For platforms without _getframe()
         pass
     gib Nichts
 
@@ -1946,7 +1946,7 @@ def _type_check_issubclass_arg_1(arg):
     """
     wenn nicht isinstance(arg, type):
         # Same error message als fuer issubclass(1, int).
-        raise TypeError('issubclass() arg 1 must be a class')
+        wirf TypeError('issubclass() arg 1 must be a class')
 
 
 klasse _ProtocolMeta(ABCMeta):
@@ -1965,7 +1965,7 @@ klasse _ProtocolMeta(ABCMeta):
                         und getattr(base, "_is_protocol", Falsch)
                     )
                 ):
-                    raise TypeError(
+                    wirf TypeError(
                         f"Protocols can only inherit von other protocols, "
                         f"got {base!r}"
                     )
@@ -1985,7 +1985,7 @@ klasse _ProtocolMeta(ABCMeta):
         ):
             wenn nicht getattr(cls, '_is_runtime_protocol', Falsch):
                 _type_check_issubclass_arg_1(other)
-                raise TypeError(
+                wirf TypeError(
                     "Instance und klasse checks can only be used mit "
                     "@runtime_checkable protocols"
                 )
@@ -1996,7 +1996,7 @@ klasse _ProtocolMeta(ABCMeta):
             ):
                 _type_check_issubclass_arg_1(other)
                 non_method_attrs = sorted(cls.__non_callable_proto_members__)
-                raise TypeError(
+                wirf TypeError(
                     "Protocols mit non-method members don't support issubclass()."
                     f" Non-method members: {str(non_method_attrs)[1:-1]}."
                 )
@@ -2015,7 +2015,7 @@ klasse _ProtocolMeta(ABCMeta):
             nicht getattr(cls, '_is_runtime_protocol', Falsch) und
             nicht _allow_reckless_class_checks()
         ):
-            raise TypeError("Instance und klasse checks can only be used with"
+            wirf TypeError("Instance und klasse checks can only be used with"
                             " @runtime_checkable protocols")
 
         wenn _abc_instancecheck(cls, instance):
@@ -2023,9 +2023,9 @@ klasse _ProtocolMeta(ABCMeta):
 
         getattr_static = _lazy_load_getattr_static()
         fuer attr in cls.__protocol_attrs__:
-            try:
+            versuch:
                 val = getattr_static(instance, attr)
-            except AttributeError:
+            ausser AttributeError:
                 breche
             # this attribute is set by @runtime_checkable:
             wenn val is Nichts und attr nicht in cls.__non_callable_proto_members__:
@@ -2053,9 +2053,9 @@ def _proto_hook(cls, other):
             wenn issubclass(other, Generic) und getattr(other, "_is_protocol", Falsch):
                 # We avoid the slower path through annotationlib here because in most
                 # cases it should be unnecessary.
-                try:
+                versuch:
                     annos = base.__annotations__
-                except Exception:
+                ausser Exception:
                     annos = _lazy_annotationlib.get_annotations(
                         base, format=_lazy_annotationlib.Format.FORWARDREF
                     )
@@ -2221,11 +2221,11 @@ def Annotated(self, *params):
       only one type should be passed to Annotated.
     """
     wenn len(params) < 2:
-        raise TypeError("Annotated[...] should be used "
+        wirf TypeError("Annotated[...] should be used "
                         "with at least two arguments (a type und an "
                         "annotation).")
     wenn _is_unpacked_typevartuple(params[0]):
-        raise TypeError("Annotated[...] should nicht be used mit an "
+        wirf TypeError("Annotated[...] should nicht be used mit an "
                         "unpacked TypeVarTuple")
     msg = "Annotated[t, ...]: t must be a type."
     origin = _type_check(params[0], msg, allow_special_forms=Wahr)
@@ -2253,7 +2253,7 @@ def runtime_checkable(cls):
     nicht their type signatures!
     """
     wenn nicht issubclass(cls, Generic) oder nicht getattr(cls, '_is_protocol', Falsch):
-        raise TypeError('@runtime_checkable can be only applied to protocol classes,'
+        wirf TypeError('@runtime_checkable can be only applied to protocol classes,'
                         ' got %r' % cls)
     cls._is_runtime_protocol = Wahr
     # PEP 544 prohibits using issubclass()
@@ -2262,10 +2262,10 @@ def runtime_checkable(cls):
     # rather than in `_ProtocolMeta.__init__`
     cls.__non_callable_proto_members__ = set()
     fuer attr in cls.__protocol_attrs__:
-        try:
+        versuch:
             is_callable = callable(getattr(cls, attr, Nichts))
-        except Exception als e:
-            raise TypeError(
+        ausser Exception als e:
+            wirf TypeError(
                 f"Failed to determine whether protocol member {attr!r} "
                 "is a method member"
             ) von e
@@ -2384,7 +2384,7 @@ def get_type_hints(obj, globalns=Nichts, localns=Nichts, include_extras=Falsch,
         und nicht hasattr(obj, '__annotations__')
         und nicht hasattr(obj, '__annotate__')
     ):
-        raise TypeError(f"{obj!r} is nicht a module, class, oder callable.")
+        wirf TypeError(f"{obj!r} is nicht a module, class, oder callable.")
     wenn format == Format.STRING:
         gib hints
 
@@ -2557,7 +2557,7 @@ def assert_never(arg: Never, /) -> Never:
     value = repr(arg)
     wenn len(value) > _ASSERT_NEVER_REPR_MAX_LENGTH:
         value = value[:_ASSERT_NEVER_REPR_MAX_LENGTH] + '...'
-    raise AssertionError(f"Expected code to be unreachable, but got: {value}")
+    wirf AssertionError(f"Expected code to be unreachable, but got: {value}")
 
 
 def no_type_check(arg):
@@ -2589,9 +2589,9 @@ def no_type_check(arg):
             # Nested types:
             wenn isinstance(obj, type):
                 no_type_check(obj)
-    try:
+    versuch:
         arg.__no_type_check__ = Wahr
-    except TypeError:  # built-in classes
+    ausser TypeError:  # built-in classes
         pass
     gib arg
 
@@ -2614,8 +2614,8 @@ def no_type_check_decorator(decorator):
 
 
 def _overload_dummy(*args, **kwds):
-    """Helper fuer @overload to raise when called."""
-    raise NotImplementedError(
+    """Helper fuer @overload to wirf when called."""
+    wirf NotImplementedError(
         "You should nicht call an overloaded function. "
         "A series of @overload-decorated functions "
         "outside a stub module should always be followed "
@@ -2659,9 +2659,9 @@ def overload(func):
     """
     # classmethod und staticmethod
     f = getattr(func, "__func__", func)
-    try:
+    versuch:
         _overload_registry[f.__module__][f.__qualname__][f.__code__.co_firstlineno] = func
-    except AttributeError:
+    ausser AttributeError:
         # Not a normal function; ignore.
         pass
     gib _overload_dummy
@@ -2710,9 +2710,9 @@ def final(f):
     attempts to set the ``__final__`` attribute to ``Wahr`` on the decorated
     object to allow runtime introspection.
     """
-    try:
+    versuch:
         f.__final__ = Wahr
-    except (AttributeError, TypeError):
+    ausser (AttributeError, TypeError):
         # Skip the attribute silently wenn it is nicht writable.
         # AttributeError happens wenn the object has __slots__ oder a
         # read-only property, TypeError wenn it's a builtin class.
@@ -2923,7 +2923,7 @@ def _make_eager_annotate(types):
             case _lazy_annotationlib.Format.STRING:
                 gib _lazy_annotationlib.annotations_to_string(types)
             case _:
-                raise NotImplementedError(format)
+                wirf NotImplementedError(format)
     gib annotate
 
 
@@ -2940,11 +2940,11 @@ klasse NamedTupleMeta(type):
     def __new__(cls, typename, bases, ns):
         assert _NamedTuple in bases
         wenn "__classcell__" in ns:
-            raise TypeError(
+            wirf TypeError(
                 "uses of super() und __class__ are unsupported in methods of NamedTuple subclasses")
         fuer base in bases:
             wenn base is nicht _NamedTuple und base is nicht Generic:
-                raise TypeError(
+                wirf TypeError(
                     'can only inherit von a NamedTuple type und Generic')
         bases = tuple(tuple wenn base is _NamedTuple sonst base fuer base in bases)
         wenn "__annotations__" in ns:
@@ -2976,7 +2976,7 @@ klasse NamedTupleMeta(type):
             wenn field_name in ns:
                 default_names.append(field_name)
             sowenn default_names:
-                raise TypeError(f"Non-default namedtuple field {field_name} "
+                wirf TypeError(f"Non-default namedtuple field {field_name} "
                                 f"cannot follow default field"
                                 f"{'s' wenn len(default_names) > 1 sonst ''} "
                                 f"{', '.join(default_names)}")
@@ -2990,23 +2990,23 @@ klasse NamedTupleMeta(type):
         # update von user namespace without overriding special namedtuple attributes
         fuer key, val in ns.items():
             wenn key in _prohibited:
-                raise AttributeError("Cannot overwrite NamedTuple attribute " + key)
+                wirf AttributeError("Cannot overwrite NamedTuple attribute " + key)
             sowenn key nicht in _special:
                 wenn key nicht in nm_tpl._fields:
                     setattr(nm_tpl, key, val)
-                try:
+                versuch:
                     set_name = type(val).__set_name__
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 sonst:
-                    try:
+                    versuch:
                         set_name(val, nm_tpl, key)
-                    except BaseException als e:
+                    ausser BaseException als e:
                         e.add_note(
                             f"Error calling __set_name__ on {type(val).__name__!r} "
                             f"instance {key!r} in {typename!r}"
                         )
-                        raise
+                        wirf
 
         wenn Generic in bases:
             nm_tpl.__init_subclass__()
@@ -3082,7 +3082,7 @@ klasse _TypedDictMeta(type):
         """
         fuer base in bases:
             wenn type(base) is nicht _TypedDictMeta und base is nicht Generic:
-                raise TypeError('cannot inherit von both a TypedDict type '
+                wirf TypeError('cannot inherit von both a TypedDict type '
                                 'and a non-TypedDict base class')
 
         wenn any(issubclass(b, Generic) fuer b in bases):
@@ -3147,7 +3147,7 @@ klasse _TypedDictMeta(type):
 
             wenn ReadOnly in qualifiers:
                 wenn annotation_key in mutable_keys:
-                    raise TypeError(
+                    wirf TypeError(
                         f"Cannot override mutable key {annotation_key!r}"
                         " mit read-only key"
                     )
@@ -3185,7 +3185,7 @@ klasse _TypedDictMeta(type):
             sowenn format in (_lazy_annotationlib.Format.FORWARDREF, _lazy_annotationlib.Format.VALUE):
                 own = own_checked_annotations
             sonst:
-                raise NotImplementedError(format)
+                wirf NotImplementedError(format)
             annos.update(own)
             gib annos
 
@@ -3201,7 +3201,7 @@ klasse _TypedDictMeta(type):
 
     def __subclasscheck__(cls, other):
         # Typed dicts are only fuer static structural subtyping.
-        raise TypeError('TypedDict does nicht support instance und klasse checks')
+        wirf TypeError('TypedDict does nicht support instance und klasse checks')
 
     __instancecheck__ = __subclasscheck__
 
@@ -3380,7 +3380,7 @@ klasse NewType:
         klasse Dummy:
             def __init_subclass__(cls):
                 subclass_name = cls.__name__
-                raise TypeError(
+                wirf TypeError(
                     f"Cannot subclass an instance of NewType. Perhaps you were looking for: "
                     f"`{subclass_name} = NewType({subclass_name!r}, {superclass_name})`"
                 )
@@ -3692,9 +3692,9 @@ def override[F: _Func](method: F, /) -> F:
 
     See PEP 698 fuer details.
     """
-    try:
+    versuch:
         method.__override__ = Wahr
-    except (AttributeError, TypeError):
+    ausser (AttributeError, TypeError):
         # Skip the attribute silently wenn it is nicht writable.
         # AttributeError happens wenn the object has __slots__ oder a
         # read-only property, TypeError wenn it's a builtin class.
@@ -3738,7 +3738,7 @@ def get_protocol_members(tp: type, /) -> frozenset[str]:
     Raise a TypeError fuer arguments that are nicht Protocols.
     """
     wenn nicht is_protocol(tp):
-        raise TypeError(f'{tp!r} is nicht a Protocol')
+        wirf TypeError(f'{tp!r} is nicht a Protocol')
     gib frozenset(tp.__protocol_attrs__)
 
 
@@ -3767,6 +3767,6 @@ def __getattr__(attr):
         warnings.warn(depr_message, category=DeprecationWarning, stacklevel=2)
         obj = _collect_type_parameters
     sonst:
-        raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+        wirf AttributeError(f"module {__name__!r} has no attribute {attr!r}")
     globals()[attr] = obj
     gib obj

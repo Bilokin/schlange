@@ -18,8 +18,8 @@ klasse Dialog(Widget):
                       cnf['title'], cnf['text'],
                       cnf['bitmap'], cnf['default'],
                       *cnf['strings']))
-        try: Widget.destroy(self)
-        except TclError: pass
+        versuch: Widget.destroy(self)
+        ausser TclError: pass
 
     def destroy(self): pass
 

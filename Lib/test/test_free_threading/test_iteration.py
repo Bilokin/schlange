@@ -100,12 +100,12 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
                 items.append(item)
             results.extend(items)
         mutators = ()
-        try:
+        versuch:
             threads = self.run_threads(worker)
             mutators = self.run_threads(mutator, numthreads=NUMMUTATORS)
             fuer t in threads:
                 t.join()
-        finally:
+        schliesslich:
             endmutate.set()
             fuer m in mutators:
                 m.join()

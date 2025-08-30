@@ -949,7 +949,7 @@ klasse GenericAliasSubstitutionTests(BaseTestCase):
             # Raises TypeError because C is nicht variadic.
             # (If C _were_ variadic, it'd be fine.)
             ('C[T, *tuple_type[int, ...]]',       '[int]',                   'TypeError'),
-            # Should definitely raise TypeError: list only takes one argument.
+            # Should definitely wirf TypeError: list only takes one argument.
             ('list[T, *tuple_type[int, ...]]',    '[int]',                   'list[int, *tuple_type[int, ...]]'),
             ('List[T, *tuple_type[int, ...]]',    '[int]',                   'TypeError'),
             # Should raise, because more than one `TypeVarTuple` is nicht supported.
@@ -2649,7 +2649,7 @@ klasse LiteralTests(BaseTestCase):
 
     def test_illegal_parameters_do_not_raise_runtime_errors(self):
         # Type checkers should reject these types, but we do not
-        # raise errors at runtime to maintain maximum flexibility.
+        # wirf errors at runtime to maintain maximum flexibility.
         Literal[int]
         Literal[3j + 2, ..., ()]
         Literal[{"foo": 3, "bar": 4}]
@@ -2779,9 +2779,9 @@ klasse MySimpleMapping(SimpleMapping[XK, XV]):
         self.store[key] = value
 
     def get(self, key: str, default=Nichts):
-        try:
+        versuch:
             gib self.store[key]
-        except KeyError:
+        ausser KeyError:
             gib default
 
 
@@ -2858,7 +2858,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertNotIsInstance(f, P)
 
     def test_runtime_checkable_generic_non_protocol(self):
-        # Make sure this doesn't raise AttributeError
+        # Make sure this doesn't wirf AttributeError
         mit self.assertRaisesRegex(
             TypeError,
             "@runtime_checkable can be only applied to protocol classes",
@@ -3020,7 +3020,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse P(Protocol):
             @abc.abstractmethod
             def ameth(self) -> int:
-                raise NotImplementedError
+                wirf NotImplementedError
 
         klasse B(P):
             pass
@@ -3406,7 +3406,7 @@ klasse ProtocolTests(BaseTestCase):
             def __getattr__(self, attr):
                 wenn attr == "x":
                     gib 42
-                raise AttributeError(attr)
+                wirf AttributeError(attr)
 
         self.assertNotIsInstance(Eggs(), Spam)
 
@@ -3610,11 +3610,11 @@ klasse ProtocolTests(BaseTestCase):
         klasse C:
             @property
             def attr(self):
-                raise AttributeError('no')
+                wirf AttributeError('no')
 
         klasse CustomDescriptor:
             def __get__(self, obj, objtype=Nichts):
-                raise RuntimeError("NO")
+                wirf RuntimeError("NO")
 
         klasse D:
             attr = CustomDescriptor()
@@ -3626,7 +3626,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse WhyWouldYouDoThis:
             def __getattr__(self, name):
-                raise RuntimeError("wut")
+                wirf RuntimeError("wut")
 
         T = TypeVar('T')
 
@@ -3915,7 +3915,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertIsSubclass(ImplementsHasX, HasX)
         self.assertNotIsSubclass(Empty, HasX)
 
-        # isinstance() und issubclass() checks against this still raise TypeError,
+        # isinstance() und issubclass() checks against this still wirf TypeError,
         # despite the presence of the custom __subclasshook__ method,
         # als it's nicht decorated mit @runtime_checkable
         klasse NotRuntimeCheckable(Protocol):
@@ -4608,14 +4608,14 @@ klasse ProtocolTests(BaseTestCase):
     def test_nonruntime_protocol_interaction_with_evil_classproperty(self):
         klasse classproperty:
             def __get__(self, instance, type):
-                raise RuntimeError("NO")
+                wirf RuntimeError("NO")
 
         klasse Commentable(Protocol):
             evil = classproperty()
 
         # recognised als a protocol attr,
         # but nicht actually accessed by the protocol metaclass
-        # (which would raise RuntimeError) fuer non-runtime protocols.
+        # (which would wirf RuntimeError) fuer non-runtime protocols.
         # See gh-113320
         self.assertEqual(get_protocol_members(Commentable), {"evil"})
 
@@ -4624,7 +4624,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse classproperty:
             def __get__(self, instance, type):
-                raise CustomError
+                wirf CustomError
 
         mit self.assertRaises(TypeError) als cm:
             @runtime_checkable
@@ -4845,7 +4845,7 @@ klasse GenericTests(BaseTestCase):
     def test_setattr_exceptions(self):
         klasse Immutable[T]:
             def __setattr__(self, key, value):
-                raise RuntimeError("immutable")
+                wirf RuntimeError("immutable")
 
         # gh-115165: This used to cause RuntimeError to be raised
         # when we tried to set `__orig_class__` on the `Immutable` instance
@@ -4929,7 +4929,7 @@ klasse GenericTests(BaseTestCase):
         def naive_dict_check(obj, tp):
             # Check wenn a dictionary conforms to Dict type
             wenn len(tp.__parameters__) > 0:
-                raise NotImplementedError
+                wirf NotImplementedError
             wenn tp.__args__:
                 KT, VT = tp.__args__
                 gib all(
@@ -4944,7 +4944,7 @@ klasse GenericTests(BaseTestCase):
         def naive_generic_check(obj, tp):
             # Check wenn an instance conforms to the generic class
             wenn nicht hasattr(obj, '__orig_class__'):
-                raise NotImplementedError
+                wirf NotImplementedError
             gib obj.__orig_class__ == tp
         klasse Node(Generic[T]): ...
         self.assertWahr(naive_generic_check(Node[int](), Node[int]))
@@ -5620,7 +5620,7 @@ klasse GenericTests(BaseTestCase):
             def __init_subclass__(cls, **kwargs) -> Nichts:
                 fuer base in cls.__bases__:
                     wenn base is nicht Final und issubclass(base, Final):
-                        raise FinalException(base)
+                        wirf FinalException(base)
                 super().__init_subclass__(**kwargs)
         klasse Test(Generic[T], Final):
             pass
@@ -6500,7 +6500,7 @@ klasse AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
         wenn data:
             gib data
         sonst:
-            raise StopAsyncIteration
+            wirf StopAsyncIteration
 
 klasse ACM:
     async def __aenter__(self) -> int:
@@ -6610,9 +6610,9 @@ async def g_with(am: typing.AsyncContextManager[int]):
     async mit am als x:
         gib x
 
-try:
+versuch:
     g_with(ACM()).send(Nichts)
-except StopIteration als e:
+ausser StopIteration als e:
     assert e.args[0] == 42
 
 gth = get_type_hints
@@ -6881,7 +6881,7 @@ klasse GetTypeHintsTests(BaseTestCase):
         self.assertEqual(hints, {'value': Final})
 
     def test_top_level_class_var(self):
-        # This is nicht meaningful but we don't raise fuer it.
+        # This is nicht meaningful but we don't wirf fuer it.
         # https://github.com/python/cpython/issues/133959
         hints = get_type_hints(ann_module6)
         self.assertEqual(hints, {'wrong': ClassVar[int]})
@@ -7413,9 +7413,9 @@ klasse CollectionsAbcTests(BaseTestCase):
         mit self.assertRaises(TypeError):
             isinstance(g, typing.Coroutine[int])
         self.assertNotIsInstance(foo, typing.Coroutine)
-        try:
+        versuch:
             g.send(Nichts)
-        except StopIteration:
+        ausser StopIteration:
             pass
 
     def test_async_iterable(self):
@@ -8334,7 +8334,7 @@ klasse NamedTupleTests(BaseTestCase):
 
         klasse Annoying:
             def __set_name__(self, owner, name):
-                raise CustomException
+                wirf CustomException
 
         annoying = Annoying()
 
@@ -8372,7 +8372,7 @@ klasse NamedTupleTests(BaseTestCase):
         klasse Meta(type):
             def __getattribute__(self, attr):
                 wenn attr == "__set_name__":
-                    raise CustomException
+                    wirf CustomException
                 gib object.__getattribute__(self, attr)
 
         klasse VeryAnnoying(metaclass=Meta): pass
@@ -9488,7 +9488,7 @@ klasse AnnotatedTests(BaseTestCase):
     def test_instantiate_immutable(self):
         klasse C:
             def __setattr__(self, key, value):
-                raise Exception("should be ignored")
+                wirf Exception("should be ignored")
 
         A = Annotated[C, "a decoration"]
         # gh-115165: This used to cause RuntimeError to be raised

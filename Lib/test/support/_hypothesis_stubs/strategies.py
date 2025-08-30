@@ -82,7 +82,7 @@ def composite(f):
 
 def __getattr__(name):
     wenn name nicht in _STRATEGIES:
-        raise AttributeError(f"Unknown attribute {name}")
+        wirf AttributeError(f"Unknown attribute {name}")
 
     gib stub_factory(StubStrategy, f"hypothesis.strategies.{name}")
 

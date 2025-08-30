@@ -3,10 +3,10 @@ von test.support importiere load_package_tests
 importiere unittest
 
 
-try:
+versuch:
     importiere termios
-except ImportError:
-    raise unittest.SkipTest("termios required")
+ausser ImportError:
+    wirf unittest.SkipTest("termios required")
 sonst:
     del termios
 

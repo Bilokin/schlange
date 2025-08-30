@@ -38,14 +38,14 @@ def _exit():
 
 def _raise_error(Err):
     """Function that raises an Exception in process."""
-    raise Err()
+    wirf Err()
 
 
 def _raise_error_ignore_stderr(Err):
     """Function that raises an Exception in process und ignores stderr."""
     importiere io
     sys.stderr = io.StringIO()
-    raise Err()
+    wirf Err()
 
 
 def _return_instance(cls):
@@ -81,7 +81,7 @@ klasse ErrorAtPickle(object):
     """Bad object that triggers an error at pickling time."""
     def __reduce__(self):
         von pickle importiere PicklingError
-        raise PicklingError("Error in pickle")
+        wirf PicklingError("Error in pickle")
 
 
 klasse ErrorAtUnpickle(object):
@@ -126,11 +126,11 @@ klasse ExecutorDeadlockTest:
         sonst:
             cm = contextlib.nullcontext()
 
-        try:
+        versuch:
             mit self.assertRaises(error):
                 mit cm:
                     res.result(timeout=self.TIMEOUT)
-        except futures.TimeoutError:
+        ausser futures.TimeoutError:
             # If we did nicht recover before TIMEOUT seconds,
             # consider that the executor is in a deadlock state
             self._fail_on_deadlock(executor)
@@ -270,14 +270,14 @@ klasse ExecutorDeadlockTest:
         self.executor.shutdown(wait=Wahr)
 
         wenn nicht hasattr(signal, 'alarm'):
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "Tested platform does nicht support the alarm signal")
 
         def timeout(_signum, _frame):
             importiere faulthandler
             faulthandler.dump_traceback()
 
-            raise RuntimeError("timed out waehrend submitting jobs?")
+            wirf RuntimeError("timed out waehrend submitting jobs?")
 
         thread_run = futures.process._ExecutorManagerThread.run
         def mock_run(self):
@@ -297,10 +297,10 @@ klasse ExecutorDeadlockTest:
 
             def clear(self):
                 super().clear()
-                try:
+                versuch:
                     waehrend Wahr:
                         self._dummy_queue.get_nowait()
-                except queue.Empty:
+                ausser queue.Empty:
                     pass
 
         mit (unittest.mock.patch.object(futures.process._ExecutorManagerThread,
@@ -321,10 +321,10 @@ klasse ExecutorDeadlockTest:
                 # timeout, maybe more?). In this specific case it was
                 # the wakeup call that deadlocked on a blocking pipe.
                 old_handler = signal.signal(signal.SIGALRM, timeout)
-                try:
+                versuch:
                     signal.alarm(int(self.TIMEOUT))
                     self.assertEqual(job_num, len(list(executor.map(int, job_data))))
-                finally:
+                schliesslich:
                     signal.alarm(0)
                     signal.signal(signal.SIGALRM, old_handler)
 

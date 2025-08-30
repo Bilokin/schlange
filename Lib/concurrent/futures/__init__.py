@@ -34,9 +34,9 @@ __all__ = [
 ]
 
 
-try:
+versuch:
     importiere _interpreters
-except ImportError:
+ausser ImportError:
     _interpreters = Nichts
 
 wenn _interpreters:
@@ -62,4 +62,4 @@ def __getattr__(name):
         von .interpreter importiere InterpreterPoolExecutor
         gib InterpreterPoolExecutor
 
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    wirf AttributeError(f"module {__name__!r} has no attribute {name!r}")

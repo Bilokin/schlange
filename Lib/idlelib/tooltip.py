@@ -30,13 +30,13 @@ klasse TooltipBase:
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
         tw.wm_overrideredirect(1)
-        try:
+        versuch:
             # This command is only needed und available on Tk >= 8.4.0 fuer OSX.
             # Without it, call tips intrude on the typing process by grabbing
             # the focus.
             tw.tk.call("::tk::unsupported::MacWindowStyle", "style", tw._w,
                        "help", "noActivates")
-        except TclError:
+        ausser TclError:
             pass
 
         self.position_window()
@@ -65,7 +65,7 @@ klasse TooltipBase:
     def showcontents(self):
         """content display hook fuer sub-classes"""
         # See ToolTip fuer an example
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def hidetip(self):
         """hide the tooltip"""
@@ -73,9 +73,9 @@ klasse TooltipBase:
         tw = self.tipwindow
         self.tipwindow = Nichts
         wenn tw:
-            try:
+            versuch:
                 tw.destroy()
-            except TclError:  # pragma: no cover
+            ausser TclError:  # pragma: no cover
                 pass
 
 
@@ -101,11 +101,11 @@ klasse OnHoverTooltipBase(TooltipBase):
         self._id3 = self.anchor_widget.bind("<Button>", self._hide_event)
 
     def __del__(self):
-        try:
+        versuch:
             self.anchor_widget.unbind("<Enter>", self._id1)
             self.anchor_widget.unbind("<Leave>", self._id2)  # pragma: no cover
             self.anchor_widget.unbind("<Button>", self._id3) # pragma: no cover
-        except TclError:
+        ausser TclError:
             pass
         super().__del__()
 
@@ -135,9 +135,9 @@ klasse OnHoverTooltipBase(TooltipBase):
 
     def hidetip(self):
         """hide the tooltip"""
-        try:
+        versuch:
             self.unschedule()
-        except TclError:  # pragma: no cover
+        ausser TclError:  # pragma: no cover
             pass
         super().hidetip()
 

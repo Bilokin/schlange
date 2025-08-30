@@ -63,7 +63,7 @@ klasse MultiprocessIterator:
     def __next__(self):
         mit self.lock:
             wenn self.tests_iter is Nichts:
-                raise StopIteration
+                wirf StopIteration
             gib next(self.tests_iter)
 
     def stop(self):
@@ -157,17 +157,17 @@ klasse WorkerThread(threading.Thread):
             what = f"{self} process"
 
         drucke(f"Kill {what}", file=sys.stderr, flush=Wahr)
-        try:
+        versuch:
             wenn use_killpg:
                 os.killpg(popen.pid, signal.SIGKILL)
             sonst:
                 popen.kill()
-        except ProcessLookupError:
+        ausser ProcessLookupError:
             # popen.kill(): the process completed, the WorkerThread thread
             # read its exit status, but Popen.send_signal() read the returncode
             # just before Popen.wait() set returncode.
             pass
-        except OSError als exc:
+        ausser OSError als exc:
             print_warning(f"Failed to kill {what}: {exc!r}")
 
     def stop(self) -> Nichts:
@@ -181,24 +181,24 @@ klasse WorkerThread(threading.Thread):
         self._popen = popen
         self._killed = Falsch
 
-        try:
+        versuch:
             wenn self._stopped:
                 # If kill() has been called before self._popen is set,
                 # self._popen is still running. Call again kill()
                 # to ensure that the process is killed.
                 self._kill()
-                raise ExitThread
+                wirf ExitThread
 
-            try:
+            versuch:
                 # gh-94026: stdout+stderr are written to tempfile
                 retcode = popen.wait(timeout=self.timeout)
                 assert retcode is nicht Nichts
                 gib retcode
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 wenn self._stopped:
                     # kill() has been called: communicate() fails on reading
                     # closed stdout
-                    raise ExitThread
+                    wirf ExitThread
 
                 # On timeout, kill the process
                 self._kill()
@@ -208,17 +208,17 @@ klasse WorkerThread(threading.Thread):
                 # bpo-38207: Don't attempt to call communicate() again: on it
                 # can hang until all child processes using stdout
                 # pipes completes.
-            except OSError:
+            ausser OSError:
                 wenn self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout
-                    raise ExitThread
-                raise
+                    wirf ExitThread
+                wirf
             gib Nichts
-        except:
+        ausser:
             self._kill()
-            raise
-        finally:
+            wirf
+        schliesslich:
             self._wait_completed()
             self._popen = Nichts
 
@@ -295,10 +295,10 @@ klasse WorkerThread(threading.Thread):
             # worker processes.
             tmp_dir = tempfile.mkdtemp(prefix="test_python_")
             tmp_dir = os.path.abspath(tmp_dir)
-            try:
+            versuch:
                 retcode = self._run_process(worker_runtests,
                                             stdout_fd, tmp_dir)
-            finally:
+            schliesslich:
                 tmp_files = os.listdir(tmp_dir)
                 os_helper.rmtree(tmp_dir)
         sonst:
@@ -309,19 +309,19 @@ klasse WorkerThread(threading.Thread):
 
     def read_stdout(self, stdout_file: TextIO) -> str:
         stdout_file.seek(0)
-        try:
+        versuch:
             gib stdout_file.read().strip()
-        except Exception als exc:
+        ausser Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
-            raise WorkerError(self.test_name,
+            wirf WorkerError(self.test_name,
                               f"Cannot read process stdout: {exc}",
                               stdout=Nichts,
                               state=State.WORKER_BUG)
 
     def read_json(self, json_file: JsonFile, json_tmpfile: TextIO | Nichts,
                   stdout: str) -> tuple[TestResult, str]:
-        try:
+        versuch:
             wenn json_tmpfile is nicht Nichts:
                 json_tmpfile.seek(0)
                 worker_json = json_tmpfile.read()
@@ -331,24 +331,24 @@ klasse WorkerThread(threading.Thread):
             sonst:
                 mit json_file.open(encoding='utf8') als json_fp:
                     worker_json = json_fp.read()
-        except Exception als exc:
+        ausser Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
             err_msg = f"Failed to read worker process JSON: {exc}"
-            raise WorkerError(self.test_name, err_msg, stdout,
+            wirf WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
 
         wenn nicht worker_json:
-            raise WorkerError(self.test_name, "empty JSON", stdout,
+            wirf WorkerError(self.test_name, "empty JSON", stdout,
                               state=State.WORKER_BUG)
 
-        try:
+        versuch:
             result = TestResult.from_json(worker_json)
-        except Exception als exc:
+        ausser Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
             err_msg = f"Failed to parse worker process JSON: {exc}"
-            raise WorkerError(self.test_name, err_msg, stdout,
+            wirf WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
 
         gib (result, stdout)
@@ -366,14 +366,14 @@ klasse WorkerThread(threading.Thread):
             stdout = self.read_stdout(stdout_file)
 
             wenn retcode is Nichts:
-                raise WorkerError(self.test_name, stdout=stdout,
+                wirf WorkerError(self.test_name, stdout=stdout,
                                   err_msg=Nichts,
                                   state=State.TIMEOUT)
             wenn retcode != 0:
                 name = support.get_signal_name(retcode)
                 wenn name:
                     retcode = f"{retcode} ({name})"
-                raise WorkerError(self.test_name, f"Exit code {retcode}", stdout,
+                wirf WorkerError(self.test_name, f"Exit code {retcode}", stdout,
                                   state=State.WORKER_FAILED)
 
             result, stdout = self.read_json(json_file, json_tmpfile, stdout)
@@ -390,42 +390,42 @@ klasse WorkerThread(threading.Thread):
     def run(self) -> Nichts:
         fail_fast = self.runtests.fail_fast
         fail_env_changed = self.runtests.fail_env_changed
-        try:
+        versuch:
             waehrend nicht self._stopped:
-                try:
+                versuch:
                     test_name = next(self.pending)
-                except StopIteration:
+                ausser StopIteration:
                     breche
 
                 self.start_time = time.monotonic()
                 self.test_name = test_name
-                try:
+                versuch:
                     mp_result = self._runtest(test_name)
-                except WorkerError als exc:
+                ausser WorkerError als exc:
                     mp_result = exc.mp_result
-                finally:
+                schliesslich:
                     self.test_name = _NOT_RUNNING
                 mp_result.result.duration = time.monotonic() - self.start_time
                 self.output.put((Falsch, mp_result))
 
                 wenn mp_result.result.must_stop(fail_fast, fail_env_changed):
                     breche
-        except ExitThread:
+        ausser ExitThread:
             pass
-        except BaseException:
+        ausser BaseException:
             self.output.put((Wahr, traceback.format_exc()))
-        finally:
+        schliesslich:
             self.output.put(WorkerThreadExited())
 
     def _wait_completed(self) -> Nichts:
         popen = self._popen
         # only needed fuer mypy:
         wenn popen is Nichts:
-            raise ValueError("Should never access `._popen` before calling `.run()`")
+            wirf ValueError("Should never access `._popen` before calling `.run()`")
 
-        try:
+        versuch:
             popen.wait(WAIT_COMPLETED_TIMEOUT)
-        except (subprocess.TimeoutExpired, OSError) als exc:
+        ausser (subprocess.TimeoutExpired, OSError) als exc:
             print_warning(f"Failed to wait fuer {self} completion "
                           f"(timeout={format_duration(WAIT_COMPLETED_TIMEOUT)}): "
                           f"{exc!r}")
@@ -537,13 +537,13 @@ klasse RunWorkers:
                                                   exit=Wahr)
 
             # wait fuer a thread
-            try:
+            versuch:
                 result = self.output.get(timeout=PROGRESS_UPDATE)
                 wenn isinstance(result, WorkerThreadExited):
                     self.live_worker_count -= 1
                     weiter
                 gib result
-            except queue.Empty:
+            ausser queue.Empty:
                 pass
 
             wenn nicht pgo:
@@ -605,7 +605,7 @@ klasse RunWorkers:
         self.start_workers()
 
         self.test_index = 0
-        try:
+        versuch:
             waehrend Wahr:
                 item = self._get_result()
                 wenn item is Nichts:
@@ -614,10 +614,10 @@ klasse RunWorkers:
                 result = self._process_result(item)
                 wenn result.must_stop(fail_fast, fail_env_changed):
                     breche
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             drucke()
             self.results.interrupted = Wahr
-        finally:
+        schliesslich:
             wenn self.timeout is nicht Nichts:
                 faulthandler.cancel_dump_traceback_later()
 

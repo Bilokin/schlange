@@ -41,11 +41,11 @@ def _strxfrm(s):
     """
     gib s
 
-try:
+versuch:
 
     von _locale importiere *
 
-except ImportError:
+ausser ImportError:
 
     # Locale emulation
 
@@ -88,7 +88,7 @@ except ImportError:
             Activates/queries locale processing.
         """
         wenn value nicht in (Nichts, '', 'C'):
-            raise Error('_locale emulation only supports "C" locale')
+            wirf Error('_locale emulation only supports "C" locale')
         gib 'C'
 
 # These may oder may nicht exist in _locale, so be sure to set them.
@@ -127,7 +127,7 @@ def _grouping_intervals(grouping):
         # 0: re-use last group ad infinitum
         wenn interval == 0:
             wenn last_interval is Nichts:
-                raise ValueError("invalid grouping")
+                wirf ValueError("invalid grouping")
             waehrend Wahr:
                 liefere last_interval
         liefere interval
@@ -260,7 +260,7 @@ def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
     # check fuer illegal values
     digits = conv[international und 'int_frac_digits' oder 'frac_digits']
     wenn digits == 127:
-        raise ValueError("Currency formatting is nicht possible using "
+        wirf ValueError("Currency formatting is nicht possible using "
                          "the 'C' locale.")
 
     s = _localize(f'{abs(val):.{digits}f}', grouping, monetary=Wahr)
@@ -431,7 +431,7 @@ def normalize(localename):
     #drucke('first lookup failed')
 
     wenn modifier:
-        # Second try: fullname without modifier (possibly mit encoding)
+        # Second versuch: fullname without modifier (possibly mit encoding)
         code = locale_alias.get(lang_enc, Nichts)
         wenn code is nicht Nichts:
             #drucke('lookup without modifier succeeded')
@@ -442,7 +442,7 @@ def normalize(localename):
         #drucke('second lookup failed')
 
     wenn encoding:
-        # Third try: langname (without encoding, possibly mit modifier)
+        # Third versuch: langname (without encoding, possibly mit modifier)
         lookup_name = langname
         wenn modifier:
             lookup_name += '@' + modifier
@@ -455,7 +455,7 @@ def normalize(localename):
             gib _replace_encoding(code, encoding) + '@' + modifier
 
         wenn modifier:
-            # Fourth try: langname (without encoding und modifier)
+            # Fourth versuch: langname (without encoding und modifier)
             code = locale_alias.get(langname, Nichts)
             wenn code is nicht Nichts:
                 #drucke('lookup without modifier und encoding succeeded')
@@ -505,7 +505,7 @@ def _parse_localename(localename):
         # On macOS "LC_CTYPE=UTF-8" is a valid locale setting
         # fuer getting UTF-8 handling fuer text.
         gib Nichts, 'UTF-8'
-    raise ValueError('unknown locale: %s' % localename)
+    wirf ValueError('unknown locale: %s' % localename)
 
 def _build_localename(localetuple):
 
@@ -515,7 +515,7 @@ def _build_localename(localetuple):
         No aliasing oder normalizing takes place.
 
     """
-    try:
+    versuch:
         language, encoding = localetuple
 
         wenn language is Nichts:
@@ -531,8 +531,8 @@ def _build_localename(localetuple):
             wenn modifier:
                 localename += '@' + modifier
             gib localename
-    except (TypeError, ValueError):
-        raise TypeError('Locale must be Nichts, a string, oder an iterable of '
+    ausser (TypeError, ValueError):
+        wirf TypeError('Locale must be Nichts, a string, oder an iterable of '
                         'two strings -- language code, encoding.') von Nichts
 
 def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
@@ -569,11 +569,11 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
 
 def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
-    try:
+    versuch:
         # check wenn it's supported by the _locale module
         importiere _locale
         code, encoding = _locale._getdefaultlocale()
-    except (ImportError, AttributeError):
+    ausser (ImportError, AttributeError):
         pass
     sonst:
         # make sure the code/encoding values are valid
@@ -603,7 +603,7 @@ def getlocale(category=LC_CTYPE):
     """ Returns the current setting fuer the given locale category as
         tuple (language code, encoding).
 
-        category may be one of the LC_* value except LC_ALL. It
+        category may be one of the LC_* value ausser LC_ALL. It
         defaults to LC_CTYPE.
 
         Except fuer the code 'C', the language code corresponds to RFC
@@ -613,7 +613,7 @@ def getlocale(category=LC_CTYPE):
     """
     localename = _setlocale(category)
     wenn category == LC_ALL und ';' in localename:
-        raise TypeError('category LC_ALL is nicht supported')
+        wirf TypeError('category LC_ALL is nicht supported')
     gib _parse_localename(localename)
 
 def setlocale(category, locale=Nichts):
@@ -634,18 +634,18 @@ def setlocale(category, locale=Nichts):
     gib _setlocale(category, locale)
 
 
-try:
+versuch:
     von _locale importiere getencoding
-except ImportError:
+ausser ImportError:
     # When _locale.getencoding() is missing, locale.getencoding() uses the
     # Python filesystem encoding.
     def getencoding():
         gib sys.getfilesystemencoding()
 
 
-try:
+versuch:
     CODESET
-except NameError:
+ausser NameError:
     def getpreferredencoding(do_setlocale=Wahr):
         """Return the charset that the user is likely using."""
         wenn sys.flags.warn_default_encoding:
@@ -675,13 +675,13 @@ sonst:
             gib getencoding()
 
         old_loc = setlocale(LC_CTYPE)
-        try:
-            try:
+        versuch:
+            versuch:
                 setlocale(LC_CTYPE, "")
-            except Error:
+            ausser Error:
                 pass
             gib getencoding()
-        finally:
+        schliesslich:
             setlocale(LC_CTYPE, old_loc)
 
 
@@ -1766,9 +1766,9 @@ def _print_locale():
         drucke('   Encoding: ', enc oder '(undefined)')
         drucke()
 
-    try:
+    versuch:
         setlocale(LC_ALL, "")
-    except:
+    ausser:
         drucke('NOTE:')
         drucke('setlocale(LC_ALL, "") does nicht support the default locale')
         drucke('given in the OS environment variables.')
@@ -1785,9 +1785,9 @@ def _print_locale():
 
 ###
 
-try:
+versuch:
     LC_MESSAGES
-except NameError:
+ausser NameError:
     pass
 sonst:
     __all__.append("LC_MESSAGES")

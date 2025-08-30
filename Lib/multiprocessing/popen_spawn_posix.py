@@ -42,14 +42,14 @@ klasse Popen(popen_fork.Popen):
         prep_data = spawn.get_preparation_data(process_obj._name)
         fp = io.BytesIO()
         set_spawning_popen(self)
-        try:
+        versuch:
             reduction.dump(prep_data, fp)
             reduction.dump(process_obj, fp)
-        finally:
+        schliesslich:
             set_spawning_popen(Nichts)
 
         parent_r = child_w = child_r = parent_w = Nichts
-        try:
+        versuch:
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
             cmd = spawn.get_command_line(tracker_fd=tracker_fd,
@@ -60,7 +60,7 @@ klasse Popen(popen_fork.Popen):
             self.sentinel = parent_r
             mit open(parent_w, 'wb', closefd=Falsch) als f:
                 f.write(fp.getbuffer())
-        finally:
+        schliesslich:
             fds_to_close = []
             fuer fd in (parent_r, parent_w):
                 wenn fd is nicht Nichts:

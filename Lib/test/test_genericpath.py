@@ -30,7 +30,7 @@ klasse GenericTest:
         fuer attr in self.common_attributes + self.attributes:
             mit self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
-                raise self.fail("{}.{}() did nicht raise a TypeError"
+                wirf self.fail("{}.{}() did nicht wirf a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
     def test_commonprefix(self):
@@ -165,9 +165,9 @@ klasse GenericTest:
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_exists_fd(self):
         r, w = os.pipe()
-        try:
+        versuch:
             self.assertWahr(self.pathmodule.exists(r))
-        finally:
+        schliesslich:
             os.close(r)
             os.close(w)
         self.assertFalsch(self.pathmodule.exists(r))
@@ -189,18 +189,18 @@ klasse GenericTest:
         self.assertIs(self.pathmodule.isdir(filename + '\x00'), Falsch)
         self.assertIs(self.pathmodule.isdir(bfilename + b'\x00'), Falsch)
 
-        try:
+        versuch:
             create_file(filename)
             self.assertIs(self.pathmodule.isdir(filename), Falsch)
             self.assertIs(self.pathmodule.isdir(bfilename), Falsch)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
-        try:
+        versuch:
             os.mkdir(filename)
             self.assertIs(self.pathmodule.isdir(filename), Wahr)
             self.assertIs(self.pathmodule.isdir(bfilename), Wahr)
-        finally:
+        schliesslich:
             os_helper.rmdir(filename)
 
     def test_isfile(self):
@@ -214,18 +214,18 @@ klasse GenericTest:
         self.assertIs(self.pathmodule.isfile(filename + '\x00'), Falsch)
         self.assertIs(self.pathmodule.isfile(bfilename + b'\x00'), Falsch)
 
-        try:
+        versuch:
             create_file(filename)
             self.assertIs(self.pathmodule.isfile(filename), Wahr)
             self.assertIs(self.pathmodule.isfile(bfilename), Wahr)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
-        try:
+        versuch:
             os.mkdir(filename)
             self.assertIs(self.pathmodule.isfile(filename), Falsch)
             self.assertIs(self.pathmodule.isfile(bfilename), Falsch)
-        finally:
+        schliesslich:
             os_helper.rmdir(filename)
 
     def test_samefile(self):
@@ -263,9 +263,9 @@ klasse GenericTest:
 
     @unittest.skipUnless(hasattr(os, 'link'), 'requires os.link')
     def test_samefile_on_link(self):
-        try:
+        versuch:
             self._test_samefile_on_link_func(os.link)
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.skipTest('os.link(): %s' % e)
 
     def test_samestat(self):
@@ -306,9 +306,9 @@ klasse GenericTest:
 
     @unittest.skipUnless(hasattr(os, 'link'), 'requires os.link')
     def test_samestat_on_link(self):
-        try:
+        versuch:
             self._test_samestat_on_link_func(os.link)
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.skipTest('os.link(): %s' % e)
 
     def test_sameopenfile(self):
@@ -346,7 +346,7 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
 
     def test_invalid_paths(self):
         fuer attr in GenericTest.common_attributes:
-            # os.path.commonprefix doesn't raise ValueError
+            # os.path.commonprefix doesn't wirf ValueError
             wenn attr == 'commonprefix':
                 weiter
             func = getattr(self.pathmodule, attr)
@@ -500,9 +500,9 @@ klasse CommonTest(GenericTest):
             self.assertIsInstance(abspath(path), str)
 
         unicwd = '\xe7w\xf0'
-        try:
+        versuch:
             os.fsencode(unicwd)
-        except (AttributeError, UnicodeEncodeError):
+        ausser (AttributeError, UnicodeEncodeError):
             # FS encoding is probably ASCII
             pass
         sonst:

@@ -2,17 +2,17 @@
 """
 importiere re
 
-try:
+versuch:
     von _json importiere encode_basestring_ascii als c_encode_basestring_ascii
-except ImportError:
+ausser ImportError:
     c_encode_basestring_ascii = Nichts
-try:
+versuch:
     von _json importiere encode_basestring als c_encode_basestring
-except ImportError:
+ausser ImportError:
     c_encode_basestring = Nichts
-try:
+versuch:
     von _json importiere make_encoder als c_make_encoder
-except ImportError:
+ausser ImportError:
     c_make_encoder = Nichts
 
 ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
@@ -52,9 +52,9 @@ def py_encode_basestring_ascii(s):
     """
     def replace(match):
         s = match.group(0)
-        try:
+        versuch:
             gib ESCAPE_DCT[s]
-        except KeyError:
+        ausser KeyError:
             n = ord(s)
             wenn n < 0x10000:
                 gib '\\u{0:04x}'.format(n)
@@ -97,7 +97,7 @@ klasse JSONEncoder(object):
     To extend this to recognize other objects, subclass und implement a
     ``.default()`` method mit another method that returns a serializable
     object fuer ``o`` wenn possible, otherwise it should call the superclass
-    implementation (to raise ``TypeError``).
+    implementation (to wirf ``TypeError``).
 
     """
     item_separator = ', '
@@ -141,7 +141,7 @@ klasse JSONEncoder(object):
 
         If specified, default is a function that gets called fuer objects
         that can't otherwise be serialized.  It should gib a JSON encodable
-        version of the object oder raise a ``TypeError``.
+        version of the object oder wirf a ``TypeError``.
 
         """
 
@@ -161,23 +161,23 @@ klasse JSONEncoder(object):
     def default(self, o):
         """Implement this method in a subclass such that it returns
         a serializable object fuer ``o``, oder calls the base implementation
-        (to raise a ``TypeError``).
+        (to wirf a ``TypeError``).
 
         For example, to support arbitrary iterators, you could
         implement default like this::
 
             def default(self, o):
-                try:
+                versuch:
                     iterable = iter(o)
-                except TypeError:
+                ausser TypeError:
                     pass
                 sonst:
                     gib list(iterable)
-                # Let the base klasse default method raise the TypeError
+                # Let the base klasse default method wirf the TypeError
                 gib super().default(o)
 
         """
-        raise TypeError(f'Object of type {o.__class__.__name__} '
+        wirf TypeError(f'Object of type {o.__class__.__name__} '
                         f'is nicht JSON serializable')
 
     def encode(self, o):
@@ -237,7 +237,7 @@ klasse JSONEncoder(object):
                 gib _repr(o)
 
             wenn nicht allow_nan:
-                raise ValueError(
+                wirf ValueError(
                     "Out of range float values are nicht JSON compliant: " +
                     repr(o))
 
@@ -282,7 +282,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         wenn markers is nicht Nichts:
             markerid = id(lst)
             wenn markerid in markers:
-                raise ValueError("Circular reference detected")
+                wirf ValueError("Circular reference detected")
             markers[markerid] = lst
         buf = '['
         wenn _indent is nicht Nichts:
@@ -296,7 +296,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         fuer i, value in enumerate(lst):
             wenn i:
                 buf = separator
-            try:
+            versuch:
                 wenn isinstance(value, str):
                     liefere buf + _encoder(value)
                 sowenn value is Nichts:
@@ -322,11 +322,11 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
                     liefere von chunks
-            except GeneratorExit:
-                raise
-            except BaseException als exc:
+            ausser GeneratorExit:
+                wirf
+            ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(lst).__name__} item {i}')
-                raise
+                wirf
         wenn newline_indent is nicht Nichts:
             _current_indent_level -= 1
             liefere '\n' + _indent * _current_indent_level
@@ -341,7 +341,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         wenn markers is nicht Nichts:
             markerid = id(dct)
             wenn markerid in markers:
-                raise ValueError("Circular reference detected")
+                wirf ValueError("Circular reference detected")
             markers[markerid] = dct
         liefere '{'
         wenn _indent is nicht Nichts:
@@ -376,7 +376,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             sowenn _skipkeys:
                 weiter
             sonst:
-                raise TypeError(f'keys must be str, int, float, bool oder Nichts, '
+                wirf TypeError(f'keys must be str, int, float, bool oder Nichts, '
                                 f'not {key.__class__.__name__}')
             wenn first:
                 first = Falsch
@@ -386,7 +386,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 liefere item_separator
             liefere _encoder(key)
             liefere _key_separator
-            try:
+            versuch:
                 wenn isinstance(value, str):
                     liefere _encoder(value)
                 sowenn value is Nichts:
@@ -409,11 +409,11 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
                     liefere von chunks
-            except GeneratorExit:
-                raise
-            except BaseException als exc:
+            ausser GeneratorExit:
+                wirf
+            ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(dct).__name__} item {key!r}')
-                raise
+                wirf
         wenn nicht first und newline_indent is nicht Nichts:
             _current_indent_level -= 1
             liefere '\n' + _indent * _current_indent_level
@@ -444,16 +444,16 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             wenn markers is nicht Nichts:
                 markerid = id(o)
                 wenn markerid in markers:
-                    raise ValueError("Circular reference detected")
+                    wirf ValueError("Circular reference detected")
                 markers[markerid] = o
             newobj = _default(o)
-            try:
+            versuch:
                 liefere von _iterencode(newobj, _current_indent_level)
-            except GeneratorExit:
-                raise
-            except BaseException als exc:
+            ausser GeneratorExit:
+                wirf
+            ausser BaseException als exc:
                 exc.add_note(f'when serializing {type(o).__name__} object')
-                raise
+                wirf
             wenn markers is nicht Nichts:
                 del markers[markerid]
     gib _iterencode

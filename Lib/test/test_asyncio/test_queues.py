@@ -259,9 +259,9 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         q.put_nowait(2)
         reader.cancel()
 
-        try:
+        versuch:
             await reader
-        except asyncio.CancelledError:
+        ausser asyncio.CancelledError:
             # try again
             reader = asyncio.create_task(q.get())
             await reader
@@ -305,9 +305,9 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(value1, 1)
 
         writer.cancel()
-        try:
+        versuch:
             await writer
-        except asyncio.CancelledError:
+        ausser asyncio.CancelledError:
             # try again
             writer = asyncio.create_task(q.put(2))
             await writer
@@ -556,7 +556,7 @@ klasse _QueueShutdownTestMixin:
         mit self.assertRaisesShutdown():
             await get_task
 
-        # Ensure put() und get() raise ShutDown
+        # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -600,7 +600,7 @@ klasse _QueueShutdownTestMixin:
         await asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
-        # Ensure put() und get() raise ShutDown
+        # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -642,7 +642,7 @@ klasse _QueueShutdownTestMixin:
         self.assertWahr(join_task.done())
         await join_task
 
-        # Ensure put() und get() raise ShutDown
+        # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():
@@ -679,7 +679,7 @@ klasse _QueueShutdownTestMixin:
         await asyncio.sleep(0)
         self.assertFalsch(join_task.done())
 
-        # Ensure put() und get() raise ShutDown
+        # Ensure put() und get() wirf ShutDown
         mit self.assertRaisesShutdown():
             await q.put("data")
         mit self.assertRaisesShutdown():

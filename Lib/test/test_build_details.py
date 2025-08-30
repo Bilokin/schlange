@@ -12,7 +12,7 @@ klasse FormatTestsBase:
     @property
     def contents(self):
         """Install details file contents. Should be overriden by subclasses."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     def data(self):

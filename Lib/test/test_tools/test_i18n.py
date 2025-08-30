@@ -159,7 +159,7 @@ klasse Test_pygettext(unittest.TestCase):
             wenn creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will raise wenn the date format does nicht exactly match.
+            # This will wirf wenn the date format does nicht exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     def test_output_option(self):

@@ -6,7 +6,7 @@ importiere unittest
 klasse TestPEP479(unittest.TestCase):
     def test_stopiteration_wrapping(self):
         def f():
-            raise StopIteration
+            wirf StopIteration
         def g():
             liefere f()
         mit self.assertRaisesRegex(RuntimeError,
@@ -15,13 +15,13 @@ klasse TestPEP479(unittest.TestCase):
 
     def test_stopiteration_wrapping_context(self):
         def f():
-            raise StopIteration
+            wirf StopIteration
         def g():
             liefere f()
 
-        try:
+        versuch:
             next(g())
-        except RuntimeError als exc:
+        ausser RuntimeError als exc:
             self.assertIs(type(exc.__cause__), StopIteration)
             self.assertIs(type(exc.__context__), StopIteration)
             self.assertWahr(exc.__suppress_context__)

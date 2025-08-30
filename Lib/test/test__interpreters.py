@@ -47,7 +47,7 @@ def _wait_for_interp_to_run(interp, timeout=Nichts):
         wenn _interpreters.is_running(interp):
             breche
     sonst:
-        raise RuntimeError('interp is nicht running')
+        wirf RuntimeError('interp is nicht running')
 
 
 @contextlib.contextmanager
@@ -75,9 +75,9 @@ def clean_up_interpreters():
     fuer id, *_ in _interpreters.list_all():
         wenn id == 0:  # main
             weiter
-        try:
+        versuch:
             _interpreters.destroy(id)
-        except _interpreters.InterpreterError:
+        ausser _interpreters.InterpreterError:
             pass  # already destroyed
 
 
@@ -422,9 +422,9 @@ klasse DestroyTests(TestBase):
         id = _interpreters.create()
         script = dedent(f"""
             importiere _interpreters
-            try:
+            versuch:
                 _interpreters.destroy({id})
-            except _interpreters.InterpreterError:
+            ausser _interpreters.InterpreterError:
                 pass
             """)
 
@@ -566,11 +566,11 @@ klasse RunStringTests(TestBase):
                 def f():
                     drucke('it worked!', end='')
 
-                try:
+                versuch:
                     t = threading.Thread(target=f, daemon=Wahr)
                     t.start()
                     t.join()
-                except RuntimeError:
+                ausser RuntimeError:
                     drucke('{expected}', end='')
                 """)
             mit file:
@@ -617,9 +617,9 @@ klasse RunStringTests(TestBase):
         subinterp = _interpreters.create()
         script, file = _captured_script(f"""
             importiere os, sys
-            try:
+            versuch:
                 os.execl(sys.executable)
-            except RuntimeError:
+            ausser RuntimeError:
                 drucke('{expected}', end='')
             """)
         mit file:
@@ -638,9 +638,9 @@ klasse RunStringTests(TestBase):
             expected = 'spam spam spam spam spam'
             script = dedent(f"""
                 importiere os
-                try:
+                versuch:
                     os.fork()
-                except RuntimeError:
+                ausser RuntimeError:
                     mit open('{file.name}', 'w', encoding='utf-8') als out:
                         out.write('{expected}')
                 """)
@@ -867,7 +867,7 @@ klasse RunFailedTests(TestBase):
 
     def run_script(self, text, *, fails=Falsch):
         r, w = os.pipe()
-        try:
+        versuch:
             script = dedent(f"""
                 importiere os, sys
                 os.write({w}, b'0')
@@ -878,7 +878,7 @@ klasse RunFailedTests(TestBase):
                 # Nothing von here down should ever run.
                 os.write({w}, b'1')
                 klasse NeverError(Exception): pass
-                raise NeverError  # never raised
+                wirf NeverError  # never raised
                 """).format(dedent(text))
             wenn fails:
                 err = _interpreters.run_string(self.id, script)
@@ -888,12 +888,12 @@ klasse RunFailedTests(TestBase):
                 err = _interpreters.run_string(self.id, script)
                 self.assertIs(err, Nichts)
                 gib Nichts
-        except:
-            raise  # re-raise
+        ausser:
+            wirf  # re-raise
         sonst:
             msg = os.read(r, 100)
             self.assertEqual(msg, b'0')
-        finally:
+        schliesslich:
             os.close(r)
             os.close(w)
 
@@ -945,14 +945,14 @@ klasse RunFailedTests(TestBase):
 
         mit self.subTest('SystemExit'):
             self.assert_run_failed_msg(SystemExit, '42', """
-                raise SystemExit(42)
+                wirf SystemExit(42)
                 """)
 
         # XXX Also check os._exit() (via a subprocess)?
 
     def test_plain_exception(self):
         self.assert_run_failed_msg(Exception, 'spam', """
-            raise Exception("spam")
+            wirf Exception("spam")
             """)
 
     def test_invalid_syntax(self):
@@ -993,7 +993,7 @@ klasse RunFailedTests(TestBase):
 
     def test_ExceptionGroup(self):
         self.assert_run_failed(ExceptionGroup, """
-            raise ExceptionGroup('exceptions', [
+            wirf ExceptionGroup('exceptions', [
                 Exception('spam'),
                 ImportError('eggs'),
             ])
@@ -1003,7 +1003,7 @@ klasse RunFailedTests(TestBase):
         self.assert_run_failed_msg('MyError', 'spam', """
             klasse MyError(Exception):
                 pass
-            raise MyError('spam')
+            wirf MyError('spam')
             """)
 
 
@@ -1040,16 +1040,16 @@ klasse RunFuncTests(TestBase):
         failed = Nichts
         def f():
             nonlocal failed
-            try:
+            versuch:
                 _interpreters.set___main___attrs(self.id, dict(w=w))
                 _interpreters.run_func(self.id, script)
-            except Exception als exc:
+            ausser Exception als exc:
                 failed = exc
         t = threading.Thread(target=f)
         t.start()
         t.join()
         wenn failed:
-            raise Exception von failed
+            wirf Exception von failed
 
         mit open(r, encoding="utf-8") als outfile:
             out = outfile.read()

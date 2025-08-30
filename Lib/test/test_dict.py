@@ -160,7 +160,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse BadEq(object):
             def __eq__(self, other):
-                raise Exc()
+                wirf Exc()
             def __hash__(self):
                 gib 24
 
@@ -174,7 +174,7 @@ klasse DictTest(unittest.TestCase):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 
@@ -218,7 +218,7 @@ klasse DictTest(unittest.TestCase):
         d.clear()
         klasse FailingUserDict:
             def keys(self):
-                raise Exc
+                wirf Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         klasse FailingUserDict:
@@ -232,7 +232,7 @@ klasse DictTest(unittest.TestCase):
                         wenn self.i:
                             self.i = 0
                             gib 'a'
-                        raise Exc
+                        wirf Exc
                 gib BogonIter()
             def __getitem__(self, key):
                 gib key
@@ -250,17 +250,17 @@ klasse DictTest(unittest.TestCase):
                             rtn = chr(self.i)
                             self.i += 1
                             gib rtn
-                        raise StopIteration
+                        wirf StopIteration
                 gib BogonIter()
             def __getitem__(self, key):
-                raise Exc
+                wirf Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         klasse badseq(object):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, {}.update, badseq())
 
@@ -278,7 +278,7 @@ klasse DictTest(unittest.TestCase):
 
         def badgen():
             liefere "key"
-            raise TypeError("oops")
+            wirf TypeError("oops")
             liefere "value"
 
         mit self.assertRaises(TypeError) als cm:
@@ -351,7 +351,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse baddict1(dict):
             def __init__(self):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, baddict1.fromkeys, [1])
 
@@ -359,13 +359,13 @@ klasse DictTest(unittest.TestCase):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, dict.fromkeys, BadSeq())
 
         klasse baddict2(dict):
             def __setitem__(self, key, value):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, baddict2.fromkeys, [1])
 
@@ -480,7 +480,7 @@ klasse DictTest(unittest.TestCase):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 
@@ -581,7 +581,7 @@ klasse DictTest(unittest.TestCase):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 
@@ -664,7 +664,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse BadRepr(object):
             def __repr__(self):
-                raise Exc()
+                wirf Exc()
 
         d = {1: BadRepr()}
         self.assertRaises(Exc, repr, d)
@@ -685,7 +685,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse BadCmp(object):
             def __eq__(self, other):
-                raise Exc()
+                wirf Exc()
             def __hash__(self):
                 gib 1
 
@@ -746,7 +746,7 @@ klasse DictTest(unittest.TestCase):
     def test_errors_in_view_containment_check(self):
         klasse C:
             def __eq__(self, other):
-                raise RuntimeError
+                wirf RuntimeError
 
         d1 = {1: C()}
         d2 = {1: C()}
@@ -838,7 +838,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse E(dict):
             def __missing__(self, key):
-                raise RuntimeError(key)
+                wirf RuntimeError(key)
         e = E()
         mit self.assertRaises(RuntimeError) als c:
             e[42]
@@ -878,7 +878,7 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, other):
                 wenn isinstance(other, self.__class__):
-                    raise CustomException
+                    wirf CustomException
                 gib other
 
         d = {}
@@ -1084,9 +1084,9 @@ klasse DictTest(unittest.TestCase):
             self.assertEqual(list(it), list(data))
 
             it = pickle.loads(d)
-            try:
+            versuch:
                 drop = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -1140,9 +1140,9 @@ klasse DictTest(unittest.TestCase):
             self.assertEqual(list(it), list(reversed(data)))
 
             it = pickle.loads(d)
-            try:
+            versuch:
                 drop = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -1293,9 +1293,9 @@ klasse DictTest(unittest.TestCase):
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
-        try:
+        versuch:
             dict.fromkeys(d)  # shouldn't crash
-        except RuntimeError:  # implementation defined
+        ausser RuntimeError:  # implementation defined
             pass
 
     def test_fromkeys_operator_modifying_set_operand(self):
@@ -1311,9 +1311,9 @@ klasse DictTest(unittest.TestCase):
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1), X(2)}
-        try:
+        versuch:
             dict.fromkeys(d)  # shouldn't crash
-        except RuntimeError:  # implementation defined
+        ausser RuntimeError:  # implementation defined
             pass
 
     def test_dictitems_contains_use_after_free(self):
@@ -1585,7 +1585,7 @@ klasse DictTest(unittest.TestCase):
         # other exceptions are left unchanged.
         klasse HashError:
             def __hash__(self):
-                raise KeyError('error')
+                wirf KeyError('error')
 
         key2 = HashError()
         mit self.assertRaises(KeyError):
@@ -1623,7 +1623,7 @@ klasse CAPITest(unittest.TestCase):
         klasse Exc(Exception): pass
         klasse BadEq:
             def __eq__(self, other):
-                raise Exc
+                wirf Exc
             def __hash__(self):
                 gib 7
 

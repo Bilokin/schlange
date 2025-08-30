@@ -21,10 +21,10 @@ von test.support.os_helper importiere TESTFN, unlink
 von test.support.warnings_helper importiere check_warnings
 von test importiere support
 
-try:
+versuch:
     importiere _testcapi
     von _testcapi importiere INT_MAX
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
     INT_MAX = 2**31 - 1
 
@@ -40,7 +40,7 @@ klasse SlottedNaiveException(Exception):
 
 klasse BrokenStrException(Exception):
     def __str__(self):
-        raise Exception("str() is broken")
+        wirf Exception("str() is broken")
 
 # XXX This is nicht really enough, each *operation* should be tested!
 
@@ -49,13 +49,13 @@ klasse ExceptionTests(unittest.TestCase):
 
     def raise_catch(self, exc, excname):
         mit self.subTest(exc=exc, excname=excname):
-            try:
-                raise exc("spam")
-            except exc als err:
+            versuch:
+                wirf exc("spam")
+            ausser exc als err:
                 buf1 = str(err)
-            try:
-                raise exc("spam")
-            except exc als err:
+            versuch:
+                wirf exc("spam")
+            ausser exc als err:
                 buf2 = str(err)
             self.assertEqual(buf1, buf2)
             self.assertEqual(exc.__name__, excname)
@@ -69,13 +69,13 @@ klasse ExceptionTests(unittest.TestCase):
         fp.close()
         fp = open(TESTFN, 'r', encoding="utf-8")
         savestdin = sys.stdin
-        try:
-            try:
+        versuch:
+            versuch:
                 importiere marshal
                 marshal.loads(b'')
-            except EOFError:
+            ausser EOFError:
                 pass
-        finally:
+        schliesslich:
             sys.stdin = savestdin
             fp.close()
             unlink(TESTFN)
@@ -99,8 +99,8 @@ klasse ExceptionTests(unittest.TestCase):
         self.raise_catch(MemoryError, "MemoryError")
 
         self.raise_catch(NameError, "NameError")
-        try: x = undefined_variable
-        except NameError: pass
+        versuch: x = undefined_variable
+        ausser NameError: pass
 
         self.raise_catch(OverflowError, "OverflowError")
         x = 1
@@ -111,15 +111,15 @@ klasse ExceptionTests(unittest.TestCase):
         self.raise_catch(RecursionError, "RecursionError")
 
         self.raise_catch(SyntaxError, "SyntaxError")
-        try: exec('/\n')
-        except SyntaxError: pass
+        versuch: exec('/\n')
+        ausser SyntaxError: pass
 
         self.raise_catch(IndentationError, "IndentationError")
 
         self.raise_catch(TabError, "TabError")
-        try: compile("try:\n\t1/0\n    \t1/0\nfinally:\n pass\n",
+        versuch: compile("try:\n\t1/0\n    \t1/0\nfinally:\n pass\n",
                      '<string>', 'exec')
-        except TabError: pass
+        ausser TabError: pass
         sonst: self.fail("TabError nicht raised")
 
         self.raise_catch(SystemError, "SystemError")
@@ -128,19 +128,19 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertRaises(SystemExit, sys.exit, 0)
 
         self.raise_catch(TypeError, "TypeError")
-        try: [] + ()
-        except TypeError: pass
+        versuch: [] + ()
+        ausser TypeError: pass
 
         self.raise_catch(ValueError, "ValueError")
         self.assertRaises(ValueError, chr, 17<<16)
 
         self.raise_catch(ZeroDivisionError, "ZeroDivisionError")
-        try: x = 1/0
-        except ZeroDivisionError: pass
+        versuch: x = 1/0
+        ausser ZeroDivisionError: pass
 
         self.raise_catch(Exception, "Exception")
-        try: x = 1/0
-        except Exception als e: pass
+        versuch: x = 1/0
+        ausser Exception als e: pass
 
         self.raise_catch(StopAsyncIteration, "StopAsyncIteration")
 
@@ -150,18 +150,18 @@ klasse ExceptionTests(unittest.TestCase):
 
         def ckmsg(src, msg):
             mit self.subTest(src=src, msg=msg):
-                try:
+                versuch:
                     compile(src, '<fragment>', 'exec')
-                except SyntaxError als e:
+                ausser SyntaxError als e:
                     wenn e.msg != msg:
                         self.fail("expected %s, got %s" % (msg, e.msg))
                 sonst:
                     self.fail("failed to get expected SyntaxError")
 
         s = '''if 1:
-        try:
+        versuch:
             weiter
-        except:
+        ausser:
             pass'''
 
         ckmsg(s, "'continue' nicht properly in loop")
@@ -170,9 +170,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def testSyntaxErrorMissingParens(self):
         def ckmsg(src, msg, exception=SyntaxError):
-            try:
+            versuch:
                 compile(src, '<fragment>', 'exec')
-            except exception als e:
+            ausser exception als e:
                 wenn e.msg != msg:
                     self.fail("expected %s, got %s" % (msg, e.msg))
             sonst:
@@ -345,16 +345,16 @@ klasse ExceptionTests(unittest.TestCase):
 
         klasse BadException(Exception):
             def __init__(self_):
-                raise RuntimeError("can't instantiate BadException")
+                wirf RuntimeError("can't instantiate BadException")
 
         klasse InvalidException:
             pass
 
         @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
         def test_capi1():
-            try:
+            versuch:
                 _testcapi.raise_exception(BadException, 1)
-            except TypeError als err:
+            ausser TypeError als err:
                 co = err.__traceback__.tb_frame.f_code
                 self.assertEqual(co.co_name, "test_capi1")
                 self.assertEndsWith(co.co_filename, 'test_exceptions.py')
@@ -363,9 +363,9 @@ klasse ExceptionTests(unittest.TestCase):
 
         @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
         def test_capi2():
-            try:
+            versuch:
                 _testcapi.raise_exception(BadException, 0)
-            except RuntimeError als err:
+            ausser RuntimeError als err:
                 tb = err.__traceback__.tb_next
                 co = tb.tb_frame.f_code
                 self.assertEqual(co.co_name, "__init__")
@@ -385,9 +385,9 @@ klasse ExceptionTests(unittest.TestCase):
         test_capi3()
 
     def test_WindowsError(self):
-        try:
+        versuch:
             WindowsError
-        except NameError:
+        ausser NameError:
             pass
         sonst:
             self.assertIs(WindowsError, OSError)
@@ -523,7 +523,7 @@ klasse ExceptionTests(unittest.TestCase):
             (AttributeError, ('foo',), dict(name='name', obj='obj'),
                 dict(args=('foo',), name='name', obj='obj')),
         ]
-        try:
+        versuch:
             # More tests are in test_WindowsError
             exceptionList.append(
                 (WindowsError, (1, 'strErrorStr', 'filenameStr'), {},
@@ -532,15 +532,15 @@ klasse ExceptionTests(unittest.TestCase):
                      'errno' : 1,
                      'filename' : 'filenameStr', 'filename2' : Nichts})
             )
-        except NameError:
+        ausser NameError:
             pass
 
         fuer exc, args, kwargs, expected in exceptionList:
-            try:
+            versuch:
                 e = exc(*args, **kwargs)
-            except:
+            ausser:
                 drucke(f"\nexc={exc!r}, args={args!r}", file=sys.stderr)
-                # raise
+                # wirf
             sonst:
                 # Verify module name
                 wenn nicht type(e).__name__.endswith('NaiveException'):
@@ -623,9 +623,9 @@ klasse ExceptionTests(unittest.TestCase):
                 self.assertEqual(e.__notes__, 42)
 
     def testWithTraceback(self):
-        try:
-            raise IndexError(4)
-        except Exception als e:
+        versuch:
+            wirf IndexError(4)
+        ausser Exception als e:
             tb = e.__traceback__
 
         e = BaseException().with_traceback(tb)
@@ -644,9 +644,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertEqual(e.__traceback__, tb)
 
     def testInvalidTraceback(self):
-        try:
+        versuch:
             Exception().__traceback__ = 5
-        except TypeError als e:
+        ausser TypeError als e:
             self.assertIn("__traceback__ must be a traceback", str(e))
         sonst:
             self.fail("No exception raised")
@@ -665,9 +665,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_invalid_delattr(self):
         TE = TypeError
-        try:
-            raise IndexError(4)
-        except Exception als e:
+        versuch:
+            wirf IndexError(4)
+        ausser Exception als e:
             exc = e
 
         msg = "may nicht be deleted"
@@ -677,9 +677,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertRaisesRegex(TE, msg, delattr, exc, '__context__')
 
     def testNichtsClearsTracebackAttr(self):
-        try:
-            raise IndexError(4)
-        except Exception als e:
+        versuch:
+            wirf IndexError(4)
+        ausser Exception als e:
             tb = e.__traceback__
 
         e = Exception()
@@ -704,9 +704,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(e.__cause__)
 
     def testChainingDescriptors(self):
-        try:
-            raise Exception()
-        except Exception als exc:
+        versuch:
+            wirf Exception()
+        ausser Exception als exc:
             e = exc
 
         self.assertIsNichts(e.__context__)
@@ -741,9 +741,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertRaises(RecursionError, f)
 
         def g():
-            try:
+            versuch:
                 gib g()
-            except ValueError:
+            ausser ValueError:
                 gib -1
         self.assertRaises(RecursionError, g)
 
@@ -755,10 +755,10 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_exception_cleanup_names(self):
         # Make sure the local variable bound to the exception instance by
-        # an "except" statement is only visible inside the except block.
-        try:
-            raise Exception()
-        except Exception als e:
+        # an "except" statement is only visible inside the ausser block.
+        versuch:
+            wirf Exception()
+        ausser Exception als e:
             self.assertIsInstance(e, Exception)
         self.assertNotIn('e', locals())
         mit self.assertRaises(UnboundLocalError):
@@ -766,9 +766,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_exception_cleanup_names2(self):
         # Make sure the cleanup doesn't breche wenn the variable is explicitly deleted.
-        try:
-            raise Exception()
-        except Exception als e:
+        versuch:
+            wirf Exception()
+        ausser Exception als e:
             self.assertIsInstance(e, Exception)
             del e
         self.assertNotIn('e', locals())
@@ -788,14 +788,14 @@ klasse ExceptionTests(unittest.TestCase):
         def inner_raising_func():
             # Create some references in exception value und traceback
             local_ref = obj
-            raise MyException(obj)
+            wirf MyException(obj)
 
         # Qualified "except" mit "as"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        versuch:
             inner_raising_func()
-        except MyException als e:
+        ausser MyException als e:
             pass
         obj = Nichts
         gc_collect()  # For PyPy oder other GCs.
@@ -805,9 +805,9 @@ klasse ExceptionTests(unittest.TestCase):
         # Qualified "except" without "as"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        versuch:
             inner_raising_func()
-        except MyException:
+        ausser MyException:
             pass
         obj = Nichts
         gc_collect()  # For PyPy oder other GCs.
@@ -817,9 +817,9 @@ klasse ExceptionTests(unittest.TestCase):
         # Bare "except"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        versuch:
             inner_raising_func()
-        except:
+        ausser:
             pass
         obj = Nichts
         gc_collect()  # For PyPy oder other GCs.
@@ -830,9 +830,9 @@ klasse ExceptionTests(unittest.TestCase):
         obj = MyObj()
         wr = weakref.ref(obj)
         fuer i in [0]:
-            try:
+            versuch:
                 inner_raising_func()
-            except:
+            ausser:
                 breche
         obj = Nichts
         gc_collect()  # For PyPy oder other GCs.
@@ -842,13 +842,13 @@ klasse ExceptionTests(unittest.TestCase):
         # "except" block raising another exception
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
-            try:
+        versuch:
+            versuch:
                 inner_raising_func()
-            except:
-                raise KeyError
-        except KeyError als e:
-            # We want to test that the except block above got rid of
+            ausser:
+                wirf KeyError
+        ausser KeyError als e:
+            # We want to test that the ausser block above got rid of
             # the exception raised in inner_raising_func(), but it
             # also ends up in the __context__ of the KeyError, so we
             # must clear the latter manually fuer our test to succeed.
@@ -864,15 +864,15 @@ klasse ExceptionTests(unittest.TestCase):
         # Some complicated construct
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        versuch:
             inner_raising_func()
-        except MyException:
-            try:
-                try:
-                    raise
-                finally:
-                    raise
-            except MyException:
+        ausser MyException:
+            versuch:
+                versuch:
+                    wirf
+                schliesslich:
+                    wirf
+            ausser MyException:
                 pass
         obj = Nichts
         wenn check_impl_detail(cpython=Falsch):
@@ -897,13 +897,13 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(obj)
 
     def test_exception_target_in_nested_scope(self):
-        # issue 4617: This used to raise a SyntaxError
+        # issue 4617: This used to wirf a SyntaxError
         # "can nicht delete variable 'e' referenced in nested scope"
         def print_error():
             e
-        try:
+        versuch:
             something
-        except Exception als e:
+        ausser Exception als e:
             print_error()
             # implicit "del e" here
 
@@ -911,9 +911,9 @@ klasse ExceptionTests(unittest.TestCase):
         # Test that generator exception state doesn't leak into the calling
         # frame
         def yield_raise():
-            try:
-                raise KeyError("caught")
-            except KeyError:
+            versuch:
+                wirf KeyError("caught")
+            ausser KeyError:
                 liefere sys.exception()
                 liefere sys.exception()
             liefere sys.exception()
@@ -925,9 +925,9 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIsNichts(next(g))
 
         # Same test, but inside an exception handler
-        try:
-            raise TypeError("foo")
-        except TypeError:
+        versuch:
+            wirf TypeError("foo")
+        ausser TypeError:
             g = yield_raise()
             self.assertIsInstance(next(g), KeyError)
             self.assertIsInstance(sys.exception(), TypeError)
@@ -941,14 +941,14 @@ klasse ExceptionTests(unittest.TestCase):
         # See issue 12475.
         def g():
             liefere
-        try:
-            raise RuntimeError
-        except RuntimeError:
+        versuch:
+            wirf RuntimeError
+        ausser RuntimeError:
             it = g()
             next(it)
-        try:
+        versuch:
             next(it)
-        except StopIteration:
+        ausser StopIteration:
             pass
         self.assertIsNichts(sys.exception())
 
@@ -956,15 +956,15 @@ klasse ExceptionTests(unittest.TestCase):
         # See issue #23353.  When gen.throw() is called, the caller's
         # exception state should be save und restored.
         def g():
-            try:
+            versuch:
                 liefere
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 liefere sys.exception()
         it = g()
         next(it)
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             self.assertIs(sys.exception(), e)
             gen_exc = it.throw(e)
             self.assertIs(sys.exception(), e)
@@ -975,25 +975,25 @@ klasse ExceptionTests(unittest.TestCase):
         # See issue #23353.  When an exception is raised by a generator,
         # the caller's exception state should still be restored.
         def g():
-            try:
+            versuch:
                 1/0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 liefere sys.exception()
-                raise
+                wirf
         it = g()
-        try:
-            raise TypeError
-        except TypeError:
+        versuch:
+            wirf TypeError
+        ausser TypeError:
             # The caller's exception state (TypeError) is temporarily
             # saved in the generator.
             tp = type(next(it))
         self.assertIs(tp, ZeroDivisionError)
-        try:
+        versuch:
             next(it)
             # We can't check it immediately, but waehrend next() returns
             # mit an exception, it shouldn't have restored the old
             # exception state (TypeError).
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             self.assertIs(sys.exception(), e)
         # We used to find TypeError here.
         self.assertIsNichts(sys.exception())
@@ -1004,9 +1004,9 @@ klasse ExceptionTests(unittest.TestCase):
             liefere
             self.assertIsNichts(sys.exception())
         it = g()
-        try:
-            raise RuntimeError
-        except RuntimeError:
+        versuch:
+            wirf RuntimeError
+        ausser RuntimeError:
             next(it)
         self.assertRaises(StopIteration, next, it)
 
@@ -1016,9 +1016,9 @@ klasse ExceptionTests(unittest.TestCase):
             liefere 1
         def run_gen():
             gen = simple_gen()
-            try:
-                raise RuntimeError
-            except RuntimeError:
+            versuch:
+                wirf RuntimeError
+            ausser RuntimeError:
                 gib next(gen)
         run_gen()
         gc_collect()
@@ -1034,9 +1034,9 @@ klasse ExceptionTests(unittest.TestCase):
             pass
 
         def raising_gen():
-            try:
-                raise MyException(obj)
-            except MyException:
+            versuch:
+                wirf MyException(obj)
+            ausser MyException:
                 liefere
 
         obj = MyObj()
@@ -1051,9 +1051,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_generator_throw_cleanup_exc_state(self):
         def do_throw(g):
-            try:
+            versuch:
                 g.throw(RuntimeError())
-            except RuntimeError:
+            ausser RuntimeError:
                 pass
         self._check_generator_cleanup_exc_state(do_throw)
 
@@ -1069,9 +1069,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_generator_next_cleanup_exc_state(self):
         def do_next(g):
-            try:
+            versuch:
                 next(g)
-            except StopIteration:
+            ausser StopIteration:
                 pass
             sonst:
                 self.fail("should have raised StopIteration")
@@ -1079,9 +1079,9 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_generator_send_cleanup_exc_state(self):
         def do_send(g):
-            try:
+            versuch:
                 g.send(Nichts)
-            except StopIteration:
+            ausser StopIteration:
                 pass
             sonst:
                 self.fail("should have raised StopIteration")
@@ -1095,9 +1095,9 @@ klasse ExceptionTests(unittest.TestCase):
                 nonlocal e
                 e = sys.exception()
         e = ()
-        try:
-            raise Exception(MyObject())
-        except:
+        versuch:
+            wirf Exception(MyObject())
+        ausser:
             pass
         gc_collect()  # For PyPy oder other GCs.
         self.assertIsNichts(e)
@@ -1112,19 +1112,19 @@ klasse ExceptionTests(unittest.TestCase):
 
         # Create a context chain:
         # C -> B -> A
-        # Then raise A in context of C.
-        try:
-            try:
-                raise A
-            except A als a_:
+        # Then wirf A in context of C.
+        versuch:
+            versuch:
+                wirf A
+            ausser A als a_:
                 a = a_
-                try:
-                    raise B
-                except B als b_:
+                versuch:
+                    wirf B
+                ausser B als b_:
                     b = b_
-                    try:
-                        raise C
-                    except C als c_:
+                    versuch:
+                        wirf C
+                    ausser C als c_:
                         c = c_
                         self.assertIsInstance(a, A)
                         self.assertIsInstance(b, B)
@@ -1132,8 +1132,8 @@ klasse ExceptionTests(unittest.TestCase):
                         self.assertIsNichts(a.__context__)
                         self.assertIs(b.__context__, a)
                         self.assertIs(c.__context__, b)
-                        raise a
-        except A als e:
+                        wirf a
+        ausser A als e:
             exc = e
 
         # Expect A -> C -> B, without cycle
@@ -1146,15 +1146,15 @@ klasse ExceptionTests(unittest.TestCase):
         # See issue 25782. Cycle in context chain.
 
         def cycle():
-            try:
-                raise ValueError(1)
-            except ValueError als ex:
+            versuch:
+                wirf ValueError(1)
+            ausser ValueError als ex:
                 ex.__context__ = ex
-                raise TypeError(2)
+                wirf TypeError(2)
 
-        try:
+        versuch:
             cycle()
-        except Exception als e:
+        ausser Exception als e:
             exc = e
 
         self.assertIsInstance(exc, TypeError)
@@ -1176,20 +1176,20 @@ klasse ExceptionTests(unittest.TestCase):
         # V           |
         # C --> B --> A
         mit self.assertRaises(C) als cm:
-            try:
-                raise A()
-            except A als _a:
+            versuch:
+                wirf A()
+            ausser A als _a:
                 a = _a
-                try:
-                    raise B()
-                except B als _b:
+                versuch:
+                    wirf B()
+                ausser B als _b:
                     b = _b
-                    try:
-                        raise C()
-                    except C als _c:
+                    versuch:
+                        wirf C()
+                    ausser C als _c:
                         c = _c
                         a.__context__ = c
-                        raise c
+                        wirf c
 
         self.assertIs(cm.exception, c)
         # Verify the expected context chain cycle
@@ -1216,25 +1216,25 @@ klasse ExceptionTests(unittest.TestCase):
         #             V           |
         # E --> D --> C --> B --> A
         mit self.assertRaises(E) als cm:
-            try:
-                raise A()
-            except A als _a:
+            versuch:
+                wirf A()
+            ausser A als _a:
                 a = _a
-                try:
-                    raise B()
-                except B als _b:
+                versuch:
+                    wirf B()
+                ausser B als _b:
                     b = _b
-                    try:
-                        raise C()
-                    except C als _c:
+                    versuch:
+                        wirf C()
+                    ausser C als _c:
                         c = _c
                         a.__context__ = c
-                        try:
-                            raise D()
-                        except D als _d:
+                        versuch:
+                            wirf D()
+                        ausser D als _d:
                             d = _d
                             e = E()
-                            raise e
+                            wirf e
 
         self.assertIs(cm.exception, e)
         # Verify the expected context chain cycle
@@ -1245,31 +1245,31 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIs(a.__context__, c)
 
     def test_context_of_exception_in_try_and_finally(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 te = TypeError(1)
-                raise te
-            finally:
+                wirf te
+            schliesslich:
                 ve = ValueError(2)
-                raise ve
-        except Exception als e:
+                wirf ve
+        ausser Exception als e:
             exc = e
 
         self.assertIs(exc, ve)
         self.assertIs(exc.__context__, te)
 
     def test_context_of_exception_in_except_and_finally(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 te = TypeError(1)
-                raise te
-            except:
+                wirf te
+            ausser:
                 ve = ValueError(2)
-                raise ve
-            finally:
+                wirf ve
+            schliesslich:
                 oe = OSError(3)
-                raise oe
-        except Exception als e:
+                wirf oe
+        ausser Exception als e:
             exc = e
 
         self.assertIs(exc, oe)
@@ -1277,18 +1277,18 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIs(exc.__context__.__context__, te)
 
     def test_context_of_exception_in_else_and_finally(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            except:
+            ausser:
                 pass
             sonst:
                 ve = ValueError(1)
-                raise ve
-            finally:
+                wirf ve
+            schliesslich:
                 oe = OSError(2)
-                raise oe
-        except Exception als e:
+                wirf oe
+        ausser Exception als e:
             exc = e
 
         self.assertIs(exc, oe)
@@ -1403,26 +1403,26 @@ klasse ExceptionTests(unittest.TestCase):
         # it should be ignored
         klasse Meta(type):
             def __subclasscheck__(cls, subclass):
-                raise ValueError()
+                wirf ValueError()
         klasse MyException(Exception, metaclass=Meta):
             pass
 
         mit captured_stderr() als stderr:
-            try:
-                raise KeyError()
-            except MyException als e:
+            versuch:
+                wirf KeyError()
+            ausser MyException als e:
                 self.fail("exception should nicht be a MyException")
-            except KeyError:
+            ausser KeyError:
                 pass
-            except:
+            ausser:
                 self.fail("Should have raised KeyError")
             sonst:
                 self.fail("Should have raised KeyError")
 
         def g():
-            try:
+            versuch:
                 gib g()
-            except RecursionError als e:
+            ausser RecursionError als e:
                 gib e
         exc = g()
         self.assertIsInstance(exc, RecursionError, type(exc))
@@ -1467,10 +1467,10 @@ klasse ExceptionTests(unittest.TestCase):
 
             def setrecursionlimit(depth):
                 waehrend 1:
-                    try:
+                    versuch:
                         sys.setrecursionlimit(depth)
                         gib depth
-                    except RecursionError:
+                    ausser RecursionError:
                         # sys.setrecursionlimit() raises a RecursionError if
                         # the new recursion limit is too low (issue #25274).
                         depth += 1
@@ -1489,9 +1489,9 @@ klasse ExceptionTests(unittest.TestCase):
             generator = gen()
             next(generator)
             recursionlimit = sys.getrecursionlimit()
-            try:
+            versuch:
                 recurse(support.exceeds_recursion_limit())
-            finally:
+            schliesslich:
                 sys.setrecursionlimit(recursionlimit)
                 drucke('Done.')
         """ % __file__
@@ -1511,9 +1511,9 @@ klasse ExceptionTests(unittest.TestCase):
         # an exception
         code = """if 1:
             importiere _testcapi
-            try:
-                raise _testcapi.RecursingInfinitelyError
-            finally:
+            versuch:
+                wirf _testcapi.RecursingInfinitelyError
+            schliesslich:
                 drucke('Done.')
         """
         rc, out, err = script_helper.assert_python_failure("-c", code)
@@ -1529,45 +1529,45 @@ klasse ExceptionTests(unittest.TestCase):
         def set_relative_recursion_limit(n):
             depth = 1
             waehrend Wahr:
-                try:
+                versuch:
                     sys.setrecursionlimit(depth)
-                except RecursionError:
+                ausser RecursionError:
                     depth += 1
                 sonst:
                     breche
             sys.setrecursionlimit(depth+n)
 
         def recurse_in_except():
-            try:
+            versuch:
                 1/0
-            except:
+            ausser:
                 recurse_in_except()
 
         def recurse_after_except():
-            try:
+            versuch:
                 1/0
-            except:
+            ausser:
                 pass
             recurse_after_except()
 
         def recurse_in_body_and_except():
-            try:
+            versuch:
                 recurse_in_body_and_except()
-            except:
+            ausser:
                 recurse_in_body_and_except()
 
         recursionlimit = sys.getrecursionlimit()
-        try:
+        versuch:
             set_relative_recursion_limit(10)
             fuer func in (recurse_in_except, recurse_after_except, recurse_in_body_and_except):
                 mit self.subTest(func=func):
-                    try:
+                    versuch:
                         func()
-                    except RecursionError:
+                    ausser RecursionError:
                         pass
                     sonst:
                         self.fail("Should have raised a RecursionError")
-        finally:
+        schliesslich:
             sys.setrecursionlimit(recursionlimit)
 
 
@@ -1605,9 +1605,9 @@ klasse ExceptionTests(unittest.TestCase):
         importiere traceback
         von _testcapi importiere raise_memoryerror
         def raiseMemError():
-            try:
+            versuch:
                 raise_memoryerror()
-            except MemoryError als e:
+            ausser MemoryError als e:
                 tb = e.__traceback__
             sonst:
                 self.fail("Should have raised a MemoryError")
@@ -1672,9 +1672,9 @@ klasse ExceptionTests(unittest.TestCase):
             wr = weakref.ref(c)
             raise_memoryerror()
         # We cannot use assertRaises since it manually deletes the traceback
-        try:
+        versuch:
             inner()
-        except MemoryError als e:
+        ausser MemoryError als e:
             self.assertNotEqual(wr(), Nichts)
         sonst:
             self.fail("MemoryError nicht raised")
@@ -1693,9 +1693,9 @@ klasse ExceptionTests(unittest.TestCase):
             wr = weakref.ref(c)
             inner()
         # We cannot use assertRaises since it manually deletes the traceback
-        try:
+        versuch:
             inner()
-        except RecursionError als e:
+        ausser RecursionError als e:
             self.assertNotEqual(wr(), Nichts)
         sonst:
             self.fail("RecursionError nicht raised")
@@ -1714,7 +1714,7 @@ klasse ExceptionTests(unittest.TestCase):
             def __del__(self):
                 exc = ValueError("del is broken")
                 # The following line is included in the traceback report:
-                raise exc
+                wirf exc
 
         obj = BrokenDel()
         mit support.catch_unraisable_exception() als cm:
@@ -1731,11 +1731,11 @@ klasse ExceptionTests(unittest.TestCase):
         # Check fuer sensible reporting of unhandled exceptions
         fuer exc_type in (ValueError, BrokenStrException):
             mit self.subTest(exc_type):
-                try:
+                versuch:
                     exc = exc_type("test message")
                     # The following line is included in the traceback report:
-                    raise exc
-                except exc_type:
+                    wirf exc
+                ausser exc_type:
                     mit captured_stderr() als stderr:
                         sys.__excepthook__(*sys.exc_info())
                 report = stderr.getvalue()
@@ -1778,14 +1778,14 @@ klasse ExceptionTests(unittest.TestCase):
             pass
 
         def main():
-            try:
-                raise MainError()
-            except MainError:
-                try:
+            versuch:
+                wirf MainError()
+            ausser MainError:
+                versuch:
                     liefere
-                except SubError:
+                ausser SubError:
                     pass
-                raise
+                wirf
 
         coro = main()
         coro.send(Nichts)
@@ -1795,18 +1795,18 @@ klasse ExceptionTests(unittest.TestCase):
     def test_generator_doesnt_retain_old_exc2(self):
         #Issue 28884#msg282532
         def g():
-            try:
-                raise ValueError
-            except ValueError:
+            versuch:
+                wirf ValueError
+            ausser ValueError:
                 liefere 1
             self.assertIsNichts(sys.exception())
             liefere 2
 
         gen = g()
 
-        try:
-            raise IndexError
-        except IndexError:
+        versuch:
+            wirf IndexError
+        ausser IndexError:
             self.assertEqual(next(gen), 1)
         self.assertEqual(next(gen), 2)
 
@@ -1814,14 +1814,14 @@ klasse ExceptionTests(unittest.TestCase):
         #Issue 25612#msg304117
         def g():
             liefere 1
-            raise
+            wirf
             liefere 2
 
         mit self.assertRaises(ZeroDivisionError):
             i = g()
-            try:
+            versuch:
                 1/0
-            except:
+            ausser:
                 next(i)
                 next(i)
 
@@ -1831,9 +1831,9 @@ klasse ExceptionTests(unittest.TestCase):
         # misbehave.
         global AssertionError
         AssertionError = TypeError
-        try:
+        versuch:
             assert Falsch, 'hello'
-        except BaseException als e:
+        ausser BaseException als e:
             del AssertionError
             self.assertIsInstance(e, AssertionError)
             self.assertEqual(str(e), 'hello')
@@ -1853,20 +1853,20 @@ klasse ExceptionTests(unittest.TestCase):
         klasse TestException(MemoryError):
             pass
 
-        try:
-            raise MemoryError
-        except MemoryError als exc:
+        versuch:
+            wirf MemoryError
+        ausser MemoryError als exc:
             inst = exc
 
-        try:
-            raise TestException
-        except Exception:
+        versuch:
+            wirf TestException
+        ausser Exception:
             pass
 
         fuer _ in range(10):
-            try:
-                raise MemoryError
-            except MemoryError als exc:
+            versuch:
+                wirf MemoryError
+            ausser MemoryError als exc:
                 pass
 
             gc_collect()
@@ -1888,23 +1888,23 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_keyerror_context(self):
         # Make sure that _PyErr_SetKeyError() chains exceptions
-        try:
+        versuch:
             err1 = Nichts
             err2 = Nichts
-            try:
+            versuch:
                 d = {}
-                try:
-                    raise ValueError("bug")
-                except Exception als exc:
+                versuch:
+                    wirf ValueError("bug")
+                ausser Exception als exc:
                     err1 = exc
                     d[1]
-            except Exception als exc:
+            ausser Exception als exc:
                 err2 = exc
 
             self.assertIsInstance(err1, ValueError)
             self.assertIsInstance(err2, KeyError)
             self.assertEqual(err2.__context__, err1)
-        finally:
+        schliesslich:
             # Break any potential reference cycle
             exc1 = Nichts
             exc2 = Nichts
@@ -1912,9 +1912,9 @@ klasse ExceptionTests(unittest.TestCase):
 
 klasse NameErrorTests(unittest.TestCase):
     def test_name_error_has_name(self):
-        try:
+        versuch:
             bluch
-        except NameError als exc:
+        ausser NameError als exc:
             self.assertEqual("bluch", exc.name)
 
     def test_issue45826(self):
@@ -1923,9 +1923,9 @@ klasse NameErrorTests(unittest.TestCase):
             mit self.assertRaisesRegex(NameError, 'aaa'):
                 aab
 
-        try:
+        versuch:
             f()
-        except self.failureException:
+        ausser self.failureException:
             mit support.captured_stderr() als err:
                 sys.__excepthook__(*sys.exc_info())
         sonst:
@@ -1935,15 +1935,15 @@ klasse NameErrorTests(unittest.TestCase):
 
     def test_issue45826_focused(self):
         def f():
-            try:
+            versuch:
                 nonsense
-            except BaseException als E:
+            ausser BaseException als E:
                 E.with_traceback(Nichts)
-                raise ZeroDivisionError()
+                wirf ZeroDivisionError()
 
-        try:
+        versuch:
             f()
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             mit support.captured_stderr() als err:
                 sys.__excepthook__(*sys.exc_info())
 
@@ -1977,14 +1977,14 @@ klasse AttributeErrorTests(unittest.TestCase):
             blech = Nichts
 
         obj = A()
-        try:
+        versuch:
             obj.bluch
-        except AttributeError als exc:
+        ausser AttributeError als exc:
             self.assertEqual("bluch", exc.name)
             self.assertEqual(obj, exc.obj)
-        try:
+        versuch:
             object.__getattribute__(obj, "bluch")
-        except AttributeError als exc:
+        ausser AttributeError als exc:
             self.assertEqual("bluch", exc.name)
             self.assertEqual(obj, exc.obj)
 
@@ -1994,9 +1994,9 @@ klasse AttributeErrorTests(unittest.TestCase):
                 gib
 
         obj = A()
-        try:
+        versuch:
             obj.bluch()
-        except AttributeError als exc:
+        ausser AttributeError als exc:
             self.assertEqual("bluch", exc.name)
             self.assertEqual(obj, exc.obj)
 
@@ -2355,9 +2355,9 @@ klasse SyntaxErrorTests(unittest.TestCase):
         ]
         fuer args, expected in cases:
             mit self.subTest(args=args):
-                try:
-                    raise SyntaxError("bad bad", args)
-                except SyntaxError als exc:
+                versuch:
+                    wirf SyntaxError("bad bad", args)
+                ausser SyntaxError als exc:
                     mit support.captured_stderr() als err:
                         sys.__excepthook__(*sys.exc_info())
                     self.assertIn(expected, err.getvalue())
@@ -2368,9 +2368,9 @@ klasse SyntaxErrorTests(unittest.TestCase):
         klasse MySyntaxError(SyntaxError):
             pass
 
-        try:
-            raise MySyntaxError("bad bad", ("bad.py", 1, 2, "abcdefg", 1, 7))
-        except SyntaxError als exc:
+        versuch:
+            wirf MySyntaxError("bad bad", ("bad.py", 1, 2, "abcdefg", 1, 7))
+        ausser SyntaxError als exc:
             mit support.captured_stderr() als err:
                 sys.__excepthook__(*sys.exc_info())
             self.assertIn("""
@@ -2519,24 +2519,24 @@ klasse SyntaxErrorTests(unittest.TestCase):
 klasse TestInvalidExceptionMatcher(unittest.TestCase):
     def test_except_star_invalid_exception_type(self):
         mit self.assertRaises(TypeError):
-            try:
-                raise ValueError
-            except 42:
+            versuch:
+                wirf ValueError
+            ausser 42:
                 pass
 
         mit self.assertRaises(TypeError):
-            try:
-                raise ValueError
-            except (ValueError, 42):
+            versuch:
+                wirf ValueError
+            ausser (ValueError, 42):
                 pass
 
 
 klasse PEP626Tests(unittest.TestCase):
 
     def lineno_after_raise(self, f, *expected):
-        try:
+        versuch:
             f()
-        except Exception als ex:
+        ausser Exception als ex:
             t = ex.__traceback__
         sonst:
             self.fail("No exception raised")
@@ -2559,52 +2559,52 @@ klasse PEP626Tests(unittest.TestCase):
 
     def test_lineno_after_raise_in_except(self):
         def in_except():
-            try:
+            versuch:
                 1/0
-            except:
+            ausser:
                 1/0
                 pass
         self.lineno_after_raise(in_except, 4)
 
     def test_lineno_after_other_except(self):
         def other_except():
-            try:
+            versuch:
                 1/0
-            except TypeError als ex:
+            ausser TypeError als ex:
                 pass
         self.lineno_after_raise(other_except, 3)
 
     def test_lineno_in_named_except(self):
         def in_named_except():
-            try:
+            versuch:
                 1/0
-            except Exception als ex:
+            ausser Exception als ex:
                 1/0
                 pass
         self.lineno_after_raise(in_named_except, 4)
 
     def test_lineno_in_try(self):
         def in_try():
-            try:
+            versuch:
                 1/0
-            finally:
+            schliesslich:
                 pass
         self.lineno_after_raise(in_try, 4)
 
     def test_lineno_in_finally_normal(self):
         def in_finally_normal():
-            try:
+            versuch:
                 pass
-            finally:
+            schliesslich:
                 1/0
                 pass
         self.lineno_after_raise(in_finally_normal, 4)
 
     def test_lineno_in_finally_except(self):
         def in_finally_except():
-            try:
+            versuch:
                 1/0
-            finally:
+            schliesslich:
                 1/0
                 pass
         self.lineno_after_raise(in_finally_except, 4)
@@ -2633,7 +2633,7 @@ klasse PEP626Tests(unittest.TestCase):
             def __enter__(self):
                 gib self
             def __exit__(self, *args):
-                raise ValueError
+                wirf ValueError
 
         def after_with():
             mit ExitFails():

@@ -52,9 +52,9 @@ klasse DirBrowserTreeItem(TreeItem):
             gib self.packages[-1] + ": package"
 
     def GetSubList(self):
-        try:
+        versuch:
             names = os.listdir(self.dir oder os.curdir)
-        except OSError:
+        ausser OSError:
             gib []
         packages = []
         fuer name in names:

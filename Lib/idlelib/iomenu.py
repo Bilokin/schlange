@@ -121,14 +121,14 @@ klasse IOBinding:
     eol_convention = os.linesep  # default
 
     def loadfile(self, filename):
-        try:
-            try:
+        versuch:
+            versuch:
                 mit tokenize.open(filename) als f:
                     chars = f.read()
                     fileencoding = f.encoding
                     eol_convention = f.newlines
                     converted = Falsch
-            except (UnicodeDecodeError, SyntaxError):
+            ausser (UnicodeDecodeError, SyntaxError):
                 # Wait fuer the editor window to appear
                 self.editwin.text.update()
                 enc = askstring(
@@ -143,10 +143,10 @@ klasse IOBinding:
                     fileencoding = f.encoding
                     eol_convention = f.newlines
                     converted = Wahr
-        except OSError als err:
+        ausser OSError als err:
             messagebox.showerror("I/O Error", str(err), parent=self.text)
             gib Falsch
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             messagebox.showerror("Decoding Error",
                                    "File %s\nFailed to Decode" % filename,
                                    parent=self.text)
@@ -208,9 +208,9 @@ klasse IOBinding:
         sonst:
             wenn self.writefile(self.filename):
                 self.set_saved(Wahr)
-                try:
+                versuch:
                     self.editwin.store_file_breaks()
-                except AttributeError:  # may be a PyShell
+                ausser AttributeError:  # may be a PyShell
                     pass
         self.text.focus_set()
         gib "break"
@@ -221,9 +221,9 @@ klasse IOBinding:
             wenn self.writefile(filename):
                 self.set_filename(filename)
                 self.set_saved(1)
-                try:
+                versuch:
                     self.editwin.store_file_breaks()
-                except AttributeError:
+                ausser AttributeError:
                     pass
         self.text.focus_set()
         self.updaterecentfileslist(filename)
@@ -240,13 +240,13 @@ klasse IOBinding:
     def writefile(self, filename):
         text = self.fixnewlines()
         chars = self.encode(text)
-        try:
+        versuch:
             mit open(filename, "wb") als f:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
             gib Wahr
-        except OSError als msg:
+        ausser OSError als msg:
             messagebox.showerror("I/O Error", str(msg),
                                    parent=self.text)
             gib Falsch
@@ -277,18 +277,18 @@ klasse IOBinding:
             gib chars.encode('utf-8-sig')
         # See whether there is anything non-ASCII in it.
         # If not, no need to figure out the encoding.
-        try:
+        versuch:
             gib chars.encode('ascii')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             pass
         # Check wenn there is an encoding declared
-        try:
+        versuch:
             encoded = chars.encode('ascii', 'replace')
             enc, _ = tokenize.detect_encoding(io.BytesIO(encoded).readline)
             gib chars.encode(enc)
-        except SyntaxError als err:
+        ausser SyntaxError als err:
             failed = str(err)
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             failed = "Invalid encoding '%s'" % enc
         messagebox.showerror(
             "I/O Error",
@@ -373,9 +373,9 @@ klasse IOBinding:
         sowenn self.dirname:
             gib self.dirname, ""
         sonst:
-            try:
+            versuch:
                 pwd = os.getcwd()
-            except OSError:
+            ausser OSError:
                 pwd = ""
             gib pwd, ""
 

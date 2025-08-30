@@ -92,7 +92,7 @@ parser.add_argument(
 def error(format_string, *format_args, **kwargs):
     # do nicht use parser.error() to avoid printing short help
     logger.error(format_string, *format_args, **kwargs)
-    raise SystemExit(1)
+    wirf SystemExit(1)
 
 
 def _file_search(fname, pat):

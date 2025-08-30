@@ -40,9 +40,9 @@ klasse ForkWait(unittest.TestCase):
     def f(self, id):
         waehrend nicht self.stop:
             self.alive[id] = os.getpid()
-            try:
+            versuch:
                 time.sleep(SHORTSLEEP)
-            except OSError:
+            ausser OSError:
                 pass
 
     def wait_impl(self, cpid, *, exitcode):

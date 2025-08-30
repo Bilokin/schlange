@@ -347,7 +347,7 @@ klasse BaseFilter:
         self.inclusive = inclusive
 
     def _match(self, trace):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse Filter(BaseFilter):
@@ -456,7 +456,7 @@ klasse Snapshot:
         list, gib a new Snapshot instance mit a copy of the traces.
         """
         wenn nicht isinstance(filters, Iterable):
-            raise TypeError("filters must be a list of filters, nicht %s"
+            wirf TypeError("filters must be a list of filters, nicht %s"
                             % type(filters).__name__)
         wenn filters:
             include_filters = []
@@ -476,9 +476,9 @@ klasse Snapshot:
 
     def _group_by(self, key_type, cumulative):
         wenn key_type nicht in ('traceback', 'filename', 'lineno'):
-            raise ValueError("unknown key_type: %r" % (key_type,))
+            wirf ValueError("unknown key_type: %r" % (key_type,))
         wenn cumulative und key_type nicht in ('lineno', 'filename'):
-            raise ValueError("cumulative mode cannot by used "
+            wirf ValueError("cumulative mode cannot by used "
                              "with key type %r" % key_type)
 
         stats = {}
@@ -486,9 +486,9 @@ klasse Snapshot:
         wenn nicht cumulative:
             fuer trace in self.traces._traces:
                 domain, size, trace_traceback, total_nframe = trace
-                try:
+                versuch:
                     traceback = tracebacks[trace_traceback]
-                except KeyError:
+                ausser KeyError:
                     wenn key_type == 'traceback':
                         frames = trace_traceback
                     sowenn key_type == 'lineno':
@@ -497,31 +497,31 @@ klasse Snapshot:
                         frames = ((trace_traceback[0][0], 0),)
                     traceback = Traceback(frames)
                     tracebacks[trace_traceback] = traceback
-                try:
+                versuch:
                     stat = stats[traceback]
                     stat.size += size
                     stat.count += 1
-                except KeyError:
+                ausser KeyError:
                     stats[traceback] = Statistic(traceback, size, 1)
         sonst:
             # cumulative statistics
             fuer trace in self.traces._traces:
                 domain, size, trace_traceback, total_nframe = trace
                 fuer frame in trace_traceback:
-                    try:
+                    versuch:
                         traceback = tracebacks[frame]
-                    except KeyError:
+                    ausser KeyError:
                         wenn key_type == 'lineno':
                             frames = (frame,)
                         sonst: # key_type == 'filename':
                             frames = ((frame[0], 0),)
                         traceback = Traceback(frames)
                         tracebacks[frame] = traceback
-                    try:
+                    versuch:
                         stat = stats[traceback]
                         stat.size += size
                         stat.count += 1
-                    except KeyError:
+                    ausser KeyError:
                         stats[traceback] = Statistic(traceback, size, 1)
         gib stats
 
@@ -553,7 +553,7 @@ def take_snapshot():
     Take a snapshot of traces of memory blocks allocated by Python.
     """
     wenn nicht is_tracing():
-        raise RuntimeError("the tracemalloc module must be tracing memory "
+        wirf RuntimeError("the tracemalloc module must be tracing memory "
                            "allocations to take a snapshot")
     traces = _get_traces()
     traceback_limit = get_traceback_limit()

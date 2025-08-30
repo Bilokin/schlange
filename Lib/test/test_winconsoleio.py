@@ -9,7 +9,7 @@ importiere unittest
 von test.support importiere os_helper, requires_resource
 
 wenn sys.platform != 'win32':
-    raise unittest.SkipTest("test only relevant on win32")
+    wirf unittest.SkipTest("test only relevant on win32")
 
 von _testconsole importiere write_input
 
@@ -32,9 +32,9 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             self.assertRaisesRegex(ValueError,
                 "Cannot open (console|non-console file)", ConIO, fd)
 
-        try:
+        versuch:
             f = ConIO(0)
-        except ValueError:
+        ausser ValueError:
             # cannot open console because it's nicht a real console
             pass
         sonst:
@@ -47,9 +47,9 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 mit ConIO(Falsch):
                     pass
 
-        try:
+        versuch:
             f = ConIO(1, 'w')
-        except ValueError:
+        ausser ValueError:
             # cannot open console because it's nicht a real console
             pass
         sonst:
@@ -62,9 +62,9 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 mit ConIO(Falsch):
                     pass
 
-        try:
+        versuch:
             f = ConIO(2, 'w')
-        except ValueError:
+        ausser ValueError:
             # cannot open console because it's nicht a real console
             pass
         sonst:
@@ -168,14 +168,14 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
     def assertStdinRoundTrip(self, text):
         stdin = open('CONIN$', 'r')
         old_stdin = sys.stdin
-        try:
+        versuch:
             sys.stdin = stdin
             write_input(
                 stdin.buffer.raw,
                 (text + '\r\n').encode('utf-16-le', 'surrogatepass')
             )
             actual = input()
-        finally:
+        schliesslich:
             sys.stdin = old_stdin
         self.assertEqual(actual, text)
 

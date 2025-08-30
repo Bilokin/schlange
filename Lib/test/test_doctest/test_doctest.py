@@ -342,7 +342,7 @@ containing test:
     26
 
 If the docstring contains inconsistent leading whitespace in the
-expected output of an example, then `DocTest` will raise a ValueError:
+expected output of an example, then `DocTest` will wirf a ValueError:
 
     >>> docstring = r'''
     ...       >>> drucke('bad\nindentation')
@@ -354,7 +354,7 @@ expected output of an example, then `DocTest` will raise a ValueError:
     ValueError: line 4 of the docstring fuer some_test has inconsistent leading whitespace: 'indentation'
 
 If the docstring contains inconsistent leading whitespace on
-continuation lines, then `DocTest` will raise a ValueError:
+continuation lines, then `DocTest` will wirf a ValueError:
 
     >>> docstring = r'''
     ...       >>> drucke(('bad indentation',
@@ -366,7 +366,7 @@ continuation lines, then `DocTest` will raise a ValueError:
     ValueError: line 2 of the docstring fuer some_test has inconsistent leading whitespace: '...          2))'
 
 If there's no blank space after a PS1 prompt ('>>>'), then `DocTest`
-will raise a ValueError:
+will wirf a ValueError:
 
     >>> docstring = '>>>drucke(1)\n1'
     >>> parser.get_doctest(docstring, globs, 'some_test', 'filename', 0)
@@ -374,7 +374,7 @@ will raise a ValueError:
     ValueError: line 1 of the docstring fuer some_test lacks blank after >>>: '>>>drucke(1)'
 
 If there's no blank space after a PS2 prompt ('...'), then `DocTest`
-will raise a ValueError:
+will wirf a ValueError:
 
     >>> docstring = '>>> wenn 1:\n...drucke(1)\n1'
     >>> parser.get_doctest(docstring, globs, 'some_test', 'filename', 0)
@@ -821,9 +821,9 @@ klasse TestDocTestFinder(unittest.TestCase):
             pkg_dir = os.path.join(parent_dir, pkg_name)
             os.mkdir(pkg_dir)
             sys.path.append(parent_dir)
-            try:
+            versuch:
                 mod = importlib.import_module(pkg_name)
-            finally:
+            schliesslich:
                 import_helper.forget(pkg_name)
                 sys.path.pop()
 
@@ -1074,7 +1074,7 @@ Exception messages may contain newlines:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> raise ValueError('multi\nline\nmessage')
+    ...     >>> wirf ValueError('multi\nline\nmessage')
     ...     Traceback (most recent call last):
     ...     ValueError: multi
     ...     line
@@ -1089,7 +1089,7 @@ message is raised, then it is reported als a failure:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> raise ValueError('message')
+    ...     >>> wirf ValueError('message')
     ...     Traceback (most recent call last):
     ...     ValueError: wrong message
     ...     '''
@@ -1099,7 +1099,7 @@ message is raised, then it is reported als a failure:
     **********************************************************************
     File ..., line 3, in f
     Failed example:
-        raise ValueError('message')
+        wirf ValueError('message')
     Expected:
         Traceback (most recent call last):
         ValueError: wrong message
@@ -1114,7 +1114,7 @@ detail:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> raise ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     ValueError: wrong message
     ...     '''
@@ -1129,7 +1129,7 @@ the exception is nicht in the output, but this will fail under Python 3:
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException('message')
+    ...     >>> wirf HTTPException('message')
     ...     Traceback (most recent call last):
     ...     HTTPException: message
     ...     '''
@@ -1139,7 +1139,7 @@ the exception is nicht in the output, but this will fail under Python 3:
     **********************************************************************
     File ..., line 4, in f
     Failed example:
-        raise HTTPException('message')
+        wirf HTTPException('message')
     Expected:
         Traceback (most recent call last):
         HTTPException: message
@@ -1156,7 +1156,7 @@ Python 2.
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException('message')
+    ...     >>> wirf HTTPException('message')
     ...     Traceback (most recent call last):
     ...     http.client.HTTPException: message
     ...     '''
@@ -1170,7 +1170,7 @@ However, mit IGNORE_EXCEPTION_DETAIL, the module name of the exception
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     HTTPException: message
     ...     '''
@@ -1185,7 +1185,7 @@ be used when exceptions have changed module.
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException: message
     ...     '''
@@ -1197,7 +1197,7 @@ But IGNORE_EXCEPTION_DETAIL does nicht allow a mismatch in the exception type:
 
     >>> def f(x):
     ...     r'''
-    ...     >>> raise ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     TypeError: wrong type
     ...     '''
@@ -1207,7 +1207,7 @@ But IGNORE_EXCEPTION_DETAIL does nicht allow a mismatch in the exception type:
     **********************************************************************
     File ..., line 3, in f
     Failed example:
-        raise ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+        wirf ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     Expected:
         Traceback (most recent call last):
         TypeError: wrong type
@@ -1223,7 +1223,7 @@ IGNORE_EXCEPTION_DETAIL to normalize the modules between Python 2 und 3:
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException
     ...     '''
@@ -1236,7 +1236,7 @@ Note that a trailing colon doesn't matter either:
     >>> def f(x):
     ...     r'''
     ...     >>> von http.client importiere HTTPException
-    ...     >>> raise HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> wirf HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException:
     ...     '''
@@ -1678,7 +1678,7 @@ exceptions count als failures:
     ...     r'''
     ...     >>> drucke(1) # first success
     ...     1
-    ...     >>> raise ValueError(2) # first failure
+    ...     >>> wirf ValueError(2) # first failure
     ...     200
     ...     >>> drucke(3) # second failure
     ...     300
@@ -1694,7 +1694,7 @@ exceptions count als failures:
     **********************************************************************
     File ..., line 5, in f
     Failed example:
-        raise ValueError(2) # first failure
+        wirf ValueError(2) # first failure
     Exception raised:
         ...
         ValueError: 2
@@ -1705,7 +1705,7 @@ exceptions count als failures:
     **********************************************************************
     File ..., line 5, in f
     Failed example:
-        raise ValueError(2) # first failure
+        wirf ValueError(2) # first failure
     Exception raised:
         ...
         ValueError: 2
@@ -2014,8 +2014,8 @@ Create some fake stdin input, to feed to the debugger:
 
 Run the debugger on the docstring, und then restore sys.stdin.
 
-    >>> try: doctest.debug_src(s)
-    ... finally: sys.stdin = real_stdin
+    >>> versuch: doctest.debug_src(s)
+    ... schliesslich: sys.stdin = real_stdin
     > <string>(1)<module>()
     (Pdb) next
     12
@@ -2044,7 +2044,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
 
           >>> doc = '''
           ... >>> x = 42
-          ... >>> raise Exception('clé')
+          ... >>> wirf Exception('clé')
           ... Traceback (most recent call last):
           ... Exception: clé
           ... >>> importiere pdb; pdb.set_trace()
@@ -2063,8 +2063,8 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           ...    'continue', # stop debugging
           ...    ''])
 
-          >>> try: runner.run(test)
-          ... finally: sys.stdin = real_stdin
+          >>> versuch: runner.run(test)
+          ... schliesslich: sys.stdin = real_stdin
           > <doctest foo-bar@baz[2]>(1)<module>()
           -> importiere pdb; pdb.set_trace()
           (Pdb) drucke(x)
@@ -2091,9 +2091,9 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           ...    'continue', # stop debugging
           ...    ''])
 
-          >>> try:
+          >>> versuch:
           ...     runner.run(test)
-          ... finally:
+          ... schliesslich:
           ...     sys.stdin = real_stdin
           > <doctest test.test_doctest.test_doctest.test_pdb_set_trace[11]>(3)calls_set_trace()
           -> importiere pdb; pdb.set_trace()
@@ -2129,8 +2129,8 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           ...    'list',     # list source von example 3
           ...    'continue', # stop debugging
           ...    ''])
-          >>> try: runner.run(test)
-          ... finally: sys.stdin = real_stdin
+          >>> versuch: runner.run(test)
+          ... schliesslich: sys.stdin = real_stdin
           ... # doctest: +NORMALIZE_WHITESPACE
           > <doctest foo-bar@baz[1]>(3)g()
           -> importiere pdb; pdb.set_trace()
@@ -2209,9 +2209,9 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
         ...    'continue', # stop debugging
         ...    ''])
 
-        >>> try:
+        >>> versuch:
         ...     runner.run(test)
-        ... finally:
+        ... schliesslich:
         ...     sys.stdin = real_stdin
         ... # doctest: +REPORT_NDIFF
         > <doctest test.test_doctest.test_doctest.test_pdb_set_trace_nested[0]>(4)calls_set_trace()
@@ -2991,7 +2991,7 @@ parameter:
     TestResults(failed=1, attempted=2)
     >>> doctest.master = Nichts  # Reset master.
 
-The optional keyword argument `raise_on_error` can be used to raise an
+The optional keyword argument `raise_on_error` can be used to wirf an
 exception on the first error (which may be useful fuer postmortem
 debugging):
 
@@ -3112,7 +3112,7 @@ klasse TestImporter(importlib.abc.MetaPathFinder):
             gib f.read()
 
     def exec_module(self, module):
-        raise ImportError
+        wirf ImportError
 
     def create_module(self, spec):
         gib Nichts
@@ -3141,9 +3141,9 @@ klasse TestHook:
 @contextlib.contextmanager
 def test_hook(pathdir):
     hook = TestHook(pathdir)
-    try:
+    versuch:
         liefere hook
-    finally:
+    schliesslich:
         hook.remove()
 
 
@@ -3191,7 +3191,7 @@ bypasses the standard universal newline handling so doctest has to do the
 newline conversion itself; let's make sure it does so correctly (issue 1812).
 We'll write a file inside the package that has all three kinds of line endings
 in it, und use a package hook to install a custom loader; on any platform,
-at least one of the line endings will raise a ValueError fuer inconsistent
+at least one of the line endings will wirf a ValueError fuer inconsistent
 whitespace wenn doctest does nicht correctly do the newline conversion.
 
     >>> von test.support importiere os_helper
@@ -3336,10 +3336,10 @@ Tests fuer error reporting in the testmod() function.
     TestResults(failed=9, attempted=10)
 """
 
-try:
+versuch:
     os.fsencode("foo-bär@baz.py")
     supports_unicode = Wahr
-except UnicodeEncodeError:
+ausser UnicodeEncodeError:
     # Skip the test: the filesystem encoding is unable to encode the filename
     supports_unicode = Falsch
 
@@ -3352,7 +3352,7 @@ Check doctest mit a non-ascii filename:
     >>> _colorize.COLORIZE = Falsch
 
     >>> doc = '''
-    ... >>> raise Exception('clé')
+    ... >>> wirf Exception('clé')
     ... '''
     ...
     >>> parser = doctest.DocTestParser()
@@ -3364,11 +3364,11 @@ Check doctest mit a non-ascii filename:
     **********************************************************************
     File "foo-bär@baz.py", line 2, in foo-bär@baz
     Failed example:
-        raise Exception('clé')
+        wirf Exception('clé')
     Exception raised:
         Traceback (most recent call last):
           File "<doctest foo-bär@baz[0]>", line 1, in <module>
-            raise Exception('clé')
+            wirf Exception('clé')
         Exception: clé
     TestResults(failed=1, attempted=1)
 
@@ -3698,7 +3698,7 @@ def test_exception_with_note(note):
     ...     r'''
     ...     >>> exc = ValueError('message')
     ...     >>> exc.add_note('note')
-    ...     >>> raise exc
+    ...     >>> wirf exc
     ...     Traceback (most recent call last):
     ...     ValueError: message
     ...     wrong note
@@ -3709,7 +3709,7 @@ def test_exception_with_note(note):
     **********************************************************************
     File "...", line 5, in f
     Failed example:
-        raise exc
+        wirf exc
     Expected:
         Traceback (most recent call last):
         ValueError: message
@@ -3725,7 +3725,7 @@ def test_exception_with_note(note):
     """
     exc = ValueError('Text')
     exc.add_note(note)
-    raise exc
+    wirf exc
 
 
 def test_exception_with_multiple_notes():
@@ -3740,7 +3740,7 @@ def test_exception_with_multiple_notes():
     exc = ValueError('Text')
     exc.add_note('One')
     exc.add_note('Two')
-    raise exc
+    wirf exc
 
 
 def test_syntax_error_with_note(cls, multiline=Falsch):
@@ -3779,7 +3779,7 @@ def test_syntax_error_with_note(cls, multiline=Falsch):
     """
     exc = cls("error", ("x.py", 23, Nichts, "bad syntax"))
     exc.add_note('Note\nLine' wenn multiline sonst 'Note')
-    raise exc
+    wirf exc
 
 
 def test_syntax_error_subclass_from_stdlib():
@@ -3797,7 +3797,7 @@ def test_syntax_error_subclass_from_stdlib():
     von xml.etree.ElementTree importiere ParseError
     exc = ParseError("error\nerror")
     exc.add_note('Note\nLine')
-    raise exc
+    wirf exc
 
 
 def test_syntax_error_with_incorrect_expected_note():
@@ -3811,7 +3811,7 @@ def test_syntax_error_with_incorrect_expected_note():
     ...     >>> exc = SyntaxError("error", ("x.py", 23, Nichts, "bad syntax"))
     ...     >>> exc.add_note('note1')
     ...     >>> exc.add_note('note2')
-    ...     >>> raise exc
+    ...     >>> wirf exc
     ...     Traceback (most recent call last):
     ...     SyntaxError: error
     ...     wrong note
@@ -3822,7 +3822,7 @@ def test_syntax_error_with_incorrect_expected_note():
     **********************************************************************
     File "...", line 6, in f
     Failed example:
-        raise exc
+        wirf exc
     Expected:
         Traceback (most recent call last):
         SyntaxError: error

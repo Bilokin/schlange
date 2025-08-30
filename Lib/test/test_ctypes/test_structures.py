@@ -181,9 +181,9 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
                              "(Phone) TypeError: too many initializers")
 
     def get_except(self, func, *args):
-        try:
+        versuch:
             func(*args)
-        except Exception als detail:
+        ausser Exception als detail:
             gib detail.__class__, str(detail)
 
     def test_positional_args(self):

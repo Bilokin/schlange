@@ -30,14 +30,14 @@ importiere unittest
 von test importiere support
 
 wenn nicht hasattr(select, "epoll"):
-    raise unittest.SkipTest("test works only on Linux 2.6")
+    wirf unittest.SkipTest("test works only on Linux 2.6")
 
-try:
+versuch:
     select.epoll()
-except OSError als e:
+ausser OSError als e:
     wenn e.errno == errno.ENOSYS:
-        raise unittest.SkipTest("kernel doesn't support epoll()")
-    raise
+        wirf unittest.SkipTest("kernel doesn't support epoll()")
+    wirf
 
 klasse TestEPoll(unittest.TestCase):
 
@@ -52,22 +52,22 @@ klasse TestEPoll(unittest.TestCase):
     def _connected_pair(self):
         client = socket.socket()
         client.setblocking(Falsch)
-        try:
+        versuch:
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
-        except OSError als e:
+        ausser OSError als e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         sonst:
-            raise AssertionError("Connect should have raised EINPROGRESS")
+            wirf AssertionError("Connect should have raised EINPROGRESS")
         server, addr = self.serverSocket.accept()
 
         self.connections.extend((client, server))
         gib client, server
 
     def test_create(self):
-        try:
+        versuch:
             ep = select.epoll(16)
-        except OSError als e:
-            raise AssertionError(str(e))
+        ausser OSError als e:
+            wirf AssertionError(str(e))
         self.assertWahr(ep.fileno() > 0, ep.fileno())
         self.assertWahr(nicht ep.closed)
         ep.close()
@@ -105,22 +105,22 @@ klasse TestEPoll(unittest.TestCase):
         server, client = self._connected_pair()
 
         ep = select.epoll(2)
-        try:
+        versuch:
             ep.register(server.fileno(), select.EPOLLIN | select.EPOLLOUT)
             ep.register(client.fileno(), select.EPOLLIN | select.EPOLLOUT)
-        finally:
+        schliesslich:
             ep.close()
 
         # adding by object w/ fileno works, too.
         ep = select.epoll(2)
-        try:
+        versuch:
             ep.register(server, select.EPOLLIN | select.EPOLLOUT)
             ep.register(client, select.EPOLLIN | select.EPOLLOUT)
-        finally:
+        schliesslich:
             ep.close()
 
         ep = select.epoll(2)
-        try:
+        versuch:
             # TypeError: argument must be an int, oder have a fileno() method.
             self.assertRaises(TypeError, ep.register, object(),
                               select.EPOLLIN | select.EPOLLOUT)
@@ -136,7 +136,7 @@ klasse TestEPoll(unittest.TestCase):
             ep.register(server, select.EPOLLIN | select.EPOLLOUT)
             self.assertRaises(OSError, ep.register, server,
                               select.EPOLLIN | select.EPOLLOUT)
-        finally:
+        schliesslich:
             ep.close()
 
     def test_fromfd(self):
@@ -153,12 +153,12 @@ klasse TestEPoll(unittest.TestCase):
             self.assertEqual(len(events), 2)
             self.assertEqual(len(events2), 2)
 
-        try:
+        versuch:
             ep2.poll(1, 4)
-        except OSError als e:
+        ausser OSError als e:
             self.assertEqual(e.args[0], errno.EBADF, e)
         sonst:
-            self.fail("epoll on closed fd didn't raise EBADF")
+            self.fail("epoll on closed fd didn't wirf EBADF")
 
     def test_control_and_wait(self):
         # create the epoll object

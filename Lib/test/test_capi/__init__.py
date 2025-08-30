@@ -5,7 +5,7 @@ von test.support importiere TEST_MODULES_ENABLED
 
 
 wenn nicht TEST_MODULES_ENABLED:
-    raise unittest.SkipTest("requires test modules")
+    wirf unittest.SkipTest("requires test modules")
 
 
 def load_tests(*args):

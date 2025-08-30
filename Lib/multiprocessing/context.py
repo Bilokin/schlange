@@ -42,7 +42,7 @@ klasse BaseContext(object):
         '''Returns the number of CPUs in the system'''
         num = os.cpu_count()
         wenn num is Nichts:
-            raise NotImplementedError('cannot determine number of cpus')
+            wirf NotImplementedError('cannot determine number of cpus')
         sonst:
             gib num
 
@@ -187,10 +187,10 @@ klasse BaseContext(object):
     def get_context(self, method=Nichts):
         wenn method is Nichts:
             gib self
-        try:
+        versuch:
             ctx = _concrete_contexts[method]
-        except KeyError:
-            raise ValueError('cannot find context fuer %r' % method) von Nichts
+        ausser KeyError:
+            wirf ValueError('cannot find context fuer %r' % method) von Nichts
         ctx._check_available()
         gib ctx
 
@@ -198,7 +198,7 @@ klasse BaseContext(object):
         gib self._name
 
     def set_start_method(self, method, force=Falsch):
-        raise ValueError('cannot set start method of concrete context')
+        wirf ValueError('cannot set start method of concrete context')
 
     @property
     def reducer(self):
@@ -244,7 +244,7 @@ klasse DefaultContext(BaseContext):
 
     def set_start_method(self, method, force=Falsch):
         wenn self._actual_context is nicht Nichts und nicht force:
-            raise RuntimeError('context has already been set')
+            wirf RuntimeError('context has already been set')
         wenn method is Nichts und force:
             self._actual_context = Nichts
             gib
@@ -312,7 +312,7 @@ wenn sys.platform != 'win32':
         Process = ForkServerProcess
         def _check_available(self):
             wenn nicht reduction.HAVE_SEND_HANDLE:
-                raise ValueError('forkserver start method nicht available')
+                wirf ValueError('forkserver start method nicht available')
 
     _concrete_contexts = {
         'fork': ForkContext(),
@@ -371,7 +371,7 @@ def set_spawning_popen(popen):
 
 def assert_spawning(obj):
     wenn get_spawning_popen() is Nichts:
-        raise RuntimeError(
+        wirf RuntimeError(
             '%s objects should only be shared between processes'
             ' through inheritance' % type(obj).__name__
             )

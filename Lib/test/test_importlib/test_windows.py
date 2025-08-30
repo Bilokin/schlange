@@ -37,15 +37,15 @@ def get_platform():
         gib sys.platform
 
 def delete_registry_tree(root, subkey):
-    try:
+    versuch:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
-    except OSError:
+    ausser OSError:
         # subkey does nicht exist
         gib
     waehrend Wahr:
-        try:
+        versuch:
             subsubkey = EnumKey(hkey, 0)
-        except OSError:
+        ausser OSError:
             # no more subkeys
             breche
         delete_registry_tree(hkey, subsubkey)
@@ -64,22 +64,22 @@ def setup_module(machinery, name, path=Nichts):
         sys.version_info.major, sys.version_info.minor)
     assert key.casefold().startswith(base_key.casefold()), (
         "expected key '{}' to start mit '{}'".format(key, base_key))
-    try:
+    versuch:
         mit temp_module(name, "a = 1") als location:
-            try:
+            versuch:
                 OpenKey(HKEY_CURRENT_USER, base_key)
                 wenn machinery.WindowsRegistryFinder.DEBUG_BUILD:
                     delete_key = os.path.dirname(key)
                 sonst:
                     delete_key = key
-            except OSError:
+            ausser OSError:
                 delete_key = base_key
             subkey = CreateKey(HKEY_CURRENT_USER, key)
             wenn path is Nichts:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
             liefere
-    finally:
+    schliesslich:
         wenn delete_key:
             delete_registry_tree(HKEY_CURRENT_USER, delete_key)
 
@@ -145,9 +145,9 @@ klasse WindowsExtensionSuffixTests:
         ver = sys.version_info
         platform = re.sub('[^a-zA-Z0-9]', '_', get_platform())
         expected_tag = f".cp{ver.major}{ver.minor}{abi_flags}-{platform}.pyd"
-        try:
+        versuch:
             untagged_i = suffixes.index(".pyd")
-        except ValueError:
+        ausser ValueError:
             untagged_i = suffixes.index("_d.pyd")
             expected_tag = "_d" + expected_tag
 

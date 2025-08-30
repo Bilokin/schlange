@@ -155,7 +155,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
         wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
             weiter
         wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
-            raise ValueError(f"Unsupported value '{value}' fuer {key}")
+            wirf ValueError(f"Unsupported value '{value}' fuer {key}")
 
         modname = key[7:-6].lower()
         wenn modname nicht in modules:
@@ -206,7 +206,7 @@ def main() -> Nichts:
     args.builddir = get_builddir(args)
     args.sysconfig_data = get_sysconfigdata(args)
     wenn nicht args.sysconfig_data.is_file():
-        raise ValueError(f"sysconfigdata file {args.sysconfig_data} missing.")
+        wirf ValueError(f"sysconfigdata file {args.sysconfig_data} missing.")
 
     extmods = detect_extension_modules(args)
     omit_files = list(OMIT_FILES)

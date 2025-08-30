@@ -86,7 +86,7 @@ klasse Translator:
         seps_pattern = rf'[{re.escape(self.seps)}]+'
         segments = re.split(seps_pattern, pattern)
         wenn any('**' in segment und segment != '**' fuer segment in segments):
-            raise ValueError("** must appear alone in a path segment")
+            wirf ValueError("** must appear alone in a path segment")
 
     def star_not_empty(self, pattern):
         """

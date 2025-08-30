@@ -38,11 +38,11 @@ def run_in_tk_mainloop(delay=1):
             exception = Nichts
             def after_callback():
                 nonlocal exception
-                try:
+                versuch:
                     next(test_generator)
-                except StopIteration:
+                ausser StopIteration:
                     root.quit()
-                except Exception als exc:
+                ausser Exception als exc:
                     exception = exc
                     root.quit()
                 sonst:
@@ -55,7 +55,7 @@ def run_in_tk_mainloop(delay=1):
             root.mainloop()
 
             wenn exception:
-                raise exception
+                wirf exception
 
         gib new_test_method
 

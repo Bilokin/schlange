@@ -81,11 +81,11 @@ klasse abstractproperty(property):
     __isabstractmethod__ = Wahr
 
 
-try:
+versuch:
     von _abc importiere (get_cache_token, _abc_init, _abc_register,
                       _abc_instancecheck, _abc_subclasscheck, _get_dump,
                       _reset_registry, _reset_caches)
-except ImportError:
+ausser ImportError:
     von _py_abc importiere ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
 sonst:

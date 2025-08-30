@@ -126,7 +126,7 @@ def cmd_data(filenames,
              **kwargs
              ):
     # XXX
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 COMMANDS = {
@@ -182,10 +182,10 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
 
 
 def main(cmd, cmd_kwargs):
-    try:
+    versuch:
         run_cmd = COMMANDS[cmd][0]
-    except KeyError:
-        raise ValueError(f'unsupported cmd {cmd!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported cmd {cmd!r}')
     run_cmd(**cmd_kwargs)
 
 

@@ -3,22 +3,22 @@ importiere sys
 von test importiere support
 von test.support importiere threading_helper
 
-try:
+versuch:
     importiere _testcapi
     von _testcapi importiere PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
-try:
+versuch:
     importiere _testlimitedcapi
-except ImportError:
+ausser ImportError:
     _testlimitedcapi = Nichts
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     ctypes = Nichts
 
 
@@ -1919,7 +1919,7 @@ klasse PyUnicodeWriterFormatTest(unittest.TestCase):
         _PyUnicodeWriter_Format.restype = c_int
 
         wenn _PyUnicodeWriter_Format(writer.get_pointer(), *args) < 0:
-            raise ValueError("PyUnicodeWriter_Format failed")
+            wirf ValueError("PyUnicodeWriter_Format failed")
 
     def test_format(self):
         von ctypes importiere c_int

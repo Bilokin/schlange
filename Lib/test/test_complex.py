@@ -370,16 +370,16 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(3j ** 0j, 1)
         self.assertEqual(3j ** 0, 1)
 
-        try:
+        versuch:
             0j ** a
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
             self.fail("should fail 0.0 to negative oder complex power")
 
-        try:
+        versuch:
             0j ** (3-2j)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
             self.fail("should fail 0.0 to negative oder complex power")
@@ -405,13 +405,13 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             fuer imag in values:
                 mit self.subTest(real=real, imag=imag):
                     c = complex(real, imag)
-                    try:
+                    versuch:
                         c ** real
-                    except OverflowError:
+                    ausser OverflowError:
                         pass
-                    try:
+                    versuch:
                         c ** c
-                    except OverflowError:
+                    ausser OverflowError:
                         pass
 
         # gh-113841: possible undefined division by 0 in _Py_c_pow()
@@ -432,17 +432,17 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer value in values:
             fuer exponent in exponents:
                 mit self.subTest(value=value, exponent=exponent):
-                    try:
+                    versuch:
                         int_pow = value**exponent
-                    except OverflowError:
+                    ausser OverflowError:
                         int_pow = "overflow"
-                    try:
+                    versuch:
                         float_pow = value**float(exponent)
-                    except OverflowError:
+                    ausser OverflowError:
                         float_pow = "overflow"
-                    try:
+                    versuch:
                         complex_pow = value**complex(exponent)
-                    except OverflowError:
+                    ausser OverflowError:
                         complex_pow = "overflow"
                     self.assertEqual(str(float_pow), str(int_pow))
                     self.assertEqual(str(complex_pow), str(int_pow))
@@ -575,7 +575,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse evilcomplex:
             def __complex__(self):
-                raise EvilExc
+                wirf EvilExc
 
         self.assertRaises(EvilExc, complex, evilcomplex())
 
@@ -887,7 +887,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertComplexesAreIdentical(z, roundtrip)
 
         # wenn we predefine some constants, then eval(repr(z)) should
-        # also work, except that it might change the sign of zeros
+        # also work, ausser that it might change the sign of zeros
         inf, nan = float('inf'), float('nan')
         infj, nanj = complex(0.0, inf), complex(0.0, nan)
         fuer x in vals:

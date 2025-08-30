@@ -64,16 +64,16 @@ fuer l in data:
     wenn m:
         wenn m.group(1) == "Start":
             wenn curname:
-                raise RuntimeError("Double Start", (curname, l))
+                wirf RuntimeError("Double Start", (curname, l))
             curname = m.group(2)
             table = {}
             tables.append((curname, table))
             weiter
         sonst:
             wenn nicht curname:
-                raise RuntimeError("End without start", l)
+                wirf RuntimeError("End without start", l)
             wenn curname != m.group(2):
-                raise RuntimeError("Unexpected end", l)
+                wirf RuntimeError("Unexpected end", l)
             curname = Nichts
             weiter
     wenn nicht curname:
@@ -87,10 +87,10 @@ fuer l in data:
         fields = fields[0].split("-")
         wenn len(fields) > 1:
             # range
-            try:
+            versuch:
                 start, end = fields
-            except ValueError:
-                raise RuntimeError("Unpacking problem", l)
+            ausser ValueError:
+                wirf RuntimeError("Unpacking problem", l)
         sonst:
             start = end = fields[0]
         start = int(start, 16)
@@ -170,7 +170,7 @@ name, table_b3 = tables[0]
 del tables[0]
 assert name == "B.3"
 
-# B.3 is mostly Python's .lower, except fuer a number
+# B.3 is mostly Python's .lower, ausser fuer a number
 # of special cases, e.g. considering canonical forms.
 
 b3_exceptions = {}
@@ -202,7 +202,7 @@ def map_table_b3(code):
     gib code.lower()
 
 # B.2 is case folding fuer NFKC. This is the same als B.3,
-# except where NormalizeWithKC(Fold(a)) !=
+# ausser where NormalizeWithKC(Fold(a)) !=
 # NormalizeWithKC(Fold(NormalizeWithKC(Fold(a))))
 
 def map_table_b2(a):

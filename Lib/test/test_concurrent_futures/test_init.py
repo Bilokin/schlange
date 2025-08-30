@@ -36,7 +36,7 @@ def init_fail(log_queue=Nichts):
         logger.setLevel('CRITICAL')
         logger.propagate = Falsch
     time.sleep(0.1)  # let some futures be scheduled
-    raise ValueError('error in initializer')
+    wirf ValueError('error in initializer')
 
 
 klasse InitializerMixin(ExecutorMixin):
@@ -79,9 +79,9 @@ klasse FailingInitializerMixin(ExecutorMixin):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_initializer(self):
         mit self._assert_logged('ValueError: error in initializer'):
-            try:
+            versuch:
                 future = self.executor.submit(get_init_status)
-            except BrokenExecutor:
+            ausser BrokenExecutor:
                 # Perhaps the executor is already broken
                 pass
             sonst:
@@ -103,10 +103,10 @@ klasse FailingInitializerMixin(ExecutorMixin):
         wenn self.log_queue is nicht Nichts:
             liefere
             output = []
-            try:
+            versuch:
                 waehrend Wahr:
                     output.append(self.log_queue.get_nowait().getMessage())
-            except queue.Empty:
+            ausser queue.Empty:
                 pass
         sonst:
             mit self.assertLogs('concurrent.futures', 'CRITICAL') als cm:
@@ -127,9 +127,9 @@ klasse FailingInitializerResourcesTest(unittest.TestCase):
     """
 
     def _test(self, test_class):
-        try:
+        versuch:
             _check_system_limits()
-        except NotImplementedError:
+        ausser NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
 
         runner = unittest.TextTestRunner(stream=io.StringIO())

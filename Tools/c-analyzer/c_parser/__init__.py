@@ -22,12 +22,12 @@ def parse_files(filenames, *,
     wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
-        try:
+        versuch:
             liefere von _parse_file(
                     filename, match_kind, get_file_preprocessor, file_maxsizes)
-        except Exception:
+        ausser Exception:
             drucke(f'# requested file: <{filename}>')
-            raise  # re-raise
+            wirf  # re-raise
 
 
 def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
@@ -48,7 +48,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
         wenn match_kind is nicht Nichts und nicht match_kind(item.kind):
             weiter
         wenn nicht item.filename:
-            raise NotImplementedError(repr(item))
+            wirf NotImplementedError(repr(item))
         liefere item
 
 
@@ -69,7 +69,7 @@ def _resolve_max_size(filename, maxsizes):
 
 
 def parse_signature(text):
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 # aliases

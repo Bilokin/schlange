@@ -126,7 +126,7 @@ def _parse_ns_name(builder, name):
         prefix = EMPTY_PREFIX
         qname = localname = intern(localname, localname)
     sonst:
-        raise ValueError("Unsupported syntax: spaces in URIs nicht supported: %r" % name)
+        wirf ValueError("Unsupported syntax: spaces in URIs nicht supported: %r" % name)
     gib intern(uri, uri), localname, prefix, qname
 
 
@@ -199,14 +199,14 @@ klasse ExpatBuilder:
         node."""
         parser = self.getParser()
         first_buffer = Wahr
-        try:
+        versuch:
             waehrend buffer := file.read(16*1024):
                 parser.Parse(buffer, Falsch)
                 wenn first_buffer und self.document.documentElement:
                     self._setup_subset(buffer)
                 first_buffer = Falsch
             parser.Parse(b"", Wahr)
-        except ParseEscape:
+        ausser ParseEscape:
             pass
         doc = self.document
         self.reset()
@@ -216,10 +216,10 @@ klasse ExpatBuilder:
     def parseString(self, string):
         """Parse a document von a string, returning the document node."""
         parser = self.getParser()
-        try:
+        versuch:
             parser.Parse(string, Wahr)
             self._setup_subset(string)
-        except ParseEscape:
+        ausser ParseEscape:
             pass
         doc = self.document
         self.reset()
@@ -464,9 +464,9 @@ klasse FilterVisibilityController(object):
         wenn self.filter.whatToShow & mask:
             val = self.filter.startContainer(node)
             wenn val == FILTER_INTERRUPT:
-                raise ParseEscape
+                wirf ParseEscape
             wenn val nicht in _ALLOWED_FILTER_RETURNS:
-                raise ValueError(
+                wirf ValueError(
                       "startContainer() returned illegal value: " + repr(val))
             gib val
         sonst:
@@ -477,7 +477,7 @@ klasse FilterVisibilityController(object):
         wenn self.filter.whatToShow & mask:
             val = self.filter.acceptNode(node)
             wenn val == FILTER_INTERRUPT:
-                raise ParseEscape
+                wirf ParseEscape
             wenn val == FILTER_SKIP:
                 # move all child nodes to the parent, und remove this node
                 parent = node.parentNode
@@ -486,7 +486,7 @@ klasse FilterVisibilityController(object):
                 # node is handled by the caller
                 gib FILTER_REJECT
             wenn val nicht in _ALLOWED_FILTER_RETURNS:
-                raise ValueError(
+                wirf ValueError(
                       "acceptNode() returned illegal value: " + repr(val))
             gib val
         sonst:
@@ -633,11 +633,11 @@ klasse FragmentBuilder(ExpatBuilder):
             subset = ""
         nsattrs = self._getNSattrs() # get ns decls von node's ancestors
         document = _FRAGMENT_BUILDER_TEMPLATE % (ident, subset, nsattrs)
-        try:
+        versuch:
             parser.Parse(document, Wahr)
-        except:
+        ausser:
             self.reset()
-            raise
+            wirf
         fragment = self.fragment
         self.reset()
 ##         self._parser = Nichts
@@ -693,9 +693,9 @@ klasse FragmentBuilder(ExpatBuilder):
             self.document = self.originalDocument
             self.fragment = self.document.createDocumentFragment()
             self.curNode = self.fragment
-            try:
+            versuch:
                 parser.Parse(self._source, Wahr)
-            finally:
+            schliesslich:
                 self.curNode = old_cur_node
                 self.document = old_document
                 self._source = Nichts
@@ -859,15 +859,15 @@ klasse InternalSubsetExtractor(ExpatBuilder):
         gib self.subset
 
     def parseFile(self, file):
-        try:
+        versuch:
             ExpatBuilder.parseFile(self, file)
-        except ParseEscape:
+        ausser ParseEscape:
             pass
 
     def parseString(self, string):
-        try:
+        versuch:
             ExpatBuilder.parseString(self, string)
-        except ParseEscape:
+        ausser ParseEscape:
             pass
 
     def install(self, parser):
@@ -882,15 +882,15 @@ klasse InternalSubsetExtractor(ExpatBuilder):
             parser.DefaultHandler = self.subset.append
             parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
         sonst:
-            raise ParseEscape()
+            wirf ParseEscape()
 
     def end_doctype_decl_handler(self):
         s = ''.join(self.subset).replace('\r\n', '\n').replace('\r', '\n')
         self.subset = s
-        raise ParseEscape()
+        wirf ParseEscape()
 
     def start_element_handler(self, name, attrs):
-        raise ParseEscape()
+        wirf ParseEscape()
 
 
 def parse(file, namespaces=Wahr):

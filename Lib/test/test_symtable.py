@@ -444,9 +444,9 @@ klasse SymtableTest(unittest.TestCase):
         ### Bug tickler: SyntaxError file name correct whether error raised
         ### waehrend parsing oder building symbol table.
         def checkfilename(brokencode, offset):
-            try:
+            versuch:
                 symtable.symtable(brokencode, "spam", "exec")
-            except SyntaxError als e:
+            ausser SyntaxError als e:
                 self.assertEqual(e.filename, "spam")
                 self.assertEqual(e.lineno, 1)
                 self.assertEqual(e.offset, offset)

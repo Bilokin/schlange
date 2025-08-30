@@ -5,9 +5,9 @@ importiere opcode
 importiere sys
 importiere textwrap
 importiere unittest
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 von test importiere support
@@ -824,9 +824,9 @@ klasse TestBuglets(unittest.TestCase):
 
     def test_bpo_42057(self):
         fuer i in range(10):
-            try:
-                raise Exception
-            except Exception oder Exception:
+            versuch:
+                wirf Exception
+            ausser Exception oder Exception:
                 pass
 
     def test_bpo_45773_pop_jump_if_true(self):
@@ -911,9 +911,9 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
 
     def test_load_fast_unknown_after_error(self):
         def f():
-            try:
+            versuch:
                 res = 1 / 0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 pass
             gib res
         # LOAD_FAST (known) still occurs in the no-exception branch.
@@ -922,9 +922,9 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
 
     def test_load_fast_unknown_after_error_2(self):
         def f():
-            try:
+            versuch:
                 1 / 0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 drucke(a, b, c, d, e, f, g)
             a = b = c = d = e = f = g = 1
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
@@ -2704,9 +2704,9 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
         # `obj` von the stack. See gh-133371 fuer more details.
         def create_obj():
             obj = [42]
-            try:
+            versuch:
                 gib obj
-            finally:
+            schliesslich:
                 del obj
 
         obj = create_obj()

@@ -126,7 +126,7 @@ klasse TestPrint(unittest.TestCase):
                 pass
 
             def flush(self):
-                raise RuntimeError
+                wirf RuntimeError
         self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=Wahr)
 
     def test_gh130163(self):

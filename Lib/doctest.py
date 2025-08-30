@@ -227,15 +227,15 @@ def _normalize_module(module, depth=2):
     sowenn isinstance(module, str):
         gib __import__(module, globals(), locals(), ["*"])
     sowenn module is Nichts:
-        try:
-            try:
+        versuch:
+            versuch:
                 gib sys.modules[sys._getframemodulename(depth)]
-            except AttributeError:
+            ausser AttributeError:
                 gib sys.modules[sys._getframe(depth).f_globals['__name__']]
-        except KeyError:
+        ausser KeyError:
             pass
     sonst:
-        raise TypeError("Expected a module, string, oder Nichts")
+        wirf TypeError("Expected a module, string, oder Nichts")
 
 def _newline_convert(data):
     # The IO module provides a handy decoder fuer universal newline conversion
@@ -246,9 +246,9 @@ def _load_testfile(filename, package, module_relative, encoding):
         package = _normalize_module(package, 3)
         filename = _module_relative_path(package, filename)
         wenn (loader := getattr(package, '__loader__', Nichts)) is Nichts:
-            try:
+            versuch:
                 loader = package.__spec__.loader
-            except AttributeError:
+            ausser AttributeError:
                 pass
         wenn hasattr(loader, 'get_data'):
             file_contents = loader.get_data(filename)
@@ -353,7 +353,7 @@ def _comment_line(line):
 
 def _strip_exception_details(msg):
     # Support fuer IGNORE_EXCEPTION_DETAIL.
-    # Get rid of everything except the exception name; in particular, drop
+    # Get rid of everything ausser the exception name; in particular, drop
     # the possibly dotted module path (if any) und the exception message (if
     # any).  We assume that a colon is never part of a dotted name, oder of an
     # exception name.
@@ -408,17 +408,17 @@ klasse _OutputRedirectingPdb(pdb.Pdb):
         save_stdout = sys.stdout
         sys.stdout = self.__out
         # Call Pdb's trace dispatch method.
-        try:
+        versuch:
             gib pdb.Pdb.trace_dispatch(self, *args)
-        finally:
+        schliesslich:
             sys.stdout = save_stdout
 
 # [XX] Normalize mit respect to os.path.pardir?
 def _module_relative_path(module, test_path):
     wenn nicht inspect.ismodule(module):
-        raise TypeError('Expected a module: %r' % module)
+        wirf TypeError('Expected a module: %r' % module)
     wenn test_path.startswith('/'):
-        raise ValueError('Module-relative files may nicht have absolute paths')
+        wirf ValueError('Module-relative files may nicht have absolute paths')
 
     # Normalize the path. On Windows, replace "/" mit "\".
     test_path = os.path.join(*(test_path.split('/')))
@@ -441,7 +441,7 @@ def _module_relative_path(module, test_path):
                     gib fullpath
 
         # A module w/o __file__ (this includes builtins)
-        raise ValueError("Can't resolve paths relative to the module "
+        wirf ValueError("Can't resolve paths relative to the module "
                          "%r (it has no __file__)"
                          % module.__name__)
 
@@ -787,13 +787,13 @@ klasse DocTestParser:
             fuer option in option_strings:
                 wenn (option[0] nicht in '+-' oder
                     option[1:] nicht in OPTIONFLAGS_BY_NAME):
-                    raise ValueError('line %r of the doctest fuer %s '
+                    wirf ValueError('line %r of the doctest fuer %s '
                                      'has an invalid option: %r' %
                                      (lineno+1, name, option))
                 flag = OPTIONFLAGS_BY_NAME[option[1:]]
                 options[flag] = (option[0] == '+')
         wenn options und self._IS_BLANK_OR_COMMENT(source):
-            raise ValueError('line %r of the doctest fuer %s has an option '
+            wirf ValueError('line %r of the doctest fuer %s has an option '
                              'directive on a line mit no example: %r' %
                              (lineno, name, source))
         gib options
@@ -815,11 +815,11 @@ klasse DocTestParser:
         Given the lines of a source string (including prompts und
         leading indentation), check to make sure that every prompt is
         followed by a space character.  If any line is nicht followed by
-        a space character, then raise ValueError.
+        a space character, then wirf ValueError.
         """
         fuer i, line in enumerate(lines):
             wenn len(line) >= indent+4 und line[indent+3] != ' ':
-                raise ValueError('line %r of the docstring fuer %s '
+                wirf ValueError('line %r of the docstring fuer %s '
                                  'lacks blank after %s: %r' %
                                  (lineno+i+1, name,
                                   line[indent:indent+3], line))
@@ -827,11 +827,11 @@ klasse DocTestParser:
     def _check_prefix(self, lines, prefix, name, lineno):
         """
         Check that every line in the given list starts mit the given
-        prefix; wenn any line does not, then raise a ValueError.
+        prefix; wenn any line does not, then wirf a ValueError.
         """
         fuer i, line in enumerate(lines):
             wenn line und nicht line.startswith(prefix):
-                raise ValueError('line %r of the docstring fuer %s has '
+                wirf ValueError('line %r of the docstring fuer %s has '
                                  'inconsistent leading whitespace: %r' %
                                  (lineno+i+1, name, line))
 
@@ -910,7 +910,7 @@ klasse DocTestFinder:
         wenn name is Nichts:
             name = getattr(obj, '__name__', Nichts)
             wenn name is Nichts:
-                raise ValueError("DocTestFinder.find: name must be given "
+                wirf ValueError("DocTestFinder.find: name must be given "
                         "when obj.__name__ doesn't exist: %r" %
                                  (type(obj),))
 
@@ -925,9 +925,9 @@ klasse DocTestFinder:
         # Read the module's source code.  This is used by
         # DocTestFinder._find_lineno to find the line number fuer a
         # given object's docstring.
-        try:
+        versuch:
             file = inspect.getsourcefile(obj)
-        except TypeError:
+        ausser TypeError:
             source_lines = Nichts
         sonst:
             wenn nicht file:
@@ -1000,16 +1000,16 @@ klasse DocTestFinder:
         sowenn isinstance(object, property):
             gib Wahr # [XX] no way nicht be sure.
         sonst:
-            raise ValueError("object must be a klasse oder function")
+            wirf ValueError("object must be a klasse oder function")
 
     def _is_routine(self, obj):
         """
         Safely unwrap objects und determine wenn they are functions.
         """
         maybe_routine = obj
-        try:
+        versuch:
             maybe_routine = inspect.unwrap(maybe_routine)
-        except ValueError:
+        ausser ValueError:
             pass
         gib inspect.isroutine(maybe_routine)
 
@@ -1046,12 +1046,12 @@ klasse DocTestFinder:
         wenn inspect.ismodule(obj) und self._recurse:
             fuer valname, val in getattr(obj, '__test__', {}).items():
                 wenn nicht isinstance(valname, str):
-                    raise ValueError("DocTestFinder.find: __test__ keys "
+                    wirf ValueError("DocTestFinder.find: __test__ keys "
                                      "must be strings: %r" %
                                      (type(valname),))
                 wenn nicht (inspect.isroutine(val) oder inspect.isclass(val) oder
                         inspect.ismodule(val) oder isinstance(val, str)):
-                    raise ValueError("DocTestFinder.find: __test__ values "
+                    wirf ValueError("DocTestFinder.find: __test__ values "
                                      "must be strings, functions, methods, "
                                      "classes, oder modules: %r" %
                                      (type(val),))
@@ -1084,14 +1084,14 @@ klasse DocTestFinder:
         wenn isinstance(obj, str):
             docstring = obj
         sonst:
-            try:
+            versuch:
                 wenn obj.__doc__ is Nichts:
                     docstring = ''
                 sonst:
                     docstring = obj.__doc__
                     wenn nicht isinstance(docstring, str):
                         docstring = str(docstring)
-            except (TypeError, AttributeError):
+            ausser (TypeError, AttributeError):
                 docstring = ''
 
         # Find the docstring's location in the file.
@@ -1147,9 +1147,9 @@ klasse DocTestFinder:
         wenn inspect.isroutine(obj) und getattr(obj, '__doc__', Nichts):
             # We don't use `docstring` var here, because `obj` can be changed.
             obj = inspect.unwrap(obj)
-            try:
+            versuch:
                 obj = obj.__code__
-            except AttributeError:
+            ausser AttributeError:
                 # Functions implemented in C don't necessarily
                 # have a __code__ attribute.
                 # If there's no code, there's no lineno
@@ -1401,15 +1401,15 @@ klasse DocTestRunner:
             # Run the example in the given context (globs), und record
             # any exception that gets raised.  (But don't intercept
             # keyboard interrupts.)
-            try:
+            versuch:
                 # Don't blink!  This is where the user's code gets run.
                 exec(compile(example.source, filename, "single",
                              compileflags, Wahr), test.globs)
                 self.debugger.set_continue() # ==== Example Finished ====
                 exc_info = Nichts
-            except KeyboardInterrupt:
-                raise
-            except BaseException als exc:
+            ausser KeyboardInterrupt:
+                wirf
+            ausser BaseException als exc:
                 exc_info = type(exc), exc, exc.__traceback__.tb_next
                 self.debugger.set_continue() # ==== Example Finished ====
 
@@ -1573,9 +1573,9 @@ klasse DocTestRunner:
         color_variables = {"PYTHON_COLORS": Nichts, "FORCE_COLOR": Nichts}
         fuer key in color_variables:
             color_variables[key] = os.environ.pop(key, Nichts)
-        try:
+        versuch:
             gib self.__run(test, compileflags, out)
-        finally:
+        schliesslich:
             sys.stdout = save_stdout
             pdb.set_trace = save_set_trace
             sys.settrace(save_trace)
@@ -1878,17 +1878,17 @@ klasse UnexpectedException(Exception):
         gib str(self.test)
 
 klasse DebugRunner(DocTestRunner):
-    r"""Run doc tests but raise an exception als soon als there is a failure.
+    r"""Run doc tests but wirf an exception als soon als there is a failure.
 
        If an unexpected exception occurs, an UnexpectedException is raised.
        It contains the test, the example, und the original exception:
 
          >>> runner = DebugRunner(verbose=Falsch)
-         >>> test = DocTestParser().get_doctest('>>> raise KeyError\n42',
+         >>> test = DocTestParser().get_doctest('>>> wirf KeyError\n42',
          ...                                    {}, 'foo', 'foo.py', 0)
-         >>> try:
+         >>> versuch:
          ...     runner.run(test)
-         ... except UnexpectedException als f:
+         ... ausser UnexpectedException als f:
          ...     failure = f
 
          >>> failure.test is test
@@ -1898,7 +1898,7 @@ klasse DebugRunner(DocTestRunner):
          '42\n'
 
          >>> exc_info = failure.exc_info
-         >>> raise exc_info[1] # Already has the traceback
+         >>> wirf exc_info[1] # Already has the traceback
          Traceback (most recent call last):
          ...
          KeyError
@@ -1914,9 +1914,9 @@ klasse DebugRunner(DocTestRunner):
          ...      2
          ...      ''', {}, 'foo', 'foo.py', 0)
 
-         >>> try:
+         >>> versuch:
          ...    runner.run(test)
-         ... except DocTestFailure als f:
+         ... ausser DocTestFailure als f:
          ...    failure = f
 
        DocTestFailure objects provide access to the test:
@@ -1942,7 +1942,7 @@ klasse DebugRunner(DocTestRunner):
 
          >>> test = DocTestParser().get_doctest('''
          ...      >>> x = 2
-         ...      >>> raise KeyError
+         ...      >>> wirf KeyError
          ...      ''', {}, 'foo', 'foo.py', 0)
 
          >>> runner.run(test)
@@ -1975,10 +1975,10 @@ klasse DebugRunner(DocTestRunner):
         gib r
 
     def report_unexpected_exception(self, out, test, example, exc_info):
-        raise UnexpectedException(test, example, exc_info)
+        wirf UnexpectedException(test, example, exc_info)
 
     def report_failure(self, out, test, example, got):
-        raise DocTestFailure(test, example, got)
+        wirf DocTestFailure(test, example, got)
 
 ######################################################################
 ## 6. Test Functions
@@ -2066,7 +2066,7 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
 
     # Check that we were actually given a module.
     wenn nicht inspect.ismodule(m):
-        raise TypeError("testmod: module required; %r" % (m,))
+        wirf TypeError("testmod: module required; %r" % (m,))
 
     # If no name was given, then use the module's name.
     wenn name is Nichts:
@@ -2177,7 +2177,7 @@ def testfile(filename, module_relative=Wahr, name=Nichts, package=Nichts,
     global master
 
     wenn package und nicht module_relative:
-        raise ValueError("Package may only be specified fuer module-"
+        wirf ValueError("Package may only be specified fuer module-"
                          "relative paths.")
 
     # Relativize the path
@@ -2277,7 +2277,7 @@ def set_unittest_reportflags(flags):
     global _unittest_reportflags
 
     wenn (flags & REPORTING_FLAGS) != flags:
-        raise ValueError("Only reporting flags allowed", flags)
+        wirf ValueError("Only reporting flags allowed", flags)
     old = _unittest_reportflags
     _unittest_reportflags = flags
     gib old
@@ -2384,7 +2384,7 @@ klasse DocTestCase(unittest.TestCase):
                                test_case=self, test_result=result)
         results = runner.run(test, clear_globs=Falsch)
         wenn results.skipped == results.attempted:
-            raise unittest.SkipTest("all examples were skipped")
+            wirf unittest.SkipTest("all examples were skipped")
 
     def format_failure(self, err):
         test = self._dt_test
@@ -2410,12 +2410,12 @@ klasse DocTestCase(unittest.TestCase):
            UnexpectedException errors wenn there is an unexpected
            exception:
 
-             >>> test = DocTestParser().get_doctest('>>> raise KeyError\n42',
+             >>> test = DocTestParser().get_doctest('>>> wirf KeyError\n42',
              ...                {}, 'foo', 'foo.py', 0)
              >>> case = DocTestCase(test)
-             >>> try:
+             >>> versuch:
              ...     case.debug()
-             ... except UnexpectedException als f:
+             ... ausser UnexpectedException als f:
              ...     failure = f
 
            The UnexpectedException contains the test, the example, und
@@ -2428,7 +2428,7 @@ klasse DocTestCase(unittest.TestCase):
              '42\n'
 
              >>> exc_info = failure.exc_info
-             >>> raise exc_info[1] # Already has the traceback
+             >>> wirf exc_info[1] # Already has the traceback
              Traceback (most recent call last):
              ...
              KeyError
@@ -2442,9 +2442,9 @@ klasse DocTestCase(unittest.TestCase):
              ...      ''', {}, 'foo', 'foo.py', 0)
              >>> case = DocTestCase(test)
 
-             >>> try:
+             >>> versuch:
              ...    case.debug()
-             ... except DocTestFailure als f:
+             ... ausser DocTestFailure als f:
              ...    failure = f
 
            DocTestFailure objects provide access to the test:
@@ -2605,7 +2605,7 @@ def DocFileTest(path, module_relative=Wahr, package=Nichts,
         globs = globs.copy()
 
     wenn package und nicht module_relative:
-        raise ValueError("Package may only be specified fuer module-"
+        wirf ValueError("Package may only be specified fuer module-"
                          "relative paths.")
 
     # Relativize the path.
@@ -2788,7 +2788,7 @@ def testsource(module, name):
     tests = DocTestFinder().find(module)
     test = [t fuer t in tests wenn t.name == name]
     wenn nicht test:
-        raise ValueError(name, "not found in tests")
+        wirf ValueError(name, "not found in tests")
     test = test[0]
     testsrc = script_from_examples(test.docstring)
     gib testsrc
@@ -2808,9 +2808,9 @@ def debug_script(src, pm=Falsch, globs=Nichts):
         globs = {}
 
     wenn pm:
-        try:
+        versuch:
             exec(src, globs, globs)
-        except:
+        ausser:
             drucke(sys.exc_info()[1])
             p = pdb.Pdb(nosigint=Wahr)
             p.reset()

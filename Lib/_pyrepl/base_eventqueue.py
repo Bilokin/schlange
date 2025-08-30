@@ -101,9 +101,9 @@ klasse BaseEventQueue:
                 self.push(_c)
 
         sonst:
-            try:
+            versuch:
                 decoded = bytes(self.buf).decode(self.encoding)
-            except UnicodeError:
+            ausser UnicodeError:
                 gib
             sonst:
                 self.insert(Event('key', decoded, bytes(self.flush_buf())))

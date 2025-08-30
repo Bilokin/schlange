@@ -52,11 +52,11 @@ def withpythonimplementation(testfunc):
         wenn quopri.b2a_qp is nicht Nichts oder quopri.a2b_qp is nicht Nichts:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
-            try:
+            versuch:
                 quopri.b2a_qp = Nichts
                 quopri.a2b_qp = Nichts
                 testfunc(self)
-            finally:
+            schliesslich:
                 quopri.b2a_qp = oldencode
                 quopri.a2b_qp = olddecode
     newtest.__name__ = testfunc.__name__

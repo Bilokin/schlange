@@ -60,10 +60,10 @@ importiere math als _math
 importiere numbers als _numbers
 importiere sys
 
-try:
+versuch:
     von collections importiere namedtuple als _namedtuple
     DecimalTuple = _namedtuple('DecimalTuple', 'sign digits exponent', module='decimal')
-except ImportError:
+ausser ImportError:
     DecimalTuple = lambda *args: args
 
 # Rounding
@@ -148,7 +148,7 @@ klasse InvalidOperation(DecimalException):
     An operand is invalid
 
     The result of the operation after this is a quiet positive NaN,
-    except when the cause is a signaling NaN, in which case the result is
+    ausser when the cause is a signaling NaN, in which case the result is
     also a quiet NaN, but mit the original sign, und an optional
     diagnostic information.
     """
@@ -320,7 +320,7 @@ klasse FloatOperation(DecimalException, TypeError):
     set the flag.
 
     Otherwise (the signal is trapped), only equality comparisons und explicit
-    conversions are silent. All other mixed operations raise FloatOperation.
+    conversions are silent. All other mixed operations wirf FloatOperation.
     """
 
 # List of public traps und flags
@@ -357,9 +357,9 @@ def getcontext():
     a new context und sets this thread's context.
     New contexts are copies of DefaultContext.
     """
-    try:
+    versuch:
         gib _current_context_var.get()
-    except LookupError:
+    ausser LookupError:
         context = Context()
         _current_context_var.set(context)
         gib context
@@ -414,7 +414,7 @@ def localcontext(ctx=Nichts, **kwargs):
     ctx_manager = _ContextManager(ctx)
     fuer key, value in kwargs.items():
         wenn key nicht in _context_attributes:
-            raise TypeError(f"'{key}' is an invalid keyword argument fuer this function")
+            wirf TypeError(f"'{key}' is an invalid keyword argument fuer this function")
         setattr(ctx_manager.new_context, key, value)
     gib ctx_manager
 
@@ -426,7 +426,7 @@ def IEEEContext(bits, /):
     than IEEE_CONTEXT_MAX_BITS.
     """
     wenn bits <= 0 oder bits > IEEE_CONTEXT_MAX_BITS oder bits % 32:
-        raise ValueError("argument must be a multiple of 32, "
+        wirf ValueError("argument must be a multiple of 32, "
                          f"with a maximum of {IEEE_CONTEXT_MAX_BITS}")
 
     ctx = Context()
@@ -548,12 +548,12 @@ klasse Decimal(object):
         # tuple/list conversion (possibly von as_tuple())
         wenn isinstance(value, (list,tuple)):
             wenn len(value) != 3:
-                raise ValueError('Invalid tuple size in creation of Decimal '
+                wirf ValueError('Invalid tuple size in creation of Decimal '
                                  'from list oder tuple.  The list oder tuple '
                                  'should have exactly three elements.')
             # process sign.  The isinstance test rejects floats
             wenn nicht (isinstance(value[0], int) und value[0] in (0,1)):
-                raise ValueError("Invalid sign.  The first value in the tuple "
+                wirf ValueError("Invalid sign.  The first value in the tuple "
                                  "should be an integer; either 0 fuer a "
                                  "positive number oder 1 fuer a negative number.")
             self._sign = value[0]
@@ -571,7 +571,7 @@ klasse Decimal(object):
                         wenn digits oder digit != 0:
                             digits.append(digit)
                     sonst:
-                        raise ValueError("The second value in the tuple must "
+                        wirf ValueError("The second value in the tuple must "
                                          "be composed of integers in the range "
                                          "0 through 9.")
                 wenn value[2] in ('n', 'N'):
@@ -585,7 +585,7 @@ klasse Decimal(object):
                     self._exp = value[2]
                     self._is_special = Falsch
                 sonst:
-                    raise ValueError("The third value in the tuple must "
+                    wirf ValueError("The third value in the tuple must "
                                      "be an integer, oder one of the "
                                      "strings 'F', 'n', 'N'.")
             gib self
@@ -603,7 +603,7 @@ klasse Decimal(object):
             self._is_special  = value._is_special
             gib self
 
-        raise TypeError("Cannot convert %r to Decimal" % value)
+        wirf TypeError("Cannot convert %r to Decimal" % value)
 
     @classmethod
     def from_number(cls, number):
@@ -618,7 +618,7 @@ klasse Decimal(object):
         """
         wenn isinstance(number, (int, Decimal, float)):
             gib cls(number)
-        raise TypeError("Cannot convert %r to Decimal" % number)
+        wirf TypeError("Cannot convert %r to Decimal" % number)
 
     @classmethod
     def from_float(cls, f):
@@ -657,7 +657,7 @@ klasse Decimal(object):
             k = d.bit_length() - 1
             coeff = str(n*5**k)
         sonst:
-            raise TypeError("argument must be int oder float.")
+            wirf TypeError("argument must be int oder float.")
 
         result = _dec_from_triple(sign, coeff, -k)
         wenn cls is Decimal:
@@ -900,7 +900,7 @@ klasse Decimal(object):
         # in the documentation.  (See library docs, 'Built-in Types').
         wenn self._is_special:
             wenn self.is_snan():
-                raise TypeError('Cannot hash a signaling NaN value.')
+                wirf TypeError('Cannot hash a signaling NaN value.')
             sowenn self.is_nan():
                 gib object.__hash__(self)
             sonst:
@@ -940,9 +940,9 @@ klasse Decimal(object):
         """
         wenn self._is_special:
             wenn self.is_nan():
-                raise ValueError("cannot convert NaN to integer ratio")
+                wirf ValueError("cannot convert NaN to integer ratio")
             sonst:
-                raise OverflowError("cannot convert Infinity to integer ratio")
+                wirf OverflowError("cannot convert Infinity to integer ratio")
 
         wenn nicht self:
             gib 0, 1
@@ -1076,7 +1076,7 @@ klasse Decimal(object):
             context = getcontext()
 
         wenn nicht self und context.rounding != ROUND_FLOOR:
-            # + (-0) = 0, except in ROUND_FLOOR rounding mode.
+            # + (-0) = 0, ausser in ROUND_FLOOR rounding mode.
             ans = self.copy_abs()
         sonst:
             ans = Decimal(self)
@@ -1218,7 +1218,7 @@ klasse Decimal(object):
     def __mul__(self, other, context=Nichts):
         """Return self * other.
 
-        (+-) INF * 0 (or its reverse) raise InvalidOperation.
+        (+-) INF * 0 (or its reverse) wirf InvalidOperation.
         """
         other = _convert_other(other)
         wenn other is NotImplemented:
@@ -1562,7 +1562,7 @@ klasse Decimal(object):
         """Float representation."""
         wenn self._isnan():
             wenn self.is_snan():
-                raise ValueError("Cannot convert signaling NaN to float")
+                wirf ValueError("Cannot convert signaling NaN to float")
             s = "-nan" wenn self._sign sonst "nan"
         sonst:
             s = str(self)
@@ -1572,9 +1572,9 @@ klasse Decimal(object):
         """Converts self to an int, truncating wenn necessary."""
         wenn self._is_special:
             wenn self._isnan():
-                raise ValueError("Cannot convert NaN to integer")
+                wirf ValueError("Cannot convert NaN to integer")
             sowenn self._isinfinity():
-                raise OverflowError("Cannot convert infinity to integer")
+                wirf OverflowError("Cannot convert infinity to integer")
         s = (-1)**self._sign
         wenn self._exp >= 0:
             gib s*int(self._int)*10**self._exp
@@ -1612,7 +1612,7 @@ klasse Decimal(object):
     def _fix(self, context):
         """Round wenn it is necessary to keep self within prec precision.
 
-        Rounds und fixes the exponent.  Does nicht raise on a sNaN.
+        Rounds und fixes the exponent.  Does nicht wirf on a sNaN.
 
         Arguments:
         self - Decimal instance
@@ -1675,7 +1675,7 @@ klasse Decimal(object):
             sonst:
                 ans = _dec_from_triple(self._sign, coeff, exp_min)
 
-            # raise the appropriate signals, taking care to respect
+            # wirf the appropriate signals, taking care to respect
             # the precedence described in the specification
             wenn changed und self_is_subnormal:
                 context._raise_error(Underflow)
@@ -1685,7 +1685,7 @@ klasse Decimal(object):
                 context._raise_error(Inexact)
             context._raise_error(Rounded)
             wenn nicht ans:
-                # raise Clamped on underflow to 0
+                # wirf Clamped on underflow to 0
                 context._raise_error(Clamped)
             gib ans
 
@@ -1828,16 +1828,16 @@ klasse Decimal(object):
         wenn n is nicht Nichts:
             # two-argument form: use the equivalent quantize call
             wenn nicht isinstance(n, int):
-                raise TypeError('Second argument to round should be integral')
+                wirf TypeError('Second argument to round should be integral')
             exp = _dec_from_triple(0, '1', -n)
             gib self.quantize(exp)
 
         # one-argument form
         wenn self._is_special:
             wenn self.is_nan():
-                raise ValueError("cannot round a NaN")
+                wirf ValueError("cannot round a NaN")
             sonst:
-                raise OverflowError("cannot round an infinity")
+                wirf OverflowError("cannot round an infinity")
         gib int(self._rescale(0, ROUND_HALF_EVEN))
 
     def __floor__(self):
@@ -1850,9 +1850,9 @@ klasse Decimal(object):
         """
         wenn self._is_special:
             wenn self.is_nan():
-                raise ValueError("cannot round a NaN")
+                wirf ValueError("cannot round a NaN")
             sonst:
-                raise OverflowError("cannot round an infinity")
+                wirf OverflowError("cannot round an infinity")
         gib int(self._rescale(0, ROUND_FLOOR))
 
     def __ceil__(self):
@@ -1865,9 +1865,9 @@ klasse Decimal(object):
         """
         wenn self._is_special:
             wenn self.is_nan():
-                raise ValueError("cannot round a NaN")
+                wirf ValueError("cannot round a NaN")
             sonst:
-                raise OverflowError("cannot round an infinity")
+                wirf OverflowError("cannot round an infinity")
         gib int(self._rescale(0, ROUND_CEILING))
 
     def fma(self, other, third, context=Nichts):
@@ -1884,7 +1884,7 @@ klasse Decimal(object):
         other = _convert_other(other, raiseit=Wahr)
         third = _convert_other(third, raiseit=Wahr)
 
-        # compute product; raise InvalidOperation wenn either operand is
+        # compute product; wirf InvalidOperation wenn either operand is
         # a signaling NaN oder wenn the product is zero times infinity.
         wenn self._is_special oder other._is_special:
             wenn context is Nichts:
@@ -2420,7 +2420,7 @@ klasse Decimal(object):
         # requires that the Inexact flag be raised (in spite of
         # exactness), but since the result is exact _fix won't do this
         # fuer us.  (Correspondingly, the Underflow signal should also
-        # be raised fuer subnormal results.)  We can't directly raise
+        # be raised fuer subnormal results.)  We can't directly wirf
         # these signals either before oder after calling _fix, since
         # that would violate the precedence fuer signals.  So we wrap
         # the ._fix call in a temporary context, und reraise
@@ -2442,7 +2442,7 @@ klasse Decimal(object):
             # round in the new context
             ans = ans._fix(newcontext)
 
-            # raise Inexact, und wenn necessary, Underflow
+            # wirf Inexact, und wenn necessary, Underflow
             newcontext._raise_error(Inexact)
             wenn newcontext.flags[Subnormal]:
                 newcontext._raise_error(Underflow)
@@ -2543,7 +2543,7 @@ klasse Decimal(object):
             gib context._raise_error(InvalidOperation,
                                         'quantize result has too many digits fuer current context')
 
-        # raise appropriate flags
+        # wirf appropriate flags
         wenn ans und ans.adjusted() < context.Emin:
             context._raise_error(Subnormal)
         wenn ans._exp > self._exp:
@@ -2616,7 +2616,7 @@ klasse Decimal(object):
 
         """
         wenn places <= 0:
-            raise ValueError("argument should be at least 1 in _round")
+            wirf ValueError("argument should be at least 1 in _round")
         wenn self._is_special oder nicht self:
             gib Decimal(self)
         ans = self._rescale(self.adjusted()+1-places, rounding)
@@ -2636,7 +2636,7 @@ klasse Decimal(object):
         when appropriate.
 
         See also: to_integral_value, which does exactly the same as
-        this method except that it doesn't raise Inexact oder Rounded.
+        this method ausser that it doesn't wirf Inexact oder Rounded.
         """
         wenn self._is_special:
             ans = self._check_nans(context=context)
@@ -2714,7 +2714,7 @@ klasse Decimal(object):
         # we increase the last digit to 1 oder 6 respectively; wenn it's
         # exact we leave the last digit alone.  Now the final round to
         # p places (or fewer in the case of underflow) will round
-        # correctly und raise the appropriate flags.
+        # correctly und wirf the appropriate flags.
 
         # use an extra digit of precision
         prec = context.prec+1
@@ -2778,7 +2778,7 @@ klasse Decimal(object):
     def max(self, other, context=Nichts):
         """Returns the larger value.
 
-        Like max(self, other) except wenn one is nicht a number, returns
+        Like max(self, other) ausser wenn one is nicht a number, returns
         NaN (and signals wenn one is sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=Wahr)
@@ -2820,7 +2820,7 @@ klasse Decimal(object):
     def min(self, other, context=Nichts):
         """Returns the smaller value.
 
-        Like min(self, other) except wenn one is nicht a number, returns
+        Like min(self, other) ausser wenn one is nicht a number, returns
         NaN (and signals wenn one is sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=Wahr)
@@ -2868,10 +2868,10 @@ klasse Decimal(object):
 
     def adjusted(self):
         """Return the adjusted exponent of self"""
-        try:
+        versuch:
             gib self._exp + len(self._int) - 1
         # If NaN oder Infinity, self._exp is string
-        except TypeError:
+        ausser TypeError:
             gib 0
 
     def canonical(self):
@@ -3020,7 +3020,7 @@ klasse Decimal(object):
 
         # the result is now guaranteed to be inexact (the true
         # mathematical result is transcendental). There's no need to
-        # raise Rounded und Inexact here---they'll always be raised as
+        # wirf Rounded und Inexact here---they'll always be raised as
         # a result of the call to _fix.
         p = context.prec
         adj = self.adjusted()
@@ -3037,10 +3037,10 @@ klasse Decimal(object):
             # underflow to 0
             ans = _dec_from_triple(0, '1', context.Etiny()-1)
         sowenn self._sign == 0 und adj < -p:
-            # p+1 digits; final round will raise correct flags
+            # p+1 digits; final round will wirf correct flags
             ans = _dec_from_triple(0, '1' + '0'*(p-1) + '1', -p)
         sowenn self._sign == 1 und adj < -p-1:
-            # p+1 digits; final round will raise correct flags
+            # p+1 digits; final round will wirf correct flags
             ans = _dec_from_triple(0, '9'*(p+1), -p-1)
         # general case
         sonst:
@@ -3530,7 +3530,7 @@ klasse Decimal(object):
         sonst: # comparison == 1
             ans = self.next_minus(context)
 
-        # decide which flags to raise using value of ans
+        # decide which flags to wirf using value of ans
         wenn ans._isinfinity():
             context._raise_error(Overflow,
                                  'Infinite result von next_toward',
@@ -3542,7 +3542,7 @@ klasse Decimal(object):
             context._raise_error(Subnormal)
             context._raise_error(Inexact)
             context._raise_error(Rounded)
-            # wenn precision == 1 then we don't raise Clamped fuer a
+            # wenn precision == 1 then we don't wirf Clamped fuer a
             # result 0E-Etiny.
             wenn nicht ans:
                 context._raise_error(Clamped)
@@ -3854,11 +3854,11 @@ klasse Context(object):
     def __init__(self, prec=Nichts, rounding=Nichts, Emin=Nichts, Emax=Nichts,
                        capitals=Nichts, clamp=Nichts, flags=Nichts, traps=Nichts,
                        _ignored_flags=Nichts):
-        # Set defaults; fuer everything except flags und _ignored_flags,
+        # Set defaults; fuer everything ausser flags und _ignored_flags,
         # inherit von DefaultContext.
-        try:
+        versuch:
             dc = DefaultContext
-        except NameError:
+        ausser NameError:
             pass
 
         self.prec = prec wenn prec is nicht Nichts sonst dc.prec
@@ -3889,27 +3889,27 @@ klasse Context(object):
 
     def _set_integer_check(self, name, value, vmin, vmax):
         wenn nicht isinstance(value, int):
-            raise TypeError("%s must be an integer" % name)
+            wirf TypeError("%s must be an integer" % name)
         wenn vmin == '-inf':
             wenn value > vmax:
-                raise ValueError("%s must be in [%s, %d]. got: %s" % (name, vmin, vmax, value))
+                wirf ValueError("%s must be in [%s, %d]. got: %s" % (name, vmin, vmax, value))
         sowenn vmax == 'inf':
             wenn value < vmin:
-                raise ValueError("%s must be in [%d, %s]. got: %s" % (name, vmin, vmax, value))
+                wirf ValueError("%s must be in [%d, %s]. got: %s" % (name, vmin, vmax, value))
         sonst:
             wenn value < vmin oder value > vmax:
-                raise ValueError("%s must be in [%d, %d]. got %s" % (name, vmin, vmax, value))
+                wirf ValueError("%s must be in [%d, %d]. got %s" % (name, vmin, vmax, value))
         gib object.__setattr__(self, name, value)
 
     def _set_signal_dict(self, name, d):
         wenn nicht isinstance(d, dict):
-            raise TypeError("%s must be a signal dict" % d)
+            wirf TypeError("%s must be a signal dict" % d)
         fuer key in d:
             wenn nicht key in _signals:
-                raise KeyError("%s is nicht a valid signal dict" % d)
+                wirf KeyError("%s is nicht a valid signal dict" % d)
         fuer key in _signals:
             wenn nicht key in d:
-                raise KeyError("%s is nicht a valid signal dict" % d)
+                wirf KeyError("%s is nicht a valid signal dict" % d)
         gib object.__setattr__(self, name, d)
 
     def __setattr__(self, name, value):
@@ -3925,20 +3925,20 @@ klasse Context(object):
             gib self._set_integer_check(name, value, 0, 1)
         sowenn name == 'rounding':
             wenn nicht value in _rounding_modes:
-                # raise TypeError even fuer strings to have consistency
+                # wirf TypeError even fuer strings to have consistency
                 # among various implementations.
-                raise TypeError("%s: invalid rounding mode" % value)
+                wirf TypeError("%s: invalid rounding mode" % value)
             gib object.__setattr__(self, name, value)
         sowenn name == 'flags' oder name == 'traps':
             gib self._set_signal_dict(name, value)
         sowenn name == '_ignored_flags':
             gib object.__setattr__(self, name, value)
         sonst:
-            raise AttributeError(
+            wirf AttributeError(
                 "'decimal.Context' object has no attribute '%s'" % name)
 
     def __delattr__(self, name):
-        raise AttributeError("%s cannot be deleted" % name)
+        wirf AttributeError("%s cannot be deleted" % name)
 
     # Support fuer pickling, copy, und deepcopy
     def __reduce__(self):
@@ -4007,7 +4007,7 @@ klasse Context(object):
 
         # Errors should only be risked on copies of the context
         # self._ignored_flags = []
-        raise error(explanation)
+        wirf error(explanation)
 
     def _ignore_all_flags(self):
         """Ignore all flags, wenn they are raised"""
@@ -4130,7 +4130,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__add__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -4147,7 +4147,7 @@ klasse Context(object):
         Decimal('2.50')
         """
         wenn nicht isinstance(a, Decimal):
-            raise TypeError("canonical requires a Decimal als an argument.")
+            wirf TypeError("canonical requires a Decimal als an argument.")
         gib a.canonical()
 
     def compare(self, a, b):
@@ -4354,7 +4354,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__truediv__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -4377,7 +4377,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__floordiv__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -4398,7 +4398,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__divmod__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -4459,7 +4459,7 @@ klasse Context(object):
         Wahr
         """
         wenn nicht isinstance(a, Decimal):
-            raise TypeError("is_canonical requires a Decimal als an argument.")
+            wirf TypeError("is_canonical requires a Decimal als an argument.")
         gib a.is_canonical()
 
     def is_finite(self, a):
@@ -4934,7 +4934,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__mul__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -5180,7 +5180,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__pow__(b, modulo, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -5199,7 +5199,7 @@ klasse Context(object):
         an error condition, the exponent of the result of a quantize is always
         equal to that of the right-hand operand.
 
-        Also unlike other operations, quantize will never raise Underflow, even
+        Also unlike other operations, quantize will never wirf Underflow, even
         wenn the result is subnormal und inexact.
 
         >>> ExtendedContext.quantize(Decimal('2.17'), Decimal('0.001'))
@@ -5284,7 +5284,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__mod__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -5475,7 +5475,7 @@ klasse Context(object):
         a = _convert_other(a, raiseit=Wahr)
         r = a.__sub__(b, context=self)
         wenn r is NotImplemented:
-            raise TypeError("Unable to convert %s to Decimal" % b)
+            wirf TypeError("Unable to convert %s to Decimal" % b)
         sonst:
             gib r
 
@@ -5551,7 +5551,7 @@ klasse Context(object):
         When the operand has a negative exponent, the result is the same
         als using the quantize() operation using the given operand als the
         left-hand-operand, 1E+0 als the right-hand-operand, und the precision
-        of the operand als the precision setting, except that no flags will
+        of the operand als the precision setting, ausser that no flags will
         be set.  The rounding mode is taken von the context.
 
         >>> ExtendedContext.to_integral_value(Decimal('2.1'))
@@ -5664,7 +5664,7 @@ def _sqrt_nearest(n, a):
 
     """
     wenn n <= 0 oder a <= 0:
-        raise ValueError("Both arguments to _sqrt_nearest should be positive.")
+        wirf ValueError("Both arguments to _sqrt_nearest should be positive.")
 
     b=0
     waehrend a != b:
@@ -5830,7 +5830,7 @@ klasse _Log10Memoize(object):
         # digits; the stored digits should always be correct
         # (truncated, nicht rounded to nearest).
         wenn p < 0:
-            raise ValueError("p should be nonnegative")
+            wirf ValueError("p should be nonnegative")
 
         wenn p >= len(self.digits):
             # compute p+3, p+6, p+9, ... digits; weiter until at
@@ -5970,7 +5970,7 @@ def _log10_lb(c, correction = {
         '6': 23, '7': 16, '8': 10, '9': 5}):
     """Compute a lower bound fuer 100*log10(c) fuer a positive integer c."""
     wenn c <= 0:
-        raise ValueError("The argument to _log10_lb should be nonnegative.")
+        wirf ValueError("The argument to _log10_lb should be nonnegative.")
     str_c = str(c)
     gib 100*len(str_c) - correction[str_c[0]]
 
@@ -5992,7 +5992,7 @@ def _convert_other(other, raiseit=Falsch, allow_float=Falsch):
         gib Decimal.from_float(other)
 
     wenn raiseit:
-        raise TypeError("Unable to convert %s to Decimal" % other)
+        wirf TypeError("Unable to convert %s to Decimal" % other)
     gib NotImplemented
 
 def _convert_for_comparison(self, other, equality_op=Falsch):
@@ -6136,9 +6136,9 @@ del re
 # The locale module is only needed fuer the 'n' format specifier.  The
 # rest of the PEP 3101 code functions quite happily without it, so we
 # don't care too much wenn locale isn't present.
-try:
+versuch:
     importiere locale als _locale
-except ImportError:
+ausser ImportError:
     pass
 
 def _parse_format_specifier(format_spec, _localeconv=Nichts):
@@ -6162,7 +6162,7 @@ def _parse_format_specifier(format_spec, _localeconv=Nichts):
     """
     m = _parse_format_specifier_regex.match(format_spec)
     wenn m is Nichts:
-        raise ValueError("Invalid format specifier: " + format_spec)
+        wirf ValueError("Invalid format specifier: " + format_spec)
 
     # get the dictionary
     format_dict = m.groupdict()
@@ -6174,10 +6174,10 @@ def _parse_format_specifier(format_spec, _localeconv=Nichts):
     format_dict['zeropad'] = (format_dict['zeropad'] is nicht Nichts)
     wenn format_dict['zeropad']:
         wenn fill is nicht Nichts:
-            raise ValueError("Fill character conflicts mit '0'"
+            wirf ValueError("Fill character conflicts mit '0'"
                              " in format specifier: " + format_spec)
         wenn align is nicht Nichts:
-            raise ValueError("Alignment conflicts mit '0' in "
+            wirf ValueError("Alignment conflicts mit '0' in "
                              "format specifier: " + format_spec)
     format_dict['fill'] = fill oder ' '
     # PEP 3101 originally specified that the default alignment should
@@ -6208,7 +6208,7 @@ def _parse_format_specifier(format_spec, _localeconv=Nichts):
         wenn _localeconv is Nichts:
             _localeconv = _locale.localeconv()
         wenn format_dict['thousands_sep'] is nicht Nichts:
-            raise ValueError("Explicit thousands separator conflicts mit "
+            wirf ValueError("Explicit thousands separator conflicts mit "
                              "'n' type in format specifier: " + format_spec)
         format_dict['thousands_sep'] = _localeconv['thousands_sep']
         format_dict['grouping'] = _localeconv['grouping']
@@ -6247,7 +6247,7 @@ def _format_align(sign, body, spec):
         half = len(padding)//2
         result = padding[:half] + sign + body + padding[half:]
     sonst:
-        raise ValueError('Unrecognised alignment field')
+        wirf ValueError('Unrecognised alignment field')
 
     gib result
 
@@ -6272,7 +6272,7 @@ def _group_lengths(grouping):
     sowenn grouping[-1] == _locale.CHAR_MAX:
         gib grouping[:-1]
     sonst:
-        raise ValueError('unrecognised format fuer grouping')
+        wirf ValueError('unrecognised format fuer grouping')
 
 def _insert_thousands_sep(digits, spec, min_width=1):
     """Insert thousands separators into a digit string.
@@ -6297,7 +6297,7 @@ def _insert_thousands_sep(digits, spec, min_width=1):
     groups = []
     fuer l in _group_lengths(grouping):
         wenn l <= 0:
-            raise ValueError("group length should be positive")
+            wirf ValueError("group length should be positive")
         # max(..., 1) forces at least 1 digit to the left of a separator
         l = min(max(len(digits), min_width, 1), l)
         groups.append('0'*(l - len(digits)) + digits[-l:])

@@ -164,9 +164,9 @@ klasse RangeTest(unittest.TestCase):
         # Check long ranges (len > sys.maxsize)
         # len() is expected to fail due to limitations of the __len__ protocol
         def _range_len(x):
-            try:
+            versuch:
                 length = len(x)
-            except OverflowError:
+            ausser OverflowError:
                 step = x[1] - x[0]
                 length = 1 + ((x[-1] - x[0]) // step)
             gib length
@@ -286,7 +286,7 @@ klasse RangeTest(unittest.TestCase):
         klasse BadCmp:
             def __eq__(self, other):
                 wenn other == 2:
-                    raise BadExc()
+                    wirf BadExc()
                 gib Falsch
 
         a = range(4)
@@ -321,7 +321,7 @@ klasse RangeTest(unittest.TestCase):
         # User-defined klasse mit a failing __index__ method
         klasse IX:
             def __index__(self):
-                raise RuntimeError
+                wirf RuntimeError
         self.assertRaises(RuntimeError, range, IX())
 
         # User-defined klasse mit an invalid __index__ method
@@ -395,9 +395,9 @@ klasse RangeTest(unittest.TestCase):
                     self.assertEqual(list(it), data)
 
                     it = pickle.loads(d)
-                    try:
+                    versuch:
                         next(it)
-                    except StopIteration:
+                    ausser StopIteration:
                         weiter
                     d = pickle.dumps(it, proto)
                     it = pickle.loads(d)
@@ -471,7 +471,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertEqual(list(it), [12, 10])
 
     def test_odd_bug(self):
-        # This used to raise a "SystemError: NULL result without error"
+        # This used to wirf a "SystemError: NULL result without error"
         # because the range validation step was eating the exception
         # before NULL was returned.
         mit self.assertRaises(TypeError):

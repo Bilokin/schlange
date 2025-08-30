@@ -128,12 +128,12 @@ klasse BZ2FileTest(BaseTest):
         # boundary coincides mit the end of the raw read buffer.
         buffer_size = _streams.BUFFER_SIZE
         _streams.BUFFER_SIZE = len(self.DATA)
-        try:
+        versuch:
             self.createTempFile(streams=5)
             mit BZ2File(self.filename) als bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT * 5)
-        finally:
+        schliesslich:
             _streams.BUFFER_SIZE = buffer_size
 
     def testReadTrailingJunk(self):
@@ -275,7 +275,7 @@ klasse BZ2FileTest(BaseTest):
             self.assertRaises(TypeError, bz2f.writelines)
             bz2f.writelines(self.TEXT_LINES)
         # Issue #1535500: Calling writelines() on a closed BZ2File
-        # should raise an exception.
+        # should wirf an exception.
         self.assertRaises(ValueError, bz2f.writelines, ["a"])
         mit open(self.filename, 'rb') als f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
@@ -388,69 +388,69 @@ klasse BZ2FileTest(BaseTest):
         self.createTempFile()
         mit open(self.filename, 'rb') als rawf:
             bz2f = BZ2File(rawf)
-            try:
+            versuch:
                 self.assertEqual(bz2f.fileno(), rawf.fileno())
-            finally:
+            schliesslich:
                 bz2f.close()
         self.assertRaises(ValueError, bz2f.fileno)
 
     def testSeekable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
-        try:
+        versuch:
             self.assertWahr(bz2f.seekable())
             bz2f.read()
             self.assertWahr(bz2f.seekable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.seekable)
 
         bz2f = BZ2File(BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(bz2f.seekable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.seekable)
 
         src = BytesIO(self.DATA)
         src.seekable = lambda: Falsch
         bz2f = BZ2File(src)
-        try:
+        versuch:
             self.assertFalsch(bz2f.seekable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.seekable)
 
     def testReadable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
-        try:
+        versuch:
             self.assertWahr(bz2f.readable())
             bz2f.read()
             self.assertWahr(bz2f.readable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.readable)
 
         bz2f = BZ2File(BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(bz2f.readable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.readable)
 
     def testWritable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
-        try:
+        versuch:
             self.assertFalsch(bz2f.writable())
             bz2f.read()
             self.assertFalsch(bz2f.writable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.writable)
 
         bz2f = BZ2File(BytesIO(), "w")
-        try:
+        versuch:
             self.assertWahr(bz2f.writable())
-        finally:
+        schliesslich:
             bz2f.close()
         self.assertRaises(ValueError, bz2f.writable)
 
@@ -480,20 +480,20 @@ klasse BZ2FileTest(BaseTest):
             f.write(b"xxx")
         f = BZ2File(self.filename, "rb")
         f.close()
-        try:
+        versuch:
             mit f:
                 pass
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
-            self.fail("__enter__ on a closed file didn't raise an exception")
-        try:
+            self.fail("__enter__ on a closed file didn't wirf an exception")
+        versuch:
             mit BZ2File(self.filename, "wb") als f:
                 1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            self.fail("1/0 didn't raise an exception")
+            self.fail("1/0 didn't wirf an exception")
 
     @threading_helper.requires_working_threading()
     def testThreading(self):
@@ -851,16 +851,16 @@ klasse BZ2CompressorTest(BaseTest):
         # "Test BZ2Compressor.compress()/flush() mit >4GiB input"
         bz2c = BZ2Compressor()
         data = b"x" * size
-        try:
+        versuch:
             compressed = bz2c.compress(data)
             compressed += bz2c.flush()
-        finally:
+        schliesslich:
             data = Nichts  # Release memory
         data = bz2.decompress(compressed)
-        try:
+        versuch:
             self.assertEqual(len(data), size)
             self.assertEqual(len(data.strip(b"x")), 0)
-        finally:
+        schliesslich:
             data = Nichts
 
     def testPickle(self):
@@ -910,13 +910,13 @@ klasse BZ2DecompressorTest(BaseTest):
         # "Test BZ2Decompressor.decompress() mit >4GiB input"
         blocksize = min(10 * 1024 * 1024, size)
         block = random.randbytes(blocksize)
-        try:
+        versuch:
             data = block * ((size-1) // blocksize + 1)
             compressed = bz2.compress(data)
             bz2d = BZ2Decompressor()
             decompressed = bz2d.decompress(compressed)
             self.assertWahr(decompressed == data)
-        finally:
+        schliesslich:
             data = Nichts
             compressed = Nichts
             decompressed = Nichts

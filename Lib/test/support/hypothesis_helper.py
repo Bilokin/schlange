@@ -1,8 +1,8 @@
 importiere os
 
-try:
+versuch:
     importiere hypothesis
-except ImportError:
+ausser ImportError:
     von . importiere _hypothesis_stubs als hypothesis
 sonst:
     # Regrtest changes to use a tempdir als the working directory, so we have

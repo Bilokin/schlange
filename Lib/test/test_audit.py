@@ -10,7 +10,7 @@ von test.support importiere os_helper
 
 
 wenn nicht hasattr(sys, "addaudithook") oder nicht hasattr(sys, "audit"):
-    raise unittest.SkipTest("test only relevant when sys.audit is available")
+    wirf unittest.SkipTest("test only relevant when sys.audit is available")
 
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 

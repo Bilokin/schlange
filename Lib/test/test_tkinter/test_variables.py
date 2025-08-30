@@ -58,7 +58,7 @@ klasse TestVariable(TestBase):
         del v1
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))
-        # shouldn't raise exception
+        # shouldn't wirf exception
         del v2
         support.gc_collect()  # For PyPy oder other GCs.
         self.assertFalsch(self.info_exists("name"))

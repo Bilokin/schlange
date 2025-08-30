@@ -126,18 +126,18 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
 def _main(fd, parent_sentinel):
     mit os.fdopen(fd, 'rb', closefd=Wahr) als from_parent:
         process.current_process()._inheriting = Wahr
-        try:
+        versuch:
             preparation_data = reduction.pickle.load(from_parent)
             prepare(preparation_data)
             self = reduction.pickle.load(from_parent)
-        finally:
+        schliesslich:
             del process.current_process()._inheriting
     gib self._bootstrap(parent_sentinel)
 
 
 def _check_not_importing_main():
     wenn getattr(process.current_process(), '_inheriting', Falsch):
-        raise RuntimeError('''
+        wirf RuntimeError('''
         An attempt has been made to start a new process before the
         current process has finished its bootstrapping phase.
 
@@ -171,9 +171,9 @@ def get_preparation_data(name):
         d['log_level'] = util._logger.getEffectiveLevel()
 
     sys_path=sys.path.copy()
-    try:
+    versuch:
         i = sys_path.index('')
-    except ValueError:
+    ausser ValueError:
         pass
     sonst:
         sys_path[i] = process.ORIGINAL_DIR

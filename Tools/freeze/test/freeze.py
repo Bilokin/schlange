@@ -31,7 +31,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
     wenn cwd:
         drucke('+', 'cd', cwd, flush=Wahr)
     drucke('+', shlex.join(cmd), flush=Wahr)
-    try:
+    versuch:
         gib subprocess.run(
             cmd,
             cwd=cwd,
@@ -39,7 +39,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
             text=Wahr,
             check=Wahr,
         )
-    except subprocess.CalledProcessError als err:
+    ausser subprocess.CalledProcessError als err:
         # Don't be quiet wenn things fail
         drucke(f"{err.__class__.__name__}: {err}")
         drucke("--- STDOUT ---")
@@ -47,7 +47,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
         drucke("--- STDERR ---")
         drucke(err.stderr)
         drucke("---- END ----")
-        raise
+        wirf
 
 
 def _run_stdout(cmd):
@@ -78,7 +78,7 @@ def ensure_opt(args, name, value):
         arg = args[pos]
         wenn arg == opt:
             wenn pos == len(args) - 1:
-                raise NotImplementedError((args, opt))
+                wirf NotImplementedError((args, opt))
             args[pos + 1] = value
         sonst:
             args[pos] = f'{opt}={value}'
@@ -88,7 +88,7 @@ def copy_source_tree(newroot, oldroot):
     drucke(f'copying the source tree von {oldroot} to {newroot}...')
     wenn os.path.exists(newroot):
         wenn newroot == SRCDIR:
-            raise Exception('this probably isn\'t what you wanted')
+            wirf Exception('this probably isn\'t what you wanted')
         shutil.rmtree(newroot)
 
     shutil.copytree(oldroot, newroot, ignore=support.copy_python_src_ignore)
@@ -135,7 +135,7 @@ def prepare(script=Nichts, outdir=Nichts):
     _run_quiet(cmd, cwd=builddir)
 
     wenn nicht MAKE:
-        raise UnsupportedError('make')
+        wirf UnsupportedError('make')
 
     cores = os.process_cpu_count()
     wenn cores und cores >= 3:
@@ -161,7 +161,7 @@ def prepare(script=Nichts, outdir=Nichts):
 
 def freeze(python, scriptfile, outdir):
     wenn nicht MAKE:
-        raise UnsupportedError('make')
+        wirf UnsupportedError('make')
 
     drucke(f'freezing {scriptfile}...')
     os.makedirs(outdir, exist_ok=Wahr)

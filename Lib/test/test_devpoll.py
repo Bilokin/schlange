@@ -9,7 +9,7 @@ importiere unittest
 von test.support importiere cpython_only
 
 wenn nicht hasattr(select, 'devpoll') :
-    raise unittest.SkipTest('test works only on Solaris OS family')
+    wirf unittest.SkipTest('test works only on Solaris OS family')
 
 
 def find_ready_matching(ready, flag):

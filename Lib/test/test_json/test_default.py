@@ -11,7 +11,7 @@ klasse TestDefault:
     def test_bad_default(self):
         def default(obj):
             wenn obj is NotImplemented:
-                raise ValueError
+                wirf ValueError
             wenn obj is ...:
                 gib NotImplemented
             wenn obj is type:

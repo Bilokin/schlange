@@ -6,15 +6,15 @@ importiere types
 
 CAN_USE_PYREPL: bool
 FAIL_REASON: str
-try:
+versuch:
     wenn sys.platform == "win32" und sys.getwindowsversion().build < 10586:
-        raise RuntimeError("Windows 10 TH2 oder later required")
+        wirf RuntimeError("Windows 10 TH2 oder later required")
     wenn nicht os.isatty(sys.stdin.fileno()):
-        raise OSError(errno.ENOTTY, "tty required", "stdin")
+        wirf OSError(errno.ENOTTY, "tty required", "stdin")
     von .simple_interact importiere check
     wenn err := check():
-        raise RuntimeError(err)
-except Exception als e:
+        wirf RuntimeError(err)
+ausser Exception als e:
     CAN_USE_PYREPL = Falsch
     FAIL_REASON = f"warning: can't use pyrepl: {e}"
 sonst:

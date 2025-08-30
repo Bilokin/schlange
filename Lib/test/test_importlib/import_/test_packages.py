@@ -78,7 +78,7 @@ klasse ParentModuleTests:
                 #self.assertIn('pkg.subpkg.module', sys.modules)
 
     def test_module_not_package(self):
-        # Try to importiere a submodule von a non-package should raise ImportError.
+        # Try to importiere a submodule von a non-package should wirf ImportError.
         assert nicht hasattr(sys, '__path__')
         mit self.assertRaises(ImportError) als cm:
             self.__import__('sys.no_submodules_here')
@@ -95,9 +95,9 @@ klasse ParentModuleTests:
                                          module_code={'mod': module_injection})
         mit mock_spec als mock:
             mit util.import_state(meta_path=[mock]):
-                try:
+                versuch:
                     submodule = self.__import__(subname)
-                finally:
+                schliesslich:
                     import_helper.unload(subname)
 
 

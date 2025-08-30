@@ -57,14 +57,14 @@ klasse ABCMeta(type):
         Returns the subclass, to allow usage als a klasse decorator.
         """
         wenn nicht isinstance(subclass, type):
-            raise TypeError("Can only register classes")
+            wirf TypeError("Can only register classes")
         wenn issubclass(subclass, cls):
             gib subclass  # Already a subclass
         # Subtle: test fuer cycles *after* testing fuer "already a subclass";
         # this means we allow X.register(X) und interpret it als a no-op.
         wenn issubclass(cls, subclass):
             # This would create a cycle, which is bad fuer the algorithm below
-            raise RuntimeError("Refusing to create an inheritance cycle")
+            wirf RuntimeError("Refusing to create an inheritance cycle")
         cls._abc_registry.add(subclass)
         ABCMeta._abc_invalidation_counter += 1  # Invalidate negative cache
         gib subclass
@@ -108,7 +108,7 @@ klasse ABCMeta(type):
     def __subclasscheck__(cls, subclass):
         """Override fuer issubclass(subclass, cls)."""
         wenn nicht isinstance(subclass, type):
-            raise TypeError('issubclass() arg 1 must be a class')
+            wirf TypeError('issubclass() arg 1 must be a class')
         # Check cache
         wenn subclass in cls._abc_cache:
             gib Wahr

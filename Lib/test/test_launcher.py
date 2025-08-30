@@ -12,7 +12,7 @@ von pathlib importiere Path
 von test importiere support
 
 wenn sys.platform != "win32":
-    raise unittest.SkipTest("test only applies to Windows")
+    wirf unittest.SkipTest("test only applies to Windows")
 
 # Get winreg after the platform check
 importiere winreg
@@ -107,7 +107,7 @@ def create_registry_data(root, data):
             # For strings, we set values. 'key' may be Nichts in this case
             winreg.SetValueEx(root, key, Nichts, winreg.REG_SZ, value)
         sonst:
-            raise TypeError("don't know how to create data fuer '{}'".format(value))
+            wirf TypeError("don't know how to create data fuer '{}'".format(value))
 
     fuer k, v in data.items():
         _create_registry_data(root, k, v)
@@ -115,12 +115,12 @@ def create_registry_data(root, data):
 
 def enum_keys(root):
     fuer i in itertools.count():
-        try:
+        versuch:
             liefere winreg.EnumKey(root, i)
-        except OSError als ex:
+        ausser OSError als ex:
             wenn ex.winerror == 259:
                 breche
-            raise
+            wirf
 
 
 def delete_registry_data(root, keys):
@@ -138,10 +138,10 @@ def is_installed(tag):
         (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_64KEY),
         (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_32KEY),
     ]:
-        try:
+        versuch:
             winreg.CloseKey(winreg.OpenKey(root, key, access=winreg.KEY_READ | flag))
             gib Wahr
-        except OSError:
+        ausser OSError:
             pass
     gib Falsch
 
@@ -153,9 +153,9 @@ klasse PreservePyIni:
         self._preserved = Nichts
 
     def __enter__(self):
-        try:
+        versuch:
             self._preserved = self.path.read_bytes()
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             self._preserved = Nichts
         self.path.write_text(self.content, encoding="utf-16")
 
@@ -186,7 +186,7 @@ klasse RunPyMixin:
         # Test launch und check version, to exclude installs of older
         # releases when running outside of a source tree
         wenn py_exe:
-            try:
+            versuch:
                 mit subprocess.Popen(
                     [py_exe, "-h"],
                     stdin=subprocess.PIPE,
@@ -201,11 +201,11 @@ klasse RunPyMixin:
                     p.wait(10)
                 wenn nicht sys.version.startswith(version):
                     py_exe = Nichts
-            except OSError:
+            ausser OSError:
                 py_exe = Nichts
 
         wenn nicht py_exe:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "cannot locate '{}' fuer test".format(PY_EXE)
             )
         gib py_exe
@@ -249,7 +249,7 @@ klasse RunPyMixin:
             drucke("++ STDERR ++")
             drucke(err)
         wenn allow_fail und p.returncode != expect_returncode:
-            raise subprocess.CalledProcessError(p.returncode, [self.py_exe, *args], out, err)
+            wirf subprocess.CalledProcessError(p.returncode, [self.py_exe, *args], out, err)
         sonst:
             self.assertEqual(expect_returncode, p.returncode)
         data = {
@@ -264,7 +264,7 @@ klasse RunPyMixin:
     def py_ini(self, content):
         local_appdata = os.environ.get("LOCALAPPDATA")
         wenn nicht local_appdata:
-            raise unittest.SkipTest("LOCALAPPDATA environment variable is "
+            wirf unittest.SkipTest("LOCALAPPDATA environment variable is "
                                     "missing oder empty")
         gib PreservePyIni(Path(local_appdata) / "py.ini", content)
 
@@ -275,9 +275,9 @@ klasse RunPyMixin:
             file.write_bytes(content)
         sonst:
             file.write_text(content, encoding=encoding)
-        try:
+        versuch:
             liefere file
-        finally:
+        schliesslich:
             file.unlink()
 
     @contextlib.contextmanager
@@ -286,9 +286,9 @@ klasse RunPyMixin:
         venv.mkdir(exist_ok=Wahr, parents=Wahr)
         venv_exe = (venv / ("python_d.exe" wenn DEBUG_BUILD sonst "python.exe"))
         venv_exe.touch()
-        try:
+        versuch:
             liefere venv_exe, {"VIRTUAL_ENV": str(venv.parent)}
-        finally:
+        schliesslich:
             shutil.rmtree(venv)
 
 
@@ -347,13 +347,13 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             expect.pop(f"-V:{company}/ignored", Nichts)
 
         actual = {k: v fuer k, v in found.items() wenn k in expect}
-        try:
+        versuch:
             self.assertDictEqual(expect, actual)
-        except:
+        ausser:
             wenn support.verbose:
                 drucke("*** STDOUT ***")
                 drucke(data["stdout"])
-            raise
+            wirf
 
     def test_list_paths(self):
         data = self.run_py(["--list-paths"])
@@ -369,25 +369,25 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 install = company_data[tag]["InstallPath"]
-                try:
+                versuch:
                     expect[arg] = install["ExecutablePath"]
-                    try:
+                    versuch:
                         expect[arg] += " " + install["ExecutableArguments"]
-                    except KeyError:
+                    ausser KeyError:
                         pass
-                except KeyError:
+                ausser KeyError:
                     expect[arg] = str(Path(install[Nichts]) / Path(sys.executable).name)
 
             expect.pop(f"-V:{company}/ignored", Nichts)
 
         actual = {k: v fuer k, v in found.items() wenn k in expect}
-        try:
+        versuch:
             self.assertDictEqual(expect, actual)
-        except:
+        ausser:
             wenn support.verbose:
                 drucke("*** STDOUT ***")
                 drucke(data["stdout"])
-            raise
+            wirf
 
     def test_filter_to_company(self):
         company = "PythonTestSuite"
@@ -438,30 +438,30 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         )
 
     def test_search_major_3(self):
-        try:
+        versuch:
             data = self.run_py(["-3"], allow_fail=Wahr)
-        except subprocess.CalledProcessError:
-            raise unittest.SkipTest("requires at least one Python 3.x install")
+        ausser subprocess.CalledProcessError:
+            wirf unittest.SkipTest("requires at least one Python 3.x install")
         self.assertEqual("PythonCore", data["env.company"])
         self.assertStartsWith(data["env.tag"], "3.")
 
     def test_search_major_3_32(self):
-        try:
+        versuch:
             data = self.run_py(["-3-32"], allow_fail=Wahr)
-        except subprocess.CalledProcessError:
+        ausser subprocess.CalledProcessError:
             wenn nicht any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
-                raise unittest.SkipTest("requires at least one 32-bit Python 3.x install")
-            raise
+                wirf unittest.SkipTest("requires at least one 32-bit Python 3.x install")
+            wirf
         self.assertEqual("PythonCore", data["env.company"])
         self.assertStartsWith(data["env.tag"], "3.")
         self.assertEndsWith(data["env.tag"], "-32")
 
     def test_search_major_2(self):
-        try:
+        versuch:
             data = self.run_py(["-2"], allow_fail=Wahr)
-        except subprocess.CalledProcessError:
+        ausser subprocess.CalledProcessError:
             wenn nicht is_installed("2.7"):
-                raise unittest.SkipTest("requires at least one Python 2.x install")
+                wirf unittest.SkipTest("requires at least one Python 2.x install")
         self.assertEqual("PythonCore", data["env.company"])
         self.assertStartsWith(data["env.tag"], "2.")
 
@@ -696,9 +696,9 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         cmd = data["stdout"].strip()
         # If winget is runnable, we should find it. Otherwise, we'll be trying
         # to open the Store.
-        try:
+        versuch:
             subprocess.check_call(["winget.exe", "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             self.assertIn("ms-windows-store://", cmd)
         sonst:
             self.assertIn("winget.exe", cmd)

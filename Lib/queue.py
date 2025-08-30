@@ -5,9 +5,9 @@ importiere types
 von collections importiere deque
 von heapq importiere heappush, heappop
 von time importiere monotonic als time
-try:
+versuch:
     von _queue importiere SimpleQueue
-except ImportError:
+ausser ImportError:
     SimpleQueue = Nichts
 
 __all__ = [
@@ -21,9 +21,9 @@ __all__ = [
 ]
 
 
-try:
+versuch:
     von _queue importiere Empty
-except ImportError:
+ausser ImportError:
     klasse Empty(Exception):
         'Exception raised by Queue.get(block=0)/get_nowait().'
         pass
@@ -87,7 +87,7 @@ klasse Queue:
             unfinished = self.unfinished_tasks - 1
             wenn unfinished <= 0:
                 wenn unfinished < 0:
-                    raise ValueError('task_done() called too many times')
+                    wirf ValueError('task_done() called too many times')
                 self.all_tasks_done.notify_all()
             self.unfinished_tasks = unfinished
 
@@ -142,34 +142,34 @@ klasse Queue:
         a non-negative number, it blocks at most 'timeout' seconds und raises
         the Full exception wenn no free slot was available within that time.
         Otherwise ('block' is false), put an item on the queue wenn a free slot
-        is immediately available, sonst raise the Full exception ('timeout'
+        is immediately available, sonst wirf the Full exception ('timeout'
         is ignored in that case).
 
         Raises ShutDown wenn the queue has been shut down.
         '''
         mit self.not_full:
             wenn self.is_shutdown:
-                raise ShutDown
+                wirf ShutDown
             wenn self.maxsize > 0:
                 wenn nicht block:
                     wenn self._qsize() >= self.maxsize:
-                        raise Full
+                        wirf Full
                 sowenn timeout is Nichts:
                     waehrend self._qsize() >= self.maxsize:
                         self.not_full.wait()
                         wenn self.is_shutdown:
-                            raise ShutDown
+                            wirf ShutDown
                 sowenn timeout < 0:
-                    raise ValueError("'timeout' must be a non-negative number")
+                    wirf ValueError("'timeout' must be a non-negative number")
                 sonst:
                     endtime = time() + timeout
                     waehrend self._qsize() >= self.maxsize:
                         remaining = endtime - time()
                         wenn remaining <= 0.0:
-                            raise Full
+                            wirf Full
                         self.not_full.wait(remaining)
                         wenn self.is_shutdown:
-                            raise ShutDown
+                            wirf ShutDown
             self._put(item)
             self.unfinished_tasks += 1
             self.not_empty.notify()
@@ -182,7 +182,7 @@ klasse Queue:
         a non-negative number, it blocks at most 'timeout' seconds und raises
         the Empty exception wenn no item was available within that time.
         Otherwise ('block' is false), gib an item wenn one is immediately
-        available, sonst raise the Empty exception ('timeout' is ignored
+        available, sonst wirf the Empty exception ('timeout' is ignored
         in that case).
 
         Raises ShutDown wenn the queue has been shut down und is empty,
@@ -190,26 +190,26 @@ klasse Queue:
         '''
         mit self.not_empty:
             wenn self.is_shutdown und nicht self._qsize():
-                raise ShutDown
+                wirf ShutDown
             wenn nicht block:
                 wenn nicht self._qsize():
-                    raise Empty
+                    wirf Empty
             sowenn timeout is Nichts:
                 waehrend nicht self._qsize():
                     self.not_empty.wait()
                     wenn self.is_shutdown und nicht self._qsize():
-                        raise ShutDown
+                        wirf ShutDown
             sowenn timeout < 0:
-                raise ValueError("'timeout' must be a non-negative number")
+                wirf ValueError("'timeout' must be a non-negative number")
             sonst:
                 endtime = time() + timeout
                 waehrend nicht self._qsize():
                     remaining = endtime - time()
                     wenn remaining <= 0.0:
-                        raise Empty
+                        wirf Empty
                     self.not_empty.wait(remaining)
                     wenn self.is_shutdown und nicht self._qsize():
-                        raise ShutDown
+                        wirf ShutDown
             item = self._get()
             self.not_full.notify()
             gib item
@@ -218,7 +218,7 @@ klasse Queue:
         '''Put an item into the queue without blocking.
 
         Only enqueue the item wenn a free slot is immediately available.
-        Otherwise raise the Full exception.
+        Otherwise wirf the Full exception.
         '''
         gib self.put(item, block=Falsch)
 
@@ -226,15 +226,15 @@ klasse Queue:
         '''Remove und gib an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
-        raise the Empty exception.
+        wirf the Empty exception.
         '''
         gib self.get(block=Falsch)
 
     def shutdown(self, immediate=Falsch):
-        '''Shut-down the queue, making queue gets und puts raise ShutDown.
+        '''Shut-down the queue, making queue gets und puts wirf ShutDown.
 
-        By default, gets will only raise once the queue is empty. Set
-        'immediate' to Wahr to make gets raise immediately instead.
+        By default, gets will only wirf once the queue is empty. Set
+        'immediate' to Wahr to make gets wirf immediately instead.
 
         All blocked callers of put() und get() will be unblocked.
 
@@ -251,7 +251,7 @@ klasse Queue:
                         self.unfinished_tasks -= 1
                 # release all blocked threads in `join()`
                 self.all_tasks_done.notify_all()
-            # All getters need to re-check queue-empty to raise ShutDown
+            # All getters need to re-check queue-empty to wirf ShutDown
             self.not_empty.notify_all()
             self.not_full.notify_all()
 
@@ -343,13 +343,13 @@ klasse _PySimpleQueue:
         a non-negative number, it blocks at most 'timeout' seconds und raises
         the Empty exception wenn no item was available within that time.
         Otherwise ('block' is false), gib an item wenn one is immediately
-        available, sonst raise the Empty exception ('timeout' is ignored
+        available, sonst wirf the Empty exception ('timeout' is ignored
         in that case).
         '''
         wenn timeout is nicht Nichts und timeout < 0:
-            raise ValueError("'timeout' must be a non-negative number")
+            wirf ValueError("'timeout' must be a non-negative number")
         wenn nicht self._count.acquire(block, timeout):
-            raise Empty
+            wirf Empty
         gib self._queue.popleft()
 
     def put_nowait(self, item):
@@ -364,7 +364,7 @@ klasse _PySimpleQueue:
         '''Remove und gib an item von the queue without blocking.
 
         Only get an item wenn one is immediately available. Otherwise
-        raise the Empty exception.
+        wirf the Empty exception.
         '''
         gib self.get(block=Falsch)
 

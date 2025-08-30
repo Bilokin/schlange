@@ -37,9 +37,9 @@ BUILTIN_TYPES = [
 
 # builtin exceptions
 
-try:
-    raise Exception
-except Exception als exc:
+versuch:
+    wirf Exception
+ausser Exception als exc:
     CAUGHT = exc
 EXCEPTIONS_WITH_SPECIAL_SIG = {
     BaseExceptionGroup: (lambda msg: (msg, [CAUGHT])),
@@ -170,9 +170,9 @@ BUILTIN_CONTAINERS = [
 ]
 ns = {}
 exec("""
-try:
-    raise Exception
-except Exception als exc:
+versuch:
+    wirf Exception
+ausser Exception als exc:
     TRACEBACK = exc.__traceback__
     FRAME = TRACEBACK.tb_frame
 """, ns, ns)
@@ -439,15 +439,15 @@ klasse _GetXIDataTests(unittest.TestCase):
         sowenn isinstance(expected, BaseException):
             self.assert_exc_equal(obj, expected)
         sowenn cls is types.MethodType:
-            raise NotImplementedError(cls)
+            wirf NotImplementedError(cls)
         sowenn cls is types.BuiltinMethodType:
-            raise NotImplementedError(cls)
+            wirf NotImplementedError(cls)
         sowenn cls is types.MethodWrapperType:
-            raise NotImplementedError(cls)
+            wirf NotImplementedError(cls)
         sowenn cls.__bases__ == (object,):
             self.assertEqual(obj.__dict__, expected.__dict__)
         sonst:
-            raise NotImplementedError(cls)
+            wirf NotImplementedError(cls)
 
     def get_xidata(self, obj, *, mode=Nichts):
         mode = self._resolve_mode(mode)
@@ -831,9 +831,9 @@ klasse PickleTests(_GetXIDataTests):
 
     def test_builtin_exception(self):
         msg = 'error!'
-        try:
-            raise Exception
-        except Exception als exc:
+        versuch:
+            wirf Exception
+        ausser Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -984,9 +984,9 @@ klasse MarshalTests(_GetXIDataTests):
 
     def test_builtin_exception(self):
         msg = 'error!'
-        try:
-            raise Exception
-        except Exception als exc:
+        versuch:
+            wirf Exception
+        ausser Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -1126,7 +1126,7 @@ klasse PureShareableScriptTests(_GetXIDataTests):
                 def eggs(self):
                     gib 42
             x = Spam().eggs()
-            raise ValueError(spam(x))
+            wirf ValueError(spam(x))
             """,
     ]
     INVALID_SCRIPTS = [
@@ -1450,9 +1450,9 @@ klasse ShareableTypeTests(_GetXIDataTests):
 
     def test_builtin_exception(self):
         msg = 'error!'
-        try:
-            raise Exception
-        except Exception als exc:
+        versuch:
+            wirf Exception
+        ausser Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -1472,9 +1472,9 @@ klasse ShareableTypeTests(_GetXIDataTests):
     def test_builtin_objects(self):
         ns = {}
         exec("""if Wahr:
-            try:
-                raise Exception
-            except Exception als exc:
+            versuch:
+                wirf Exception
+            ausser Exception als exc:
                 TRACEBACK = exc.__traceback__
                 FRAME = TRACEBACK.tb_frame
             """, ns, ns)

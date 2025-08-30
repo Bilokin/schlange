@@ -147,7 +147,7 @@ klasse Process:
 
     async def _feed_stdin(self, input):
         debug = self._loop.get_debug()
-        try:
+        versuch:
             wenn input is nicht Nichts:
                 self.stdin.write(input)
                 wenn debug:
@@ -155,9 +155,9 @@ klasse Process:
                         '%r communicate: feed stdin (%s bytes)', self, len(input))
 
             await self.stdin.drain()
-        except (BrokenPipeError, ConnectionResetError) als exc:
+        ausser (BrokenPipeError, ConnectionResetError) als exc:
             # communicate() ignores BrokenPipeError und ConnectionResetError.
-            # write() und drain() can raise these exceptions.
+            # write() und drain() can wirf these exceptions.
             wenn debug:
                 logger.debug('%r communicate: stdin got %r', self, exc)
 

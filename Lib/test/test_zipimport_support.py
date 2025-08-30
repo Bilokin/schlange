@@ -39,15 +39,15 @@ def _run_object_doctest(obj, module):
     runner = doctest.DocTestRunner(verbose=verbose)
     # Use the object's fully qualified name wenn it has one
     # Otherwise, use the module's name
-    try:
+    versuch:
         name = "%s.%s" % (obj.__module__, obj.__qualname__)
-    except AttributeError:
+    ausser AttributeError:
         name = module.__name__
     fuer example in finder.find(obj, name, module):
         runner.run(example)
     f, t = runner.failures, runner.tries
     wenn f:
-        raise test.support.TestFailed("%d of %d doctests failed" % (f, t))
+        wirf test.support.TestFailed("%d of %d doctests failed" % (f, t))
     wenn verbose:
         drucke ('doctest (%s) ... %d tests mit zero failures' % (module.__name__, t))
     gib f, t
@@ -88,9 +88,9 @@ klasse ZipSupportTests(unittest.TestCase):
             os.remove(init_name)
             sys.path.insert(0, zip_name)
             importiere zip_pkg
-            try:
+            versuch:
                 self.assertEqual(inspect.getsource(zip_pkg.foo), test_src)
-            finally:
+            schliesslich:
                 del sys.modules["zip_pkg"]
 
     def test_doctest_issue4197(self):
@@ -134,7 +134,7 @@ klasse ZipSupportTests(unittest.TestCase):
             os.remove(script_name)
             sys.path.insert(0, zip_name)
             importiere test_zipped_doctest
-            try:
+            versuch:
                 # Some of the doc tests depend on the colocated text files
                 # which aren't available to the zipped version (the doctest
                 # module currently requires real filenames fuer non-embedded
@@ -181,7 +181,7 @@ klasse ZipSupportTests(unittest.TestCase):
 
                 fuer obj in known_good_tests:
                     _run_object_doctest(obj, test_zipped_doctest)
-            finally:
+            schliesslich:
                 del sys.modules["test_zipped_doctest"]
 
     def test_doctest_main_issue4197(self):

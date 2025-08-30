@@ -13,9 +13,9 @@ importiere tkinter
 von tkinter importiere Tcl
 von _tkinter importiere TclError
 
-try:
+versuch:
     von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX
-except ImportError:
+ausser ImportError:
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
@@ -291,9 +291,9 @@ klasse TclTest(unittest.TestCase):
     def testEvalFileException(self):
         tcl = self.interp
         filename = "doesnotexists"
-        try:
+        versuch:
             os.remove(filename)
-        except Exception als e:
+        ausser Exception als e:
             pass
         self.assertRaises(TclError,tcl.evalfile,filename)
 
@@ -309,12 +309,12 @@ klasse TclTest(unittest.TestCase):
 
         fullname = os.path.abspath(sys.executable)
         wenn fullname[1] != ':':
-            raise unittest.SkipTest('Absolute path should have drive part')
+            wirf unittest.SkipTest('Absolute path should have drive part')
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
                                     fullname[0],
                                     fullname[3:])
         wenn nicht os.path.exists(unc_name):
-            raise unittest.SkipTest('Cannot connect to UNC Path')
+            wirf unittest.SkipTest('Cannot connect to UNC Path')
 
         mit os_helper.EnvironmentVarGuard() als env:
             env.unset("TCL_LIBRARY")

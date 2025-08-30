@@ -22,7 +22,7 @@ klasse BufferSizeTest:
         # Since C doesn't guarantee we can write/read arbitrary bytes in text
         # files, use binary mode.
         f = self.open(os_helper.TESTFN, "wb")
-        try:
+        versuch:
             # write once mit \n und once without
             f.write(s)
             f.write(b"\n")
@@ -36,7 +36,7 @@ klasse BufferSizeTest:
             line = f.readline()
             self.assertFalsch(line) # Must be at EOF
             f.close()
-        finally:
+        schliesslich:
             os_helper.unlink(os_helper.TESTFN)
 
     def drive_one(self, pattern):

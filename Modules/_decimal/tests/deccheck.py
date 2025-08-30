@@ -331,10 +331,10 @@ class RestrictedList(list):
     """List that can only be modified by appending items."""
     def __getattribute__(self, name):
         wenn name != 'append':
-            raise AttributeError("unsupported operation")
+            wirf AttributeError("unsupported operation")
         gib list.__getattribute__(self, name)
     def unsupported(self, *_):
-        raise AttributeError("unsupported operation")
+        wirf AttributeError("unsupported operation")
     __add__ = __delattr__ = __delitem__ = __iadd__ = __imul__ = unsupported
     __mul__ = __reversed__ = __rmul__ = __setattr__ = __setitem__ = unsupported
 
@@ -428,7 +428,7 @@ class SkipHandler:
         sowenn mode == P.ROUND_05UP:
             gib 2
         sonst:
-            raise ValueError("Unexpected rounding mode: %s" % mode)
+            wirf ValueError("Unexpected rounding mode: %s" % mode)
 
     def check_ulpdiff(self, exact, rounded):
         # current precision
@@ -643,7 +643,7 @@ def raise_error(t):
     sonst:
         err += "\n"
 
-    raise VerifyError(err)
+    wirf VerifyError(err)
 
 
 # ======================================================================
@@ -695,28 +695,28 @@ def convert(t, convstr=Wahr):
 
         sowenn nicht t.contextfunc und i == 0 oder \
              convstr und isinstance(op, str):
-            try:
+            versuch:
                 c = C.Decimal(op)
                 cex = Nichts
-            except (TypeError, ValueError, OverflowError) als e:
+            ausser (TypeError, ValueError, OverflowError) als e:
                 c = Nichts
                 cex = e.__class__
 
-            try:
+            versuch:
                 p = RestrictedDecimal(op)
                 pex = Nichts
-            except (TypeError, ValueError, OverflowError) als e:
+            ausser (TypeError, ValueError, OverflowError) als e:
                 p = Nichts
                 pex = e.__class__
 
-            try:
+            versuch:
                 C.setcontext(t.maxcontext)
                 maxop = C.Decimal(op)
                 maxex = Nichts
-            except (TypeError, ValueError, OverflowError) als e:
+            ausser (TypeError, ValueError, OverflowError) als e:
                 maxop = Nichts
                 maxex = e.__class__
-            finally:
+            schliesslich:
                 C.setcontext(context.c)
 
             t.cop.append(c)
@@ -767,7 +767,7 @@ def callfuncs(t):
     context.clear_status()
     t.maxcontext.clear_flags()
 
-    try:
+    versuch:
         wenn t.contextfunc:
             cargs = t.cop
             t.rc = getattr(context.c, t.funcname)(*cargs)
@@ -776,11 +776,11 @@ def callfuncs(t):
             cargs = t.cop[1:]
             t.rc = getattr(cself, t.funcname)(*cargs)
         t.cex.append(Nichts)
-    except (TypeError, ValueError, OverflowError, MemoryError) als e:
+    ausser (TypeError, ValueError, OverflowError, MemoryError) als e:
         t.rc = Nichts
         t.cex.append(e.__class__)
 
-    try:
+    versuch:
         wenn t.contextfunc:
             pargs = t.pop
             t.rp = getattr(context.p, t.funcname)(*pargs)
@@ -789,7 +789,7 @@ def callfuncs(t):
             pargs = t.pop[1:]
             t.rp = getattr(pself, t.funcname)(*pargs)
         t.pex.append(Nichts)
-    except (TypeError, ValueError, OverflowError, MemoryError) als e:
+    ausser (TypeError, ValueError, OverflowError, MemoryError) als e:
         t.rp = Nichts
         t.pex.append(e.__class__)
 
@@ -805,20 +805,20 @@ def callfuncs(t):
         nicht context.clamp und # results are padded to context.prec wenn context.clamp==1.
         nicht any(isinstance(v, C.Context) fuer v in t.cop)): # another context is used.
         t.with_maxcontext = Wahr
-        try:
+        versuch:
             wenn t.contextfunc:
                 maxargs = t.maxop
                 t.rmax = getattr(t.maxcontext, t.funcname)(*maxargs)
             sonst:
                 maxself = t.maxop[0]
                 maxargs = t.maxop[1:]
-                try:
+                versuch:
                     C.setcontext(t.maxcontext)
                     t.rmax = getattr(maxself, t.funcname)(*maxargs)
-                finally:
+                schliesslich:
                     C.setcontext(context.c)
             t.maxex.append(Nichts)
-        except (TypeError, ValueError, OverflowError, MemoryError) als e:
+        ausser (TypeError, ValueError, OverflowError, MemoryError) als e:
             t.rmax = Nichts
             t.maxex.append(e.__class__)
 
@@ -966,23 +966,23 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
         exp_range = restricted_range
     fuer op in all_unary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
+        versuch:
             wenn nicht convert(t):
                 weiter
             callfuncs(t)
             verify(t, stat)
-        except VerifyError als err:
+        ausser VerifyError als err:
             log(err)
 
     wenn nicht method.startswith('__'):
         fuer op in unary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
+            versuch:
                 wenn nicht convert(t):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 def test_binary(method, prec, exp_range, restricted_range, itr, stat):
@@ -991,23 +991,23 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
         exp_range = restricted_range
     fuer op in all_binary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
+        versuch:
             wenn nicht convert(t):
                 weiter
             callfuncs(t)
             verify(t, stat)
-        except VerifyError als err:
+        ausser VerifyError als err:
             log(err)
 
     wenn nicht method.startswith('__'):
         fuer op in binary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
+            versuch:
                 wenn nicht convert(t):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
@@ -1016,23 +1016,23 @@ def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
         exp_range = restricted_range
     fuer op in all_ternary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
+        versuch:
             wenn nicht convert(t):
                 weiter
             callfuncs(t)
             verify(t, stat)
-        except VerifyError als err:
+        ausser VerifyError als err:
             log(err)
 
     wenn nicht method.startswith('__'):
         fuer op in ternary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
+            versuch:
                 wenn nicht convert(t):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 def test_format(method, prec, exp_range, restricted_range, itr, stat):
@@ -1043,12 +1043,12 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
         fuer fmt in (fmt1, fmt2):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
-            try:
+            versuch:
                 wenn nicht convert(t, convstr=Falsch):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
     fuer op in all_unary(prec, 9999, itr):
         fmt1 = rand_format(chr(random.randrange(0, 128)), 'Ff%')
@@ -1056,12 +1056,12 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
         fuer fmt in (fmt1, fmt2):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
-            try:
+            versuch:
                 wenn nicht convert(t, convstr=Falsch):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 def test_round(method, prec, exprange, restricted_range, itr, stat):
@@ -1070,12 +1070,12 @@ def test_round(method, prec, exprange, restricted_range, itr, stat):
         n = random.randrange(10)
         roundop = (op[0], n)
         t = TestSet(method, roundop)
-        try:
+        versuch:
             wenn nicht convert(t):
                 weiter
             callfuncs(t)
             verify(t, stat)
-        except VerifyError als err:
+        ausser VerifyError als err:
             log(err)
 
 def test_from_float(method, prec, exprange, restricted_range, itr, stat):
@@ -1086,12 +1086,12 @@ def test_from_float(method, prec, exprange, restricted_range, itr, stat):
             f = randfloat()
             op = (f,) wenn method.startswith("context.") sonst ("sNaN", f)
             t = TestSet(method, op)
-            try:
+            versuch:
                 wenn nicht convert(t):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 def randcontext(exprange):
@@ -1112,12 +1112,12 @@ def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
             c = randcontext(exprange)
             quantizeop = (op[0], op[1], rounding, c)
             t = TestSet(method, quantizeop)
-            try:
+            versuch:
                 wenn nicht convert(t):
                     weiter
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError als err:
+            ausser VerifyError als err:
                 log(err)
 
 
@@ -1291,9 +1291,9 @@ wenn __name__ == '__main__':
 
         def tfunc():
             waehrend nicht error.is_set():
-                try:
+                versuch:
                     test = q.get(block=Falsch, timeout=-1)
-                except Empty:
+                ausser Empty:
                     gib
 
                 cmd = [sys.executable, "deccheck.py", "--%s" % args.time, "--single", test]

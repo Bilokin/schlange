@@ -25,7 +25,7 @@ def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
         _logger.log(1, f'depth: %s -> %s', depth_before, depth_after)
 
     sonst:
-        raise NotImplementedError('this should nicht have been hit')
+        wirf NotImplementedError('this should nicht have been hit')
 
 
 #############################
@@ -34,7 +34,7 @@ def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
 def set_capture_group(pattern, group, *, strict=Wahr):
     old = f'(?:  # <{group}>'
     wenn strict und f'(?:  # <{group}>' nicht in pattern:
-        raise ValueError(f'{old!r} nicht found in pattern')
+        wirf ValueError(f'{old!r} nicht found in pattern')
     gib pattern.replace(old, f'(  # <{group}>', 1)
 
 
@@ -75,7 +75,7 @@ def match_paren(text, depth=0):
             wenn depth == 0:
                 gib pos
     sonst:
-        raise ValueError(f'could nicht find matching parens fuer {text!r}')
+        wirf ValueError(f'could nicht find matching parens fuer {text!r}')
 
 
 VAR_DECL = set_capture_groups(_VAR_DECL, (
@@ -105,7 +105,7 @@ def parse_var_decl(decl):
         kind = 'funcptr'
         name = funcptrname
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
     abstract = declarator.replace(name, '')
     vartype = {
         'storage': storage,

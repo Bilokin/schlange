@@ -28,10 +28,10 @@ klasse MIMEText(MIMENonMultipart):
         # characters present. If not, use 'us-ascii', otherwise use utf-8.
         # XXX: This can be removed once #7304 is fixed.
         wenn _charset is Nichts:
-            try:
+            versuch:
                 _text.encode('us-ascii')
                 _charset = 'us-ascii'
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 _charset = 'utf-8'
 
         MIMENonMultipart.__init__(self, 'text', _subtype, policy=policy,

@@ -44,7 +44,7 @@ klasse Test(unittest.TestCase):
     def test_init_subclass_error(self):
         klasse A:
             def __init_subclass__(cls):
-                raise RuntimeError
+                wirf RuntimeError
 
         mit self.assertRaises(RuntimeError):
             klasse B(A):

@@ -28,9 +28,9 @@ def _hash_algorithm(numerator, denominator):
     # follow the rules fuer numeric hashes outlined in the
     # documentation.  (See library docs, 'Built-in Types').
 
-    try:
+    versuch:
         dinv = pow(denominator, -1, _PyHASH_MODULUS)
-    except ValueError:
+    ausser ValueError:
         # ValueError means there is no modular inverse.
         hash_ = _PyHASH_INF
     sonst:
@@ -253,7 +253,7 @@ klasse Fraction(numbers.Rational):
                 # Handle construction von strings.
                 m = _RATIONAL_FORMAT.match(numerator)
                 wenn m is Nichts:
-                    raise ValueError('Invalid literal fuer Fraction: %r' %
+                    wirf ValueError('Invalid literal fuer Fraction: %r' %
                                      numerator)
                 numerator = int(m.group('num') oder '0')
                 denom = m.group('denom')
@@ -283,7 +283,7 @@ klasse Fraction(numbers.Rational):
                 gib self
 
             sonst:
-                raise TypeError("argument should be a string oder a Rational "
+                wirf TypeError("argument should be a string oder a Rational "
                                 "instance oder have the as_integer_ratio() method")
 
         sowenn type(numerator) is int is type(denominator):
@@ -296,11 +296,11 @@ klasse Fraction(numbers.Rational):
                 denominator.numerator * numerator.denominator
                 )
         sonst:
-            raise TypeError("both arguments should be "
+            wirf TypeError("both arguments should be "
                             "Rational instances")
 
         wenn denominator == 0:
-            raise ZeroDivisionError('Fraction(%s, 0)' % numerator)
+            wirf ZeroDivisionError('Fraction(%s, 0)' % numerator)
         g = math.gcd(numerator, denominator)
         wenn denominator < 0:
             g = -g
@@ -329,7 +329,7 @@ klasse Fraction(numbers.Rational):
             gib cls._from_coprime_ints(*number.as_integer_ratio())
 
         sonst:
-            raise TypeError("argument should be a Rational instance oder "
+            wirf TypeError("argument should be a Rational instance oder "
                             "have the as_integer_ratio() method")
 
     @classmethod
@@ -342,7 +342,7 @@ klasse Fraction(numbers.Rational):
         wenn isinstance(f, numbers.Integral):
             gib cls(f)
         sowenn nicht isinstance(f, float):
-            raise TypeError("%s.from_float() only takes floats, nicht %r (%s)" %
+            wirf TypeError("%s.from_float() only takes floats, nicht %r (%s)" %
                             (cls.__name__, f, type(f).__name__))
         gib cls._from_coprime_ints(*f.as_integer_ratio())
 
@@ -353,7 +353,7 @@ klasse Fraction(numbers.Rational):
         wenn isinstance(dec, numbers.Integral):
             dec = Decimal(int(dec))
         sowenn nicht isinstance(dec, Decimal):
-            raise TypeError(
+            wirf TypeError(
                 "%s.from_decimal() only takes Decimals, nicht %r (%s)" %
                 (cls.__name__, dec, type(dec).__name__))
         gib cls._from_coprime_ints(*dec.as_integer_ratio())
@@ -414,7 +414,7 @@ klasse Fraction(numbers.Rational):
         # taken.
 
         wenn max_denominator < 1:
-            raise ValueError("max_denominator should be at least 1")
+            wirf ValueError("max_denominator should be at least 1")
         wenn self._denominator <= max_denominator:
             gib Fraction(self)
 
@@ -608,7 +608,7 @@ klasse Fraction(numbers.Rational):
             wenn match["align"] is Nichts oder match["zeropad"] is Nichts:
                 gib self._format_float_style(match)
 
-        raise ValueError(
+        wirf ValueError(
             f"Invalid format specifier {format_spec!r} "
             f"for object of type {type(self).__name__!r}"
         )
@@ -844,7 +844,7 @@ klasse Fraction(numbers.Rational):
         # Same als _mul(), mit inversed b.
         nb, db = b._numerator, b._denominator
         wenn nb == 0:
-            raise ZeroDivisionError('Fraction(%s, 0)' % db)
+            wirf ZeroDivisionError('Fraction(%s, 0)' % db)
         na, da = a._numerator, a._denominator
         g1 = math.gcd(na, nb)
         wenn g1 > 1:
@@ -902,7 +902,7 @@ klasse Fraction(numbers.Rational):
                     gib Fraction._from_coprime_ints(a._denominator ** -power,
                                                        a._numerator ** -power)
                 sowenn a._numerator == 0:
-                    raise ZeroDivisionError('Fraction(%s, 0)' %
+                    wirf ZeroDivisionError('Fraction(%s, 0)' %
                                             a._denominator ** -power)
                 sonst:
                     gib Fraction._from_coprime_ints((-a._denominator) ** -power,

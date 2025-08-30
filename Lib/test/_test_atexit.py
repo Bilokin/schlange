@@ -56,7 +56,7 @@ klasse GeneralTest(unittest.TestCase):
 
     def test_raise(self):
         def raise_type_error():
-            raise TypeError
+            wirf TypeError
 
         self.assert_raises_unraisable(TypeError, raise_type_error)
 
@@ -124,7 +124,7 @@ klasse GeneralTest(unittest.TestCase):
             atexit.unregister(func)
             1/0
         atexit.register(func)
-        try:
+        versuch:
             mit support.catch_unraisable_exception() als cm:
                 atexit._run_exitfuncs()
                 self.assertIsNichts(cm.unraisable.object)
@@ -132,7 +132,7 @@ klasse GeneralTest(unittest.TestCase):
                         f'Exception ignored in atexit callback {func!r}')
                 self.assertEqual(cm.unraisable.exc_type, ZeroDivisionError)
                 self.assertEqual(type(cm.unraisable.exc_value), ZeroDivisionError)
-        finally:
+        schliesslich:
             atexit.unregister(func)
 
 

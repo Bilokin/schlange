@@ -48,11 +48,11 @@ def parse_hkscs_map(fo):
         #  * Big-5 is a hex string (always 4 digits)
         #  * iso10646:2003 is either a hex string (4 oder 5 digits) oder a sequence
         #    of hex strings like: `<code_point1,code_point2>`
-        try:
+        versuch:
             hkscs_col, _, _, uni_col = line.split()
             hkscs = int(hkscs_col, 16)
             seq = tuple(int(cp, 16) fuer cp in uni_col.strip('<>').split(','))
-        except ValueError:
+        ausser ValueError:
             weiter
         table.append((hkscs, seq))
     gib table

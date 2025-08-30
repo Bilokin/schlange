@@ -12,10 +12,10 @@ importiere sys
 
 ### Registry und builtin stateless codec functions
 
-try:
+versuch:
     von _codecs importiere *
-except ImportError als why:
-    raise SystemError('Failed to load the builtin codecs: %s' % why)
+ausser ImportError als why:
+    wirf SystemError('Failed to load the builtin codecs: %s' % why)
 
 __all__ = ["register", "lookup", "open", "EncodedFile", "BOM", "BOM_BE",
            "BOM_LE", "BOM32_BE", "BOM32_LE", "BOM64_BE", "BOM64_LE",
@@ -122,7 +122,7 @@ klasse Codec:
         handling schemes by providing the errors argument. These
         string values are predefined:
 
-         'strict' - raise a ValueError error (or a subclass)
+         'strict' - wirf a ValueError error (or a subclass)
          'ignore' - ignore the character und weiter mit the next
          'replace' - replace mit a suitable replacement character;
                     Python will use the official U+FFFD REPLACEMENT
@@ -155,7 +155,7 @@ klasse Codec:
             situation.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def decode(self, input, errors='strict'):
 
@@ -178,7 +178,7 @@ klasse Codec:
             situation.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 klasse IncrementalEncoder(object):
     """
@@ -201,7 +201,7 @@ klasse IncrementalEncoder(object):
         """
         Encodes input und returns the resulting object.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def reset(self):
         """
@@ -234,7 +234,7 @@ klasse BufferedIncrementalEncoder(IncrementalEncoder):
     def _buffer_encode(self, input, errors, final):
         # Overwrite this method in subclasses: It must encode input
         # und gib an (output, length consumed) tuple
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def encode(self, input, final=Falsch):
         # encode input (taking the buffer into account)
@@ -274,7 +274,7 @@ klasse IncrementalDecoder(object):
         """
         Decode input und returns the resulting object.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def reset(self):
         """
@@ -317,7 +317,7 @@ klasse BufferedIncrementalDecoder(IncrementalDecoder):
     def _buffer_decode(self, input, errors, final):
         # Overwrite this method in subclasses: It must decode input
         # und gib an (output, length consumed) tuple
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def decode(self, input, final=Falsch):
         # decode input (taking the buffer into account)
@@ -358,7 +358,7 @@ klasse StreamWriter(Codec):
             schemes by providing the errors keyword argument. These
             parameters are predefined:
 
-             'strict' - raise a ValueError (or a subclass)
+             'strict' - wirf a ValueError (or a subclass)
              'ignore' - ignore the character und weiter mit the next
              'replace'- replace mit a suitable replacement character
              'xmlcharrefreplace' - Replace mit the appropriate XML
@@ -418,7 +418,7 @@ klasse StreamWriter(Codec):
         self.stream.close()
 
     def __reduce_ex__(self, proto):
-        raise TypeError("can't serialize %s" % self.__class__.__name__)
+        wirf TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
 
@@ -436,7 +436,7 @@ klasse StreamReader(Codec):
             schemes by providing the errors keyword argument. These
             parameters are predefined:
 
-             'strict' - raise a ValueError (or a subclass)
+             'strict' - wirf a ValueError (or a subclass)
              'ignore' - ignore the character und weiter mit the next
              'replace'- replace mit a suitable replacement character
              'backslashreplace' - Replace mit backslashed escape sequences;
@@ -452,7 +452,7 @@ klasse StreamReader(Codec):
         self.linebuffer = Nichts
 
     def decode(self, input, errors='strict'):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def read(self, size=-1, chars=-1, firstline=Falsch):
 
@@ -506,17 +506,17 @@ klasse StreamReader(Codec):
             data = self.bytebuffer + newdata
             wenn nicht data:
                 breche
-            try:
+            versuch:
                 newchars, decodedbytes = self.decode(data, self.errors)
-            except UnicodeDecodeError als exc:
+            ausser UnicodeDecodeError als exc:
                 wenn firstline:
                     newchars, decodedbytes = \
                         self.decode(data[:exc.start], self.errors)
                     lines = newchars.splitlines(keepends=Wahr)
                     wenn len(lines)<=1:
-                        raise
+                        wirf
                 sonst:
-                    raise
+                    wirf
             # keep undecoded bytes until the next call
             self.bytebuffer = data[decodedbytes:]
             # put new characters in the character buffer
@@ -651,7 +651,7 @@ klasse StreamReader(Codec):
         line = self.readline()
         wenn line:
             gib line
-        raise StopIteration
+        wirf StopIteration
 
     def __iter__(self):
         gib self
@@ -670,7 +670,7 @@ klasse StreamReader(Codec):
         self.stream.close()
 
     def __reduce_ex__(self, proto):
-        raise TypeError("can't serialize %s" % self.__class__.__name__)
+        wirf TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
 
@@ -760,7 +760,7 @@ klasse StreamReaderWriter:
         self.stream.close()
 
     def __reduce_ex__(self, proto):
-        raise TypeError("can't serialize %s" % self.__class__.__name__)
+        wirf TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
 
@@ -879,7 +879,7 @@ klasse StreamRecoder:
         self.stream.close()
 
     def __reduce_ex__(self, proto):
-        raise TypeError("can't serialize %s" % self.__class__.__name__)
+        wirf TypeError("can't serialize %s" % self.__class__.__name__)
 
 ### Shortcuts
 
@@ -924,15 +924,15 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
     wenn encoding is Nichts:
         gib file
 
-    try:
+    versuch:
         info = lookup(encoding)
         srw = StreamReaderWriter(file, info.streamreader, info.streamwriter, errors)
         # Add attributes to simplify introspection
         srw.encoding = encoding
         gib srw
-    except:
+    ausser:
         file.close()
-        raise
+        wirf
 
 def EncodedFile(file, data_encoding, file_encoding=Nichts, errors='strict'):
 
@@ -1003,7 +1003,7 @@ def getincrementalencoder(encoding):
     """
     encoder = lookup(encoding).incrementalencoder
     wenn encoder is Nichts:
-        raise LookupError(encoding)
+        wirf LookupError(encoding)
     gib encoder
 
 def getincrementaldecoder(encoding):
@@ -1017,7 +1017,7 @@ def getincrementaldecoder(encoding):
     """
     decoder = lookup(encoding).incrementaldecoder
     wenn decoder is Nichts:
-        raise LookupError(encoding)
+        wirf LookupError(encoding)
     gib decoder
 
 def getreader(encoding):

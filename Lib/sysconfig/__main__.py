@@ -56,12 +56,12 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
             wenn "$" in tmpv:
                 notdone[n] = v
             sonst:
-                try:
+                versuch:
                     wenn n in _ALWAYS_STR:
-                        raise ValueError
+                        wirf ValueError
 
                     v = int(v)
-                except ValueError:
+                ausser ValueError:
                     # insert literal `$'
                     done[n] = v.replace('$$', '$')
                 sonst:
@@ -117,11 +117,11 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
                     wenn "$" in after:
                         notdone[name] = value
                     sonst:
-                        try:
+                        versuch:
                             wenn name in _ALWAYS_STR:
-                                raise ValueError
+                                wirf ValueError
                             value = int(value)
-                        except ValueError:
+                        ausser ValueError:
                             done[name] = value.strip()
                         sonst:
                             done[name] = value
@@ -178,23 +178,23 @@ def _generate_posix_vars():
     vars = {}
     # load the installed Makefile:
     makefile = get_makefile_filename()
-    try:
+    versuch:
         _parse_makefile(makefile, vars)
-    except OSError als e:
+    ausser OSError als e:
         msg = f"invalid Python installation: unable to open {makefile}"
         wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
-        raise OSError(msg)
+        wirf OSError(msg)
     # load the installed pyconfig.h:
     config_h = get_config_h_filename()
-    try:
+    versuch:
         mit open(config_h, encoding="utf-8") als f:
             parse_config_h(f, vars)
-    except OSError als e:
+    ausser OSError als e:
         msg = f"invalid Python installation: unable to open {config_h}"
         wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
-        raise OSError(msg)
+        wirf OSError(msg)
     # On AIX, there are wrong paths to the linker scripts in the Makefile
     # -- these paths are relative to the Python source, but when installed
     # the scripts are in another directory.
@@ -270,7 +270,7 @@ def _main():
 
 
 wenn __name__ == '__main__':
-    try:
+    versuch:
         _main()
-    except BrokenPipeError:
+    ausser BrokenPipeError:
         pass

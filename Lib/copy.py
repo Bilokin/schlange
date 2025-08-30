@@ -93,7 +93,7 @@ def copy(x):
             wenn reductor:
                 rv = reductor()
             sonst:
-                raise Error("un(shallow)copyable object of type %s" % cls)
+                wirf Error("un(shallow)copyable object of type %s" % cls)
 
     wenn isinstance(rv, str):
         gib x
@@ -149,7 +149,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
                         wenn reductor:
                             rv = reductor()
                         sonst:
-                            raise Error(
+                            wirf Error(
                                 "un(deep)copyable object of type %s" % cls)
                 wenn isinstance(rv, str):
                     y = x
@@ -182,9 +182,9 @@ def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     y = [deepcopy(a, memo) fuer a in x]
     # We're nicht going to put the tuple in the memo, but it's still important we
     # check fuer it, in case the tuple contains recursive mutable structures.
-    try:
+    versuch:
         gib memo[id(x)]
-    except KeyError:
+    ausser KeyError:
         pass
     fuer k, j in zip(x, y):
         wenn k is nicht j:
@@ -219,9 +219,9 @@ def _keep_alive(x, memo):
     normally nicht be used unless someone tries to deepcopy
     the memo itself...
     """
-    try:
+    versuch:
         memo[id(memo)].append(x)
-    except KeyError:
+    ausser KeyError:
         # aha, this is the first one :-)
         memo[id(memo)]=[x]
 
@@ -282,5 +282,5 @@ def replace(obj, /, **changes):
     cls = obj.__class__
     func = getattr(cls, '__replace__', Nichts)
     wenn func is Nichts:
-        raise TypeError(f"replace() does nicht support {cls.__name__} objects")
+        wirf TypeError(f"replace() does nicht support {cls.__name__} objects")
     gib func(obj, **changes)

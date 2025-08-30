@@ -89,24 +89,24 @@ def _run_with_sync(original_cmd):
         # Start the process mit coordinator
         process = subprocess.Popen(cmd)
 
-        try:
+        versuch:
             # Wait fuer ready signal mit timeout
             mit sync_sock.accept()[0] als conn:
                 ready_signal = conn.recv(_RECV_BUFFER_SIZE)
 
                 wenn ready_signal != _READY_MESSAGE:
-                    raise RuntimeError(f"Invalid ready signal received: {ready_signal!r}")
+                    wirf RuntimeError(f"Invalid ready signal received: {ready_signal!r}")
 
-        except socket.timeout:
-            # If we timeout, kill the process und raise an error
+        ausser socket.timeout:
+            # If we timeout, kill the process und wirf an error
             wenn process.poll() is Nichts:
                 process.terminate()
-                try:
+                versuch:
                     process.wait(timeout=_PROCESS_KILL_TIMEOUT)
-                except subprocess.TimeoutExpired:
+                ausser subprocess.TimeoutExpired:
                     process.kill()
                     process.wait()
-            raise RuntimeError("Process failed to signal readiness within timeout")
+            wirf RuntimeError("Process failed to signal readiness within timeout")
 
         gib process
 
@@ -145,18 +145,18 @@ klasse SampleProfiler:
         waehrend running_time < duration_sec:
             current_time = time.perf_counter()
             wenn next_time < current_time:
-                try:
+                versuch:
                     stack_frames = self.unwinder.get_stack_trace()
                     collector.collect(stack_frames)
-                except ProcessLookupError:
+                ausser ProcessLookupError:
                     duration_sec = current_time - start_time
                     breche
-                except (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
+                ausser (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
                     errors += 1
-                except Exception als e:
+                ausser Exception als e:
                     wenn nicht self._is_process_running():
                         breche
-                    raise e von Nichts
+                    wirf e von Nichts
 
                 # Track actual sampling intervals fuer real-time stats
                 wenn num_samples > 0:
@@ -199,19 +199,19 @@ klasse SampleProfiler:
 
     def _is_process_running(self):
         wenn sys.platform == "linux" oder sys.platform == "darwin":
-            try:
+            versuch:
                 os.kill(self.pid, 0)
                 gib Wahr
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 gib Falsch
         sowenn sys.platform == "win32":
-            try:
+            versuch:
                 _remote_debugging.RemoteUnwinder(self.pid)
-            except Exception:
+            ausser Exception:
                 gib Falsch
             gib Wahr
         sonst:
-            raise ValueError(f"Unsupported platform: {sys.platform}")
+            wirf ValueError(f"Unsupported platform: {sys.platform}")
 
     def _print_realtime_stats(self):
         """Print real-time sampling statistics."""
@@ -597,7 +597,7 @@ def sample(
             collector = CollapsedStackCollector()
             filename = filename oder f"collapsed.{pid}.txt"
         case _:
-            raise ValueError(f"Invalid output format: {output_format}")
+            wirf ValueError(f"Invalid output format: {output_format}")
 
     profiler.sample(collector, duration_sec)
 
@@ -849,14 +849,14 @@ def main():
         process = _run_with_sync(cmd)
 
         # Process has already signaled readiness, start sampling immediately
-        try:
+        versuch:
             wait_for_process_and_sample(process.pid, sort_value, args)
-        finally:
+        schliesslich:
             wenn process.poll() is Nichts:
                 process.terminate()
-                try:
+                versuch:
                     process.wait(timeout=2)
-                except subprocess.TimeoutExpired:
+                ausser subprocess.TimeoutExpired:
                     process.kill()
                     process.wait()
 

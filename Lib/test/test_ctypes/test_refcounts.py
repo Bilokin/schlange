@@ -133,7 +133,7 @@ klasse PyObjectRestypeTest(unittest.TestCase):
 
         # At this point, there's no exception set, so PyErr_Occurred
         # returns NULL. Given the restype is py_object, the
-        # ctypes machinery will raise a custom error.
+        # ctypes machinery will wirf a custom error.
         mit self.assertRaisesRegex(ValueError, "PyObject is NULL"):
             PyErr_Occurred()
 

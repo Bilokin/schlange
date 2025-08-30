@@ -176,9 +176,9 @@ klasse samplecmdclass(cmd.Cmd):
         wenn len(l) != 2:
             drucke("*** invalid number of arguments")
             gib
-        try:
+        versuch:
             l = [int(i) fuer i in l]
-        except ValueError:
+        ausser ValueError:
             drucke("*** arguments should be numbers")
             gib
         drucke(l[0]+l[1])
@@ -258,9 +258,9 @@ klasse CmdPrintExceptionClass(cmd.Cmd):
     GH-80731
     cmd.Cmd should print the correct exception in default()
     >>> mycmd = CmdPrintExceptionClass()
-    >>> try:
-    ...     raise ValueError("test")
-    ... except ValueError:
+    >>> versuch:
+    ...     wirf ValueError("test")
+    ... ausser ValueError:
     ...     mycmd.onecmd("not important")
     (<class 'ValueError'>, ValueError('test'))
     """

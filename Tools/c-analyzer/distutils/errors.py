@@ -1,7 +1,7 @@
 """distutils.errors
 
 Provides exceptions used by the Distutils modules.  Note that Distutils
-modules may raise standard exceptions; in particular, SystemExit is
+modules may wirf standard exceptions; in particular, SystemExit is
 usually raised fuer errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 

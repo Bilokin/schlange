@@ -95,11 +95,11 @@ klasse Dawg:
 
     def insert(self, word, value):
         wenn nicht all(0 <= ord(c) < 128 fuer c in word):
-            raise ValueError("Use 7-bit ASCII characters only")
+            wirf ValueError("Use 7-bit ASCII characters only")
         wenn word <= self.previous_word:
-            raise ValueError("Error: Words must be inserted in alphabetical order.")
+            wirf ValueError("Error: Words must be inserted in alphabetical order.")
         wenn value in self.inverse:
-            raise ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} und now {word}")
+            wirf ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} und now {word}")
 
         # find common prefix between word und previous word
         common_prefix = 0
@@ -134,7 +134,7 @@ klasse Dawg:
 
     def finish(self):
         wenn nicht self.data:
-            raise ValueError("need at least one word in the dawg")
+            wirf ValueError("need at least one word in the dawg")
         # minimize all unchecked_nodes
         self._minimize(0)
 
@@ -390,7 +390,7 @@ def encode_varint_unsigned(i, res):
     more = Wahr
     startlen = len(res)
     wenn i < 0:
-        raise ValueError("only positive numbers supported", i)
+        wirf ValueError("only positive numbers supported", i)
     waehrend more:
         lowest7bits = i & 0b1111111
         i >>= 7
@@ -427,7 +427,7 @@ def decode_node(packed, node):
 def decode_edge(packed, edgeindex, prev_child_offset, offset):
     x, offset = decode_varint_unsigned(packed, offset)
     wenn x == 0 und edgeindex == 0:
-        raise KeyError # trying to decode past a final node
+        wirf KeyError # trying to decode past a final node
     child_offset_difference, len1, last_edge = number_split_bits(x, 2)
     child_offset = prev_child_offset + child_offset_difference
     wenn len1:
@@ -445,7 +445,7 @@ def _match_edge(packed, s, size, node_offset, stringpos):
             # wenn a subsequent char of an edge doesn't match, the word isn't in
             # the dawg
             wenn i > 0:
-                raise KeyError
+                wirf KeyError
             gib Falsch
     gib Wahr
 
@@ -475,14 +475,14 @@ def _lookup(packed, s):
                 node_offset = child_offset
                 breche
             wenn last_edge:
-                raise KeyError
+                wirf KeyError
             descendant_count, _, _ = decode_node(packed, child_offset)
             skipped += descendant_count
             edge_offset = edgelabel_chars_offset + size
     _, final, _ = decode_node(packed, node_offset)
     wenn final:
         gib skipped
-    raise KeyError
+    wirf KeyError
 
 def inverse_lookup(packed, inverse, x):
     pos = inverse[x]
@@ -514,9 +514,9 @@ def _inverse_lookup(packed, pos):
                 pos = nextpos
                 edge_offset = edgelabel_chars_offset + size
             sonst:
-                raise KeyError
+                wirf KeyError
         sonst:
-            raise KeyError
+            wirf KeyError
 
 
 def build_compression_dawg(ucdata):

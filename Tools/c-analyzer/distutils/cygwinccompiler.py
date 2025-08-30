@@ -77,7 +77,7 @@ def get_msvcr():
             # VS2010 / MSVC 10.0
             gib ['msvcr100']
         sonst:
-            raise ValueError("Unknown MS Compiler version %s " % msc_ver)
+            wirf ValueError("Unknown MS Compiler version %s " % msc_ver)
 
 
 klasse CygwinCCompiler(UnixCCompiler):
@@ -176,7 +176,7 @@ klasse Mingw32CCompiler(CygwinCCompiler):
             entry_point = ''
 
         wenn is_cygwingcc():
-            raise CCompilerError(
+            wirf CCompilerError(
                 'Cygwin gcc cannot be used mit --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',
@@ -235,16 +235,16 @@ def check_config_h():
 
     # let's see wenn __GNUC__ is mentioned in python.h
     fn = sysconfig.get_config_h_filename()
-    try:
+    versuch:
         config_h = open(fn)
-        try:
+        versuch:
             wenn "__GNUC__" in config_h.read():
                 gib CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn
             sonst:
                 gib CONFIG_H_NOTOK, "'%s' does nicht mention '__GNUC__'" % fn
-        finally:
+        schliesslich:
             config_h.close()
-    except OSError als exc:
+    ausser OSError als exc:
         gib (CONFIG_H_UNCERTAIN,
                 "couldn't read '%s': %s" % (fn, exc.strerror))
 
@@ -260,9 +260,9 @@ def _find_exe_version(cmd):
     wenn find_executable(executable) is Nichts:
         gib Nichts
     out = Popen(cmd, shell=Wahr, stdout=PIPE).stdout
-    try:
+    versuch:
         out_string = out.read()
-    finally:
+    schliesslich:
         out.close()
     result = RE_VERSION.search(out_string)
     wenn result is Nichts:

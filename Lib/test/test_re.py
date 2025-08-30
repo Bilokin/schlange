@@ -11,9 +11,9 @@ von re importiere Scanner
 von weakref importiere proxy
 
 # some platforms lack working multiprocessing
-try:
+versuch:
     importiere _multiprocessing  # noqa: F401
-except ImportError:
+ausser ImportError:
     multiprocessing = Nichts
 sonst:
     importiere multiprocessing
@@ -1360,7 +1360,7 @@ klasse ReTests(unittest.TestCase):
             match = text
             span = (0, len(text))
         sowenn match is Nichts oder span is Nichts:
-            raise ValueError('If match is nicht Nichts, span should be specified '
+            wirf ValueError('If match is nicht Nichts, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
         self.assertWahr(m)
@@ -1878,7 +1878,7 @@ klasse ReTests(unittest.TestCase):
         enc = locale.getpreferredencoding()
         # Search non-ASCII letter
         fuer i in range(128, 256):
-            try:
+            versuch:
                 c = bytes([i]).decode(enc)
                 sletter = c.lower()
                 wenn sletter == c: weiter
@@ -1887,7 +1887,7 @@ klasse ReTests(unittest.TestCase):
                 wenn bletter.decode(enc) != sletter: weiter
                 bpat = re.escape(bytes([i]))
                 breche
-            except (UnicodeError, TypeError):
+            ausser (UnicodeError, TypeError):
                 pass
         sonst:
             bletter = Nichts
@@ -2182,9 +2182,9 @@ klasse ReTests(unittest.TestCase):
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
         fuer loc in 'en_US.iso88591', 'en_US.utf8':
-            try:
+            versuch:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            ausser locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -2218,9 +2218,9 @@ klasse ReTests(unittest.TestCase):
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
         fuer loc in 'en_US.iso88591', 'en_US.utf8':
-            try:
+            versuch:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            ausser locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -2340,7 +2340,7 @@ klasse ReTests(unittest.TestCase):
         self.assertEqual(pattern2, pattern1)
 
         # nicht equal: pattern of a different types (str vs bytes),
-        # comparison must nicht raise a BytesWarning
+        # comparison must nicht wirf a BytesWarning
         re.purge()
         pattern3 = re.compile('abc')
         mit warnings.catch_warnings():
@@ -2654,9 +2654,9 @@ klasse ReTests(unittest.TestCase):
         p = multiprocessing.Process(target=pattern.sub, args=('', input_js))
         p.start()
         p.join(SHORT_TIMEOUT)
-        try:
+        versuch:
             self.assertFalsch(p.is_alive(), 'pattern.sub() timed out')
-        finally:
+        schliesslich:
             wenn p.is_alive():
                 p.terminate()
                 p.join()
@@ -2687,13 +2687,13 @@ klasse ReTests(unittest.TestCase):
             pass
         p = re.compile(pattern)
         fuer n in range(maxcount):
-            try:
+            versuch:
                 p._fail_after(n, Interrupt)
                 p.match(string)
                 gib n
-            except Interrupt:
+            ausser Interrupt:
                 pass
-            finally:
+            schliesslich:
                 p._fail_after(-1, Nichts)
 
     @unittest.skipUnless(hasattr(re.Pattern, '_fail_after'), 'requires debug build')
@@ -2973,9 +2973,9 @@ klasse ImplementationTest(unittest.TestCase):
 
     @cpython_only
     def test_repeat_minmax_overflow_maxrepeat(self):
-        try:
+        versuch:
             von _sre importiere MAXREPEAT
-        except ImportError:
+        ausser ImportError:
             self.skipTest('requires _sre.MAXREPEAT constant')
         string = "x" * 100000
         self.assertIsNichts(re.match(r".{%d}" % (MAXREPEAT - 1), string))
@@ -3025,7 +3025,7 @@ klasse ExternalTests(unittest.TestCase):
             sowenn len(t) == 3:
                 pattern, s, outcome = t
             sonst:
-                raise ValueError('Test tuples should have 3 oder 5 fields', t)
+                wirf ValueError('Test tuples should have 3 oder 5 fields', t)
 
             mit self.subTest(pattern=pattern, string=s):
                 wenn outcome == SYNTAX_ERROR:  # Expected a syntax error
@@ -3048,20 +3048,20 @@ klasse ExternalTests(unittest.TestCase):
                                'groups': result.group(),
                                'flags': result.re.flags}
                     fuer i in range(1, 100):
-                        try:
+                        versuch:
                             gi = result.group(i)
                             # Special hack because sonst the string concat fails:
                             wenn gi is Nichts:
                                 gi = "Nichts"
-                        except IndexError:
+                        ausser IndexError:
                             gi = "Error"
                         vardict['g%d' % i] = gi
                     fuer i in result.re.groupindex.keys():
-                        try:
+                        versuch:
                             gi = result.group(i)
                             wenn gi is Nichts:
                                 gi = "Nichts"
-                        except IndexError:
+                        ausser IndexError:
                             gi = "Error"
                         vardict[i] = gi
                     self.assertEqual(eval(repl, vardict), expected,
@@ -3069,10 +3069,10 @@ klasse ExternalTests(unittest.TestCase):
 
                 # Try the match mit both pattern und string converted to
                 # bytes, und check that it still succeeds.
-                try:
+                versuch:
                     bpat = bytes(pattern, "ascii")
                     bs = bytes(s, "ascii")
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     # skip non-ascii tests
                     pass
                 sonst:

@@ -37,12 +37,12 @@ klasse Chooser(Dialog):
 
         Convert initialcolor von a RGB triplet to a color string.
         """
-        try:
+        versuch:
             color = self.options["initialcolor"]
             wenn isinstance(color, tuple):
                 # Assume an RGB triplet.
                 self.options["initialcolor"] = "#%02x%02x%02x" % color
-        except KeyError:
+        ausser KeyError:
             pass
 
     def _fixresult(self, widget, result):

@@ -245,7 +245,7 @@ Test failures in looking up the __prepare__ method work.
     ...     pass
     >>> klasse FailDescr:
     ...     def __get__(self, instance, owner):
-    ...        raise ObscureException
+    ...        wirf ObscureException
     >>> klasse Meta(type):
     ...     __prepare__ = FailDescr()
     >>> klasse X(metaclass=Meta):

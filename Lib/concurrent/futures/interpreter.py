@@ -8,19 +8,19 @@ importiere traceback
 
 
 def do_call(results, func, args, kwargs):
-    try:
+    versuch:
         gib func(*args, **kwargs)
-    except BaseException als exc:
+    ausser BaseException als exc:
         # Send the captured exception out on the results queue,
         # but still leave it unhandled fuer the interpreter to handle.
-        try:
+        versuch:
             results.put(exc)
-        except interpreters.NotShareableError:
+        ausser interpreters.NotShareableError:
             # The exception is nicht shareable.
             drucke('exception is nicht shareable:', file=sys.stderr)
             traceback.print_exception(exc)
             results.put(Nichts)
-        raise  # re-raise
+        wirf  # re-raise
 
 
 klasse WorkerContext(_thread.WorkerContext):
@@ -30,18 +30,18 @@ klasse WorkerContext(_thread.WorkerContext):
         def resolve_task(fn, args, kwargs):
             wenn isinstance(fn, str):
                 # XXX Circle back to this later.
-                raise TypeError('scripts nicht supported')
+                wirf TypeError('scripts nicht supported')
             sonst:
                 task = (fn, args, kwargs)
             gib task
 
         wenn initializer is nicht Nichts:
-            try:
+            versuch:
                 initdata = resolve_task(initializer, initargs, {})
-            except ValueError:
+            ausser ValueError:
                 wenn isinstance(initializer, str) und initargs:
-                    raise ValueError(f'an initializer script does nicht take args, got {initargs!r}')
-                raise  # re-raise
+                    wirf ValueError(f'an initializer script does nicht take args, got {initargs!r}')
+                wirf  # re-raise
         sonst:
             initdata = Nichts
         def create_context():
@@ -60,15 +60,15 @@ klasse WorkerContext(_thread.WorkerContext):
     def initialize(self):
         assert self.interp is Nichts, self.interp
         self.interp = interpreters.create()
-        try:
+        versuch:
             maxsize = 0
             self.results = interpreters.create_queue(maxsize)
 
             wenn self.initdata:
                 self.run(self.initdata)
-        except BaseException:
+        ausser BaseException:
             self.finalize()
-            raise  # re-raise
+            wirf  # re-raise
 
     def finalize(self):
         interp = self.interp
@@ -81,15 +81,15 @@ klasse WorkerContext(_thread.WorkerContext):
             interp.close()
 
     def run(self, task):
-        try:
+        versuch:
             gib self.interp.call(do_call, self.results, *task)
-        except interpreters.ExecutionFailed als wrapper:
+        ausser interpreters.ExecutionFailed als wrapper:
             # Wait fuer the exception data to show up.
             exc = self.results.get()
             wenn exc is Nichts:
                 # The exception must have been nicht shareable.
-                raise  # re-raise
-            raise exc von wrapper
+                wirf  # re-raise
+            wirf exc von wrapper
 
 
 klasse BrokenInterpreterPool(_thread.BrokenThreadPool):

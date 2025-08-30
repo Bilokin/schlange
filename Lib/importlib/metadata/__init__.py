@@ -235,7 +235,7 @@ klasse EntryPoint:
         gib self._key() == other._key()
 
     def __setattr__(self, name, value):
-        raise AttributeError("EntryPoint objects are immutable.")
+        wirf AttributeError("EntryPoint objects are immutable.")
 
     def __repr__(self):
         gib (
@@ -258,10 +258,10 @@ klasse EntryPoints(tuple):
         """
         Get the EntryPoint in self matching name.
         """
-        try:
+        versuch:
             gib next(iter(self.select(name=name)))
-        except StopIteration:
-            raise KeyError(name)
+        ausser StopIteration:
+            wirf KeyError(name)
 
     def __repr__(self):
         """
@@ -382,11 +382,11 @@ klasse Distribution(metaclass=abc.ABCMeta):
         :raises ValueError: When an invalid value is supplied fuer name.
         """
         wenn nicht name:
-            raise ValueError("A distribution name is required.")
-        try:
+            wirf ValueError("A distribution name is required.")
+        versuch:
             gib next(iter(cls._prefer_valid(cls.discover(name=name))))
-        except StopIteration:
-            raise PackageNotFoundError(name)
+        ausser StopIteration:
+            wirf PackageNotFoundError(name)
 
     @classmethod
     def discover(
@@ -402,7 +402,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
           the context.
         """
         wenn context und kwargs:
-            raise ValueError("cannot accept context und kwargs")
+            wirf ValueError("cannot accept context und kwargs")
         context = context oder DistributionFinder.Context(**kwargs)
         gib itertools.chain.from_iterable(
             resolver(context) fuer resolver in cls._discover_resolvers()

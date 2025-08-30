@@ -35,11 +35,11 @@ fuer name, func, args in [
         ("os.path.abspath", os.path.abspath, ('.',)),
         ]:
 
-    try:
+    versuch:
         t = Worker(func, args)
         t.start()
         t.join(TIMEOUT)
         wenn t.is_alive():
             errors.append("%s appeared to hang" % name)
-    finally:
+    schliesslich:
         del t

@@ -27,7 +27,7 @@ klasse TestLoader:
             gib self._get_filename
         wenn name == 'is_package':
             gib self._is_package
-        raise AttributeError(name)
+        wirf AttributeError(name)
 
     def _get_filename(self, name):
         gib self.path
@@ -197,9 +197,9 @@ klasse ModuleSpecTests:
     def test_cached_source_missing_cache_tag(self):
         original = sys.implementation.cache_tag
         sys.implementation.cache_tag = Nichts
-        try:
+        versuch:
             cached = self.loc_spec.cached
-        finally:
+        schliesslich:
             sys.implementation.cache_tag = original
 
         self.assertIs(cached, Nichts)
@@ -269,7 +269,7 @@ klasse ModuleSpecMethodsTests:
     def test_load_failed(self):
         klasse FailedLoader(TestLoader):
             def exec_module(self, module):
-                raise RuntimeError
+                wirf RuntimeError
         self.spec.loader = FailedLoader()
         mit CleanImport(self.spec.name):
             mit self.assertRaises(RuntimeError):
@@ -280,7 +280,7 @@ klasse ModuleSpecMethodsTests:
         klasse FailedLoader(TestLoader):
             def exec_module(self, module):
                 del sys.modules[module.__name__]
-                raise RuntimeError
+                wirf RuntimeError
         self.spec.loader = FailedLoader()
         mit CleanImport(self.spec.name):
             mit self.assertRaises(RuntimeError):
@@ -385,7 +385,7 @@ klasse FactoryTests:
     def test_spec_from_loader_default_with_bad_is_package(self):
         klasse Loader:
             def is_package(self, name):
-                raise ImportError
+                wirf ImportError
         loader = Loader()
         spec = self.util.spec_from_loader(self.name, loader)
 
@@ -568,7 +568,7 @@ klasse FactoryTests:
     def test_spec_from_file_location_loader_no_location_bad_get_filename(self):
         klasse Loader:
             def get_filename(self, name):
-                raise ImportError
+                wirf ImportError
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, loader=loader)
 
@@ -664,7 +664,7 @@ klasse FactoryTests:
     def test_spec_from_file_location_smsl_default_bad_is_package(self):
         klasse Loader:
             def is_package(self, name):
-                raise ImportError
+                wirf ImportError
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)

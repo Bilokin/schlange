@@ -30,9 +30,9 @@ def _ignore_deprecated_imports(ignore=Wahr):
 
 
 def unload(name):
-    try:
+    versuch:
         del sys.modules[name]
-    except KeyError:
+    ausser KeyError:
         pass
 
 
@@ -76,12 +76,12 @@ def import_module(name, deprecated=Falsch, *, required_on=()):
     compared against sys.platform.
     """
     mit _ignore_deprecated_imports(deprecated):
-        try:
+        versuch:
             gib importlib.import_module(name)
-        except ImportError als msg:
+        ausser ImportError als msg:
             wenn sys.platform.startswith(tuple(required_on)):
-                raise
-            raise unittest.SkipTest(str(msg))
+                wirf
+            wirf unittest.SkipTest(str(msg))
 
 
 def _save_and_remove_modules(names):
@@ -101,9 +101,9 @@ def frozen_modules(enabled=Wahr):
     Also, some essential modules will always be imported frozen.
     """
     _imp._override_frozen_modules_for_tests(1 wenn enabled sonst -1)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         _imp._override_frozen_modules_for_tests(0)
 
 
@@ -121,9 +121,9 @@ def multi_interp_extensions_check(enabled=Wahr):
     Also see importlib.utils.allowing_all_extensions().
     """
     old = _imp._override_multi_interp_extensions_check(1 wenn enabled sonst -1)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         _imp._override_multi_interp_extensions_check(old)
 
 
@@ -144,7 +144,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 
     *blocked* is an iterable of module names that are replaced mit Nichts
     in the module cache during the importiere to ensure that attempts to import
-    them raise ImportError.
+    them wirf ImportError.
 
     The named module und any modules named in the *fresh* und *blocked*
     parameters are saved before starting the importiere und then reinserted into
@@ -153,7 +153,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     Module und package deprecation messages are suppressed during this import
     wenn *deprecated* is Wahr.
 
-    This function will raise ImportError wenn the named module cannot be
+    This function will wirf ImportError wenn the named module cannot be
     imported.
 
     If "usefrozen" is Falsch (the default) then the frozen importer is
@@ -171,16 +171,16 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
         fuer modname in blocked:
             sys.modules[modname] = Nichts
 
-        try:
+        versuch:
             mit frozen_modules(usefrozen):
                 # Return Nichts when one of the "fresh" modules can nicht be imported.
-                try:
+                versuch:
                     fuer modname in fresh:
                         __import__(modname)
-                except ImportError:
+                ausser ImportError:
                     gib Nichts
                 gib importlib.import_module(name)
-        finally:
+        schliesslich:
             _save_and_remove_modules(names)
             sys.modules.update(orig_modules)
 
@@ -276,9 +276,9 @@ def isolated_modules():
     Save modules on entry und cleanup on exit.
     """
     (saved,) = modules_setup()
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         modules_cleanup(saved)
 
 
@@ -302,11 +302,11 @@ def ready_to_import(name=Nichts, source=""):
     mit temp_dir() als tempdir:
         path = script_helper.make_script(tempdir, name, source)
         old_module = sys.modules.pop(name, Nichts)
-        try:
+        versuch:
             sys.path.insert(0, tempdir)
             liefere name, path
             sys.path.remove(tempdir)
-        finally:
+        schliesslich:
             wenn old_module is nicht Nichts:
                 sys.modules[name] = old_module
             sonst:
@@ -323,12 +323,12 @@ def ensure_lazy_imports(imported_module, modules_to_block):
         modules_to_block = {modules_to_block}
         wenn unexpected := modules_to_block & sys.modules.keys():
             startup = ", ".join(unexpected)
-            raise AssertionError(f'unexpectedly imported at startup: {{startup}}')
+            wirf AssertionError(f'unexpectedly imported at startup: {{startup}}')
 
         importiere {imported_module}
         wenn unexpected := modules_to_block & sys.modules.keys():
             after = ", ".join(unexpected)
-            raise AssertionError(f'unexpectedly imported after importing {imported_module}: {{after}}')
+            wirf AssertionError(f'unexpectedly imported after importing {imported_module}: {{after}}')
         """
     )
     von .script_helper importiere assert_python_ok
@@ -346,9 +346,9 @@ def module_restored(name):
         mod = type(sys)(name)
         mod.__dict__.update(orig.__dict__)
         sys.modules[name] = mod
-    try:
+    versuch:
         liefere mod
-    finally:
+    schliesslich:
         wenn orig is missing:
             sys.modules.pop(name, Nichts)
         sonst:
@@ -367,9 +367,9 @@ def create_module(name, loader=Nichts, *, ispkg=Falsch):
 
 
 def _ensure_module(name, ispkg, addparent, clearnone):
-    try:
+    versuch:
         mod = orig = sys.modules[name]
-    except KeyError:
+    ausser KeyError:
         mod = orig = Nichts
         missing = Wahr
     sonst:
@@ -383,12 +383,12 @@ def _ensure_module(name, ispkg, addparent, clearnone):
     wenn nicht missing:
         assert orig is Nichts, (name, sys.modules[name])
         wenn nicht clearnone:
-            raise ModuleNotFoundError(name)
+            wirf ModuleNotFoundError(name)
         del sys.modules[name]
     # Try normal import, then fall back to adding the module.
-    try:
+    versuch:
         mod = importlib.import_module(name)
-    except ModuleNotFoundError:
+    ausser ModuleNotFoundError:
         wenn addparent und nicht clearnone:
             addparent = Nichts
         mod = _add_module(name, ispkg, addparent)

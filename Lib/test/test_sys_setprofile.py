@@ -37,9 +37,9 @@ klasse HookWatcher:
         wenn frame is Nichts:
             frame = sys._getframe(1)
 
-        try:
+        versuch:
             frameno = self.frames.index(frame)
-        except ValueError:
+        ausser ValueError:
             frameno = len(self.frames)
             self.frames.append(frame)
 
@@ -123,8 +123,8 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_caught_exception(self):
         def f(p):
-            try: 1/0
-            except ZeroDivisionError: pass
+            versuch: 1/0
+            ausser ZeroDivisionError: pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -132,8 +132,8 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_caught_nested_exception(self):
         def f(p):
-            try: 1/0
-            except ZeroDivisionError: pass
+            versuch: 1/0
+            ausser ZeroDivisionError: pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -154,11 +154,11 @@ klasse ProfileHookTestCase(TestCaseBase):
         def f(p):
             1/0
         def g(p):
-            try:
+            versuch:
                 f(p)
-            except ZeroDivisionError:
-                try: f(p)
-                except ZeroDivisionError: pass
+            ausser ZeroDivisionError:
+                versuch: f(p)
+                ausser ZeroDivisionError: pass
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -173,8 +173,8 @@ klasse ProfileHookTestCase(TestCaseBase):
         def f(p):
             1/0
         def g(p):
-            try: f(p)
-            finally: p.add_event("falling through")
+            versuch: f(p)
+            schliesslich: p.add_event("falling through")
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -186,8 +186,8 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_raise_twice(self):
         def f(p):
-            try: 1/0
-            except ZeroDivisionError: 1/0
+            versuch: 1/0
+            ausser ZeroDivisionError: 1/0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -195,8 +195,8 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_raise_reraise(self):
         def f(p):
-            try: 1/0
-            except ZeroDivisionError: raise
+            versuch: 1/0
+            ausser ZeroDivisionError: wirf
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -204,7 +204,7 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_raise(self):
         def f(p):
-            raise Exception()
+            wirf Exception()
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -319,8 +319,8 @@ klasse ProfileSimulatorTestCase(TestCaseBase):
 
     def test_caught_exception(self):
         def f(p):
-            try: 1/0
-            except ZeroDivisionError: pass
+            versuch: 1/0
+            ausser ZeroDivisionError: pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -407,8 +407,8 @@ def ident(function):
 
 
 def protect(f, p):
-    try: f(p)
-    except: pass
+    versuch: f(p)
+    ausser: pass
 
 protect_ident = ident(protect)
 
@@ -420,11 +420,11 @@ def capture_events(callable, p=Nichts):
     # traces.
     old_gc = gc.isenabled()
     gc.disable()
-    try:
+    versuch:
         sys.setprofile(p.callback)
         protect(callable, p)
         sys.setprofile(Nichts)
-    finally:
+    schliesslich:
         wenn old_gc:
             gc.enable()
     gib p.get_events()[1:-1]

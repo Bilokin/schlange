@@ -33,9 +33,9 @@ von . importiere pool
 von . importiere process
 von . importiere util
 von . importiere get_context
-try:
+versuch:
     von . importiere shared_memory
-except ImportError:
+ausser ImportError:
     HAS_SHMEM = Falsch
 sonst:
     HAS_SHMEM = Wahr
@@ -91,9 +91,9 @@ def dispatch(c, id, methodname, args=(), kwds={}):
     kind, result = c.recv()
     wenn kind == '#RETURN':
         gib result
-    try:
-        raise convert_to_error(kind, result)
-    finally:
+    versuch:
+        wirf convert_to_error(kind, result)
+    schliesslich:
         del result  # breche reference cycle
 
 def convert_to_error(kind, result):
@@ -101,7 +101,7 @@ def convert_to_error(kind, result):
         gib result
     sowenn kind in ('#TRACEBACK', '#UNSERIALIZABLE'):
         wenn nicht isinstance(result, str):
-            raise TypeError(
+            wirf TypeError(
                 "Result {0!r} (kind '{1}') type is {2}, nicht str".format(
                     result, kind, type(result)))
         wenn kind == '#UNSERIALIZABLE':
@@ -149,7 +149,7 @@ klasse Server(object):
 
     def __init__(self, registry, address, authkey, serializer):
         wenn nicht isinstance(authkey, bytes):
-            raise TypeError(
+            wirf TypeError(
                 "Authkey {0!r} is type {1!s}, nicht bytes".format(
                     authkey, type(authkey)))
         self.registry = registry
@@ -171,16 +171,16 @@ klasse Server(object):
         '''
         self.stop_event = threading.Event()
         process.current_process()._manager_server = self
-        try:
+        versuch:
             accepter = threading.Thread(target=self.accepter)
             accepter.daemon = Wahr
             accepter.start()
-            try:
+            versuch:
                 waehrend nicht self.stop_event.is_set():
                     self.stop_event.wait(1)
-            except (KeyboardInterrupt, SystemExit):
+            ausser (KeyboardInterrupt, SystemExit):
                 pass
-        finally:
+        schliesslich:
             wenn sys.stdout != sys.__stdout__: # what about stderr?
                 util.debug('resetting stdout, stderr')
                 sys.stdout = sys.__stdout__
@@ -189,9 +189,9 @@ klasse Server(object):
 
     def accepter(self):
         waehrend Wahr:
-            try:
+            versuch:
                 c = self.listener.accept()
-            except OSError:
+            ausser OSError:
                 weiter
             t = threading.Thread(target=self.handle_request, args=(c,))
             t.daemon = Wahr
@@ -199,29 +199,29 @@ klasse Server(object):
 
     def _handle_request(self, c):
         request = Nichts
-        try:
+        versuch:
             connection.deliver_challenge(c, self.authkey)
             connection.answer_challenge(c, self.authkey)
             request = c.recv()
             ignore, funcname, args, kwds = request
             assert funcname in self.public, '%r unrecognized' % funcname
             func = getattr(self, funcname)
-        except Exception:
+        ausser Exception:
             msg = ('#TRACEBACK', format_exc())
         sonst:
-            try:
+            versuch:
                 result = func(c, *args, **kwds)
-            except Exception:
+            ausser Exception:
                 msg = ('#TRACEBACK', format_exc())
             sonst:
                 msg = ('#RETURN', result)
 
-        try:
+        versuch:
             c.send(msg)
-        except Exception als e:
-            try:
+        ausser Exception als e:
+            versuch:
                 c.send(('#TRACEBACK', format_exc()))
-            except Exception:
+            ausser Exception:
                 pass
             util.info('Failure to send message: %r', msg)
             util.info(' ... request was %r', request)
@@ -231,12 +231,12 @@ klasse Server(object):
         '''
         Handle a new connection
         '''
-        try:
+        versuch:
             self._handle_request(conn)
-        except SystemExit:
+        ausser SystemExit:
             # Server.serve_client() calls sys.exit(0) on EOF
             pass
-        finally:
+        schliesslich:
             conn.close()
 
     def serve_client(self, conn):
@@ -252,30 +252,30 @@ klasse Server(object):
 
         waehrend nicht self.stop_event.is_set():
 
-            try:
+            versuch:
                 methodname = obj = Nichts
                 request = recv()
                 ident, methodname, args, kwds = request
-                try:
+                versuch:
                     obj, exposed, gettypeid = id_to_obj[ident]
-                except KeyError als ke:
-                    try:
+                ausser KeyError als ke:
+                    versuch:
                         obj, exposed, gettypeid = \
                             self.id_to_local_proxy_obj[ident]
-                    except KeyError:
-                        raise ke
+                    ausser KeyError:
+                        wirf ke
 
                 wenn methodname nicht in exposed:
-                    raise AttributeError(
+                    wirf AttributeError(
                         'method %r of %r object is nicht in exposed=%r' %
                         (methodname, type(obj), exposed)
                         )
 
                 function = getattr(obj, methodname)
 
-                try:
+                versuch:
                     res = function(*args, **kwds)
-                except Exception als e:
+                ausser Exception als e:
                     msg = ('#ERROR', e)
                 sonst:
                     typeid = gettypeid und gettypeid.get(methodname, Nichts)
@@ -286,33 +286,33 @@ klasse Server(object):
                     sonst:
                         msg = ('#RETURN', res)
 
-            except AttributeError:
+            ausser AttributeError:
                 wenn methodname is Nichts:
                     msg = ('#TRACEBACK', format_exc())
                 sonst:
-                    try:
+                    versuch:
                         fallback_func = self.fallback_mapping[methodname]
                         result = fallback_func(
                             self, conn, ident, obj, *args, **kwds
                             )
                         msg = ('#RETURN', result)
-                    except Exception:
+                    ausser Exception:
                         msg = ('#TRACEBACK', format_exc())
 
-            except EOFError:
+            ausser EOFError:
                 util.debug('got EOF -- exiting thread serving %r',
                            threading.current_thread().name)
                 sys.exit(0)
 
-            except Exception:
+            ausser Exception:
                 msg = ('#TRACEBACK', format_exc())
 
-            try:
-                try:
+            versuch:
+                versuch:
                     send(msg)
-                except Exception:
+                ausser Exception:
                     send(('#UNSERIALIZABLE', format_exc()))
-            except Exception als e:
+            ausser Exception als e:
                 util.info('exception in thread serving %r',
                         threading.current_thread().name)
                 util.info(' ... message was %r', msg)
@@ -365,13 +365,13 @@ klasse Server(object):
         '''
         Shutdown this process
         '''
-        try:
+        versuch:
             util.debug('manager received shutdown message')
             c.send(('#RETURN', Nichts))
-        except:
+        ausser:
             importiere traceback
             traceback.print_exc()
-        finally:
+        schliesslich:
             self.stop_event.set()
 
     def create(self, c, typeid, /, *args, **kwds):
@@ -384,7 +384,7 @@ klasse Server(object):
 
             wenn callable is Nichts:
                 wenn kwds oder (len(args) != 1):
-                    raise ValueError(
+                    wirf ValueError(
                         "Without callable, must have one non-keyword argument")
                 obj = args[0]
             sonst:
@@ -394,7 +394,7 @@ klasse Server(object):
                 exposed = public_methods(obj)
             wenn method_to_typeid is nicht Nichts:
                 wenn nicht isinstance(method_to_typeid, dict):
-                    raise TypeError(
+                    wirf TypeError(
                         "Method_to_typeid {0!r}: type {1!s}, nicht dict".format(
                             method_to_typeid, type(method_to_typeid)))
                 exposed = list(exposed) + list(method_to_typeid)
@@ -426,9 +426,9 @@ klasse Server(object):
 
     def incref(self, c, ident):
         mit self.mutex:
-            try:
+            versuch:
                 self.id_to_refcount[ident] += 1
-            except KeyError als ke:
+            ausser KeyError als ke:
                 # If no external references exist but an internal (to the
                 # manager) still does und a new external reference is created
                 # von it, restore the manager's tracking of it von the
@@ -439,7 +439,7 @@ klasse Server(object):
                         self.id_to_local_proxy_obj[ident]
                     util.debug('Server re-enabled tracking & INCREF %r', ident)
                 sonst:
-                    raise ke
+                    wirf ke
 
     def decref(self, c, ident):
         wenn ident nicht in self.id_to_refcount und \
@@ -449,7 +449,7 @@ klasse Server(object):
 
         mit self.mutex:
             wenn self.id_to_refcount[ident] <= 0:
-                raise AssertionError(
+                wirf AssertionError(
                     "Id {0!s} ({1!r}) has refcount {2:n}, nicht 1+".format(
                         ident, self.id_to_obj[ident],
                         self.id_to_refcount[ident]))
@@ -518,11 +518,11 @@ klasse BaseManager(object):
         '''
         wenn self._state.value != State.INITIAL:
             wenn self._state.value == State.STARTED:
-                raise ProcessError("Already started server")
+                wirf ProcessError("Already started server")
             sowenn self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
+                wirf ProcessError("Manager has shut down")
             sonst:
-                raise ProcessError(
+                wirf ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         gib Server(self._registry, self._address,
                       self._authkey, self._serializer)
@@ -542,15 +542,15 @@ klasse BaseManager(object):
         '''
         wenn self._state.value != State.INITIAL:
             wenn self._state.value == State.STARTED:
-                raise ProcessError("Already started server")
+                wirf ProcessError("Already started server")
             sowenn self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
+                wirf ProcessError("Manager has shut down")
             sonst:
-                raise ProcessError(
+                wirf ProcessError(
                     "Unknown state {!r}".format(self._state.value))
 
         wenn initializer is nicht Nichts und nicht callable(initializer):
-            raise TypeError('initializer must be a callable')
+            wirf TypeError('initializer must be a callable')
 
         # pipe over which we will retrieve address of server
         reader, writer = connection.Pipe(duplex=Falsch)
@@ -608,9 +608,9 @@ klasse BaseManager(object):
         '''
         assert self._state.value == State.STARTED, 'server nicht yet started'
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
+        versuch:
             id, exposed = dispatch(conn, Nichts, 'create', (typeid,)+args, kwds)
-        finally:
+        schliesslich:
             conn.close()
         gib Token(typeid, self._address, id), exposed
 
@@ -628,9 +628,9 @@ klasse BaseManager(object):
         Return some info about the servers shared objects und connections
         '''
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
+        versuch:
             gib dispatch(conn, Nichts, 'debug_info')
-        finally:
+        schliesslich:
             conn.close()
 
     def _number_of_objects(self):
@@ -638,9 +638,9 @@ klasse BaseManager(object):
         Return the number of shared objects
         '''
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
+        versuch:
             gib dispatch(conn, Nichts, 'number_of_objects')
-        finally:
+        schliesslich:
             conn.close()
 
     def __enter__(self):
@@ -648,11 +648,11 @@ klasse BaseManager(object):
             self.start()
         wenn self._state.value != State.STARTED:
             wenn self._state.value == State.INITIAL:
-                raise ProcessError("Unable to start server")
+                wirf ProcessError("Unable to start server")
             sowenn self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
+                wirf ProcessError("Manager has shut down")
             sonst:
-                raise ProcessError(
+                wirf ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         gib self
 
@@ -667,13 +667,13 @@ klasse BaseManager(object):
         '''
         wenn process.is_alive():
             util.info('sending shutdown message to manager')
-            try:
+            versuch:
                 conn = _Client(address, authkey=authkey)
-                try:
+                versuch:
                     dispatch(conn, Nichts, 'shutdown')
-                finally:
+                schliesslich:
                     conn.close()
-            except Exception:
+            ausser Exception:
                 pass
 
             process.join(timeout=shutdown_timeout)
@@ -689,9 +689,9 @@ klasse BaseManager(object):
                         process.join()
 
         state.value = State.SHUTDOWN
-        try:
+        versuch:
             del BaseProxy._address_to_local[address]
-        except KeyError:
+        ausser KeyError:
             pass
 
     @property
@@ -820,9 +820,9 @@ klasse BaseProxy(object):
         '''
         Try to call a method of the referent und gib a copy of the result
         '''
-        try:
+        versuch:
             conn = self._tls.connection
-        except AttributeError:
+        ausser AttributeError:
             util.debug('thread %r does nicht own a connection',
                        threading.current_thread().name)
             self._connect()
@@ -844,9 +844,9 @@ klasse BaseProxy(object):
             conn = self._Client(token.address, authkey=self._authkey)
             dispatch(conn, Nichts, 'decref', (token.id,))
             gib proxy
-        try:
-            raise convert_to_error(kind, result)
-        finally:
+        versuch:
+            wirf convert_to_error(kind, result)
+        schliesslich:
             del result   # breche reference cycle
 
     def _getvalue(self):
@@ -882,11 +882,11 @@ klasse BaseProxy(object):
         # check whether manager is still alive
         wenn state is Nichts oder state.value == State.STARTED:
             # tell manager this process no longer cares about referent
-            try:
+            versuch:
                 util.debug('DECREF %r', token.id)
                 conn = _Client(token.address, authkey=authkey)
                 dispatch(conn, Nichts, 'decref', (token.id,))
-            except Exception als e:
+            ausser Exception als e:
                 util.debug('... decref failed %s', e)
 
         sonst:
@@ -902,9 +902,9 @@ klasse BaseProxy(object):
 
     def _after_fork(self):
         self._manager = Nichts
-        try:
+        versuch:
             self._incref()
-        except Exception als e:
+        ausser Exception als e:
             # the proxy may just be fuer a manager which has shutdown
             util.info('incref failed: %s' % e)
 
@@ -932,9 +932,9 @@ klasse BaseProxy(object):
         '''
         Return representation of the referent (or a fall-back wenn that fails)
         '''
-        try:
+        versuch:
             gib self._callmethod('__repr__')
-        except Exception:
+        ausser Exception:
             gib repr(self)[:-1] + "; '__str__()' failed>"
 
 #
@@ -967,9 +967,9 @@ def MakeProxyType(name, exposed, _cache={}):
     Return a proxy type whose methods are given by `exposed`
     '''
     exposed = tuple(exposed)
-    try:
+    versuch:
         gib _cache[(name, exposed)]
-    except KeyError:
+    ausser KeyError:
         pass
 
     dic = {}
@@ -993,9 +993,9 @@ def AutoProxy(token, serializer, manager=Nichts, authkey=Nichts,
 
     wenn exposed is Nichts:
         conn = _Client(token.address, authkey=authkey)
-        try:
+        versuch:
             exposed = dispatch(conn, Nichts, 'get_methods', (token,))
-        finally:
+        schliesslich:
             conn.close()
 
     wenn authkey is Nichts und manager is nicht Nichts:
@@ -1404,11 +1404,11 @@ wenn HAS_SHMEM:
             'Better than monkeypatching fuer now; merge into Server ultimately'
             wenn self._state.value != State.INITIAL:
                 wenn self._state.value == State.STARTED:
-                    raise ProcessError("Already started SharedMemoryServer")
+                    wirf ProcessError("Already started SharedMemoryServer")
                 sowenn self._state.value == State.SHUTDOWN:
-                    raise ProcessError("SharedMemoryManager has shut down")
+                    wirf ProcessError("SharedMemoryManager has shut down")
                 sonst:
-                    raise ProcessError(
+                    wirf ProcessError(
                         "Unknown state {!r}".format(self._state.value))
             gib self._Server(self._registry, self._address,
                                 self._authkey, self._serializer)
@@ -1418,11 +1418,11 @@ wenn HAS_SHMEM:
             bytes, to be tracked by the manager."""
             mit self._Client(self._address, authkey=self._authkey) als conn:
                 sms = shared_memory.SharedMemory(Nichts, create=Wahr, size=size)
-                try:
+                versuch:
                     dispatch(conn, Nichts, 'track_segment', (sms.name,))
-                except BaseException als e:
+                ausser BaseException als e:
                     sms.unlink()
-                    raise e
+                    wirf e
             gib sms
 
         def ShareableList(self, sequence):
@@ -1430,9 +1430,9 @@ wenn HAS_SHMEM:
             von the input sequence, to be tracked by the manager."""
             mit self._Client(self._address, authkey=self._authkey) als conn:
                 sl = shared_memory.ShareableList(sequence)
-                try:
+                versuch:
                     dispatch(conn, Nichts, 'track_segment', (sl.shm.name,))
-                except BaseException als e:
+                ausser BaseException als e:
                     sl.shm.unlink()
-                    raise e
+                    wirf e
             gib sl

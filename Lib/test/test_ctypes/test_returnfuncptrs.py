@@ -51,7 +51,7 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
                     gib "my_strchr"
                 wenn key == 1:
                     gib CDLL(_ctypes_test.__file__)
-                raise IndexError
+                wirf IndexError
 
         # _CFuncPtr instances are now callable mit a tuple argument
         # which denotes a function name und a dll:

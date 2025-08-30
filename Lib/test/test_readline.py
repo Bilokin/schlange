@@ -105,9 +105,9 @@ klasse TestHistoryManipulation (unittest.TestCase):
 
         # test 'no such file' behaviour
         os.unlink(hfilename)
-        try:
+        versuch:
             readline.append_history_file(1, hfilename)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             pass  # Some implementations gib this error (libreadline).
         sonst:
             os.unlink(hfilename)  # Some create it anyways (libedit).
@@ -128,9 +128,9 @@ klasse TestHistoryManipulation (unittest.TestCase):
 
     def test_nonascii_history(self):
         readline.clear_history()
-        try:
+        versuch:
             readline.add_history("entrée 1")
-        except UnicodeEncodeError als err:
+        ausser UnicodeEncodeError als err:
             self.skipTest("Locale cannot encode test data: " + format(err))
         readline.add_history("entrée 2")
         readline.replace_history_item(1, "entrée 22")
@@ -240,9 +240,9 @@ drucke("History length:", readline.get_current_history_length())
                 # und always use the UTF-8 encoding.
                 self.skipTest(f"the LC_CTYPE encoding is {encoding!r}")
 
-        try:
+        versuch:
             readline.add_history("\xEB\xEF")
-        except UnicodeEncodeError als err:
+        ausser UnicodeEncodeError als err:
             self.skipTest("Locale cannot encode test data: " + format(err))
 
         script = r"""import readline

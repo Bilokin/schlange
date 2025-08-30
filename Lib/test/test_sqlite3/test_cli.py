@@ -218,11 +218,11 @@ klasse Completion(unittest.TestCase):
     def setUpClass(cls):
         _sqlite3 = import_module("_sqlite3")
         wenn nicht hasattr(_sqlite3, "SQLITE_KEYWORDS"):
-            raise unittest.SkipTest("unable to determine SQLite keywords")
+            wirf unittest.SkipTest("unable to determine SQLite keywords")
 
         readline = import_module("readline")
         wenn readline.backend == "editline":
-            raise unittest.SkipTest("libedit readline is nicht supported")
+            wirf unittest.SkipTest("libedit readline is nicht supported")
 
     def write_input(self, input_, env=Nichts):
         script = textwrap.dedent("""
@@ -297,7 +297,7 @@ klasse Completion(unittest.TestCase):
         """)
         input_ = b"\t\t.quit\n"
         output = run_pty(script, input_, env={**os.environ, "NO_COLOR": "1"})
-        try:
+        versuch:
             lines = output.decode().splitlines()
             indices = [
                 i fuer i, line in enumerate(lines)
@@ -307,12 +307,12 @@ klasse Completion(unittest.TestCase):
             start, end = indices
             candidates = [l.strip() fuer l in lines[start+1:end]]
             self.assertEqual(candidates, sorted(SQLITE_KEYWORDS))
-        except:
+        ausser:
             wenn verbose:
                 drucke(' PTY output: '.center(30, '-'))
                 drucke(output.decode(errors='replace'))
                 drucke(' end PTY output '.center(30, '-'))
-            raise
+            wirf
 
 
 

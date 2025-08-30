@@ -84,9 +84,9 @@ klasse TestFail:
             wenn idx in SKIPS:
                 self.loads(doc)
                 weiter
-            try:
+            versuch:
                 self.loads(doc)
-            except self.JSONDecodeError:
+            ausser self.JSONDecodeError:
                 pass
             sonst:
                 self.fail(f"Expected failure fuer fail{idx}.json: {doc!r}")

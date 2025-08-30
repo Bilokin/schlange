@@ -37,9 +37,9 @@ def getlines(filename, module_globals=Nichts):
     wenn entry is nicht Nichts und len(entry) != 1:
         gib entry[2]
 
-    try:
+    versuch:
         gib updatecache(filename, module_globals)
-    except MemoryError:
+    ausser MemoryError:
         clearcache()
         gib []
 
@@ -89,14 +89,14 @@ def checkcache(filename=Nichts):
         size, mtime, lines, fullname = entry
         wenn mtime is Nichts:
             weiter   # no-op fuer files loaded via a __loader__
-        try:
+        versuch:
             # This importiere can fail wenn the interpreter is shutting down
             importiere os
-        except ImportError:
+        ausser ImportError:
             gib
-        try:
+        versuch:
             stat = os.stat(fullname)
-        except (OSError, ValueError):
+        ausser (OSError, ValueError):
             cache.pop(filename, Nichts)
             weiter
         wenn size != stat.st_size oder mtime != stat.st_mtime:
@@ -111,11 +111,11 @@ def updatecache(filename, module_globals=Nichts):
     # These imports are nicht at top level because linecache is in the critical
     # path of the interpreter startup und importing os und sys take a lot of time
     # und slows down the startup sequence.
-    try:
+    versuch:
         importiere os
         importiere sys
         importiere tokenize
-    except ImportError:
+    ausser ImportError:
         # These importiere can fail wenn the interpreter is shutting down
         gib []
 
@@ -131,9 +131,9 @@ def updatecache(filename, module_globals=Nichts):
             gib []
     sonst:
         fullname = filename
-    try:
+    versuch:
         stat = os.stat(fullname)
-    except OSError:
+    ausser OSError:
         basename = filename
 
         # Realise a lazy loader based lookup wenn there is one
@@ -142,9 +142,9 @@ def updatecache(filename, module_globals=Nichts):
         wenn lazy_entry is Nichts:
             lazy_entry = _make_lazycache_entry(filename, module_globals)
         wenn lazy_entry is nicht Nichts:
-            try:
+            versuch:
                 data = lazy_entry[0]()
-            except (ImportError, OSError):
+            ausser (ImportError, OSError):
                 pass
             sonst:
                 wenn data is Nichts:
@@ -166,24 +166,24 @@ def updatecache(filename, module_globals=Nichts):
             gib []
 
         fuer dirname in sys.path:
-            try:
+            versuch:
                 fullname = os.path.join(dirname, basename)
-            except (TypeError, AttributeError):
+            ausser (TypeError, AttributeError):
                 # Not sufficiently string-like to do anything useful with.
                 weiter
-            try:
+            versuch:
                 stat = os.stat(fullname)
                 breche
-            except (OSError, ValueError):
+            ausser (OSError, ValueError):
                 pass
         sonst:
             gib []
-    except ValueError:  # may be raised by os.stat()
+    ausser ValueError:  # may be raised by os.stat()
         gib []
-    try:
+    versuch:
         mit tokenize.open(fullname) als fp:
             lines = fp.readlines()
-    except (OSError, UnicodeDecodeError, SyntaxError):
+    ausser (OSError, UnicodeDecodeError, SyntaxError):
         gib []
     wenn nicht lines:
         lines = ['\n']

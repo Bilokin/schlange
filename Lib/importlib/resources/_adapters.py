@@ -34,7 +34,7 @@ def _io_wrapper(file, mode='r', *args, **kwargs):
         gib TextIOWrapper(file, *args, **kwargs)
     sowenn mode == 'rb':
         gib file
-    raise ValueError(f"Invalid mode value '{mode}', only 'r' und 'rb' are supported")
+    wirf ValueError(f"Invalid mode value '{mode}', only 'r' und 'rb' are supported")
 
 
 klasse CompatibilityFiles:
@@ -117,7 +117,7 @@ klasse CompatibilityFiles:
 
         def __init__(self, *path_parts):
             wenn len(path_parts) < 1:
-                raise ValueError('Need at least one path part to construct a path')
+                wirf ValueError('Need at least one path part to construct a path')
             self._path = path_parts
 
         def iterdir(self):
@@ -136,7 +136,7 @@ klasse CompatibilityFiles:
             gib self._path[-1]
 
         def open(self, mode='r', *args, **kwargs):
-            raise FileNotFoundError("Can't open orphan path")
+            wirf FileNotFoundError("Can't open orphan path")
 
     def __init__(self, spec):
         self.spec = spec

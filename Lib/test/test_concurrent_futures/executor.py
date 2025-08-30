@@ -26,7 +26,7 @@ def make_dummy_object(_):
 
 # Used in test_swallows_falsey_exceptions
 def raiser(exception, msg='std'):
-    raise exception(msg)
+    wirf exception(msg)
 
 
 klasse FalschyBoolException(Exception):
@@ -81,12 +81,12 @@ klasse ExecutorTest:
     @support.requires_resource('walltime')
     def test_map_timeout(self):
         results = []
-        try:
+        versuch:
             fuer i in self.executor.map(time.sleep,
                                        [0, 0, 6],
                                        timeout=5):
                 results.append(i)
-        except futures.TimeoutError:
+        ausser futures.TimeoutError:
             pass
         sonst:
             self.fail('expected TimeoutError')

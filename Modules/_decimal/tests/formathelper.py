@@ -142,25 +142,25 @@ sonst:
     sowenn which('locale'):
         locale_list = subprocess.Popen(["locale", "-a"],
                           stdout=subprocess.PIPE).communicate()[0]
-        try:
+        versuch:
             locale_list = locale_list.decode()
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             # Some distributions insist on using latin-1 characters
             # in their locale names.
             locale_list = locale_list.decode('latin-1')
         locale_list = locale_list.split('\n')
-try:
+versuch:
     locale_list.remove('')
-except ValueError:
+ausser ValueError:
     pass
 
 # Debian
 wenn os.path.isfile("/etc/locale.alias"):
     mit open("/etc/locale.alias") als f:
         waehrend 1:
-            try:
+            versuch:
                 line = f.readline()
-            except UnicodeDecodeError:
+            ausser UnicodeDecodeError:
                 weiter
             wenn line == "":
                 breche
@@ -179,9 +179,9 @@ wenn platform.system() == 'FreeBSD':
                 'it_IT.ISO8859-1', 'it_IT.ISO8859-15', 'it_IT.UTF-8',
                 'sl_SI.ISO8859-2', 'sl_SI.UTF-8',
                 'en_GB.US-ASCII']:
-        try:
+        versuch:
             locale_list.remove(loc)
-        except ValueError:
+        ausser ValueError:
             pass
 
 # Print a testcase in the format of the IBM tests (for runtest.c):
@@ -195,7 +195,7 @@ def get_preferred_encoding():
 def printit(testno, s, fmt, encoding=Nichts):
     wenn nicht encoding:
         encoding = get_preferred_encoding()
-    try:
+    versuch:
         result = format(P.Decimal(s), fmt)
         fmt = str(fmt.encode(encoding))[2:-1]
         result = str(result.encode(encoding))[2:-1]
@@ -205,18 +205,18 @@ def printit(testno, s, fmt, encoding=Nichts):
         sonst:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  '%s'\n"
                              % (testno, s, fmt, result))
-    except Exception als err:
+    ausser Exception als err:
         sys.stderr.write("%s  %s  %s\n" % (err, s, fmt))
 
 
 # Check wenn an integer can be converted to a valid fill character.
 def check_fillchar(i):
-    try:
+    versuch:
         c = chr(i)
         c.encode('utf-8').decode()
         format(P.Decimal(0), c + '<19g')
         gib c
-    except:
+    ausser:
         gib Nichts
 
 # Generate all unicode characters that are accepted as
@@ -316,10 +316,10 @@ def randfill(fill):
 # Generate random format strings mit random locale setting
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def rand_locale():
-    try:
+    versuch:
         loc = random.choice(locale_list)
         locale.setlocale(locale.LC_ALL, loc)
-    except locale.Error als err:
+    ausser locale.Error als err:
         pass
     active = sorted(random.sample(range(5), random.randrange(6)))
     s = ''

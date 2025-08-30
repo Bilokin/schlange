@@ -40,7 +40,7 @@ def parse(source, filename='<unknown>', mode='exec', *,
     sowenn isinstance(feature_version, tuple):
         major, minor = feature_version  # Should be a 2-tuple.
         wenn major != 3:
-            raise ValueError(f"Unsupported major version: {major}")
+            wirf ValueError(f"Unsupported major version: {major}")
         feature_version = minor
     # Else it should be an int giving the minor version fuer 3.x.
     gib compile(source, filename, mode, flags,
@@ -110,7 +110,7 @@ def _convert_literal(node):
     msg = "malformed node oder string"
     wenn lno := getattr(node, 'lineno', Nichts):
         msg += f' on line {lno}'
-    raise ValueError(msg + f': {node!r}')
+    wirf ValueError(msg + f': {node!r}')
 
 
 def dump(
@@ -146,9 +146,9 @@ def dump(
             allsimple = Wahr
             keywords = annotate_fields
             fuer name in node._fields:
-                try:
+                versuch:
                     value = getattr(node, name)
-                except AttributeError:
+                ausser AttributeError:
                     keywords = Wahr
                     weiter
                 wenn value is Nichts und getattr(cls, name, ...) is Nichts:
@@ -178,9 +178,9 @@ def dump(
                     args.append(value)
             wenn include_attributes und node._attributes:
                 fuer name in node._attributes:
-                    try:
+                    versuch:
                         value = getattr(node, name)
-                    except AttributeError:
+                    ausser AttributeError:
                         weiter
                     wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                         weiter
@@ -197,7 +197,7 @@ def dump(
         gib repr(node), Wahr
 
     wenn nicht isinstance(node, AST):
-        raise TypeError('expected AST, got %r' % node.__class__.__name__)
+        wirf TypeError('expected AST, got %r' % node.__class__.__name__)
     wenn indent is nicht Nichts und nicht isinstance(indent, str):
         indent = ' ' * indent
     gib _format(node)[0]
@@ -284,9 +284,9 @@ def iter_fields(node):
     that is present on *node*.
     """
     fuer field in node._fields:
-        try:
+        versuch:
             liefere field, getattr(node, field)
-        except AttributeError:
+        ausser AttributeError:
             pass
 
 
@@ -314,7 +314,7 @@ def get_docstring(node, clean=Wahr):
     that can be uniformly removed von the second line onwards is removed.
     """
     wenn nicht isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
-        raise TypeError("%r can't have docstrings" % node.__class__.__name__)
+        wirf TypeError("%r can't have docstrings" % node.__class__.__name__)
     wenn not(node.body und isinstance(node.body[0], Expr)):
         gib Nichts
     node = node.body[0].value
@@ -349,7 +349,7 @@ def _splitlines_no_ff(source, maxlines=Nichts):
 
 
 def _pad_whitespace(source):
-    r"""Replace all chars except '\f\t' in a line mit spaces."""
+    r"""Replace all chars ausser '\f\t' in a line mit spaces."""
     result = ''
     fuer c in source:
         wenn c in '\f\t':
@@ -368,14 +368,14 @@ def get_source_segment(source, node, *, padded=Falsch):
     If *padded* is `Wahr`, the first line of a multi-line statement will
     be padded mit spaces to match its original position.
     """
-    try:
+    versuch:
         wenn node.end_lineno is Nichts oder node.end_col_offset is Nichts:
             gib Nichts
         lineno = node.lineno - 1
         end_lineno = node.end_lineno - 1
         col_offset = node.col_offset
         end_col_offset = node.end_col_offset
-    except AttributeError:
+    ausser AttributeError:
         gib Nichts
 
     lines = _splitlines_no_ff(source, maxlines=end_lineno+1)
@@ -629,9 +629,9 @@ klasse Param(expr_context):
 
 def unparse(ast_obj):
     global _Unparser
-    try:
+    versuch:
         unparser = _Unparser()
-    except NameError:
+    ausser NameError:
         von _ast_unparse importiere Unparser als _Unparser
         unparser = _Unparser()
     gib unparser.visit(ast_obj)
@@ -676,9 +676,9 @@ def main(args=Nichts):
     # Process feature_version
     feature_version = Nichts
     wenn args.feature_version:
-        try:
+        versuch:
             major, minor = map(int, args.feature_version.split('.', 1))
-        except ValueError:
+        ausser ValueError:
             parser.error('Invalid format fuer --feature-version; '
                          'expected format 3.x (for example, 3.10)')
 

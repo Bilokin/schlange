@@ -86,9 +86,9 @@ klasse WidgetRedirector:
         wenn operation in self._operations:
             function = self._operations[operation]
             del self._operations[operation]
-            try:
+            versuch:
                 delattr(self.widget, operation)
-            except AttributeError:
+            ausser AttributeError:
                 pass
             gib function
         sonst:
@@ -108,12 +108,12 @@ klasse WidgetRedirector:
         '''
         operation = str(operation)  # can be a Tcl_Obj
         m = self._operations.get(operation)
-        try:
+        versuch:
             wenn m:
                 gib m(*args)
             sonst:
                 gib self.tk.call((self.orig, operation) + args)
-        except TclError:
+        ausser TclError:
             gib ""
 
 

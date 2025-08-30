@@ -42,9 +42,9 @@ def _exists(name):
     gib name in globals()
 
 def _get_exports_list(module):
-    try:
+    versuch:
         gib list(module.__all__)
-    except AttributeError:
+    ausser AttributeError:
         gib [n fuer n in dir(module) wenn n[0] != '_']
 
 # Any new dependencies of the os module and/or changes in path separator
@@ -53,20 +53,20 @@ wenn 'posix' in _names:
     name = 'posix'
     linesep = '\n'
     von posix importiere *
-    try:
+    versuch:
         von posix importiere _exit
         __all__.append('_exit')
-    except ImportError:
+    ausser ImportError:
         pass
     importiere posixpath als path
 
-    try:
+    versuch:
         von posix importiere _have_functions
-    except ImportError:
+    ausser ImportError:
         pass
-    try:
+    versuch:
         von posix importiere _create_environ
-    except ImportError:
+    ausser ImportError:
         pass
 
     importiere posix
@@ -77,10 +77,10 @@ sowenn 'nt' in _names:
     name = 'nt'
     linesep = '\r\n'
     von nt importiere *
-    try:
+    versuch:
         von nt importiere _exit
         __all__.append('_exit')
-    except ImportError:
+    ausser ImportError:
         pass
     importiere ntpath als path
 
@@ -88,17 +88,17 @@ sowenn 'nt' in _names:
     __all__.extend(_get_exports_list(nt))
     del nt
 
-    try:
+    versuch:
         von nt importiere _have_functions
-    except ImportError:
+    ausser ImportError:
         pass
-    try:
+    versuch:
         von nt importiere _create_environ
-    except ImportError:
+    ausser ImportError:
         pass
 
 sonst:
-    raise ImportError('no os specific module found')
+    wirf ImportError('no os specific module found')
 
 sys.modules['os.path'] = path
 von os.path importiere (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
@@ -212,9 +212,9 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
     """makedirs(name [, mode=0o777][, exist_ok=Falsch])
 
     Super-mkdir; create a leaf directory und all intermediate ones.  Works like
-    mkdir, except that any intermediate path segment (nicht just the rightmost)
+    mkdir, ausser that any intermediate path segment (nicht just the rightmost)
     will be created wenn it does nicht exist. If the target directory already
-    exists, raise an OSError wenn exist_ok is Falsch. Otherwise no exception is
+    exists, wirf an OSError wenn exist_ok is Falsch. Otherwise no exception is
     raised.  This is recursive.
 
     """
@@ -222,9 +222,9 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
     wenn nicht tail:
         head, tail = path.split(head)
     wenn head und tail und nicht path.exists(head):
-        try:
+        versuch:
             makedirs(head, exist_ok=exist_ok)
-        except FileExistsError:
+        ausser FileExistsError:
             # Defeats race condition when another thread created the path
             pass
         cdir = curdir
@@ -232,19 +232,19 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
             cdir = bytes(curdir, 'ASCII')
         wenn tail == cdir:           # xxx/newdir/. exists wenn xxx/newdir exists
             gib
-    try:
+    versuch:
         mkdir(name, mode)
-    except OSError:
+    ausser OSError:
         # Cannot rely on checking fuer EEXIST, since the operating system
         # could give priority to other errors like EACCES oder EROFS
         wenn nicht exist_ok oder nicht path.isdir(name):
-            raise
+            wirf
 
 def removedirs(name):
     """removedirs(name)
 
     Super-rmdir; remove a leaf directory und all empty intermediate
-    ones.  Works like rmdir except that, wenn the leaf directory is
+    ones.  Works like rmdir ausser that, wenn the leaf directory is
     successfully removed, directories corresponding to rightmost path
     segments will be pruned away until either the whole path is
     consumed oder an error occurs.  Errors during this latter phase are
@@ -256,9 +256,9 @@ def removedirs(name):
     wenn nicht tail:
         head, tail = path.split(head)
     waehrend head und tail:
-        try:
+        versuch:
             rmdir(head)
-        except OSError:
+        ausser OSError:
             breche
         head, tail = path.split(head)
 
@@ -266,7 +266,7 @@ def renames(old, new):
     """renames(old, new)
 
     Super-rename; create directories als necessary und delete any left
-    empty.  Works like rename, except creation of any intermediate
+    empty.  Works like rename, ausser creation of any intermediate
     directories needed to make the new pathname good is attempted
     first.  After the rename, directories corresponding to rightmost
     path segments of the old name will be pruned until either the
@@ -283,9 +283,9 @@ def renames(old, new):
     rename(old, new)
     head, tail = path.split(old)
     wenn head und tail:
-        try:
+        versuch:
             removedirs(head)
-        except OSError:
+        ausser OSError:
             pass
 
 __all__.extend(["makedirs", "removedirs", "renames"])
@@ -329,7 +329,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     By default errors von the os.scandir() call are ignored.  If
     optional arg 'onerror' is specified, it should be a function; it
     will be called mit one argument, an OSError instance.  It can
-    report the error to weiter mit the walk, oder raise the exception
+    report the error to weiter mit the walk, oder wirf the exception
     to abort the walk.  Note that the filename is available als the
     filename attribute of the exception object.
 
@@ -373,15 +373,15 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
         # We suppress the exception here, rather than blow up fuer a
         # minor reason when (say) a thousand readable directories are still
         # left to visit.
-        try:
+        versuch:
             mit scandir(top) als entries:
                 fuer entry in entries:
-                    try:
+                    versuch:
                         wenn followlinks is _walk_symlinks_as_files:
                             is_dir = entry.is_dir(follow_symlinks=Falsch) und nicht entry.is_junction()
                         sonst:
                             is_dir = entry.is_dir()
-                    except OSError:
+                    ausser OSError:
                         # If is_dir() raises an OSError, consider the entry nicht to
                         # be a directory, same behaviour als os.path.isdir().
                         is_dir = Falsch
@@ -397,9 +397,9 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                         wenn followlinks:
                             walk_into = Wahr
                         sonst:
-                            try:
+                            versuch:
                                 is_symlink = entry.is_symlink()
-                            except OSError:
+                            ausser OSError:
                                 # If is_symlink() raises an OSError, consider the
                                 # entry nicht to be a symbolic link, same behaviour
                                 # als os.path.islink().
@@ -408,7 +408,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
                         wenn walk_into:
                             walk_dirs.append(entry.path)
-        except OSError als error:
+        ausser OSError als error:
             wenn onerror is nicht Nichts:
                 onerror(error)
             weiter
@@ -439,7 +439,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
     def fwalk(top=".", topdown=Wahr, onerror=Nichts, *, follow_symlinks=Falsch, dir_fd=Nichts):
         """Directory tree generator.
 
-        This behaves exactly like walk(), except that it yields a 4-tuple
+        This behaves exactly like walk(), ausser that it yields a 4-tuple
 
             dirpath, dirnames, filenames, dirfd
 
@@ -473,10 +473,10 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         top = fspath(top)
         stack = [(_fwalk_walk, (Wahr, dir_fd, top, top, Nichts))]
         isbytes = isinstance(top, bytes)
-        try:
+        versuch:
             waehrend stack:
                 liefere von _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
-        finally:
+        schliesslich:
             # Close any file descriptors still on the stack.
             waehrend stack:
                 action, value = stack.pop()
@@ -502,7 +502,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             gib
         assert action == _fwalk_walk
         isroot, dirfd, toppath, topname, entry = value
-        try:
+        versuch:
             wenn nicht follow_symlinks:
                 # Note: To guard against symlink races, we use the standard
                 # lstat()/open()/fstat() trick.
@@ -511,9 +511,9 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
                 sonst:
                     orig_st = entry.stat(follow_symlinks=Falsch)
             topfd = open(topname, O_RDONLY | O_NONBLOCK, dir_fd=dirfd)
-        except OSError als err:
+        ausser OSError als err:
             wenn isroot:
-                raise
+                wirf
             wenn onerror is nicht Nichts:
                 onerror(err)
             gib
@@ -532,19 +532,19 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
             name = entry.name
             wenn isbytes:
                 name = fsencode(name)
-            try:
+            versuch:
                 wenn entry.is_dir():
                     dirs.append(name)
                     wenn entries is nicht Nichts:
                         entries.append(entry)
                 sonst:
                     nondirs.append(name)
-            except OSError:
-                try:
+            ausser OSError:
+                versuch:
                     # Add dangling symlinks, ignore disappeared files
                     wenn entry.is_symlink():
                         nondirs.append(name)
-                except OSError:
+                ausser OSError:
                     pass
 
         wenn topdown:
@@ -633,17 +633,17 @@ def _execvpe(file, args, env=Nichts):
         path_list = map(fsencode, path_list)
     fuer dir in path_list:
         fullname = path.join(dir, file)
-        try:
+        versuch:
             exec_func(fullname, *argrest)
-        except (FileNotFoundError, NotADirectoryError) als e:
+        ausser (FileNotFoundError, NotADirectoryError) als e:
             last_exc = e
-        except OSError als e:
+        ausser OSError als e:
             last_exc = e
             wenn saved_exc is Nichts:
                 saved_exc = e
     wenn saved_exc is nicht Nichts:
-        raise saved_exc
-    raise last_exc
+        wirf saved_exc
+    wirf last_exc
 
 
 def get_exec_path(env=Nichts):
@@ -666,19 +666,19 @@ def get_exec_path(env=Nichts):
     mit warnings.catch_warnings():
         warnings.simplefilter("ignore", BytesWarning)
 
-        try:
+        versuch:
             path_list = env.get('PATH')
-        except TypeError:
+        ausser TypeError:
             path_list = Nichts
 
         wenn supports_bytes_environ:
-            try:
+            versuch:
                 path_listb = env[b'PATH']
-            except (KeyError, TypeError):
+            ausser (KeyError, TypeError):
                 pass
             sonst:
                 wenn path_list is nicht Nichts:
-                    raise ValueError(
+                    wirf ValueError(
                         "env cannot contain 'PATH' und b'PATH' keys")
                 path_list = path_listb
 
@@ -702,11 +702,11 @@ klasse _Environ(MutableMapping):
         self._data = data
 
     def __getitem__(self, key):
-        try:
+        versuch:
             value = self._data[self.encodekey(key)]
-        except KeyError:
-            # raise KeyError mit the original key value
-            raise KeyError(key) von Nichts
+        ausser KeyError:
+            # wirf KeyError mit the original key value
+            wirf KeyError(key) von Nichts
         gib self.decodevalue(value)
 
     def __setitem__(self, key, value):
@@ -718,11 +718,11 @@ klasse _Environ(MutableMapping):
     def __delitem__(self, key):
         encodedkey = self.encodekey(key)
         unsetenv(encodedkey)
-        try:
+        versuch:
             del self._data[encodedkey]
-        except KeyError:
-            # raise KeyError mit the original key value
-            raise KeyError(key) von Nichts
+        ausser KeyError:
+            # wirf KeyError mit the original key value
+            wirf KeyError(key) von Nichts
 
     def __iter__(self):
         # list() von dict object is an atomic operation
@@ -771,7 +771,7 @@ def _create_environ_mapping():
         # Where Env Var Names Must Be UPPERCASE
         def check_str(value):
             wenn nicht isinstance(value, str):
-                raise TypeError("str expected, nicht %s" % type(value).__name__)
+                wirf TypeError("str expected, nicht %s" % type(value).__name__)
             gib value
         encode = check_str
         decode = str
@@ -785,7 +785,7 @@ def _create_environ_mapping():
         encoding = sys.getfilesystemencoding()
         def encode(value):
             wenn nicht isinstance(value, str):
-                raise TypeError("str expected, nicht %s" % type(value).__name__)
+                wirf TypeError("str expected, nicht %s" % type(value).__name__)
             gib value.encode(encoding, 'surrogateescape')
         def decode(value):
             gib value.decode(encoding, 'surrogateescape')
@@ -826,7 +826,7 @@ __all__.extend(("getenv", "supports_bytes_environ"))
 wenn supports_bytes_environ:
     def _check_bytes(value):
         wenn nicht isinstance(value, bytes):
-            raise TypeError("bytes expected, nicht %s" % type(value).__name__)
+            wirf TypeError("bytes expected, nicht %s" % type(value).__name__)
         gib value
 
     # bytes environ
@@ -891,18 +891,18 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
     def _spawnvef(mode, file, args, env, func):
         # Internal helper; func is the exec*() function to use
         wenn nicht isinstance(args, (tuple, list)):
-            raise TypeError('argv must be a tuple oder a list')
+            wirf TypeError('argv must be a tuple oder a list')
         wenn nicht args oder nicht args[0]:
-            raise ValueError('argv first element cannot be empty')
+            wirf ValueError('argv first element cannot be empty')
         pid = fork()
         wenn nicht pid:
             # Child
-            try:
+            versuch:
                 wenn env is Nichts:
                     func(file, args)
                 sonst:
                     func(file, args, env)
-            except:
+            ausser:
                 _exit(127)
         sonst:
             # Parent
@@ -1021,11 +1021,11 @@ wenn sys.platform != 'vxworks':
     # Supply os.popen()
     def popen(cmd, mode="r", buffering=-1):
         wenn nicht isinstance(cmd, str):
-            raise TypeError("invalid cmd type (%s, expected string)" % type(cmd))
+            wirf TypeError("invalid cmd type (%s, expected string)" % type(cmd))
         wenn mode nicht in ("r", "w"):
-            raise ValueError("invalid mode %r" % mode)
+            wirf ValueError("invalid mode %r" % mode)
         wenn buffering == 0 oder buffering is Nichts:
-            raise ValueError("popen() does nicht support unbuffered streams")
+            wirf ValueError("popen() does nicht support unbuffered streams")
         importiere subprocess
         wenn mode == "r":
             proc = subprocess.Popen(cmd,
@@ -1068,7 +1068,7 @@ wenn sys.platform != 'vxworks':
 # Supply os.fdopen()
 def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
     wenn nicht isinstance(fd, int):
-        raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
+        wirf TypeError("invalid fd type (%s, expected integer)" % type(fd))
     importiere io
     wenn "b" nicht in mode:
         encoding = io.text_encoding(encoding)
@@ -1091,24 +1091,24 @@ def _fspath(path):
     # Work von the object's type to match method resolution of other magic
     # methods.
     path_type = type(path)
-    try:
+    versuch:
         path_repr = path_type.__fspath__(path)
-    except AttributeError:
+    ausser AttributeError:
         wenn hasattr(path_type, '__fspath__'):
-            raise
+            wirf
         sonst:
-            raise TypeError("expected str, bytes oder os.PathLike object, "
+            wirf TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__)
-    except TypeError:
+    ausser TypeError:
         wenn path_type.__fspath__ is Nichts:
-            raise TypeError("expected str, bytes oder os.PathLike object, "
+            wirf TypeError("expected str, bytes oder os.PathLike object, "
                             "not " + path_type.__name__) von Nichts
         sonst:
-            raise
+            wirf
     wenn isinstance(path_repr, (str, bytes)):
         gib path_repr
     sonst:
-        raise TypeError("expected {}.__fspath__() to gib str oder bytes, "
+        wirf TypeError("expected {}.__fspath__() to gib str oder bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
@@ -1128,7 +1128,7 @@ klasse PathLike(abc.ABC):
     @abc.abstractmethod
     def __fspath__(self):
         """Return the file system path representation of the object."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @classmethod
     def __subclasshook__(cls, subclass):

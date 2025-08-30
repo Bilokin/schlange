@@ -192,7 +192,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.code = format[-1]
                 self.byteorder = format[:-1]
                 wenn nicht self.byteorder in byteorders:
-                    raise ValueError("unrecognized packing byteorder: %s" %
+                    wirf ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
@@ -205,7 +205,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
                 sonst:
-                    raise ValueError("unrecognized format code: %s" %
+                    wirf ValueError("unrecognized format code: %s" %
                                      self.code)
 
             def test_one(self, x, pack=struct.pack,
@@ -293,7 +293,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 # '__int__' should be used mit a deprecation warning.
                 klasse BadIndex(object):
                     def __index__(self):
-                        raise TypeError
+                        wirf TypeError
 
                     def __int__(self):
                         gib 42
@@ -317,9 +317,9 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 # Check fuer legitimate values von '__index__'.
                 fuer obj in (Indexable(0), Indexable(10), Indexable(17),
                             Indexable(42), Indexable(100), Indexable(127)):
-                    try:
+                    versuch:
                         struct.pack(format, obj)
-                    except:
+                    ausser:
                         self.fail("integer code pack failed on object "
                                   "with '__index__' method")
 
@@ -495,7 +495,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_bool(self):
         klasse ExplodingBool(object):
             def __bool__(self):
-                raise OSError
+                wirf OSError
         fuer prefix in tuple("<>!=")+('',):
             false = (), [], [], '', 0
             true = [1], 'test', 5, -1, 0xffffffff+1, 0xffffffff/2
@@ -524,9 +524,9 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertFalsch(prefix, msg='encoded bool is nicht one byte: %r'
                                              %packed)
 
-            try:
+            versuch:
                 struct.pack(prefix + '?', ExplodingBool())
-            except OSError:
+            ausser OSError:
                 pass
             sonst:
                 self.fail("Expected OSError: struct.pack(%r, "

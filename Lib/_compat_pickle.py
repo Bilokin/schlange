@@ -140,9 +140,9 @@ PYTHON2_EXCEPTIONS = (
     "ZeroDivisionError",
 )
 
-try:
+versuch:
     WindowsError
-except NameError:
+ausser NameError:
     pass
 sonst:
     PYTHON2_EXCEPTIONS += ("WindowsError",)

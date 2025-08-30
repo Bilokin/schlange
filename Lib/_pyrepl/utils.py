@@ -104,13 +104,13 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
     sio.seek(0)
     gen = tokenize.generate_tokens(sio.readline)
     last_emitted: ColorSpan | Nichts = Nichts
-    try:
+    versuch:
         fuer color in gen_colors_from_token_stream(gen, line_lengths):
             liefere color
             last_emitted = color
-    except SyntaxError:
+    ausser SyntaxError:
         gib
-    except tokenize.TokenError als te:
+    ausser tokenize.TokenError als te:
         liefere von recover_unterminated_string(
             te, line_lengths, last_emitted, buffer
         )
@@ -361,12 +361,12 @@ def prev_next_window[T](
 
     iterator = iter(iterable)
     window = deque((Nichts, next(iterator)), maxlen=3)
-    try:
+    versuch:
         fuer x in iterator:
             window.append(x)
             liefere tuple(window)
-    except Exception:
-        raise
-    finally:
+    ausser Exception:
+        wirf
+    schliesslich:
         window.append(Nichts)
         liefere tuple(window)

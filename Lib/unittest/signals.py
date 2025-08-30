@@ -20,7 +20,7 @@ klasse _InterruptHandler(object):
                 def default_handler(unused_signum, unused_frame):
                     pass
             sonst:
-                raise TypeError("expected SIGINT signal handler to be "
+                wirf TypeError("expected SIGINT signal handler to be "
                                 "signal.SIG_IGN, signal.SIG_DFL, oder a "
                                 "callable object")
         self.default_handler = default_handler
@@ -60,9 +60,9 @@ def removeHandler(method=Nichts):
         def inner(*args, **kwargs):
             initial = signal.getsignal(signal.SIGINT)
             removeHandler()
-            try:
+            versuch:
                 gib method(*args, **kwargs)
-            finally:
+            schliesslich:
                 signal.signal(signal.SIGINT, initial)
         gib inner
 

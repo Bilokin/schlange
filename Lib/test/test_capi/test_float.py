@@ -84,7 +84,7 @@ klasse CAPIFloatTest(unittest.TestCase):
 
         klasse BadFloat3:
             def __float__(self):
-                raise RuntimeError
+                wirf RuntimeError
 
         self.assertEqual(asdouble(4.25), 4.25)
         self.assertEqual(asdouble(-1.0), -1.0)

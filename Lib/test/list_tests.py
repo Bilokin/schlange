@@ -277,7 +277,7 @@ klasse CommonTest(seq_tests.CommonTest):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise StopIteration
+                wirf StopIteration
             def __length_hint__(self):
                 gib sys.maxsize
         a = self.type2test([1,2,3,4])
@@ -346,7 +346,7 @@ klasse CommonTest(seq_tests.CommonTest):
         klasse BadCmp:
             def __eq__(self, other):
                 wenn other == 2:
-                    raise BadExc()
+                    wirf BadExc()
                 gib Falsch
 
         a = self.type2test([0, 1, 2, 3])
@@ -354,7 +354,7 @@ klasse CommonTest(seq_tests.CommonTest):
 
         klasse BadCmp2:
             def __eq__(self, other):
-                raise BadExc()
+                wirf BadExc()
 
         d = self.type2test('abcdefghcij')
         d.remove('c')
@@ -560,7 +560,7 @@ klasse CommonTest(seq_tests.CommonTest):
         # Bug #1242657
         klasse F(object):
             def __iter__(self):
-                raise KeyboardInterrupt
+                wirf KeyboardInterrupt
         self.assertRaises(KeyboardInterrupt, list, F())
 
     def test_exhausted_iterator(self):

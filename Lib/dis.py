@@ -76,9 +76,9 @@ def _try_compile(source, name):
        Utility function to accept strings in functions that otherwise
        expect code objects
     """
-    try:
+    versuch:
         gib compile(source, name, 'eval')
-    except SyntaxError:
+    ausser SyntaxError:
         pass
     gib compile(source, name, 'exec')
 
@@ -114,9 +114,9 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
         fuer name, x1 in items:
             wenn isinstance(x1, _have_code):
                 drucke("Disassembly of %s:" % name, file=file)
-                try:
+                versuch:
                     dis(x1, file=file, depth=depth, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
-                except TypeError als msg:
+                ausser TypeError als msg:
                     drucke("Sorry:", msg, file=file)
                 drucke(file=file)
     sowenn hasattr(x, 'co_code'): # Code object
@@ -133,19 +133,19 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
     sowenn isinstance(x, str):    # Source code
         _disassemble_str(x, file=file, depth=depth, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
     sonst:
-        raise TypeError("don't know how to disassemble %s objects" %
+        wirf TypeError("don't know how to disassemble %s objects" %
                         type(x).__name__)
 
 def distb(tb=Nichts, *, file=Nichts, show_caches=Falsch, adaptive=Falsch, show_offsets=Falsch, show_positions=Falsch):
     """Disassemble a traceback (default: last traceback)."""
     wenn tb is Nichts:
-        try:
+        versuch:
             wenn hasattr(sys, 'last_exc'):
                 tb = sys.last_exc.__traceback__
             sonst:
                 tb = sys.last_traceback
-        except AttributeError:
-            raise RuntimeError("no last traceback to disassemble") von Nichts
+        ausser AttributeError:
+            wirf RuntimeError("no last traceback to disassemble") von Nichts
         waehrend tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
 
@@ -208,7 +208,7 @@ def _get_code_object(x):
     # By now, wenn we don't have a code object, we can't disassemble x.
     wenn hasattr(x, 'co_code'):
         gib x
-    raise TypeError("don't know how to disassemble %s objects" %
+    wirf TypeError("don't know how to disassemble %s objects" %
                     type(x).__name__)
 
 def _deoptop(op):
@@ -223,9 +223,9 @@ def _get_code_array(co, adaptive):
         fuer i in range(0, len(code), 2):
             op, arg = code[i], code[i+1]
             wenn op == ENTER_EXECUTOR:
-                try:
+                versuch:
                     ex = get_executor(co, i)
-                except (ValueError, RuntimeError):
+                ausser (ValueError, RuntimeError):
                     ex = Nichts
 
                 wenn ex:
@@ -733,7 +733,7 @@ def _parse_varint(iterator):
 def _parse_exception_table(code):
     iterator = iter(code.co_exceptiontable)
     entries = []
-    try:
+    versuch:
         waehrend Wahr:
             start = _parse_varint(iterator)*2
             length = _parse_varint(iterator)*2
@@ -743,7 +743,7 @@ def _parse_exception_table(code):
             depth = dl >> 1
             lasti = bool(dl&1)
             entries.append(_ExceptionTableEntry(start, end, target, depth, lasti))
-    except StopIteration:
+    ausser StopIteration:
         gib entries
 
 def _is_backward_jump(op):

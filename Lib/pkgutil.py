@@ -72,16 +72,16 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
         liefere info
 
         wenn info.ispkg:
-            try:
+            versuch:
                 __import__(info.name)
-            except ImportError:
+            ausser ImportError:
                 wenn onerror is nicht Nichts:
                     onerror(info.name)
-            except Exception:
+            ausser Exception:
                 wenn onerror is nicht Nichts:
                     onerror(info.name)
                 sonst:
-                    raise
+                    wirf
             sonst:
                 path = getattr(sys.modules[info.name], '__path__', Nichts) oder []
 
@@ -104,7 +104,7 @@ def iter_modules(path=Nichts, prefix=''):
     wenn path is Nichts:
         importers = iter_importers()
     sowenn isinstance(path, str):
-        raise ValueError("path must be Nichts oder list of paths to look fuer "
+        wirf ValueError("path must be Nichts oder list of paths to look fuer "
                         "modules in")
     sonst:
         importers = map(get_importer, path)
@@ -131,9 +131,9 @@ def _iter_file_finder_modules(importer, prefix=''):
 
     yielded = {}
     importiere inspect
-    try:
+    versuch:
         filenames = os.listdir(importer.path)
-    except OSError:
+    ausser OSError:
         # ignore unreadable directories like importiere does
         filenames = []
     filenames.sort()  # handle packages before same-named modules
@@ -148,9 +148,9 @@ def _iter_file_finder_modules(importer, prefix=''):
 
         wenn nicht modname und os.path.isdir(path) und '.' nicht in fn:
             modname = fn
-            try:
+            versuch:
                 dircontents = os.listdir(path)
-            except OSError:
+            ausser OSError:
                 # ignore unreadable directories like importiere does
                 dircontents = []
             fuer fn in dircontents:
@@ -169,7 +169,7 @@ iter_importer_modules.register(
     importlib.machinery.FileFinder, _iter_file_finder_modules)
 
 
-try:
+versuch:
     importiere zipimport
     von zipimport importiere zipimporter
 
@@ -203,7 +203,7 @@ try:
 
     iter_importer_modules.register(zipimporter, iter_zipimport_modules)
 
-except ImportError:
+ausser ImportError:
     pass
 
 
@@ -217,15 +217,15 @@ def get_importer(path_item):
     rescan of sys.path_hooks is necessary.
     """
     path_item = os.fsdecode(path_item)
-    try:
+    versuch:
         importer = sys.path_importer_cache[path_item]
-    except KeyError:
+    ausser KeyError:
         fuer path_hook in sys.path_hooks:
-            try:
+            versuch:
                 importer = path_hook(path_item)
                 sys.path_importer_cache.setdefault(path_item, importer)
                 breche
-            except ImportError:
+            ausser ImportError:
                 pass
         sonst:
             importer = Nichts
@@ -246,7 +246,7 @@ def iter_importers(fullname=""):
     """
     wenn fullname.startswith('.'):
         msg = "Relative module name {!r} nicht supported".format(fullname)
-        raise ImportError(msg)
+        wirf ImportError(msg)
     wenn '.' in fullname:
         # Get the containing package's __path__
         pkg_name = fullname.rpartition(".")[0]
@@ -276,7 +276,7 @@ def extend_path(path, name):
 
     It also looks fuer *.pkg files beginning where * matches the name
     argument.  This feature is similar to *.pth files (see site.py),
-    except that it doesn't special-case lines starting mit 'import'.
+    ausser that it doesn't special-case lines starting mit 'import'.
     A *.pkg file is trusted at face value: apart von checking for
     duplicates, all entries found in a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
@@ -290,7 +290,7 @@ def extend_path(path, name):
     It is assumed that sys.path is a sequence.  Items of sys.path that
     are nicht (unicode oder 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
-    errors when used als filenames may cause this function to raise an
+    errors when used als filenames may cause this function to wirf an
     exception (in line mit os.path.isdir() behavior).
     """
 
@@ -305,9 +305,9 @@ def extend_path(path, name):
 
     parent_package, _, final_name = name.rpartition('.')
     wenn parent_package:
-        try:
+        versuch:
             search_path = sys.modules[parent_package].__path__
-        except (KeyError, AttributeError):
+        ausser (KeyError, AttributeError):
             # We can't do anything: find_loader() returns Nichts when
             # passed a dotted name.
             gib path
@@ -339,9 +339,9 @@ def extend_path(path, name):
         # It looks fuer a file named "zope.app.pkg"
         pkgfile = os.path.join(dir, sname_pkg)
         wenn os.path.isfile(pkgfile):
-            try:
+            versuch:
                 f = open(pkgfile)
-            except OSError als msg:
+            ausser OSError als msg:
                 sys.stderr.write("Can't open %s: %s\n" %
                                  (pkgfile, msg))
             sonst:
@@ -424,7 +424,7 @@ def resolve_name(name):
     hierarchy within that package. Only one importiere is needed in this form. If
     it ends mit the colon, then a module object is returned.
 
-    The function will gib an object (which might be a module), oder raise one
+    The function will gib an object (which might be a module), oder wirf one
     of the following exceptions:
 
     ValueError - wenn `name` isn't in a recognised format
@@ -443,7 +443,7 @@ def resolve_name(name):
 
     m = _NAME_PATTERN.match(name)
     wenn nicht m:
-        raise ValueError(f'invalid format: {name!r}')
+        wirf ValueError(f'invalid format: {name!r}')
     gd = m.groupdict()
     wenn gd.get('cln'):
         # there is a colon - a one-step importiere is all that's needed
@@ -459,11 +459,11 @@ def resolve_name(name):
         waehrend parts:
             p = parts[0]
             s = f'{modname}.{p}'
-            try:
+            versuch:
                 mod = importlib.import_module(s)
                 parts.pop(0)
                 modname = s
-            except ImportError:
+            ausser ImportError:
                 breche
     # wenn we reach this point, mod is the module, already imported, und
     # parts is the list of parts in the object hierarchy to be traversed, oder

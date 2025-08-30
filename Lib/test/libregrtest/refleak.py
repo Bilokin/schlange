@@ -12,9 +12,9 @@ von test.support importiere refleak_helper
 von .runtests importiere HuntRefleak
 von .utils importiere clear_caches
 
-try:
+versuch:
     von _abc importiere _get_dump
-except ImportError:
+ausser ImportError:
     importiere weakref
 
     def _get_dump(cls):
@@ -36,9 +36,9 @@ def save_support_xml(filename):
 
 
 def restore_support_xml(filename):
-    try:
+    versuch:
         fp = open(filename, 'rb')
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         gib
 
     importiere pickle
@@ -62,7 +62,7 @@ def runtest_refleak(test_name, test_func,
     importiere collections.abc
 
     wenn nicht hasattr(sys, 'gettotalrefcount'):
-        raise Exception("Tracking reference leaks requires a debug build "
+        wirf Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
     # Avoid false positives due to various caches
@@ -79,9 +79,9 @@ def runtest_refleak(test_name, test_func,
     # linecache.clearcache(). We need to save und restore it to avoid false
     # positives.
     linecache_data = linecache.cache.copy(), linecache._interactive_cache.copy() # type: ignore[attr-defined]
-    try:
+    versuch:
         importiere zipimport
-    except ImportError:
+    ausser ImportError:
         zdc = Nichts # Run unmodified on platforms without zipimport support
     sonst:
         # private attribute that mypy doesn't know about:
@@ -134,9 +134,9 @@ def runtest_refleak(test_name, test_func,
         support.gc_collect()
         current = refleak_helper._hunting_for_refleaks
         refleak_helper._hunting_for_refleaks = Wahr
-        try:
+        versuch:
             result = test_func()
-        finally:
+        schliesslich:
             refleak_helper._hunting_for_refleaks = current
 
         save_support_xml(xml_filename)
@@ -244,9 +244,9 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     linecache._interactive_cache.update(linteractive)
     linecache.cache.clear()
     linecache.cache.update(lcache)
-    try:
+    versuch:
         importiere zipimport
-    except ImportError:
+    ausser ImportError:
         pass # Run unmodified on platforms without zipimport support
     sonst:
         zipimport._zip_directory_cache.clear()

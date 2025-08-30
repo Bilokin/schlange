@@ -11,9 +11,9 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 von _ctypes importiere _Pointer,  _SimpleCData
 
 
-try:
+versuch:
     WINFUNCTYPE = ctypes.WINFUNCTYPE
-except AttributeError:
+ausser AttributeError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 

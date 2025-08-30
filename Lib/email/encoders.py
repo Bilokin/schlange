@@ -53,9 +53,9 @@ def encode_7or8bit(msg):
         gib
     # We play a trick to make this go fast.  If decoding von ASCII succeeds,
     # we know the data must be 7bit, otherwise treat it als 8bit.
-    try:
+    versuch:
         orig.decode('ascii')
-    except UnicodeError:
+    ausser UnicodeError:
         msg['Content-Transfer-Encoding'] = '8bit'
     sonst:
         msg['Content-Transfer-Encoding'] = '7bit'

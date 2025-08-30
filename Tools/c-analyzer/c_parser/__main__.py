@@ -27,9 +27,9 @@ def _format_vartype(vartype):
         gib vartype
 
     data = vartype
-    try:
+    versuch:
         vartype = data['vartype']
-    except KeyError:
+    ausser KeyError:
         storage, typequal, typespec, abstract = vartype.values()
     sonst:
         storage = data.get('storage')
@@ -118,7 +118,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
     sowenn kind == KIND.STATEMENT:
         pass
     sonst:
-        raise NotImplementedError(item)
+        wirf NotImplementedError(item)
     wenn isforward:
         fwd = '*'
         wenn nicht showfwd und showfwd is nicht Nichts:
@@ -130,7 +130,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
 
 
 def fmt_full(filename, item, *, showfwd=Nichts):
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 FORMATS = {
@@ -175,10 +175,10 @@ def cmd_parse(filenames, *,
               ):
     wenn 'get_file_preprocessor' nicht in kwargs:
         kwargs['get_file_preprocessor'] = _get_preprocessor()
-    try:
+    versuch:
         do_fmt = FORMATS[fmt]
-    except KeyError:
-        raise ValueError(f'unsupported fmt {fmt!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported fmt {fmt!r}')
     fuer filename, relfile in main_for_filenames(filenames, iter_filenames, relroot):
         fuer item in _iter_parsed(filename, **kwargs):
             item = item.fix_filename(relroot, fixroot=Falsch, normalize=Falsch)
@@ -196,7 +196,7 @@ def cmd_data(filenames,
              **kwargs
              ):
     # XXX
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 COMMANDS = {
@@ -248,10 +248,10 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset='parse'):
 
 
 def main(cmd, cmd_kwargs):
-    try:
+    versuch:
         run_cmd = COMMANDS[cmd][0]
-    except KeyError:
-        raise ValueError(f'unsupported cmd {cmd!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported cmd {cmd!r}')
     run_cmd(**cmd_kwargs)
 
 

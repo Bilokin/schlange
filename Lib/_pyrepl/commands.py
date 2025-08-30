@@ -226,7 +226,7 @@ klasse ctrl_c(Command):
     def do(self) -> Nichts:
         self.reader.console.finish()
         self.reader.finish()
-        raise KeyboardInterrupt
+        wirf KeyboardInterrupt
 
 
 klasse suspend(Command):
@@ -427,7 +427,7 @@ klasse delete(EditCommand):
         ):
             r.update_screen()
             r.console.finish()
-            raise EOFError
+            wirf EOFError
         fuer i in range(r.get_arg()):
             wenn r.pos != len(b):
                 del b[r.pos]

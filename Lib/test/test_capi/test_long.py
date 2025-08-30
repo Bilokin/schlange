@@ -553,7 +553,7 @@ klasse LongTests(unittest.TestCase):
                 # gib to be exactly the right size.
                 expect_2 = (n,)
 
-            try:
+            versuch:
                 actual = asnativebytes(v, buffer, 0, -1)
                 self.assertIn(actual, expect_1)
 
@@ -569,7 +569,7 @@ klasse LongTests(unittest.TestCase):
                 self.assertIn(actual, expect_2, bytes_be.hex())
                 actual = asnativebytes(v, buffer, n, 5)
                 self.assertIn(actual, expect_2, bytes_be.hex())
-            except AssertionError als ex:
+            ausser AssertionError als ex:
                 value_hex = ''.join(reversed([
                     f'{b:02X}{"" wenn i % 8 sonst "_"}'
                     fuer i, b in enumerate(bytes_le, start=1)
@@ -579,8 +579,8 @@ klasse LongTests(unittest.TestCase):
                     drucke(n, 'bytes')
                     drucke('hex =', value_hex)
                     drucke('int =', v)
-                    raise
-                raise AssertionError(f"Value: 0x{value_hex}") von ex
+                    wirf
+                wirf AssertionError(f"Value: 0x{value_hex}") von ex
 
     def test_long_fromnativebytes(self):
         importiere math

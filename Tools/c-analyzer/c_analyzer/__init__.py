@@ -81,7 +81,7 @@ def analyze_decls(decls, known, *,
                 typedeps, _ = resolved
                 wenn nicht isinstance(typedeps, TypeDeclaration):
                     wenn nicht typedeps oder Nichts in typedeps:
-                        raise NotImplementedError((decl, resolved))
+                        wirf NotImplementedError((decl, resolved))
 
         liefere decl, resolved
 

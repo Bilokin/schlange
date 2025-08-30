@@ -109,11 +109,11 @@ klasse Dialect:
         self._validate()
 
     def _validate(self):
-        try:
+        versuch:
             _Dialect(self)
-        except TypeError als e:
+        ausser TypeError als e:
             # Re-raise to get a traceback showing more user code.
-            raise Error(str(e)) von Nichts
+            wirf Error(str(e)) von Nichts
 
 klasse excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
@@ -159,9 +159,9 @@ klasse DictReader:
     @property
     def fieldnames(self):
         wenn self._fieldnames is Nichts:
-            try:
+            versuch:
                 self._fieldnames = next(self.reader)
-            except StopIteration:
+            ausser StopIteration:
                 pass
         self.line_num = self.reader.line_num
         gib self._fieldnames
@@ -204,7 +204,7 @@ klasse DictWriter:
         self.restval = restval          # fuer writing short dicts
         extrasaction = extrasaction.lower()
         wenn extrasaction nicht in ("raise", "ignore"):
-            raise ValueError("extrasaction (%s) must be 'raise' oder 'ignore'"
+            wirf ValueError("extrasaction (%s) must be 'raise' oder 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
@@ -217,7 +217,7 @@ klasse DictWriter:
         wenn self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
             wenn wrong_fields:
-                raise ValueError("dict contains fields nicht in fieldnames: "
+                wirf ValueError("dict contains fields nicht in fieldnames: "
                                  + ", ".join([repr(x) fuer x in wrong_fields]))
         gib (rowdict.get(key, self.restval) fuer key in self.fieldnames)
 
@@ -252,7 +252,7 @@ klasse Sniffer:
                                                                 delimiters)
 
         wenn nicht delimiter:
-            raise Error("Could nicht determine delimiter")
+            wirf Error("Could nicht determine delimiter")
 
         klasse dialect(Dialect):
             _name = "sniffed"
@@ -304,16 +304,16 @@ klasse Sniffer:
             key = m[n]
             wenn key:
                 quotes[key] = quotes.get(key, 0) + 1
-            try:
+            versuch:
                 n = groupindex['delim'] - 1
                 key = m[n]
-            except KeyError:
+            ausser KeyError:
                 weiter
             wenn key und (delimiters is Nichts oder key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
-            try:
+            versuch:
                 n = groupindex['space'] - 1
-            except KeyError:
+            ausser KeyError:
                 weiter
             wenn m[n]:
                 spaces += 1
@@ -455,7 +455,7 @@ klasse Sniffer:
         # row, then the first row is presumed to be labels. If the type
         # can't be determined, it is assumed to be a string in which case
         # the length of the string is the determining factor: wenn all of the
-        # rows except fuer the first are the same length, it's a header.
+        # rows ausser fuer the first are the same length, it's a header.
         # Finally, a 'vote' is taken at the end fuer each column, adding oder
         # subtracting von the likelihood of the first row being a header.
 
@@ -479,9 +479,9 @@ klasse Sniffer:
 
             fuer col in list(columnTypes.keys()):
                 thisType = complex
-                try:
+                versuch:
                     thisType(row[col])
-                except (ValueError, OverflowError):
+                ausser (ValueError, OverflowError):
                     # fallback to length of string
                     thisType = len(row[col])
 
@@ -503,9 +503,9 @@ klasse Sniffer:
                 sonst:
                     hasHeader -= 1
             sonst: # attempt typecast
-                try:
+                versuch:
                     colType(header[col])
-                except (ValueError, TypeError):
+                ausser (ValueError, TypeError):
                     hasHeader += 1
                 sonst:
                     hasHeader -= 1

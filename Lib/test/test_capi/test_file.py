@@ -27,31 +27,31 @@ klasse CAPIFileTest(unittest.TestCase):
             # FileIO
             fp.seek(0)
             obj = pyfile_fromfd(fd, filename, "rb", 0, NULL, NULL, NULL, 0)
-            try:
+            versuch:
                 self.assertIsInstance(obj, _io.FileIO)
                 self.assertEqual(obj.readline(), FIRST_LINE.encode())
-            finally:
+            schliesslich:
                 obj.close()
 
             # BufferedReader
             fp.seek(0)
             obj = pyfile_fromfd(fd, filename, "rb", 1024, NULL, NULL, NULL, 0)
-            try:
+            versuch:
                 self.assertIsInstance(obj, _io.BufferedReader)
                 self.assertEqual(obj.readline(), FIRST_LINE.encode())
-            finally:
+            schliesslich:
                 obj.close()
 
             # TextIOWrapper
             fp.seek(0)
             obj = pyfile_fromfd(fd, filename, "r", 1,
                                 "utf-8", "replace", NULL, 0)
-            try:
+            versuch:
                 self.assertIsInstance(obj, _io.TextIOWrapper)
                 self.assertEqual(obj.encoding, "utf-8")
                 self.assertEqual(obj.errors, "replace")
                 self.assertEqual(obj.readline(), FIRST_LINE_NORM)
-            finally:
+            schliesslich:
                 obj.close()
 
     def test_pyfile_getline(self):
@@ -198,13 +198,13 @@ klasse CAPIFileTest(unittest.TestCase):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
 
-        try:
+        versuch:
             old_stdout = os.dup(STDOUT_FD)
-        except OSError als exc:
+        ausser OSError als exc:
             # os.dup(STDOUT_FD) is nicht supported on WASI
             self.skipTest(f"os.dup() failed mit {exc!r}")
 
-        try:
+        versuch:
             mit open(filename, "wb") als fp:
                 # PyFile_NewStdPrinter() only accepts fileno(stdout)
                 # oder fileno(stderr) file descriptor.
@@ -216,7 +216,7 @@ klasse CAPIFileTest(unittest.TestCase):
                 # The surrogate character is encoded with
                 # the "surrogateescape" error handler
                 self.assertEqual(file.write("[\udc80]"), 8)
-        finally:
+        schliesslich:
             os.dup2(old_stdout, STDOUT_FD)
             os.close(old_stdout)
 
@@ -249,18 +249,18 @@ klasse CAPIFileTest(unittest.TestCase):
             filenames.append(os_helper.TESTFN_UNENCODABLE)
         fuer filename in filenames:
             mit self.subTest(filename=filename):
-                try:
+                versuch:
                     mit open(filename, "wb") als fp:
                         fp.write(source)
-                except OSError:
+                ausser OSError:
                     # TESTFN_UNDECODABLE cannot be used to create a file
                     # on macOS/WASI.
                     filename = Nichts
                     weiter
-                try:
+                versuch:
                     data = py_fopen(filename, "rb")
                     self.assertEqual(data, source[:256])
-                finally:
+                schliesslich:
                     os_helper.unlink(filename)
 
         # embedded null character/byte in the filename

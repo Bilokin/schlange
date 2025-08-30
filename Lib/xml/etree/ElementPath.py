@@ -79,12 +79,12 @@ def xpath_tokenizer(pattern, namespaces=Nichts):
         wenn tag und tag[0] != "{":
             wenn ":" in tag:
                 prefix, uri = tag.split(":", 1)
-                try:
+                versuch:
                     wenn nicht namespaces:
-                        raise KeyError
+                        wirf KeyError
                     liefere ttype, "{%s}%s" % (namespaces[prefix], uri)
-                except KeyError:
-                    raise SyntaxError("prefix %r nicht found in prefix map" % prefix) von Nichts
+                ausser KeyError:
+                    wirf SyntaxError("prefix %r nicht found in prefix map" % prefix) von Nichts
             sowenn default_namespace und nicht parsing_attribute:
                 liefere ttype, "{%s}%s" % (default_namespace, tag)
             sonst:
@@ -146,7 +146,7 @@ def _prepare_tag(tag):
                 wenn _isinstance(el_tag, _str) und el_tag[ns_only] == ns:
                     liefere elem
     sonst:
-        raise RuntimeError(f"internal parser error, got {tag}")
+        wirf RuntimeError(f"internal parser error, got {tag}")
     gib select
 
 
@@ -181,16 +181,16 @@ def prepare_self(next, token):
     gib select
 
 def prepare_descendant(next, token):
-    try:
+    versuch:
         token = next()
-    except StopIteration:
+    ausser StopIteration:
         gib
     wenn token[0] == "*":
         tag = "*"
     sowenn nicht token[0]:
         tag = token[1]
     sonst:
-        raise SyntaxError("invalid descendant")
+        wirf SyntaxError("invalid descendant")
 
     wenn _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
@@ -213,7 +213,7 @@ def prepare_descendant(next, token):
 
 def prepare_parent(next, token):
     def select(context, result):
-        # FIXME: raise error wenn .. is applied at toplevel?
+        # FIXME: wirf error wenn .. is applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
         fuer elem in result:
@@ -230,9 +230,9 @@ def prepare_predicate(next, token):
     signature = []
     predicate = []
     waehrend 1:
-        try:
+        versuch:
             token = next()
-        except StopIteration:
+        ausser StopIteration:
             gib
         wenn token[0] == "]":
             breche
@@ -309,32 +309,32 @@ def prepare_predicate(next, token):
             # [index]
             index = int(predicate[0]) - 1
             wenn index < 0:
-                raise SyntaxError("XPath position >= 1 expected")
+                wirf SyntaxError("XPath position >= 1 expected")
         sonst:
             wenn predicate[0] != "last":
-                raise SyntaxError("unsupported function")
+                wirf SyntaxError("unsupported function")
             wenn signature == "-()-":
-                try:
+                versuch:
                     index = int(predicate[2]) - 1
-                except ValueError:
-                    raise SyntaxError("unsupported expression")
+                ausser ValueError:
+                    wirf SyntaxError("unsupported expression")
                 wenn index > -2:
-                    raise SyntaxError("XPath offset von last() must be negative")
+                    wirf SyntaxError("XPath offset von last() must be negative")
             sonst:
                 index = -1
         def select(context, result):
             parent_map = get_parent_map(context)
             fuer elem in result:
-                try:
+                versuch:
                     parent = parent_map[elem]
                     # FIXME: what wenn the selector is "*" ?
                     elems = list(parent.findall(elem.tag))
                     wenn elems[index] is elem:
                         liefere elem
-                except (IndexError, KeyError):
+                ausser (IndexError, KeyError):
                     pass
         gib select
-    raise SyntaxError("invalid predicate")
+    wirf SyntaxError("invalid predicate")
 
 ops = {
     "": prepare_child,
@@ -366,29 +366,29 @@ def iterfind(elem, path, namespaces=Nichts):
     wenn namespaces:
         cache_key += tuple(sorted(namespaces.items()))
 
-    try:
+    versuch:
         selector = _cache[cache_key]
-    except KeyError:
+    ausser KeyError:
         wenn len(_cache) > 100:
             _cache.clear()
         wenn path[:1] == "/":
-            raise SyntaxError("cannot use absolute path on element")
+            wirf SyntaxError("cannot use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
-        try:
+        versuch:
             token = next()
-        except StopIteration:
+        ausser StopIteration:
             gib
         selector = []
         waehrend 1:
-            try:
+            versuch:
                 selector.append(ops[token[0]](next, token))
-            except StopIteration:
-                raise SyntaxError("invalid path") von Nichts
-            try:
+            ausser StopIteration:
+                wirf SyntaxError("invalid path") von Nichts
+            versuch:
                 token = next()
                 wenn token[0] == "/":
                     token = next()
-            except StopIteration:
+            ausser StopIteration:
                 breche
         _cache[cache_key] = selector
     # execute selector pattern
@@ -414,10 +414,10 @@ def findall(elem, path, namespaces=Nichts):
 # Find text fuer first matching object.
 
 def findtext(elem, path, default=Nichts, namespaces=Nichts):
-    try:
+    versuch:
         elem = next(iterfind(elem, path, namespaces))
         wenn elem.text is Nichts:
             gib ""
         gib elem.text
-    except StopIteration:
+    ausser StopIteration:
         gib default

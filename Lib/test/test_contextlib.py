@@ -87,16 +87,16 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def woohoo():
             state.append(1)
-            try:
+            versuch:
                 liefere 42
-            finally:
+            schliesslich:
                 state.append(999)
         mit self.assertRaises(ZeroDivisionError):
             mit woohoo() als x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
-                raise ZeroDivisionError()
+                wirf ZeroDivisionError()
         self.assertEqual(state, [1, 42, 999])
 
     def test_contextmanager_traceback(self):
@@ -104,10 +104,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
         def f():
             liefere
 
-        try:
+        versuch:
             mit f():
                 1/0
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
@@ -118,10 +118,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
         klasse RuntimeErrorSubclass(RuntimeError):
             pass
 
-        try:
+        versuch:
             mit f():
-                raise RuntimeErrorSubclass(42)
-        except RuntimeErrorSubclass als e:
+                wirf RuntimeErrorSubclass(42)
+        ausser RuntimeErrorSubclass als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
@@ -136,10 +136,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
             StopIterationSubclass('spam'),
         ):
             mit self.subTest(type=type(stop_exc)):
-                try:
+                versuch:
                     mit f():
-                        raise stop_exc
-                except type(stop_exc) als e:
+                        wirf stop_exc
+                ausser type(stop_exc) als e:
                     self.assertIs(e, stop_exc)
                     frames = traceback.extract_tb(e.__traceback__)
                 sonst:
@@ -161,9 +161,9 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_trap_yield_after_throw(self):
         @contextmanager
         def whoo():
-            try:
+            versuch:
                 liefere
-            except:
+            ausser:
                 liefere
         ctx = whoo()
         ctx.__enter__()
@@ -198,10 +198,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_non_normalised(self):
         @contextmanager
         def whoo():
-            try:
+            versuch:
                 liefere
-            except RuntimeError:
-                raise SyntaxError
+            ausser RuntimeError:
+                wirf SyntaxError
 
         ctx = whoo()
         ctx.__enter__()
@@ -213,16 +213,16 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def woohoo():
             state.append(1)
-            try:
+            versuch:
                 liefere 42
-            except ZeroDivisionError als e:
+            ausser ZeroDivisionError als e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
         mit woohoo() als x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
-            raise ZeroDivisionError(999)
+            wirf ZeroDivisionError(999)
         self.assertEqual(state, [1, 42, 999])
 
     def test_contextmanager_except_stopiter(self):
@@ -235,10 +235,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
 
         fuer stop_exc in (StopIteration('spam'), StopIterationSubclass('spam')):
             mit self.subTest(type=type(stop_exc)):
-                try:
+                versuch:
                     mit woohoo():
-                        raise stop_exc
-                except Exception als ex:
+                        wirf stop_exc
+                ausser Exception als ex:
                     self.assertIs(ex, stop_exc)
                 sonst:
                     self.fail(f'{stop_exc} was suppressed')
@@ -256,10 +256,10 @@ def woohoo():
         woohoo = locals['woohoo']
 
         stop_exc = StopIteration('spam')
-        try:
+        versuch:
             mit woohoo():
-                raise stop_exc
-        except Exception als ex:
+                wirf stop_exc
+        ausser Exception als ex:
             self.assertIs(ex, stop_exc)
         sonst:
             self.fail('StopIteration was suppressed')
@@ -267,22 +267,22 @@ def woohoo():
     def test_contextmanager_do_not_unchain_non_stopiteration_exceptions(self):
         @contextmanager
         def test_issue29692():
-            try:
+            versuch:
                 liefere
-            except Exception als exc:
-                raise RuntimeError('issue29692:Chained') von exc
-        try:
+            ausser Exception als exc:
+                wirf RuntimeError('issue29692:Chained') von exc
+        versuch:
             mit test_issue29692():
-                raise ZeroDivisionError
-        except Exception als ex:
+                wirf ZeroDivisionError
+        ausser Exception als ex:
             self.assertIs(type(ex), RuntimeError)
             self.assertEqual(ex.args[0], 'issue29692:Chained')
             self.assertIsInstance(ex.__cause__, ZeroDivisionError)
 
-        try:
+        versuch:
             mit test_issue29692():
-                raise StopIteration('issue29692:Unchained')
-        except Exception als ex:
+                wirf StopIteration('issue29692:Unchained')
+        ausser Exception als ex:
             self.assertIs(type(ex), StopIteration)
             self.assertEqual(ex.args[0], 'issue29692:Unchained')
             self.assertIsNichts(ex.__cause__)
@@ -290,10 +290,10 @@ def woohoo():
     def test_contextmanager_wrap_runtimeerror(self):
         @contextmanager
         def woohoo():
-            try:
+            versuch:
                 liefere
-            except Exception als exc:
-                raise RuntimeError(f'caught {exc}') von exc
+            ausser Exception als exc:
+                wirf RuntimeError(f'caught {exc}') von exc
 
         mit self.assertRaises(RuntimeError):
             mit woohoo():
@@ -304,7 +304,7 @@ def woohoo():
         # done by the generator machinery oder by the generator itself.
         mit self.assertRaises(StopIteration):
             mit woohoo():
-                raise StopIteration
+                wirf StopIteration
 
     def _create_contextmanager_attribs(self):
         def attribs(**kw):
@@ -443,7 +443,7 @@ klasse FileContextTestCase(unittest.TestCase):
 
     def testWithOpen(self):
         tfn = tempfile.mktemp()
-        try:
+        versuch:
             mit open(tfn, "w", encoding="utf-8") als f:
                 self.assertFalsch(f.closed)
                 f.write("Booh\n")
@@ -454,7 +454,7 @@ klasse FileContextTestCase(unittest.TestCase):
                     self.assertEqual(f.read(), "Booh\n")
                     1 / 0
             self.assertWahr(f.closed)
-        finally:
+        schliesslich:
             os_helper.unlink(tfn)
 
 klasse LockContextTestCase(unittest.TestCase):
@@ -543,14 +543,14 @@ klasse TestContextDecorator(unittest.TestCase):
 
         mit self.assertRaisesRegex(NameError, 'foo'):
             mit context:
-                raise NameError('foo')
+                wirf NameError('foo')
         self.assertIsNotNichts(context.exc)
         self.assertIs(context.exc[0], NameError)
 
         context = mycontext()
         context.catch = Wahr
         mit context:
-            raise NameError('foo')
+            wirf NameError('foo')
         self.assertIsNotNichts(context.exc)
         self.assertIs(context.exc[0], NameError)
 
@@ -573,7 +573,7 @@ klasse TestContextDecorator(unittest.TestCase):
         def test():
             self.assertIsNichts(context.exc)
             self.assertWahr(context.started)
-            raise NameError('foo')
+            wirf NameError('foo')
 
         mit self.assertRaisesRegex(NameError, 'foo'):
             test()
@@ -849,13 +849,13 @@ klasse TestBaseExitStack:
         # internal contextlib frames).
 
         def raise_exc(exc):
-            raise exc
+            wirf exc
 
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.callback(raise_exc, ValueError)
                 1/0
-        except ValueError als e:
+        ausser ValueError als e:
             exc = e
 
         self.assertIsInstance(exc, ValueError)
@@ -883,7 +883,7 @@ klasse TestBaseExitStack:
             def __enter__(self):
                 gib self
             def __exit__(self, *exc_details):
-                raise self.exc
+                wirf self.exc
 
         klasse RaiseExcWithContext:
             def __init__(self, outer, inner):
@@ -892,10 +892,10 @@ klasse TestBaseExitStack:
             def __enter__(self):
                 gib self
             def __exit__(self, *exc_details):
-                try:
-                    raise self.inner
-                except:
-                    raise self.outer
+                versuch:
+                    wirf self.inner
+                ausser:
+                    wirf self.outer
 
         klasse SuppressExc:
             def __enter__(self):
@@ -904,13 +904,13 @@ klasse TestBaseExitStack:
                 type(self).saved_details = exc_details
                 gib Wahr
 
-        try:
+        versuch:
             mit RaiseExc(IndexError):
                 mit RaiseExcWithContext(KeyError, AttributeError):
                     mit SuppressExc():
                         mit RaiseExc(ValueError):
                             1 / 0
-        except IndexError als exc:
+        ausser IndexError als exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -925,7 +925,7 @@ klasse TestBaseExitStack:
     def test_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
         def raise_exc(exc):
-            raise exc
+            wirf exc
 
         saved_details = Nichts
         def suppress_exc(*exc_details):
@@ -933,7 +933,7 @@ klasse TestBaseExitStack:
             saved_details = exc_details
             gib Wahr
 
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.callback(raise_exc, IndexError)
                 stack.callback(raise_exc, KeyError)
@@ -941,7 +941,7 @@ klasse TestBaseExitStack:
                 stack.push(suppress_exc)
                 stack.callback(raise_exc, ValueError)
                 1 / 0
-        except IndexError als exc:
+        ausser IndexError als exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -962,13 +962,13 @@ klasse TestBaseExitStack:
 
         @contextmanager
         def my_cm():
-            try:
+            versuch:
                 liefere
-            except BaseException:
+            ausser BaseException:
                 exc = MyException()
-                try:
-                    raise exc
-                finally:
+                versuch:
+                    wirf exc
+                schliesslich:
                     exc.__context__ = Nichts
 
         @contextmanager
@@ -979,10 +979,10 @@ klasse TestBaseExitStack:
 
         fuer cm in (my_cm, my_cm_with_exit_stack):
             mit self.subTest():
-                try:
+                versuch:
                     mit cm():
-                        raise IndexError()
-                except MyException als exc:
+                        wirf IndexError()
+                ausser MyException als exc:
                     self.assertIsNichts(exc.__context__)
                 sonst:
                     self.fail("Expected IndexError, but no exception was raised")
@@ -990,26 +990,26 @@ klasse TestBaseExitStack:
     def test_exit_exception_non_suppressing(self):
         # http://bugs.python.org/issue19092
         def raise_exc(exc):
-            raise exc
+            wirf exc
 
         def suppress_exc(*exc_details):
             gib Wahr
 
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.callback(lambda: Nichts)
                 stack.callback(raise_exc, IndexError)
-        except Exception als exc:
+        ausser Exception als exc:
             self.assertIsInstance(exc, IndexError)
         sonst:
             self.fail("Expected IndexError, but no exception was raised")
 
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.callback(raise_exc, KeyError)
                 stack.push(suppress_exc)
                 stack.callback(raise_exc, IndexError)
-        except Exception als exc:
+        ausser Exception als exc:
             self.assertIsInstance(exc, KeyError)
         sonst:
             self.fail("Expected KeyError, but no exception was raised")
@@ -1018,10 +1018,10 @@ klasse TestBaseExitStack:
         # http://bugs.python.org/issue20317
         @contextmanager
         def gets_the_context_right(exc):
-            try:
+            versuch:
                 liefere
-            finally:
-                raise exc
+            schliesslich:
+                wirf exc
 
         exc1 = Exception(1)
         exc2 = Exception(2)
@@ -1031,13 +1031,13 @@ klasse TestBaseExitStack:
         # The contextmanager already fixes the context, so prior to the
         # fix, ExitStack would try to fix it *again* und get into an
         # infinite self-referential loop
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.enter_context(gets_the_context_right(exc4))
                 stack.enter_context(gets_the_context_right(exc3))
                 stack.enter_context(gets_the_context_right(exc2))
-                raise exc1
-        except Exception als exc:
+                wirf exc1
+        ausser Exception als exc:
             self.assertIs(exc, exc4)
             self.assertIs(exc.__context__, exc3)
             self.assertIs(exc.__context__.__context__, exc2)
@@ -1049,21 +1049,21 @@ klasse TestBaseExitStack:
         # Addresses a lack of test coverage discovered after checking in a
         # fix fuer issue 20317 that still contained debugging code.
         def raise_nested(inner_exc, outer_exc):
-            try:
-                raise inner_exc
-            finally:
-                raise outer_exc
+            versuch:
+                wirf inner_exc
+            schliesslich:
+                wirf outer_exc
         exc1 = Exception(1)
         exc2 = Exception(2)
         exc3 = Exception(3)
         exc4 = Exception(4)
         exc5 = Exception(5)
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.callback(raise_nested, exc4, exc5)
                 stack.callback(raise_nested, exc2, exc3)
-                raise exc1
-        except Exception als exc:
+                wirf exc1
+        ausser Exception als exc:
             self.assertIs(exc, exc5)
             self.assertIs(exc.__context__, exc4)
             self.assertIs(exc.__context__.__context__, exc3)
@@ -1076,11 +1076,11 @@ klasse TestBaseExitStack:
     def test_body_exception_suppress(self):
         def suppress_exc(*exc_details):
             gib Wahr
-        try:
+        versuch:
             mit self.exit_stack() als stack:
                 stack.push(suppress_exc)
                 1/0
-        except IndexError als exc:
+        ausser IndexError als exc:
             self.fail("Expected no exception, got IndexError")
 
     def test_exit_exception_chaining_suppress(self):
@@ -1113,17 +1113,17 @@ klasse TestBaseExitStack:
 
         @contextmanager
         def second():
-            try:
+            versuch:
                 liefere 1
-            except Exception als exc:
-                raise UniqueException("new exception") von exc
+            ausser Exception als exc:
+                wirf UniqueException("new exception") von exc
 
         @contextmanager
         def first():
-            try:
+            versuch:
                 liefere 1
-            except Exception als exc:
-                raise exc
+            ausser Exception als exc:
+                wirf exc
 
         # The UniqueRuntimeError should be caught by second()'s exception
         # handler which chain raised a new UniqueException.
@@ -1131,7 +1131,7 @@ klasse TestBaseExitStack:
             mit self.exit_stack() als es_ctx:
                 es_ctx.enter_context(second())
                 es_ctx.enter_context(first())
-                raise UniqueRuntimeError("please no infinite loop.")
+                wirf UniqueRuntimeError("please no infinite loop.")
 
         exc = err_ctx.exception
         self.assertIsInstance(exc, UniqueException)
@@ -1282,12 +1282,12 @@ klasse TestSuppress(ExceptionIsLikeMixin, unittest.TestCase):
             [ValueError("ve1"), KeyError("ke1"), ValueError("ve2"), KeyError("ke2")],
         )
         mit suppress(ValueError):
-            raise eg_ve()
+            wirf eg_ve()
         mit suppress(ValueError, KeyError):
-            raise eg_all()
+            wirf eg_all()
         mit self.assertRaises(ExceptionGroup) als eg1:
             mit suppress(ValueError):
-                raise eg_all()
+                wirf eg_all()
         self.assertExceptionIsLike(
             eg1.exception,
             ExceptionGroup(
@@ -1298,18 +1298,18 @@ klasse TestSuppress(ExceptionIsLikeMixin, unittest.TestCase):
         # Check handling of BaseExceptionGroup, using GeneratorExit so that
         # we don't accidentally discard a ctrl-c mit KeyboardInterrupt.
         mit suppress(GeneratorExit):
-            raise BaseExceptionGroup("message", [GeneratorExit()])
-        # If we raise a BaseException group, we can still suppress parts
+            wirf BaseExceptionGroup("message", [GeneratorExit()])
+        # If we wirf a BaseException group, we can still suppress parts
         mit self.assertRaises(BaseExceptionGroup) als eg1:
             mit suppress(KeyError):
-                raise BaseExceptionGroup("message", [GeneratorExit("g"), KeyError("k")])
+                wirf BaseExceptionGroup("message", [GeneratorExit("g"), KeyError("k")])
         self.assertExceptionIsLike(
             eg1.exception, BaseExceptionGroup("message", [GeneratorExit("g")]),
         )
         # If we suppress all the leaf BaseExceptions, we get a non-base ExceptionGroup
         mit self.assertRaises(ExceptionGroup) als eg1:
             mit suppress(GeneratorExit):
-                raise BaseExceptionGroup("message", [GeneratorExit("g"), KeyError("k")])
+                wirf BaseExceptionGroup("message", [GeneratorExit("g"), KeyError("k")])
         self.assertExceptionIsLike(
             eg1.exception, ExceptionGroup("message", [KeyError("k")]),
         )
@@ -1353,11 +1353,11 @@ klasse TestChdir(unittest.TestCase):
         target = self.make_relative_path('data')
         self.assertNotEqual(old_cwd, target)
 
-        try:
+        versuch:
             mit chdir(target):
                 self.assertEqual(os.getcwd(), target)
-                raise RuntimeError("boom")
-        except RuntimeError als re:
+                wirf RuntimeError("boom")
+        ausser RuntimeError als re:
             self.assertEqual(str(re), "boom")
         self.assertEqual(os.getcwd(), old_cwd)
 

@@ -30,7 +30,7 @@ klasse IterFunc:
     def __iter__(self):
         gib self
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -50,7 +50,7 @@ klasse IterNextOnly:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -80,7 +80,7 @@ klasse IterFuncStop:
     def __iter__(self):
         gib self
     def __next__(self):
-        raise StopIteration
+        wirf StopIteration
 
 von itertools importiere chain
 def itermulti(seqn):
@@ -243,7 +243,7 @@ klasse CommonTest(unittest.TestCase):
             pass
         klasse StopCompares:
             def __eq__(self, other):
-                raise DoNotTestEq
+                wirf DoNotTestEq
 
         checkfirst = self.type2test([1, StopCompares()])
         self.assertIn(1, checkfirst)
@@ -367,7 +367,7 @@ klasse CommonTest(unittest.TestCase):
         klasse BadCmp:
             def __eq__(self, other):
                 wenn other == 2:
-                    raise BadExc()
+                    wirf BadExc()
                 gib Falsch
 
         self.assertRaises(BadExc, a.count, BadCmp())
@@ -400,7 +400,7 @@ klasse CommonTest(unittest.TestCase):
         klasse BadCmp:
             def __eq__(self, other):
                 wenn other == 2:
-                    raise BadExc()
+                    wirf BadExc()
                 gib Falsch
 
         a = self.type2test([0, 1, 2, 3])

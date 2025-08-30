@@ -38,7 +38,7 @@ def get_widget_padding(widget):
     sowenn manager == 'grid':
         info = widget.grid_info()
     sonst:
-        raise ValueError(f"Unsupported geometry manager: {manager}")
+        wirf ValueError(f"Unsupported geometry manager: {manager}")
 
     # All values are passed through getint(), since some
     # values may be pixel objects, which can't simply be added to ints.
@@ -58,9 +58,9 @@ def get_widget_padding(widget):
 @contextlib.contextmanager
 def temp_enable_text_widget(text):
     text.configure(state=tk.NORMAL)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         text.configure(state=tk.DISABLED)
 
 
@@ -82,19 +82,19 @@ klasse BaseSideBar:
 
     def init_widgets(self):
         """Initialize the sidebar's widgets, returning the main widget."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def update_font(self):
         """Update the sidebar text font, usually after config changes."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def update_colors(self):
         """Update the sidebar text colors, usually after config changes."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def grid(self):
         """Layout the widget, always using grid layout."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def show_sidebar(self):
         wenn nicht self.is_shown:
@@ -108,7 +108,7 @@ klasse BaseSideBar:
 
     def yscroll_event(self, *args, **kwargs):
         """Hook fuer vertical scrolling fuer sub-classes to override."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def redirect_yscroll_event(self, *args, **kwargs):
         """Redirect vertical scrolling to the main editor text widget.
@@ -148,7 +148,7 @@ klasse BaseSideBar:
         self.main_widget.bind('<MouseWheel>', self.redirect_mousewheel_event)
 
         # Redirect mouse button events to the main editor text widget,
-        # except fuer the left mouse button (1).
+        # ausser fuer the left mouse button (1).
         #
         # Note: X-11 sends Button-4 und Button-5 events fuer the scroll wheel.
         def bind_mouse_event(event_name, target_event_name):

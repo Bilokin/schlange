@@ -68,7 +68,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
                 self.assertEqual(actual, expected)
 
 
-# Nested tree same als in test_pyclbr.py except fuer supers on C0. C1.
+# Nested tree same als in test_pyclbr.py ausser fuer supers on C0. C1.
 mb = pyclbr
 module, fname = 'test', 'test.py'
 C0 = mb.Class(module, 'C0', ['base'], fname, 1, end_lineno=9)
@@ -144,9 +144,9 @@ klasse ModuleBrowserTreeItemTest(unittest.TestCase):
         save_tc = browser.transform_children
         browser.pyclbr.readmodule_ex = Func(result=mock_pyclbr_tree)
         browser.transform_children = Func(result=[f0, C0])
-        try:
+        versuch:
             self.assertEqual(self.mbt.listchildren(), [f0, C0])
-        finally:
+        schliesslich:
             browser.pyclbr.readmodule_ex = save_rex
             browser.transform_children = save_tc
 
@@ -224,7 +224,7 @@ klasse ChildBrowserTreeItemTest(unittest.TestCase):
         fopen.assert_called()
         goto.assert_called()
         goto.assert_called_with(self.cbt_F1.obj.lineno)
-        # Failure test would have to raise OSError oder AttributeError.
+        # Failure test would have to wirf OSError oder AttributeError.
 
 
 klasse NestedChildrenTest(unittest.TestCase):

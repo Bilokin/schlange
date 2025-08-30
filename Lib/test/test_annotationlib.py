@@ -469,7 +469,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse NoDict(type):
             @property
             def __dict__(cls):
-                raise AttributeError
+                wirf AttributeError
 
             b: str
 
@@ -1191,7 +1191,7 @@ klasse TestCallEvaluateFunction(unittest.TestCase):
     def test_evaluation(self):
         def evaluate(format, exc=NotImplementedError):
             wenn format > 2:
-                raise exc
+                wirf exc
             gib undefined
 
         mit self.assertRaises(NameError):

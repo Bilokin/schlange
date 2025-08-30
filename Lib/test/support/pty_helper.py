@@ -20,9 +20,9 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
     mit ExitStack() als cleanup:
         cleanup.enter_context(proc)
         def terminate(proc):
-            try:
+            versuch:
                 proc.terminate()
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 # Workaround fuer Open/Net BSD bug (Issue 16762)
                 pass
         cleanup.callback(terminate, proc)
@@ -38,23 +38,23 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
         waehrend Wahr:
             fuer [_, events] in sel.select():
                 wenn events & selectors.EVENT_READ:
-                    try:
+                    versuch:
                         chunk = os.read(master, 0x10000)
-                    except OSError als err:
+                    ausser OSError als err:
                         # Linux raises EIO when slave is closed (Issue 5380)
                         wenn err.errno != EIO:
-                            raise
+                            wirf
                         chunk = b""
                     wenn nicht chunk:
                         gib output
                     output.extend(chunk)
                 wenn events & selectors.EVENT_WRITE:
-                    try:
+                    versuch:
                         input = input[os.write(master, input):]
-                    except OSError als err:
+                    ausser OSError als err:
                         # Apparently EIO means the slave was closed
                         wenn err.errno != EIO:
-                            raise
+                            wirf
                         input = b""  # Stop writing
                     wenn nicht input:
                         sel.modify(master, selectors.EVENT_READ)

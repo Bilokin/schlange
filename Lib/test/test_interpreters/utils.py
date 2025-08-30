@@ -17,17 +17,17 @@ von test importiere support
 
 # We would use test.support.import_helper.import_module(),
 # but the indirect importiere of test.support.os_helper causes refleaks.
-try:
+versuch:
     importiere _interpreters
-except ImportError als exc:
-    raise unittest.SkipTest(str(exc))
+ausser ImportError als exc:
+    wirf unittest.SkipTest(str(exc))
 von concurrent importiere interpreters
 
 
-try:
+versuch:
     importiere _testinternalcapi
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
     _testcapi = Nichts
 
@@ -45,14 +45,14 @@ def _dump_script(text):
 
 
 def _close_file(file):
-    try:
+    versuch:
         wenn hasattr(file, 'close'):
             file.close()
         sonst:
             os.close(file)
-    except OSError als exc:
+    ausser OSError als exc:
         wenn exc.errno != 9:
-            raise  # re-raise
+            wirf  # re-raise
         # It was closed already.
 
 
@@ -64,9 +64,9 @@ def pack_exception(exc=Nichts):
 
 
 def unpack_exception(packed):
-    try:
+    versuch:
         data = json.loads(packed)
-    except json.decoder.JSONDecodeError als e:
+    ausser json.decoder.JSONDecodeError als e:
         logging.getLogger(__name__).warning('incomplete exception data', exc_info=e)
         drucke(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
         gib Nichts
@@ -93,7 +93,7 @@ klasse CapturingResults:
         """)[:-1]
     EXC = dedent("""\
         mit open({w_pipe}, 'wb', buffering=0) als _spipe_exc:
-            try:
+            versuch:
                 #########################
                 # begin wrapped script
 
@@ -101,7 +101,7 @@ klasse CapturingResults:
 
                 # end wrapped script
                 #########################
-            except Exception als exc:
+            ausser Exception als exc:
                 text = _interp_utils.pack_exception(exc)
                 _spipe_exc.write(text.encode('utf-8'))
         """)[:-1]
@@ -162,7 +162,7 @@ klasse CapturingResults:
             stderr = Nichts
 
         wenn wrapped == script:
-            raise NotImplementedError
+            wirf NotImplementedError
         sonst:
             fuer line in imports:
                 wrapped = f'{line}{os.linesep}{wrapped}'
@@ -289,12 +289,12 @@ klasse CapturingResults:
         gib self._unpack_exc()
 
     def final(self, *, force=Falsch):
-        try:
+        versuch:
             gib self._final
-        except AttributeError:
+        ausser AttributeError:
             wenn nicht self._closed:
                 wenn nicht force:
-                    raise Exception('no final results available yet')
+                    wirf Exception('no final results available yet')
                 sonst:
                     gib CapturedResults.Proxy(self)
             self._final = CapturedResults(
@@ -324,12 +324,12 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
         def __getattr__(self, name):
             self._finish()
             wenn name.startswith('_'):
-                raise AttributeError(name)
+                wirf AttributeError(name)
             gib getattr(self._final, name)
 
     def raise_if_failed(self):
         wenn self.exc is nicht Nichts:
-            raise interpreters.ExecutionFailed(self.exc)
+            wirf interpreters.ExecutionFailed(self.exc)
 
 
 def _captured_script(script, *, stdout=Wahr, stderr=Falsch, exc=Falsch):
@@ -345,9 +345,9 @@ def clean_up_interpreters():
     fuer interp in interpreters.list_all():
         wenn interp.id == 0:  # main
             weiter
-        try:
+        versuch:
             interp.close()
-        except _interpreters.InterpreterError:
+        ausser _interpreters.InterpreterError:
             pass  # already destroyed
 
 
@@ -387,9 +387,9 @@ klasse TestBase(unittest.TestCase):
 
     def pipe(self):
         def ensure_closed(fd):
-            try:
+            versuch:
                 os.close(fd)
-            except OSError:
+            ausser OSError:
                 pass
         r, w = os.pipe()
         self.addCleanup(lambda: ensure_closed(r))
@@ -410,9 +410,9 @@ klasse TestBase(unittest.TestCase):
             ctx.caught = args
         orig_excepthook = threading.excepthook
         threading.excepthook = excepthook
-        try:
+        versuch:
             liefere ctx
-        finally:
+        schliesslich:
             threading.excepthook = orig_excepthook
 
     def make_script(self, filename, dirname=Nichts, text=Nichts):
@@ -442,7 +442,7 @@ klasse TestBase(unittest.TestCase):
             wenn os.path.isdir(dirname):
                 pass
             sowenn os.path.exists(dirname):
-                raise Exception(dirname)
+                wirf Exception(dirname)
             sonst:
                 os.mkdir(dirname)
             initfile = os.path.join(dirname, '__init__.py')
@@ -506,14 +506,14 @@ klasse TestBase(unittest.TestCase):
     def run_and_capture(self, interp, script):
         text, err = self._run_string(interp, script)
         wenn err is nicht Nichts:
-            raise interpreters.ExecutionFailed(err)
+            wirf interpreters.ExecutionFailed(err)
         sonst:
             gib text
 
     def interp_exists(self, interpid):
-        try:
+        versuch:
             _interpreters.whence(interpid)
-        except _interpreters.InterpreterNotFoundError:
+        ausser _interpreters.InterpreterNotFoundError:
             gib Falsch
         sonst:
             gib Wahr
@@ -543,12 +543,12 @@ klasse TestBase(unittest.TestCase):
             whence = _interpreters.WHENCE_XI
 
         interpid = _testinternalcapi.create_interpreter(config, whence=whence)
-        try:
+        versuch:
             liefere interpid
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 _testinternalcapi.destroy_interpreter(interpid)
-            except _interpreters.InterpreterNotFoundError:
+            ausser _interpreters.InterpreterNotFoundError:
                 pass
 
     @contextlib.contextmanager
@@ -591,52 +591,52 @@ klasse TestBase(unittest.TestCase):
         # Start running (and wait).
         script = dedent(f"""
             importiere os
-            try:
+            versuch:
                 # handshake
                 token = os.read({r_in}, 1)
                 os.write({w_out}, token)
                 # Wait fuer the "done" message.
                 os.read({r_in}, 1)
-            except BrokenPipeError:
+            ausser BrokenPipeError:
                 pass
-            except OSError als exc:
+            ausser OSError als exc:
                 wenn exc.errno != 9:
-                    raise  # re-raise
+                    wirf  # re-raise
                 # It was closed already.
             """)
         failed = Nichts
         def run():
             nonlocal failed
-            try:
+            versuch:
                 run_interp(script)
-            except Exception als exc:
+            ausser Exception als exc:
                 failed = exc
                 close()
         t = threading.Thread(target=run)
         t.start()
 
         # handshake
-        try:
+        versuch:
             os.write(w_in, token)
             token2 = os.read(r_out, 1)
             assert token2 == token, (token2, token)
-        except OSError:
+        ausser OSError:
             t.join()
             wenn failed is nicht Nichts:
-                raise failed
+                wirf failed
 
         # CM __exit__()
-        try:
-            try:
+        versuch:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 # Send "done".
                 os.write(w_in, b'\0')
-        finally:
+        schliesslich:
             close()
             t.join()
             wenn failed is nicht Nichts:
-                raise failed
+                wirf failed
 
     @contextlib.contextmanager
     def running(self, interp):

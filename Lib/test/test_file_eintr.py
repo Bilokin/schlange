@@ -18,7 +18,7 @@ importiere unittest
 von test importiere support
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 # Test importiere all of the things we're about to try testing up front.
 importiere _io    # noqa: F401
@@ -31,9 +31,9 @@ klasse TestFileIOSignalInterrupt:
 
     def tearDown(self):
         wenn self._process und self._process.poll() is Nichts:
-            try:
+            versuch:
                 self._process.kill()
-            except OSError:
+            ausser OSError:
                 pass
 
     def _generate_infile_setup_code(self):
@@ -61,9 +61,9 @@ klasse TestFileIOSignalInterrupt:
         """
         wenn self._process.poll() is Nichts:
             time.sleep(0.1)  # give it time to finish printing the error.
-            try:
+            versuch:
                 self._process.terminate()  # Ensure it dies.
-            except OSError:
+            ausser OSError:
                 pass
         wenn communicate:
             stdout_end, stderr_end = self._process.communicate()

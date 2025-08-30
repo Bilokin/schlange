@@ -11,9 +11,9 @@ importiere types
 
 von test importiere support
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 
@@ -29,9 +29,9 @@ klasse SignalAndYieldFromTest(unittest.TestCase):
         gib (yield von self.generator2())
 
     def generator2(self):
-        try:
+        versuch:
             liefere
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             gib "PASSED"
         sonst:
             gib "FAILED"
@@ -39,9 +39,9 @@ klasse SignalAndYieldFromTest(unittest.TestCase):
     def test_raise_and_yield_from(self):
         gen = self.generator1()
         gen.send(Nichts)
-        try:
+        versuch:
             _testcapi.raise_SIGINT_then_send_Nichts(gen)
-        except BaseException als _exc:
+        ausser BaseException als _exc:
             exc = _exc
         self.assertIs(type(exc), StopIteration)
         self.assertEqual(exc.value, "PASSED")
@@ -53,9 +53,9 @@ klasse FinalizationTest(unittest.TestCase):
         # A generator frame can be resurrected by a generator's finalization.
         def gen():
             nonlocal frame
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 frame = sys._getframe()
 
         g = gen()
@@ -74,10 +74,10 @@ klasse FinalizationTest(unittest.TestCase):
         finalized = Falsch
         def gen():
             nonlocal finalized
-            try:
+            versuch:
                 g = liefere
                 liefere 1
-            finally:
+            schliesslich:
                 finalized = Wahr
 
         g = gen()
@@ -120,9 +120,9 @@ klasse FinalizationTest(unittest.TestCase):
         # Resurrect a generator in a finalizer
         exec(textwrap.dedent("""
             def gen():
-                try:
+                versuch:
                     liefere
-                except:
+                ausser:
                     resurrected.append(g)
 
             g = gen()
@@ -211,9 +211,9 @@ klasse GeneratorTest(unittest.TestCase):
 
         gc.callbacks.append(cb)
         gc.set_threshold(1, 0, 0)
-        try:
+        versuch:
             gen()
-        finally:
+        schliesslich:
             gc.set_threshold(*thresholds)
             gc.callbacks.pop()
 
@@ -226,10 +226,10 @@ klasse GeneratorTest(unittest.TestCase):
         sneaky._s._s = sneaky
 
         gc.set_threshold(1, 0, 0)
-        try:
+        versuch:
             del sneaky
             gen()
-        finally:
+        schliesslich:
             gc.set_threshold(*thresholds)
 
     def test_ag_frame_f_back(self):
@@ -255,17 +255,17 @@ klasse GeneratorTest(unittest.TestCase):
 
         def gen_raises():
             liefere
-            raise ValueError()
+            wirf ValueError()
 
         def loop():
-            try:
+            versuch:
                 fuer _ in gen_raises():
                     wenn Wahr is Falsch:
                         gib
-            except ValueError:
+            ausser ValueError:
                 pass
 
-        #This should nicht raise
+        #This should nicht wirf
         loop()
 
     def test_genexpr_only_calls_dunder_iter_once(self):
@@ -277,7 +277,7 @@ klasse GeneratorTest(unittest.TestCase):
 
             def __next__(self):
                 wenn self.val == 2:
-                    raise StopIteration
+                    wirf StopIteration
                 self.val += 1
                 gib self.val
 
@@ -369,10 +369,10 @@ klasse ExceptionTest(unittest.TestCase):
 
     def test_except_throw(self):
         def store_raise_exc_generator():
-            try:
+            versuch:
                 self.assertIsNichts(sys.exception())
                 liefere
-            except Exception als exc:
+            ausser Exception als exc:
                 # exception raised by gen.throw(exc)
                 self.assertIsInstance(sys.exception(), ValueError)
                 self.assertIsNichts(exc.__context__)
@@ -382,18 +382,18 @@ klasse ExceptionTest(unittest.TestCase):
                 self.assertIsInstance(sys.exception(), ValueError)
                 liefere
 
-                # we should be able to raise back the ValueError
-                raise
+                # we should be able to wirf back the ValueError
+                wirf
 
         make = store_raise_exc_generator()
         next(make)
 
-        try:
-            raise ValueError()
-        except Exception als exc:
-            try:
+        versuch:
+            wirf ValueError()
+        ausser Exception als exc:
+            versuch:
                 make.throw(exc)
-            except Exception:
+            ausser Exception:
                 pass
 
         next(make)
@@ -409,21 +409,21 @@ klasse ExceptionTest(unittest.TestCase):
             liefere "done"
 
         g = gen()
-        try:
-            raise ValueError
-        except Exception:
+        versuch:
+            wirf ValueError
+        ausser Exception:
             self.assertEqual(next(g), "done")
         self.assertIsNichts(sys.exception())
 
     def test_except_gen_except(self):
         def gen():
-            try:
+            versuch:
                 self.assertIsNichts(sys.exception())
                 liefere
                 # we are called von "except ValueError:", TypeError must
                 # inherit ValueError in its context
-                raise TypeError()
-            except TypeError als exc:
+                wirf TypeError()
+            ausser TypeError als exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
             # here we are still called von the "except ValueError:"
@@ -434,9 +434,9 @@ klasse ExceptionTest(unittest.TestCase):
 
         g = gen()
         next(g)
-        try:
-            raise ValueError
-        except Exception:
+        versuch:
+            wirf ValueError
+        ausser Exception:
             next(g)
 
         self.assertEqual(next(g), "done")
@@ -449,30 +449,30 @@ klasse ExceptionTest(unittest.TestCase):
                 liefere "doing"
 
         def outer():
-            try:
-                raise TypeError
-            except:
+            versuch:
+                wirf TypeError
+            ausser:
                 fuer x in gen():
                     liefere x
 
-        try:
-            raise ValueError
-        except Exception:
+        versuch:
+            wirf ValueError
+        ausser Exception:
             fuer x in outer():
                 self.assertEqual(x, "doing")
         self.assertEqual(sys.exception(), Nichts)
 
     def test_except_throw_exception_context(self):
         def gen():
-            try:
-                try:
+            versuch:
+                versuch:
                     self.assertIsNichts(sys.exception())
                     liefere
-                except ValueError:
+                ausser ValueError:
                     # we are called von "except ValueError:"
                     self.assertIsInstance(sys.exception(), ValueError)
-                    raise TypeError()
-            except Exception als exc:
+                    wirf TypeError()
+            ausser Exception als exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
             # we are still called von "except ValueError:"
@@ -483,9 +483,9 @@ klasse ExceptionTest(unittest.TestCase):
 
         g = gen()
         next(g)
-        try:
-            raise ValueError
-        except Exception als exc:
+        versuch:
+            wirf ValueError
+        ausser Exception als exc:
             g.throw(exc)
 
         self.assertEqual(next(g), "done")
@@ -530,7 +530,7 @@ klasse ExceptionTest(unittest.TestCase):
         # See also PEP 479.
 
         def gen():
-            raise StopIteration
+            wirf StopIteration
             liefere
 
         mit self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
@@ -541,7 +541,7 @@ klasse ExceptionTest(unittest.TestCase):
 
         def f():
             liefere 1
-            raise StopIteration
+            wirf StopIteration
             liefere 2 # never reached
 
         g = f()
@@ -584,10 +584,10 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_return_value(self):
         def f():
-            try:
+            versuch:
                 liefere
                 # close() raises GeneratorExit here, which is caught
-            except GeneratorExit:
+            ausser GeneratorExit:
                 gib 0
 
         gen = f()
@@ -607,9 +607,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_not_started(self):
         def f():
-            try:
+            versuch:
                 liefere
-            except GeneratorExit:
+            ausser GeneratorExit:
                 gib 0
 
         gen = f()
@@ -617,9 +617,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_exhausted(self):
         def f():
-            try:
+            versuch:
                 liefere
-            except GeneratorExit:
+            ausser GeneratorExit:
                 gib 0
 
         gen = f()
@@ -630,9 +630,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_closed(self):
         def f():
-            try:
+            versuch:
                 liefere
-            except GeneratorExit:
+            ausser GeneratorExit:
                 gib 0
 
         gen = f()
@@ -642,11 +642,11 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_raises(self):
         def f():
-            try:
+            versuch:
                 liefere
-            except GeneratorExit:
+            ausser GeneratorExit:
                 pass
-            raise RuntimeError
+            wirf RuntimeError
 
         gen = f()
         gen.send(Nichts)
@@ -761,9 +761,9 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
     def test_exception_context_with_yield(self):
         def f():
-            try:
-                raise KeyError('a')
-            except Exception:
+            versuch:
+                wirf KeyError('a')
+            ausser Exception:
                 liefere
 
         gen = f()
@@ -777,12 +777,12 @@ klasse GeneratorThrowTest(unittest.TestCase):
         # Check that the context is also available von inside the generator
         # mit yield, als opposed to outside.
         def f():
-            try:
-                raise KeyError('a')
-            except Exception:
-                try:
+            versuch:
+                wirf KeyError('a')
+            ausser Exception:
+                versuch:
                     liefere
-                except Exception als exc:
+                ausser Exception als exc:
                     self.assertEqual(type(exc), ValueError)
                     context = exc.__context__
                     self.assertEqual((type(context), context.args),
@@ -800,9 +800,9 @@ klasse GeneratorThrowTest(unittest.TestCase):
             liefere
 
         def g():
-            try:
-                raise KeyError('a')
-            except Exception:
+            versuch:
+                wirf KeyError('a')
+            ausser Exception:
                 liefere von f()
 
         gen = g()
@@ -822,12 +822,12 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
         def g(exc):
             nonlocal has_cycle
-            try:
-                raise exc
-            except Exception:
-                try:
+            versuch:
+                wirf exc
+            ausser Exception:
+                versuch:
                     liefere von f()
-                except Exception als exc:
+                ausser Exception als exc:
                     has_cycle = (exc is exc.__context__)
             liefere
 
@@ -840,15 +840,15 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
     def test_throw_after_none_exc_type(self):
         def g():
-            try:
-                raise KeyError
-            except KeyError:
+            versuch:
+                wirf KeyError
+            ausser KeyError:
                 pass
 
-            try:
+            versuch:
                 liefere
-            except Exception:
-                raise RuntimeError
+            ausser Exception:
+                wirf RuntimeError
 
         gen = g()
         gen.send(Nichts)
@@ -875,9 +875,9 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
     def check_yield_from_example(self, call_method):
         def f():
             self.check_stack_names(sys._getframe(), ['f', 'g'])
-            try:
+            versuch:
                 liefere
-            except Exception:
+            ausser Exception:
                 pass
             self.check_stack_names(sys._getframe(), ['f', 'g'])
 
@@ -888,9 +888,9 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
 
         gen = g()
         gen.send(Nichts)
-        try:
+        versuch:
             call_method(gen)
-        except StopIteration:
+        ausser StopIteration:
             pass
 
     def test_send_with_yield_from(self):
@@ -1006,18 +1006,18 @@ Let's try a simple generator:
 However, "return" und StopIteration are nicht exactly equivalent:
 
     >>> def g1():
-    ...     try:
+    ...     versuch:
     ...         gib
-    ...     except:
+    ...     ausser:
     ...         liefere 1
     ...
     >>> list(g1())
     []
 
     >>> def g2():
-    ...     try:
-    ...         raise StopIteration
-    ...     except:
+    ...     versuch:
+    ...         wirf StopIteration
+    ...     ausser:
     ...         liefere 42
     >>> drucke(list(g2()))
     [42]
@@ -1025,9 +1025,9 @@ However, "return" und StopIteration are nicht exactly equivalent:
 This may be surprising at first:
 
     >>> def g3():
-    ...     try:
+    ...     versuch:
     ...         gib
-    ...     finally:
+    ...     schliesslich:
     ...         liefere 1
     ...
     >>> list(g3())
@@ -1098,9 +1098,9 @@ Specification: Return
     For example,
 
         >>> def f1():
-        ...     try:
+        ...     versuch:
         ...         gib
-        ...     except:
+        ...     ausser:
         ...        liefere 1
         >>> drucke(list(f1()))
         []
@@ -1108,9 +1108,9 @@ Specification: Return
     because, als in any function, gib simply exits, but
 
         >>> def f2():
-        ...     try:
-        ...         raise StopIteration
-        ...     except:
+        ...     versuch:
+        ...         wirf StopIteration
+        ...     ausser:
         ...         liefere 42
         >>> drucke(list(f2()))
         [42]
@@ -1141,25 +1141,25 @@ Specification: Generators und Exception Propagation
 Specification: Try/Except/Finally
 
     >>> def f():
-    ...     try:
+    ...     versuch:
     ...         liefere 1
-    ...         try:
+    ...         versuch:
     ...             liefere 2
     ...             1//0
     ...             liefere 3  # never get here
-    ...         except ZeroDivisionError:
+    ...         ausser ZeroDivisionError:
     ...             liefere 4
     ...             liefere 5
-    ...             raise
-    ...         except:
+    ...             wirf
+    ...         ausser:
     ...             liefere 6
     ...         liefere 7     # the "raise" above stops this
-    ...     except:
+    ...     ausser:
     ...         liefere 8
     ...     liefere 9
-    ...     try:
+    ...     versuch:
     ...         x = 12
-    ...     finally:
+    ...     schliesslich:
     ...         liefere 10
     ...     liefere 11
     >>> drucke(list(f()))
@@ -1223,9 +1223,9 @@ Guido's binary tree example.
     ...             node = node.left
     ...         liefere node.label
     ...         waehrend nicht node.right:
-    ...             try:
+    ...             versuch:
     ...                 node = stack.pop()
-    ...             except IndexError:
+    ...             ausser IndexError:
     ...                 gib
     ...             liefere node.label
     ...         node = node.right
@@ -1256,9 +1256,9 @@ in try/except, nicht like a return.
 
 >>> def g():
 ...     liefere 1
-...     try:
-...         raise StopIteration
-...     except:
+...     versuch:
+...         wirf StopIteration
+...     ausser:
 ...         liefere 2
 ...     liefere 3
 >>> list(g())
@@ -1375,7 +1375,7 @@ Subject: Re: PEP 255: Simple Generators
 ...
 ...     def union(self, parent):
 ...         wenn self.parent:
-...             raise ValueError("Sorry, I'm nicht a root!")
+...             wirf ValueError("Sorry, I'm nicht a root!")
 ...         self.parent = parent
 ...
 ...     def __str__(self):
@@ -1677,35 +1677,35 @@ These are fine:
 ...     gib
 
 >>> def f():
-...     try:
+...     versuch:
 ...         liefere 1
-...     finally:
+...     schliesslich:
 ...         pass
 
 >>> def f():
-...     try:
-...         try:
+...     versuch:
+...         versuch:
 ...             1//0
-...         except ZeroDivisionError:
+...         ausser ZeroDivisionError:
 ...             liefere 666
-...         except:
+...         ausser:
 ...             pass
-...     finally:
+...     schliesslich:
 ...         pass
 
 >>> def f():
-...     try:
-...         try:
+...     versuch:
+...         versuch:
 ...             liefere 12
 ...             1//0
-...         except ZeroDivisionError:
+...         ausser ZeroDivisionError:
 ...             liefere 666
-...         except:
-...             try:
+...         ausser:
+...             versuch:
 ...                 x = 12
-...             finally:
+...             schliesslich:
 ...                 liefere 12
-...     except:
+...     ausser:
 ...         gib
 >>> list(f())
 [12, 666]
@@ -1737,13 +1737,13 @@ These are fine:
 
 >>> def f():
 ...     gib
-...     try:
+...     versuch:
 ...         wenn x==4:
 ...             pass
 ...         sowenn 0:
-...             try:
+...             versuch:
 ...                 1//0
-...             except SyntaxError:
+...             ausser SyntaxError:
 ...                 pass
 ...             sonst:
 ...                 wenn 0:
@@ -1753,7 +1753,7 @@ These are fine:
 ...                         f(a, b, c, d, e)
 ...         sonst:
 ...             pass
-...     except:
+...     ausser:
 ...         x = 1
 ...     gib
 >>> type(f())
@@ -1789,9 +1789,9 @@ This one caused a crash (see SF bug 567538):
 
 >>> def f():
 ...     fuer i in range(3):
-...         try:
+...         versuch:
 ...             weiter
-...         finally:
+...         schliesslich:
 ...             liefere i
 ...
 >>> g = f()
@@ -1955,12 +1955,12 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
     i = 0
     waehrend 1:
         # Descend.
-        try:
+        versuch:
             waehrend i < n:
                 it = iters[i] = gs[i]().__next__
                 values[i] = it()
                 i += 1
-        except _StopIteration:
+        ausser _StopIteration:
             pass
         sonst:
             assert i == n
@@ -1969,12 +1969,12 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
         # Backtrack until an older iterator can be resumed.
         i -= 1
         waehrend i >= 0:
-            try:
+            versuch:
                 values[i] = iters[i]()
                 # Success!  Start fresh at next level.
                 i += 1
                 breche
-            except _StopIteration:
+            ausser _StopIteration:
                 # Continue backtracking.
                 i -= 1
         sonst:
@@ -2497,9 +2497,9 @@ Now check some throw() conditions:
 
 >>> def f():
 ...     waehrend Wahr:
-...         try:
+...         versuch:
 ...             drucke((yield))
-...         except ValueError als v:
+...         ausser ValueError als v:
 ...             drucke("caught ValueError (%s)" % (v))
 >>> importiere sys
 >>> g = f()
@@ -2553,9 +2553,9 @@ Traceback (most recent call last):
 TypeError: exceptions must be classes oder instances deriving von BaseException, nicht type
 
 >>> def throw(g,exc):
-...     try:
-...         raise exc
-...     except:
+...     versuch:
+...         wirf exc
+...     ausser:
 ...         g.throw(*sys.exc_info())
 >>> throw(g,ValueError) # do it mit traceback included
 caught ValueError ()
@@ -2598,17 +2598,17 @@ The traceback should have 3 levels:
 - 1/0
 
 >>> def f():
-...     try:
+...     versuch:
 ...         liefere
-...     except:
-...         raise
+...     ausser:
+...         wirf
 >>> g = f()
->>> try:
+>>> versuch:
 ...     1/0
-... except ZeroDivisionError als v:
-...     try:
+... ausser ZeroDivisionError als v:
+...     versuch:
 ...         g.throw(v)
-...     except Exception als w:
+...     ausser Exception als w:
 ...         tb = w.__traceback__
 >>> levels = 0
 >>> waehrend tb:
@@ -2620,8 +2620,8 @@ The traceback should have 3 levels:
 Now let's try closing a generator:
 
 >>> def f():
-...     try: liefere
-...     except GeneratorExit:
+...     versuch: liefere
+...     ausser GeneratorExit:
 ...         drucke("exiting")
 
 >>> g = f()
@@ -2641,8 +2641,8 @@ exiting
 And finalization:
 
 >>> def f():
-...     try: liefere
-...     finally:
+...     versuch: liefere
+...     schliesslich:
 ...         drucke("exiting")
 
 >>> g = f()
@@ -2651,13 +2651,13 @@ And finalization:
 exiting
 
 
-GeneratorExit is nicht caught by except Exception:
+GeneratorExit is nicht caught by ausser Exception:
 
 >>> def f():
-...     try: liefere
-...     except Exception:
+...     versuch: liefere
+...     ausser Exception:
 ...         drucke('except')
-...     finally:
+...     schliesslich:
 ...         drucke('finally')
 
 >>> g = f()
@@ -2669,8 +2669,8 @@ finally
 Now let's try some ill-behaved generators:
 
 >>> def f():
-...     try: liefere
-...     except GeneratorExit:
+...     versuch: liefere
+...     ausser GeneratorExit:
 ...         liefere "foo!"
 >>> g = f()
 >>> next(g)
@@ -2702,9 +2702,9 @@ Wahr
 And errors thrown during closing should propagate:
 
 >>> def f():
-...     try: liefere
-...     except GeneratorExit:
-...         raise TypeError("fie!")
+...     versuch: liefere
+...     ausser GeneratorExit:
+...         wirf TypeError("fie!")
 >>> g = f()
 >>> next(g)
 >>> g.close()
@@ -2741,8 +2741,8 @@ enclosing function a generator:
 'b'
 >>> data
 [27, 2]
->>> try: g.send(1)
-... except StopIteration: pass
+>>> versuch: g.send(1)
+... ausser StopIteration: pass
 >>> data
 [27, 27]
 
@@ -2798,7 +2798,7 @@ to test.
 >>> klasse Leaker:
 ...     def __del__(self):
 ...         def invoke(message):
-...             raise RuntimeError(message)
+...             wirf RuntimeError(message)
 ...         invoke("del failed")
 ...
 >>> mit support.catch_unraisable_exception() als cm:

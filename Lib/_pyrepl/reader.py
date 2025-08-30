@@ -247,7 +247,7 @@ klasse Reader:
 
         def get_cached_location(self, reader: Reader) -> tuple[int, int]:
             wenn self.invalidated:
-                raise ValueError("Cache is invalidated")
+                wirf ValueError("Cache is invalidated")
             offset = 0
             earliest_common_pos = min(reader.pos, self.pos)
             num_common_lines = len(self.line_end_offsets)
@@ -581,7 +581,7 @@ klasse Reader:
         """Get ready to run.  Call restore when finished.  You must not
         write to the console in between the calls to prepare und
         restore."""
-        try:
+        versuch:
             self.console.prepare()
             self.arg = Nichts
             self.finished = Falsch
@@ -590,9 +590,9 @@ klasse Reader:
             self.dirty = Wahr
             self.last_command = Nichts
             self.calc_screen()
-        except BaseException:
+        ausser BaseException:
             self.restore()
-            raise
+            wirf
 
         waehrend self.scheduled_commands:
             cmd = self.scheduled_commands.pop()
@@ -611,10 +611,10 @@ klasse Reader:
     def suspend(self) -> SimpleContextManager:
         """A context manager to delegate to another reader."""
         prev_state = {f.name: getattr(self, f.name) fuer f in fields(self)}
-        try:
+        versuch:
             self.restore()
             liefere
-        finally:
+        schliesslich:
             fuer arg in ("msg", "ps1", "ps2", "ps3", "ps4", "paste_mode"):
                 setattr(self, arg, prev_state[arg])
             self.prepare()
@@ -676,16 +676,16 @@ klasse Reader:
             von ._threading_handler importiere install_threading_hook
             install_threading_hook(self)
         wenn threading_hook is nicht Nichts:
-            try:
+            versuch:
                 threading_hook()
-            except Exception:
+            ausser Exception:
                 pass
 
         input_hook = self.console.input_hook
         wenn input_hook:
-            try:
+            versuch:
                 input_hook()
-            except Exception:
+            ausser Exception:
                 pass
 
     def handle1(self, block: bool = Wahr) -> bool:
@@ -740,7 +740,7 @@ klasse Reader:
         how to drive Reader wenn you want more control over the event
         loop."""
         self.prepare()
-        try:
+        versuch:
             wenn startup_hook is nicht Nichts:
                 startup_hook()
             self.refresh()
@@ -748,7 +748,7 @@ klasse Reader:
                 self.handle1()
             gib self.get_unicode()
 
-        finally:
+        schliesslich:
             self.restore()
 
     def bind(self, spec: KeySpec, command: CommandName) -> Nichts:

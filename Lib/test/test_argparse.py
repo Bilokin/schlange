@@ -158,8 +158,8 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
     old_stderr = sys.stderr
     sys.stdout = StdIOBuffer()
     sys.stderr = StdIOBuffer()
-    try:
-        try:
+    versuch:
+        versuch:
             result = parse_args(*args, **kwargs)
             fuer key in list(vars(result)):
                 attr = getattr(result, key)
@@ -172,13 +172,13 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
                 sowenn attr is sys.stderr.buffer:
                     setattr(result, key, getattr(old_stderr, 'buffer', BIN_STDERR_SENTINEL))
             gib result
-        except SystemExit als e:
+        ausser SystemExit als e:
             code = e.code
             stdout = sys.stdout.getvalue()
             stderr = sys.stderr.getvalue()
-            raise ArgumentParserError(
+            wirf ArgumentParserError(
                 "SystemExit", stdout, stderr, code) von Nichts
-    finally:
+    schliesslich:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
 
@@ -255,9 +255,9 @@ klasse ParserTesterMetaclass(type):
             """Parse the args by defaulting to sys.argv"""
             old_sys_argv = sys.argv
             sys.argv = [old_sys_argv[0]] + args
-            try:
+            versuch:
                 gib parser.parse_args()
-            finally:
+            schliesslich:
                 sys.argv = old_sys_argv
 
         # klasse that holds the combination of one optional argument
@@ -277,9 +277,9 @@ klasse ParserTesterMetaclass(type):
 
                     def wrapper(self, test_func=test_func):
                         test_func(self)
-                    try:
+                    versuch:
                         wrapper.__name__ = test_name
-                    except TypeError:
+                    ausser TypeError:
                         pass
                     setattr(tester_cls, test_name, wrapper)
 
@@ -1847,9 +1847,9 @@ klasse StdStreamComparer:
             self.backupattr = object() # Not equal to anything
 
     def __eq__(self, other):
-        try:
+        versuch:
             gib other == self.getattr(sys)
-        except AttributeError:
+        ausser AttributeError:
             gib other == self.backupattr
 
 
@@ -2160,7 +2160,7 @@ klasse TestActionUserDefined(ParserTestCase):
     klasse OptionalAction(argparse.Action):
 
         def __call__(self, parser, namespace, value, option_string=Nichts):
-            try:
+            versuch:
                 # check destination und option string
                 assert self.dest == 'spam', 'dest: %s' % self.dest
                 assert option_string == '-s', 'flag: %s' % option_string
@@ -2172,17 +2172,17 @@ klasse TestActionUserDefined(ParserTestCase):
                 sowenn value in [2.0]:
                     expected_ns.badger = 84
                 sonst:
-                    raise AssertionError('value: %s' % value)
+                    wirf AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
-            except AssertionError als e:
-                raise ArgumentParserError('opt_action failed: %s' % e)
+            ausser AssertionError als e:
+                wirf ArgumentParserError('opt_action failed: %s' % e)
             setattr(namespace, 'spam', value)
 
     klasse PositionalAction(argparse.Action):
 
         def __call__(self, parser, namespace, value, option_string=Nichts):
-            try:
+            versuch:
                 assert option_string is Nichts, ('option_string: %s' %
                                                option_string)
                 # check destination
@@ -2197,11 +2197,11 @@ klasse TestActionUserDefined(ParserTestCase):
                 sowenn value in [2]:
                     expected_ns.spam = 0.125
                 sonst:
-                    raise AssertionError('value: %s' % value)
+                    wirf AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
-            except AssertionError als e:
-                raise ArgumentParserError('arg_action failed: %s' % e)
+            ausser AssertionError als e:
+                wirf ArgumentParserError('arg_action failed: %s' % e)
             setattr(namespace, 'badger', value)
 
     argument_signatures = [
@@ -4008,9 +4008,9 @@ klasse TestHelpFormattingMetaclass(type):
 
                     def test_wrapper(self, test_func=test_func):
                         test_func(self)
-                    try:
+                    versuch:
                         test_wrapper.__name__ = test_name
-                    except TypeError:
+                    ausser TypeError:
                         pass
                     setattr(test_class, test_name, test_wrapper)
 
@@ -4054,10 +4054,10 @@ klasse TestHelpFormattingMetaclass(type):
                 print_ = getattr(parser, 'print_%s' % self.func_suffix)
                 old_stream = getattr(sys, self.std_name)
                 setattr(sys, self.std_name, StdIOBuffer())
-                try:
+                versuch:
                     print_()
                     parser_text = getattr(sys, self.std_name).getvalue()
-                finally:
+                schliesslich:
                     setattr(sys, self.std_name, old_stream)
                 self._test(tester, parser_text)
 
@@ -5722,7 +5722,7 @@ klasse TestInvalidArgumentConstructors(TestCase):
                 wenn dest == 'spam':
                     wenn const is Success:
                         wenn default is Success:
-                            raise Success()
+                            wirf Success()
 
             def __call__(self, *args, **kwargs):
                 pass
@@ -6053,7 +6053,7 @@ klasse TestArgumentTypeError(TestCase):
     def test_argument_type_error(self):
 
         def spam(string):
-            raise argparse.ArgumentTypeError('spam!')
+            wirf argparse.ArgumentTypeError('spam!')
 
         parser = ErrorRaisingArgumentParser(prog='PROG', add_help=Falsch)
         parser.add_argument('x', type=spam)

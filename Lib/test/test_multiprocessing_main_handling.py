@@ -18,7 +18,7 @@ von test.support.script_helper importiere (
     assert_python_ok)
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is nicht helpful fuer PGO")
+    wirf unittest.SkipTest("test is nicht helpful fuer PGO")
 
 # Look up which start methods are available to test
 importiere multiprocessing
@@ -81,7 +81,7 @@ test_source_main_skipped_in_children = """\
 # so we just use "int" als a passthrough operation below
 
 wenn __name__ != "__main__":
-    raise RuntimeError("Should only be called als __main__!")
+    wirf RuntimeError("Should only be called als __main__!")
 
 importiere sys
 importiere time

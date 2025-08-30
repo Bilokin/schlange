@@ -50,7 +50,7 @@ klasse WorkerContext:
     def prepare(cls, initializer, initargs):
         wenn initializer is nicht Nichts:
             wenn nicht callable(initializer):
-                raise TypeError("initializer must be a callable")
+                wirf TypeError("initializer must be a callable")
         def create_context():
             gib cls(initializer, initargs)
         def resolve_task(fn, args, kwargs):
@@ -82,9 +82,9 @@ klasse _WorkItem:
         wenn nicht self.future.set_running_or_notify_cancel():
             gib
 
-        try:
+        versuch:
             result = ctx.run(self.task)
-        except BaseException als exc:
+        ausser BaseException als exc:
             self.future.set_exception(exc)
             # Break a reference cycle mit the exception 'exc'
             self = Nichts
@@ -95,19 +95,19 @@ klasse _WorkItem:
 
 
 def _worker(executor_reference, ctx, work_queue):
-    try:
+    versuch:
         ctx.initialize()
-    except BaseException:
+    ausser BaseException:
         _base.LOGGER.critical('Exception in initializer:', exc_info=Wahr)
         executor = executor_reference()
         wenn executor is nicht Nichts:
             executor._initializer_failed()
         gib
-    try:
+    versuch:
         waehrend Wahr:
-            try:
+            versuch:
                 work_item = work_queue.get_nowait()
-            except queue.Empty:
+            ausser queue.Empty:
                 # attempt to increment idle count wenn queue is empty
                 executor = executor_reference()
                 wenn executor is nicht Nichts:
@@ -135,9 +135,9 @@ def _worker(executor_reference, ctx, work_queue):
                 work_queue.put(Nichts)
                 gib
             del executor
-    except BaseException:
+    ausser BaseException:
         _base.LOGGER.critical('Exception in worker', exc_info=Wahr)
-    finally:
+    schliesslich:
         ctx.finalize()
 
 
@@ -180,7 +180,7 @@ klasse ThreadPoolExecutor(_base.Executor):
             # on many core machine.
             max_workers = min(32, (os.process_cpu_count() oder 1) + 4)
         wenn max_workers <= 0:
-            raise ValueError("max_workers must be greater than 0")
+            wirf ValueError("max_workers must be greater than 0")
 
         (self._create_worker_context,
          self._resolve_work_item_task,
@@ -199,12 +199,12 @@ klasse ThreadPoolExecutor(_base.Executor):
     def submit(self, fn, /, *args, **kwargs):
         mit self._shutdown_lock, _global_shutdown_lock:
             wenn self._broken:
-                raise self.BROKEN(self._broken)
+                wirf self.BROKEN(self._broken)
 
             wenn self._shutdown:
-                raise RuntimeError('cannot schedule new futures after shutdown')
+                wirf RuntimeError('cannot schedule new futures after shutdown')
             wenn _shutdown:
-                raise RuntimeError('cannot schedule new futures after '
+                wirf RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()
@@ -244,9 +244,9 @@ klasse ThreadPoolExecutor(_base.Executor):
                             'is nicht usable anymore')
             # Drain work queue und mark pending futures failed
             waehrend Wahr:
-                try:
+                versuch:
                     work_item = self._work_queue.get_nowait()
-                except queue.Empty:
+                ausser queue.Empty:
                     breche
                 wenn work_item is nicht Nichts:
                     work_item.future.set_exception(self.BROKEN(self._broken))
@@ -258,9 +258,9 @@ klasse ThreadPoolExecutor(_base.Executor):
                 # Drain all work items von the queue, und then cancel their
                 # associated futures.
                 waehrend Wahr:
-                    try:
+                    versuch:
                         work_item = self._work_queue.get_nowait()
-                    except queue.Empty:
+                    ausser queue.Empty:
                         breche
                     wenn work_item is nicht Nichts:
                         work_item.future.cancel()

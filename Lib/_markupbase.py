@@ -26,7 +26,7 @@ klasse ParserBase:
 
     def __init__(self):
         wenn self.__class__ is ParserBase:
-            raise RuntimeError(
+            wirf RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
     def reset(self):
@@ -127,11 +127,11 @@ klasse ParserBase:
                     # also in data attribute specifications of attlist declaration
                     # also link type declaration subsets in linktype declarations
                     # also link attribute specification lists in link declarations
-                    raise AssertionError("unsupported '[' char in %s declaration" % decltype)
+                    wirf AssertionError("unsupported '[' char in %s declaration" % decltype)
                 sonst:
-                    raise AssertionError("unexpected '[' char in declaration")
+                    wirf AssertionError("unexpected '[' char in declaration")
             sonst:
-                raise AssertionError("unexpected %r char in declaration" % rawdata[j])
+                wirf AssertionError("unexpected %r char in declaration" % rawdata[j])
             wenn j < 0:
                 gib j
         gib -1 # incomplete
@@ -151,7 +151,7 @@ klasse ParserBase:
             # look fuer MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
         sonst:
-            raise AssertionError(
+            wirf AssertionError(
                 'unknown status keyword %r in marked section' % rawdata[i+3:j]
             )
         wenn nicht match:
@@ -165,7 +165,7 @@ klasse ParserBase:
     def parse_comment(self, i, report=1):
         rawdata = self.rawdata
         wenn rawdata[i:i+4] != '<!--':
-            raise AssertionError('unexpected call to parse_comment()')
+            wirf AssertionError('unexpected call to parse_comment()')
         match = _commentclose.search(rawdata, i+4)
         wenn nicht match:
             gib -1
@@ -189,7 +189,7 @@ klasse ParserBase:
                     gib -1
                 wenn s != "<!":
                     self.updatepos(declstartpos, j + 1)
-                    raise AssertionError(
+                    wirf AssertionError(
                         "unexpected char in internal subset (in %r)" % s
                     )
                 wenn (j + 2) == n:
@@ -208,7 +208,7 @@ klasse ParserBase:
                     gib -1
                 wenn name nicht in {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
-                    raise AssertionError(
+                    wirf AssertionError(
                         "unknown declaration %r in internal subset" % name
                     )
                 # handle the individual names
@@ -234,14 +234,14 @@ klasse ParserBase:
                     wenn rawdata[j] == ">":
                         gib j
                     self.updatepos(declstartpos, j)
-                    raise AssertionError("unexpected char after internal subset")
+                    wirf AssertionError("unexpected char after internal subset")
                 sonst:
                     gib -1
             sowenn c.isspace():
                 j = j + 1
             sonst:
                 self.updatepos(declstartpos, j)
-                raise AssertionError("unexpected char %r in internal subset" % c)
+                wirf AssertionError("unexpected char %r in internal subset" % c)
         # end of buffer reached
         gib -1
 
@@ -387,7 +387,7 @@ klasse ParserBase:
             gib name.lower(), m.end()
         sonst:
             self.updatepos(declstartpos, i)
-            raise AssertionError(
+            wirf AssertionError(
                 "expected name token at %r" % rawdata[declstartpos:declstartpos+20]
             )
 

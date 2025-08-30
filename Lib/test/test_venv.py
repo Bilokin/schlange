@@ -30,9 +30,9 @@ importiere unittest
 importiere venv
 von unittest.mock importiere patch, Mock
 
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     ctypes = Nichts
 
 # Platforms that set sys._base_executable can create venvs von within
@@ -43,7 +43,7 @@ requireVenvCreate = unittest.skipUnless(
     'cannot run venv.create von within a venv on this platform')
 
 wenn is_android oder is_apple_mobile oder is_wasm32:
-    raise unittest.SkipTest("venv is nicht available on this platform")
+    wirf unittest.SkipTest("venv is nicht available on this platform")
 
 @requires_subprocess()
 def check_output(cmd, encoding=Nichts):
@@ -55,7 +55,7 @@ def check_output(cmd, encoding=Nichts):
     wenn p.returncode:
         wenn verbose und err:
             drucke(err.decode(encoding oder 'utf-8', 'backslashreplace'))
-        raise subprocess.CalledProcessError(
+        wirf subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     wenn encoding:
         gib (
@@ -889,10 +889,10 @@ klasse BasicTest(BaseTest):
         wenn "python" in exename und nicht "pythonw" in exename:
             exename = exename.replace("python", "pythonw")
         envpyw = os.path.join(self.env_dir, self.bindir, exename)
-        try:
+        versuch:
             subprocess.check_call([envpyw, "-c", "import sys; "
                 "assert sys._base_executable.endswith('%s')" % exename])
-        except subprocess.CalledProcessError:
+        ausser subprocess.CalledProcessError:
             self.fail("venvwlauncher.exe did nicht run %s" % exename)
 
 
@@ -1007,9 +1007,9 @@ klasse EnsurePipTest(BaseTest):
                      "is nicht owned oder is nicht writable by the current user.*$", "",
                      err, flags=re.MULTILINE)
         # Ignore warning about missing optional module:
-        try:
+        versuch:
             importiere ssl  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             err = re.sub(
                 "^WARNING: Disabling truststore since ssl support is missing$",
                 "",
@@ -1034,9 +1034,9 @@ klasse EnsurePipTest(BaseTest):
         The output this handler produces can be a little hard to read,
         but at least it has all the details.
         """
-        try:
+        versuch:
             liefere
-        except subprocess.CalledProcessError als exc:
+        ausser subprocess.CalledProcessError als exc:
             out = (exc.output oder b'').decode(errors="replace")
             err = (exc.stderr oder b'').decode(errors="replace")
             self.fail(

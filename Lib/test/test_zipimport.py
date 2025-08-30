@@ -23,9 +23,9 @@ importiere doctest
 importiere inspect
 importiere io
 von traceback importiere extract_tb, extract_stack, print_tb
-try:
+versuch:
     importiere zlib
-except ImportError:
+ausser ImportError:
     zlib = Nichts
 
 test_src = """\
@@ -35,7 +35,7 @@ def get_file():
     gib __file__
 """
 test_co = compile(test_src, "<???>", "exec")
-raise_src = 'def do_raise(): raise TypeError\n'
+raise_src = 'def do_raise(): wirf TypeError\n'
 
 def make_pyc(co, mtime, size):
     data = marshal.dumps(co)
@@ -199,14 +199,14 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         wenn "zlib" in sys.modules:
             del sys.modules["zlib"]
         files = {"zlib.py": test_src}
-        try:
+        versuch:
             self.doTest(".py", files, "zlib")
-        except ImportError:
+        ausser ImportError:
             wenn self.compression != ZIP_DEFLATED:
-                self.fail("expected test to nicht raise ImportError")
+                self.fail("expected test to nicht wirf ImportError")
         sonst:
             wenn self.compression != ZIP_STORED:
-                self.fail("expected test to raise ImportError")
+                self.fail("expected test to wirf ImportError")
 
     def testPy(self):
         files = {TESTMOD + ".py": test_src}
@@ -267,10 +267,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         badmagic_pyc = bytearray(test_pyc)
         badmagic_pyc[0] ^= 0x04  # flip an arbitrary bit
         files = {TESTMOD + pyc_ext: badmagic_pyc}
-        try:
+        versuch:
             self.doTest(".py", files, TESTMOD)
             self.fail("This should nicht be reached")
-        except zipimport.ZipImportError als exc:
+        ausser zipimport.ZipImportError als exc:
             self.assertIsInstance(exc.__cause__, ImportError)
             self.assertIn("magic number", exc.__cause__.msg)
 
@@ -748,7 +748,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         def get_file():
             gib __file__
         wenn __loader__.get_data("some.data") != b"some data":
-            raise AssertionError("bad data")\n"""
+            wirf AssertionError("bad data")\n"""
         pyc = make_pyc(compile(src, "<???>", "exec"), NOW, len(src))
         files = {TESTMOD + pyc_ext: pyc,
                  "some.data": "some data"}
@@ -798,12 +798,12 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def doDoctestFile(self, module):
         log = []
         old_master, doctest.master = doctest.master, Nichts
-        try:
+        versuch:
             doctest.testfile(
                 'xyz.txt', package=module, module_relative=Wahr,
                 globs=locals()
             )
-        finally:
+        schliesslich:
             doctest.master = old_master
         self.assertEqual(log,[Wahr])
 
@@ -822,9 +822,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.runDoctest(self.doDoctestSuite)
 
     def doTraceback(self, module):
-        try:
+        versuch:
             module.do_raise()
-        except Exception als e:
+        ausser Exception als e:
             tb = e.__traceback__.tb_next
 
             f,lno,n,line = extract_tb(tb, 1)[0]
@@ -836,12 +836,12 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             s = io.StringIO()
             print_tb(tb, 1, s)
             self.assertEndsWith(s.getvalue(),
-                '    def do_raise(): raise TypeError\n'
+                '    def do_raise(): wirf TypeError\n'
                 '' wenn support.has_no_debug_ranges() sonst
                 '                    ^^^^^^^^^^^^^^^\n'
             )
         sonst:
-            raise AssertionError("This ought to be impossible")
+            wirf AssertionError("This ought to be impossible")
 
     def testTraceback(self):
         files = {TESTMOD + ".py": raise_src}
@@ -945,7 +945,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 empty_page = b"\0" * 4096
                 mit open(name, "rb") als f:
                     part = Nichts
-                    try:
+                    versuch:
                         waehrend Wahr:
                             offset = f.tell()
                             data = f.read(len(empty_page))
@@ -969,7 +969,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                                 wenn part:
                                     part.close()
                                 part = Nichts
-                    finally:
+                    schliesslich:
                         wenn part:
                             part.close()
 
@@ -981,7 +981,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             def extract_offset(name):
                 wenn m := re.search(r"-(0x[0-9a-f]{9})\.part$", name):
                     gib int(m.group(1), base=16)
-                raise ValueError(f"{name=} does nicht fit expected pattern.")
+                wirf ValueError(f"{name=} does nicht fit expected pattern.")
             offset_parts = [(extract_offset(n), n) fuer n in pre_built_zip_parts]
             mit open(TEMP_ZIP, "wb") als f:
                 fuer offset, part_fn in sorted(offset_parts):
@@ -1041,12 +1041,12 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
     def testFileUnreadable(self):
         os_helper.unlink(TESTMOD)
         fd = os.open(TESTMOD, os.O_CREAT, 000)
-        try:
+        versuch:
             os.close(fd)
 
             mit self.assertRaises(zipimport.ZipImportError) als cm:
                 zipimport.zipimporter(TESTMOD)
-        finally:
+        schliesslich:
             # If we leave "the read-only bit" set on Windows, nothing can
             # delete TESTMOD, und later tests suffer bogus failures.
             os.chmod(TESTMOD, 0o666)
@@ -1068,7 +1068,7 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
         fp.close()
         z = zipimport.zipimporter(TESTMOD)
 
-        try:
+        versuch:
             mit warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
                 self.assertRaises(TypeError, z.load_module, Nichts)
@@ -1090,7 +1090,7 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
             self.assertRaises(OSError, z.get_data, 'abc')
             self.assertRaises(error, z.get_source, 'abc')
             self.assertRaises(error, z.is_package, 'abc')
-        finally:
+        schliesslich:
             zipimport._zip_directory_cache.clear()
 
 

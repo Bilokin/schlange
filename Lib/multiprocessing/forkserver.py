@@ -67,7 +67,7 @@ klasse ForkServer(object):
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
         wenn nicht all(type(mod) is str fuer mod in modules_names):
-            raise TypeError('module_names must be a list of strings')
+            wirf TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
     def get_inherited_fds(self):
@@ -89,7 +89,7 @@ klasse ForkServer(object):
         self.ensure_running()
         assert self._forkserver_authkey
         wenn len(fds) + 4 >= MAXFDS_TO_SEND:
-            raise ValueError('too many fds')
+            wirf ValueError('too many fds')
         mit socket.socket(socket.AF_UNIX) als client:
             client.connect(self._forkserver_address)
             parent_r, child_w = os.pipe()
@@ -97,26 +97,26 @@ klasse ForkServer(object):
             allfds = [child_r, child_w, self._forkserver_alive_fd,
                       resource_tracker.getfd()]
             allfds += fds
-            try:
+            versuch:
                 client.setblocking(Wahr)
                 wrapped_client = connection.Connection(client.fileno())
                 # The other side of this exchange happens in the child as
                 # implemented in main().
-                try:
+                versuch:
                     connection.answer_challenge(
                             wrapped_client, self._forkserver_authkey)
                     connection.deliver_challenge(
                             wrapped_client, self._forkserver_authkey)
-                finally:
+                schliesslich:
                     wrapped_client._detach()
                     del wrapped_client
                 reduction.sendfds(client, allfds)
                 gib parent_r, parent_w
-            except:
+            ausser:
                 os.close(parent_r)
                 os.close(parent_w)
-                raise
-            finally:
+                wirf
+            schliesslich:
                 os.close(child_r)
                 os.close(child_w)
 
@@ -164,7 +164,7 @@ klasse ForkServer(object):
                 alive_r, alive_w = os.pipe()
                 # A short lived pipe to initialize the forkserver authkey.
                 authkey_r, authkey_w = os.pipe()
-                try:
+                versuch:
                     fds_to_pass = [listener.fileno(), alive_r, authkey_r]
                     main_kws['authkey_r'] = authkey_r
                     cmd %= (listener.fileno(), alive_r, self._preload_modules,
@@ -173,19 +173,19 @@ klasse ForkServer(object):
                     args = [exe] + util._args_from_interpreter_flags()
                     args += ['-c', cmd]
                     pid = util.spawnv_passfds(exe, args, fds_to_pass)
-                except:
+                ausser:
                     os.close(alive_w)
                     os.close(authkey_w)
-                    raise
-                finally:
+                    wirf
+                schliesslich:
                     os.close(alive_r)
                     os.close(authkey_r)
                 # Authenticate our control socket to prevent access from
                 # processes we have nicht shared this key with.
-                try:
+                versuch:
                     self._forkserver_authkey = os.urandom(_AUTHKEY_LEN)
                     os.write(authkey_w, self._forkserver_authkey)
-                finally:
+                schliesslich:
                     os.close(authkey_w)
                 self._forkserver_address = address
                 self._forkserver_alive_fd = alive_w
@@ -199,10 +199,10 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
          *, authkey_r=Nichts):
     """Run forkserver."""
     wenn authkey_r is nicht Nichts:
-        try:
+        versuch:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
             assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
-        finally:
+        schliesslich:
             os.close(authkey_r)
     sonst:
         authkey = b''
@@ -212,14 +212,14 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
             sys.path[:] = sys_path
         wenn '__main__' in preload und main_path is nicht Nichts:
             process.current_process()._inheriting = Wahr
-            try:
+            versuch:
                 spawn.import_main_path(main_path)
-            finally:
+            schliesslich:
                 del process.current_process()._inheriting
         fuer modname in preload:
-            try:
+            versuch:
                 __import__(modname)
-            except ImportError:
+            ausser ImportError:
                 pass
 
         # gh-135335: flush stdout/stderr in case any of the preloaded modules
@@ -260,7 +260,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
         selector.register(sig_r, selectors.EVENT_READ)
 
         waehrend Wahr:
-            try:
+            versuch:
                 waehrend Wahr:
                     rfds = [key.fileobj fuer (key, events) in selector.select()]
                     wenn rfds:
@@ -269,16 +269,16 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                 wenn alive_r in rfds:
                     # EOF because no more client processes left
                     assert os.read(alive_r, 1) == b'', "Not at EOF?"
-                    raise SystemExit
+                    wirf SystemExit
 
                 wenn sig_r in rfds:
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
                     waehrend Wahr:
                         # Scan fuer child processes
-                        try:
+                        versuch:
                             pid, sts = os.waitpid(-1, os.WNOHANG)
-                        except ChildProcessError:
+                        ausser ChildProcessError:
                             breche
                         wenn pid == 0:
                             breche
@@ -287,9 +287,9 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                             returncode = os.waitstatus_to_exitcode(sts)
 
                             # Send exit code to client process
-                            try:
+                            versuch:
                                 write_signed(child_w, returncode)
-                            except BrokenPipeError:
+                            ausser BrokenPipeError:
                                 # client vanished
                                 pass
                             os.close(child_w)
@@ -301,26 +301,26 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                 wenn listener in rfds:
                     # Incoming fork request
                     mit listener.accept()[0] als s:
-                        try:
+                        versuch:
                             wenn authkey:
                                 wrapped_s = connection.Connection(s.fileno())
                                 # The other side of this exchange happens in
                                 # in connect_to_new_process().
-                                try:
+                                versuch:
                                     connection.deliver_challenge(
                                             wrapped_s, authkey)
                                     connection.answer_challenge(
                                             wrapped_s, authkey)
-                                finally:
+                                schliesslich:
                                     wrapped_s._detach()
                                     del wrapped_s
                             # Receive fds von client
                             fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
-                        except (EOFError, BrokenPipeError, AuthenticationError):
+                        ausser (EOFError, BrokenPipeError, AuthenticationError):
                             s.close()
                             weiter
                         wenn len(fds) > MAXFDS_TO_SEND:
-                            raise RuntimeError(
+                            wirf RuntimeError(
                                 "Too many ({0:n}) fds to send".format(
                                     len(fds)))
                         child_r, child_w, *fds = fds
@@ -329,7 +329,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                         wenn pid == 0:
                             # Child
                             code = 1
-                            try:
+                            versuch:
                                 listener.close()
                                 selector.close()
                                 unused_fds = [alive_r, child_w, sig_r, sig_w]
@@ -339,17 +339,17 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                                 code = _serve_one(child_r, fds,
                                                   unused_fds,
                                                   old_handlers)
-                            except Exception:
+                            ausser Exception:
                                 sys.excepthook(*sys.exc_info())
                                 sys.stderr.flush()
-                            finally:
+                            schliesslich:
                                 atexit._run_exitfuncs()
                                 os._exit(code)
                         sonst:
                             # Send pid to client process
-                            try:
+                            versuch:
                                 write_signed(child_w, pid)
-                            except BrokenPipeError:
+                            ausser BrokenPipeError:
                                 # client vanished
                                 pass
                             pid_to_fd[pid] = child_w
@@ -357,9 +357,9 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                             fuer fd in fds:
                                 os.close(fd)
 
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno != errno.ECONNABORTED:
-                    raise
+                    wirf
 
 
 def _serve_one(child_r, fds, unused_fds, handlers):
@@ -391,7 +391,7 @@ def read_signed(fd):
     waehrend unread:
         count = os.readinto(fd, unread)
         wenn count == 0:
-            raise EOFError('unexpected EOF')
+            wirf EOFError('unexpected EOF')
         unread = unread[count:]
 
     gib SIGNED_STRUCT.unpack(data)[0]
@@ -401,7 +401,7 @@ def write_signed(fd, n):
     waehrend msg:
         nbytes = os.write(fd, msg)
         wenn nbytes == 0:
-            raise RuntimeError('should nicht get here')
+            wirf RuntimeError('should nicht get here')
         msg = msg[nbytes:]
 
 #

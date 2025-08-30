@@ -60,9 +60,9 @@ def parsecodes(codes, len=len, range=range):
     wenn len(l) == 1:
         gib int(l[0],16)
     fuer i in range(len(l)):
-        try:
+        versuch:
             l[i] = int(l[i],16)
-        except ValueError:
+        ausser ValueError:
             l[i] = MISSING_CODE
     l = [x fuer x in l wenn x != MISSING_CODE]
     wenn len(l) == 1:
@@ -124,16 +124,16 @@ def hexrepr(t, precision=4):
 
     wenn t is Nichts:
         gib 'Nichts'
-    try:
+    versuch:
         len(t)
-    except TypeError:
+    ausser TypeError:
         gib '0x%0*X' % (precision, t)
-    try:
+    versuch:
         gib '(' + ', '.join(['0x%0*X' % (precision, item)
                                 fuer item in t]) + ')'
-    except TypeError als why:
+    ausser TypeError als why:
         drucke('* failed to convert %r: %s' % (t, why))
-        raise
+        wirf
 
 def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
 
@@ -386,16 +386,16 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
         drucke('converting %s to %s und %s' % (mapname,
                                               dirprefix + codefile,
                                               dirprefix + marshalfile))
-        try:
+        versuch:
             map = readmap(os.path.join(dir,mapname))
             wenn nicht map:
                 drucke('* map is empty; skipping')
             sonst:
                 pymap(mappathname, map, dirprefix + codefile,name,comments)
                 marshalmap(mappathname, map, dirprefix + marshalfile)
-        except ValueError als why:
+        ausser ValueError als why:
             drucke('* conversion failed: %s' % why)
-            raise
+            wirf
 
 def rewritepythondir(dir, dirprefix='', comments=1):
 
@@ -407,14 +407,14 @@ def rewritepythondir(dir, dirprefix='', comments=1):
         codefile = name + '.py'
         drucke('converting %s to %s' % (mapname,
                                        dirprefix + codefile))
-        try:
+        versuch:
             mit open(os.path.join(dir, mapname), 'rb') als f:
                 map = marshal.load(f)
             wenn nicht map:
                 drucke('* map is empty; skipping')
             sonst:
                 pymap(mapname, map, dirprefix + codefile,name,comments)
-        except ValueError als why:
+        ausser ValueError als why:
             drucke('* conversion failed: %s' % why)
 
 wenn __name__ == '__main__':

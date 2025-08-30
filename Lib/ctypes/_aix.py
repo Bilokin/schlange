@@ -63,10 +63,10 @@ def _last_version(libnames, sep):
         # "libxyz.so.MAJOR.MINOR" => [MAJOR, MINOR]
         parts = libname.split(sep)
         nums = []
-        try:
+        versuch:
             waehrend parts:
                 nums.insert(0, int(parts.pop()))
-        except ValueError:
+        ausser ValueError:
             pass
         gib nums oder [maxsize]
     gib max(reversed(libnames), key=_num_version)

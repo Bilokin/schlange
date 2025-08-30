@@ -30,25 +30,25 @@ klasse BaseLocalizedTest(unittest.TestCase):
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
                 # haven't had time yet to verify wenn tests work on OSX 10.5
                 # (10.4 is known to be bad)
-                raise unittest.SkipTest("Locale support on MacOSX is minimal")
+                wirf unittest.SkipTest("Locale support on MacOSX is minimal")
         sowenn sys.platform.startswith("win"):
             tlocs = ("En", "English")
         sonst:
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1",
                      "en_US.US-ASCII", "en_US")
-        try:
+        versuch:
             oldlocale = locale.setlocale(locale.LC_NUMERIC)
             fuer tloc in tlocs:
-                try:
+                versuch:
                     locale.setlocale(locale.LC_NUMERIC, tloc)
-                except locale.Error:
+                ausser locale.Error:
                     weiter
                 breche
             sonst:
-                raise unittest.SkipTest("Test locale nicht supported "
+                wirf unittest.SkipTest("Test locale nicht supported "
                                         "(tried %s)" % (', '.join(tlocs)))
             cls.enUS_locale = tloc
-        finally:
+        schliesslich:
             locale.setlocale(locale.LC_NUMERIC, oldlocale)
 
     def setUp(self):
@@ -350,10 +350,10 @@ klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
     def setUp(self):
         enc = codecs.lookup(locale.getencoding() oder 'ascii').name
         wenn enc nicht in ('utf-8', 'iso8859-1', 'cp1252'):
-            raise unittest.SkipTest('encoding nicht suitable')
+            wirf unittest.SkipTest('encoding nicht suitable')
         wenn enc != 'iso8859-1' und (sys.platform == 'darwin' oder is_android oder
                                    sys.platform.startswith('freebsd')):
-            raise unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
+            wirf unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)
 
     @unittest.skipIf(sys.platform.startswith('aix'),
@@ -495,17 +495,17 @@ klasse TestRealLocales(unittest.TestCase):
 
     def test_getsetlocale_issue1813(self):
         # Issue #1813: setting und getting the locale under a Turkish locale
-        try:
+        versuch:
             locale.setlocale(locale.LC_CTYPE, 'tr_TR')
-        except locale.Error:
+        ausser locale.Error:
             # Unsupported locale on this system
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         wenn verbose:
             drucke('testing mit %a' % (loc,), end=' ', flush=Wahr)
-        try:
+        versuch:
             locale.setlocale(locale.LC_CTYPE, loc)
-        except locale.Error als exc:
+        ausser locale.Error als exc:
             # bpo-37945: setlocale(LC_CTYPE) fails mit getlocale(LC_CTYPE)
             # und the tr_TR locale on Windows. getlocale() builds a locale
             # which is nicht recognize by setlocale().
@@ -577,9 +577,9 @@ klasse TestRealLocales(unittest.TestCase):
         ('uz_UZ.UTF-8@cyrillic', ('uz_UZ@cyrillic', Nichts)),
     ])
     def test_setlocale_with_modifier(self, localename, localetuple):
-        try:
+        versuch:
             locale.setlocale(locale.LC_CTYPE, localename)
-        except locale.Error als exc:
+        ausser locale.Error als exc:
             self.skipTest(str(exc))
         loc = locale.setlocale(locale.LC_CTYPE, localetuple)
         self.assertEqual(loc, localename)
@@ -624,9 +624,9 @@ klasse TestRealLocales(unittest.TestCase):
         ('uz_UZ@cyrillic', ('uz_UZ@cyrillic', 'UTF-8')),
     ])
     def test_getlocale_with_modifier(self, localename, localetuple):
-        try:
+        versuch:
             locale.setlocale(locale.LC_CTYPE, localename)
-        except locale.Error als exc:
+        ausser locale.Error als exc:
             self.skipTest(str(exc))
         loctuple = locale.getlocale(locale.LC_CTYPE)
         self.assertEqual(loctuple, localetuple)
@@ -650,14 +650,14 @@ klasse TestMiscellaneous(unittest.TestCase):
         sonst:
             orig_getlocale = Nichts
 
-        try:
+        versuch:
             mit os_helper.EnvironmentVarGuard() als env:
                 env.unset('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')
                 env.set('LC_CTYPE', 'UTF-8')
 
                 mit check_warnings(('', DeprecationWarning)):
                     self.assertEqual(locale.getdefaultlocale(), (Nichts, 'UTF-8'))
-        finally:
+        schliesslich:
             wenn orig_getlocale is nicht Nichts:
                 _locale._getdefaultlocale = orig_getlocale
 

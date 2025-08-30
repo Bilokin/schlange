@@ -24,19 +24,19 @@ def openfile(filename):
 
 # Prevent this test von running in the Python distro
 def setUpModule():
-    try:
+    versuch:
         openfile('crispin-torture.txt')
-    except OSError:
-        raise unittest.SkipTest
+    ausser OSError:
+        wirf unittest.SkipTest
 
 
 
 klasse TortureBase(TestEmailBase):
     def _msgobj(self, filename):
         fp = openfile(filename)
-        try:
+        versuch:
             msg = email.message_from_file(fp)
-        finally:
+        schliesslich:
             fp.close()
         gib msg
 

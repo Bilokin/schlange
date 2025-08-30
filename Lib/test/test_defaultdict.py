@@ -39,12 +39,12 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertNotIn(12, d2.keys())
         d2.default_factory = Nichts
         self.assertEqual(d2.default_factory, Nichts)
-        try:
+        versuch:
             d2[15]
-        except KeyError als err:
+        ausser KeyError als err:
             self.assertEqual(err.args, (15,))
         sonst:
-            self.fail("d2[15] didn't raise KeyError")
+            self.fail("d2[15] didn't wirf KeyError")
         self.assertRaises(TypeError, defaultdict, 1)
 
     def test_missing(self):
@@ -118,9 +118,9 @@ klasse TestDefaultDict(unittest.TestCase):
 
     def test_keyerror_without_factory(self):
         d1 = defaultdict()
-        try:
+        versuch:
             d1[(1,)]
-        except KeyError als err:
+        ausser KeyError als err:
             self.assertEqual(err.args[0], (1,))
         sonst:
             self.fail("expected KeyError")

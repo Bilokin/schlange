@@ -72,12 +72,12 @@ def _format_coroutine(coro):
         gib f'{coro_name}()'
 
     def is_running(coro):
-        try:
+        versuch:
             gib coro.cr_running
-        except AttributeError:
-            try:
+        ausser AttributeError:
+            versuch:
                 gib coro.gi_running
-            except AttributeError:
+            ausser AttributeError:
                 gib Falsch
 
     coro_code = Nichts

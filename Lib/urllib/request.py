@@ -106,9 +106,9 @@ von urllib.parse importiere (
 von urllib.response importiere addinfourl, addclosehook
 
 # check fuer SSL
-try:
+versuch:
     importiere ssl  # noqa: F401
-except ImportError:
+ausser ImportError:
     _have_ssl = Falsch
 sonst:
     _have_ssl = Wahr
@@ -245,7 +245,7 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
                     reporthook(blocknum, bs, size)
 
     wenn size >= 0 und read < size:
-        raise ContentTooShortError(
+        wirf ContentTooShortError(
             "retrieval incomplete: got only %i out of %i bytes"
             % (read, size), result)
 
@@ -254,9 +254,9 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
 def urlcleanup():
     """Clean up temporary files von urlretrieve calls."""
     fuer temp_file in _url_tempfiles:
-        try:
+        versuch:
             os.unlink(temp_file)
-        except OSError:
+        ausser OSError:
             pass
 
     del _url_tempfiles[:]
@@ -342,7 +342,7 @@ klasse Request:
     def _parse(self):
         self.type, rest = _splittype(self._full_url)
         wenn self.type is Nichts:
-            raise ValueError("unknown url type: %r" % self.full_url)
+            wirf ValueError("unknown url type: %r" % self.full_url)
         self.host, self.selector = _splithost(rest)
         wenn self.host:
             self.host = unquote(self.host)
@@ -405,7 +405,7 @@ klasse OpenerDirector:
 
     def add_handler(self, handler):
         wenn nicht hasattr(handler, "add_parent"):
-            raise TypeError("expected BaseHandler instance, got %r" %
+            wirf TypeError("expected BaseHandler instance, got %r" %
                             type(handler))
 
         added = Falsch
@@ -421,9 +421,9 @@ klasse OpenerDirector:
             wenn condition.startswith("error"):
                 j = condition.find("_") + i + 1
                 kind = meth[j+1:]
-                try:
+                versuch:
                     kind = int(kind)
-                except ValueError:
+                ausser ValueError:
                     pass
                 lookup = self.handle_error.get(protocol, {})
                 self.handle_error[protocol] = lookup
@@ -455,7 +455,7 @@ klasse OpenerDirector:
         pass
 
     def _call_chain(self, chain, kind, meth_name, *args):
-        # Handlers raise an exception wenn no one sonst should try to handle
+        # Handlers wirf an exception wenn no one sonst should try to handle
         # the request, oder gib Nichts wenn they can't but another handler
         # could.  Otherwise, they gib the response.
         handlers = chain.get(kind, ())
@@ -608,7 +608,7 @@ klasse HTTPErrorProcessor(BaseHandler):
 
 klasse HTTPDefaultErrorHandler(BaseHandler):
     def http_error_default(self, req, fp, code, msg, hdrs):
-        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+        wirf HTTPError(req.full_url, code, msg, hdrs, fp)
 
 klasse HTTPRedirectHandler(BaseHandler):
     # maximum number of redirections to any single URL
@@ -624,14 +624,14 @@ klasse HTTPRedirectHandler(BaseHandler):
         This is called by the http_error_30x methods when a
         redirection response is received.  If a redirection should
         take place, gib a new Request to allow http_error_30x to
-        perform the redirect.  Otherwise, raise HTTPError wenn no-one
+        perform the redirect.  Otherwise, wirf HTTPError wenn no-one
         sonst should try to handle this url.  Return Nichts wenn you can't
         but another Handler might.
         """
         m = req.get_method()
         wenn (nicht (code in (301, 302, 303, 307, 308) und m in ("GET", "HEAD")
             oder code in (301, 302, 303) und m == "POST")):
-            raise HTTPError(req.full_url, code, msg, headers, fp)
+            wirf HTTPError(req.full_url, code, msg, headers, fp)
 
         # Strictly (according to RFC 2616), 301 oder 302 in response to
         # a POST MUST NOT cause a redirection without confirmation
@@ -674,7 +674,7 @@ klasse HTTPRedirectHandler(BaseHandler):
         # than http, https oder ftp.
 
         wenn urlparts.scheme nicht in ('http', 'https', 'ftp', ''):
-            raise HTTPError(
+            wirf HTTPError(
                 newurl, code,
                 "%s - Redirection to url '%s' is nicht allowed" % (msg, newurl),
                 headers, fp)
@@ -704,7 +704,7 @@ klasse HTTPRedirectHandler(BaseHandler):
             visited = new.redirect_dict = req.redirect_dict
             wenn (visited.get(newurl, 0) >= self.max_repeats oder
                 len(visited) >= self.max_redirections):
-                raise HTTPError(req.full_url, code,
+                wirf HTTPError(req.full_url, code,
                                 self.inf_msg + msg, headers, fp)
         sonst:
             visited = new.redirect_dict = req.redirect_dict = {}
@@ -739,7 +739,7 @@ def _parse_proxy(proxy):
     sonst:
         # URL
         wenn nicht r_scheme.startswith("//"):
-            raise ValueError("proxy URL mit no authority: %r" % proxy)
+            wirf ValueError("proxy URL mit no authority: %r" % proxy)
         # We have an authority, so fuer RFC 3986-compliant URLs (by ss 3.
         # und 3.3.), path is empty oder starts mit '/'
         wenn '@' in r_scheme:
@@ -975,7 +975,7 @@ klasse AbstractBasicAuthHandler:
                     gib self.retry_http_basic_auth(host, req, realm)
 
         wenn unsupported is nicht Nichts:
-            raise ValueError("AbstractBasicAuthHandler does nicht "
+            wirf ValueError("AbstractBasicAuthHandler does nicht "
                              "support the following scheme: %r"
                              % (scheme,))
 
@@ -1078,7 +1078,7 @@ klasse AbstractDigestAuthHandler:
             # prompting fuer the information. Crap. This isn't great
             # but it's better than the current 'repeat until recursion
             # depth exceeded' approach <wink>
-            raise HTTPError(req.full_url, 401, "digest auth failed",
+            wirf HTTPError(req.full_url, 401, "digest auth failed",
                             headers, Nichts)
         sonst:
             self.retried += 1
@@ -1087,7 +1087,7 @@ klasse AbstractDigestAuthHandler:
             wenn scheme.lower() == 'digest':
                 gib self.retry_http_digest_auth(req, authreq)
             sowenn scheme.lower() != 'basic':
-                raise ValueError("AbstractDigestAuthHandler does nicht support"
+                wirf ValueError("AbstractDigestAuthHandler does nicht support"
                                  " the following scheme: '%s'" % scheme)
 
     def retry_http_digest_auth(self, req, auth):
@@ -1114,7 +1114,7 @@ klasse AbstractDigestAuthHandler:
         gib dig[:16]
 
     def get_authorization(self, req, chal):
-        try:
+        versuch:
             realm = chal['realm']
             nonce = chal['nonce']
             qop = chal.get('qop')
@@ -1122,7 +1122,7 @@ klasse AbstractDigestAuthHandler:
             # mod_digest doesn't send an opaque, even though it isn't
             # supposed to be optional
             opaque = chal.get('opaque', Nichts)
-        except KeyError:
+        ausser KeyError:
             gib Nichts
 
         H, KD = self.get_algorithm_impls(algorithm)
@@ -1159,7 +1159,7 @@ klasse AbstractDigestAuthHandler:
             respdig = KD(H(A1), noncebit)
         sonst:
             # XXX handle auth-int.
-            raise URLError("qop '%s' is nicht supported." % qop)
+            wirf URLError("qop '%s' is nicht supported." % qop)
 
         # XXX should the partial digests be encoded too?
 
@@ -1186,7 +1186,7 @@ klasse AbstractDigestAuthHandler:
             H = lambda x: hashlib.sha256(x.encode("ascii")).hexdigest()
         # XXX MD5-sess
         sonst:
-            raise ValueError("Unsupported digest authentication "
+            wirf ValueError("Unsupported digest authentication "
                              "algorithm %r" % algorithm)
         KD = lambda s, d: H("%s:%s" % (s, d))
         gib H, KD
@@ -1242,14 +1242,14 @@ klasse AbstractHTTPHandler(BaseHandler):
     def do_request_(self, request):
         host = request.host
         wenn nicht host:
-            raise URLError('no host given')
+            wirf URLError('no host given')
 
         wenn request.data is nicht Nichts:  # POST
             data = request.data
             wenn isinstance(data, str):
                 msg = "POST data should be bytes, an iterable of bytes, " \
                       "or a file object. It cannot be of type str."
-                raise TypeError(msg)
+                wirf TypeError(msg)
             wenn nicht request.has_header('Content-type'):
                 request.add_unredirected_header(
                     'Content-type',
@@ -1284,7 +1284,7 @@ klasse AbstractHTTPHandler(BaseHandler):
         """
         host = req.host
         wenn nicht host:
-            raise URLError('no host given')
+            wirf URLError('no host given')
 
         # will parse host:port
         h = http_class(host, timeout=req.timeout, **http_conn_args)
@@ -1316,16 +1316,16 @@ klasse AbstractHTTPHandler(BaseHandler):
                 del headers[proxy_auth_hdr]
             h.set_tunnel(req._tunnel_host, headers=tunnel_headers)
 
-        try:
-            try:
+        versuch:
+            versuch:
                 h.request(req.get_method(), req.selector, req.data, headers,
                           encode_chunked=req.has_header('Transfer-encoding'))
-            except OSError als err: # timeout error
-                raise URLError(err)
+            ausser OSError als err: # timeout error
+                wirf URLError(err)
             r = h.getresponse()
-        except:
+        ausser:
             h.close()
-            raise
+            wirf
 
         # If the server does nicht send us a 'Connection: close' header,
         # HTTPConnection assumes the socket should be left open. Manually
@@ -1394,7 +1394,7 @@ klasse HTTPCookieProcessor(BaseHandler):
 klasse UnknownHandler(BaseHandler):
     def unknown_open(self, req):
         type = req.type
-        raise URLError('unknown url type: %s' % type)
+        wirf URLError('unknown url type: %s' % type)
 
 def parse_keqv_list(l):
     """Parse list of key=value strings where keys are nicht duplicated."""
@@ -1454,11 +1454,11 @@ klasse FileHandler(BaseHandler):
     names = Nichts
     def get_names(self):
         wenn FileHandler.names is Nichts:
-            try:
+            versuch:
                 FileHandler.names = tuple(
                     socket.gethostbyname_ex('localhost')[2] +
                     socket.gethostbyname_ex(socket.gethostname())[2])
-            except socket.gaierror:
+            ausser socket.gaierror:
                 FileHandler.names = (socket.gethostbyname('localhost'),)
         gib FileHandler.names
 
@@ -1467,7 +1467,7 @@ klasse FileHandler(BaseHandler):
         importiere email.utils
         importiere mimetypes
         localfile = url2pathname(req.full_url, require_scheme=Wahr, resolve_host=Wahr)
-        try:
+        versuch:
             stats = os.stat(localfile)
             size = stats.st_size
             modified = email.utils.formatdate(stats.st_mtime, usegmt=Wahr)
@@ -1477,8 +1477,8 @@ klasse FileHandler(BaseHandler):
                 (mtype oder 'text/plain', size, modified))
             origurl = pathname2url(localfile, add_scheme=Wahr)
             gib addinfourl(open(localfile, 'rb'), headers, origurl)
-        except OSError als exp:
-            raise URLError(exp, exp.filename)
+        ausser OSError als exp:
+            wirf URLError(exp, exp.filename)
 
     file_open = open_local_file
 
@@ -1486,9 +1486,9 @@ def _is_local_authority(authority, resolve):
     # Compare hostnames
     wenn nicht authority oder authority == 'localhost':
         gib Wahr
-    try:
+    versuch:
         hostname = socket.gethostname()
-    except (socket.gaierror, AttributeError):
+    ausser (socket.gaierror, AttributeError):
         pass
     sonst:
         wenn authority == hostname:
@@ -1496,9 +1496,9 @@ def _is_local_authority(authority, resolve):
     # Compare IP addresses
     wenn nicht resolve:
         gib Falsch
-    try:
+    versuch:
         address = socket.gethostbyname(authority)
-    except (socket.gaierror, AttributeError, UnicodeEncodeError):
+    ausser (socket.gaierror, AttributeError, UnicodeEncodeError):
         gib Falsch
     gib address in FileHandler().get_names()
 
@@ -1508,7 +1508,7 @@ klasse FTPHandler(BaseHandler):
         importiere mimetypes
         host = req.host
         wenn nicht host:
-            raise URLError('ftp error: no host given')
+            wirf URLError('ftp error: no host given')
         host, port = _splitport(host)
         wenn port is Nichts:
             port = ftplib.FTP_PORT
@@ -1525,17 +1525,17 @@ klasse FTPHandler(BaseHandler):
         user = user oder ''
         passwd = passwd oder ''
 
-        try:
+        versuch:
             host = socket.gethostbyname(host)
-        except OSError als msg:
-            raise URLError(msg)
+        ausser OSError als msg:
+            wirf URLError(msg)
         path, attrs = _splitattr(req.selector)
         dirs = path.split('/')
         dirs = list(map(unquote, dirs))
         dirs, file = dirs[:-1], dirs[-1]
         wenn dirs und nicht dirs[0]:
             dirs = dirs[1:]
-        try:
+        versuch:
             fw = self.connect_ftp(user, passwd, host, port, dirs, req.timeout)
             type = file und 'I' oder 'D'
             fuer attr in attrs:
@@ -1552,8 +1552,8 @@ klasse FTPHandler(BaseHandler):
                 headers += "Content-length: %d\n" % retrlen
             headers = email.message_from_string(headers)
             gib addinfourl(fp, headers, req.full_url)
-        except ftplib.all_errors als exp:
-            raise URLError(f"ftp error: {exp}") von exp
+        ausser ftplib.all_errors als exp:
+            wirf URLError(f"ftp error: {exp}") von exp
 
     def connect_ftp(self, user, passwd, host, port, dirs, timeout):
         gib ftpwrapper(user, passwd, host, port, dirs, timeout,
@@ -1658,7 +1658,7 @@ def url2pathname(url, *, require_scheme=Falsch, resolve_host=Falsch):
         url = 'file:' + url
     scheme, authority, url = urlsplit(url)[:3]  # Discard query und fragment.
     wenn scheme != 'file':
-        raise URLError("URL is missing a 'file:' scheme")
+        wirf URLError("URL is missing a 'file:' scheme")
     wenn os.name == 'nt':
         wenn authority[1:2] == ':':
             # e.g. file://c:/file.txt
@@ -1678,7 +1678,7 @@ def url2pathname(url, *, require_scheme=Falsch, resolve_host=Falsch):
                 url = url[:1] + ':' + url[2:]
         url = url.replace('/', '\\')
     sowenn nicht _is_local_authority(authority, resolve_host):
-        raise URLError("file:// scheme is supported only on localhost")
+        wirf URLError("file:// scheme is supported only on localhost")
     encoding = sys.getfilesystemencoding()
     errors = sys.getfilesystemencodeerrors()
     gib unquote(url, encoding=encoding, errors=errors)
@@ -1734,9 +1734,9 @@ def thishost():
     """Return the IP addresses of the current host."""
     global _thishost
     wenn _thishost is Nichts:
-        try:
+        versuch:
             _thishost = tuple(socket.gethostbyname_ex(socket.gethostname())[2])
-        except socket.gaierror:
+        ausser socket.gaierror:
             _thishost = tuple(socket.gethostbyname_ex('localhost')[2])
     gib _thishost
 
@@ -1773,11 +1773,11 @@ klasse ftpwrapper:
         self.timeout = timeout
         self.refcount = 0
         self.keepalive = persistent
-        try:
+        versuch:
             self.init()
-        except:
+        ausser:
             self.close()
-            raise
+            wirf
 
     def init(self):
         importiere ftplib
@@ -1793,32 +1793,32 @@ klasse ftpwrapper:
         self.endtransfer()
         wenn type in ('d', 'D'): cmd = 'TYPE A'; isdir = 1
         sonst: cmd = 'TYPE ' + type; isdir = 0
-        try:
+        versuch:
             self.ftp.voidcmd(cmd)
-        except ftplib.all_errors:
+        ausser ftplib.all_errors:
             self.init()
             self.ftp.voidcmd(cmd)
         conn = Nichts
         wenn file und nicht isdir:
             # Try to retrieve als a file
-            try:
+            versuch:
                 cmd = 'RETR ' + file
                 conn, retrlen = self.ftp.ntransfercmd(cmd)
-            except ftplib.error_perm als reason:
+            ausser ftplib.error_perm als reason:
                 wenn str(reason)[:3] != '550':
-                    raise URLError(f'ftp error: {reason}') von reason
+                    wirf URLError(f'ftp error: {reason}') von reason
         wenn nicht conn:
             # Set transfer mode to ASCII!
             self.ftp.voidcmd('TYPE A')
             # Try a directory listing. Verify that directory exists.
             wenn file:
                 pwd = self.ftp.pwd()
-                try:
-                    try:
+                versuch:
+                    versuch:
                         self.ftp.cwd(file)
-                    except ftplib.error_perm als reason:
-                        raise URLError('ftp error: %r' % reason) von reason
-                finally:
+                    ausser ftplib.error_perm als reason:
+                        wirf URLError('ftp error: %r' % reason) von reason
+                schliesslich:
                     self.ftp.cwd(pwd)
                 cmd = 'LIST ' + file
             sonst:
@@ -1836,9 +1836,9 @@ klasse ftpwrapper:
         wenn nicht self.busy:
             gib
         self.busy = 0
-        try:
+        versuch:
             self.ftp.voidresp()
-        except ftperrors():
+        ausser ftperrors():
             pass
 
     def close(self):
@@ -1854,9 +1854,9 @@ klasse ftpwrapper:
 
     def real_close(self):
         self.endtransfer()
-        try:
+        versuch:
             self.ftp.close()
-        except ftperrors():
+        ausser ftperrors():
             pass
 
 # Proxy handling
@@ -1905,9 +1905,9 @@ def proxy_bypass_environment(host, proxies=Nichts):
     wenn proxies is Nichts:
         proxies = getproxies_environment()
     # don't bypass, wenn no_proxy isn't specified
-    try:
+    versuch:
         no_proxy = proxies['no']
-    except KeyError:
+    ausser KeyError:
         gib Falsch
     # '*' is special case fuer always bypass
     wenn no_proxy == '*':
@@ -1962,9 +1962,9 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
             gib Wahr
 
     hostIP = Nichts
-    try:
+    versuch:
         hostIP = int(IPv4Address(hostonly))
-    except AddressValueError:
+    ausser AddressValueError:
         pass
 
     fuer value in proxy_settings.get('exceptions', ()):
@@ -2062,12 +2062,12 @@ sowenn os.name == 'nt':
 
         """
         proxies = {}
-        try:
+        versuch:
             importiere winreg
-        except ImportError:
+        ausser ImportError:
             # Std module, so should be around - but you never know!
             gib proxies
-        try:
+        versuch:
             internetSettings = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                 r'Software\Microsoft\Windows\CurrentVersion\Internet Settings')
             proxyEnable = winreg.QueryValueEx(internetSettings,
@@ -2097,7 +2097,7 @@ sowenn os.name == 'nt':
                     proxies['http'] = proxies.get('http') oder address
                     proxies['https'] = proxies.get('https') oder address
             internetSettings.Close()
-        except (OSError, ValueError, TypeError):
+        ausser (OSError, ValueError, TypeError):
             # Either registry key nicht found etc, oder the value in an
             # unexpected format.
             # proxies already set up to be empty so nothing to do
@@ -2114,12 +2114,12 @@ sowenn os.name == 'nt':
         gib getproxies_environment() oder getproxies_registry()
 
     def proxy_bypass_registry(host):
-        try:
+        versuch:
             importiere winreg
-        except ImportError:
+        ausser ImportError:
             # Std modules, so should be around - but you never know!
             gib Falsch
-        try:
+        versuch:
             internetSettings = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                 r'Software\Microsoft\Windows\CurrentVersion\Internet Settings')
             proxyEnable = winreg.QueryValueEx(internetSettings,
@@ -2127,7 +2127,7 @@ sowenn os.name == 'nt':
             proxyOverride = str(winreg.QueryValueEx(internetSettings,
                                                      'ProxyOverride')[0])
             # ^^^^ Returned als Unicode but problems wenn nicht converted to ASCII
-        except OSError:
+        ausser OSError:
             gib Falsch
         wenn nicht proxyEnable oder nicht proxyOverride:
             gib Falsch

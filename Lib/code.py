@@ -52,7 +52,7 @@ klasse InteractiveInterpreter:
 
         3) The input is complete; compile_command() returned a code
         object.  The code is executed by calling self.runcode() (which
-        also handles run-time exceptions, except fuer SystemExit).
+        also handles run-time exceptions, ausser fuer SystemExit).
 
         The gib value is Wahr in case 2, Falsch in the other cases (unless
         an exception is raised).  The gib value can be used to
@@ -60,9 +60,9 @@ klasse InteractiveInterpreter:
         line.
 
         """
-        try:
+        versuch:
             code = self.compile(source, filename, symbol)
-        except (OverflowError, SyntaxError, ValueError):
+        ausser (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename, source=source)
             gib Falsch
@@ -87,11 +87,11 @@ klasse InteractiveInterpreter:
         caller should be prepared to deal mit it.
 
         """
-        try:
+        versuch:
             exec(code, self.locals)
-        except SystemExit:
-            raise
-        except:
+        ausser SystemExit:
+            wirf
+        ausser:
             self.showtraceback()
 
     def showsyntaxerror(self, filename=Nichts, **kwargs):
@@ -106,13 +106,13 @@ klasse InteractiveInterpreter:
         The output is written by self.write(), below.
 
         """
-        try:
+        versuch:
             typ, value, tb = sys.exc_info()
             wenn filename und issubclass(typ, SyntaxError):
                 value.filename = filename
             source = kwargs.pop('source', "")
             self._showtraceback(typ, value, Nichts, source)
-        finally:
+        schliesslich:
             typ = value = tb = Nichts
 
     def showtraceback(self):
@@ -123,10 +123,10 @@ klasse InteractiveInterpreter:
         The output is written by self.write(), below.
 
         """
-        try:
+        versuch:
             typ, value, tb = sys.exc_info()
             self._showtraceback(typ, value, tb.tb_next, "")
-        finally:
+        schliesslich:
             typ = value = tb = Nichts
 
     def _showtraceback(self, typ, value, tb, source):
@@ -145,11 +145,11 @@ klasse InteractiveInterpreter:
         sonst:
             # If someone has set sys.excepthook, we let that take precedence
             # over self.write
-            try:
+            versuch:
                 sys.excepthook(typ, value, tb)
-            except SystemExit:
-                raise
-            except BaseException als e:
+            ausser SystemExit:
+                wirf
+            ausser BaseException als e:
                 e.__context__ = Nichts
                 e = e.with_traceback(e.__traceback__.tb_next)
                 drucke('Error in sys.excepthook:', file=sys.stderr)
@@ -217,16 +217,16 @@ klasse InteractiveConsole(InteractiveInterpreter):
         a default message is printed.
 
         """
-        try:
+        versuch:
             sys.ps1
             delete_ps1_after = Falsch
-        except AttributeError:
+        ausser AttributeError:
             sys.ps1 = ">>> "
             delete_ps1_after = Wahr
-        try:
+        versuch:
             sys.ps2
             delete_ps2_after = Falsch
-        except AttributeError:
+        ausser AttributeError:
             sys.ps2 = "... "
             delete_ps2_after = Wahr
 
@@ -260,31 +260,31 @@ klasse InteractiveConsole(InteractiveInterpreter):
                 _quit = builtins.quit
                 builtins.quit = Quitter("quit")
 
-        try:
+        versuch:
             waehrend Wahr:
-                try:
+                versuch:
                     wenn more:
                         prompt = sys.ps2
                     sonst:
                         prompt = sys.ps1
-                    try:
+                    versuch:
                         line = self.raw_input(prompt)
-                    except EOFError:
+                    ausser EOFError:
                         self.write("\n")
                         breche
                     sonst:
                         more = self.push(line)
-                except KeyboardInterrupt:
+                ausser KeyboardInterrupt:
                     self.write("\nKeyboardInterrupt\n")
                     self.resetbuffer()
                     more = 0
-                except SystemExit als e:
+                ausser SystemExit als e:
                     wenn self.local_exit:
                         self.write("\n")
                         breche
                     sonst:
-                        raise e
-        finally:
+                        wirf e
+        schliesslich:
             # restore exit und quit in builtins wenn they were modified
             wenn _exit is nicht Nichts:
                 builtins.exit = _exit
@@ -352,7 +352,7 @@ klasse Quitter:
         gib f'Use {self.name} oder {self.eof} to exit'
 
     def __call__(self, code=Nichts):
-        raise SystemExit(code)
+        wirf SystemExit(code)
 
 
 def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local_exit=Falsch):
@@ -375,9 +375,9 @@ def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local
     wenn readfunc is nicht Nichts:
         console.raw_input = readfunc
     sonst:
-        try:
+        versuch:
             importiere readline  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             pass
     console.interact(banner, exitmsg)
 

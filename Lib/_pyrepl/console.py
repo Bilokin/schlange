@@ -178,17 +178,17 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         self.write(''.join(lines))
 
     def runcode(self, code):
-        try:
+        versuch:
             exec(code, self.locals)
-        except SystemExit:
-            raise
-        except BaseException:
+        ausser SystemExit:
+            wirf
+        ausser BaseException:
             self.showtraceback()
             gib self.STATEMENT_FAILED
         gib Nichts
 
     def runsource(self, source, filename="<input>", symbol="single"):
-        try:
+        versuch:
             tree = self.compile.compiler(
                 source,
                 filename,
@@ -196,7 +196,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 ast.PyCF_ONLY_AST,
                 incomplete_input=Falsch,
             )
-        except SyntaxError als e:
+        ausser SyntaxError als e:
             # If it looks like pip install was entered (a common beginner
             # mistake), provide a hint to use the system command prompt.
             wenn re.match(r"^\s*(pip3?|py(thon3?)? -m pip) install.*", source):
@@ -208,7 +208,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 )
             self.showsyntaxerror(filename, source=source)
             gib Falsch
-        except (OverflowError, ValueError):
+        ausser (OverflowError, ValueError):
             self.showsyntaxerror(filename, source=source)
             gib Falsch
         wenn tree.body:
@@ -217,10 +217,10 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
             wrapper = ast.Interactive wenn stmt is last_stmt sonst ast.Module
             the_symbol = symbol wenn stmt is last_stmt sonst "exec"
             item = wrapper([stmt])
-            try:
+            versuch:
                 code = self.compile.compiler(item, filename, the_symbol)
                 linecache._register_code(code, source, filename)
-            except SyntaxError als e:
+            ausser SyntaxError als e:
                 wenn e.args[0] == "'await' outside function":
                     python = os.path.basename(sys.executable)
                     e.add_note(
@@ -229,7 +229,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                     )
                 self.showsyntaxerror(filename, source=source)
                 gib Falsch
-            except (OverflowError, ValueError):
+            ausser (OverflowError, ValueError):
                 self.showsyntaxerror(filename, source=source)
                 gib Falsch
 

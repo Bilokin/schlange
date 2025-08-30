@@ -86,7 +86,7 @@ klasse async_chat(asyncore.dispatcher):
         asyncore.dispatcher.__init__(self, sock, map)
 
     def collect_incoming_data(self, data):
-        raise NotImplementedError("must be implemented in subclass")
+        wirf NotImplementedError("must be implemented in subclass")
 
     def _collect_incoming_data(self, data):
         self.incoming.append(data)
@@ -97,7 +97,7 @@ klasse async_chat(asyncore.dispatcher):
         gib d
 
     def found_terminator(self):
-        raise NotImplementedError("must be implemented in subclass")
+        wirf NotImplementedError("must be implemented in subclass")
 
     def set_terminator(self, term):
         """Set the input delimiter.
@@ -107,7 +107,7 @@ klasse async_chat(asyncore.dispatcher):
         wenn isinstance(term, str) und self.use_encoding:
             term = bytes(term, self.encoding)
         sowenn isinstance(term, int) und term < 0:
-            raise ValueError('the number of received bytes must be positive')
+            wirf ValueError('the number of received bytes must be positive')
         self.terminator = term
 
     def get_terminator(self):
@@ -120,11 +120,11 @@ klasse async_chat(asyncore.dispatcher):
 
     def handle_read(self):
 
-        try:
+        versuch:
             data = self.recv(self.ac_in_buffer_size)
-        except BlockingIOError:
+        ausser BlockingIOError:
             gib
-        except OSError:
+        ausser OSError:
             self.handle_error()
             gib
 
@@ -198,7 +198,7 @@ klasse async_chat(asyncore.dispatcher):
 
     def push(self, data):
         wenn nicht isinstance(data, (bytes, bytearray, memoryview)):
-            raise TypeError('data argument must be byte-ish (%r)',
+            wirf TypeError('data argument must be byte-ish (%r)',
                             type(data))
         sabs = self.ac_out_buffer_size
         wenn len(data) > sabs:
@@ -240,9 +240,9 @@ klasse async_chat(asyncore.dispatcher):
 
             # handle classic producer behavior
             obs = self.ac_out_buffer_size
-            try:
+            versuch:
                 data = first[:obs]
-            except TypeError:
+            ausser TypeError:
                 data = first.more()
                 wenn data:
                     self.producer_fifo.appendleft(data)
@@ -254,9 +254,9 @@ klasse async_chat(asyncore.dispatcher):
                 data = bytes(data, self.encoding)
 
             # send the data
-            try:
+            versuch:
                 num_sent = self.send(data)
-            except OSError:
+            ausser OSError:
                 self.handle_error()
                 gib
 

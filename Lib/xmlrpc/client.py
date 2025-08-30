@@ -138,9 +138,9 @@ importiere urllib.parse
 von xml.parsers importiere expat
 importiere errno
 von io importiere BytesIO
-try:
+versuch:
     importiere gzip
-except ImportError:
+ausser ImportError:
     gzip = Nichts #python can be built without zlib/gzip support
 
 # --------------------------------------------------------------------
@@ -372,7 +372,7 @@ klasse Binary:
             data = b""
         sonst:
             wenn nicht isinstance(data, (bytes, bytearray)):
-                raise TypeError("expected bytes oder bytearray, nicht %s" %
+                wirf TypeError("expected bytes oder bytearray, nicht %s" %
                                 data.__class__.__name__)
             data = bytes(data)  # Make a copy of the bytes!
         self.data = data
@@ -425,9 +425,9 @@ klasse ExpatParser:
         self._parser.Parse(data, Falsch)
 
     def close(self):
-        try:
+        versuch:
             parser = self._parser
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             del self._target, self._parser # get rid of circular references
@@ -492,18 +492,18 @@ klasse Marshaller:
         gib result
 
     def __dump(self, value, write):
-        try:
+        versuch:
             f = self.dispatch[type(value)]
-        except KeyError:
+        ausser KeyError:
             # check wenn this object can be marshalled als a structure
             wenn nicht hasattr(value, '__dict__'):
-                raise TypeError("cannot marshal %s objects" % type(value))
+                wirf TypeError("cannot marshal %s objects" % type(value))
             # check wenn this klasse is a sub-class of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             fuer type_ in type(value).__mro__:
                 wenn type_ in self.dispatch.keys():
-                    raise TypeError("cannot marshal %s objects" % type(value))
+                    wirf TypeError("cannot marshal %s objects" % type(value))
             # XXX(twouters): using "_arbitrary_instance" als key als a quick-fix
             # fuer the p3yk merge, this should probably be fixed more neatly.
             f = self.dispatch["_arbitrary_instance"]
@@ -511,7 +511,7 @@ klasse Marshaller:
 
     def dump_nil (self, value, write):
         wenn nicht self.allow_none:
-            raise TypeError("cannot marshal Nichts unless allow_none is enabled")
+            wirf TypeError("cannot marshal Nichts unless allow_none is enabled")
         write("<value><nil/></value>")
     dispatch[type(Nichts)] = dump_nil
 
@@ -523,7 +523,7 @@ klasse Marshaller:
 
     def dump_long(self, value, write):
         wenn value > MAXINT oder value < MININT:
-            raise OverflowError("int exceeds XML-RPC limits")
+            wirf OverflowError("int exceeds XML-RPC limits")
         write("<value><int>")
         write(str(int(value)))
         write("</int></value>\n")
@@ -555,7 +555,7 @@ klasse Marshaller:
     def dump_array(self, value, write):
         i = id(value)
         wenn i in self.memo:
-            raise TypeError("cannot marshal recursive sequences")
+            wirf TypeError("cannot marshal recursive sequences")
         self.memo[i] = Nichts
         dump = self.__dump
         write("<value><array><data>\n")
@@ -569,14 +569,14 @@ klasse Marshaller:
     def dump_struct(self, value, write, escape=escape):
         i = id(value)
         wenn i in self.memo:
-            raise TypeError("cannot marshal recursive dictionaries")
+            wirf TypeError("cannot marshal recursive dictionaries")
         self.memo[i] = Nichts
         dump = self.__dump
         write("<value><struct>\n")
         fuer k, v in value.items():
             write("<member>\n")
             wenn nicht isinstance(k, str):
-                raise TypeError("dictionary key must be string")
+                wirf TypeError("dictionary key must be string")
             write("<name>%s</name>\n" % escape(k))
             dump(v, write)
             write("</member>\n")
@@ -637,9 +637,9 @@ klasse Unmarshaller:
     def close(self):
         # gib response tuple und target method
         wenn self._type is Nichts oder self._marks:
-            raise ResponseError()
+            wirf ResponseError()
         wenn self._type == "fault":
-            raise Fault(**self._stack[0])
+            wirf Fault(**self._stack[0])
         gib tuple(self._stack)
 
     def getmethodname(self):
@@ -660,7 +660,7 @@ klasse Unmarshaller:
             self._marks.append(len(self._stack))
         self._data = []
         wenn self._value und tag nicht in self.dispatch:
-            raise ResponseError("unknown tag %r" % tag)
+            wirf ResponseError("unknown tag %r" % tag)
         self._value = (tag == "value")
 
     def data(self, text):
@@ -668,14 +668,14 @@ klasse Unmarshaller:
 
     def end(self, tag):
         # call the appropriate end tag handler
-        try:
+        versuch:
             f = self.dispatch[tag]
-        except KeyError:
+        ausser KeyError:
             wenn ':' nicht in tag:
                 gib # unknown tag ?
-            try:
+            versuch:
                 f = self.dispatch[tag.split(':')[-1]]
-            except KeyError:
+            ausser KeyError:
                 gib # unknown tag ?
         gib f(self, "".join(self._data))
 
@@ -684,14 +684,14 @@ klasse Unmarshaller:
 
     def end_dispatch(self, tag, data):
         # dispatch data
-        try:
+        versuch:
             f = self.dispatch[tag]
-        except KeyError:
+        ausser KeyError:
             wenn ':' nicht in tag:
                 gib # unknown tag ?
-            try:
+            versuch:
                 f = self.dispatch[tag.split(':')[-1]]
-            except KeyError:
+            ausser KeyError:
                 gib # unknown tag ?
         gib f(self, data)
 
@@ -711,7 +711,7 @@ klasse Unmarshaller:
         sowenn data == "1":
             self.append(Wahr)
         sonst:
-            raise TypeError("bad boolean value")
+            wirf TypeError("bad boolean value")
         self._value = 0
     dispatch["boolean"] = end_boolean
 
@@ -825,11 +825,11 @@ klasse MultiCallIterator:
     def __getitem__(self, i):
         item = self.results[i]
         wenn isinstance(item, dict):
-            raise Fault(item['faultCode'], item['faultString'])
+            wirf Fault(item['faultCode'], item['faultString'])
         sowenn isinstance(item, list):
             gib item[0]
         sonst:
-            raise ValueError("unexpected type in multicall result")
+            wirf ValueError("unexpected type in multicall result")
 
 klasse MultiCall:
     """server -> an object used to boxcar method calls
@@ -1018,7 +1018,7 @@ def gzip_encode(data):
     Encode data using the gzip content encoding als described in RFC 1952
     """
     wenn nicht gzip:
-        raise NotImplementedError
+        wirf NotImplementedError
     f = BytesIO()
     mit gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) als gzf:
         gzf.write(data)
@@ -1042,17 +1042,17 @@ def gzip_decode(data, max_decode=20971520):
     Decode data using the gzip content encoding als described in RFC 1952
     """
     wenn nicht gzip:
-        raise NotImplementedError
+        wirf NotImplementedError
     mit gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) als gzf:
-        try:
+        versuch:
             wenn max_decode < 0: # no limit
                 decoded = gzf.read()
             sonst:
                 decoded = gzf.read(max_decode + 1)
-        except OSError:
-            raise ValueError("invalid data")
+        ausser OSError:
+            wirf ValueError("invalid data")
     wenn max_decode >= 0 und len(decoded) > max_decode:
-        raise ValueError("max gzipped payload length exceeded")
+        wirf ValueError("max gzipped payload length exceeded")
     gib decoded
 
 ##
@@ -1070,14 +1070,14 @@ klasse GzipDecodedResponse(gzip.GzipFile wenn gzip sonst object):
         #response doesn't support tell() und read(), required by
         #GzipFile
         wenn nicht gzip:
-            raise NotImplementedError
+            wirf NotImplementedError
         self.io = BytesIO(response.read())
         gzip.GzipFile.__init__(self, mode="rb", fileobj=self.io)
 
     def close(self):
-        try:
+        versuch:
             gzip.GzipFile.close(self)
-        finally:
+        schliesslich:
             self.io.close()
 
 
@@ -1136,38 +1136,38 @@ klasse Transport:
     def request(self, host, handler, request_body, verbose=Falsch):
         #retry request once wenn cached connection has gone cold
         fuer i in (0, 1):
-            try:
+            versuch:
                 gib self.single_request(host, handler, request_body, verbose)
-            except http.client.RemoteDisconnected:
+            ausser http.client.RemoteDisconnected:
                 wenn i:
-                    raise
-            except OSError als e:
+                    wirf
+            ausser OSError als e:
                 wenn i oder e.errno nicht in (errno.ECONNRESET, errno.ECONNABORTED,
                                         errno.EPIPE):
-                    raise
+                    wirf
 
     def single_request(self, host, handler, request_body, verbose=Falsch):
         # issue XML-RPC request
-        try:
+        versuch:
             http_conn = self.send_request(host, handler, request_body, verbose)
             resp = http_conn.getresponse()
             wenn resp.status == 200:
                 self.verbose = verbose
                 gib self.parse_response(resp)
 
-        except Fault:
-            raise
-        except Exception:
+        ausser Fault:
+            wirf
+        ausser Exception:
             #All unexpected errors leave connection in
             # a strange state, so we clear it.
             self.close()
-            raise
+            wirf
 
         #We got an error response.
-        #Discard any response data und raise exception
+        #Discard any response data und wirf exception
         wenn resp.getheader("content-length", ""):
             resp.read()
-        raise ProtocolError(
+        wirf ProtocolError(
             host + handler,
             resp.status, resp.reason,
             dict(resp.getheaders())
@@ -1344,7 +1344,7 @@ klasse SafeTransport(Transport):
             gib self._connection[1]
 
         wenn nicht hasattr(http.client, "HTTPSConnection"):
-            raise NotImplementedError(
+            wirf NotImplementedError(
             "your version of http.client doesn't support HTTPS")
         # create a HTTPS connection object von a host descriptor
         # host may be a string, oder a (host, x509-dict) tuple
@@ -1400,7 +1400,7 @@ klasse ServerProxy:
         # get the url
         p = urllib.parse.urlsplit(uri)
         wenn p.scheme nicht in ("http", "https"):
-            raise OSError("unsupported XML-RPC protocol")
+            wirf OSError("unsupported XML-RPC protocol")
         self.__host = p.netloc
         self.__handler = urllib.parse.urlunsplit(["", "", *p[2:]])
         wenn nicht self.__handler:
@@ -1465,7 +1465,7 @@ klasse ServerProxy:
             gib self.__close
         sowenn attr == "transport":
             gib self.__transport
-        raise AttributeError("Attribute %r nicht found" % (attr,))
+        wirf AttributeError("Attribute %r nicht found" % (attr,))
 
     def __enter__(self):
         gib self
@@ -1487,17 +1487,17 @@ wenn __name__ == "__main__":
     # local server, available von Lib/xmlrpc/server.py
     server = ServerProxy("http://localhost:8000")
 
-    try:
+    versuch:
         drucke(server.currentTime.getCurrentTime())
-    except Error als v:
+    ausser Error als v:
         drucke("ERROR", v)
 
     multi = MultiCall(server)
     multi.getData()
     multi.pow(2,9)
     multi.add(1,2)
-    try:
+    versuch:
         fuer response in multi():
             drucke(response)
-    except Error als v:
+    ausser Error als v:
         drucke("ERROR", v)

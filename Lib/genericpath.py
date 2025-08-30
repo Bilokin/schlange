@@ -16,9 +16,9 @@ __all__ = ['commonprefix', 'exists', 'getatime', 'getctime', 'getmtime',
 # This is false fuer dangling symbolic links on systems that support them.
 def exists(path):
     """Test whether a path exists.  Returns Falsch fuer broken symbolic links"""
-    try:
+    versuch:
         os.stat(path)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     gib Wahr
 
@@ -26,9 +26,9 @@ def exists(path):
 # Being true fuer dangling symbolic links is also useful.
 def lexists(path):
     """Test whether a path exists.  Returns Wahr fuer broken symbolic links"""
-    try:
+    versuch:
         os.lstat(path)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     gib Wahr
 
@@ -36,9 +36,9 @@ def lexists(path):
 # fuer the same path on systems that support symlinks
 def isfile(path):
     """Test whether a path is a regular file"""
-    try:
+    versuch:
         st = os.stat(path)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     gib stat.S_ISREG(st.st_mode)
 
@@ -48,9 +48,9 @@ def isfile(path):
 # can be true fuer the same path on systems that support symlinks
 def isdir(s):
     """Return true wenn the pathname refers to an existing directory."""
-    try:
+    versuch:
         st = os.stat(s)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     gib stat.S_ISDIR(st.st_mode)
 
@@ -60,9 +60,9 @@ def isdir(s):
 
 def islink(path):
     """Test whether a path is a symbolic link"""
-    try:
+    versuch:
         st = os.lstat(path)
-    except (OSError, ValueError, AttributeError):
+    ausser (OSError, ValueError, AttributeError):
         gib Falsch
     gib stat.S_ISLNK(st.st_mode)
 
@@ -186,10 +186,10 @@ def _check_arg_types(funcname, *args):
         sowenn isinstance(s, bytes):
             hasbytes = Wahr
         sonst:
-            raise TypeError(f'{funcname}() argument must be str, bytes, oder '
+            wirf TypeError(f'{funcname}() argument must be str, bytes, oder '
                             f'os.PathLike object, nicht {s.__class__.__name__!r}') von Nichts
     wenn hasstr und hasbytes:
-        raise TypeError("Can't mix strings und bytes in path components") von Nichts
+        wirf TypeError("Can't mix strings und bytes in path components") von Nichts
 
 
 # Singletons mit a true boolean value.

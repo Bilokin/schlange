@@ -168,11 +168,11 @@ klasse CoverageResults:
         self.outfile = outfile
         wenn self.infile:
             # Try to merge existing counts file.
-            try:
+            versuch:
                 mit open(self.infile, 'rb') als f:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers=callers))
-            except (OSError, EOFError, ValueError) als err:
+            ausser (OSError, EOFError, ValueError) als err:
                 drucke(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
@@ -212,7 +212,7 @@ klasse CoverageResults:
                          specified.
         :param ignore_missing_files: If Wahr, counts fuer files that no longer
                          exist are silently ignored. Otherwise, a missing file
-                         will raise a FileNotFoundError.
+                         will wirf a FileNotFoundError.
         """
         wenn self.calledfuncs:
             drucke()
@@ -289,20 +289,20 @@ klasse CoverageResults:
 
         wenn self.outfile:
             # try und store counts und module info into self.outfile
-            try:
+            versuch:
                 mit open(self.outfile, 'wb') als f:
                     pickle.dump((self.counts, self.calledfuncs, self.callers),
                                 f, 1)
-            except OSError als err:
+            ausser OSError als err:
                 drucke("Can't save counts files because %s" % err, file=sys.stderr)
 
     def write_results_file(self, path, lines, lnotab, lines_hit, encoding=Nichts):
         """Return a coverage results file in path."""
         # ``lnotab`` is a dict of executable lines, oder a line number "table"
 
-        try:
+        versuch:
             outfile = open(path, "w", encoding=encoding)
-        except OSError als err:
+        ausser OSError als err:
             drucke(("trace: Could nicht open %r fuer writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
             gib 0, 0
@@ -375,11 +375,11 @@ def _find_strings(filename, encoding=Nichts):
 
 def _find_executable_linenos(filename):
     """Return dict where keys are line numbers in the line number table."""
-    try:
+    versuch:
         mit tokenize.open(filename) als f:
             prog = f.read()
             encoding = f.encoding
-    except OSError als err:
+    ausser OSError als err:
         drucke(("Not printing coverage data fuer %r: %s"
                               % (filename, err)), file=sys.stderr)
         gib {}
@@ -449,9 +449,9 @@ klasse Trace:
         wenn nicht self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
-        try:
+        versuch:
             exec(cmd, globals, locals)
-        finally:
+        schliesslich:
             wenn nicht self.donothing:
                 sys.settrace(Nichts)
                 threading.settrace(Nichts)
@@ -460,9 +460,9 @@ klasse Trace:
         result = Nichts
         wenn nicht self.donothing:
             sys.settrace(self.globaltrace)
-        try:
+        versuch:
             result = func(*args, **kw)
-        finally:
+        schliesslich:
             wenn nicht self.donothing:
                 sys.settrace(Nichts)
         gib result
@@ -709,7 +709,7 @@ def main():
               countcallers=opts.trackcalls, ignoremods=opts.ignore_module,
               ignoredirs=opts.ignore_dir, infile=opts.file,
               outfile=opts.file, timing=opts.timing)
-    try:
+    versuch:
         wenn opts.module:
             importiere runpy
             module_name = opts.progname
@@ -737,9 +737,9 @@ def main():
                 '__cached__': Nichts,
             }
         t.runctx(code, globs, globs)
-    except OSError als err:
+    ausser OSError als err:
         sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
-    except SystemExit:
+    ausser SystemExit:
         pass
 
     results = t.results()

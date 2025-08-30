@@ -58,9 +58,9 @@ def spam_with_globals_and_builtins():
 
 
 def spam_with_global_and_attr_same_name():
-    try:
+    versuch:
         spam_minimal.spam_minimal
-    except AttributeError:
+    ausser AttributeError:
         pass
 
 
@@ -84,7 +84,7 @@ def spam_returns_arg(x):
 
 
 def spam_raises():
-    raise Exception('spam!')
+    wirf Exception('spam!')
 
 
 def spam_with_inner_not_closure():
@@ -107,7 +107,7 @@ def spam_annotated(a: int, b: str, c: object) -> tuple:
 def spam_full(a, b, /, c, d:int=1, *args, e, f:object=Nichts, **kwargs) -> tuple:
     # arg defaults, kwarg defaults
     # annotations
-    # all kinds of local vars, except cells
+    # all kinds of local vars, ausser cells
     # no free vars
     # some globals
     # some builtins

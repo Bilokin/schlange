@@ -661,7 +661,7 @@ def test_pdb_pp_repr_exc():
 
     >>> klasse BadRepr:
     ...     def __repr__(self):
-    ...         raise Exception('repr_exc')
+    ...         wirf Exception('repr_exc')
     >>> obj = BadRepr()
 
     >>> def test_function():
@@ -1180,9 +1180,9 @@ def test_convenience_variables():
 
     >>> def util_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-    ...     try:
-    ...         raise Exception('test')
-    ...     except Exception:
+    ...     versuch:
+    ...         wirf Exception('test')
+    ...     ausser Exception:
     ...         pass
     ...     gib 1
 
@@ -1217,7 +1217,7 @@ def test_convenience_variables():
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_convenience_variables[0]>(3)util_function()
-    -> try:
+    -> versuch:
     (Pdb) $_frame.f_lineno
     3
     (Pdb) $ _frame
@@ -1240,21 +1240,21 @@ def test_convenience_variables():
     10
     (Pdb) d
     > <doctest test.test_pdb.test_convenience_variables[0]>(3)util_function()
-    -> try:
+    -> versuch:
     (Pdb) next
     > <doctest test.test_pdb.test_convenience_variables[0]>(4)util_function()
-    -> raise Exception('test')
+    -> wirf Exception('test')
     (Pdb) $a
     *** KeyError: 'a'
     (Pdb) next
     Exception: test
     > <doctest test.test_pdb.test_convenience_variables[0]>(4)util_function()
-    -> raise Exception('test')
+    -> wirf Exception('test')
     (Pdb) $_exception
     Exception('test')
     (Pdb) next
     > <doctest test.test_pdb.test_convenience_variables[0]>(5)util_function()
-    -> except Exception:
+    -> ausser Exception:
     (Pdb) $_exception
     *** KeyError: '_exception'
     (Pdb) gib
@@ -1271,23 +1271,23 @@ def test_post_mortem_chained():
     """Test post mortem traceback debugging of chained exception
 
     >>> def test_function_2():
-    ...     try:
+    ...     versuch:
     ...         1/0
-    ...     finally:
+    ...     schliesslich:
     ...         drucke('Exception!')
 
     >>> def test_function_reraise():
-    ...     try:
+    ...     versuch:
     ...         test_function_2()
-    ...     except ZeroDivisionError als e:
-    ...         raise ZeroDivisionError('reraised') von e
+    ...     ausser ZeroDivisionError als e:
+    ...         wirf ZeroDivisionError('reraised') von e
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         test_function_reraise()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1305,13 +1305,13 @@ def test_post_mortem_chained():
     ...     'up',
     ...     'exit',
     ... ]):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ZeroDivisionError:
+    ...    ausser ZeroDivisionError:
     ...        drucke('Correctly reraised.')
     Exception!
     > <doctest test.test_pdb.test_post_mortem_chained[1]>(5)test_function_reraise()
-    -> raise ZeroDivisionError('reraised') von e
+    -> wirf ZeroDivisionError('reraised') von e
     (Pdb) exceptions
       0 ZeroDivisionError('division by zero')
     > 1 ZeroDivisionError('reraised')
@@ -1328,7 +1328,7 @@ def test_post_mortem_chained():
     -> 1/0
     (Pdb) exceptions 1
     > <doctest test.test_pdb.test_post_mortem_chained[1]>(5)test_function_reraise()
-    -> raise ZeroDivisionError('reraised') von e
+    -> wirf ZeroDivisionError('reraised') von e
     (Pdb) $_exception
     ZeroDivisionError('reraised')
     (Pdb) up
@@ -1336,7 +1336,7 @@ def test_post_mortem_chained():
     -> test_function_reraise()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_chained[1]>(5)test_function_reraise()
-    -> raise ZeroDivisionError('reraised') von e
+    -> wirf ZeroDivisionError('reraised') von e
     (Pdb) exceptions -1
     *** No exception mit that number
     (Pdb) exceptions 3
@@ -1352,24 +1352,24 @@ def test_post_mortem_cause_no_context():
     """Test post mortem traceback debugging of chained exception
 
     >>> def make_exc_with_stack(type_, *content, from_=Nichts):
-    ...     try:
-    ...         raise type_(*content) von from_
-    ...     except Exception als out:
+    ...     versuch:
+    ...         wirf type_(*content) von from_
+    ...     ausser Exception als out:
     ...         gib out
     ...
 
     >>> def main():
-    ...     try:
-    ...         raise ValueError('Context Not Shown')
-    ...     except Exception als e1:
-    ...         raise ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
+    ...     versuch:
+    ...         wirf ValueError('Context Not Shown')
+    ...     ausser Exception als e1:
+    ...         wirf ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         main()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1380,27 +1380,27 @@ def test_post_mortem_cause_no_context():
     ...     'down',
     ...     'exit',
     ... ]):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError:
+    ...    ausser ValueError:
     ...        drucke('Ok.')
     > <doctest test.test_pdb.test_post_mortem_cause_no_context[1]>(5)main()
-    -> raise ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
+    -> wirf ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
     (Pdb) exceptions
         0 TypeError('The Cause')
     >   1 ValueError('With Cause')
     (Pdb) exceptions 0
     > <doctest test.test_pdb.test_post_mortem_cause_no_context[0]>(3)make_exc_with_stack()
-    -> raise type_(*content) von from_
+    -> wirf type_(*content) von from_
     (Pdb) exceptions 1
     > <doctest test.test_pdb.test_post_mortem_cause_no_context[1]>(5)main()
-    -> raise ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
+    -> wirf ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_cause_no_context[2]>(5)test_function()
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_cause_no_context[1]>(5)main()
-    -> raise ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
+    -> wirf ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
     (Pdb) exit"""
 
 
@@ -1409,21 +1409,21 @@ def test_post_mortem_context_of_the_cause():
 
 
     >>> def main():
-    ...     try:
-    ...         raise TypeError('Context of the cause')
-    ...     except Exception als e1:
-    ...         try:
-    ...             raise ValueError('Root Cause')
-    ...         except Exception als e2:
+    ...     versuch:
+    ...         wirf TypeError('Context of the cause')
+    ...     ausser Exception als e1:
+    ...         versuch:
+    ...             wirf ValueError('Root Cause')
+    ...         ausser Exception als e2:
     ...             ex = e2
-    ...         raise ValueError("With Cause, und cause has context") von ex
+    ...         wirf ValueError("With Cause, und cause has context") von ex
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         main()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1439,25 +1439,25 @@ def test_post_mortem_context_of_the_cause():
     ...     'down',
     ...     'exit',
     ... ]):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError:
+    ...    ausser ValueError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, und cause has context") von ex
+    -> wirf ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions
       0 TypeError('Context of the cause')
       1 ValueError('Root Cause')
     > 2 ValueError('With Cause, und cause has context')
     (Pdb) exceptions 2
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, und cause has context") von ex
+    -> wirf ValueError("With Cause, und cause has context") von ex
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[1]>(5)test_function()
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, und cause has context") von ex
+    -> wirf ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions 3
     *** No exception mit that number
     (Pdb) up
@@ -1465,7 +1465,7 @@ def test_post_mortem_context_of_the_cause():
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, und cause has context") von ex
+    -> wirf ValueError("With Cause, und cause has context") von ex
     (Pdb) exceptions 4
     *** No exception mit that number
     (Pdb) up
@@ -1473,7 +1473,7 @@ def test_post_mortem_context_of_the_cause():
     -> main()
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
-    -> raise ValueError("With Cause, und cause has context") von ex
+    -> wirf ValueError("With Cause, und cause has context") von ex
     (Pdb) exit
     """
 
@@ -1486,29 +1486,29 @@ def test_post_mortem_from_none():
 
 
     >>> def main():
-    ...     try:
-    ...         raise TypeError('Context of the cause')
-    ...     except Exception als e1:
-    ...         raise ValueError("With Cause, und cause has context") von Nichts
+    ...     versuch:
+    ...         wirf TypeError('Context of the cause')
+    ...     ausser Exception als e1:
+    ...         wirf ValueError("With Cause, und cause has context") von Nichts
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         main()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'exceptions',
     ...     'exit',
     ... ]):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError:
+    ...    ausser ValueError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_from_none[0]>(5)main()
-    -> raise ValueError("With Cause, und cause has context") von Nichts
+    -> wirf ValueError("With Cause, und cause has context") von Nichts
     (Pdb) exceptions
     > 0 ValueError('With Cause, und cause has context')
     (Pdb) exit
@@ -1521,15 +1521,15 @@ def test_post_mortem_from_no_stack():
     especially when one exception has no stack.
 
     >>> def main():
-    ...     raise Exception() von Exception()
+    ...     wirf Exception() von Exception()
 
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         main()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1537,12 +1537,12 @@ def test_post_mortem_from_no_stack():
     ...      "exceptions 0",
     ...     "exit"],
     ... ):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError:
+    ...    ausser ValueError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_from_no_stack[0]>(2)main()
-    -> raise Exception() von Exception()
+    -> wirf Exception() von Exception()
     (Pdb) exceptions
         - Exception()
     >   1 Exception()
@@ -1566,9 +1566,9 @@ def test_post_mortem_single_no_stack():
     >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     []
     ... ):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError als e:
+    ...    ausser ValueError als e:
     ...        drucke(e)
     A valid traceback must be passed wenn no exception is being handled
     """
@@ -1579,17 +1579,17 @@ def test_post_mortem_complex():
     Test mit simple und complex cycles, exception groups,...
 
     >>> def make_ex_with_stack(type_, *content, from_=Nichts):
-    ...     try:
-    ...         raise type_(*content) von from_
-    ...     except Exception als out:
+    ...     versuch:
+    ...         wirf type_(*content) von from_
+    ...     ausser Exception als out:
     ...         gib out
     ...
 
     >>> def cycle():
-    ...     try:
-    ...         raise ValueError("Cycle Leaf")
-    ...     except Exception als e:
-    ...         raise e von e
+    ...     versuch:
+    ...         wirf ValueError("Cycle Leaf")
+    ...     ausser Exception als e:
+    ...         wirf e von e
     ...
 
     >>> def tri_cycle():
@@ -1600,43 +1600,43 @@ def test_post_mortem_complex():
     ...     a.__cause__ = b
     ...     b.__cause__ = c
     ...
-    ...     raise c von a
+    ...     wirf c von a
     ...
 
     >>> def cause():
-    ...     try:
-    ...         raise ValueError("Cause Leaf")
-    ...     except Exception als e:
-    ...         raise e
+    ...     versuch:
+    ...         wirf ValueError("Cause Leaf")
+    ...     ausser Exception als e:
+    ...         wirf e
     ...
 
     >>> def context(n=10):
-    ...     try:
-    ...         raise ValueError(f"Context Leaf {n}")
-    ...     except Exception als e:
+    ...     versuch:
+    ...         wirf ValueError(f"Context Leaf {n}")
+    ...     ausser Exception als e:
     ...         wenn n == 0:
-    ...             raise ValueError(f"With Context {n}") von e
+    ...             wirf ValueError(f"With Context {n}") von e
     ...         sonst:
     ...             context(n - 1)
     ...
 
     >>> def main():
-    ...     try:
+    ...     versuch:
     ...         cycle()
-    ...     except Exception als e1:
-    ...         try:
+    ...     ausser Exception als e1:
+    ...         versuch:
     ...             tri_cycle()
-    ...         except Exception als e2:
+    ...         ausser Exception als e2:
     ...             ex = e2
-    ...         raise ValueError("With Context und With Cause") von ex
+    ...         wirf ValueError("With Context und With Cause") von ex
 
 
     >>> def test_function():
     ...     importiere pdb;
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
-    ...     try:
+    ...     versuch:
     ...         main()
-    ...     except Exception als e:
+    ...     ausser Exception als e:
     ...         pdb._post_mortem(e, instance)
 
     >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1647,12 +1647,12 @@ def test_post_mortem_complex():
     ...     "exceptions 3",
     ...     "exit"],
     ... ):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ValueError:
+    ...    ausser ValueError:
     ...        drucke('Correctly reraised.')
         > <doctest test.test_pdb.test_post_mortem_complex[5]>(9)main()
-    -> raise ValueError("With Context und With Cause") von ex
+    -> wirf ValueError("With Context und With Cause") von ex
     (Pdb) exceptions
         0 ValueError('Cycle2')
         1 ValueError('Cycle1')
@@ -1660,16 +1660,16 @@ def test_post_mortem_complex():
     >   3 ValueError('With Context und With Cause')
     (Pdb) exceptions 0
     > <doctest test.test_pdb.test_post_mortem_complex[0]>(3)make_ex_with_stack()
-    -> raise type_(*content) von from_
+    -> wirf type_(*content) von from_
     (Pdb) exceptions 1
     > <doctest test.test_pdb.test_post_mortem_complex[0]>(3)make_ex_with_stack()
-    -> raise type_(*content) von from_
+    -> wirf type_(*content) von from_
     (Pdb) exceptions 2
     > <doctest test.test_pdb.test_post_mortem_complex[0]>(3)make_ex_with_stack()
-    -> raise type_(*content) von from_
+    -> wirf type_(*content) von from_
     (Pdb) exceptions 3
     > <doctest test.test_pdb.test_post_mortem_complex[5]>(9)main()
-    -> raise ValueError("With Context und With Cause") von ex
+    -> wirf ValueError("With Context und With Cause") von ex
     (Pdb) exit
     """
 
@@ -1678,9 +1678,9 @@ def test_post_mortem():
     """Test post mortem traceback debugging.
 
     >>> def test_function_2():
-    ...     try:
+    ...     versuch:
     ...         1/0
-    ...     finally:
+    ...     schliesslich:
     ...         drucke('Exception!')
 
     >>> def test_function():
@@ -1697,9 +1697,9 @@ def test_post_mortem():
     ...     'list',      # list code of test_function_2()
     ...     'continue',
     ... ]):
-    ...    try:
+    ...    versuch:
     ...        test_function()
-    ...    except ZeroDivisionError:
+    ...    ausser ZeroDivisionError:
     ...        drucke('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem[1]>(2)test_function()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -1730,9 +1730,9 @@ def test_post_mortem():
     -> 1/0
     (Pdb) list
       1         def test_function_2():
-      2             try:
+      2             versuch:
       3  >>             1/0
-      4             finally:
+      4             schliesslich:
       5  ->             drucke('Exception!')
     [EOF]
     (Pdb) weiter
@@ -2068,13 +2068,13 @@ def test_pdb_next_command_for_generator():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     it = test_gen()
-    ...     try:
+    ...     versuch:
     ...         wenn next(it) != 0:
-    ...             raise AssertionError
+    ...             wirf AssertionError
     ...         next(it)
-    ...     except StopIteration als ex:
+    ...     ausser StopIteration als ex:
     ...         wenn ex.value != 1:
-    ...             raise AssertionError
+    ...             wirf AssertionError
     ...     drucke("finished")
 
     >>> mit PdbTestInput(['step',
@@ -2094,7 +2094,7 @@ def test_pdb_next_command_for_generator():
     -> it = test_gen()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(4)test_function()
-    -> try:
+    -> versuch:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(5)test_function()
     -> wenn next(it) != 0:
@@ -2449,13 +2449,13 @@ def test_pdb_return_command_for_generator():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     it = test_gen()
-    ...     try:
+    ...     versuch:
     ...         wenn next(it) != 0:
-    ...             raise AssertionError
+    ...             wirf AssertionError
     ...         next(it)
-    ...     except StopIteration als ex:
+    ...     ausser StopIteration als ex:
     ...         wenn ex.value != 1:
-    ...             raise AssertionError
+    ...             wirf AssertionError
     ...     drucke("finished")
 
     >>> mit PdbTestInput(['step',
@@ -2474,7 +2474,7 @@ def test_pdb_return_command_for_generator():
     -> it = test_gen()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(4)test_function()
-    -> try:
+    -> versuch:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(5)test_function()
     -> wenn next(it) != 0:
@@ -2488,7 +2488,7 @@ def test_pdb_return_command_for_generator():
     -> next(it)
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(8)test_function()
-    -> except StopIteration als ex:
+    -> ausser StopIteration als ex:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(9)test_function()
     -> wenn ex.value != 1:
@@ -2738,9 +2738,9 @@ def test_pdb_breakpoint_with_throw():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     g = gen()
-    ...     try:
+    ...     versuch:
     ...         g.throw(TypeError)
-    ...     except TypeError:
+    ...     ausser TypeError:
     ...         pass
 
     >>> mit PdbTestInput([
@@ -2817,7 +2817,7 @@ def test_pdb_closure():
     ...     'lst = [n fuer n in range(10) wenn (n % x) == 0]',
     ...     'lst',
     ...     'sum(n fuer n in lst wenn n > x)',
-    ...     'x = 1; raise Exception()',
+    ...     'x = 1; wirf Exception()',
     ...     'x',
     ...     'def f():',
     ...     '  gib x',
@@ -2847,7 +2847,7 @@ def test_pdb_closure():
     [0, 2, 4, 6, 8]
     (Pdb) sum(n fuer n in lst wenn n > x)
     18
-    (Pdb) x = 1; raise Exception()
+    (Pdb) x = 1; wirf Exception()
     *** Exception
     (Pdb) x
     1
@@ -3184,8 +3184,8 @@ def test_pdb_issue_gh_101517():
     Make sure pdb doesn't crash when the exception is caught in a try/except* block
 
     >>> def test_function():
-    ...     try:
-    ...         raise KeyError
+    ...     versuch:
+    ...         wirf KeyError
     ...     except* Exception als e:
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
@@ -3235,16 +3235,16 @@ def test_pdb_issue_gh_127321():
 def test_pdb_issue_gh_80731():
     """See GH-80731
 
-    pdb should correctly print exception info wenn in an except block.
+    pdb should correctly print exception info wenn in an ausser block.
 
     >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     'import sys',
     ...     'sys.exc_info()',
     ...     'continue'
     ... ]):
-    ...     try:
-    ...         raise ValueError('Correct')
-    ...     except ValueError:
+    ...     versuch:
+    ...         wirf ValueError('Correct')
+    ...     ausser ValueError:
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     > <doctest test.test_pdb.test_pdb_issue_gh_80731[0]>(9)<module>()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -4186,7 +4186,7 @@ def bœr():
     def test_post_mortem_restart(self):
         script = """
             def foo():
-                raise ValueError("foo")
+                wirf ValueError("foo")
             foo()
         """
 
@@ -4756,7 +4756,7 @@ klasse PdbTestReadline(unittest.TestCase):
         # If this fails, the test is skipped because SkipTest will be raised
         readline = import_module('readline')
         wenn readline.backend == "editline":
-            raise unittest.SkipTest("libedit readline is nicht supported fuer pdb")
+            wirf unittest.SkipTest("libedit readline is nicht supported fuer pdb")
 
     def test_basic_completion(self):
         script = textwrap.dedent("""
@@ -4898,7 +4898,7 @@ klasse PdbTestReadline(unittest.TestCase):
         """)
 
         # \t should always complete a 4-space indent
-        # This piece of code will raise an IndentationError oder a SyntaxError
+        # This piece of code will wirf an IndentationError oder a SyntaxError
         # wenn the completion is nicht working als expected
         input = textwrap.dedent("""\
             def func():

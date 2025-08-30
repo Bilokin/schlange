@@ -32,13 +32,13 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     @classmethod
     def __getId(cls, test):
-        try:
+        versuch:
             test_id = test.id
-        except AttributeError:
+        ausser AttributeError:
             gib str(test)
-        try:
+        versuch:
             gib test_id()
-        except TypeError:
+        ausser TypeError:
             gib str(test_id)
         gib repr(test)
 
@@ -132,7 +132,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     def get_xml_element(self):
         wenn nicht self.USE_XML:
-            raise ValueError("USE_XML is false")
+            wirf ValueError("USE_XML is false")
         e = self.__suite
         e.set('tests', str(self.testsRun))
         e.set('errors', str(len(self.errors)))
@@ -178,7 +178,7 @@ wenn __name__ == '__main__':
         def test_error(self):
             drucke('stdout', file=sys.stdout)
             drucke('stderr', file=sys.stderr)
-            raise RuntimeError('error message')
+            wirf RuntimeError('error message')
 
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTests))

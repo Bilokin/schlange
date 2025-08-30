@@ -170,7 +170,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     """
 
     wenn maxlinelen < 4:
-        raise ValueError("maxlinelen must be at least 4")
+        wirf ValueError("maxlinelen must be at least 4")
     wenn nicht body:
         gib body
 

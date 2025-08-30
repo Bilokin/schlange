@@ -22,10 +22,10 @@ von . importiere process
 von . importiere util
 
 # TODO: Do any platforms still lack a functioning sem_open?
-try:
+versuch:
     von _multiprocessing importiere SemLock, sem_unlink
-except ImportError:
-    raise ImportError("This platform lacks a functioning sem_open" +
+ausser ImportError:
+    wirf ImportError("This platform lacks a functioning sem_open" +
                       " implementation. https://github.com/python/cpython/issues/48020.")
 
 #
@@ -52,16 +52,16 @@ klasse SemLock(object):
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
         unlink_now = sys.platform == 'win32' oder self._is_fork_ctx
         fuer i in range(100):
-            try:
+            versuch:
                 sl = self._semlock = _multiprocessing.SemLock(
                     kind, value, maxvalue, self._make_name(),
                     unlink_now)
-            except FileExistsError:
+            ausser FileExistsError:
                 pass
             sonst:
                 breche
         sonst:
-            raise FileExistsError('cannot find name fuer semaphore')
+            wirf FileExistsError('cannot find name fuer semaphore')
 
         util.debug('created semlock mit handle %s' % sl.handle)
         self._make_methods()
@@ -106,7 +106,7 @@ klasse SemLock(object):
             h = context.get_spawning_popen().duplicate_for_child(sl.handle)
         sonst:
             wenn self._is_fork_ctx:
-                raise RuntimeError('A SemLock created in a fork context is being '
+                wirf RuntimeError('A SemLock created in a fork context is being '
                                    'shared mit a process in a spawn context. This is '
                                    'not supported. Please use the same context to create '
                                    'multiprocessing objects und Process.')
@@ -138,9 +138,9 @@ klasse Semaphore(SemLock):
         gib self._semlock._get_value()
 
     def __repr__(self):
-        try:
+        versuch:
             value = self._semlock._get_value()
-        except Exception:
+        ausser Exception:
             value = 'unknown'
         gib '<%s(value=%s)>' % (self.__class__.__name__, value)
 
@@ -154,9 +154,9 @@ klasse BoundedSemaphore(Semaphore):
         SemLock.__init__(self, SEMAPHORE, value, value, ctx=ctx)
 
     def __repr__(self):
-        try:
+        versuch:
             value = self._semlock._get_value()
-        except Exception:
+        ausser Exception:
             value = 'unknown'
         gib '<%s(value=%s, maxvalue=%s)>' % \
                (self.__class__.__name__, value, self._semlock.maxvalue)
@@ -171,7 +171,7 @@ klasse Lock(SemLock):
         SemLock.__init__(self, SEMAPHORE, 1, 1, ctx=ctx)
 
     def __repr__(self):
-        try:
+        versuch:
             wenn self._semlock._is_mine():
                 name = process.current_process().name
                 wenn threading.current_thread().name != 'MainThread':
@@ -182,7 +182,7 @@ klasse Lock(SemLock):
                 name = 'SomeOtherThread'
             sonst:
                 name = 'SomeOtherProcess'
-        except Exception:
+        ausser Exception:
             name = 'unknown'
         gib '<%s(owner=%s)>' % (self.__class__.__name__, name)
 
@@ -196,7 +196,7 @@ klasse RLock(SemLock):
         SemLock.__init__(self, RECURSIVE_MUTEX, 1, 1, ctx=ctx)
 
     def __repr__(self):
-        try:
+        versuch:
             wenn self._semlock._is_mine():
                 name = process.current_process().name
                 wenn threading.current_thread().name != 'MainThread':
@@ -208,7 +208,7 @@ klasse RLock(SemLock):
                 name, count = 'SomeOtherThread', 'nonzero'
             sonst:
                 name, count = 'SomeOtherProcess', 'nonzero'
-        except Exception:
+        ausser Exception:
             name, count = 'unknown', 'unknown'
         gib '<%s(%s, %s)>' % (self.__class__.__name__, name, count)
 
@@ -246,10 +246,10 @@ klasse Condition(object):
         self.release = self._lock.release
 
     def __repr__(self):
-        try:
+        versuch:
             num_waiters = (self._sleeping_count._semlock._get_value() -
                            self._woken_count._semlock._get_value())
-        except Exception:
+        ausser Exception:
             num_waiters = 'unknown'
         gib '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
@@ -265,10 +265,10 @@ klasse Condition(object):
         fuer i in range(count):
             self._lock.release()
 
-        try:
+        versuch:
             # wait fuer notification oder timeout
             gib self._wait_semaphore.acquire(Wahr, timeout)
-        finally:
+        schliesslich:
             # indicate that this thread has woken
             self._woken_count.release()
 

@@ -4,9 +4,9 @@ importiere unittest
 importiere dis
 importiere io
 importiere opcode
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 _UNSPECIFIED = object()

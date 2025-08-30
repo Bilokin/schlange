@@ -20,18 +20,18 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
                   end=' ')
         sonst:
             drucke("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
-    try:
+    versuch:
         result = formatstr % args
-    except OverflowError:
+    ausser OverflowError:
         wenn nicht overflowok:
-            raise
+            wirf
         wenn verbose:
             drucke('overflow (this is fine)')
     sonst:
         wenn output und limit is Nichts und result != output:
             wenn verbose:
                 drucke('no')
-            raise AssertionError("%r %% %r == %r != %r" %
+            wirf AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
         # when 'limit' is specified, it determines how many characters
         # must match exactly; lengths must always match.
@@ -73,21 +73,21 @@ def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     testformat(ba_format, b_args, ba_output, limit, overflowok)
 
 def test_exc(formatstr, args, exception, excmsg):
-    try:
+    versuch:
         testformat(formatstr, args)
-    except exception als exc:
+    ausser exception als exc:
         wenn str(exc) == excmsg:
             wenn verbose:
                 drucke("yes")
         sonst:
             wenn verbose: drucke('no')
             drucke('Unexpected ', exception, ':', repr(str(exc)))
-    except:
+    ausser:
         wenn verbose: drucke('no')
         drucke('Unexpected exception')
-        raise
+        wirf
     sonst:
-        raise TestFailed('did nicht get expected exception: %s' % excmsg)
+        wirf TestFailed('did nicht get expected exception: %s' % excmsg)
 
 def test_exc_common(formatstr, args, exception, excmsg):
     # test str und bytes
@@ -197,7 +197,7 @@ klasse FormatTest(unittest.TestCase):
         # 0 flag und the width
         testcommon("%#+027.23X", big, "+0X0001234567890ABCDEF12345")
         testcommon("%# 027.23X", big, " 0X0001234567890ABCDEF12345")
-        # same, except no 0 flag
+        # same, ausser no 0 flag
         testcommon("%#+27.23X", big, " +0X001234567890ABCDEF12345")
         testcommon("%#-+27.23x", big, "+0x001234567890abcdef12345 ")
         testcommon("%#- 27.23x", big, " 0x001234567890abcdef12345 ")
@@ -314,12 +314,12 @@ klasse FormatTest(unittest.TestCase):
 
         wenn maxsize == 2**31-1:
             # crashes 2.2.1 und earlier:
-            try:
+            versuch:
                 "%*d"%(maxsize, -127)
-            except MemoryError:
+            ausser MemoryError:
                 pass
             sonst:
-                raise TestFailed('"%*d"%(maxsize, -127) should fail')
+                wirf TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_bytes_and_bytearray_format(self):
         # %c will insert a single byte, either von an int in range(256), oder
@@ -388,12 +388,12 @@ klasse FormatTest(unittest.TestCase):
 
         wenn maxsize == 2**31-1:
             # crashes 2.2.1 und earlier:
-            try:
+            versuch:
                 "%*d"%(maxsize, -127)
-            except MemoryError:
+            ausser MemoryError:
                 pass
             sonst:
-                raise TestFailed('"%*d"%(maxsize, -127) should fail')
+                wirf TestFailed('"%*d"%(maxsize, -127) should fail')
 
     def test_nul(self):
         # test the null character
@@ -424,12 +424,12 @@ klasse FormatTest(unittest.TestCase):
         self.assertEqual(format(0j, "\u2007^4"), "\u20070j\u2007")
 
     def test_locale(self):
-        try:
+        versuch:
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
-        except locale.Error als err:
+        ausser locale.Error als err:
             self.skipTest("Cannot set locale: {}".format(err))
-        try:
+        versuch:
             localeconv = locale.localeconv()
             sep = localeconv['thousands_sep']
             point = localeconv['decimal_point']
@@ -445,7 +445,7 @@ klasse FormatTest(unittest.TestCase):
                 self.assertIn(sep, text)
             self.assertIn(point, text)
             self.assertEqual(text.replace(sep, ''), '1234' + point + '5')
-        finally:
+        schliesslich:
             locale.setlocale(locale.LC_ALL, oldloc)
 
     @support.cpython_only

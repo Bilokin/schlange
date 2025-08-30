@@ -29,7 +29,7 @@ def onearg(x):
 
 def errfunc(*args):
     'Test function that raises an error'
-    raise ValueError
+    wirf ValueError
 
 def gen3():
     'Non-restartable source sequence'
@@ -56,7 +56,7 @@ klasse StopNow:
     def __iter__(self):
         gib self
     def __next__(self):
-        raise StopIteration
+        wirf StopIteration
 
 def take(n, seq):
     'Convenience function fuer partially consuming a long of infinite iterable'
@@ -89,12 +89,12 @@ klasse TestBasicOps(unittest.TestCase):
         def expand(it, i=0):
             # Recursively expand iterables, within sensible bounds
             wenn i > 10:
-                raise RuntimeError("infinite recursion encountered")
+                wirf RuntimeError("infinite recursion encountered")
             wenn isinstance(it, str):
                 gib it
-            try:
+            versuch:
                 l = list(islice(it, stop))
-            except TypeError:
+            ausser TypeError:
                 gib it # can't expand it
             gib [expand(e, i+1) fuer e in l]
 
@@ -111,11 +111,11 @@ klasse TestBasicOps(unittest.TestCase):
         # Take von the copy, und create another copy und compare them.
         i3 = pickle.loads(dump)
         took = 0
-        try:
+        versuch:
             fuer i in range(take):
                 next(i3)
                 took += 1
-        except StopIteration:
+        ausser StopIteration:
             pass #in case there is less data than 'take'
         dump = pickle.dumps(i3, protocol)
         i4 = pickle.loads(dump)
@@ -699,7 +699,7 @@ klasse TestBasicOps(unittest.TestCase):
         def delayed_raise(n=0):
             fuer i in range(n):
                 liefere 'yo'
-            raise ExpectedError
+            wirf ExpectedError
         def gulp(iterable, keyp=Nichts, func=list):
             gib [func(g) fuer k, g in groupby(iterable, keyp)]
 
@@ -711,7 +711,7 @@ klasse TestBasicOps(unittest.TestCase):
         # __eq__ failure
         klasse DummyCmp:
             def __eq__(self, dst):
-                raise ExpectedError
+                wirf ExpectedError
         s = [DummyCmp(), DummyCmp(), Nichts]
 
         # __eq__ failure on outer object
@@ -725,7 +725,7 @@ klasse TestBasicOps(unittest.TestCase):
                 keyfunc.skip -= 1
                 gib obj
             sonst:
-                raise ExpectedError
+                wirf ExpectedError
 
         # keyfunc failure on outer object
         keyfunc.skip = 0
@@ -824,12 +824,12 @@ klasse TestBasicOps(unittest.TestCase):
             "zip_longest('abc', fv=1)",
             "zip_longest('abc', fillvalue=1, bogus_keyword=Nichts)",
         ]:
-            try:
+            versuch:
                 eval(stmt, globals(), locals())
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
-                self.fail('Did nicht raise Type in:  ' + stmt)
+                self.fail('Did nicht wirf Type in:  ' + stmt)
 
         self.assertEqual([tuple(list(pair)) fuer pair in zip_longest('abc', 'def')],
                          list(zip('abc', 'def')))
@@ -848,7 +848,7 @@ klasse TestBasicOps(unittest.TestCase):
 
         klasse BadIterable:
             def __iter__(self):
-                raise exception
+                wirf exception
 
         mit self.assertRaises(TypeError) als cm:
             zip_longest(BadIterable())
@@ -870,7 +870,7 @@ klasse TestBasicOps(unittest.TestCase):
                     self.t -= 1
                     gib self.o
                 sonst:
-                    raise self.e
+                    wirf self.e
 
         # Formerly this code in would fail in debug mode
         # mit Undetected Error und Stop Iteration
@@ -972,7 +972,7 @@ klasse TestBasicOps(unittest.TestCase):
                     gib self
                 def __next__(self):
                     wenn self.count >= maxcount:
-                        raise StopIteration
+                        wirf StopIteration
                     self.count +=1
                     wenn self.count == 1:
                         gib next(it, Nichts)
@@ -1027,7 +1027,7 @@ klasse TestBasicOps(unittest.TestCase):
         def product2(*iterables, repeat=1):
             'Pure python version used in docs'
             wenn repeat < 0:
-                raise ValueError('repeat argument cannot be negative')
+                wirf ValueError('repeat argument cannot be negative')
             pools = [tuple(pool) fuer pool in iterables] * repeat
 
             result = [[]]
@@ -1341,12 +1341,12 @@ klasse TestBasicOps(unittest.TestCase):
     # Issue 13454: Crash when deleting backward iterator von tee()
     def test_tee_del_backward(self):
         forward, backward = tee(repeat(Nichts, 20000000))
-        try:
+        versuch:
             any(forward)  # exhaust the iterator
             del backward
-        except:
+        ausser:
             del forward, backward
-            raise
+            wirf
 
     def test_tee_reenter(self):
         klasse I:
@@ -1377,11 +1377,11 @@ klasse TestBasicOps(unittest.TestCase):
         a, b = tee(I())
         thread = threading.Thread(target=next, args=[a])
         thread.start()
-        try:
+        versuch:
             start.wait()
             mit self.assertRaisesRegex(RuntimeError, "tee"):
                 next(b)
-        finally:
+        schliesslich:
             finish.set()
             thread.join()
 
@@ -1584,7 +1584,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             "Batch data into tuples of length n. The last batch may be shorter."
             # batched('ABCDEFG', 3) --> ABC DEF G
             wenn n < 1:
-                raise ValueError('n must be at least one')
+                wirf ValueError('n must be at least one')
             it = iter(iterable)
             waehrend batch := tuple(islice(it, n)):
                 liefere batch
@@ -1593,13 +1593,13 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 ['', 'a', 'ab', 'abc', 'abcd', 'abcde', 'abcdef', 'abcdefg', Nichts],
                 [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, Nichts]):
             mit self.subTest(iterable=iterable, n=n):
-                try:
+                versuch:
                     e1, r1 = Nichts, list(batched(iterable, n))
-                except Exception als e:
+                ausser Exception als e:
                     e1, r1 = type(e), Nichts
-                try:
+                versuch:
                     e2, r2 = Nichts, list(batched_recipe(iterable, n))
-                except Exception als e:
+                ausser Exception als e:
                     e2, r2 = type(e), Nichts
                 self.assertEqual(r1, r2)
                 self.assertEqual(e1, e2)
@@ -1627,9 +1627,9 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                     liefere curr_value
                 exhausted = Wahr
 
-            try:
+            versuch:
                 curr_value = next(iterator)
-            except StopIteration:
+            ausser StopIteration:
                 gib
             curr_key = keyfunc(curr_value)
 
@@ -1712,7 +1712,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         def delayed_raise(n=0):
             fuer i in range(n):
                 liefere 'yo'
-            raise ExpectedError
+            wirf ExpectedError
         def gulp(iterable, keyp=Nichts, func=list):
             gib [func(g) fuer k, g in groupby(iterable, keyp)]
 
@@ -1724,7 +1724,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         # __eq__ failure
         klasse DummyCmp:
             def __eq__(self, dst):
-                raise ExpectedError
+                wirf ExpectedError
         s = [DummyCmp(), DummyCmp(), Nichts]
 
         # __eq__ failure on outer object
@@ -1738,7 +1738,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 keyfunc.skip -= 1
                 gib obj
             sonst:
-                raise ExpectedError
+                wirf ExpectedError
 
         # keyfunc failure on outer object
         keyfunc.skip = 0
@@ -1759,7 +1759,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         stop = s.stop
         step = 1 wenn s.step is Nichts sonst s.step
         wenn start < 0 oder (stop is nicht Nichts und stop < 0) oder step <= 0:
-            raise ValueError
+            wirf ValueError
 
         indices = count() wenn stop is Nichts sonst range(max(start, stop))
         next_i = start
@@ -1792,7 +1792,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
         def tee(iterable, n=2):
             wenn n < 0:
-                raise ValueError
+                wirf ValueError
             wenn n == 0:
                 gib ()
             iterator = _tee(iterable)
@@ -1944,12 +1944,12 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
         # Issue 13454: Crash when deleting backward iterator von tee()
         forward, backward = tee(repeat(Nichts, 2000)) # 20000000
-        try:
+        versuch:
             any(forward)  # exhaust the iterator
             del backward
-        except:
+        ausser:
             del forward, backward
-            raise
+            wirf
 
 
 klasse TestGC(unittest.TestCase):
@@ -2081,7 +2081,7 @@ klasse I:
     def __iter__(self):
         gib self
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -2101,7 +2101,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -2133,7 +2133,7 @@ klasse E2:
         gib self
     def __next__(self):
         wenn self.i == 2:
-            raise ZeroDivisionError
+            wirf ZeroDivisionError
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -2145,7 +2145,7 @@ klasse S:
     def __iter__(self):
         gib self
     def __next__(self):
-        raise StopIteration
+        wirf StopIteration
 
 def L(seqn):
     'Test multiple tiers of iterators'
@@ -2383,7 +2383,7 @@ klasse RegressionTests(unittest.TestCase):
             hist.append(0)
             liefere 1
             hist.append(1)
-            raise AssertionError
+            wirf AssertionError
             hist.append(2)
 
         def gen2(x):

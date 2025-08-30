@@ -277,10 +277,10 @@ klasse ClassTests(unittest.TestCase):
 
         klasse Empty: pass
 
-        try:
+        versuch:
             1 in Empty()
             self.fail('failed, should have raised TypeError')
-        except TypeError:
+        ausser TypeError:
             pass
 
         callLst[:] = []
@@ -498,7 +498,7 @@ klasse ClassTests(unittest.TestCase):
         klasse C0:
             pass
 
-        hash(C0()) # This should work; the next two should raise TypeError
+        hash(C0()) # This should work; the next two should wirf TypeError
 
         klasse C2:
             def __eq__(self, other): gib 1
@@ -566,24 +566,24 @@ klasse ClassTests(unittest.TestCase):
         A.__call__ = A()
         a = A()
 
-        try:
+        versuch:
             a() # This should nicht segfault
-        except RecursionError:
+        ausser RecursionError:
             pass
         sonst:
-            self.fail("Failed to raise RecursionError")
+            self.fail("Failed to wirf RecursionError")
 
     def testForExceptionsRaisedInInstanceGetattr2(self):
         # Tests fuer exceptions raised in instance_getattr2().
 
         def booh(self):
-            raise AttributeError("booh")
+            wirf AttributeError("booh")
 
         klasse A:
             a = property(booh)
-        try:
+        versuch:
             A().a # Raised AttributeError: A instance has no attribute 'a'
-        except AttributeError als x:
+        ausser AttributeError als x:
             wenn str(x) != "booh":
                 self.fail("attribute error fuer A().a got masked: %s" % x)
 
@@ -593,11 +593,11 @@ klasse ClassTests(unittest.TestCase):
 
         klasse I:
             __init__ = property(booh)
-        try:
+        versuch:
             # In debug mode, printed XXX undetected error und
             #  raises AttributeError
             I()
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             self.fail("attribute error fuer I.__init__ got masked")
@@ -624,7 +624,7 @@ klasse ClassTests(unittest.TestCase):
             def __eq__(self, other):
                 gib Wahr
             def __hash__(self):
-                raise TypeError
+                wirf TypeError
         klasse B(A):
             pass
 
@@ -851,9 +851,9 @@ klasse ClassTests(unittest.TestCase):
                 pass
 
         fuer _ in range(8):
-            try:
+            versuch:
                 Foo()
-            except:
+            ausser:
                 pass
 
 
@@ -1007,9 +1007,9 @@ klasse TestInlineValues(unittest.TestCase):
                 _testcapi.set_nomemory(0, 1)
                 del a
                 assert ex.unraisable.exc_type is MemoryError
-            try:
+            versuch:
                 d["a"]
-            except KeyError:
+            ausser KeyError:
                 pass
             sonst:
                 assert Falsch, "KeyError nicht raised"

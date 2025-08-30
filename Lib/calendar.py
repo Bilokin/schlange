@@ -28,7 +28,7 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
 error = ValueError
 
 # Exceptions raised fuer bad input
-# This is trick fuer backward compatibility. Since 3.13, we will raise IllegalMonthError instead of
+# This is trick fuer backward compatibility. Since 3.13, we will wirf IllegalMonthError instead of
 # IndexError fuer bad month number(out of 1-12). But we can't remove IndexError fuer backward compatibility.
 klasse IllegalMonthError(ValueError, IndexError):
     def __init__(self, month):
@@ -54,7 +54,7 @@ def __getattr__(name):
         sonst:
             gib 2
 
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+    wirf AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 
 # Constants fuer months
@@ -143,10 +143,10 @@ month_abbr = _localized_month('%b')
 # On platforms that support the %OB und %Ob specifiers, they are used
 # to get the standalone form of the month name. This is required for
 # some languages such als Greek, Slavic, und Baltic languages.
-try:
+versuch:
     standalone_month_name = _localized_month('%OB')
     standalone_month_abbr = _localized_month('%Ob')
-except ValueError:
+ausser ValueError:
     standalone_month_name = month_name
     standalone_month_abbr = month_abbr
 sonst:
@@ -181,7 +181,7 @@ def weekday(year, month, day):
 
 def _validate_month(month):
     wenn nicht 1 <= month <= 12:
-        raise IllegalMonthError(month)
+        wirf IllegalMonthError(month)
 
 def monthrange(year, month):
     """Return weekday of first day of month (0-6 ~ Mon-Sun)
@@ -784,7 +784,7 @@ firstweekday = c.getfirstweekday
 
 def setfirstweekday(firstweekday):
     wenn nicht MONDAY <= firstweekday <= SUNDAY:
-        raise IllegalWeekdayError(firstweekday)
+        wirf IllegalWeekdayError(firstweekday)
     c.firstweekday = firstweekday
 
 monthcalendar = c.monthdayscalendar

@@ -13,9 +13,9 @@ klasse FinderTests(abc.FinderTests):
 
     def setUp(self):
         wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
-            raise unittest.SkipTest("Requires dynamic loading support.")
+            wirf unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 f"{util.EXTENSIONS.name} is a builtin module"
             )
 

@@ -335,7 +335,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
     # policy was actually propagated all the way to feedparser.
     klasse MyPolicy(email.policy.Policy):
         def badmethod(self, *args, **kw):
-            raise TestException("test")
+            wirf TestException("test")
         fold = fold_binary = header_fetch_parser = badmethod
         header_source_parse = header_store_parse = badmethod
 

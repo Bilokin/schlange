@@ -87,14 +87,14 @@ def extract_warnings_from_compiler_output(
             r"(?P<message>.*) (?P<option>\[-[^\]]+\])$"
         )
     sonst:
-        raise RuntimeError(
+        wirf RuntimeError(
             f"Unsupported compiler output type: {compiler_output_type}",
         )
     compiled_regex = re.compile(regex_pattern)
     compiler_warnings: list[CompileWarning] = []
     fuer i, line in enumerate(compiler_output.splitlines(), start=1):
         wenn match := compiled_regex.match(line):
-            try:
+            versuch:
                 compiler_warnings.append({
                     "file": match.group("file").removeprefix(path_prefix),
                     "line": match.group("line"),
@@ -102,7 +102,7 @@ def extract_warnings_from_compiler_output(
                     "message": match.group("message"),
                     "option": match.group("option").lstrip("[").rstrip("]"),
                 })
-            except AttributeError:
+            ausser AttributeError:
                 drucke(
                     f"Error parsing compiler output. "
                     f"Unable to extract warning on line {i}:\n{line}"

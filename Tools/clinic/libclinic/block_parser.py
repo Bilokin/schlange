@@ -125,15 +125,15 @@ klasse BlockParser:
     def __next__(self) -> Block:
         waehrend Wahr:
             wenn nicht self.input:
-                raise StopIteration
+                wirf StopIteration
 
             wenn self.dsl_name:
-                try:
+                versuch:
                     return_value = self.parse_clinic_block(self.dsl_name)
-                except ClinicError als exc:
+                ausser ClinicError als exc:
                     exc.filename = self.language.filename
                     exc.lineno = self.line_number
-                    raise
+                    wirf
                 self.dsl_name = Nichts
                 self.first_block = Falsch
                 gib return_value

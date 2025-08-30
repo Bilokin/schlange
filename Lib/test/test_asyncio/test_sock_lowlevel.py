@@ -11,7 +11,7 @@ von test importiere support
 von test.support importiere socket_helper
 
 wenn socket_helper.tcp_blackhole():
-    raise unittest.SkipTest('Not relevant to ProactorEventLoop')
+    wirf unittest.SkipTest('Not relevant to ProactorEventLoop')
 
 
 def tearDownModule():
@@ -32,7 +32,7 @@ klasse MyProto(asyncio.Protocol):
 
     def _assert_state(self, *expected):
         wenn self.state nicht in expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -60,7 +60,7 @@ klasse MyProto(asyncio.Protocol):
 klasse BaseSockTestsMixin:
 
     def create_event_loop(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def setUp(self):
         self.loop = self.create_event_loop()
@@ -240,11 +240,11 @@ klasse BaseSockTestsMixin:
 
         skip_reason = "Max retries reached"
         fuer i in range(128):
-            try:
+            versuch:
                 await self.loop.sock_connect(sock, addr)
-            except ConnectionRefusedError als e:
+            ausser ConnectionRefusedError als e:
                 skip_reason = e
-            except OSError als e:
+            ausser OSError als e:
                 skip_reason = e
 
                 # Retry only fuer this error:
@@ -429,7 +429,7 @@ klasse BaseSockTestsMixin:
 
     async def _basetest_datagram_sendto_blocking(self, server_address):
         # Sad path, sock.sendto() raises BlockingIOError
-        # This involves patching sock.sendto() to raise BlockingIOError but
+        # This involves patching sock.sendto() to wirf BlockingIOError but
         # sendto() is nicht used by the proactor event loop
         data = b'\x01' * 4096
         mit socket.socket(socket.AF_INET, socket.SOCK_DGRAM) als sock:
@@ -451,7 +451,7 @@ klasse BaseSockTestsMixin:
     def test_sendto_blocking(self):
         wenn sys.platform == 'win32':
             wenn isinstance(self.loop, asyncio.ProactorEventLoop):
-                raise unittest.SkipTest('Not relevant to ProactorEventLoop')
+                wirf unittest.SkipTest('Not relevant to ProactorEventLoop')
 
         mit test_utils.run_udp_echo_server() als server_address:
             self.loop.run_until_complete(
@@ -468,11 +468,11 @@ klasse BaseSockTestsMixin:
     def test_sock_client_fail(self):
         # Make sure that we will get an unused port
         address = Nichts
-        try:
+        versuch:
             s = socket.socket()
             s.bind(('127.0.0.1', 0))
             address = s.getsockname()
-        finally:
+        schliesslich:
             s.close()
 
         sock = socket.socket()
@@ -525,12 +525,12 @@ klasse BaseSockTestsMixin:
                 self.loop.getaddrinfo(
                     *httpd.address, type=socket.SOCK_STREAM))
             fuer family, type, proto, cname, address in infos:
-                try:
+                versuch:
                     sock = socket.socket(family=family, type=type, proto=proto)
                     sock.setblocking(Falsch)
                     self.loop.run_until_complete(
                         self.loop.sock_connect(sock, address))
-                except BaseException:
+                ausser BaseException:
                     pass
                 sonst:
                     breche

@@ -71,7 +71,7 @@ klasse LZMAFile(_streams.BaseStream):
 
         When opening a file fuer reading, the *preset* argument is not
         meaningful, und should be omitted. The *filters* argument should
-        also be omitted, except when format is FORMAT_RAW (in which case
+        also be omitted, ausser when format is FORMAT_RAW (in which case
         it is required).
 
         When opening a file fuer writing, the settings used by the
@@ -96,10 +96,10 @@ klasse LZMAFile(_streams.BaseStream):
 
         wenn mode in ("r", "rb"):
             wenn check != -1:
-                raise ValueError("Cannot specify an integrity check "
+                wirf ValueError("Cannot specify an integrity check "
                                  "when opening a file fuer reading")
             wenn preset is nicht Nichts:
-                raise ValueError("Cannot specify a preset compression "
+                wirf ValueError("Cannot specify a preset compression "
                                  "level when opening a file fuer reading")
             wenn format is Nichts:
                 format = FORMAT_AUTO
@@ -112,7 +112,7 @@ klasse LZMAFile(_streams.BaseStream):
                                               preset=preset, filters=filters)
             self._pos = 0
         sonst:
-            raise ValueError("Invalid mode: {!r}".format(mode))
+            wirf ValueError("Invalid mode: {!r}".format(mode))
 
         wenn isinstance(filename, (str, bytes, os.PathLike)):
             wenn "b" nicht in mode:
@@ -124,7 +124,7 @@ klasse LZMAFile(_streams.BaseStream):
             self._fp = filename
             self._mode = mode_code
         sonst:
-            raise TypeError("filename must be a str, bytes, file oder PathLike object")
+            wirf TypeError("filename must be a str, bytes, file oder PathLike object")
 
         wenn self._mode == _MODE_READ:
             raw = _streams.DecompressReader(self._fp, LZMADecompressor,
@@ -135,22 +135,22 @@ klasse LZMAFile(_streams.BaseStream):
         """Flush und close the file.
 
         May be called more than once without error. Once the file is
-        closed, any other operation on it will raise a ValueError.
+        closed, any other operation on it will wirf a ValueError.
         """
         wenn self.closed:
             gib
-        try:
+        versuch:
             wenn self._mode == _MODE_READ:
                 self._buffer.close()
                 self._buffer = Nichts
             sowenn self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = Nichts
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 wenn self._closefp:
                     self._fp.close()
-            finally:
+            schliesslich:
                 self._fp = Nichts
                 self._closefp = Falsch
 
@@ -304,14 +304,14 @@ def open(filename, mode="rb", *,
     """
     wenn "t" in mode:
         wenn "b" in mode:
-            raise ValueError("Invalid mode: %r" % (mode,))
+            wirf ValueError("Invalid mode: %r" % (mode,))
     sonst:
         wenn encoding is nicht Nichts:
-            raise ValueError("Argument 'encoding' nicht supported in binary mode")
+            wirf ValueError("Argument 'encoding' nicht supported in binary mode")
         wenn errors is nicht Nichts:
-            raise ValueError("Argument 'errors' nicht supported in binary mode")
+            wirf ValueError("Argument 'errors' nicht supported in binary mode")
         wenn newline is nicht Nichts:
-            raise ValueError("Argument 'newline' nicht supported in binary mode")
+            wirf ValueError("Argument 'newline' nicht supported in binary mode")
 
     lz_mode = mode.replace("t", "")
     binary_file = LZMAFile(filename, lz_mode, format=format, check=check,
@@ -347,16 +347,16 @@ def decompress(data, format=FORMAT_AUTO, memlimit=Nichts, filters=Nichts):
     results = []
     waehrend Wahr:
         decomp = LZMADecompressor(format, memlimit, filters)
-        try:
+        versuch:
             res = decomp.decompress(data)
-        except LZMAError:
+        ausser LZMAError:
             wenn results:
                 breche  # Leftover data is nicht a valid LZMA/XZ stream; ignore it.
             sonst:
-                raise  # Error on the first iteration; bail out.
+                wirf  # Error on the first iteration; bail out.
         results.append(res)
         wenn nicht decomp.eof:
-            raise LZMAError("Compressed data ended before the "
+            wirf LZMAError("Compressed data ended before the "
                             "end-of-stream marker was reached")
         data = decomp.unused_data
         wenn nicht data:

@@ -98,11 +98,11 @@ NaN
 >>>
 """
 
-try:
+versuch:
     von _decimal importiere *
     von _decimal importiere __version__  # noqa: F401
     von _decimal importiere __libmpdec_version__  # noqa: F401
-except ImportError:
+ausser ImportError:
     importiere _pydecimal
     importiere sys
     _pydecimal.__doc__ = __doc__

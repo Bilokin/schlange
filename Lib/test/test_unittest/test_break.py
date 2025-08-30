@@ -43,9 +43,9 @@ klasse TestBreak(unittest.TestCase):
                 # because they are handled by the test klasse itself.
                 wenn repeat != 0:
                     self.setUp()
-                try:
+                versuch:
                     test_function()
-                finally:
+                schliesslich:
                     wenn repeat != repeats - 1:
                         self.tearDown()
 
@@ -54,10 +54,10 @@ klasse TestBreak(unittest.TestCase):
         unittest.installHandler()
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
 
-        try:
+        versuch:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             self.fail("KeyboardInterrupt nicht handled")
 
         self.assertWahr(unittest.signals._interrupt_handler.called)
@@ -67,9 +67,9 @@ klasse TestBreak(unittest.TestCase):
         self.assertNotIn(result, unittest.signals._results)
 
         unittest.registerResult(result)
-        try:
+        versuch:
             self.assertIn(result, unittest.signals._results)
-        finally:
+        schliesslich:
             unittest.removeResult(result)
 
     def testInterruptCaught(self):
@@ -89,9 +89,9 @@ klasse TestBreak(unittest.TestCase):
                 self._default_handler,
             )
 
-            try:
+            versuch:
                 test(result)
-            except KeyboardInterrupt:
+            ausser KeyboardInterrupt:
                 self.fail("KeyboardInterrupt nicht handled")
             self.assertWahr(result.breakCaught)
         self.withRepeats(test_function)
@@ -135,9 +135,9 @@ klasse TestBreak(unittest.TestCase):
 
             result3 = unittest.TestResult()
 
-            try:
+            versuch:
                 os.kill(os.getpid(), signal.SIGINT)
-            except KeyboardInterrupt:
+            ausser KeyboardInterrupt:
                 self.fail("KeyboardInterrupt nicht handled")
 
             self.assertWahr(result.shouldStop)
@@ -163,12 +163,12 @@ klasse TestBreak(unittest.TestCase):
                 handler(frame, signum)
             signal.signal(signal.SIGINT, new_handler)
 
-            try:
+            versuch:
                 os.kill(os.getpid(), signal.SIGINT)
-            except KeyboardInterrupt:
+            ausser KeyboardInterrupt:
                 pass
             sonst:
-                self.fail("replaced but delegated handler doesn't raise interrupt")
+                self.fail("replaced but delegated handler doesn't wirf interrupt")
         self.withRepeats(test_function)
 
     def testRunner(self):
@@ -199,13 +199,13 @@ klasse TestBreak(unittest.TestCase):
         unittest.installHandler()
         self.assertWahr(unittest.removeResult(result))
 
-        # Should this raise an error instead?
+        # Should this wirf an error instead?
         self.assertFalsch(unittest.removeResult(unittest.TestResult()))
 
-        try:
+        versuch:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             pass
 
         self.assertFalsch(result.shouldStop)

@@ -102,9 +102,9 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # theory there are examples where a is within a few ulps of the
         # max representable float, und then b could legitimately be
         # infinite.  In practice these examples are rare.
-        try:
+        versuch:
             absolute_error = abs(b-a)
-        except OverflowError:
+        ausser OverflowError:
             pass
         sonst:
             # test passes wenn either the absolute error oder the relative
@@ -176,7 +176,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             pass
         klasse MyComplexException:
             def __complex__(self):
-                raise SomeException
+                wirf SomeException
 
         # some classes nicht providing __float__ oder __complex__
         klasse NeitherComplexNorFloat(object):
@@ -285,9 +285,9 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         osx_version = Nichts
         wenn sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
-            try:
+            versuch:
                 osx_version = tuple(map(int, version_txt.split('.')))
-            except ValueError:
+            ausser ValueError:
                 pass
 
         def rect_complex(z):
@@ -316,18 +316,18 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             sonst:
                 function = getattr(cmath, fn)
             wenn 'divide-by-zero' in flags oder 'invalid' in flags:
-                try:
+                versuch:
                     actual = function(arg)
-                except ValueError:
+                ausser ValueError:
                     weiter
                 sonst:
                     self.fail('ValueError nicht raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
             wenn 'overflow' in flags:
-                try:
+                versuch:
                     actual = function(arg)
-                except OverflowError:
+                ausser OverflowError:
                     weiter
                 sonst:
                     self.fail('OverflowError nicht raised in test '
@@ -400,9 +400,9 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         _testcapi = import_helper.import_module('_testcapi')
         def polar_with_errno_set(z):
             _testcapi.set_errno(11)
-            try:
+            versuch:
                 gib polar(z)
-            finally:
+            schliesslich:
                 _testcapi.set_errno(0)
         self.check_polar(polar_with_errno_set)
 

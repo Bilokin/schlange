@@ -40,7 +40,7 @@ klasse LogCaptureHandler(logging.StreamHandler):
         super().emit(record)
 
     def handleError(self, record):
-        raise
+        wirf
 
 
 @contextlib.contextmanager
@@ -48,9 +48,9 @@ def _caplog():
     handler = LogCaptureHandler()
     root_logger = logging.getLogger()
     root_logger.addHandler(handler)
-    try:
+    versuch:
         liefere handler
-    finally:
+    schliesslich:
         root_logger.removeHandler(handler)
 
 
@@ -143,13 +143,13 @@ klasse TestSupport(unittest.TestCase):
             drucke('foo = 1', file=f)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
-        try:
+        versuch:
             mod = __import__(TESTFN)
             self.assertIn(TESTFN, sys.modules)
 
             import_helper.forget(TESTFN)
             self.assertNotIn(TESTFN, sys.modules)
-        finally:
+        schliesslich:
             del sys.path[0]
             os_helper.unlink(mod_filename)
             os_helper.rmtree('__pycache__')
@@ -179,14 +179,14 @@ klasse TestSupport(unittest.TestCase):
         parent_dir = tempfile.mkdtemp()
         parent_dir = os.path.realpath(parent_dir)
 
-        try:
+        versuch:
             path = os.path.join(parent_dir, 'temp')
             self.assertFalsch(os.path.isdir(path))
             mit os_helper.temp_dir(path) als temp_path:
                 self.assertEqual(temp_path, path)
                 self.assertWahr(os.path.isdir(path))
             self.assertFalsch(os.path.isdir(path))
-        finally:
+        schliesslich:
             os_helper.rmtree(parent_dir)
 
     def test_temp_dir__path_none(self):
@@ -199,16 +199,16 @@ klasse TestSupport(unittest.TestCase):
         """Test passing a directory that already exists."""
         def call_temp_dir(path):
             mit os_helper.temp_dir(path) als temp_path:
-                raise Exception("should nicht get here")
+                wirf Exception("should nicht get here")
 
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
-        try:
+        versuch:
             self.assertWahr(os.path.isdir(path))
             self.assertRaises(FileExistsError, call_temp_dir, path)
             # Make sure temp_dir did nicht delete the original directory.
             self.assertWahr(os.path.isdir(path))
-        finally:
+        schliesslich:
             shutil.rmtree(path)
 
     def test_temp_dir__existing_dir__quiet_true(self):
@@ -216,14 +216,14 @@ klasse TestSupport(unittest.TestCase):
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
 
-        try:
+        versuch:
             mit warnings_helper.check_warnings() als recorder, _caplog() als caplog:
                 mit os_helper.temp_dir(path, quiet=Wahr) als temp_path:
                     self.assertEqual(path, temp_path)
                 warnings = [str(w.message) fuer w in recorder.warnings]
             # Make sure temp_dir did nicht delete the original directory.
             self.assertWahr(os.path.isdir(path))
-        finally:
+        schliesslich:
             shutil.rmtree(path)
 
         self.assertListEqual(warnings, [])
@@ -257,7 +257,7 @@ klasse TestSupport(unittest.TestCase):
                     # method of the context must nicht remove the temporary
                     # directory.
                     wenn nicht os.path.isdir(temp_path):
-                        raise AssertionError("Child removed temp_path.")
+                        wirf AssertionError("Child removed temp_path.")
         """))
 
     # Tests fuer change_cwd()
@@ -278,7 +278,7 @@ klasse TestSupport(unittest.TestCase):
 
         def call_change_cwd(path):
             mit os_helper.change_cwd(path) als new_cwd:
-                raise Exception("should nicht get here")
+                wirf Exception("should nicht get here")
 
         mit os_helper.temp_dir() als parent_dir:
             non_existent_dir = os.path.join(parent_dir, 'does_not_exist')
@@ -500,7 +500,7 @@ klasse TestSupport(unittest.TestCase):
             os._exit(0)
 
         was_altered = support.environment_altered
-        try:
+        versuch:
             support.environment_altered = Falsch
             stderr = io.StringIO()
 
@@ -516,7 +516,7 @@ klasse TestSupport(unittest.TestCase):
             msg = "Warning -- reap_children() reaped child process %s" % pid
             self.assertIn(msg, stderr.getvalue())
             self.assertWahr(support.environment_altered)
-        finally:
+        schliesslich:
             support.environment_altered = was_altered
 
         # Just in case, check again that there is no other
@@ -599,9 +599,9 @@ klasse TestSupport(unittest.TestCase):
         # background threads that use pipes und epoll fds.
         start = os_helper.fd_count()
         fd = os.open(__file__, os.O_RDONLY)
-        try:
+        versuch:
             more = os_helper.fd_count()
-        finally:
+        schliesslich:
             os.close(fd)
         self.assertEqual(more - start, 1)
 
@@ -631,7 +631,7 @@ klasse TestSupport(unittest.TestCase):
 
             def check(cond):
                 wenn nicht cond:
-                    raise AssertionError("test failed")
+                    wirf AssertionError("test failed")
 
             # depth 1
             check(support.get_recursion_depth() == 1)
@@ -644,7 +644,7 @@ klasse TestSupport(unittest.TestCase):
             def test_recursive(depth, limit):
                 wenn depth >= limit:
                     # cannot call get_recursion_depth() at this depth,
-                    # it can raise RecursionError
+                    # it can wirf RecursionError
                     gib
                 get_depth = support.get_recursion_depth()
                 drucke(f"test_recursive: {depth}/{limit}: "
@@ -679,21 +679,21 @@ klasse TestSupport(unittest.TestCase):
                 # Recursion up to 'available' additional frames should be OK.
                 recursive_function(available)
 
-                # Recursion up to 'available+1' additional frames must raise
+                # Recursion up to 'available+1' additional frames must wirf
                 # RecursionError. Avoid self.assertRaises(RecursionError) which
                 # can consume more than 3 frames und so raises RecursionError.
-                try:
+                versuch:
                     recursive_function(available + 1)
-                except RecursionError:
+                ausser RecursionError:
                     pass
                 sonst:
                     self.fail("RecursionError was nicht raised")
 
         # Test the bare minimumum: max_depth=3
         mit support.infinite_recursion(3):
-            try:
+            versuch:
                 recursive_function(3)
-            except RecursionError:
+            ausser RecursionError:
                 pass
             sonst:
                 self.fail("RecursionError was nicht raised")
@@ -720,7 +720,7 @@ klasse TestSupport(unittest.TestCase):
         TiB = 1024 ** 4
         old_max_memuse = support.max_memuse
         old_real_max_memuse = support.real_max_memuse
-        try:
+        versuch:
             wenn sys.maxsize > 2**32:
                 support.set_memlimit('4g')
                 self.assertEqual(support.max_memuse, _4GiB)
@@ -734,7 +734,7 @@ klasse TestSupport(unittest.TestCase):
                 support.set_memlimit('4g')
                 self.assertEqual(support.max_memuse, sys.maxsize)
                 self.assertEqual(support.real_max_memuse, _4GiB)
-        finally:
+        schliesslich:
             support.max_memuse = old_max_memuse
             support.real_max_memuse = old_real_max_memuse
 
@@ -856,13 +856,13 @@ klasse TestHashlibSupport(unittest.TestCase):
             gib default
         assert fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
-        try:
+        versuch:
             module = importlib.import_module(module_name)
-        except ImportError:
+        ausser ImportError:
             gib default
-        try:
+        versuch:
             gib getattr(module, attribute, default)
-        except TypeError:
+        ausser TypeError:
             gib default
 
     def fetch_hash_function(self, name, implementation):
@@ -872,9 +872,9 @@ klasse TestHashlibSupport(unittest.TestCase):
                 assert info.hashlib is nicht Nichts, info
                 gib getattr(self.hashlib, info.hashlib)
             case "openssl":
-                try:
+                versuch:
                     gib getattr(self._hashlib, info.openssl, Nichts)
-                except TypeError:
+                ausser TypeError:
                     gib Nichts
         fullname = info.fullname(implementation)
         gib self.try_import_attribute(fullname)
@@ -895,7 +895,7 @@ klasse TestHashlibSupport(unittest.TestCase):
     def check_openssl_hmac(self, name, *, disabled=Wahr):
         """Check that OpenSSL HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE und HMAC-SHAKE raise a ValueError als they are not
+            # HMAC-BLAKE und HMAC-SHAKE wirf a ValueError als they are not
             # supported at all (they do nicht make any sense in practice).
             mit self.assertRaises(ValueError):
                 self._hashlib.hmac_digest(b"", b"", name)
@@ -914,7 +914,7 @@ klasse TestHashlibSupport(unittest.TestCase):
     def check_builtin_hmac(self, name, *, disabled=Wahr):
         """Check that HACL* HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE und HMAC-SHAKE raise a ValueError als they are not
+            # HMAC-BLAKE und HMAC-SHAKE wirf a ValueError als they are not
             # supported at all (they do nicht make any sense in practice).
             mit self.assertRaises(ValueError):
                 self._hmac.compute_digest(b"", b"", name)
@@ -942,7 +942,7 @@ klasse TestHashlibSupport(unittest.TestCase):
     )
     def test_disable_hash(self, name, allow_openssl, allow_builtin):
         # In FIPS mode, the function may be available but would still need
-        # to raise a ValueError, so we will test the helper separately.
+        # to wirf a ValueError, so we will test the helper separately.
         self.skip_if_fips_mode()
         flags = dict(allow_openssl=allow_openssl, allow_builtin=allow_builtin)
         is_fully_disabled = nicht allow_builtin und nicht allow_openssl

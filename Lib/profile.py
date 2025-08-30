@@ -11,7 +11,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may nicht use this file except in compliance mit the License.
+# you may nicht use this file ausser in compliance mit the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -59,20 +59,20 @@ klasse _Utils:
 
     def run(self, statement, filename, sort):
         prof = self.profiler()
-        try:
+        versuch:
             prof.run(statement)
-        except SystemExit:
+        ausser SystemExit:
             pass
-        finally:
+        schliesslich:
             self._show(prof, filename, sort)
 
     def runctx(self, statement, globals, locals, filename, sort):
         prof = self.profiler()
-        try:
+        versuch:
             prof.runctx(statement, globals, locals)
-        except SystemExit:
+        ausser SystemExit:
             pass
-        finally:
+        schliesslich:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):
@@ -166,9 +166,9 @@ klasse Profile:
         sonst:
             self.timer = timer
             t = self.timer() # test out timer function
-            try:
+            versuch:
                 length = len(t)
-            except TypeError:
+            ausser TypeError:
                 self.get_time = timer
                 self.dispatcher = self.trace_dispatch_i
             sonst:
@@ -429,9 +429,9 @@ klasse Profile:
     def runctx(self, cmd, globals, locals):
         self.set_cmd(cmd)
         sys.setprofile(self.dispatcher)
-        try:
+        versuch:
             exec(cmd, globals, locals)
-        finally:
+        schliesslich:
             sys.setprofile(Nichts)
         gib self
 
@@ -439,9 +439,9 @@ klasse Profile:
     def runcall(self, func, /, *args, **kw):
         self.set_cmd(repr(func))
         sys.setprofile(self.dispatcher)
-        try:
+        versuch:
             gib func(*args, **kw)
-        finally:
+        schliesslich:
             sys.setprofile(Nichts)
 
 
@@ -487,13 +487,13 @@ klasse Profile:
 
     def calibrate(self, m, verbose=0):
         wenn self.__class__ is nicht Profile:
-            raise TypeError("Subclasses must override .calibrate().")
+            wirf TypeError("Subclasses must override .calibrate().")
 
         saved_bias = self.bias
         self.bias = 0
-        try:
+        versuch:
             gib self._calibrate_inner(m, verbose)
-        finally:
+        schliesslich:
             self.bias = saved_bias
 
     def _calibrate_inner(self, m, verbose):
@@ -501,7 +501,7 @@ klasse Profile:
 
         # Set up a test case to be run mit und without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
-        # Do nicht raise any exceptions, though, because we want to know
+        # Do nicht wirf any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
         # one gib event, per Python-level call).
 
@@ -547,7 +547,7 @@ klasse Profile:
             drucke("'CPU seconds' profiler reported =", reported_time)
             drucke("total # calls =", total_calls)
         wenn total_calls != m + 1:
-            raise ValueError("internal error: total calls = %d" % total_calls)
+            wirf ValueError("internal error: total calls = %d" % total_calls)
 
         # reported_time - elapsed_noprofile = overhead the profiler wasn't
         # able to measure.  Divide by twice the number of calls (since there
@@ -609,9 +609,9 @@ def main():
                 '__package__': Nichts,
                 '__cached__': Nichts,
             }
-        try:
+        versuch:
             runctx(code, globs, Nichts, options.outfile, options.sort)
-        except BrokenPipeError als exc:
+        ausser BrokenPipeError als exc:
             # Prevent "Exception ignored" during interpreter shutdown.
             sys.stdout = Nichts
             sys.exit(exc.errno)

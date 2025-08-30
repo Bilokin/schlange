@@ -12,13 +12,13 @@ von xml.sax.handler importiere feature_external_ges, feature_external_pes
 von xml.sax.handler importiere feature_string_interning
 von xml.sax.handler importiere property_xml_string, property_interning_dict
 
-try:
+versuch:
     von xml.parsers importiere expat
-except ImportError:
-    raise SAXReaderNotAvailable("expat nicht supported", Nichts)
+ausser ImportError:
+    wirf SAXReaderNotAvailable("expat nicht supported", Nichts)
 sonst:
     wenn nicht hasattr(expat, "ParserCreate"):
-        raise SAXReaderNotAvailable("expat nicht supported", Nichts)
+        wirf SAXReaderNotAvailable("expat nicht supported", Nichts)
 von xml.sax importiere xmlreader, saxutils, handler
 
 AttributesImpl = xmlreader.AttributesImpl
@@ -27,9 +27,9 @@ AttributesNSImpl = xmlreader.AttributesNSImpl
 # If we're using a sufficiently recent version of Python, we can use
 # weak references to avoid cycles between the parser und content
 # handler, otherwise we'll just have to pretend.
-try:
+versuch:
     importiere _weakref
-except ImportError:
+ausser ImportError:
     def _mkproxy(o):
         gib o
 sonst:
@@ -99,16 +99,16 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         source = saxutils.prepare_input_source(source)
 
         self._source = source
-        try:
+        versuch:
             self.reset()
             self._cont_handler.setDocumentLocator(ExpatLocator(self))
             xmlreader.IncrementalParser.parse(self, source)
-        except:
+        ausser:
             # bpo-30264: Close the source on error to nicht leak resources:
             # xml.sax.parse() doesn't give access to the underlying parser
             # to the caller
             self._close_source()
-            raise
+            wirf
 
     def prepareParser(self, source):
         wenn source.getSystemId() is nicht Nichts:
@@ -131,11 +131,11 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             gib 0
         sowenn name == feature_external_ges:
             gib self._external_ges
-        raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def setFeature(self, name, state):
         wenn self._parsing:
-            raise SAXNotSupportedException("Cannot set features waehrend parsing")
+            wirf SAXNotSupportedException("Cannot set features waehrend parsing")
 
         wenn name == feature_namespaces:
             self._namespaces = state
@@ -149,18 +149,18 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 self._interning = Nichts
         sowenn name == feature_validation:
             wenn state:
-                raise SAXNotSupportedException(
+                wirf SAXNotSupportedException(
                     "expat does nicht support validation")
         sowenn name == feature_external_pes:
             wenn state:
-                raise SAXNotSupportedException(
+                wirf SAXNotSupportedException(
                     "expat does nicht read external parameter entities")
         sowenn name == feature_namespace_prefixes:
             wenn state:
-                raise SAXNotSupportedException(
+                wirf SAXNotSupportedException(
                     "expat does nicht report namespace prefixes")
         sonst:
-            raise SAXNotRecognizedException(
+            wirf SAXNotRecognizedException(
                 "Feature '%s' nicht recognized" % name)
 
     def getProperty(self, name):
@@ -173,13 +173,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 wenn hasattr(self._parser, "GetInputContext"):
                     gib self._parser.GetInputContext()
                 sonst:
-                    raise SAXNotRecognizedException(
+                    wirf SAXNotRecognizedException(
                         "This version of expat does nicht support getting"
                         " the XML string")
             sonst:
-                raise SAXNotSupportedException(
+                wirf SAXNotSupportedException(
                     "XML string cannot be returned when nicht parsing")
-        raise SAXNotRecognizedException("Property '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Property '%s' nicht recognized" % name)
 
     def setProperty(self, name, value):
         wenn name == handler.property_lexical_handler:
@@ -189,10 +189,10 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         sowenn name == property_interning_dict:
             self._interning = value
         sowenn name == property_xml_string:
-            raise SAXNotSupportedException("Property '%s' cannot be set" %
+            wirf SAXNotSupportedException("Property '%s' cannot be set" %
                                            name)
         sonst:
-            raise SAXNotRecognizedException("Property '%s' nicht recognized" %
+            wirf SAXNotRecognizedException("Property '%s' nicht recognized" %
                                             name)
 
     # IncrementalParser methods
@@ -203,13 +203,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._parsing = Wahr
             self._cont_handler.startDocument()
 
-        try:
+        versuch:
             # The isFinal parameter is internal to the expat reader.
             # If it is set to true, expat will check validity of the entire
             # document. When feeding chunks, they are nicht normally final -
-            # except when invoked von close.
+            # ausser when invoked von close.
             self._parser.Parse(data, isFinal)
-        except expat.error als e:
+        ausser expat.error als e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             # FIXME: when to invoke error()?
             self._err_handler.fatalError(exc)
@@ -219,22 +219,22 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             gib
 
         was_enabled = self._parser.GetReparseDeferralEnabled()
-        try:
+        versuch:
             self._parser.SetReparseDeferralEnabled(Falsch)
             self._parser.Parse(b"", Falsch)
-        except expat.error als e:
+        ausser expat.error als e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             self._err_handler.fatalError(exc)
-        finally:
+        schliesslich:
             self._parser.SetReparseDeferralEnabled(was_enabled)
 
     def _close_source(self):
         source = self._source
-        try:
+        versuch:
             file = source.getCharacterStream()
             wenn file is nicht Nichts:
                 file.close()
-        finally:
+        schliesslich:
             file = source.getByteStream()
             wenn file is nicht Nichts:
                 file.close()
@@ -244,13 +244,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
             gib
-        try:
+        versuch:
             self.feed(b"", isFinal=Wahr)
             self._cont_handler.endDocument()
             self._parsing = Falsch
             # breche cycle created by expat handlers pointing to our methods
             self._parser = Nichts
-        finally:
+        schliesslich:
             self._parsing = Falsch
             wenn self._parser is nicht Nichts:
                 # Keep ErrorColumnNumber und ErrorLineNumber after closing.
@@ -307,9 +307,9 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 #         self._parser.DefaultHandlerExpand =
 #         self._parser.NotStandaloneHandler =
         self._parser.ExternalEntityRefHandler = self.external_entity_ref
-        try:
+        versuch:
             self._parser.SkippedEntityHandler = self.skipped_entity_handler
-        except AttributeError:
+        ausser AttributeError:
             # This pyexpat does nicht support SkippedEntity
             pass
         self._parser.SetParamEntityParsing(
@@ -424,9 +424,9 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser = self._parser.ExternalEntityParserCreate(context)
         self._source = source
 
-        try:
+        versuch:
             xmlreader.IncrementalParser.parse(self, source)
-        except:
+        ausser:
             gib 0  # FIXME: save error info here?
 
         (self._parser, self._source) = self._entity_stack[-1]

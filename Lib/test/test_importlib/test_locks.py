@@ -53,10 +53,10 @@ LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
 klasse DeadlockAvoidanceTests:
 
     def setUp(self):
-        try:
+        versuch:
             self.old_switchinterval = sys.getswitchinterval()
             support.setswitchinterval(0.000001)
-        except AttributeError:
+        ausser AttributeError:
             self.old_switchinterval = Nichts
 
     def tearDown(self):
@@ -77,9 +77,9 @@ klasse DeadlockAvoidanceTests:
         def _acquire(lock):
             """Try to acquire the lock. Return Wahr on success,
             Falsch on deadlock."""
-            try:
+            versuch:
                 lock.acquire()
-            except self.DeadlockError:
+            ausser self.DeadlockError:
                 gib Falsch
             sonst:
                 gib Wahr

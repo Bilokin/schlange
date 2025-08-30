@@ -8,7 +8,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may nicht use this file except in compliance mit the License.
+# you may nicht use this file ausser in compliance mit the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -126,12 +126,12 @@ klasse Stats:
         self.stats = {}
         self.sort_arg_dict = {}
         self.load_stats(arg)
-        try:
+        versuch:
             self.get_top_level_stats()
-        except Exception:
+        ausser Exception:
             drucke("Invalid timing data %s" %
                   (self.files[-1] wenn self.files sonst ''), file=self.stream)
-            raise
+            wirf
 
     def load_stats(self, arg):
         wenn arg is Nichts:
@@ -144,10 +144,10 @@ klasse Stats:
                 stats.pop((('__sampled__',)))
                 self.__class__ = SampledStats
             self.stats = stats
-            try:
+            versuch:
                 file_stats = os.stat(arg)
                 arg = time.ctime(file_stats.st_mtime) + "    " + arg
-            except:  # in case this is nicht unix
+            ausser:  # in case this is nicht unix
                 pass
             self.files = [arg]
         sowenn hasattr(arg, 'create_stats'):
@@ -155,7 +155,7 @@ klasse Stats:
             self.stats = arg.stats
             arg.stats = {}
         wenn nicht self.stats:
-            raise TypeError("Cannot create oder construct a %r object von %r"
+            wirf TypeError("Cannot create oder construct a %r object von %r"
                             % (self.__class__, arg))
         gib
 
@@ -248,7 +248,7 @@ klasse Stats:
         sowenn len(field) >= 2:
             fuer arg in field[1:]:
                 wenn type(arg) != type(field[0]):
-                    raise TypeError("Can't have mixed argument type")
+                    wirf TypeError("Can't have mixed argument type")
 
         sort_arg_defs = self.get_sort_arg_defs()
 
@@ -330,9 +330,9 @@ klasse Stats:
     def eval_print_amount(self, sel, list, msg):
         new_list = list
         wenn isinstance(sel, str):
-            try:
+            versuch:
                 rex = re.compile(sel)
-            except re.PatternError:
+            ausser re.PatternError:
                 msg += "   <Invalid regular expression %r>\n" % sel
                 gib new_list, msg
             new_list = []
@@ -663,9 +663,9 @@ def stats_factory(raw_stats):
 
 wenn __name__ == '__main__':
     importiere cmd
-    try:
+    versuch:
         importiere readline  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         pass
 
     klasse ProfileBrowser(cmd.Cmd):
@@ -681,19 +681,19 @@ wenn __name__ == '__main__':
             args = line.split()
             processed = []
             fuer term in args:
-                try:
+                versuch:
                     processed.append(int(term))
                     weiter
-                except ValueError:
+                ausser ValueError:
                     pass
-                try:
+                versuch:
                     frac = float(term)
                     wenn frac > 1 oder frac < 0:
                         drucke("Fraction argument must be in [0, 1]", file=self.stream)
                         weiter
                     processed.append(frac)
                     weiter
-                except ValueError:
+                ausser ValueError:
                     pass
                 processed.append(term)
             wenn self.stats:
@@ -711,9 +711,9 @@ wenn __name__ == '__main__':
 
         def do_add(self, line):
             wenn self.stats:
-                try:
+                versuch:
                     self.stats.add(line)
-                except OSError als e:
+                ausser OSError als e:
                     drucke("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
             sonst:
                 drucke("No statistics object is loaded.", file=self.stream)
@@ -746,20 +746,20 @@ wenn __name__ == '__main__':
 
         def do_read(self, line):
             wenn line:
-                try:
+                versuch:
                     mit open(line, 'rb') als f:
                         raw_stats = marshal.load(f)
                     self.stats = stats_factory(raw_stats)
-                    try:
+                    versuch:
                         file_stats = os.stat(line)
                         arg = time.ctime(file_stats.st_mtime) + "    " + line
-                    except Exception:
+                    ausser Exception:
                         arg = line
                     self.stats.files = [arg]
-                except OSError als err:
+                ausser OSError als err:
                     drucke(err.args[1], file=self.stream)
                     gib
-                except Exception als err:
+                ausser Exception als err:
                     drucke(err.__class__.__name__ + ':', err, file=self.stream)
                     gib
                 self.prompt = line + "% "
@@ -826,14 +826,14 @@ wenn __name__ == '__main__':
         initprofile = sys.argv[1]
     sonst:
         initprofile = Nichts
-    try:
+    versuch:
         browser = ProfileBrowser(initprofile)
         fuer profile in sys.argv[2:]:
             browser.do_add(profile)
         drucke("Welcome to the profile statistics browser.", file=browser.stream)
         browser.cmdloop()
         drucke("Goodbye.", file=browser.stream)
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         pass
 
 # That's all, folks.

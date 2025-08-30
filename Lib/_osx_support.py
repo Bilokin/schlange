@@ -59,10 +59,10 @@ def _read_output(commandstring, capture_stderr=Falsch):
     # function is nicht usable during python bootstrap.
     # tempfile is also nicht available then.
     importiere contextlib
-    try:
+    versuch:
         importiere tempfile
         fp = tempfile.NamedTemporaryFile()
-    except ImportError:
+    ausser ImportError:
         fp = open("/tmp/_osx_support.%s"%(
             os.getpid(),), "w+b")
 
@@ -95,17 +95,17 @@ def _get_system_version():
 
     wenn _SYSTEM_VERSION is Nichts:
         _SYSTEM_VERSION = ''
-        try:
+        versuch:
             f = open('/System/Library/CoreServices/SystemVersion.plist', encoding="utf-8")
-        except OSError:
+        ausser OSError:
             # We're on a plain darwin box, fall back to the default
             # behaviour.
             pass
         sonst:
-            try:
+            versuch:
                 m = re.search(r'<key>ProductUserVisibleVersion</key>\s*'
                               r'<string>(.*?)</string>', f.read())
-            finally:
+            schliesslich:
                 f.close()
             wenn m is nicht Nichts:
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
@@ -125,9 +125,9 @@ def _get_system_version_tuple():
     wenn _SYSTEM_VERSION_TUPLE is Nichts:
         osx_version = _get_system_version()
         wenn osx_version:
-            try:
+            versuch:
                 _SYSTEM_VERSION_TUPLE = tuple(int(i) fuer i in osx_version.split('.'))
-            except ValueError:
+            ausser ValueError:
                 _SYSTEM_VERSION_TUPLE = ()
 
     gib _SYSTEM_VERSION_TUPLE
@@ -241,7 +241,7 @@ def _find_appropriate_compiler(_config_vars):
             cc = _find_build_tool('clang')
 
     wenn nicht cc:
-        raise SystemError(
+        wirf SystemError(
                "Cannot locate working compiler")
 
     wenn cc != oldcc:
@@ -378,11 +378,11 @@ def compiler_fixup(compiler_so, cc_args):
 
     wenn stripArch oder 'ARCHFLAGS' in os.environ:
         waehrend Wahr:
-            try:
+            versuch:
                 index = compiler_so.index('-arch')
                 # Strip this argument und the next one:
                 del compiler_so[index:index+2]
-            except ValueError:
+            ausser ValueError:
                 breche
 
     sowenn nicht _supports_arm64_builds():
@@ -526,9 +526,9 @@ def get_platform_osx(_config_vars, osname, release, machine):
         cflags = _config_vars.get(_INITPRE+'CFLAGS',
                                     _config_vars.get('CFLAGS', ''))
         wenn macrelease:
-            try:
+            versuch:
                 macrelease = tuple(int(i) fuer i in macrelease.split('.')[0:2])
-            except ValueError:
+            ausser ValueError:
                 macrelease = (10, 3)
         sonst:
             # assume no universal support
@@ -558,7 +558,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
             sowenn archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
                 machine = 'universal'
             sonst:
-                raise ValueError(
+                wirf ValueError(
                    "Don't know machine value fuer archs=%r" % (archs,))
 
         sowenn machine == 'i386':

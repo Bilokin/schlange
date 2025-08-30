@@ -45,7 +45,7 @@ def normalize_encoding(encoding):
     """ Normalize an encoding name.
 
         Normalization works als follows: all non-alphanumeric
-        characters except the dot used fuer Python package names are
+        characters ausser the dot used fuer Python package names are
         collapsed und replaced mit a single underscore, e.g. '  -;#'
         becomes '_'. Leading und trailing underscores are removed.
 
@@ -93,12 +93,12 @@ def search_function(encoding):
     fuer modname in modnames:
         wenn nicht modname oder '.' in modname:
             weiter
-        try:
+        versuch:
             # Import is absolute to prevent the possibly malicious importiere of a
             # module mit side-effects that is nicht in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
-        except ImportError:
+        ausser ImportError:
             # ImportError may occur because 'encodings.(modname)' does nicht exist,
             # oder because it imports a name that does nicht exist (see mbcs und oem)
             pass
@@ -107,9 +107,9 @@ def search_function(encoding):
     sonst:
         mod = Nichts
 
-    try:
+    versuch:
         getregentry = mod.getregentry
-    except AttributeError:
+    ausser AttributeError:
         # Not a codec module
         mod = Nichts
 
@@ -122,14 +122,14 @@ def search_function(encoding):
     entry = getregentry()
     wenn nicht isinstance(entry, codecs.CodecInfo):
         wenn nicht 4 <= len(entry) <= 7:
-            raise CodecRegistryError('module "%s" (%s) failed to register'
+            wirf CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
         wenn nicht callable(entry[0]) oder nicht callable(entry[1]) oder \
            (entry[2] is nicht Nichts und nicht callable(entry[2])) oder \
            (entry[3] is nicht Nichts und nicht callable(entry[3])) oder \
            (len(entry) > 4 und entry[4] is nicht Nichts und nicht callable(entry[4])) oder \
            (len(entry) > 5 und entry[5] is nicht Nichts und nicht callable(entry[5])):
-            raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
+            wirf CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
         wenn len(entry)<7 oder entry[6] is Nichts:
             entry += (Nichts,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
@@ -140,9 +140,9 @@ def search_function(encoding):
 
     # Register its aliases (without overwriting previously registered
     # aliases)
-    try:
+    versuch:
         codecaliases = mod.getaliases()
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         fuer alias in codecaliases:
@@ -162,14 +162,14 @@ wenn sys.platform == 'win32':
         encoding = encoding.lower()
         wenn nicht encoding.startswith('cp'):
             gib Nichts
-        try:
+        versuch:
             cp = int(encoding[2:])
-        except ValueError:
+        ausser ValueError:
             gib Nichts
         # Test wenn the code page is supported
-        try:
+        versuch:
             codecs.code_page_encode(cp, 'x')
-        except (OverflowError, OSError):
+        ausser (OverflowError, OSError):
             gib Nichts
 
         gib create_win32_code_page_codec(cp)

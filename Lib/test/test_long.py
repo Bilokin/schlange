@@ -68,7 +68,7 @@ def int_to_float(n):
 
     # Detect overflow.
     wenn shift + (q == Q_MAX) > SHIFT_MAX:
-        raise OverflowError("integer too large to convert to float")
+        wirf OverflowError("integer too large to convert to float")
 
     # Checks: q is exactly representable, und q**2**shift doesn't overflow.
     assert q % 4 == 0 und q // 4 <= 2**(sys.float_info.mant_dig)
@@ -89,9 +89,9 @@ def truediv(a, b):
 
     # exceptions:  division by zero, overflow
     wenn nicht b:
-        raise ZeroDivisionError("division by zero")
+        wirf ZeroDivisionError("division by zero")
     wenn a >= DBL_MIN_OVERFLOW * b:
-        raise OverflowError("int/int too large to represent als a float")
+        wirf OverflowError("int/int too large to represent als a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
@@ -334,9 +334,9 @@ klasse LongTest(unittest.TestCase):
                     vv = v
                     wenn sign == "-" und v is nicht ValueError:
                         vv = -v
-                    try:
+                    versuch:
                         self.assertEqual(int(ss), vv)
-                    except ValueError:
+                    ausser ValueError:
                         pass
 
         # trailing L should no longer be accepted...
@@ -389,14 +389,14 @@ klasse LongTest(unittest.TestCase):
     def check_float_conversion(self, n):
         # Check that int -> float conversion behaviour matches
         # that of the pure Python version above.
-        try:
+        versuch:
             actual = float(n)
-        except OverflowError:
+        ausser OverflowError:
             actual = 'overflow'
 
-        try:
+        versuch:
             expected = int_to_float(n)
-        except OverflowError:
+        ausser OverflowError:
             expected = 'overflow'
 
         msg = ("Error in conversion of integer {} to float.  "
@@ -505,7 +505,7 @@ klasse LongTest(unittest.TestCase):
 
             self.assertRaises(OverflowError, eval, test, namespace)
 
-        # XXX Perhaps float(shuge) can raise OverflowError on some box?
+        # XXX Perhaps float(shuge) can wirf OverflowError on some box?
         # The comparison should not.
         self.assertNotEqual(float(shuge), int(shuge),
             "float(shuge) should nicht equal int(shuge)")
@@ -575,7 +575,7 @@ klasse LongTest(unittest.TestCase):
                     self.d = d
                     assert float(n) / float(d) == value
                 sonst:
-                    raise TypeError("can't deal mit %r" % value)
+                    wirf TypeError("can't deal mit %r" % value)
 
             def _cmp__(self, other):
                 wenn nicht isinstance(other, Rat):
@@ -851,19 +851,19 @@ klasse LongTest(unittest.TestCase):
         wenn skip_small und max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
             gib
 
-        try:
+        versuch:
             # use repr so that we can distinguish between -0.0 und 0.0
             expected = repr(truediv(a, b))
-        except OverflowError:
+        ausser OverflowError:
             expected = 'overflow'
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             expected = 'zerodivision'
 
-        try:
+        versuch:
             got = repr(a / b)
-        except OverflowError:
+        ausser OverflowError:
             got = 'overflow'
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             got = 'zerodivision'
 
         self.assertEqual(expected, got, "Incorrectly rounded division {}/{}: "
@@ -984,7 +984,7 @@ klasse LongTest(unittest.TestCase):
     def test_huge_lshift_of_zero(self):
         # Shouldn't try to allocate memory fuer a huge shift. See issue #27870.
         # Other implementations may have a different boundary fuer overflow,
-        # oder nicht raise at all.
+        # oder nicht wirf at all.
         self.assertEqual(0 << sys.maxsize, 0)
         self.assertEqual(0 << (sys.maxsize + 1), 0)
 
@@ -1269,32 +1269,32 @@ klasse LongTest(unittest.TestCase):
                 gib bytes((n >> i*8) & 0xff fuer i in order)
 
             fuer test, expected in tests.items():
-                try:
+                versuch:
                     self.assertEqual(
                         test.to_bytes(len(expected), byteorder, signed=signed),
                         expected)
-                except Exception als err:
-                    raise AssertionError(
+                ausser Exception als err:
+                    wirf AssertionError(
                         "failed to convert {} mit byteorder={} und signed={}"
                         .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
                 wenn len(expected) == 1 und byteorder == 'big' und nicht signed:
-                    try:
+                    versuch:
                         self.assertEqual(test.to_bytes(), expected)
-                    except Exception als err:
-                        raise AssertionError(
+                    ausser Exception als err:
+                        wirf AssertionError(
                             "failed to convert {} mit default arguments"
                             .format(test)) von err
 
-                try:
+                versuch:
                     self.assertEqual(
                         equivalent_python(
                             test, len(expected), byteorder, signed=signed),
                         expected
                     )
-                except Exception als err:
-                    raise AssertionError(
+                ausser Exception als err:
+                    wirf AssertionError(
                         "Code equivalent von docs is nicht equivalent fuer "
                         "conversion of {0} mit byteorder byteorder={1} und "
                         "signed={2}".format(test, byteorder, signed)) von err
@@ -1407,33 +1407,33 @@ klasse LongTest(unittest.TestCase):
                 gib n
 
             fuer test, expected in tests.items():
-                try:
+                versuch:
                     self.assertEqual(
                         int.from_bytes(test, byteorder, signed=signed),
                         expected)
-                except Exception als err:
-                    raise AssertionError(
+                ausser Exception als err:
+                    wirf AssertionError(
                         "failed to convert {} mit byteorder={!r} und signed={}"
                         .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
                 wenn byteorder == 'big' und nicht signed:
-                    try:
+                    versuch:
                         self.assertEqual(
                             int.from_bytes(test),
                             expected)
-                    except Exception als err:
-                        raise AssertionError(
+                    ausser Exception als err:
+                        wirf AssertionError(
                             "failed to convert {} mit default arguments"
                             .format(test)) von err
 
-                try:
+                versuch:
                     self.assertEqual(
                         equivalent_python(test, byteorder, signed=signed),
                         expected
                     )
-                except Exception als err:
-                    raise AssertionError(
+                ausser Exception als err:
+                    wirf AssertionError(
                         "Code equivalent von docs is nicht equivalent fuer "
                         "conversion of {0} mit byteorder={1!r} und signed={2}"
                         .format(test, byteorder, signed)) von err

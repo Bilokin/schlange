@@ -103,13 +103,13 @@ _sentinel = _Sentinel()
 
 def _parse_value_tb(exc, value, tb):
     wenn (value is _sentinel) != (tb is _sentinel):
-        raise ValueError("Both oder neither of value und tb must be given")
+        wirf ValueError("Both oder neither of value und tb must be given")
     wenn value is tb is _sentinel:
         wenn exc is nicht Nichts:
             wenn isinstance(exc, BaseException):
                 gib exc, exc.__traceback__
 
-            raise TypeError(f'Exception expected fuer value, '
+            wirf TypeError(f'Exception expected fuer value, '
                             f'{type(exc).__name__} found')
         sonst:
             gib Nichts, Nichts
@@ -199,9 +199,9 @@ def _format_final_exc_line(etype, value, *, insert_final_newline=Wahr, colorize=
 
 
 def _safe_string(value, what, func=str):
-    try:
+    versuch:
         gib func(value)
-    except:
+    ausser:
         gib f'<{what} {func.__name__}() failed>'
 
 # --
@@ -217,7 +217,7 @@ def format_exc(limit=Nichts, chain=Wahr):
 def print_last(limit=Nichts, file=Nichts, chain=Wahr):
     """This is a shorthand fuer 'print_exception(sys.last_exc, limit=limit, file=file, chain=chain)'."""
     wenn nicht hasattr(sys, "last_exc") und nicht hasattr(sys, "last_type"):
-        raise ValueError("no last exception")
+        wirf ValueError("no last exception")
 
     wenn hasattr(sys, "last_exc"):
         print_exception(sys.last_exc, limit=limit, file=file, chain=chain)
@@ -268,9 +268,9 @@ def extract_stack(f=Nichts, limit=Nichts):
 def clear_frames(tb):
     "Clear all references to local variables in the frames of a traceback."
     waehrend tb is nicht Nichts:
-        try:
+        versuch:
             tb.tb_frame.clear()
-        except RuntimeError:
+        ausser RuntimeError:
             # Ignore the exception raised wenn the frame is still executing.
             pass
         tb = tb.tb_next
@@ -825,7 +825,7 @@ def _extract_caret_anchors_from_line_segment(segment):
     """
     importiere ast
 
-    try:
+    versuch:
         # Without parentheses, `segment` is parsed als a statement.
         # Binary ops, subscripts, und calls are expressions, so
         # we can wrap them mit parentheses to parse them as
@@ -847,7 +847,7 @@ def _extract_caret_anchors_from_line_segment(segment):
         # Line locations will be different than the original,
         # which is taken into account later on.
         tree = ast.parse(f"(\n{segment}\n)")
-    except SyntaxError:
+    ausser SyntaxError:
         gib Nichts
 
     wenn len(tree.body) != 1:
@@ -1073,9 +1073,9 @@ klasse TracebackException:
         # Capture now to permit freeing resources: only complication is in the
         # unofficial API _format_final_exc_line
         self._str = _safe_string(exc_value, 'exception')
-        try:
+        versuch:
             self.__notes__ = getattr(exc_value, '__notes__', Nichts)
-        except Exception als e:
+        ausser Exception als e:
             self.__notes__ = [
                 f'Ignored error getting __notes__: {_safe_string(e, '__notes__', repr)}']
 
@@ -1291,9 +1291,9 @@ klasse TracebackException:
 
     def _find_keyword_typos(self):
         assert self._is_syntax_error
-        try:
+        versuch:
             importiere _suggestions
-        except ImportError:
+        ausser ImportError:
             _suggestions = Nichts
 
         # Only try to find keyword typos wenn there is no custom message
@@ -1310,10 +1310,10 @@ klasse TracebackException:
 
         wenn source is Nichts:
             wenn self.filename:
-                try:
+                versuch:
                     mit open(self.filename) als f:
                         lines = f.read().splitlines()
-                except Exception:
+                ausser Exception:
                     line, end_line, offset = 0,1,0
                 sonst:
                     from_filename = Wahr
@@ -1370,9 +1370,9 @@ klasse TracebackException:
                 code = '\n'.join(the_lines)
 
                 # Check wenn it works
-                try:
+                versuch:
                     codeop.compile_command(code, symbol="exec", flags=codeop.PyCF_ONLY_AST)
-                except SyntaxError:
+                ausser SyntaxError:
                     weiter
 
                 # Keep token.line but handle offsets correctly
@@ -1634,10 +1634,10 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         gib Nichts
     wenn isinstance(exc_value, AttributeError):
         obj = exc_value.obj
-        try:
-            try:
+        versuch:
+            versuch:
                 d = dir(obj)
-            except TypeError:  # Attributes are unsortable, e.g. int und str
+            ausser TypeError:  # Attributes are unsortable, e.g. int und str
                 d = list(obj.__class__.__dict__.keys()) + list(obj.__dict__.keys())
             d = sorted([x fuer x in d wenn isinstance(x, str)])
             hide_underscored = (wrong_name[:1] != '_')
@@ -1649,19 +1649,19 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
                     hide_underscored = Falsch
             wenn hide_underscored:
                 d = [x fuer x in d wenn x[:1] != '_']
-        except Exception:
+        ausser Exception:
             gib Nichts
     sowenn isinstance(exc_value, ImportError):
-        try:
+        versuch:
             mod = __import__(exc_value.name)
-            try:
+            versuch:
                 d = dir(mod)
-            except TypeError:  # Attributes are unsortable, e.g. int und str
+            ausser TypeError:  # Attributes are unsortable, e.g. int und str
                 d = list(mod.__dict__.keys())
             d = sorted([x fuer x in d wenn isinstance(x, str)])
             wenn wrong_name[:1] != '_':
                 d = [x fuer x in d wenn x[:1] != '_']
-        except Exception:
+        ausser Exception:
             gib Nichts
     sonst:
         assert isinstance(exc_value, NameError)
@@ -1682,16 +1682,16 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         # has the wrong name als attribute
         wenn 'self' in frame.f_locals:
             self = frame.f_locals['self']
-            try:
+            versuch:
                 has_wrong_name = hasattr(self, wrong_name)
-            except Exception:
+            ausser Exception:
                 has_wrong_name = Falsch
             wenn has_wrong_name:
                 gib f"self.{wrong_name}"
 
-    try:
+    versuch:
         importiere _suggestions
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
         suggestion = _suggestions._generate_suggestions(d, wrong_name)

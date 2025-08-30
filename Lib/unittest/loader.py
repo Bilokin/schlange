@@ -30,7 +30,7 @@ klasse _FailedTest(case.TestCase):
         wenn name != self._testMethodName:
             gib super(_FailedTest, self).__getattr__(name)
         def testFailure():
-            raise self._exception
+            wirf self._exception
         gib testFailure
 
 
@@ -81,7 +81,7 @@ klasse TestLoader(object):
     def loadTestsFromTestCase(self, testCaseClass):
         """Return a suite of all test cases contained in testCaseClass"""
         wenn issubclass(testCaseClass, suite.TestSuite):
-            raise TypeError("Test cases should nicht be derived von "
+            wirf TypeError("Test cases should nicht be derived von "
                             "TestSuite. Maybe you meant to derive von "
                             "TestCase?")
         wenn testCaseClass in (case.TestCase, case.FunctionTestCase):
@@ -109,9 +109,9 @@ klasse TestLoader(object):
         load_tests = getattr(module, 'load_tests', Nichts)
         tests = self.suiteClass(tests)
         wenn load_tests is nicht Nichts:
-            try:
+            versuch:
                 gib load_tests(self, tests, pattern)
-            except Exception als e:
+            ausser Exception als e:
                 error_case, error_message = _make_failed_load_tests(
                     module.__name__, e, self.suiteClass)
                 self.errors.append(error_message)
@@ -132,11 +132,11 @@ klasse TestLoader(object):
         wenn module is Nichts:
             parts_copy = parts[:]
             waehrend parts_copy:
-                try:
+                versuch:
                     module_name = '.'.join(parts_copy)
                     module = __import__(module_name)
                     breche
-                except ImportError:
+                ausser ImportError:
                     next_attribute = parts_copy.pop()
                     # Last error so we can give it to the user wenn needed.
                     error_case, error_message = _make_failed_import_test(
@@ -148,9 +148,9 @@ klasse TestLoader(object):
             parts = parts[1:]
         obj = module
         fuer part in parts:
-            try:
+            versuch:
                 parent, obj = obj, getattr(obj, part)
-            except AttributeError als e:
+            ausser AttributeError als e:
                 # We can't traverse some part of the name.
                 wenn (getattr(obj, '__path__', Nichts) is nicht Nichts
                     und error_case is nicht Nichts):
@@ -195,10 +195,10 @@ klasse TestLoader(object):
             sowenn isinstance(test, case.TestCase):
                 gib self.suiteClass([test])
             sonst:
-                raise TypeError("calling %s returned %s, nicht a test" %
+                wirf TypeError("calling %s returned %s, nicht a test" %
                                 (obj, test))
         sonst:
-            raise TypeError("don't know how to make test from: %s" % obj)
+            wirf TypeError("don't know how to make test from: %s" % obj)
 
     def loadTestsFromNames(self, names, module=Nichts):
         """Return a suite of all test cases found using the given sequence
@@ -282,17 +282,17 @@ klasse TestLoader(object):
                 is_not_importable = nicht os.path.isfile(os.path.join(start_dir, '__init__.py'))
         sonst:
             # support fuer discovery von dotted module names
-            try:
+            versuch:
                 __import__(start_dir)
-            except ImportError:
+            ausser ImportError:
                 is_not_importable = Wahr
             sonst:
                 the_module = sys.modules[start_dir]
                 wenn nicht hasattr(the_module, "__file__") oder the_module.__file__ is Nichts:
                     # look fuer namespace packages
-                    try:
+                    versuch:
                         spec = the_module.__spec__
-                    except AttributeError:
+                    ausser AttributeError:
                         spec = Nichts
 
                     wenn spec und spec.submodule_search_locations is nicht Nichts:
@@ -308,10 +308,10 @@ klasse TestLoader(object):
                             tests.extend(self._find_tests(path, pattern, namespace=Wahr))
                     sowenn the_module.__name__ in sys.builtin_module_names:
                         # builtin module
-                        raise TypeError('Can nicht use builtin modules '
+                        wirf TypeError('Can nicht use builtin modules '
                                         'as dotted module names') von Nichts
                     sonst:
-                        raise TypeError(
+                        wirf TypeError(
                             f"don't know how to discover von {the_module!r}"
                             ) von Nichts
 
@@ -331,7 +331,7 @@ klasse TestLoader(object):
                     sys.path.remove(top_level_dir)
 
         wenn is_not_importable:
-            raise ImportError('Start directory is nicht importable: %r' % start_dir)
+            wirf ImportError('Start directory is nicht importable: %r' % start_dir)
 
         wenn nicht is_namespace:
             tests = list(self._find_tests(start_dir, pattern))
@@ -400,9 +400,9 @@ klasse TestLoader(object):
                 # we found a package that didn't use load_tests.
                 name = self._get_name_from_path(full_path)
                 self._loading_packages.add(name)
-                try:
+                versuch:
                     liefere von self._find_tests(full_path, pattern, Falsch)
-                finally:
+                schliesslich:
                     self._loading_packages.discard(name)
 
     def _find_test_path(self, full_path, pattern, namespace=Falsch):
@@ -422,11 +422,11 @@ klasse TestLoader(object):
                 gib Nichts, Falsch
             # wenn the test file matches, load it
             name = self._get_name_from_path(full_path)
-            try:
+            versuch:
                 module = self._get_module_from_name(name)
-            except case.SkipTest als e:
+            ausser case.SkipTest als e:
                 gib _make_skipped_test(name, e, self.suiteClass), Falsch
-            except:
+            ausser:
                 error_case, error_message = \
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)
@@ -445,7 +445,7 @@ klasse TestLoader(object):
                     expected_dir = os.path.dirname(full_path)
                     msg = ("%r module incorrectly imported von %r. Expected "
                            "%r. Is this module globally installed?")
-                    raise ImportError(
+                    wirf ImportError(
                         msg % (mod_name, module_dir, expected_dir))
                 gib self.loadTestsFromModule(module, pattern=pattern), Falsch
         sowenn os.path.isdir(full_path):
@@ -456,11 +456,11 @@ klasse TestLoader(object):
             load_tests = Nichts
             tests = Nichts
             name = self._get_name_from_path(full_path)
-            try:
+            versuch:
                 package = self._get_module_from_name(name)
-            except case.SkipTest als e:
+            ausser case.SkipTest als e:
                 gib _make_skipped_test(name, e, self.suiteClass), Falsch
-            except:
+            ausser:
                 error_case, error_message = \
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)
@@ -469,13 +469,13 @@ klasse TestLoader(object):
                 load_tests = getattr(package, 'load_tests', Nichts)
                 # Mark this package als being in load_tests (possibly ;))
                 self._loading_packages.add(name)
-                try:
+                versuch:
                     tests = self.loadTestsFromModule(package, pattern=pattern)
                     wenn load_tests is nicht Nichts:
                         # loadTestsFromModule(package) has loaded tests fuer us.
                         gib tests, Falsch
                     gib tests, Wahr
-                finally:
+                schliesslich:
                     self._loading_packages.discard(name)
         sonst:
             gib Nichts, Falsch

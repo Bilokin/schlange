@@ -19,17 +19,17 @@ importiere unittest
 importiere unittest.mock
 importiere warnings
 
-try:
+versuch:
     importiere _testsinglephase
-except ImportError:
+ausser ImportError:
     _testsinglephase = Nichts
-try:
+versuch:
     importiere _testmultiphase
-except ImportError:
+ausser ImportError:
     _testmultiphase = Nichts
-try:
+versuch:
     importiere _interpreters
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     _interpreters = Nichts
 
 
@@ -228,9 +228,9 @@ klasse FindSpecTests:
         name = 'some_mod'
         mit util.uncache(name):
             module = types.ModuleType(name)
-            try:
+            versuch:
                 del module.__spec__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sys.modules[name] = module
             mit self.assertRaises(ValueError):
@@ -389,7 +389,7 @@ klasse PEP3147Tests:
         # However wenn the bool-ishness can't be determined, the exception
         # propagates.
         klasse Bearish:
-            def __bool__(self): raise RuntimeError
+            def __bool__(self): wirf RuntimeError
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_from_source(path, []),
@@ -436,7 +436,7 @@ klasse PEP3147Tests:
         # str() should be called on argument.
         self.assertEqual(self.util.cache_from_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
-        # Invalid characters raise ValueError.
+        # Invalid characters wirf ValueError.
         mit self.assertRaises(ValueError):
             self.util.cache_from_source(path, optimization='path/is/bad')
 
@@ -475,7 +475,7 @@ klasse PEP3147Tests:
         self.assertEqual(self.util.source_from_cache(path), expect)
 
     def test_source_from_cache_no_cache_tag(self):
-        # If sys.implementation.cache_tag is Nichts, raise NotImplementedError.
+        # If sys.implementation.cache_tag is Nichts, wirf NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
         mit support.swap_attr(sys.implementation, 'cache_tag', Nichts):
             mit self.assertRaises(NotImplementedError):
@@ -671,28 +671,28 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
     def run_with_own_gil(self, script):
         interpid = _interpreters.create('isolated')
         def ensure_destroyed():
-            try:
+            versuch:
                 _interpreters.destroy(interpid)
-            except _interpreters.InterpreterNotFoundError:
+            ausser _interpreters.InterpreterNotFoundError:
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
         wenn excsnap is nicht Nichts:
             wenn excsnap.type.__name__ == 'ImportError':
-                raise ImportError(excsnap.msg)
+                wirf ImportError(excsnap.msg)
 
     def run_with_shared_gil(self, script):
         interpid = _interpreters.create('legacy')
         def ensure_destroyed():
-            try:
+            versuch:
                 _interpreters.destroy(interpid)
-            except _interpreters.InterpreterNotFoundError:
+            ausser _interpreters.InterpreterNotFoundError:
                 pass
         self.addCleanup(ensure_destroyed)
         excsnap = _interpreters.exec(interpid, script)
         wenn excsnap is nicht Nichts:
             wenn excsnap.type.__name__ == 'ImportError':
-                raise ImportError(excsnap.msg)
+                wirf ImportError(excsnap.msg)
 
     @unittest.skipIf(_testsinglephase is Nichts, "test requires _testsinglephase module")
     # gh-117649: single-phase init modules are nicht currently supported in

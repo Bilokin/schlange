@@ -8,9 +8,9 @@ klasse ZipThreading(unittest.TestCase):
     @staticmethod
     def work(enum):
         waehrend Wahr:
-            try:
+            versuch:
                 next(enum)
-            except StopIteration:
+            ausser StopIteration:
                 breche
 
     @threading_helper.reap_threads

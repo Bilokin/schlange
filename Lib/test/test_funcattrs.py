@@ -31,15 +31,15 @@ klasse FuncAttrsTest(unittest.TestCase):
         self.b = b
 
     def cannot_set_attr(self, obj, name, value, exceptions):
-        try:
+        versuch:
             setattr(obj, name, value)
-        except exceptions:
+        ausser exceptions:
             pass
         sonst:
             self.fail("shouldn't be able to set %s to %r" % (name, value))
-        try:
+        versuch:
             delattr(obj, name)
-        except exceptions:
+        ausser exceptions:
             pass
         sonst:
             self.fail("shouldn't be able to del %s" % name)
@@ -85,10 +85,10 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
                 assert src.__code__.co_flags != dst.__code__.co_flags
                 prev = dst.__code__
-                try:
+                versuch:
                     mit self.assertWarnsRegex(DeprecationWarning, 'code object of non-matching type'):
                         dst.__code__ = src.__code__
-                finally:
+                schliesslich:
                     mit warnings.catch_warnings():
                         warnings.filterwarnings('ignore', '', DeprecationWarning)
                         dst.__code__ = prev
@@ -155,9 +155,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_empty_cell(self):
         def f(): drucke(a)
-        try:
+        versuch:
             f.__closure__[0].cell_contents
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("shouldn't be able to read an empty cell")
@@ -172,9 +172,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(f(), 9)
         self.assertEqual(a, 9)
         del c[0].cell_contents
-        try:
+        versuch:
             c[0].cell_contents
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("shouldn't be able to read an empty cell")
@@ -191,7 +191,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(self.b.__name__, 'd')
         # __name__ und __name__ must be a string
         self.cannot_set_attr(self.b, '__name__', 7, TypeError)
-        # __name__ must be available when in restricted mode. Exec will raise
+        # __name__ must be available when in restricted mode. Exec will wirf
         # AttributeError wenn __name__ is nicht available on f.
         s = """def f(): pass\nf.__name__"""
         exec(s, {'__builtins__': {}})
@@ -251,16 +251,16 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(c.__code__, d.__code__)
         self.assertEqual(c(), 7)
         # self.assertEqual(d(), 7)
-        try:
+        versuch:
             b.__code__ = c.__code__
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("__code__ mit different numbers of free vars should "
                       "not be possible")
-        try:
+        versuch:
             e.__code__ = d.__code__
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("__code__ mit different numbers of free vars should "
@@ -285,9 +285,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(first_func(3, 5), 8)
         del second_func.__defaults__
         self.assertEqual(second_func.__defaults__, Nichts)
-        try:
+        versuch:
             second_func()
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("__defaults__ does nicht update; deleting it does nicht "
@@ -314,12 +314,12 @@ klasse InstancemethodAttrTest(FuncAttrsTest):
         self.fi.id = types.MethodType(id, self.fi)
         self.assertEqual(self.fi.id(), id(self.fi))
         # Test usage
-        try:
+        versuch:
             self.fi.id.unknown_attr
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
-            self.fail("using unknown attributes should raise AttributeError")
+            self.fail("using unknown attributes should wirf AttributeError")
         # Test assignment und deletion
         self.cannot_set_attr(self.fi.id, 'unknown_attr', 2, AttributeError)
 
@@ -328,29 +328,29 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
     def test_set_attr(self):
         self.b.known_attr = 7
         self.assertEqual(self.b.known_attr, 7)
-        try:
+        versuch:
             self.fi.a.known_attr = 7
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
-            self.fail("setting attributes on methods should raise error")
+            self.fail("setting attributes on methods should wirf error")
 
     def test_delete_unknown_attr(self):
-        try:
+        versuch:
             del self.b.unknown_attr
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
-            self.fail("deleting unknown attribute should raise TypeError")
+            self.fail("deleting unknown attribute should wirf TypeError")
 
     def test_unset_attr(self):
         fuer func in [self.b, self.fi.a]:
-            try:
+            versuch:
                 func.non_existent_attr
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
-                self.fail("using unknown attributes should raise "
+                self.fail("using unknown attributes should wirf "
                           "AttributeError")
 
 
@@ -378,12 +378,12 @@ klasse FunctionDictsTest(FuncAttrsTest):
         self.assertEqual(self.fi.a.known_attr, 7)
 
     def test_delete___dict__(self):
-        try:
+        versuch:
             del self.b.__dict__
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("deleting function dictionary should raise TypeError")
+            self.fail("deleting function dictionary should wirf TypeError")
 
     def test_unassigned_dict(self):
         self.assertEqual(self.b.__dict__, {})

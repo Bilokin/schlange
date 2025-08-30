@@ -4,12 +4,12 @@ importiere sys
 wenn __name__ == "__main__":
     sys.modules['idlelib.pyshell'] = sys.modules['__main__']
 
-try:
+versuch:
     von tkinter importiere *
-except ImportError:
+ausser ImportError:
     drucke("** IDLE can't importiere Tkinter.\n"
           "Your Python may nicht be configured fuer Tk. **", file=sys.__stderr__)
-    raise SystemExit(1)
+    wirf SystemExit(1)
 
 wenn sys.platform == 'win32':
     von idlelib.util importiere fix_win_hidpi
@@ -51,11 +51,11 @@ use_subprocess = Falsch
 HOST = '127.0.0.1' # python execution server on localhost loopback
 PORT = 0  # someday pass in host, port fuer remote debug capability
 
-try:  # In case IDLE started mit -n.
+versuch:  # In case IDLE started mit -n.
     eof = 'Ctrl-D (end-of-file)'
     exit.eof = eof
     quit.eof = eof
-except NameError: # In case python started mit -S.
+ausser NameError: # In case python started mit -S.
     pass
 
 # Override warnings module to write to warning_stream.  Initialize to send IDLE
@@ -74,11 +74,11 @@ def idle_showwarning(
     """
     wenn file is Nichts:
         file = warning_stream
-    try:
+    versuch:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line=line))
         file.write(">>> ")
-    except (AttributeError, OSError):
+    ausser (AttributeError, OSError):
         pass  # wenn file (probably __stderr__) is invalid, skip warning.
 
 _warnings_showwarning = Nichts
@@ -169,14 +169,14 @@ klasse PyShellEditorWindow(EditorWindow):
         text = self.text
         filename = self.io.filename
         text.tag_add("BREAK", "%d.0" % lineno, "%d.0" % (lineno+1))
-        try:
+        versuch:
             self.breakpoints.index(lineno)
-        except ValueError:  # only add wenn missing, i.e. do once
+        ausser ValueError:  # only add wenn missing, i.e. do once
             self.breakpoints.append(lineno)
-        try:    # update the subprocess debugger
+        versuch:    # update the subprocess debugger
             debug = self.flist.pyshell.interp.debugger
             debug.set_breakpoint(filename, lineno)
-        except: # but debugger may nicht be active right now....
+        ausser: # but debugger may nicht be active right now....
             pass
 
     def set_breakpoint_event(self, event=Nichts):
@@ -195,16 +195,16 @@ klasse PyShellEditorWindow(EditorWindow):
             text.bell()
             gib
         lineno = int(float(text.index("insert")))
-        try:
+        versuch:
             self.breakpoints.remove(lineno)
-        except:
+        ausser:
             pass
         text.tag_remove("BREAK", "insert linestart",\
                         "insert lineend +1char")
-        try:
+        versuch:
             debug = self.flist.pyshell.interp.debugger
             debug.clear_breakpoint(filename, lineno)
-        except:
+        ausser:
             pass
 
     def clear_file_breaks(self):
@@ -216,10 +216,10 @@ klasse PyShellEditorWindow(EditorWindow):
                 gib
             self.breakpoints = []
             text.tag_remove("BREAK", "1.0", END)
-            try:
+            versuch:
                 debug = self.flist.pyshell.interp.debugger
                 debug.clear_file_breaks(filename)
-            except:
+            ausser:
                 pass
 
     def store_file_breaks(self):
@@ -242,12 +242,12 @@ klasse PyShellEditorWindow(EditorWindow):
         #     unexpected breakpoint deletions occurs.
         breaks = self.breakpoints
         filename = self.io.filename
-        try:
+        versuch:
             mit open(self.breakpointPath) als fp:
                 lines = fp.readlines()
-        except OSError:
+        ausser OSError:
             lines = []
-        try:
+        versuch:
             mit open(self.breakpointPath, "w") als new_file:
                 fuer line in lines:
                     wenn nicht line.startswith(filename + '='):
@@ -256,7 +256,7 @@ klasse PyShellEditorWindow(EditorWindow):
                 breaks = self.breakpoints
                 wenn breaks:
                     new_file.write(filename + '=' + str(breaks) + '\n')
-        except OSError als err:
+        ausser OSError als err:
             wenn nicht getattr(self.root, "breakpoint_error_displayed", Falsch):
                 self.root.breakpoint_error_displayed = Wahr
                 messagebox.showerror(title='IDLE Error',
@@ -347,20 +347,20 @@ klasse ModifiedColorDelegator(ColorDelegator):
 klasse ModifiedUndoDelegator(UndoDelegator):
     "Extend base class: forbid insert/delete before the I/O mark"
     def insert(self, index, chars, tags=Nichts):
-        try:
+        versuch:
             wenn self.delegate.compare(index, "<", "iomark"):
                 self.delegate.bell()
                 gib
-        except TclError:
+        ausser TclError:
             pass
         UndoDelegator.insert(self, index, chars, tags)
 
     def delete(self, index1, index2=Nichts):
-        try:
+        versuch:
             wenn self.delegate.compare(index1, "<", "iomark"):
                 self.delegate.bell()
                 gib
-        except TclError:
+        ausser TclError:
             pass
         UndoDelegator.delete(self, index1, index2)
 
@@ -372,9 +372,9 @@ klasse ModifiedUndoDelegator(UndoDelegator):
         orig_insert = self.delegate.insert
         self.delegate.insert = \
             lambda index, chars: orig_insert(index, chars, "stdin")
-        try:
+        versuch:
             super().undo_event(event)
-        finally:
+        schliesslich:
             self.delegate.insert = orig_insert
 
 
@@ -390,7 +390,7 @@ klasse MyRPCClient(rpc.RPCClient):
 
     def handle_EOF(self):
         "Override the base klasse - just re-raise EOFError"
-        raise EOFError
+        wirf EOFError
 
 def restart_line(width, filename):  # See bpo-38141.
     """Return width long restart line formatted mit filename.
@@ -445,10 +445,10 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         # GUI makes several attempts to acquire socket, listens fuer connection
         fuer i in range(3):
             time.sleep(i)
-            try:
+            versuch:
                 self.rpcclt = MyRPCClient(addr)
                 breche
-            except OSError:
+            ausser OSError:
                 pass
         sonst:
             self.display_port_binding_error()
@@ -467,9 +467,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         #time.sleep(20) # test to simulate GUI nicht accepting connection
         # Accept the connection von the Python execution server
         self.rpcclt.listening_sock.settimeout(10)
-        try:
+        versuch:
             self.rpcclt.accept()
-        except TimeoutError:
+        ausser TimeoutError:
             self.display_no_subprocess_error()
             gib Nichts
         self.rpcclt.register("console", self.tkconsole)
@@ -490,10 +490,10 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         # close only the subprocess debugger
         debug = self.getdebugger()
         wenn debug:
-            try:
+            versuch:
                 # Only close subprocess debugger, don't unregister gui_adap!
                 debugger_r.close_subprocess_debugger(self.rpcclt)
-            except:
+            ausser:
                 pass
         # Kill subprocess, spawn a new one, accept connection.
         self.rpcclt.close()
@@ -502,9 +502,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         was_executing = console.executing
         console.executing = Falsch
         self.spawn_subprocess()
-        try:
+        versuch:
             self.rpcclt.accept()
-        except TimeoutError:
+        ausser TimeoutError:
             self.display_no_subprocess_error()
             gib Nichts
         self.transfer_path(with_cwd=with_cwd)
@@ -536,13 +536,13 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def kill_subprocess(self):
         wenn self._afterid is nicht Nichts:
             self.tkconsole.text.after_cancel(self._afterid)
-        try:
+        versuch:
             self.rpcclt.listening_sock.close()
-        except AttributeError:  # no socket
+        ausser AttributeError:  # no socket
             pass
-        try:
+        versuch:
             self.rpcclt.close()
-        except AttributeError:  # no socket
+        ausser AttributeError:  # no socket
             pass
         self.terminate_subprocess()
         self.tkconsole.executing = Falsch
@@ -550,15 +550,15 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def terminate_subprocess(self):
         "Make sure subprocess is terminated"
-        try:
+        versuch:
             self.rpcsubproc.kill()
-        except OSError:
+        ausser OSError:
             # process already terminated
             gib
         sonst:
-            try:
+            versuch:
                 self.rpcsubproc.wait()
-            except OSError:
+            ausser OSError:
                 gib
 
     def transfer_path(self, with_cwd=Falsch):
@@ -580,9 +580,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         clt = self.rpcclt
         wenn clt is Nichts:
             gib
-        try:
+        versuch:
             response = clt.pollresponse(self.active_seq, wait=0.05)
-        except (EOFError, OSError, KeyboardInterrupt):
+        ausser (EOFError, OSError, KeyboardInterrupt):
             # lost connection oder subprocess terminated itself, restart
             # [the KBI is von rpc.SocketIO.handle_EOF()]
             wenn self.tkconsole.closing:
@@ -605,9 +605,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                 drucke(errmsg, what, file=sys.__stderr__)
                 drucke(errmsg, what, file=console)
             # we received a response to the currently active seq number:
-            try:
+            versuch:
                 self.tkconsole.endexecuting()
-            except AttributeError:  # shell may have closed
+            ausser AttributeError:  # shell may have closed
                 pass
         # Reschedule myself
         wenn nicht self.tkconsole.closing:
@@ -667,9 +667,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                 wenn use_subprocess:
                     source = (f"__file__ = r'''{os.path.abspath(filename)}'''\n"
                               + source + "\ndel __file__")
-        try:
+        versuch:
             code = compile(source, filename, "exec")
-        except (OverflowError, SyntaxError):
+        ausser (OverflowError, SyntaxError):
             self.tkconsole.resetoutput()
             drucke('*** Error in script oder command!\n'
                  'Traceback (most recent call last):',
@@ -751,7 +751,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def runcommand(self, code):
         "Run the code without invoking the debugger"
-        # The code better nicht raise an exception!
+        # The code better nicht wirf an exception!
         wenn self.tkconsole.executing:
             self.display_executing_dialog()
             gib 0
@@ -767,7 +767,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             self.restart_subprocess()
         self.checklinecache()
         debugger = self.debugger
-        try:
+        versuch:
             self.tkconsole.beginexecuting()
             wenn nicht debugger und self.rpcclt is nicht Nichts:
                 self.active_seq = self.rpcclt.asyncqueue("exec", "runcode",
@@ -776,19 +776,19 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                 debugger.run(code, self.locals)
             sonst:
                 exec(code, self.locals)
-        except SystemExit:
+        ausser SystemExit:
             wenn nicht self.tkconsole.closing:
                 wenn messagebox.askyesno(
                     "Exit?",
                     "Do you want to exit altogether?",
                     default="yes",
                     parent=self.tkconsole.text):
-                    raise
+                    wirf
                 sonst:
                     self.showtraceback()
             sonst:
-                raise
-        except:
+                wirf
+        ausser:
             wenn use_subprocess:
                 drucke("IDLE internal error in runcode()",
                       file=self.tkconsole.stderr)
@@ -800,11 +800,11 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                     drucke("KeyboardInterrupt", file=self.tkconsole.stderr)
                 sonst:
                     self.showtraceback()
-        finally:
+        schliesslich:
             wenn nicht use_subprocess:
-                try:
+                versuch:
                     self.tkconsole.endexecuting()
-                except AttributeError:  # shell may have closed
+                ausser AttributeError:  # shell may have closed
                     pass
 
     def write(self, s):
@@ -932,14 +932,14 @@ klasse PyShell(OutputWindow):
             sys.stdout = self.stdout
             sys.stderr = self.stderr
             sys.stdin = self.stdin
-        try:
+        versuch:
             # page help() text to shell.
             importiere pydoc # importiere must be done here to capture i/o rebinding.
             # XXX KBK 27Dec07 use text viewer someday, but must work w/o subproc
             pydoc.pager = pydoc.plainpager
-        except:
+        ausser:
             sys.stderr = sys.__stderr__
-            raise
+            wirf
         #
         self.history = self.History(self.text)
         #
@@ -1173,10 +1173,10 @@ klasse PyShell(OutputWindow):
 
     def readline(self):
         save = self.reading
-        try:
+        versuch:
             self.reading = Wahr
             self.top.mainloop()  # nested mainloop()
-        finally:
+        schliesslich:
             self.reading = save
         wenn self._stop_readline_flag:
             self._stop_readline_flag = Falsch
@@ -1188,7 +1188,7 @@ klasse PyShell(OutputWindow):
         wenn self.canceled:
             self.canceled = Falsch
             wenn nicht use_subprocess:
-                raise KeyboardInterrupt
+                wirf KeyboardInterrupt
         wenn self.endoffile:
             self.endoffile = Falsch
             line = ""
@@ -1198,10 +1198,10 @@ klasse PyShell(OutputWindow):
         gib Wahr
 
     def cancel_callback(self, event=Nichts):
-        try:
+        versuch:
             wenn self.text.compare("sel.first", "!=", "sel.last"):
                 gib # Active selection -- always use default binding
-        except:
+        ausser:
             pass
         wenn nicht (self.executing oder self.reading):
             self.resetoutput()
@@ -1248,13 +1248,13 @@ klasse PyShell(OutputWindow):
             gib # Let the default binding (insert '\n') take over
         # If some text is selected, recall the selection
         # (but only wenn this before the I/O mark)
-        try:
+        versuch:
             sel = self.text.get("sel.first", "sel.last")
             wenn sel:
                 wenn self.text.compare("sel.last", "<=", "iomark"):
                     self.recall(sel, event)
                     gib "break"
-        except:
+        ausser:
             pass
         # If we're strictly before the line containing iomark, recall
         # the current line, less a leading prompt, less leading oder
@@ -1328,7 +1328,7 @@ klasse PyShell(OutputWindow):
         s = re.sub(r'\n\s*$', '', s)
         lines = s.split('\n')
         self.text.undo_block_start()
-        try:
+        versuch:
             self.text.tag_remove("sel", "1.0", "end")
             self.text.mark_set("insert", "end-1c")
             prefix = self.text.get("insert linestart", "insert")
@@ -1346,7 +1346,7 @@ klasse PyShell(OutputWindow):
                         line = new_base_indent + line[len(orig_base_indent):]
                     self.text.insert('insert', '\n' + line.rstrip(),
                                      self.user_input_insert_tags)
-        finally:
+        schliesslich:
             self.text.see("insert")
             self.text.undo_block_stop()
 
@@ -1368,9 +1368,9 @@ klasse PyShell(OutputWindow):
             gib self.interp.remote_stack_viewer()
 
         von idlelib.stackviewer importiere StackBrowser
-        try:
+        versuch:
             StackBrowser(self.root, sys.last_exc, self.flist)
-        except:
+        ausser:
             messagebox.showerror("No stack trace",
                 "There is no stack trace yet.\n"
                 "(sys.last_exc is nicht defined)",
@@ -1418,24 +1418,24 @@ klasse PyShell(OutputWindow):
         self.ctip.remove_calltip_window()
 
     def write(self, s, tags=()):
-        try:
+        versuch:
             self.text.mark_gravity("iomark", "right")
             count = OutputWindow.write(self, s, tags, "iomark")
             self.text.mark_gravity("iomark", "left")
-        except:
-            raise ###pass  # ### 11Aug07 KBK wenn we are expecting exceptions
+        ausser:
+            wirf ###pass  # ### 11Aug07 KBK wenn we are expecting exceptions
                            # let's find out what they are und be specific.
         wenn self.canceled:
             self.canceled = Falsch
             wenn nicht use_subprocess:
-                raise KeyboardInterrupt
+                wirf KeyboardInterrupt
         gib count
 
     def rmenu_check_cut(self):
-        try:
+        versuch:
             wenn self.text.compare('sel.first', '<', 'iomark'):
                 gib 'disabled'
-        except TclError: # no selection, so the index 'sel.first' doesn't exist
+        ausser TclError: # no selection, so the index 'sel.first' doesn't exist
             gib 'disabled'
         gib super().rmenu_check_cut()
 
@@ -1533,9 +1533,9 @@ def main():
     cmd = Nichts
     script = Nichts
     startup = Falsch
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], "c:deihnr:st:")
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         drucke(f"Error: {msg}\n{usage_msg}", file=sys.stderr)
         sys.exit(2)
     fuer o, a in opts:

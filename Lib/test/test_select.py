@@ -33,9 +33,9 @@ klasse SelectTestCase(unittest.TestCase):
         mit open(__file__, 'rb') als fp:
             fd = fp.fileno()
             fp.close()
-            try:
+            versuch:
                 select.select([fd], [], [], 0)
-            except OSError als err:
+            ausser OSError als err:
                 self.assertEqual(err.errno, errno.EBADF)
             sonst:
                 self.fail("exception nicht raised")

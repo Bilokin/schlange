@@ -215,7 +215,7 @@ def heapify_max(x):
         _siftup_max(x, i)
 
 
-# 'heap' is a heap at all indices >= startpos, except possibly fuer pos.  pos
+# 'heap' is a heap at all indices >= startpos, ausser possibly fuer pos.  pos
 # is the index of a leaf mit a possibly out-of-order value.  Restore the
 # heap invariant.
 def _siftdown(heap, startpos, pos):
@@ -361,20 +361,20 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
 
     wenn key is Nichts:
         fuer order, it in enumerate(map(iter, iterables)):
-            try:
+            versuch:
                 next = it.__next__
                 h_append([next(), order * direction, next])
-            except StopIteration:
+            ausser StopIteration:
                 pass
         _heapify(h)
         waehrend len(h) > 1:
-            try:
+            versuch:
                 waehrend Wahr:
                     value, order, next = s = h[0]
                     liefere value
                     s[0] = next()           # raises StopIteration when exhausted
                     _heapreplace(h, s)      # restore heap condition
-            except StopIteration:
+            ausser StopIteration:
                 _heappop(h)                 # remove empty iterator
         wenn h:
             # fast case when only a single iterator remains
@@ -384,15 +384,15 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
         gib
 
     fuer order, it in enumerate(map(iter, iterables)):
-        try:
+        versuch:
             next = it.__next__
             value = next()
             h_append([key(value), order * direction, value, next])
-        except StopIteration:
+        ausser StopIteration:
             pass
     _heapify(h)
     waehrend len(h) > 1:
-        try:
+        versuch:
             waehrend Wahr:
                 key_value, order, value, next = s = h[0]
                 liefere value
@@ -400,7 +400,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
                 s[0] = key(value)
                 s[2] = value
                 _heapreplace(h, s)
-        except StopIteration:
+        ausser StopIteration:
             _heappop(h)
     wenn h:
         key_value, order, value, next = h[0]
@@ -488,9 +488,9 @@ def nsmallest(n, iterable, key=Nichts):
         gib [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
-    try:
+    versuch:
         size = len(iterable)
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         pass
     sonst:
         wenn n >= size:
@@ -548,9 +548,9 @@ def nlargest(n, iterable, key=Nichts):
         gib [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
-    try:
+    versuch:
         size = len(iterable)
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         pass
     sonst:
         wenn n >= size:
@@ -593,9 +593,9 @@ def nlargest(n, iterable, key=Nichts):
     gib [elem fuer (k, order, elem) in result]
 
 # If available, use C implementation
-try:
+versuch:
     von _heapq importiere *
-except ImportError:
+ausser ImportError:
     pass
 
 # For backwards compatibility

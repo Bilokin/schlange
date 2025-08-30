@@ -39,9 +39,9 @@ def main():
     importiere getopt
 
     global verbose, filename_only
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         errdrucke(msg)
     fuer o, a in opts:
         wenn o == '-q':
@@ -89,31 +89,31 @@ def check(file):
                 check(fullname)
         gib
 
-    try:
+    versuch:
         f = tokenize.open(file)
-    except OSError als msg:
+    ausser OSError als msg:
         errdrucke("%r: I/O Error: %s" % (file, msg))
         gib
 
     wenn verbose > 1:
         drucke("checking %r ..." % file)
 
-    try:
+    versuch:
         process_tokens(tokenize.generate_tokens(f.readline))
 
-    except tokenize.TokenError als msg:
+    ausser tokenize.TokenError als msg:
         errdrucke("%r: Token Error: %s" % (file, msg))
         gib
 
-    except IndentationError als msg:
+    ausser IndentationError als msg:
         errdrucke("%r: Indentation Error: %s" % (file, msg))
         gib
 
-    except SyntaxError als msg:
+    ausser SyntaxError als msg:
         errdrucke("%r: Syntax Error: %s" % (file, msg))
         gib
 
-    except NannyNag als nag:
+    ausser NannyNag als nag:
         badline = nag.get_lineno()
         line = nag.get_line()
         wenn verbose:
@@ -126,7 +126,7 @@ def check(file):
             sonst: drucke(file, badline, repr(line))
         gib
 
-    finally:
+    schliesslich:
         f.close()
 
     wenn verbose:
@@ -274,10 +274,10 @@ def format_witnesses(w):
     gib prefix + " " + ', '.join(firsts)
 
 def process_tokens(tokens):
-    try:
+    versuch:
         _process_tokens(tokens)
-    except TabError als e:
-        raise NannyNag(e.lineno, e.msg, e.text)
+    ausser TabError als e:
+        wirf NannyNag(e.lineno, e.msg, e.text)
 
 def _process_tokens(tokens):
     INDENT = tokenize.INDENT
@@ -302,7 +302,7 @@ def _process_tokens(tokens):
             wenn nicht indents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
                 msg = "indent nicht greater e.g. " + format_witnesses(witness)
-                raise NannyNag(start[0], msg, line)
+                wirf NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
         sowenn type == DEDENT:
@@ -331,7 +331,7 @@ def _process_tokens(tokens):
             wenn nicht indents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
                 msg = "indent nicht equal e.g. " + format_witnesses(witness)
-                raise NannyNag(start[0], msg, line)
+                wirf NannyNag(start[0], msg, line)
 
 
 wenn __name__ == '__main__':

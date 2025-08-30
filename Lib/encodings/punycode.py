@@ -130,11 +130,11 @@ def decode_generalized_number(extended, extpos, bias, errors):
     w = 1
     j = 0
     waehrend 1:
-        try:
+        versuch:
             char = extended[extpos]
-        except IndexError:
+        ausser IndexError:
             wenn errors == "strict":
-                raise UnicodeDecodeError("punycode", extended, extpos, extpos+1,
+                wirf UnicodeDecodeError("punycode", extended, extpos, extpos+1,
                                          "incomplete punycode string")
             gib extpos + 1, Nichts
         extpos += 1
@@ -143,7 +143,7 @@ def decode_generalized_number(extended, extpos, bias, errors):
         sowenn 0x30 <= char <= 0x39:
             digit = char - 22 # 0x30-26
         sowenn errors == "strict":
-            raise UnicodeDecodeError("punycode", extended, extpos-1, extpos,
+            wirf UnicodeDecodeError("punycode", extended, extpos-1, extpos,
                                      f"Invalid extended code point '{extended[extpos-1]}'")
         sonst:
             gib extpos, Nichts
@@ -175,7 +175,7 @@ def insertion_sort(base, extended, errors):
         char += pos // (len(base) + 1)
         wenn char > 0x10FFFF:
             wenn errors == "strict":
-                raise UnicodeDecodeError(
+                wirf UnicodeDecodeError(
                     "punycode", extended, pos-1, pos,
                     f"Invalid character U+{char:x}")
             char = ord('?')
@@ -195,17 +195,17 @@ def punycode_decode(text, errors):
         base = ""
         extended = text.upper()
     sonst:
-        try:
+        versuch:
             base = str(text[:pos], "ascii", errors)
-        except UnicodeDecodeError als exc:
-            raise UnicodeDecodeError("ascii", text, exc.start, exc.end,
+        ausser UnicodeDecodeError als exc:
+            wirf UnicodeDecodeError("ascii", text, exc.start, exc.end,
                                      exc.reason) von Nichts
         extended = text[pos+1:].upper()
-    try:
+    versuch:
         gib insertion_sort(base, extended, errors)
-    except UnicodeDecodeError als exc:
+    ausser UnicodeDecodeError als exc:
         offset = pos + 1
-        raise UnicodeDecodeError("punycode", text,
+        wirf UnicodeDecodeError("punycode", text,
                                  offset+exc.start, offset+exc.end,
                                  exc.reason) von Nichts
 
@@ -219,7 +219,7 @@ klasse Codec(codecs.Codec):
 
     def decode(self, input, errors='strict'):
         wenn errors nicht in ('strict', 'replace', 'ignore'):
-            raise UnicodeError(f"Unsupported error handling: {errors}")
+            wirf UnicodeError(f"Unsupported error handling: {errors}")
         res = punycode_decode(input, errors)
         gib res, len(input)
 
@@ -230,7 +230,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
         wenn self.errors nicht in ('strict', 'replace', 'ignore'):
-            raise UnicodeError(f"Unsupported error handling: {self.errors}")
+            wirf UnicodeError(f"Unsupported error handling: {self.errors}")
         gib punycode_decode(input, self.errors)
 
 klasse StreamWriter(Codec,codecs.StreamWriter):

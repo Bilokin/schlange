@@ -8,9 +8,9 @@ von ._support importiere (_CData, PyCFuncPtrType, Py_TPFLAGS_DISALLOW_INSTANTIAT
                        Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin)
 
 
-try:
+versuch:
     WINFUNCTYPE = ctypes.WINFUNCTYPE
-except AttributeError:
+ausser AttributeError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 

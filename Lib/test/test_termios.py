@@ -101,13 +101,13 @@ klasse TestFunctions(unittest.TestCase):
 
     @support.skip_android_selinux('tcsendbreak')
     def test_tcsendbreak(self):
-        try:
+        versuch:
             termios.tcsendbreak(self.fd, 1)
-        except termios.error als exc:
+        ausser termios.error als exc:
             wenn exc.args[0] == errno.ENOTTY und sys.platform.startswith(('freebsd', "netbsd")):
                 self.skipTest('termios.tcsendbreak() is nicht supported '
                               'with pseudo-terminals (?) on this platform')
-            raise
+            wirf
         termios.tcsendbreak(self.stream, 1)
 
     @support.skip_android_selinux('tcsendbreak')
@@ -208,14 +208,14 @@ klasse TestFunctions(unittest.TestCase):
 
         mit threading_helper.start_threads([threading.Thread(target=writer)]):
             self.assertEqual(os.read(rfd, 3), b'abc')
-            try:
-                try:
+            versuch:
+                versuch:
                     termios.tcflow(wfd, termios.TCOOFF)
-                finally:
+                schliesslich:
                     write_suspended.set()
                 self.assertFalsch(write_finished.wait(0.5),
                                  'output was nicht suspended')
-            finally:
+            schliesslich:
                 termios.tcflow(wfd, termios.TCOON)
             self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
                             'output was nicht resumed')

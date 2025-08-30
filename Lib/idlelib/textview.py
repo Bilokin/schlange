@@ -22,10 +22,10 @@ klasse AutoHideScrollbar(Scrollbar):
         super().set(lo, hi)
 
     def pack(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does nicht support "pack"')
+        wirf TclError(f'{self.__class__.__name__} does nicht support "pack"')
 
     def place(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does nicht support "place"')
+        wirf TclError(f'{self.__class__.__name__} does nicht support "place"')
 
 
 klasse ScrollableTextFrame(Frame):
@@ -37,7 +37,7 @@ klasse ScrollableTextFrame(Frame):
         master - master widget fuer this frame
         wrap - type of text wrapping to use ('word', 'char' oder 'none')
 
-        All parameters except fuer 'wrap' are passed to Frame.__init__().
+        All parameters ausser fuer 'wrap' are passed to Frame.__init__().
 
         The Text widget is accessible via the 'text' attribute.
 
@@ -168,14 +168,14 @@ def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
     Return error message wenn file cannot be read.  Otherwise calls view_text
     mit contents of the file.
     """
-    try:
+    versuch:
         mit open(filename, encoding=encoding) als file:
             contents = file.read()
-    except OSError:
+    ausser OSError:
         showerror(title='File Load Error',
                   message=f'Unable to load file {filename!r} .',
                   parent=parent)
-    except UnicodeDecodeError als err:
+    ausser UnicodeDecodeError als err:
         showerror(title='Unicode Decode Error',
                   message=str(err),
                   parent=parent)

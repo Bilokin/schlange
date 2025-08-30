@@ -33,7 +33,7 @@ def last_cb():
 
 
 klasse ReachableCode(Exception):
-    """Exception to raise to indicate that some code was reached.
+    """Exception to wirf to indicate that some code was reached.
 
     Use this exception wenn using mocks is nicht a good alternative.
     """
@@ -77,7 +77,7 @@ klasse DuckFuture:
     def result(self):
         self.assertFalsch(self.cancelled())
         wenn self.__exception is nicht Nichts:
-            raise self.__exception
+            wirf self.__exception
         gib self.__result
 
     def exception(self):
@@ -219,21 +219,21 @@ klasse BaseFutureTests:
             fut.remove_done_callback(lambda f: Nichts)
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        versuch:
             repr(fut)
-        except (RuntimeError, AttributeError):
+        ausser (RuntimeError, AttributeError):
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        versuch:
             fut.__await__()
-        except RuntimeError:
+        ausser RuntimeError:
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        versuch:
             iter(fut)
-        except RuntimeError:
+        ausser RuntimeError:
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
@@ -436,9 +436,9 @@ klasse BaseFutureTests:
         _copy_future_state(f_cancelled, newf_cancelled)
         self.assertWahr(newf_cancelled.cancelled())
 
-        try:
-            raise concurrent.futures.InvalidStateError
-        except BaseException als e:
+        versuch:
+            wirf concurrent.futures.InvalidStateError
+        ausser BaseException als e:
             f_exc = e
 
         f_conexc = concurrent.futures.Future()
@@ -447,9 +447,9 @@ klasse BaseFutureTests:
         newf_conexc = self._new_future(loop=self.loop)
         _copy_future_state(f_conexc, newf_conexc)
         self.assertWahr(newf_conexc.done())
-        try:
+        versuch:
             newf_conexc.result()
-        except BaseException als e:
+        ausser BaseException als e:
             newf_exc = e # assertRaises context manager drops the traceback
         newf_tb = ''.join(traceback.format_tb(newf_exc.__traceback__))
         self.assertEqual(newf_tb.count('raise concurrent.futures.InvalidStateError'), 1)
@@ -660,9 +660,9 @@ klasse BaseFutureTests:
         self.loop.set_debug(debug)
 
         def memory_error():
-            try:
-                raise MemoryError()
-            except BaseException als exc:
+            versuch:
+                wirf MemoryError()
+            ausser BaseException als exc:
                 gib exc
         exc = memory_error()
 
@@ -696,9 +696,9 @@ klasse BaseFutureTests:
         fut.set_result((1, 2))
         fi = fut.__iter__()
         result = Nichts
-        try:
+        versuch:
             fi.send(Nichts)
-        except StopIteration als ex:
+        ausser StopIteration als ex:
             result = ex.args[0]
         sonst:
             self.fail('StopIteration was expected')
@@ -732,9 +732,9 @@ klasse BaseFutureTests:
         f = self._new_future(loop=self.loop)
         f.cancel()
         exc = Nichts
-        try:
+        versuch:
             f.result()
-        except asyncio.CancelledError als e:
+        ausser asyncio.CancelledError als e:
             exc = e
         self.assertIsNotNichts(exc)
         self.assertListEqual(gc.get_referrers(exc), [])
@@ -743,9 +743,9 @@ klasse BaseFutureTests:
         f = self._new_future(loop=self.loop)
         f.cancel()
         exc = Nichts
-        try:
+        versuch:
             f.exception()
-        except asyncio.CancelledError als e:
+        ausser asyncio.CancelledError als e:
             exc = e
         self.assertIsNotNichts(exc)
         self.assertListEqual(gc.get_referrers(exc), [])
@@ -754,9 +754,9 @@ klasse BaseFutureTests:
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
 klasse CFutureTests(BaseFutureTests, test_utils.TestCase):
-    try:
+    versuch:
         cls = futures._CFuture
-    except AttributeError:
+    ausser AttributeError:
         cls = Nichts
 
     def test_future_del_segfault(self):
@@ -788,12 +788,12 @@ klasse CFutureTests(BaseFutureTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
 klasse CSubFutureTests(BaseFutureTests, test_utils.TestCase):
-    try:
+    versuch:
         klasse CSubFuture(futures._CFuture):
             pass
 
         cls = CSubFuture
-    except AttributeError:
+    ausser AttributeError:
         cls = Nichts
 
 
@@ -817,7 +817,7 @@ klasse BaseFutureDoneCallbackTests():
         gib bag_appender
 
     def _new_future(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_callbacks_remove_first_callback(self):
         bag = []
@@ -1073,7 +1073,7 @@ klasse BaseFutureDoneCallbackTests():
         klasse EvilEventLoop(SimpleEvilEventLoop):
             def call_soon(self, *args, **kwargs):
                 super().call_soon(*args, **kwargs)
-                raise ReachableCode
+                wirf ReachableCode
 
             def __getattribute__(self, name):
                 nonlocal fut_callback_0
@@ -1097,7 +1097,7 @@ klasse BaseFutureDoneCallbackTests():
         klasse EvilEventLoop(SimpleEvilEventLoop):
             def call_soon(self, *args, **kwargs):
                 super().call_soon(*args, **kwargs)
-                raise ReachableCode
+                wirf ReachableCode
 
             def __getattribute__(self, name):
                 wenn name == 'call_soon':
@@ -1148,7 +1148,7 @@ klasse PyFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
 klasse BaseFutureInheritanceTests:
 
     def _get_future_cls(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def setUp(self):
         super().setUp()

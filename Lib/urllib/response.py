@@ -27,7 +27,7 @@ klasse addbase(tempfile._TemporaryFileWrapper):
 
     def __enter__(self):
         wenn self.fp.closed:
-            raise ValueError("I/O operation on closed file")
+            wirf ValueError("I/O operation on closed file")
         gib self
 
     def __exit__(self, type, value, traceback):
@@ -43,14 +43,14 @@ klasse addclosehook(addbase):
         self.hookargs = hookargs
 
     def close(self):
-        try:
+        versuch:
             closehook = self.closehook
             hookargs = self.hookargs
             wenn closehook:
                 self.closehook = Nichts
                 self.hookargs = Nichts
                 closehook(*hookargs)
-        finally:
+        schliesslich:
             super(addclosehook, self).close()
 
 

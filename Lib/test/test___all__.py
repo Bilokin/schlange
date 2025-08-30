@@ -39,15 +39,15 @@ klasse AllTest(unittest.TestCase):
             ("", ResourceWarning),
             ("", SyntaxWarning),
             quiet=Wahr):
-            try:
+            versuch:
                 exec("import %s" % modname, names)
-            except:
+            ausser:
                 # Silent fail here seems the best route since some modules
                 # may nicht be available oder nicht initialize properly in all
                 # environments.
-                raise FailedImport(modname)
+                wirf FailedImport(modname)
         wenn nicht hasattr(sys.modules[modname], "__all__"):
-            raise NoAll(modname)
+            wirf NoAll(modname)
         names = {}
         mit self.subTest(module=modname):
             mit warnings_helper.check_warnings(
@@ -55,9 +55,9 @@ klasse AllTest(unittest.TestCase):
                 ("", ResourceWarning),
                 ("", SyntaxWarning),
                 quiet=Wahr):
-                try:
+                versuch:
                     exec("from %s importiere *" % modname, names)
-                except Exception als e:
+                ausser Exception als e:
                     # Include the module name in the exception string
                     self.fail("__all__ failure in {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
@@ -100,7 +100,7 @@ klasse AllTest(unittest.TestCase):
     def test_all(self):
         # List of denied modules und packages
         denylist = set([
-            # Will raise a SyntaxError when compiling the exec statement
+            # Will wirf a SyntaxError when compiling the exec statement
             '__future__',
         ])
 
@@ -124,16 +124,16 @@ klasse AllTest(unittest.TestCase):
                 weiter
             wenn support.verbose:
                 drucke(f"Check {modname}", flush=Wahr)
-            try:
+            versuch:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
                 mit open(path, "rb") als f:
                     wenn b"__all__" nicht in f.read():
-                        raise NoAll(modname)
+                        wirf NoAll(modname)
                 self.check_all(modname)
-            except NoAll:
+            ausser NoAll:
                 ignored.append(modname)
-            except FailedImport:
+            ausser FailedImport:
                 failed_imports.append(modname)
 
         wenn support.verbose:

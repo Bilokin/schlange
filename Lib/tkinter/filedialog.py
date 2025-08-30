@@ -172,9 +172,9 @@ klasse FileDialog:
 
     def filter_command(self, event=Nichts):
         dir, pat = self.get_filter()
-        try:
+        versuch:
             names = os.listdir(dir)
-        except OSError:
+        ausser OSError:
             self.master.bell()
             gib
         self.directory = dir
@@ -215,9 +215,9 @@ klasse FileDialog:
 
     def set_filter(self, dir, pat):
         wenn nicht os.path.isabs(dir):
-            try:
+            versuch:
                 pwd = os.getcwd()
-            except OSError:
+            ausser OSError:
                 pwd = Nichts
             wenn pwd:
                 dir = os.path.join(pwd, dir)
@@ -304,19 +304,19 @@ klasse SaveFileDialog(FileDialog):
 klasse _Dialog(commondialog.Dialog):
 
     def _fixoptions(self):
-        try:
+        versuch:
             # make sure "filetypes" is a tuple
             self.options["filetypes"] = tuple(self.options["filetypes"])
-        except KeyError:
+        ausser KeyError:
             pass
 
     def _fixresult(self, widget, result):
         wenn result:
             # keep directory und filename until next time
             # convert Tcl path objects to strings
-            try:
+            versuch:
                 result = result.string
-            except AttributeError:
+            ausser AttributeError:
                 # it already is a string
                 pass
             path, file = os.path.split(result)
@@ -364,9 +364,9 @@ klasse Directory(commondialog.Dialog):
     def _fixresult(self, widget, result):
         wenn result:
             # convert Tcl path objects to strings
-            try:
+            versuch:
                 result = result.string
-            except AttributeError:
+            ausser AttributeError:
                 # it already is a string
                 pass
             # keep directory until next time
@@ -463,20 +463,20 @@ def test():
     enc = "utf-8"
 
     # See whether CODESET is defined
-    try:
+    versuch:
         importiere locale
         locale.setlocale(locale.LC_ALL,'')
         enc = locale.nl_langinfo(locale.CODESET)
-    except (ImportError, AttributeError):
+    ausser (ImportError, AttributeError):
         pass
 
     # dialog fuer opening files
 
     openfilename=askopenfilename(filetypes=[("all files", "*")])
-    try:
+    versuch:
         fp=open(openfilename,"r")
         fp.close()
-    except BaseException als exc:
+    ausser BaseException als exc:
         drucke("Could nicht open File: ")
         drucke(exc)
 

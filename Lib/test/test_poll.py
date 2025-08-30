@@ -14,10 +14,10 @@ von test.support importiere threading_helper
 von test.support.os_helper importiere TESTFN
 
 
-try:
+versuch:
     select.poll
-except AttributeError:
-    raise unittest.SkipTest("select.poll nicht defined")
+ausser AttributeError:
+    wirf unittest.SkipTest("select.poll nicht defined")
 
 requires_working_socket(module=Wahr)
 
@@ -60,14 +60,14 @@ klasse PollTests(unittest.TestCase):
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             wenn nicht ready_writers:
-                raise RuntimeError("no pipes ready fuer writing")
+                wirf RuntimeError("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
             wenn nicht ready_readers:
-                raise RuntimeError("no pipes ready fuer reading")
+                wirf RuntimeError("no pipes ready fuer reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
             self.assertEqual(len(buf), MSG_LEN)
@@ -172,10 +172,10 @@ klasse PollTests(unittest.TestCase):
 
     @cpython_only
     def test_poll_c_limits(self):
-        try:
+        versuch:
             von _testcapi importiere USHRT_MAX, INT_MAX, UINT_MAX
-        except ImportError:
-            raise unittest.SkipTest("requires _testcapi")
+        ausser ImportError:
+            wirf unittest.SkipTest("requires _testcapi")
         pollster = select.poll()
         pollster.register(1)
 
@@ -201,14 +201,14 @@ klasse PollTests(unittest.TestCase):
 
         t = threading.Thread(target=pollster.poll)
         t.start()
-        try:
+        versuch:
             time.sleep(0.5)
             # trigger ufds array reallocation
             fuer fd in rfds:
                 pollster.unregister(fd)
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
-        finally:
+        schliesslich:
             # und make the call to poll() von the thread gib
             os.write(w, b'spam')
             t.join()

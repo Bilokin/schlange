@@ -55,9 +55,9 @@ klasse TokenTests(unittest.TestCase):
             self.assertWahr(0b1111111111111111111111111111111 > 0)
             fuer s in ('2147483648', '0o40000000000', '0x100000000',
                       '0b10000000000000000000000000000000'):
-                try:
+                versuch:
                     x = eval(s)
-                except OverflowError:
+                ausser OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
         sowenn maxsize == 9223372036854775807:
             self.assertEqual(-9223372036854775807-1, -0o1000000000000000000000)
@@ -67,9 +67,9 @@ klasse TokenTests(unittest.TestCase):
             fuer s in '9223372036854775808', '0o2000000000000000000000', \
                      '0x10000000000000000', \
                      '0b100000000000000000000000000000000000000000000000000000000000000':
-                try:
+                versuch:
                     x = eval(s)
-                except OverflowError:
+                ausser OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
         sonst:
             self.fail('Weird maxsize value %r' % maxsize)
@@ -351,9 +351,9 @@ klasse GrammarTests(unittest.TestCase):
         def f2bad():
             (no_such_global): int
             drucke(no_such_global)
-        try:
+        versuch:
             f2bad()
-        except Exception als e:
+        ausser Exception als e:
             self.assertIs(type(e), NameError)
 
         # klasse semantics
@@ -560,9 +560,9 @@ klasse GrammarTests(unittest.TestCase):
         # keyword argument type tests
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
-            try:
+            versuch:
                 str('x', **{b'foo':1 })
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
                 self.fail('Bytes should nicht work als keyword argument names')
@@ -815,20 +815,20 @@ klasse GrammarTests(unittest.TestCase):
         msg = ""
         waehrend nicht msg:
             msg = "ok"
-            try:
+            versuch:
                 weiter
                 msg = "continue failed to weiter inside try"
-            except:
-                msg = "continue inside try called except block"
+            ausser:
+                msg = "continue inside try called ausser block"
         wenn msg != "ok":
             self.fail(msg)
 
         msg = ""
         waehrend nicht msg:
             msg = "finally block nicht called"
-            try:
+            versuch:
                 weiter
-            finally:
+            schliesslich:
                 msg = "ok"
         wenn msg != "ok":
             self.fail(msg)
@@ -847,14 +847,14 @@ klasse GrammarTests(unittest.TestCase):
             big_hippo = 2
             waehrend big_hippo:
                 count += 1
-                try:
+                versuch:
                     wenn extra_burning_oil und big_hippo == 1:
                         extra_burning_oil -= 1
                         breche
                     big_hippo -= 1
                     weiter
-                except:
-                    raise
+                ausser:
+                    wirf
             wenn count > 2 oder big_hippo != 1:
                 self.fail("continue then breche in try/except in loop broken!")
         test_inner()
@@ -891,9 +891,9 @@ klasse GrammarTests(unittest.TestCase):
                 result = 0
                 waehrend result < 2:
                     result += 1
-                    try:
+                    versuch:
                         pass
-                    finally:
+                    schliesslich:
                         breche
             """,
             1)
@@ -904,9 +904,9 @@ klasse GrammarTests(unittest.TestCase):
                 result = 0
                 waehrend result < 2:
                     result += 1
-                    try:
+                    versuch:
                         weiter
-                    finally:
+                    schliesslich:
                         breche
             """,
             1)
@@ -917,9 +917,9 @@ klasse GrammarTests(unittest.TestCase):
             result = 0
             waehrend result < 2:
                 result += 1
-                try:
+                versuch:
                     1/0
-                finally:
+                schliesslich:
                     breche
             """,
             1)
@@ -929,9 +929,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             fuer result in [0, 1]:
                 self.assertEqual(result, 0)
-                try:
+                versuch:
                     pass
-                finally:
+                schliesslich:
                     breche
             """,
             0)
@@ -941,9 +941,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             fuer result in [0, 1]:
                 self.assertEqual(result, 0)
-                try:
+                versuch:
                     weiter
-                finally:
+                schliesslich:
                     breche
             """,
             0)
@@ -953,9 +953,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             fuer result in [0, 1]:
                 self.assertEqual(result, 0)
-                try:
+                versuch:
                     1/0
-                finally:
+                schliesslich:
                     breche
             """,
             0)
@@ -969,9 +969,9 @@ klasse GrammarTests(unittest.TestCase):
             result = 0
             waehrend result < 2:
                 result += 1
-                try:
+                versuch:
                     pass
-                finally:
+                schliesslich:
                     weiter
                 breche
             """,
@@ -984,9 +984,9 @@ klasse GrammarTests(unittest.TestCase):
             result = 0
             waehrend result < 2:
                 result += 1
-                try:
+                versuch:
                     breche
-                finally:
+                schliesslich:
                     weiter
             """,
             2)
@@ -997,9 +997,9 @@ klasse GrammarTests(unittest.TestCase):
             result = 0
             waehrend result < 2:
                 result += 1
-                try:
+                versuch:
                     1/0
-                finally:
+                schliesslich:
                     weiter
                 breche
             """,
@@ -1009,9 +1009,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             fuer result in [0, 1]:
-                try:
+                versuch:
                     pass
-                finally:
+                schliesslich:
                     weiter
                 breche
             """,
@@ -1021,9 +1021,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             fuer result in [0, 1]:
-                try:
+                versuch:
                     breche
-                finally:
+                schliesslich:
                     weiter
             """,
             1)
@@ -1032,9 +1032,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             fuer result in [0, 1]:
-                try:
+                versuch:
                     1/0
-                finally:
+                schliesslich:
                     weiter
                 breche
             """,
@@ -1047,9 +1047,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             def f():
-                try:
+                versuch:
                     pass
-                finally:
+                schliesslich:
                     gib 1
             result = f()
             """,
@@ -1059,9 +1059,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             def f():
-                try:
+                versuch:
                     gib 2
-                finally:
+                schliesslich:
                     gib 3
             result = f()
             """,
@@ -1071,9 +1071,9 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             def f():
-                try:
+                versuch:
                     1/0
-                finally:
+                schliesslich:
                     gib 4
             result = f()
             """,
@@ -1088,9 +1088,9 @@ klasse GrammarTests(unittest.TestCase):
                     count2 = 0
                     waehrend count2 < 20:
                         count2 += 10
-                        try:
+                        versuch:
                             gib count + count2
-                        finally:
+                        schliesslich:
                             wenn x:
                                 breche
                 gib 'end', count, count2
@@ -1108,9 +1108,9 @@ klasse GrammarTests(unittest.TestCase):
             def break_in_finally_after_return2(x):
                 fuer count in [0, 1]:
                     fuer count2 in [10, 20]:
-                        try:
+                        versuch:
                             gib count + count2
-                        finally:
+                        schliesslich:
                             wenn x:
                                 breche
                 gib 'end', count, count2
@@ -1129,9 +1129,9 @@ klasse GrammarTests(unittest.TestCase):
                 count = 0
                 waehrend count < 100:
                     count += 1
-                    try:
+                    versuch:
                         gib count
-                    finally:
+                    schliesslich:
                         wenn x:
                             weiter
                 gib 'end', count
@@ -1147,9 +1147,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             def continue_in_finally_after_return2(x):
                 fuer count in [0, 1]:
-                    try:
+                    versuch:
                         gib count
-                    finally:
+                    schliesslich:
                         wenn x:
                             weiter
                 gib 'end', count
@@ -1228,10 +1228,10 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_raise(self):
         # 'raise' test [',' test]
-        try: raise RuntimeError('just testing')
-        except RuntimeError: pass
-        try: raise KeyboardInterrupt
-        except KeyboardInterrupt: pass
+        versuch: wirf RuntimeError('just testing')
+        ausser RuntimeError: pass
+        versuch: wirf KeyboardInterrupt
+        ausser KeyboardInterrupt: pass
 
     def test_import(self):
         # 'import' dotted_as_names
@@ -1267,30 +1267,30 @@ klasse GrammarTests(unittest.TestCase):
         assert lambda x:x
         assert 1, lambda x:x+1
 
-        try:
+        versuch:
             assert Wahr
-        except AssertionError als e:
+        ausser AssertionError als e:
             self.fail("'assert Wahr' should nicht have raised an AssertionError")
 
-        try:
+        versuch:
             assert Wahr, 'this should always pass'
-        except AssertionError als e:
+        ausser AssertionError als e:
             self.fail("'assert Wahr, msg' should nicht have "
                       "raised an AssertionError")
 
     # these tests fail wenn python is run mit -O, so check __debug__
     @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is Falsch")
     def test_assert_failures(self):
-        try:
+        versuch:
             assert 0, "msg"
-        except AssertionError als e:
+        ausser AssertionError als e:
             self.assertEqual(e.args[0], "msg")
         sonst:
             self.fail("AssertionError nicht raised by assert 0")
 
-        try:
+        versuch:
             assert Falsch
-        except AssertionError als e:
+        ausser AssertionError als e:
             self.assertEqual(len(e.args), 0)
         sonst:
             self.fail("AssertionError nicht raised by 'assert Falsch'")
@@ -1315,9 +1315,9 @@ klasse GrammarTests(unittest.TestCase):
         # https://bugs.python.org/issue35029
         mit warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
-            try:
+            versuch:
                 compile('assert x, "msg" ', '<testcase>', 'exec')
-            except SyntaxError:
+            ausser SyntaxError:
                 self.fail('SyntaxError incorrectly raised fuer \'assert x, "msg"\'')
             mit self.assertRaises(SyntaxError):
                 compile('assert(x, "msg")', '<testcase>', 'exec')
@@ -1369,7 +1369,7 @@ klasse GrammarTests(unittest.TestCase):
                 self.sofar = []
             def __len__(self): gib len(self.sofar)
             def __getitem__(self, i):
-                wenn nicht 0 <= i < self.max: raise IndexError
+                wenn nicht 0 <= i < self.max: wirf IndexError
                 n = len(self.sofar)
                 waehrend n <= i:
                     self.sofar.append(n*n)
@@ -1395,25 +1395,25 @@ klasse GrammarTests(unittest.TestCase):
         ### try_stmt: 'try' ':' suite (except_clause ':' suite)+ ['else' ':' suite]
         ###         | 'try' ':' suite 'finally' ':' suite
         ### except_clause: 'except' [expr ['as' NAME]]
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
             pass
-        try: 1/0
-        except EOFError: pass
-        except TypeError als msg: pass
-        except: pass
+        versuch: 1/0
+        ausser EOFError: pass
+        ausser TypeError als msg: pass
+        ausser: pass
         sonst: pass
-        try: 1/0
-        except (EOFError, TypeError, ZeroDivisionError): pass
-        try: 1/0
-        except EOFError, TypeError, ZeroDivisionError: pass
-        try: 1/0
-        except (EOFError, TypeError, ZeroDivisionError) als msg: pass
-        try: pass
-        finally: pass
+        versuch: 1/0
+        ausser (EOFError, TypeError, ZeroDivisionError): pass
+        versuch: 1/0
+        ausser EOFError, TypeError, ZeroDivisionError: pass
+        versuch: 1/0
+        ausser (EOFError, TypeError, ZeroDivisionError) als msg: pass
+        versuch: pass
+        schliesslich: pass
         mit self.assertRaises(SyntaxError):
             compile("try:\n    pass\nexcept Exception als a.b:\n    pass", "?", "exec")
             compile("try:\n    pass\nexcept Exception als a[b]:\n    pass", "?", "exec")
@@ -1421,24 +1421,24 @@ klasse GrammarTests(unittest.TestCase):
     def test_try_star(self):
         ### try_stmt: 'try': suite (except_star_clause : suite) + ['else' ':' suite]
         ### except_star_clause: 'except*' expr ['as' NAME]
-        try:
+        versuch:
             1/0
         except* ZeroDivisionError:
             pass
         sonst:
             pass
-        try: 1/0
+        versuch: 1/0
         except* EOFError: pass
         except* ZeroDivisionError als msg: pass
         sonst: pass
-        try: 1/0
+        versuch: 1/0
         except* (EOFError, TypeError, ZeroDivisionError): pass
-        try: 1/0
+        versuch: 1/0
         except* EOFError, TypeError, ZeroDivisionError: pass
-        try: 1/0
+        versuch: 1/0
         except* (EOFError, TypeError, ZeroDivisionError) als msg: pass
-        try: pass
-        finally: pass
+        versuch: pass
+        schliesslich: pass
         mit self.assertRaises(SyntaxError):
             compile("try:\n    pass\nexcept* Exception als a.b:\n    pass", "?", "exec")
             compile("try:\n    pass\nexcept* Exception als a[b]:\n    pass", "?", "exec")
@@ -1805,18 +1805,18 @@ klasse GrammarTests(unittest.TestCase):
         # generator expression tests
         g = ([x fuer x in range(10)] fuer x in range(1))
         self.assertEqual(next(g), [x fuer x in range(10)])
-        try:
+        versuch:
             next(g)
             self.fail('should produce StopIteration exception')
-        except StopIteration:
+        ausser StopIteration:
             pass
 
         a = 1
-        try:
+        versuch:
             g = (a fuer d in a)
             next(g)
             self.fail('should produce TypeError')
-        except TypeError:
+        ausser TypeError:
             pass
 
         self.assertEqual(list((x, y) fuer x in 'abcd' fuer y in 'abcd'), [(x, y) fuer x in 'abcd' fuer y in 'abcd'])
@@ -2002,7 +2002,7 @@ klasse GrammarTests(unittest.TestCase):
             def __aiter__(self):
                 gib self
             async def __anext__(self):
-                raise StopAsyncIteration
+                wirf StopAsyncIteration
 
         async def foo():
             async fuer i in AIter():
@@ -2013,7 +2013,7 @@ klasse GrammarTests(unittest.TestCase):
                 pass
             sonst:
                 pass
-            raise Done
+            wirf Done
 
         mit self.assertRaises(Done):
             foo().send(Nichts)
@@ -2040,7 +2040,7 @@ klasse GrammarTests(unittest.TestCase):
                 pass
             async mit manager() als x, manager():
                 pass
-            raise Done
+            wirf Done
 
         mit self.assertRaises(Done):
             foo().send(Nichts)

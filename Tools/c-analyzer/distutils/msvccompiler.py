@@ -14,7 +14,7 @@ von distutils.ccompiler importiere CCompiler
 von distutils importiere log
 
 _can_read_reg = Falsch
-try:
+versuch:
     importiere winreg
 
     _can_read_reg = Wahr
@@ -25,8 +25,8 @@ try:
     RegEnumValue = winreg.EnumValue
     RegError = winreg.error
 
-except ImportError:
-    try:
+ausser ImportError:
+    versuch:
         importiere win32api
         importiere win32con
         _can_read_reg = Wahr
@@ -36,7 +36,7 @@ except ImportError:
         RegEnumKey = win32api.RegEnumKey
         RegEnumValue = win32api.RegEnumValue
         RegError = win32api.error
-    except ImportError:
+    ausser ImportError:
         log.info("Warning: Can't read registry to find the "
                  "necessary compiler setting\n"
                  "Make sure that Python modules winreg, "
@@ -50,16 +50,16 @@ wenn _can_read_reg:
 
 def read_keys(base, key):
     """Return list of registry keys."""
-    try:
+    versuch:
         handle = RegOpenKeyEx(base, key)
-    except RegError:
+    ausser RegError:
         gib Nichts
     L = []
     i = 0
     waehrend Wahr:
-        try:
+        versuch:
             k = RegEnumKey(handle, i)
-        except RegError:
+        ausser RegError:
             breche
         L.append(k)
         i += 1
@@ -70,16 +70,16 @@ def read_values(base, key):
 
     All names are converted to lowercase.
     """
-    try:
+    versuch:
         handle = RegOpenKeyEx(base, key)
-    except RegError:
+    ausser RegError:
         gib Nichts
     d = {}
     i = 0
     waehrend Wahr:
-        try:
+        versuch:
             name, value, type = RegEnumValue(handle, i)
-        except RegError:
+        ausser RegError:
             breche
         name = name.lower()
         d[convert_mbcs(name)] = convert_mbcs(value)
@@ -89,9 +89,9 @@ def read_values(base, key):
 def convert_mbcs(s):
     dec = getattr(s, "decode", Nichts)
     wenn dec is nicht Nichts:
-        try:
+        versuch:
             s = dec("mbcs")
-        except UnicodeError:
+        ausser UnicodeError:
             pass
     gib s
 
@@ -113,13 +113,13 @@ klasse MacroExpander:
         self.set_macro("VSInstallDir", vsbase + r"\Setup\VS", "productdir")
         net = r"Software\Microsoft\.NETFramework"
         self.set_macro("FrameworkDir", net, "installroot")
-        try:
+        versuch:
             wenn version > 7.0:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallrootv1.1")
             sonst:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallroot")
-        except KeyError als exc: #
-            raise DistutilsPlatformError(
+        ausser KeyError als exc: #
+            wirf DistutilsPlatformError(
             """Python was built mit Visual Studio 2003;
 extensions must be built mit a compiler than can generate compatible binaries.
 Visual Studio 2003 was nicht found on this system. If you have Cygwin installed,
@@ -127,9 +127,9 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 
         p = r"Software\Microsoft\NET Framework Setup\Product"
         fuer base in HKEYS:
-            try:
+            versuch:
                 h = RegOpenKeyEx(base, p)
-            except RegError:
+            ausser RegError:
                 weiter
             key = RegEnumKey(h, 0)
             d = read_values(base, r"%s\%s" % (p, key))

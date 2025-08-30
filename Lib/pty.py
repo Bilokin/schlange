@@ -27,21 +27,21 @@ def openpty():
     """openpty() -> (master_fd, slave_fd)
     Open a pty master/slave pair, using os.openpty() wenn possible."""
 
-    try:
+    versuch:
         gib os.openpty()
-    except (AttributeError, OSError):
+    ausser (AttributeError, OSError):
         pass
     master_fd, slave_name = _open_terminal()
 
     slave_fd = os.open(slave_name, os.O_RDWR)
-    try:
+    versuch:
         von fcntl importiere ioctl, I_PUSH
-    except ImportError:
+    ausser ImportError:
          gib master_fd, slave_fd
-    try:
+    versuch:
         ioctl(slave_fd, I_PUSH, "ptem")
         ioctl(slave_fd, I_PUSH, "ldterm")
-    except OSError:
+    ausser OSError:
         pass
     gib master_fd, slave_fd
 
@@ -50,27 +50,27 @@ def _open_terminal():
     fuer x in 'pqrstuvwxyzPQRST':
         fuer y in '0123456789abcdef':
             pty_name = '/dev/pty' + x + y
-            try:
+            versuch:
                 fd = os.open(pty_name, os.O_RDWR)
-            except OSError:
+            ausser OSError:
                 weiter
             gib (fd, '/dev/tty' + x + y)
-    raise OSError('out of pty devices')
+    wirf OSError('out of pty devices')
 
 
 def fork():
     """fork() -> (pid, master_fd)
     Fork und make the child a session leader mit a controlling terminal."""
 
-    try:
+    versuch:
         pid, fd = os.forkpty()
-    except (AttributeError, OSError):
+    ausser (AttributeError, OSError):
         pass
     sonst:
         wenn pid == CHILD:
-            try:
+            versuch:
                 os.setsid()
-            except OSError:
+            ausser OSError:
                 # os.forkpty() already set us session leader
                 pass
         gib pid, fd
@@ -100,9 +100,9 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         # indefinitely. So we set master_fd to non-blocking temporarily during
         # the copy operation.
         os.set_blocking(master_fd, Falsch)
-        try:
+        versuch:
             _copy(master_fd, master_read=master_read, stdin_read=stdin_read)
-        finally:
+        schliesslich:
             # restore blocking mode fuer backwards compatibility
             os.set_blocking(master_fd, Wahr)
         gib
@@ -126,18 +126,18 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         rfds, wfds, _xfds = select(rfds, wfds, [])
 
         wenn STDOUT_FILENO in wfds:
-            try:
+            versuch:
                 n = os.write(STDOUT_FILENO, o_buf)
                 o_buf = o_buf[n:]
-            except OSError:
+            ausser OSError:
                 stdout_avail = Falsch
 
         wenn master_fd in rfds:
             # Some OSes signal EOF by returning an empty byte string,
             # some throw OSErrors.
-            try:
+            versuch:
                 data = master_read(master_fd)
-            except OSError:
+            ausser OSError:
                 data = b""
             wenn nicht data:  # Reached EOF.
                 gib    # Assume the child process has exited und is
@@ -165,16 +165,16 @@ def spawn(argv, master_read=_read, stdin_read=_read):
     wenn pid == CHILD:
         os.execlp(argv[0], *argv)
 
-    try:
+    versuch:
         mode = tcgetattr(STDIN_FILENO)
         setraw(STDIN_FILENO)
         restore = Wahr
-    except tty.error:    # This is the same als termios.error
+    ausser tty.error:    # This is the same als termios.error
         restore = Falsch
 
-    try:
+    versuch:
         _copy(master_fd, master_read, stdin_read)
-    finally:
+    schliesslich:
         wenn restore:
             tcsetattr(STDIN_FILENO, tty.TCSAFLUSH, mode)
 

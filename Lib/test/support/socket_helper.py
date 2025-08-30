@@ -96,16 +96,16 @@ def bind_port(sock, host=HOST):
     wenn sock.family == socket.AF_INET und sock.type == socket.SOCK_STREAM:
         wenn hasattr(socket, 'SO_REUSEADDR'):
             wenn sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
-                raise support.TestFailed("tests should never set the "
+                wirf support.TestFailed("tests should never set the "
                                          "SO_REUSEADDR socket option on "
                                          "TCP/IP sockets!")
         wenn hasattr(socket, 'SO_REUSEPORT'):
-            try:
+            versuch:
                 wenn sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
-                    raise support.TestFailed("tests should never set the "
+                    wirf support.TestFailed("tests should never set the "
                                              "SO_REUSEPORT socket option on "
                                              "TCP/IP sockets!")
-            except OSError:
+            ausser OSError:
                 # Python's socket module was compiled using modern headers
                 # thus defining SO_REUSEPORT but this process is running
                 # under an older kernel that does nicht support SO_REUSEPORT.
@@ -120,23 +120,23 @@ def bind_port(sock, host=HOST):
 def bind_unix_socket(sock, addr):
     """Bind a unix socket, raising SkipTest wenn PermissionError is raised."""
     assert sock.family == socket.AF_UNIX
-    try:
+    versuch:
         sock.bind(addr)
-    except PermissionError:
+    ausser PermissionError:
         sock.close()
-        raise unittest.SkipTest('cannot bind AF_UNIX sockets')
+        wirf unittest.SkipTest('cannot bind AF_UNIX sockets')
 
 def _is_ipv6_enabled():
     """Check whether IPv6 is enabled on this host."""
     wenn socket.has_ipv6:
         sock = Nichts
-        try:
+        versuch:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.bind((HOSTv6, 0))
             gib Wahr
-        except OSError:
+        ausser OSError:
             pass
-        finally:
+        schliesslich:
             wenn sock:
                 sock.close()
     gib Falsch
@@ -154,12 +154,12 @@ def skip_unless_bind_unix_socket(test):
         von .os_helper importiere TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
         mit socket.socket(socket.AF_UNIX) als sock:
-            try:
+            versuch:
                 sock.bind(path)
                 _bind_nix_socket_error = Falsch
-            except OSError als e:
+            ausser OSError als e:
                 _bind_nix_socket_error = e
-            finally:
+            schliesslich:
                 unlink(path)
     wenn _bind_nix_socket_error:
         msg = 'Requires a functional unix bind(): %s' % _bind_nix_socket_error
@@ -240,14 +240,14 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
             n in captured_errnos):
             wenn nicht support.verbose:
                 sys.stderr.write(denied.args[0] + "\n")
-            raise denied von err
+            wirf denied von err
 
     old_timeout = socket.getdefaulttimeout()
-    try:
+    versuch:
         wenn timeout is nicht Nichts:
             socket.setdefaulttimeout(timeout)
         liefere
-    except OSError als err:
+    ausser OSError als err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
         waehrend Wahr:
@@ -255,17 +255,17 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
             wenn len(a) >= 1 und isinstance(a[0], OSError):
                 err = a[0]
             # The error can also be wrapped als args[1]:
-            #    except socket.error als msg:
-            #        raise OSError('socket error', msg) von msg
+            #    ausser socket.error als msg:
+            #        wirf OSError('socket error', msg) von msg
             sowenn len(a) >= 2 und isinstance(a[1], OSError):
                 err = a[1]
             sonst:
                 breche
         filter_error(err)
-        raise
+        wirf
     # XXX should we catch generic exceptions und look fuer their
     # __cause__ oder __context__?
-    finally:
+    schliesslich:
         socket.setdefaulttimeout(old_timeout)
 
 
@@ -285,9 +285,9 @@ _sysctl_cache = {}
 
 def _get_sysctl(name):
     """Get a sysctl value als an integer."""
-    try:
+    versuch:
         gib _sysctl_cache[name]
-    except KeyError:
+    ausser KeyError:
         pass
 
     # At least Linux und FreeBSD support the "-n" option
@@ -305,9 +305,9 @@ def _get_sysctl(name):
     output = proc.stdout
 
     # Parse '0\n' to get '0'
-    try:
+    versuch:
         value = int(output.strip())
-    except Exception als exc:
+    ausser Exception als exc:
         support.print_warning(f'Failed to parse {' '.join(cmd)!r} '
                               f'command output {output!r}: {exc!r}')
         # cache the error to only log the warning once

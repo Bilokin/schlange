@@ -22,7 +22,7 @@ klasse PythonInfo:
 
     def add(self, key, value):
         wenn key in self.info:
-            raise ValueError("duplicate key: %r" % key)
+            wirf ValueError("duplicate key: %r" % key)
 
         wenn value is Nichts:
             gib
@@ -57,17 +57,17 @@ def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
 
 
 def copy_attr(info_add, name, mod, attr_name):
-    try:
+    versuch:
         value = getattr(mod, attr_name)
-    except AttributeError:
+    ausser AttributeError:
         gib
     info_add(name, value)
 
 
 def call_func(info_add, name, mod, func_name, *, formatter=Nichts):
-    try:
+    versuch:
         func = getattr(mod, func_name)
-    except AttributeError:
+    ausser AttributeError:
         gib
     value = func()
     wenn formatter is nicht Nichts:
@@ -165,9 +165,9 @@ def collect_platform(info_add):
     wenn libc_ver:
         info_add('platform.libc_ver', libc_ver)
 
-    try:
+    versuch:
         os_release = platform.freedesktop_os_release()
-    except OSError:
+    ausser OSError:
         pass
     sonst:
         fuer key in (
@@ -205,18 +205,18 @@ def collect_urandom(info_add):
 
     wenn hasattr(os, 'getrandom'):
         # PEP 524: Check wenn system urandom is initialized
-        try:
-            try:
+        versuch:
+            versuch:
                 os.getrandom(1, os.GRND_NONBLOCK)
                 state = 'ready (initialized)'
-            except BlockingIOError als exc:
+            ausser BlockingIOError als exc:
                 state = 'not seeded yet (%s)' % exc
             info_add('os.getrandom', state)
-        except OSError als exc:
+        ausser OSError als exc:
             # Python was compiled on a more recent Linux version
             # than the current Linux kernel: ignore OSError(ENOSYS)
             wenn exc.errno != errno.ENOSYS:
-                raise
+                wirf
 
 
 def collect_os(info_add):
@@ -259,9 +259,9 @@ def collect_os(info_add):
     call_func(info_add, 'os.getgroups', os, 'getgroups', formatter=format_groups)
 
     wenn hasattr(os, 'getlogin'):
-        try:
+        versuch:
             login = os.getlogin()
-        except OSError:
+        ausser OSError:
             # getlogin() fails mit "OSError: [Errno 25] Inappropriate ioctl
             # fuer device" on Travis CI
             pass
@@ -363,16 +363,16 @@ def collect_os(info_add):
 
 
 def collect_pwd(info_add):
-    try:
+    versuch:
         importiere pwd
-    except ImportError:
+    ausser ImportError:
         gib
     importiere os
 
     uid = os.getuid()
-    try:
+    versuch:
         entry = pwd.getpwuid(uid)
-    except KeyError:
+    ausser KeyError:
         entry = Nichts
 
     info_add('pwd.getpwuid(%s)'% uid,
@@ -390,9 +390,9 @@ def collect_pwd(info_add):
 
 
 def collect_readline(info_add):
-    try:
+    versuch:
         importiere readline
-    except ImportError:
+    ausser ImportError:
         gib
 
     def format_attr(attr, value):
@@ -421,7 +421,7 @@ def collect_readline(info_add):
 def collect_gdb(info_add):
     importiere subprocess
 
-    try:
+    versuch:
         proc = subprocess.Popen(["gdb", "-nx", "--version"],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
@@ -430,7 +430,7 @@ def collect_gdb(info_add):
         wenn proc.returncode:
             # ignore gdb failure: test_gdb will log the error
             gib
-    except OSError:
+    ausser OSError:
         gib
 
     # Only keep the first line
@@ -439,17 +439,17 @@ def collect_gdb(info_add):
 
 
 def collect_tkinter(info_add):
-    try:
+    versuch:
         importiere _tkinter
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
         attributes = ('TK_VERSION', 'TCL_VERSION')
         copy_attributes(info_add, _tkinter, 'tkinter.%s', attributes)
 
-    try:
+    versuch:
         importiere tkinter
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
         tcl = tkinter.Tcl()
@@ -473,11 +473,11 @@ def collect_time(info_add):
     wenn hasattr(time, 'get_clock_info'):
         fuer clock in ('clock', 'monotonic', 'perf_counter',
                       'process_time', 'thread_time', 'time'):
-            try:
+            versuch:
                 # prevent DeprecatingWarning on get_clock_info('clock')
                 mit warnings.catch_warnings(record=Wahr):
                     clock_info = time.get_clock_info(clock)
-            except ValueError:
+            ausser ValueError:
                 # missing clock like time.thread_time()
                 pass
             sonst:
@@ -485,18 +485,18 @@ def collect_time(info_add):
 
 
 def collect_curses(info_add):
-    try:
+    versuch:
         importiere curses
-    except ImportError:
+    ausser ImportError:
         gib
 
     copy_attr(info_add, 'curses.ncurses_version', curses, 'ncurses_version')
 
 
 def collect_datetime(info_add):
-    try:
+    versuch:
         importiere datetime
-    except ImportError:
+    ausser ImportError:
         gib
 
     info_add('datetime.datetime.now', datetime.datetime.now())
@@ -571,13 +571,13 @@ def collect_sysconfig(info_add):
 
 def collect_ssl(info_add):
     importiere os
-    try:
+    versuch:
         importiere ssl
-    except ImportError:
+    ausser ImportError:
         gib
-    try:
+    versuch:
         importiere _ssl
-    except ImportError:
+    ausser ImportError:
         _ssl = Nichts
 
     def format_attr(attr, value):
@@ -615,33 +615,33 @@ def collect_ssl(info_add):
         env_names.extend((parts[0], parts[2]))
 
     fuer name in env_names:
-        try:
+        versuch:
             value = os.environ[name]
-        except KeyError:
+        ausser KeyError:
             weiter
         info_add('ssl.environ[%s]' % name, value)
 
 
 def collect_socket(info_add):
-    try:
+    versuch:
         importiere socket
-    except ImportError:
+    ausser ImportError:
         gib
 
-    try:
+    versuch:
         hostname = socket.gethostname()
-    except (OSError, AttributeError):
+    ausser (OSError, AttributeError):
         # WASI SDK 16.0 does nicht have gethostname(2).
         wenn sys.platform != "wasi":
-            raise
+            wirf
     sonst:
         info_add('socket.hostname', hostname)
 
 
 def collect_sqlite(info_add):
-    try:
+    versuch:
         importiere sqlite3
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = ('sqlite_version',)
@@ -649,9 +649,9 @@ def collect_sqlite(info_add):
 
 
 def collect_zlib(info_add):
-    try:
+    versuch:
         importiere zlib
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = ('ZLIB_VERSION', 'ZLIB_RUNTIME_VERSION', 'ZLIBNG_VERSION')
@@ -659,9 +659,9 @@ def collect_zlib(info_add):
 
 
 def collect_zstd(info_add):
-    try:
+    versuch:
         importiere _zstd
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = ('zstd_version',)
@@ -669,9 +669,9 @@ def collect_zstd(info_add):
 
 
 def collect_expat(info_add):
-    try:
+    versuch:
         von xml.parsers importiere expat
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = ('EXPAT_VERSION',)
@@ -679,9 +679,9 @@ def collect_expat(info_add):
 
 
 def collect_decimal(info_add):
-    try:
+    versuch:
         importiere _decimal
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = ('__libmpdec_version__',)
@@ -689,9 +689,9 @@ def collect_decimal(info_add):
 
 
 def collect_testcapi(info_add):
-    try:
+    versuch:
         importiere _testcapi
-    except ImportError:
+    ausser ImportError:
         gib
 
     fuer name in (
@@ -704,9 +704,9 @@ def collect_testcapi(info_add):
 
 
 def collect_testinternalcapi(info_add):
-    try:
+    versuch:
         importiere _testinternalcapi
-    except ImportError:
+    ausser ImportError:
         gib
 
     call_func(info_add, 'pymem.allocator', _testinternalcapi, 'pymem_getallocatorsname')
@@ -719,9 +719,9 @@ def collect_testinternalcapi(info_add):
 
 
 def collect_resource(info_add):
-    try:
+    versuch:
         importiere resource
-    except ImportError:
+    ausser ImportError:
         gib
 
     limits = [attr fuer attr in dir(resource) wenn attr.startswith('RLIMIT_')]
@@ -735,9 +735,9 @@ def collect_resource(info_add):
 
 def collect_test_socket(info_add):
     importiere unittest
-    try:
+    versuch:
         von test importiere test_socket
-    except (ImportError, unittest.SkipTest):
+    ausser (ImportError, unittest.SkipTest):
         gib
 
     # all check attributes like HAVE_SOCKET_CAN
@@ -747,9 +747,9 @@ def collect_test_socket(info_add):
 
 
 def collect_support(info_add):
-    try:
+    versuch:
         von test importiere support
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = (
@@ -778,9 +778,9 @@ def collect_support(info_add):
 
 
 def collect_support_os_helper(info_add):
-    try:
+    versuch:
         von test.support importiere os_helper
-    except ImportError:
+    ausser ImportError:
         gib
 
     fuer name in (
@@ -794,9 +794,9 @@ def collect_support_os_helper(info_add):
 
 
 def collect_support_socket_helper(info_add):
-    try:
+    versuch:
         von test.support importiere socket_helper
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = (
@@ -813,9 +813,9 @@ def collect_support_socket_helper(info_add):
 
 
 def collect_support_threading_helper(info_add):
-    try:
+    versuch:
         von test.support importiere threading_helper
-    except ImportError:
+    ausser ImportError:
         gib
 
     attributes = (
@@ -832,18 +832,18 @@ def collect_cc(info_add):
     wenn nicht CC:
         gib
 
-    try:
+    versuch:
         importiere shlex
         args = shlex.split(CC)
-    except ImportError:
+    ausser ImportError:
         args = CC.split()
     args.append('--version')
-    try:
+    versuch:
         proc = subprocess.Popen(args,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=Wahr)
-    except OSError:
+    ausser OSError:
         # Cannot run the compiler, fuer example when Python has been
         # cross-compiled und installed on the target platform where the
         # compiler is missing.
@@ -860,9 +860,9 @@ def collect_cc(info_add):
 
 
 def collect_gdbm(info_add):
-    try:
+    versuch:
         von _gdbm importiere _GDBM_VERSION
-    except ImportError:
+    ausser ImportError:
         gib
 
     info_add('gdbm.GDBM_VERSION', '.'.join(map(str, _GDBM_VERSION)))
@@ -870,9 +870,9 @@ def collect_gdbm(info_add):
 
 def collect_get_config(info_add):
     # Get global configuration variables, _PyPreConfig und _PyCoreConfig
-    try:
+    versuch:
         von _testinternalcapi importiere get_configs
-    except ImportError:
+    ausser ImportError:
         gib
 
     all_configs = get_configs()
@@ -894,18 +894,18 @@ def collect_windows(info_add):
 
     # windows.RtlAreLongPathsEnabled: RtlAreLongPathsEnabled()
     # windows.is_admin: IsUserAnAdmin()
-    try:
+    versuch:
         importiere ctypes
         wenn nicht hasattr(ctypes, 'WinDLL'):
-            raise ImportError
-    except ImportError:
+            wirf ImportError
+    ausser ImportError:
         pass
     sonst:
         ntdll = ctypes.WinDLL('ntdll')
         BOOLEAN = ctypes.c_ubyte
-        try:
+        versuch:
             RtlAreLongPathsEnabled = ntdll.RtlAreLongPathsEnabled
-        except AttributeError:
+        ausser AttributeError:
             res = '<function nicht available>'
         sonst:
             RtlAreLongPathsEnabled.restype = BOOLEAN
@@ -919,15 +919,15 @@ def collect_windows(info_add):
         IsUserAnAdmin.argtypes = ()
         info_add('windows.is_admin', IsUserAnAdmin())
 
-    try:
+    versuch:
         importiere _winapi
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
-        try:
+        versuch:
             dll_path = _winapi.GetModuleFileName(sys.dllhandle)
             info_add('windows.dll_path', dll_path)
-        except AttributeError:
+        ausser AttributeError:
             pass
 
         call_func(info_add, 'windows.ansi_code_page', _winapi, 'GetACP')
@@ -935,7 +935,7 @@ def collect_windows(info_add):
 
     # windows.version_caption: "wmic os get Caption,Version /value" command
     importiere subprocess
-    try:
+    versuch:
         # When wmic.exe output is redirected to a pipe,
         # it uses the OEM code page
         proc = subprocess.Popen(["wmic", "os", "get", "Caption,Version", "/value"],
@@ -946,7 +946,7 @@ def collect_windows(info_add):
         output, stderr = proc.communicate()
         wenn proc.returncode:
             output = ""
-    except OSError:
+    ausser OSError:
         pass
     sonst:
         fuer line in output.splitlines():
@@ -961,7 +961,7 @@ def collect_windows(info_add):
                     info_add('windows.version', line)
 
     # windows.ver: "ver" command
-    try:
+    versuch:
         proc = subprocess.Popen(["ver"], shell=Wahr,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
@@ -971,7 +971,7 @@ def collect_windows(info_add):
             gib
         wenn proc.returncode:
             output = ""
-    except OSError:
+    ausser OSError:
         gib
     sonst:
         output = output.strip()
@@ -981,37 +981,37 @@ def collect_windows(info_add):
 
     # windows.developer_mode: get AllowDevelopmentWithoutDevLicense registry
     importiere winreg
-    try:
+    versuch:
         key = winreg.OpenKey(
             winreg.HKEY_LOCAL_MACHINE,
             r"SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock")
         subkey = "AllowDevelopmentWithoutDevLicense"
-        try:
+        versuch:
             value, value_type = winreg.QueryValueEx(key, subkey)
-        finally:
+        schliesslich:
             winreg.CloseKey(key)
-    except OSError:
+    ausser OSError:
         pass
     sonst:
         info_add('windows.developer_mode', "enabled" wenn value sonst "disabled")
 
 
 def collect_fips(info_add):
-    try:
+    versuch:
         importiere _hashlib
-    except ImportError:
+    ausser ImportError:
         _hashlib = Nichts
 
     wenn _hashlib is nicht Nichts:
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
-    try:
+    versuch:
         mit open("/proc/sys/crypto/fips_enabled", encoding="utf-8") als fp:
             line = fp.readline().rstrip()
 
         wenn line:
             info_add('fips.linux_crypto_fips_enabled', line)
-    except OSError:
+    ausser OSError:
         pass
 
 
@@ -1022,9 +1022,9 @@ def collect_tempfile(info_add):
 
 
 def collect_libregrtest_utils(info_add):
-    try:
+    versuch:
         von test.libregrtest importiere utils
-    except ImportError:
+    ausser ImportError:
         gib
 
     info_add('libregrtests.build_info', ' '.join(utils.get_build_info()))
@@ -1079,9 +1079,9 @@ def collect_info(info):
         collect_support_socket_helper,
         collect_support_threading_helper,
     ):
-        try:
+        versuch:
             collect_func(info_add)
-        except Exception:
+        ausser Exception:
             error = Wahr
             drucke("ERROR: %s() failed" % (collect_func.__name__),
                   file=sys.stderr)

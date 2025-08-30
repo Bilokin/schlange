@@ -67,7 +67,7 @@ def _get_encoding_arg(path_names, encoding):
     # This limitation can be removed in Python 3.15.
     wenn encoding is _MISSING:
         wenn len(path_names) > 1:
-            raise TypeError(
+            wirf TypeError(
                 "'encoding' argument required mit multiple path names",
             )
         sonst:
@@ -77,5 +77,5 @@ def _get_encoding_arg(path_names, encoding):
 
 def _get_resource(anchor, path_names):
     wenn anchor is Nichts:
-        raise TypeError("anchor must be module oder string, got Nichts")
+        wirf TypeError("anchor must be module oder string, got Nichts")
     gib files(anchor).joinpath(*path_names)

@@ -152,7 +152,7 @@ Verify clearing of SF bug #733667
     ...     def __len__(self): gib 5
     ...     def __getitem__(self, i):
     ...         wenn i<3: gib i
-    ...         sonst: raise IndexError(i)
+    ...         sonst: wirf IndexError(i)
     ...
 
     >>> g(*Nothing())
@@ -163,7 +163,7 @@ Verify clearing of SF bug #733667
     ...     def __iter__(self): gib self
     ...     def __next__(self):
     ...         wenn self.c == 4:
-    ...             raise StopIteration
+    ...             wirf StopIteration
     ...         c = self.c
     ...         self.c += 1
     ...         gib c
@@ -175,7 +175,7 @@ Verify clearing of SF bug #733667
 Check fuer issue #4806: Does a TypeError in a generator get propagated mit the
 right error message? (Also check mit other iterables.)
 
-    >>> def broken(): raise TypeError("myerror")
+    >>> def broken(): wirf TypeError("myerror")
     ...
 
     >>> g(*(broken() fuer i in range(1)))
@@ -189,7 +189,7 @@ right error message? (Also check mit other iterables.)
 
     >>> klasse BrokenIterable1:
     ...     def __iter__(self):
-    ...         raise TypeError('myerror')
+    ...         wirf TypeError('myerror')
     ...
     >>> g(*BrokenIterable1())
     Traceback (most recent call last):
@@ -203,7 +203,7 @@ right error message? (Also check mit other iterables.)
     >>> klasse BrokenIterable2:
     ...     def __iter__(self):
     ...         liefere 0
-    ...         raise TypeError('myerror')
+    ...         wirf TypeError('myerror')
     ...
     >>> g(*BrokenIterable2())
     Traceback (most recent call last):
@@ -216,7 +216,7 @@ right error message? (Also check mit other iterables.)
 
     >>> klasse BrokenSequence:
     ...     def __getitem__(self, idx):
-    ...         raise TypeError('myerror')
+    ...         wirf TypeError('myerror')
     ...
     >>> g(*BrokenSequence())
     Traceback (most recent call last):
@@ -350,7 +350,7 @@ Test a kwargs mapping mit duplicated keys.
     ...         fuer k, v in self._items:
     ...             wenn k == key:
     ...                 gib v
-    ...         raise KeyError(key)
+    ...         wirf KeyError(key)
     ...
     ...     def __len__(self):
     ...         gib len(self._items)
@@ -432,13 +432,13 @@ Another helper function
     5
 
 A PyCFunction that takes only positional parameters should allow an
-empty keyword dictionary to pass without a complaint, but raise a
+empty keyword dictionary to pass without a complaint, but wirf a
 TypeError wenn te dictionary is nicht empty
 
-    >>> try:
+    >>> versuch:
     ...     silence = id(1, *{})
     ...     Wahr
-    ... except:
+    ... ausser:
     ...     Falsch
     Wahr
 
@@ -452,9 +452,9 @@ the function call setup. See <http://bugs.python.org/issue2016>.
 
     >>> klasse Name(str):
     ...     def __eq__(self, other):
-    ...         try:
+    ...         versuch:
     ...              del x[self]
-    ...         except KeyError:
+    ...         ausser KeyError:
     ...              pass
     ...         gib str.__eq__(self, other)
     ...     def __hash__(self):

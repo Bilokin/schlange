@@ -36,11 +36,11 @@ CLOCK_RES = 0.020
 def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
     mit proc:
-        try:
+        versuch:
             liefere proc
-        except:
+        ausser:
             proc.kill()
-            raise
+            wirf
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
@@ -189,7 +189,7 @@ klasse OSEINTRTest(EINTRBaseTest):
             '',
             'value = read_data.getvalue()',
             'if value != data:',
-            '    raise Exception(f"read error: {len(value)}'
+            '    wirf Exception(f"read error: {len(value)}'
                                   ' vs {data_len} bytes")',
         ))
 
@@ -280,7 +280,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
             'if received_data != data:',
-            '    raise Exception(f"recv error: {len(received_data)}'
+            '    wirf Exception(f"recv error: {len(received_data)}'
                                   ' vs {data_len} bytes")',
         ))
 
@@ -341,9 +341,9 @@ klasse SocketEINTRTest(EINTRBaseTest):
         # Use a fifo: until the child opens it fuer reading, the parent will
         # block when trying to open it fuer writing.
         os_helper.unlink(filename)
-        try:
+        versuch:
             os.mkfifo(filename)
-        except PermissionError als exc:
+        ausser PermissionError als exc:
             self.skipTest(f'os.mkfifo(): {exc!r}')
         self.addCleanup(os_helper.unlink, filename)
 

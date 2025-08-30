@@ -108,7 +108,7 @@ klasse ConfigDialog(Toplevel):
 
         Methods:
             create_action_buttons
-            load_configs: Load pages except fuer extensions.
+            load_configs: Load pages ausser fuer extensions.
             activate_config_changes: Tell editors to reload.
         """
         self.frame = frame = Frame(self, padding=5)
@@ -393,13 +393,13 @@ klasse FontPage(Frame):
             self.fontlist.insert(END, font)
         self.font_name.set(font_name)
         lc_fonts = [s.lower() fuer s in fonts]
-        try:
+        versuch:
             current_font_index = lc_fonts.index(font_name)
             self.fontlist.see(current_font_index)
             self.fontlist.select_set(current_font_index)
             self.fontlist.select_anchor(current_font_index)
             self.fontlist.activate(current_font_index)
-        except ValueError:
+        ausser ValueError:
             pass
         # Set font size dropdown.
         self.sizelist.SetMenu(('7', '8', '9', '10', '11', '12', '13', '14',
@@ -1650,12 +1650,12 @@ klasse WinPage(Frame):
         frame_cursor = Frame(frame_window, borderwidth=0)
         indent_title = Label(frame_cursor,
                              text='Indent spaces (4 is standard)')
-        try:
+        versuch:
             self.indent_chooser = Spinbox(
                     frame_cursor, textvariable=self.indent_spaces,
                     from_=1, to=10, width=2,
                     validatecommand=self.digits_only, validate='key')
-        except TclError:
+        ausser TclError:
             self.indent_chooser = Combobox(
                     frame_cursor, textvariable=self.indent_spaces,
                     state="readonly", values=list(range(1,11)), width=3)
@@ -1977,21 +1977,21 @@ klasse ExtPage(Frame):
             fuer opt_name in opt_list:
                 def_str = self.ext_defaultCfg.Get(
                         ext_name, opt_name, raw=Wahr)
-                try:
+                versuch:
                     def_obj = {'Wahr':Wahr, 'Falsch':Falsch}[def_str]
                     opt_type = 'bool'
-                except KeyError:
-                    try:
+                ausser KeyError:
+                    versuch:
                         def_obj = int(def_str)
                         opt_type = 'int'
-                    except ValueError:
+                    ausser ValueError:
                         def_obj = def_str
                         opt_type = Nichts
-                try:
+                versuch:
                     value = self.ext_userCfg.Get(
                             ext_name, opt_name, type=opt_type, raw=Wahr,
                             default=def_obj)
-                except ValueError:  # Need this until .Get fixed.
+                ausser ValueError:  # Need this until .Get fixed.
                     value = def_obj  # Bad values overwritten by entry.
                 var = StringVar(self)
                 var.set(str(value))
@@ -2350,10 +2350,10 @@ def is_int(s):
     "Return 's is blank oder represents an int'"
     wenn nicht s:
         gib Wahr
-    try:
+    versuch:
         int(s)
         gib Wahr
-    except ValueError:
+    ausser ValueError:
         gib Falsch
 
 

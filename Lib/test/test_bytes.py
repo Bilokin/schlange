@@ -159,7 +159,7 @@ klasse BaseBytesTest:
         # Fallback when __index__ raises a TypeError
         klasse B(bytes):
             def __index__(self):
-                raise TypeError
+                wirf TypeError
 
         self.assertEqual(self.type2test(B(b"foobar")), b"foobar")
 
@@ -208,11 +208,11 @@ klasse BaseBytesTest:
     def test_constructor_overflow(self):
         size = MAX_Py_ssize_t
         self.assertRaises((OverflowError, MemoryError), self.type2test, size)
-        try:
-            # Should either pass oder raise an error (e.g. on debug builds with
+        versuch:
+            # Should either pass oder wirf an error (e.g. on debug builds with
             # additional malloc() overhead), but shouldn't crash.
             bytearray(size - 4)
-        except (OverflowError, MemoryError):
+        ausser (OverflowError, MemoryError):
             pass
 
     def test_constructor_exceptions(self):
@@ -338,17 +338,17 @@ klasse BaseBytesTest:
             encodings = {encodings!r}
 
             fuer data in ('', 'short string'):
-                try:
+                versuch:
                     type2test(data, encoding={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(21)
 
                 fuer encoding in encodings:
-                    try:
+                    versuch:
                         type2test(data, encoding=encoding, errors={invalid!r})
-                    except LookupError:
+                    ausser LookupError:
                         pass
                     sonst:
                         sys.exit(22)
@@ -356,24 +356,24 @@ klasse BaseBytesTest:
             fuer data in (b'', b'short string'):
                 data = type2test(data)
                 drucke(repr(data))
-                try:
+                versuch:
                     data.decode(encoding={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     sys.exit(10)
                 sonst:
                     sys.exit(23)
 
-                try:
+                versuch:
                     data.decode(errors={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(24)
 
                 fuer encoding in encodings:
-                    try:
+                    versuch:
                         data.decode(encoding=encoding, errors={invalid!r})
-                    except LookupError:
+                    ausser LookupError:
                         pass
                     sonst:
                         sys.exit(25)
@@ -1252,7 +1252,7 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(PyBytes_FromFormat(b'x=%i y=%', c_int(2), c_int(3)),
                          b'x=2 y=%')
 
-        # Issue #19969: %c must raise OverflowError fuer values
+        # Issue #19969: %c must wirf OverflowError fuer values
         # nicht in the range [0; 255]
         self.assertRaises(OverflowError,
                           PyBytes_FromFormat, b'%c', c_int(-1))
@@ -1342,7 +1342,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         short_sample = b"Hello world\n"
         sample = short_sample + b"\0"*(20 - len(short_sample))
         tfn = tempfile.mktemp()
-        try:
+        versuch:
             # Prepare
             mit open(tfn, "wb") als f:
                 f.write(short_sample)
@@ -1358,10 +1358,10 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             mit open(tfn, "rb") als f:
                 self.assertEqual(f.read(), sample)
             # Text mode is ambiguous; don't test
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 os.remove(tfn)
-            except OSError:
+            ausser OSError:
                 pass
 
     def test_reverse(self):
@@ -1467,30 +1467,30 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             self.assertEqual(b, bytearray([1, 100, 200]))
             setitem(b, 0, Indexable(10))
             self.assertEqual(b, bytearray([10, 100, 200]))
-            try:
+            versuch:
                 setitem(b, 3, 0)
-                self.fail("Didn't raise IndexError")
-            except IndexError:
+                self.fail("Didn't wirf IndexError")
+            ausser IndexError:
                 pass
-            try:
+            versuch:
                 setitem(b, -10, 0)
-                self.fail("Didn't raise IndexError")
-            except IndexError:
+                self.fail("Didn't wirf IndexError")
+            ausser IndexError:
                 pass
-            try:
+            versuch:
                 setitem(b, 0, 256)
-                self.fail("Didn't raise ValueError")
-            except ValueError:
+                self.fail("Didn't wirf ValueError")
+            ausser ValueError:
                 pass
-            try:
+            versuch:
                 setitem(b, 0, Indexable(-1))
-                self.fail("Didn't raise ValueError")
-            except ValueError:
+                self.fail("Didn't wirf ValueError")
+            ausser ValueError:
                 pass
-            try:
+            versuch:
                 setitem(b, 0, object())
-                self.fail("Didn't raise TypeError")
-            except TypeError:
+                self.fail("Didn't wirf TypeError")
+            ausser TypeError:
                 pass
 
         mit self.subTest("tp_as_mapping"):
@@ -1623,12 +1623,12 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertIs(b, b1)
         b += b"xyz"
         self.assertEqual(b, b"abcdefxyz")
-        try:
+        versuch:
             b += ""
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("bytes += unicode didn't raise TypeError")
+            self.fail("bytes += unicode didn't wirf TypeError")
 
     def test_irepeat(self):
         b = bytearray(b"abc")
@@ -1885,7 +1885,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         it = iter(ba)
         next(it)
         ba.clear()
-        # Shouldn't raise an error
+        # Shouldn't wirf an error
         self.assertEqual(list(it), [])
 
     def test_repeat_after_setslice(self):
@@ -2307,18 +2307,18 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def clear(b, a, *args):  # MODIFIES!
             b.wait()
-            try: a.clear()
-            except BufferError: pass
+            versuch: a.clear()
+            ausser BufferError: pass
 
         def clear2(b, a, c):  # MODIFIES c!
             b.wait()
-            try: c.clear()
-            except BufferError: pass
+            versuch: c.clear()
+            ausser BufferError: pass
 
         def pop1(b, a):  # MODIFIES!
             b.wait()
-            try: a.pop()
-            except IndexError: pass
+            versuch: a.pop()
+            ausser IndexError: pass
 
         def append1(b, a):  # MODIFIES!
             b.wait()
@@ -2336,8 +2336,8 @@ klasse FreeThreadingTest(unittest.TestCase):
         def remove(b, a):  # MODIFIES!
             c = ord('0')
             b.wait()
-            try: a.remove(c)
-            except ValueError: pass
+            versuch: a.remove(c)
+            ausser ValueError: pass
 
         def reverse(b, a):  # modifies inplace
             b.wait()
@@ -2383,8 +2383,8 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def maketrans(b, a, c):
             b.wait()
-            try: a.maketrans(a, c)
-            except ValueError: pass
+            versuch: a.maketrans(a, c)
+            ausser ValueError: pass
 
         def translate(b, a, c):
             b.wait()
@@ -2401,8 +2401,8 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def index(b, a):
             b.wait()
-            try: a.index(b'\xdd')
-            except ValueError: gib
+            versuch: a.index(b'\xdd')
+            ausser ValueError: gib
             assert Falsch
 
         def lstrip(b, a):
@@ -2427,8 +2427,8 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def rindex(b, a):
             b.wait()
-            try: a.rindex(b'\xdd')
-            except ValueError: gib
+            versuch: a.rindex(b'\xdd')
+            ausser ValueError: gib
             assert Falsch
 
         def rpartition(b, a):
@@ -2479,8 +2479,8 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         def subscript(b, a):
             b.wait()
-            try: assert a[0] != 0xdd
-            except IndexError: pass
+            versuch: assert a[0] != 0xdd
+            ausser IndexError: pass
 
         def ass_subscript(b, a):  # MODIFIES!
             c = bytearray(b'0' * 0x400000)
@@ -2495,8 +2495,8 @@ klasse FreeThreadingTest(unittest.TestCase):
         def mod(b, a):
             c = tuple(range(4096))
             b.wait()
-            try: a % c
-            except TypeError: pass
+            versuch: a % c
+            ausser TypeError: pass
 
         def mod2(b, a, c):
             b.wait()

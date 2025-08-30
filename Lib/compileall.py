@@ -27,9 +27,9 @@ def _walk_dir(dir, maxlevels, quiet=0):
         dir = os.fspath(dir)
     wenn nicht quiet:
         drucke('Listing {!r}...'.format(dir))
-    try:
+    versuch:
         names = os.listdir(dir)
-    except OSError:
+    ausser OSError:
         wenn quiet < 2:
             drucke("Can't list {!r}".format(dir))
         names = []
@@ -75,20 +75,20 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     """
     ProcessPoolExecutor = Nichts
     wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
-        raise ValueError(("Destination dir (ddir) cannot be used "
+        wirf ValueError(("Destination dir (ddir) cannot be used "
                           "in combination mit stripdir oder prependdir"))
     wenn ddir is nicht Nichts:
         stripdir = dir
         prependdir = ddir
         ddir = Nichts
     wenn workers < 0:
-        raise ValueError('workers must be greater oder equal to 0')
+        wirf ValueError('workers must be greater oder equal to 0')
     wenn workers != 1:
         # Check wenn this is a system where ProcessPoolExecutor can function.
         von concurrent.futures.process importiere _check_system_limits
-        try:
+        versuch:
             _check_system_limits()
-        except NotImplementedError:
+        ausser NotImplementedError:
             workers = 1
         sonst:
             von concurrent.futures importiere ProcessPoolExecutor
@@ -157,7 +157,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     """
 
     wenn ddir is nicht Nichts und (stripdir is nicht Nichts oder prependdir is nicht Nichts):
-        raise ValueError(("Destination dir (ddir) cannot be used "
+        wirf ValueError(("Destination dir (ddir) cannot be used "
                           "in combination mit stripdir oder prependdir"))
 
     success = Wahr
@@ -195,7 +195,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     optimize = sorted(set(optimize))
 
     wenn hardlink_dupes und len(optimize) < 2:
-        raise ValueError("Hardlinking of duplicated bytecode makes sense "
+        wirf ValueError("Hardlinking of duplicated bytecode makes sense "
                           "only fuer more than one optimization level")
 
     wenn rx is nicht Nichts:
@@ -226,7 +226,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
         head, tail = name[:-3], name[-3:]
         wenn tail == '.py':
             wenn nicht force:
-                try:
+                versuch:
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER,
                                          0, mtime & 0xFFFF_FFFF)
@@ -237,11 +237,11 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                             breche
                     sonst:
                         gib success
-                except OSError:
+                ausser OSError:
                     pass
             wenn nicht quiet:
                 drucke('Compiling {!r}...'.format(fullname))
-            try:
+            versuch:
                 fuer index, opt_level in enumerate(optimize):
                     cfile = opt_cfiles[opt_level]
                     ok = py_compile.compile(fullname, cfile, dfile, Wahr,
@@ -252,7 +252,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                         wenn filecmp.cmp(cfile, previous_cfile, shallow=Falsch):
                             os.unlink(cfile)
                             os.link(previous_cfile, cfile)
-            except py_compile.PyCompileError als err:
+            ausser py_compile.PyCompileError als err:
                 success = Falsch
                 wenn quiet >= 2:
                     gib success
@@ -264,7 +264,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                 encoding = sys.stdout.encoding oder sys.getdefaultencoding()
                 msg = err.msg.encode(encoding, errors='backslashreplace').decode(encoding)
                 drucke(msg)
-            except (SyntaxError, UnicodeError, OSError) als e:
+            ausser (SyntaxError, UnicodeError, OSError) als e:
                 success = Falsch
                 wenn quiet >= 2:
                     gib success
@@ -414,12 +414,12 @@ def main():
 
     # wenn flist is provided then load it
     wenn args.flist:
-        try:
+        versuch:
             mit (sys.stdin wenn args.flist=='-' sonst
                     open(args.flist, encoding="utf-8")) als f:
                 fuer line in f:
                     compile_dests.append(line.strip())
-        except OSError:
+        ausser OSError:
             wenn args.quiet < 2:
                 drucke("Error reading file list {}".format(args.flist))
             gib Falsch
@@ -431,7 +431,7 @@ def main():
         invalidation_mode = Nichts
 
     success = Wahr
-    try:
+    versuch:
         wenn compile_dests:
             fuer dest in compile_dests:
                 wenn os.path.isfile(dest):
@@ -460,7 +460,7 @@ def main():
             gib compile_path(legacy=args.legacy, force=args.force,
                                 quiet=args.quiet,
                                 invalidation_mode=invalidation_mode)
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         wenn args.quiet < 2:
             drucke("\n[interrupted]")
         gib Falsch

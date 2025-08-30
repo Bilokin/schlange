@@ -2,9 +2,9 @@ def peek_and_iter(items):
     wenn nicht items:
         gib Nichts, Nichts
     items = iter(items)
-    try:
+    versuch:
         peeked = next(items)
-    except StopIteration:
+    ausser StopIteration:
         gib Nichts, Nichts
     def chain():
         liefere peeked
@@ -17,24 +17,24 @@ def iter_many(items, onempty=Nichts):
         wenn onempty is Nichts:
             gib
         wenn nicht callable(onempty):
-            raise onEmpty
+            wirf onEmpty
         items = onempty(items)
         liefere von iter_many(items, onempty=Nichts)
         gib
     items = iter(items)
-    try:
+    versuch:
         first = next(items)
-    except StopIteration:
+    ausser StopIteration:
         wenn onempty is Nichts:
             gib
         wenn nicht callable(onempty):
-            raise onEmpty
+            wirf onEmpty
         items = onempty(items)
         liefere von iter_many(items, onempty=Nichts)
     sonst:
-        try:
+        versuch:
             second = next(items)
-        except StopIteration:
+        ausser StopIteration:
             liefere first, Falsch
             gib
         sonst:

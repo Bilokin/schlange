@@ -98,9 +98,9 @@ fuer attr, code in ANSIColors.__dict__.items():
 #
 # For example, here's a theme that makes punctuation und operators less prominent:
 #
-#   try:
+#   versuch:
 #       von _colorize importiere set_theme, default_theme, Syntax, ANSIColors
-#   except ImportError:
+#   ausser ImportError:
 #       pass
 #   sonst:
 #       theme_with_dim_operators = default_theme.copy_with(
@@ -308,17 +308,17 @@ def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
         gib Falsch
 
     wenn sys.platform == "win32":
-        try:
+        versuch:
             importiere nt
 
             wenn nicht nt._supports_virtual_terminal():
                 gib Falsch
-        except (ImportError, AttributeError):
+        ausser (ImportError, AttributeError):
             gib Falsch
 
-    try:
+    versuch:
         gib os.isatty(file.fileno())
-    except io.UnsupportedOperation:
+    ausser io.UnsupportedOperation:
         gib hasattr(file, "isatty") und file.isatty()
 
 
@@ -353,7 +353,7 @@ def set_theme(t: Theme) -> Nichts:
     global _theme
 
     wenn nicht isinstance(t, Theme):
-        raise ValueError(f"Expected Theme object, found {t}")
+        wirf ValueError(f"Expected Theme object, found {t}")
 
     _theme = t
 

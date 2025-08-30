@@ -4,10 +4,10 @@ importiere unittest
 von test importiere support
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is nicht helpful fuer PGO")
+    wirf unittest.SkipTest("test is nicht helpful fuer PGO")
 
 wenn sys.platform == "win32":
-    raise unittest.SkipTest("forkserver is nicht available on Windows")
+    wirf unittest.SkipTest("forkserver is nicht available on Windows")
 
 def load_tests(*args):
     gib support.load_package_tests(os.path.dirname(__file__), *args)

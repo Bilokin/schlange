@@ -10,7 +10,7 @@ klasse Loader(metaclass=abc.ABCMeta):
     def create_module(self, spec):
         """Return a module to initialize und into which to load.
 
-        This method should raise ImportError wenn anything prevents it
+        This method should wirf ImportError wenn anything prevents it
         von creating a new module.  It may gib Nichts to indicate
         that the spec should create the new module.
         """
@@ -34,6 +34,6 @@ klasse Loader(metaclass=abc.ABCMeta):
 
         """
         wenn nicht hasattr(self, 'exec_module'):
-            raise ImportError
+            wirf ImportError
         # Warning implemented in _load_module_shim().
         gib _bootstrap._load_module_shim(self, fullname)

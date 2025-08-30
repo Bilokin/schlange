@@ -1,7 +1,7 @@
 """Supporting definitions fuer the Python regression tests."""
 
 wenn __name__ != 'test.support':
-    raise ImportError('support must be imported von the test package')
+    wirf ImportError('support must be imported von the test package')
 
 importiere annotationlib
 importiere contextlib
@@ -176,10 +176,10 @@ def load_package_tests(pkg_dir, loader, standard_tests, pattern):
 
 def get_attribute(obj, name):
     """Get an attribute, raising SkipTest wenn AttributeError is raised."""
-    try:
+    versuch:
         attribute = getattr(obj, name)
-    except AttributeError:
-        raise unittest.SkipTest("object %r has no attribute %r" % (obj, name))
+    ausser AttributeError:
+        wirf unittest.SkipTest("object %r has no attribute %r" % (obj, name))
     sonst:
         gib attribute
 
@@ -204,14 +204,14 @@ def get_original_stdout():
 
 
 def _force_run(path, func, *args):
-    try:
+    versuch:
         gib func(*args)
-    except FileNotFoundError als err:
+    ausser FileNotFoundError als err:
         # chmod() won't fix a missing file.
         wenn verbose >= 2:
             drucke('%s: %s' % (err.__class__.__name__, err))
-        raise
-    except OSError als err:
+        wirf
+    ausser OSError als err:
         wenn verbose >= 2:
             drucke('%s: %s' % (err.__class__.__name__, err))
             drucke('re-run %s%r' % (func.__name__, args))
@@ -241,7 +241,7 @@ def _is_gui_available():
         dll = ctypes.windll.user32
         h = dll.GetProcessWindowStation()
         wenn nicht h:
-            raise ctypes.WinError()
+            wirf ctypes.WinError()
         uof = USEROBJECTFLAGS()
         needed = ctypes.wintypes.DWORD()
         res = dll.GetUserObjectInformationW(h,
@@ -250,7 +250,7 @@ def _is_gui_available():
             ctypes.sizeof(uof),
             ctypes.byref(needed))
         wenn nicht res:
-            raise ctypes.WinError()
+            wirf ctypes.WinError()
         wenn nicht bool(uof.dwFlags & WSF_VISIBLE):
             reason = "gui nicht available (WSF_VISIBLE flag nicht set)"
     sowenn sys.platform == 'darwin':
@@ -258,14 +258,14 @@ def _is_gui_available():
         # being called in an environment where a window server connection
         # cannot be made, fuer instance when invoked by a buildbot oder ssh
         # process nicht running under the same user id als the current console
-        # user.  To avoid that, raise an exception wenn the window manager
+        # user.  To avoid that, wirf an exception wenn the window manager
         # connection is nicht available.
         importiere subprocess
-        try:
+        versuch:
             rc = subprocess.run(["launchctl", "managername"],
                                 capture_output=Wahr, check=Wahr)
             managername = rc.stdout.decode("utf-8").strip()
-        except subprocess.CalledProcessError:
+        ausser subprocess.CalledProcessError:
             reason = "unable to detect macOS launchd job manager"
         sonst:
             wenn managername != "Aqua":
@@ -273,13 +273,13 @@ def _is_gui_available():
 
     # check on every platform whether tkinter can actually do anything
     wenn nicht reason:
-        try:
+        versuch:
             von tkinter importiere Tk
             root = Tk()
             root.withdraw()
             root.update()
             root.destroy()
-        except Exception als e:
+        ausser Exception als e:
             err_string = str(e)
             wenn len(err_string) > 50:
                 err_string = err_string[:50] + ' [...]'
@@ -304,11 +304,11 @@ def requires(resource, msg=Nichts):
     wenn nicht is_resource_enabled(resource):
         wenn msg is Nichts:
             msg = "Use of the %r resource nicht enabled" % resource
-        raise ResourceDenied(msg)
+        wirf ResourceDenied(msg)
     wenn resource in {"network", "urlfetch"} und nicht has_socket_support:
-        raise ResourceDenied("No socket support")
+        wirf ResourceDenied("No socket support")
     wenn resource == 'gui' und nicht _is_gui_available():
-        raise ResourceDenied(_is_gui_available.reason)
+        wirf ResourceDenied(_is_gui_available.reason)
 
 def _requires_unix_version(sysname, min_version):
     """Decorator raising SkipTest wenn the OS is `sysname` und the version is less
@@ -321,9 +321,9 @@ def _requires_unix_version(sysname, min_version):
     min_version_txt = '.'.join(map(str, min_version))
     version_txt = platform.release().split('-', 1)[0]
     wenn platform.system() == sysname:
-        try:
+        versuch:
             version = tuple(map(int, version_txt.split('.')))
-        except ValueError:
+        ausser ValueError:
             skip = Falsch
         sonst:
             skip = version < min_version
@@ -368,14 +368,14 @@ def requires_mac_ver(*min_version):
             wenn sys.platform == 'darwin':
                 importiere platform
                 version_txt = platform.mac_ver()[0]
-                try:
+                versuch:
                     version = tuple(map(int, version_txt.split('.')))
-                except ValueError:
+                ausser ValueError:
                     pass
                 sonst:
                     wenn version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
-                        raise unittest.SkipTest(
+                        wirf unittest.SkipTest(
                             "Mac OS X %s oder higher required, nicht %s"
                             % (min_version_txt, version_txt))
             gib func(*args, **kw)
@@ -404,9 +404,9 @@ def skip_if_buildbot(reason=Nichts):
     importiere getpass
     wenn nicht reason:
         reason = 'not suitable fuer buildbots'
-    try:
+    versuch:
         isbuildbot = getpass.getuser().lower() == 'buildbot'
-    except (KeyError, OSError) als err:
+    ausser (KeyError, OSError) als err:
         logging.getLogger(__name__).warning('getpass.getuser() failed %s.', err, exc_info=err)
         isbuildbot = Falsch
     gib unittest.skipIf(isbuildbot, reason)
@@ -415,7 +415,7 @@ def check_sanitizer(*, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch,
                     function=Wahr):
     """Returns Wahr wenn Python is compiled mit sanitizer support"""
     wenn nicht (address oder memory oder ub oder thread):
-        raise ValueError('At least one of address, memory, ub oder thread must be Wahr')
+        wirf ValueError('At least one of address, memory, ub oder thread must be Wahr')
 
 
     cflags = sysconfig.get_config_var('CFLAGS') oder ''
@@ -472,13 +472,13 @@ def system_must_validate_cert(f):
     """Skip the test on TLS certificate validation failures."""
     @functools.wraps(f)
     def dec(*args, **kwargs):
-        try:
+        versuch:
             f(*args, **kwargs)
-        except OSError als e:
+        ausser OSError als e:
             wenn "CERTIFICATE_VERIFY_FAILED" in str(e):
-                raise unittest.SkipTest("system does nicht contain "
+                wirf unittest.SkipTest("system does nicht contain "
                                         "necessary certificates")
-            raise
+            wirf
     gib dec
 
 # A constant likely larger than the underlying OS pipe buffer size, to
@@ -501,51 +501,51 @@ requires_IEEE_754 = unittest.skipUnless(
     "test requires IEEE 754 doubles")
 
 def requires_zlib(reason='requires zlib'):
-    try:
+    versuch:
         importiere zlib
-    except ImportError:
+    ausser ImportError:
         zlib = Nichts
     gib unittest.skipUnless(zlib, reason)
 
 def requires_gzip(reason='requires gzip'):
-    try:
+    versuch:
         importiere gzip
-    except ImportError:
+    ausser ImportError:
         gzip = Nichts
     gib unittest.skipUnless(gzip, reason)
 
 def requires_bz2(reason='requires bz2'):
-    try:
+    versuch:
         importiere bz2
-    except ImportError:
+    ausser ImportError:
         bz2 = Nichts
     gib unittest.skipUnless(bz2, reason)
 
 def requires_lzma(reason='requires lzma'):
-    try:
+    versuch:
         importiere lzma
-    except ImportError:
+    ausser ImportError:
         lzma = Nichts
     gib unittest.skipUnless(lzma, reason)
 
 def requires_zstd(reason='requires zstd'):
-    try:
+    versuch:
         von compression importiere zstd
-    except ImportError:
+    ausser ImportError:
         zstd = Nichts
     gib unittest.skipUnless(zstd, reason)
 
 def has_no_debug_ranges():
-    try:
+    versuch:
         importiere _testcapi
-    except ImportError:
-        raise unittest.SkipTest("_testinternalcapi required")
+    ausser ImportError:
+        wirf unittest.SkipTest("_testinternalcapi required")
     gib nicht _testcapi.config_get('code_debug_ranges')
 
 def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
-    try:
+    versuch:
         skip = has_no_debug_ranges()
-    except unittest.SkipTest als e:
+    ausser unittest.SkipTest als e:
         skip = Wahr
         reason = e.args[0] wenn e.args sonst reason
     gib unittest.skipIf(skip, reason)
@@ -629,7 +629,7 @@ def requires_working_socket(*, module=Falsch):
     msg = "requires socket support"
     wenn module:
         wenn nicht has_socket_support:
-            raise unittest.SkipTest(msg)
+            wirf unittest.SkipTest(msg)
     sonst:
         gib unittest.skipUnless(has_socket_support, msg)
 
@@ -637,9 +637,9 @@ def requires_working_socket(*, module=Falsch):
 has_strftime_extensions = Falsch
 wenn sys.platform != "win32":
     # bpo-47037: Windows debug builds crash mit "Debug Assertion Failed"
-    try:
+    versuch:
         has_strftime_extensions = time.strftime("%4Y") != "%4Y"
-    except ValueError:
+    ausser ValueError:
         pass
 
 # Define the URL of a dedicated HTTP server fuer the network tests.
@@ -728,9 +728,9 @@ def check_syntax_error(testcase, statement, errtext='', *, lineno=Nichts, offset
 def open_urlresource(url, *args, **kw):
     importiere urllib.request, urllib.parse
     von .os_helper importiere unlink
-    try:
+    versuch:
         importiere gzip
-    except ImportError:
+    ausser ImportError:
         gzip = Nichts
 
     check = kw.pop('check', Nichts)
@@ -765,19 +765,19 @@ def open_urlresource(url, *args, **kw):
     f = opener.open(url, timeout=INTERNET_TIMEOUT)
     wenn gzip und f.headers.get('Content-Encoding') == 'gzip':
         f = gzip.GzipFile(fileobj=f)
-    try:
+    versuch:
         mit open(fn, "wb") als out:
             s = f.read()
             waehrend s:
                 out.write(s)
                 s = f.read()
-    finally:
+    schliesslich:
         f.close()
 
     f = check_valid_file(fn)
     wenn f is nicht Nichts:
         gib f
-    raise TestFailed('invalid resource %r' % fn)
+    wirf TestFailed('invalid resource %r' % fn)
 
 
 @contextlib.contextmanager
@@ -787,9 +787,9 @@ def captured_output(stream_name):
     importiere io
     orig_stdout = getattr(sys, stream_name)
     setattr(sys, stream_name, io.StringIO())
-    try:
+    versuch:
         liefere getattr(sys, stream_name)
-    finally:
+    schliesslich:
         setattr(sys, stream_name, orig_stdout)
 
 def captured_stdout():
@@ -843,9 +843,9 @@ def disable_gc():
     importiere gc
     have_gc = gc.isenabled()
     gc.disable()
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         wenn have_gc:
             gc.enable()
 
@@ -854,9 +854,9 @@ def gc_threshold(*args):
     importiere gc
     old_threshold = gc.get_threshold()
     gc.set_threshold(*args)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         gc.set_threshold(*old_threshold)
 
 def python_is_optimized():
@@ -940,10 +940,10 @@ _TPFLAGS_BASE_EXC_SUBCLASS = 1<<30
 _TPFLAGS_TYPE_SUBCLASS = 1<<31
 
 def check_sizeof(test, o, size):
-    try:
+    versuch:
         importiere _testinternalcapi
-    except ImportError:
-        raise unittest.SkipTest("_testinternalcapi required")
+    ausser ImportError:
+        wirf unittest.SkipTest("_testinternalcapi required")
     result = sys.getsizeof(o)
     # add GC header size
     wenn ((type(o) == type) und (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
@@ -964,7 +964,7 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
     arg_values = tuple(arg_values)
     def decorator(func):
         wenn isinstance(func, type):
-            raise TypeError('subTests() can only decorate methods, nicht classes')
+            wirf TypeError('subTests() can only decorate methods, nicht classes')
         @functools.wraps(func)
         def wrapper(self, /, *args, **kwargs):
             fuer values in arg_values:
@@ -984,32 +984,32 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
 
 @contextlib.contextmanager
 def run_with_locale(catstr, *locales):
-    try:
+    versuch:
         importiere locale
         category = getattr(locale, catstr)
         orig_locale = locale.setlocale(category)
-    except AttributeError:
+    ausser AttributeError:
         # wenn the test author gives us an invalid category string
-        raise
-    except Exception:
+        wirf
+    ausser Exception:
         # cannot retrieve original locale, so do nothing
         locale = orig_locale = Nichts
         wenn '' nicht in locales:
-            raise unittest.SkipTest('no locales')
+            wirf unittest.SkipTest('no locales')
     sonst:
         fuer loc in locales:
-            try:
+            versuch:
                 locale.setlocale(category, loc)
                 breche
-            except locale.Error:
+            ausser locale.Error:
                 pass
         sonst:
             wenn '' nicht in locales:
-                raise unittest.SkipTest(f'no locales {locales}')
+                wirf unittest.SkipTest(f'no locales {locales}')
 
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         wenn locale und orig_locale:
             locale.setlocale(category, orig_locale)
 
@@ -1022,28 +1022,28 @@ def run_with_locales(catstr, *locales):
         @functools.wraps(func)
         def wrapper(self, /, *args, **kwargs):
             dry_run = '' in locales
-            try:
+            versuch:
                 importiere locale
                 category = getattr(locale, catstr)
                 orig_locale = locale.setlocale(category)
-            except AttributeError:
+            ausser AttributeError:
                 # wenn the test author gives us an invalid category string
-                raise
-            except Exception:
+                wirf
+            ausser Exception:
                 # cannot retrieve original locale, so do nothing
                 pass
             sonst:
-                try:
+                versuch:
                     fuer loc in locales:
                         mit self.subTest(locale=loc):
-                            try:
+                            versuch:
                                 locale.setlocale(category, loc)
-                            except locale.Error:
+                            ausser locale.Error:
                                 self.skipTest(f'no locale {loc!r}')
                             sonst:
                                 dry_run = Falsch
                                 func(self, *args, **kwargs)
-                finally:
+                schliesslich:
                     locale.setlocale(category, orig_locale)
             wenn dry_run:
                 # no locales available, so just run the test
@@ -1060,10 +1060,10 @@ def run_with_locales(catstr, *locales):
 def run_with_tz(tz):
     def decorator(func):
         def inner(*args, **kwds):
-            try:
+            versuch:
                 tzset = time.tzset
-            except AttributeError:
-                raise unittest.SkipTest("tzset required")
+            ausser AttributeError:
+                wirf unittest.SkipTest("tzset required")
             wenn 'TZ' in os.environ:
                 orig_tz = os.environ['TZ']
             sonst:
@@ -1072,9 +1072,9 @@ def run_with_tz(tz):
             tzset()
 
             # now run the function, resetting the tz on exceptions
-            try:
+            versuch:
                 gib func(*args, **kwds)
-            finally:
+            schliesslich:
                 wenn orig_tz is Nichts:
                     del os.environ['TZ']
                 sonst:
@@ -1109,7 +1109,7 @@ def _parse_memlimit(limit: str) -> int:
     m = re.match(r'(\d+(?:\.\d+)?) (K|M|G|T)b?$', limit,
                  re.IGNORECASE | re.VERBOSE)
     wenn m is Nichts:
-        raise ValueError(f'Invalid memory limit: {limit!r}')
+        wirf ValueError(f'Invalid memory limit: {limit!r}')
     gib int(float(m.group(1)) * sizes[m.group(2).lower()])
 
 def set_memlimit(limit: str) -> Nichts:
@@ -1117,7 +1117,7 @@ def set_memlimit(limit: str) -> Nichts:
     global real_max_memuse
     memlimit = _parse_memlimit(limit)
     wenn memlimit < _2G - 1:
-        raise ValueError(f'Memory limit {limit!r} too low to be useful')
+        wirf ValueError(f'Memory limit {limit!r} too low to be useful')
 
     real_max_memuse = memlimit
     memlimit = min(memlimit, MAX_Py_ssize_t)
@@ -1134,9 +1134,9 @@ klasse _MemoryWatchdog:
         self.started = Falsch
 
     def start(self):
-        try:
+        versuch:
             f = open(self.procfile, 'r')
-        except OSError als e:
+        ausser OSError als e:
             logging.getLogger(__name__).warning('/proc nicht available fuer stats: %s', e, exc_info=e)
             sys.stderr.flush()
             gib
@@ -1179,7 +1179,7 @@ def bigmemtest(size, memuse, dry_run=Wahr):
 
             wenn ((real_max_memuse oder nicht dry_run)
                 und real_max_memuse < maxsize * memuse):
-                raise unittest.SkipTest(
+                wirf unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (size * memuse / (1024 ** 3)))
 
@@ -1192,9 +1192,9 @@ def bigmemtest(size, memuse, dry_run=Wahr):
             sonst:
                 watchdog = Nichts
 
-            try:
+            versuch:
                 gib f(self, maxsize)
-            finally:
+            schliesslich:
                 wenn watchdog:
                     watchdog.stop()
 
@@ -1208,10 +1208,10 @@ def bigaddrspacetest(f):
     def wrapper(self):
         wenn max_memuse < MAX_Py_ssize_t:
             wenn MAX_Py_ssize_t >= 2**63 - 1 und max_memuse >= 2**31:
-                raise unittest.SkipTest(
+                wirf unittest.SkipTest(
                     "not enough memory: try a 32-bit build instead")
             sonst:
-                raise unittest.SkipTest(
+                wirf unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
         sonst:
@@ -1266,7 +1266,7 @@ def check_impl_detail(**guards):
        Examples:
           wenn check_impl_detail():               # only on CPython (default)
           wenn check_impl_detail(jython=Wahr):    # only on Jython
-          wenn check_impl_detail(cpython=Falsch):  # everywhere except on CPython
+          wenn check_impl_detail(cpython=Falsch):  # everywhere ausser on CPython
     """
     guards, default = _parse_guards(guards)
     gib guards.get(sys.implementation.name, default)
@@ -1279,10 +1279,10 @@ def no_tracing(func):
         @functools.wraps(func)
         def trace_wrapper(*args, **kwargs):
             original_trace = sys.gettrace()
-            try:
+            versuch:
                 sys.settrace(Nichts)
                 gib func(*args, **kwargs)
-            finally:
+            schliesslich:
                 sys.settrace(original_trace)
 
     coverage_wrapper = trace_wrapper
@@ -1291,10 +1291,10 @@ def no_tracing(func):
         @functools.wraps(func)
         def coverage_wrapper(*args, **kwargs):
             original_events = sys.monitoring.get_events(cov)
-            try:
+            versuch:
                 sys.monitoring.set_events(cov, 0)
                 gib trace_wrapper(*args, **kwargs)
-            finally:
+            schliesslich:
                 sys.monitoring.set_events(cov, original_events)
 
     gib coverage_wrapper
@@ -1332,10 +1332,10 @@ def refcount_test(test):
 
 
 def requires_limited_api(test):
-    try:
+    versuch:
         importiere _testcapi  # noqa: F401
         importiere _testlimitedcapi  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         gib unittest.skip('needs _testcapi und _testlimitedcapi modules')(test)
     gib test
 
@@ -1428,10 +1428,10 @@ def reap_children():
     # Reap all our dead child processes so we don't leave zombies around.
     # These hog resources und might be causing some of the buildbots to die.
     waehrend Wahr:
-        try:
+        versuch:
             # Read the exit status of any child process which already completed
             pid, status = os.waitpid(-1, os.WNOHANG)
-        except OSError:
+        ausser OSError:
             breche
 
         wenn pid == 0:
@@ -1460,15 +1460,15 @@ def swap_attr(obj, attr, new_val):
     wenn hasattr(obj, attr):
         real_val = getattr(obj, attr)
         setattr(obj, attr, new_val)
-        try:
+        versuch:
             liefere real_val
-        finally:
+        schliesslich:
             setattr(obj, attr, real_val)
     sonst:
         setattr(obj, attr, new_val)
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             wenn hasattr(obj, attr):
                 delattr(obj, attr)
 
@@ -1491,15 +1491,15 @@ def swap_item(obj, item, new_val):
     wenn item in obj:
         real_val = obj[item]
         obj[item] = new_val
-        try:
+        versuch:
             liefere real_val
-        finally:
+        schliesslich:
             obj[item] = real_val
     sonst:
         obj[item] = new_val
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             wenn item in obj:
                 del obj[item]
 
@@ -1627,9 +1627,9 @@ klasse PythonSymlink:
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         fuer link in self._linked:
-            try:
+            versuch:
                 os.remove(link)
-            except IOError als ex:
+            ausser IOError als ex:
                 wenn verbose:
                     drucke("failed to clean up {}: {}".format(link, ex))
 
@@ -1643,7 +1643,7 @@ klasse PythonSymlink:
             wenn verbose:
                 drucke(repr(r[0]))
                 drucke(repr(r[1]), file=sys.stderr)
-            raise RuntimeError(
+            wirf RuntimeError(
                 'unexpected gib code: {0} (0x{0:08X})'.format(p.returncode))
         gib r
 
@@ -1662,7 +1662,7 @@ def skip_if_pgo_task(test):
 
 
 def detect_api_mismatch(ref_api, other_api, *, ignore=()):
-    """Returns the set of items in ref_api nicht in other_api, except fuer a
+    """Returns the set of items in ref_api nicht in other_api, ausser fuer a
     defined list of items to be ignored in this check.
 
     By default this skips private attributes beginning mit '_' but
@@ -1736,9 +1736,9 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
 
 
 def suppress_msvcrt_asserts(verbose=Falsch):
-    try:
+    versuch:
         importiere msvcrt
-    except ImportError:
+    ausser ImportError:
         gib
 
     msvcrt.SetErrorMode(msvcrt.SEM_FAILCRITICALERRORS
@@ -1774,9 +1774,9 @@ klasse SuppressCrashReport:
         """
         wenn sys.platform.startswith('win'):
             # see http://msdn.microsoft.com/en-us/library/windows/desktop/ms680621.aspx
-            try:
+            versuch:
                 importiere msvcrt
-            except ImportError:
+            ausser ImportError:
                 gib
 
             self.old_value = msvcrt.GetErrorMode()
@@ -1797,17 +1797,17 @@ klasse SuppressCrashReport:
                     self.old_modes[report_type] = old_mode, old_file
 
         sonst:
-            try:
+            versuch:
                 importiere resource
                 self.resource = resource
-            except ImportError:
+            ausser ImportError:
                 self.resource = Nichts
             wenn self.resource is nicht Nichts:
-                try:
+                versuch:
                     self.old_value = self.resource.getrlimit(self.resource.RLIMIT_CORE)
                     self.resource.setrlimit(self.resource.RLIMIT_CORE,
                                             (0, self.old_value[1]))
-                except (ValueError, OSError):
+                ausser (ValueError, OSError):
                     pass
 
             wenn sys.platform == 'darwin':
@@ -1846,9 +1846,9 @@ klasse SuppressCrashReport:
                     msvcrt.CrtSetReportFile(report_type, old_file)
         sonst:
             wenn self.resource is nicht Nichts:
-                try:
+                versuch:
                     self.resource.setrlimit(self.resource.RLIMIT_CORE, self.old_value)
-                except (ValueError, OSError):
+                ausser (ValueError, OSError):
                     pass
 
 
@@ -1861,14 +1861,14 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 
     """
     # check that 'attr_name' is a real attribute fuer 'object_to_patch'
-    # will raise AttributeError wenn it does nicht exist
+    # will wirf AttributeError wenn it does nicht exist
     getattr(object_to_patch, attr_name)
 
     # keep a copy of the old value
     attr_is_local = Falsch
-    try:
+    versuch:
         old_value = object_to_patch.__dict__[attr_name]
-    except (AttributeError, KeyError):
+    ausser (AttributeError, KeyError):
         old_value = getattr(object_to_patch, attr_name, Nichts)
     sonst:
         attr_is_local = Wahr
@@ -1889,10 +1889,10 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 @contextlib.contextmanager
 def patch_list(orig):
     """Like unittest.mock.patch.dict, but fuer lists."""
-    try:
+    versuch:
         saved = orig[:]
         liefere
-    finally:
+    schliesslich:
         orig[:] = saved
 
 
@@ -1902,10 +1902,10 @@ def run_in_subinterp(code):
     module is enabled.
     """
     _check_tracemalloc()
-    try:
+    versuch:
         importiere _testcapi
-    except ImportError:
-        raise unittest.SkipTest("requires _testcapi")
+    ausser ImportError:
+        wirf unittest.SkipTest("requires _testcapi")
     gib _testcapi.run_in_subinterp(code)
 
 
@@ -1915,10 +1915,10 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
     module is enabled.
     """
     _check_tracemalloc()
-    try:
+    versuch:
         importiere _testinternalcapi
-    except ImportError:
-        raise unittest.SkipTest("requires _testinternalcapi")
+    ausser ImportError:
+        wirf unittest.SkipTest("requires _testinternalcapi")
     wenn own_gil is nicht Nichts:
         assert 'gil' nicht in config, (own_gil, config)
         config['gil'] = 'own' wenn own_gil sonst 'shared'
@@ -1931,7 +1931,7 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
         sowenn gil == 2:
             config['gil'] = 'own'
         sowenn nicht isinstance(gil, str):
-            raise NotImplementedError(gil)
+            wirf NotImplementedError(gil)
     config = types.SimpleNamespace(**config)
     gib _testinternalcapi.run_in_subinterp_with_config(code, config)
 
@@ -1939,13 +1939,13 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
 def _check_tracemalloc():
     # Issue #10915, #15751: PyGILState_*() functions don't work with
     # sub-interpreters, the tracemalloc module uses these functions internally
-    try:
+    versuch:
         importiere tracemalloc
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
         wenn tracemalloc.is_tracing():
-            raise unittest.SkipTest("run_in_subinterp() cannot be used "
+            wirf unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "if tracemalloc module is tracing "
                                      "memory allocations")
 
@@ -1957,9 +1957,9 @@ def check_free_after_iterating(test, iter, cls, args=()):
             def __del__(self):
                 nonlocal done
                 done = Wahr
-                try:
+                versuch:
                     next(it)
-                except StopIteration:
+                ausser StopIteration:
                     pass
 
         it = iter(A(*args))
@@ -1989,9 +1989,9 @@ def missing_compiler_executable(cmd_names=[]):
     sysconfig.customize_compiler(compiler)
     wenn compiler.compiler_type == "msvc":
         # MSVC has no executables, so check whether initialization succeeds
-        try:
+        versuch:
             compiler.initialize()
-        except errors.PlatformError:
+        ausser errors.PlatformError:
             gib "msvc"
     fuer name in compiler.executables:
         wenn cmd_names und name nicht in cmd_names:
@@ -2024,12 +2024,12 @@ def setswitchinterval(interval):
 
 def get_pagesize():
     """Get size of a page in bytes."""
-    try:
+    versuch:
         page_size = os.sysconf('SC_PAGESIZE')
-    except (ValueError, AttributeError):
-        try:
+    ausser (ValueError, AttributeError):
+        versuch:
             page_size = os.sysconf('SC_PAGE_SIZE')
-        except (ValueError, AttributeError):
+        ausser (ValueError, AttributeError):
             page_size = 4096
     gib page_size
 
@@ -2044,10 +2044,10 @@ def disable_faulthandler():
     fd = sys.__stderr__.fileno()
 
     is_enabled = faulthandler.is_enabled()
-    try:
+    versuch:
         faulthandler.disable()
         liefere
-    finally:
+    schliesslich:
         wenn is_enabled:
             faulthandler.enable(file=fd, all_threads=Wahr)
 
@@ -2067,9 +2067,9 @@ klasse SaveSignals:
         self.signals = signal.valid_signals()
         # SIGKILL und SIGSTOP signals cannot be ignored nor caught
         fuer signame in ('SIGKILL', 'SIGSTOP'):
-            try:
+            versuch:
                 signum = getattr(signal, signame)
-            except AttributeError:
+            ausser AttributeError:
                 weiter
             self.signals.remove(signum)
         self.handlers = {}
@@ -2092,18 +2092,18 @@ klasse SaveSignals:
 
 
 def with_pymalloc():
-    try:
+    versuch:
         importiere _testcapi
-    except ImportError:
-        raise unittest.SkipTest("requires _testcapi")
+    ausser ImportError:
+        wirf unittest.SkipTest("requires _testcapi")
     gib _testcapi.WITH_PYMALLOC und nicht Py_GIL_DISABLED
 
 
 def with_mimalloc():
-    try:
+    versuch:
         importiere _testcapi
-    except ImportError:
-        raise unittest.SkipTest("requires _testcapi")
+    ausser ImportError:
+        wirf unittest.SkipTest("requires _testcapi")
     gib _testcapi.WITH_MIMALLOC
 
 
@@ -2254,7 +2254,7 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
     Raise an AssertionError wenn the process exit code is nicht equal to exitcode.
 
     If the process runs longer than timeout seconds (LONG_TIMEOUT by default),
-    kill the process (if signal.SIGKILL is available) und raise an
+    kill the process (if signal.SIGKILL is available) und wirf an
     AssertionError. The timeout feature is nicht available on Windows.
     """
     wenn os.name != "nt":
@@ -2270,15 +2270,15 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
                 breche
             # rety: the process is still running
         sonst:
-            try:
+            versuch:
                 os.kill(pid, signal.SIGKILL)
                 os.waitpid(pid, 0)
-            except OSError:
+            ausser OSError:
                 # Ignore errors like ChildProcessError oder PermissionError
                 pass
 
             dt = time.monotonic() - start_time
-            raise AssertionError(f"process {pid} is still running "
+            wirf AssertionError(f"process {pid} is still running "
                                  f"after {dt:.1f} seconds")
     sonst:
         # Windows implementation: don't support timeout :-(
@@ -2286,12 +2286,12 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
 
     exitcode2 = os.waitstatus_to_exitcode(status)
     wenn exitcode2 != exitcode:
-        raise AssertionError(f"process {pid} exited mit code {exitcode2}, "
+        wirf AssertionError(f"process {pid} exited mit code {exitcode2}, "
                              f"but exit code {exitcode} is expected")
 
     # sanity check: it should nicht fail in practice
     wenn pid2 != pid:
-        raise AssertionError(f"pid {pid2} != pid {pid}")
+        wirf AssertionError(f"pid {pid2} != pid {pid}")
 
 def skip_if_broken_multiprocessing_synchronize():
     """
@@ -2309,7 +2309,7 @@ def skip_if_broken_multiprocessing_synchronize():
     synchronize = import_module('multiprocessing.synchronize')
 
     wenn sys.platform == "linux":
-        try:
+        versuch:
             # bpo-38377: On Linux, creating a semaphore fails mit OSError
             # wenn the current user does nicht have the permission to create
             # a file in /dev/shm/ directory.
@@ -2322,8 +2322,8 @@ def skip_if_broken_multiprocessing_synchronize():
             # scenario. Awkward. This enables gh-84559. No code involved
             # should have threads at that point so fork() should be safe.
 
-        except OSError als exc:
-            raise unittest.SkipTest(f"broken multiprocessing SemLock: {exc!r}")
+        ausser OSError als exc:
+            wirf unittest.SkipTest(f"broken multiprocessing SemLock: {exc!r}")
 
 
 def check_disallow_instantiation(testcase, tp, *args, **kwds):
@@ -2347,18 +2347,18 @@ def get_recursion_depth():
 
     In the __main__ module, at the module level, it should be 1.
     """
-    try:
+    versuch:
         importiere _testinternalcapi
         depth = _testinternalcapi.get_recursion_depth()
-    except (ImportError, RecursionError) als exc:
+    ausser (ImportError, RecursionError) als exc:
         # sys._getframe() + frame.f_back implementation.
-        try:
+        versuch:
             depth = 0
             frame = sys._getframe()
             waehrend frame is nicht Nichts:
                 depth += 1
                 frame = frame.f_back
-        finally:
+        schliesslich:
             # Break any reference cycles.
             frame = Nichts
 
@@ -2379,10 +2379,10 @@ def get_recursion_available():
 def set_recursion_limit(limit):
     """Temporarily change the recursion limit."""
     original_limit = sys.getrecursionlimit()
-    try:
+    versuch:
         sys.setrecursionlimit(limit)
         liefere
-    finally:
+    schliesslich:
         sys.setrecursionlimit(original_limit)
 
 def infinite_recursion(max_depth=Nichts):
@@ -2392,7 +2392,7 @@ def infinite_recursion(max_depth=Nichts):
         # very deep recursion.
         max_depth = 20_000
     sowenn max_depth < 3:
-        raise ValueError(f"max_depth must be at least 3, got {max_depth}")
+        wirf ValueError(f"max_depth must be at least 3, got {max_depth}")
     depth = get_recursion_depth()
     depth = max(depth - 1, 1)  # Ignore infinite_recursion() frame.
     limit = depth + max_depth
@@ -2410,7 +2410,7 @@ def ignore_deprecations_from(module: str, *, like: str) -> object:
 
 def clear_ignored_deprecations(*tokens: object) -> Nichts:
     wenn nicht tokens:
-        raise ValueError("Provide token oder tokens returned by ignore_deprecations_from")
+        wirf ValueError("Provide token oder tokens returned by ignore_deprecations_from")
 
     new_filters = []
     old_filters = warnings._get_filters()
@@ -2432,16 +2432,16 @@ def clear_ignored_deprecations(*tokens: object) -> Nichts:
 # Skip a test wenn venv mit pip is known to nicht work.
 def requires_venv_with_pip():
     # ensurepip requires zlib to open ZIP archives (.whl binary wheel packages)
-    try:
+    versuch:
         importiere zlib  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         gib unittest.skipIf(Wahr, "venv: ensurepip requires zlib")
 
     # bpo-26610: pip/pep425tags.py requires ctypes.
     # gh-92820: setuptools/windows_support.py uses ctypes (setuptools 58.1).
-    try:
+    versuch:
         importiere ctypes
-    except ImportError:
+    ausser ImportError:
         ctypes = Nichts
     gib unittest.skipUnless(ctypes, 'venv: pip requires ctypes')
 
@@ -2465,7 +2465,7 @@ def _findwheel(pkgname):
         prefix = pkgname + '-'
         wenn filename.startswith(prefix):
             gib os.path.join(wheel_dir, filename)
-    raise FileNotFoundError(f"No wheel fuer {pkgname} found in {wheel_dir}")
+    wirf FileNotFoundError(f"No wheel fuer {pkgname} found in {wheel_dir}")
 
 
 # Context manager that creates a virtual environment, install setuptools in it,
@@ -2556,7 +2556,7 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
     """
     Run the loop body until "break" stops the loop.
 
-    After *timeout* seconds, raise an AssertionError wenn *error* is true,
+    After *timeout* seconds, wirf an AssertionError wenn *error* is true,
     oder just stop wenn *error is false.
 
     Example:
@@ -2571,11 +2571,11 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
             wenn check():
                 breche
         sonst:
-            raise RuntimeError('my custom error')
+            wirf RuntimeError('my custom error')
 
     """
     wenn timeout <= 0:
-        raise ValueError("timeout must be greater than zero")
+        wirf ValueError("timeout must be greater than zero")
 
     start_time = time.monotonic()
     deadline = start_time + timeout
@@ -2591,7 +2591,7 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
         msg = f"timeout ({dt:.1f} seconds)"
         wenn err_msg:
             msg = f"{msg}: {err_msg}"
-        raise AssertionError(msg)
+        wirf AssertionError(msg)
 
 
 def sleeping_retry(timeout, err_msg=Nichts, /,
@@ -2617,7 +2617,7 @@ def sleeping_retry(timeout, err_msg=Nichts, /,
             wenn check():
                 breche
         sonst:
-            raise RuntimeError('my custom error')
+            wirf RuntimeError('my custom error')
     """
 
     delay = init_delay
@@ -2660,9 +2660,9 @@ klasse Stopwatch:
         gib self
 
     def __exit__(self, *exc):
-        try:
+        versuch:
             end_time = self.get_time()
-        finally:
+        schliesslich:
             result = self.context.__exit__(*exc)
         self.seconds = end_time - self.start_time
         gib result
@@ -2672,10 +2672,10 @@ klasse Stopwatch:
 def adjust_int_max_str_digits(max_digits):
     """Temporarily change the integer string conversion length limit."""
     current = sys.get_int_max_str_digits()
-    try:
+    versuch:
         sys.set_int_max_str_digits(max_digits)
         liefere
-    finally:
+    schliesslich:
         sys.set_int_max_str_digits(current)
 
 
@@ -2750,9 +2750,9 @@ def walk_class_hierarchy(top, *, topdown=Wahr):
 
 def iter_builtin_types():
     # First try the explicit route.
-    try:
+    versuch:
         importiere _testinternalcapi
-    except ImportError:
+    ausser ImportError:
         _testinternalcapi = Nichts
     wenn _testinternalcapi is nicht Nichts:
         liefere von _testinternalcapi.get_static_builtin_types()
@@ -2806,9 +2806,9 @@ def iter_name_in_mro(cls, name):
     fuer base in inspect._static_getmro(cls):
         # This can fail wenn "base" is weird.
         ns = inspect._get_dunder_dict_of_class(base)
-        try:
+        versuch:
             obj = ns[name]
-        except KeyError:
+        ausser KeyError:
             weiter
         liefere obj, base
 
@@ -2820,20 +2820,20 @@ def find_name_in_mro(cls, name, default=inspect._sentinel):
         gib res
     wenn default is nicht inspect._sentinel:
         gib default, Nichts
-    raise AttributeError(name)
+    wirf AttributeError(name)
 
 
 # XXX The gib value should always be exactly the same...
 def identify_type_slot_wrappers():
-    try:
+    versuch:
         importiere _testinternalcapi
-    except ImportError:
+    ausser ImportError:
         _testinternalcapi = Nichts
     wenn _testinternalcapi is nicht Nichts:
         names = {n: Nichts fuer n in _testinternalcapi.identify_type_slot_wrappers()}
         gib list(names)
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 def iter_slot_wrappers(cls):
@@ -2846,9 +2846,9 @@ def iter_slot_wrappers(cls):
         assert name.startswith('__') und name.endswith('__'), (cls, name, value)
         gib Wahr
 
-    try:
+    versuch:
         attrs = identify_type_slot_wrappers()
-    except NotImplementedError:
+    ausser NotImplementedError:
         attrs = Nichts
     wenn attrs is nicht Nichts:
         fuer attr in sorted(attrs):
@@ -2865,9 +2865,9 @@ def iter_slot_wrappers(cls):
         wenn name in ns:
             unused.remove(name)
 
-        try:
+        versuch:
             value = getattr(cls, name)
-        except AttributeError:
+        ausser AttributeError:
             # It's als though it weren't in __dir__.
             assert name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
             wenn name in ns und is_slot_wrapper(name, ns[name]):
@@ -2973,22 +2973,22 @@ def get_signal_name(exitcode):
 
     wenn exitcode < 0:
         signum = -exitcode
-        try:
+        versuch:
             gib signal.Signals(signum).name
-        except ValueError:
+        ausser ValueError:
             pass
 
     # Shell exit code (ex: WASI build)
     wenn 128 < exitcode < 256:
         signum = exitcode - 128
-        try:
+        versuch:
             gib signal.Signals(signum).name
-        except ValueError:
+        ausser ValueError:
             pass
 
-    try:
+    versuch:
         gib WINDOWS_STATUS[exitcode]
-    except KeyError:
+    ausser KeyError:
         pass
 
     gib Nichts
@@ -3022,19 +3022,19 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
     wenn nicht hasattr(os, "O_SYNC"):
         gib Falsch
 
-    try:
+    versuch:
         mit open("/run/systemd/container", "rb") als fp:
             wenn fp.read().rstrip() != b"systemd-nspawn":
                 gib Falsch
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         gib Falsch
 
     # If systemd-nspawn is used, O_SYNC flag will immediately
     # trigger EINVAL.  Otherwise, ENOENT will be given instead.
     importiere errno
-    try:
+    versuch:
         fd = os.open(__file__, os.O_RDONLY | os.O_SYNC)
-    except OSError als err:
+    ausser OSError als err:
         wenn err.errno == errno.EINVAL:
             gib Wahr
     sonst:
@@ -3044,13 +3044,13 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
 
 def run_no_yield_async_fn(async_fn, /, *args, **kwargs):
     coro = async_fn(*args, **kwargs)
-    try:
+    versuch:
         coro.send(Nichts)
-    except StopIteration als e:
+    ausser StopIteration als e:
         gib e.value
     sonst:
-        raise AssertionError("coroutine did nicht complete")
-    finally:
+        wirf AssertionError("coroutine did nicht complete")
+    schliesslich:
         coro.close()
 
 
@@ -3061,29 +3061,29 @@ def async_yield(v):
 
 def run_yielding_async_fn(async_fn, /, *args, **kwargs):
     coro = async_fn(*args, **kwargs)
-    try:
+    versuch:
         waehrend Wahr:
-            try:
+            versuch:
                 coro.send(Nichts)
-            except StopIteration als e:
+            ausser StopIteration als e:
                 gib e.value
-    finally:
+    schliesslich:
         coro.close()
 
 
 def is_libssl_fips_mode():
-    try:
+    versuch:
         von _hashlib importiere get_fips_mode  # ask _hashopenssl.c
-    except ImportError:
+    ausser ImportError:
         gib Falsch  # more of a maybe, unless we add this to the _ssl module.
     gib get_fips_mode() != 0
 
 def _supports_remote_attaching():
     PROCESS_VM_READV_SUPPORTED = Falsch
 
-    try:
+    versuch:
         von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
-    except ImportError:
+    ausser ImportError:
         pass
 
     gib PROCESS_VM_READV_SUPPORTED

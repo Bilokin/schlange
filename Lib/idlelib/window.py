@@ -13,9 +13,9 @@ klasse WindowList:
         self.dict[str(window)] = window
 
     def delete(self, window):
-        try:
+        versuch:
             del self.dict[str(window)]
-        except KeyError:
+        ausser KeyError:
             # Sometimes, destroy() is called twice
             pass
         self.call_callbacks()
@@ -24,9 +24,9 @@ klasse WindowList:
         list = []
         fuer key in self.dict:
             window = self.dict[key]
-            try:
+            versuch:
                 title = window.get_title()
-            except TclError:
+            ausser TclError:
                 weiter
             list.append((title, key, window))
         list.sort()
@@ -37,16 +37,16 @@ klasse WindowList:
         self.callbacks.append(callback)
 
     def unregister_callback(self, callback):
-        try:
+        versuch:
             self.callbacks.remove(callback)
-        except ValueError:
+        ausser ValueError:
             pass
 
     def call_callbacks(self):
         fuer callback in self.callbacks:
-            try:
+            versuch:
                 callback()
-            except:
+            ausser:
                 t, v, tb = sys.exc_info()
                 drucke("warning: callback failed in WindowList", t, ":", v)
 
@@ -81,13 +81,13 @@ klasse ListedToplevel(Toplevel):
         gib self.wm_title()
 
     def wakeup(self):
-        try:
+        versuch:
             wenn self.wm_state() == "iconic":
                 self.wm_withdraw()
                 self.wm_deiconify()
             self.tkraise()
             self.focused_widget.focus_set()
-        except TclError:
+        ausser TclError:
             # This can happen when the Window menu was torn off.
             # Simply ignore it.
             pass

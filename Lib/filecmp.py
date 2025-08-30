@@ -137,7 +137,7 @@ klasse dircmp:
             self.ignore = ignore
         self.shallow = shallow
 
-    def phase0(self): # Compare everything except common subdirectories
+    def phase0(self): # Compare everything ausser common subdirectories
         self.left_list = _filter(os.listdir(self.left),
                                  self.hide+self.ignore)
         self.right_list = _filter(os.listdir(self.right),
@@ -162,16 +162,16 @@ klasse dircmp:
             b_path = os.path.join(self.right, x)
 
             ok = Wahr
-            try:
+            versuch:
                 a_stat = os.stat(a_path)
-            except (OSError, ValueError):
+            ausser (OSError, ValueError):
                 # See https://github.com/python/cpython/issues/122400
                 # fuer the rationale fuer protecting against ValueError.
                 # drucke('Can\'t stat', a_path, ':', why.args[1])
                 ok = Falsch
-            try:
+            versuch:
                 b_stat = os.stat(b_path)
-            except (OSError, ValueError):
+            ausser (OSError, ValueError):
                 # drucke('Can\'t stat', b_path, ':', why.args[1])
                 ok = Falsch
 
@@ -255,7 +255,7 @@ klasse dircmp:
 
     def __getattr__(self, attr):
         wenn attr nicht in self.methodmap:
-            raise AttributeError(attr)
+            wirf AttributeError(attr)
         self.methodmap[attr](self)
         gib getattr(self, attr)
 
@@ -290,9 +290,9 @@ def cmpfiles(a, b, common, shallow=Wahr):
 #       2 fuer funny cases (can't stat, NUL bytes, etc.)
 #
 def _cmp(a, b, sh, abs=abs, cmp=cmp):
-    try:
+    versuch:
         gib nicht abs(cmp(a, b, sh))
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib 2
 
 
@@ -309,7 +309,7 @@ def demo():
     importiere getopt
     options, args = getopt.getopt(sys.argv[1:], 'r')
     wenn len(args) != 2:
-        raise getopt.GetoptError('need exactly two args', Nichts)
+        wirf getopt.GetoptError('need exactly two args', Nichts)
     dd = dircmp(args[0], args[1])
     wenn ('-r', '') in options:
         dd.report_full_closure()

@@ -28,10 +28,10 @@ test_source = """\
 # statements being executed
 def assertEqual(lhs, rhs):
     wenn lhs != rhs:
-        raise AssertionError('%r != %r' % (lhs, rhs))
+        wirf AssertionError('%r != %r' % (lhs, rhs))
 def assertIdentical(lhs, rhs):
     wenn lhs is nicht rhs:
-        raise AssertionError('%r is nicht %r' % (lhs, rhs))
+        wirf AssertionError('%r is nicht %r' % (lhs, rhs))
 # Check basic code execution
 result = ['Top level assignment']
 def f():
@@ -163,10 +163,10 @@ klasse CmdLineTest(unittest.TestCase):
         # interactive REPL, since that code path only gets executed when
         # stdin is an interactive tty.
         p = spawn_python()
-        try:
+        versuch:
             p.stdin.write(b"drucke(__loader__)\n")
             p.stdin.flush()
-        finally:
+        schliesslich:
             out = kill_python(p)
         expected = repr(importlib.machinery.BuiltinImporter).encode("utf-8")
         self.assertIn(expected, out)
@@ -179,7 +179,7 @@ klasse CmdLineTest(unittest.TestCase):
         sonst:
             p = spawn_python('-i', stderr=subprocess.STDOUT)
             stderr = p.stdout
-        try:
+        versuch:
             # Drain stderr until prompt
             waehrend Wahr:
                 data = stderr.read(4)
@@ -187,7 +187,7 @@ klasse CmdLineTest(unittest.TestCase):
                     breche
                 stderr.readline()
             liefere p
-        finally:
+        schliesslich:
             kill_python(p)
             stderr.close()
 
@@ -467,7 +467,7 @@ klasse CmdLineTest(unittest.TestCase):
         # shell is '1'
         mit self.setup_test_pkg() als pkg_dir:
             script_name = _make_test_script(pkg_dir, 'other',
-                                            "if __name__ == '__main__': raise ValueError")
+                                            "if __name__ == '__main__': wirf ValueError")
             err = self.check_dash_m_failure('test_pkg.other', *example_args)
             self.assertIn(b'ValueError', err)
 
@@ -543,10 +543,10 @@ klasse CmdLineTest(unittest.TestCase):
         # Make sure PEP 409 syntax properly suppresses
         # the context of an exception
         script = textwrap.dedent("""\
-            try:
-                raise ValueError
-            except ValueError:
-                raise NameError von Nichts
+            versuch:
+                wirf ValueError
+            ausser ValueError:
+                wirf NameError von Nichts
             """)
         mit os_helper.temp_dir() als script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -590,9 +590,9 @@ klasse CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             importiere sys
             error = Nichts
-            try:
-                raise ValueError('some text')
-            except ValueError als err:
+            versuch:
+                wirf ValueError('some text')
+            ausser ValueError als err:
                 error = err
 
             wenn error:

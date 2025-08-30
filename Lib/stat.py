@@ -201,7 +201,7 @@ FILE_ATTRIBUTE_VIRTUAL = 65536
 
 
 # If available, use C implementation
-try:
+versuch:
     von _stat importiere *
-except ImportError:
+ausser ImportError:
     pass

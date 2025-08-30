@@ -65,7 +65,7 @@ klasse PLexer:
         tkn = self.next()
         wenn tkn is nicht Nichts und tkn.kind == kind:
             gib tkn
-        raise self.make_syntax_error(
+        wirf self.make_syntax_error(
             f"Expected {kind!r} but got {tkn und tkn.text!r}", tkn
         )
 
@@ -80,7 +80,7 @@ klasse PLexer:
                 parens += 1
             wenn tkn.kind == "RPAREN":
                 parens -= 1
-        raise self.make_syntax_error(
+        wirf self.make_syntax_error(
             f"Expected {end!r} but reached EOF", tkn)
 
     def extract_line(self, lineno: int) -> str:

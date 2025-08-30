@@ -47,10 +47,10 @@ def interpreter_requires_environment():
             gib Falsch
 
         # Try running an interpreter mit -E to see wenn it works oder not.
-        try:
+        versuch:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
-        except subprocess.CalledProcessError:
+        ausser subprocess.CalledProcessError:
             __cached_interp_requires_environment = Wahr
         sonst:
             __cached_interp_requires_environment = Falsch
@@ -77,7 +77,7 @@ klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
         signame = support.get_signal_name(exitcode)
         wenn signame:
             exitcode = f"{exitcode} ({signame})"
-        raise AssertionError(f"Process gib code is {exitcode}\n"
+        wirf AssertionError(f"Process gib code is {exitcode}\n"
                              f"command line: {cmd_line!r}\n"
                              f"\n"
                              f"stdout:\n"
@@ -151,9 +151,9 @@ def run_python_until_end(*args, **env_vars):
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          env=env, cwd=cwd)
     mit proc:
-        try:
+        versuch:
             out, err = proc.communicate()
-        finally:
+        schliesslich:
             proc.kill()
             subprocess._cleanup()
     rc = proc.returncode
@@ -177,7 +177,7 @@ def assert_python_ok(*args, **env_vars):
     If the __cleanenv keyword is set, env_vars is used als a fresh environment.
 
     Python is started in isolated mode (command line option -I),
-    except wenn the __isolated keyword is set to Falsch.
+    ausser wenn the __isolated keyword is set to Falsch.
     """
     gib _assert_python(Wahr, *args, **env_vars)
 
@@ -319,6 +319,6 @@ def run_test_script(script):
         drucke(title(f"{name} completed: exit code {proc.returncode}"),
               flush=Wahr)
         wenn proc.returncode:
-            raise AssertionError(f"{name} failed")
+            wirf AssertionError(f"{name} failed")
     sonst:
         assert_python_ok("-u", script, "-v")

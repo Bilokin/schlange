@@ -183,35 +183,35 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(d[2], 42)
         klasse E(collections.UserDict):
             def __missing__(self, key):
-                raise RuntimeError(key)
+                wirf RuntimeError(key)
         e = E()
-        try:
+        versuch:
             e[42]
-        except RuntimeError als err:
+        ausser RuntimeError als err:
             self.assertEqual(err.args, (42,))
         sonst:
-            self.fail("e[42] didn't raise RuntimeError")
+            self.fail("e[42] didn't wirf RuntimeError")
         klasse F(collections.UserDict):
             def __init__(self):
                 # An instance variable __missing__ should have no effect
                 self.__missing__ = lambda key: Nichts
                 collections.UserDict.__init__(self)
         f = F()
-        try:
+        versuch:
             f[42]
-        except KeyError als err:
+        ausser KeyError als err:
             self.assertEqual(err.args, (42,))
         sonst:
-            self.fail("f[42] didn't raise KeyError")
+            self.fail("f[42] didn't wirf KeyError")
         klasse G(collections.UserDict):
             pass
         g = G()
-        try:
+        versuch:
             g[42]
-        except KeyError als err:
+        ausser KeyError als err:
             self.assertEqual(err.args, (42,))
         sonst:
-            self.fail("g[42] didn't raise KeyError")
+            self.fail("g[42] didn't wirf KeyError")
 
     test_repr_deep = mapping_tests.TestHashMappingProtocol.test_repr_deep
 

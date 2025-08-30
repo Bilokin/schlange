@@ -44,14 +44,14 @@ klasse Message(email.message.Message):
         Override parent behavior to typical dict behavior.
 
         ``email.message.Message`` will emit Nichts values fuer missing
-        keys. Typical mappings, including this ``Message``, will raise
+        keys. Typical mappings, including this ``Message``, will wirf
         a key error fuer missing keys.
 
         Ref python/importlib_metadata#371.
         """
         res = super().__getitem__(item)
         wenn res is Nichts:
-            raise KeyError(item)
+            wirf KeyError(item)
         gib res
 
     def _repair_headers(self):

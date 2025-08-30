@@ -56,23 +56,23 @@ klasse ZstdFile(_streams.BaseStream):
         self._buffer = Nichts
 
         wenn nicht isinstance(mode, str):
-            raise ValueError('mode must be a str')
+            wirf ValueError('mode must be a str')
         wenn options is nicht Nichts und nicht isinstance(options, dict):
-            raise TypeError('options must be a dict oder Nichts')
+            wirf TypeError('options must be a dict oder Nichts')
         mode = mode.removesuffix('b')  # handle rb, wb, xb, ab
         wenn mode == 'r':
             wenn level is nicht Nichts:
-                raise TypeError('level is illegal in read mode')
+                wirf TypeError('level is illegal in read mode')
             self._mode = _MODE_READ
         sowenn mode in {'w', 'a', 'x'}:
             wenn level is nicht Nichts und nicht isinstance(level, int):
-                raise TypeError('level must be int oder Nichts')
+                wirf TypeError('level must be int oder Nichts')
             self._mode = _MODE_WRITE
             self._compressor = ZstdCompressor(level=level, options=options,
                                               zstd_dict=zstd_dict)
             self._pos = 0
         sonst:
-            raise ValueError(f'Invalid mode: {mode!r}')
+            wirf ValueError(f'Invalid mode: {mode!r}')
 
         wenn isinstance(file, (str, bytes, PathLike)):
             self._fp = io.open(file, f'{mode}b')
@@ -81,7 +81,7 @@ klasse ZstdFile(_streams.BaseStream):
                 oder (mode != 'r' und hasattr(file, 'write'))):
             self._fp = file
         sonst:
-            raise TypeError('file must be a file-like object '
+            wirf TypeError('file must be a file-like object '
                             'or a str, bytes, oder PathLike object')
 
         wenn self._mode == _MODE_READ:
@@ -97,11 +97,11 @@ klasse ZstdFile(_streams.BaseStream):
         """Flush und close the file.
 
         May be called multiple times. Once the file has been closed,
-        any other operation on it will raise ValueError.
+        any other operation on it will wirf ValueError.
         """
         wenn self._fp is Nichts:
             gib
-        try:
+        versuch:
             wenn self._mode == _MODE_READ:
                 wenn getattr(self, '_buffer', Nichts):
                     self._buffer.close()
@@ -109,12 +109,12 @@ klasse ZstdFile(_streams.BaseStream):
             sowenn self._mode == _MODE_WRITE:
                 self.flush(self.FLUSH_FRAME)
                 self._compressor = Nichts
-        finally:
+        schliesslich:
             self._mode = _MODE_CLOSED
-            try:
+            versuch:
                 wenn self._close_fp:
                     self._fp.close()
-            finally:
+            schliesslich:
                 self._fp = Nichts
                 self._close_fp = Falsch
 
@@ -150,7 +150,7 @@ klasse ZstdFile(_streams.BaseStream):
             gib
         self._check_not_closed()
         wenn mode nicht in {self.FLUSH_BLOCK, self.FLUSH_FRAME}:
-            raise ValueError('Invalid mode argument, expected either '
+            wirf ValueError('Invalid mode argument, expected either '
                              'ZstdFile.FLUSH_FRAME oder '
                              'ZstdFile.FLUSH_BLOCK')
         wenn self._compressor.last_mode == mode:
@@ -248,7 +248,7 @@ klasse ZstdFile(_streams.BaseStream):
     def __next__(self):
         wenn ret := self._buffer.readline():
             gib ret
-        raise StopIteration
+        wirf StopIteration
 
     def tell(self):
         """Return the current file position."""
@@ -327,14 +327,14 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
 
     wenn text_mode:
         wenn 'b' in mode:
-            raise ValueError(f'Invalid mode: {mode!r}')
+            wirf ValueError(f'Invalid mode: {mode!r}')
     sonst:
         wenn encoding is nicht Nichts:
-            raise ValueError('Argument "encoding" nicht supported in binary mode')
+            wirf ValueError('Argument "encoding" nicht supported in binary mode')
         wenn errors is nicht Nichts:
-            raise ValueError('Argument "errors" nicht supported in binary mode')
+            wirf ValueError('Argument "errors" nicht supported in binary mode')
         wenn newline is nicht Nichts:
-            raise ValueError('Argument "newline" nicht supported in binary mode')
+            wirf ValueError('Argument "newline" nicht supported in binary mode')
 
     binary_file = ZstdFile(file, mode, level=level, options=options,
                            zstd_dict=zstd_dict)

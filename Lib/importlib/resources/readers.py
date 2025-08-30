@@ -44,10 +44,10 @@ klasse ZipReader(abc.TraversableResources):
         self.archive = loader.archive
 
     def open_resource(self, resource):
-        try:
+        versuch:
             gib super().open_resource(resource)
-        except KeyError als exc:
-            raise FileNotFoundError(exc.args[0])
+        ausser KeyError als exc:
+            wirf FileNotFoundError(exc.args[0])
 
     def is_resource(self, path):
         """
@@ -73,9 +73,9 @@ klasse MultiplexedPath(abc.Traversable):
         self._paths = list(map(_ensure_traversable, remove_duplicates(paths)))
         wenn nicht self._paths:
             message = 'MultiplexedPath must contain at least one path'
-            raise FileNotFoundError(message)
+            wirf FileNotFoundError(message)
         wenn nicht all(path.is_dir() fuer path in self._paths):
-            raise NotADirectoryError('MultiplexedPath only supports directories')
+            wirf NotADirectoryError('MultiplexedPath only supports directories')
 
     def iterdir(self):
         children = (child fuer path in self._paths fuer child in path.iterdir())
@@ -84,10 +84,10 @@ klasse MultiplexedPath(abc.Traversable):
         gib map(self._follow, (locs fuer name, locs in groups))
 
     def read_bytes(self):
-        raise FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} is nicht a file')
 
     def read_text(self, *args, **kwargs):
-        raise FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} is nicht a file')
 
     def is_dir(self):
         gib Wahr
@@ -96,9 +96,9 @@ klasse MultiplexedPath(abc.Traversable):
         gib Falsch
 
     def joinpath(self, *descendants):
-        try:
+        versuch:
             gib super().joinpath(*descendants)
-        except abc.TraversalError:
+        ausser abc.TraversalError:
             # One of the paths did nicht resolve (a directory does nicht exist).
             # Just gib something that will nicht exist.
             gib self._paths[0].joinpath(*descendants)
@@ -114,16 +114,16 @@ klasse MultiplexedPath(abc.Traversable):
         """
         subdirs, one_dir, one_file = itertools.tee(children, 3)
 
-        try:
+        versuch:
             gib only(one_dir)
-        except ValueError:
-            try:
+        ausser ValueError:
+            versuch:
                 gib cls(*subdirs)
-            except NotADirectoryError:
+            ausser NotADirectoryError:
                 gib next(one_file)
 
     def open(self, *args, **kwargs):
-        raise FileNotFoundError(f'{self} is nicht a file')
+        wirf FileNotFoundError(f'{self} is nicht a file')
 
     @property
     def name(self):
@@ -137,7 +137,7 @@ klasse MultiplexedPath(abc.Traversable):
 klasse NamespaceReader(abc.TraversableResources):
     def __init__(self, namespace_path):
         wenn 'NamespacePath' nicht in str(namespace_path):
-            raise ValueError('Invalid path')
+            wirf ValueError('Invalid path')
         self.path = MultiplexedPath(*filter(bool, map(self._resolve, namespace_path)))
 
     @classmethod

@@ -80,7 +80,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
             self.push('-ERR unrecognized POP3 command "%s".' %cmd)
 
     def handle_error(self):
-        raise
+        wirf
 
     def push(self, data):
         asynchat.async_chat.push(self, data.encode("ISO-8859-1") + b'\r\n')
@@ -175,9 +175,9 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                 self.push('-ERR Command nicht permitted when TLS active')
 
         def _do_tls_handshake(self):
-            try:
+            versuch:
                 self.socket.do_handshake()
-            except ssl.SSLError als err:
+            ausser ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     gib
@@ -187,8 +187,8 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                 sowenn ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] oder
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
                     gib self.handle_close()
-                raise
-            except OSError als err:
+                wirf
+            ausser OSError als err:
                 wenn err.args[0] == errno.ECONNABORTED:
                     gib self.handle_close()
             sonst:
@@ -199,9 +199,9 @@ klasse DummyPOP3Handler(asynchat.async_chat):
             wenn self.tls_starting:
                 self._do_tls_handshake()
             sonst:
-                try:
+                versuch:
                     asynchat.async_chat.handle_read(self)
-                except ssl.SSLEOFError:
+                ausser ssl.SSLEOFError:
                     self.handle_close()
 
 klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
@@ -229,11 +229,11 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
     def run(self):
         self.active = Wahr
         self.__flag.set()
-        try:
+        versuch:
             waehrend self.active und asyncore.socket_map:
                 mit self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
-        finally:
+        schliesslich:
             asyncore.close_all(ignore_all=Wahr)
 
     def stop(self):
@@ -252,7 +252,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         gib 0
 
     def handle_error(self):
-        raise
+        wirf
 
 
 klasse TestPOP3Class(TestCase):
@@ -484,11 +484,11 @@ klasse TestPOP3_TLSClass(TestPOP3Class):
 
     def tearDown(self):
         wenn self.client.file is nicht Nichts und self.client.sock is nicht Nichts:
-            try:
+            versuch:
                 self.client.quit()
-            except poplib.error_proto:
+            ausser poplib.error_proto:
                 # happens in the test_too_long_lines case; the overlong
-                # response will be treated als response to QUIT und raise
+                # response will be treated als response to QUIT und wirf
                 # this exception
                 self.client.close()
         self.server.stop()
@@ -525,21 +525,21 @@ klasse TestTimeouts(TestCase):
     def server(self, evt, serv):
         serv.listen()
         evt.set()
-        try:
+        versuch:
             conn, addr = serv.accept()
             conn.send(b"+ Hola mundo\n")
             conn.close()
-        except TimeoutError:
+        ausser TimeoutError:
             pass
-        finally:
+        schliesslich:
             serv.close()
 
     def testTimeoutDefault(self):
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(test_support.LOOPBACK_TIMEOUT)
-        try:
+        versuch:
             pop = poplib.POP3(HOST, self.port)
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertEqual(pop.sock.gettimeout(), test_support.LOOPBACK_TIMEOUT)
         pop.close()
@@ -547,9 +547,9 @@ klasse TestTimeouts(TestCase):
     def testTimeoutNichts(self):
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             pop = poplib.POP3(HOST, self.port, timeout=Nichts)
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertIsNichts(pop.sock.gettimeout())
         pop.close()

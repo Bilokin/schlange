@@ -163,10 +163,10 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
 
         async def lockit(name, blocker):
             await lock.acquire()
-            try:
+            versuch:
                 wenn blocker is nicht Nichts:
                     await blocker
-            finally:
+            schliesslich:
                 lock.release()
 
         fa = asyncio.get_running_loop().create_future()
@@ -483,9 +483,9 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         asyncio.get_running_loop().call_soon(wait_task.cancel)
         asyncio.get_running_loop().call_soon(cond.release)
 
-        try:
+        versuch:
             await wait_task
-        except asyncio.CancelledError:
+        ausser asyncio.CancelledError:
             # Should nicht happen, since no cancellation points
             pass
 
@@ -771,7 +771,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                 mit self.assertRaises(asyncio.CancelledError) als err:
                     await cond.wait_for(lambda: wake)
                 raised = err.exception
-                raise raised
+                wirf raised
 
         task = asyncio.create_task(func())
         await asyncio.sleep(0)
@@ -797,7 +797,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                 mit self.assertRaises(asyncio.CancelledError) als err:
                     await cond.wait_for(lambda: wake)
                 raised = err.exception
-                raise raised
+                wirf raised
 
         task = asyncio.create_task(func())
         await asyncio.sleep(0)
@@ -848,10 +848,10 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # now wait fuer the item to be consumed
             # wenn it doesn't means that our "notify" didn"t take hold.
             # because it raced mit a cancel()
-            try:
+            versuch:
                 async mit asyncio.timeout(0.01):
                     await condition.wait_for(lambda: state == 0)
-            except TimeoutError:
+            ausser TimeoutError:
                 pass
             self.assertEqual(state, 0)
 
@@ -896,10 +896,10 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # now wait fuer the item to be consumed
             # wenn it doesn't means that our "notify" didn"t take hold.
             # because it raced mit a cancel()
-            try:
+            versuch:
                 async mit asyncio.timeout(0.01):
                     await condition.wait_for(lambda: state == 0)
-            except TimeoutError:
+            ausser TimeoutError:
                 pass
             self.assertEqual(state, 0)
 
@@ -1541,9 +1541,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         results = []
 
         async def coro():
-            try:
+            versuch:
                 await barrier.wait()
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 results.append(Wahr)
 
         async def coro_reset():
@@ -1569,9 +1569,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         rest_of_tasks = self.N//2
 
         async def coro():
-            try:
+            versuch:
                 await barrier.wait()
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 # catch here waiting tasks
                 results1.append(Wahr)
             sonst:
@@ -1596,9 +1596,9 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             nonlocal count
-            try:
+            versuch:
                 await barrier.wait()
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 # here catch still waiting tasks
                 results1.append(Wahr)
 
@@ -1607,15 +1607,15 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
             sonst:
                 count += 1
                 wenn count > blocking_tasks:
-                    # reset now: raise asyncio.BrokenBarrierError fuer waiting tasks
+                    # reset now: wirf asyncio.BrokenBarrierError fuer waiting tasks
                     await barrier.reset()
 
                     # so now waiting again to reach nb_parties
                     await barrier.wait()
                 sonst:
-                    try:
+                    versuch:
                         await barrier.wait()
-                    except asyncio.BrokenBarrierError:
+                    ausser asyncio.BrokenBarrierError:
                         # here no catch - blocked tasks go to wait
                         results2.append(Wahr)
 
@@ -1633,11 +1633,11 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         results2 = []
 
         async def coro1():
-            try:
+            versuch:
                 await barrier.wait()
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 results1.append(Wahr)
-            finally:
+            schliesslich:
                 await barrier.wait()
                 results2.append(Wahr)
 
@@ -1647,7 +1647,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         tasks = self.make_tasks(self.N-1, coro1)
 
-        # reset barrier, N-1 waiting tasks raise an BrokenBarrierError
+        # reset barrier, N-1 waiting tasks wirf an BrokenBarrierError
         asyncio.create_task(barrier.reset())
         await asyncio.sleep(0)
 
@@ -1684,13 +1684,13 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
                 # wait here to reach the `parties`
                 await barrier.wait()
             sonst:
-                try:
+                versuch:
                     # second waiting
                     await barrier.wait()
 
                     # N-1 tasks here
                     results1.append(Wahr)
-                except Exception als e:
+                ausser Exception als e:
                     # never goes here
                     results2.append(Wahr)
 
@@ -1728,20 +1728,20 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             nonlocal count
-            try:
+            versuch:
                 await barrier.wait()
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 # here catch tasks waiting to drain
                 results1.append(Wahr)
             sonst:
                 count += 1
                 wenn count > blocking_tasks:
-                    # abort now: raise asyncio.BrokenBarrierError fuer all tasks
+                    # abort now: wirf asyncio.BrokenBarrierError fuer all tasks
                     await barrier.abort()
                 sonst:
-                    try:
+                    versuch:
                         await barrier.wait()
-                    except asyncio.BrokenBarrierError:
+                    ausser asyncio.BrokenBarrierError:
                         # here catch blocked tasks (already drained)
                         results2.append(Wahr)
 
@@ -1760,15 +1760,15 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         results2 = []
 
         async def coro():
-            try:
+            versuch:
                 async mit barrier als i :
                     wenn i == self.N//2:
-                        raise RuntimeError
+                        wirf RuntimeError
                 async mit barrier:
                     results1.append(Wahr)
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 results2.append(Wahr)
-            except RuntimeError:
+            ausser RuntimeError:
                 await barrier.abort()
 
         await self.gather_tasks(self.N, coro)
@@ -1788,15 +1788,15 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
         results3 = []
 
         async def coro():
-            try:
+            versuch:
                 i = await barrier1.wait()
                 wenn i == self.N//2:
-                    raise RuntimeError
+                    wirf RuntimeError
                 await barrier1.wait()
                 results1.append(Wahr)
-            except asyncio.BrokenBarrierError:
+            ausser asyncio.BrokenBarrierError:
                 results2.append(Wahr)
-            except RuntimeError:
+            ausser RuntimeError:
                 await barrier1.abort()
 
             # Synchronize und reset the barrier.  Must synchronize first so

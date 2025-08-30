@@ -155,9 +155,9 @@ def _compile(code, pattern, flags):
             sonst:
                 lo, hi = av[1].getwidth()
                 wenn lo > MAXCODE:
-                    raise error("looks too much behind")
+                    wirf error("looks too much behind")
                 wenn lo != hi:
-                    raise PatternError("look-behind requires fixed-width pattern")
+                    wirf PatternError("look-behind requires fixed-width pattern")
                 emit(lo) # look behind
             _compile(code, av[1], flags)
             emit(SUCCESS)
@@ -216,7 +216,7 @@ def _compile(code, pattern, flags):
             sonst:
                 code[skipyes] = _len(code) - skipyes + 1
         sonst:
-            raise PatternError(f"internal: unsupported operand type {op!r}")
+            wirf PatternError(f"internal: unsupported operand type {op!r}")
 
 def _compile_charset(charset, flags, code):
     # compile charset subprogram
@@ -242,7 +242,7 @@ def _compile_charset(charset, flags, code):
             sonst:
                 emit(av)
         sonst:
-            raise PatternError(f"internal: unsupported set operator {op!r}")
+            wirf PatternError(f"internal: unsupported set operator {op!r}")
     emit(FAILURE)
 
 def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
@@ -253,7 +253,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
     hascased = Falsch
     fuer op, av in charset:
         waehrend Wahr:
-            try:
+            versuch:
                 wenn op is LITERAL:
                     wenn fixup: # IGNORECASE und nicht LOCALE
                         av = fixup(av)
@@ -290,7 +290,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
                     gib out, Falsch
                 sonst:
                     tail.append((op, av))
-            except IndexError:
+            ausser IndexError:
                 wenn len(charmap) == 256:
                     # character set contains non-UCS1 character codes
                     charmap += b'\0' * 0xff00
@@ -747,7 +747,7 @@ def dis(code):
                     level -= 1
                 i += skip
             sonst:
-                raise ValueError(op)
+                wirf ValueError(op)
 
         level -= 1
 

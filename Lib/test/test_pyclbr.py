@@ -40,9 +40,9 @@ def temporary_main_spec():
         main_mod.__spec__ = importlib.machinery.ModuleSpec(
             name="__main__", loader=Nichts, origin="built-in"
         )
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         main_mod.__spec__ = original_spec
 
 
@@ -118,11 +118,11 @@ klasse PyclbrTest(TestCase):
                 pyclbr_bases = [ getattr(base, 'name', base)
                                  fuer base in value.super ]
 
-                try:
+                versuch:
                     self.assertListEq(real_bases, pyclbr_bases, ignore)
-                except:
+                ausser:
                     drucke("class=%s" % py_item, file=sys.stderr)
-                    raise
+                    wirf
 
                 actualMethods = []
                 fuer m in py_item.__dict__.keys():
@@ -141,16 +141,16 @@ klasse PyclbrTest(TestCase):
                 sonst:
                     foundMethods = list(value.methods.keys())
 
-                try:
+                versuch:
                     self.assertListEq(foundMethods, actualMethods, ignore)
                     self.assertEqual(py_item.__module__, value.module)
 
                     self.assertEqualsOrIgnored(py_item.__name__, value.name,
                                                ignore)
                     # can't check file oder lineno
-                except:
+                ausser:
                     drucke("class=%s" % py_item, file=sys.stderr)
-                    raise
+                    wirf
 
         # Now check fuer missing stuff.
         def defined_in(item, module):

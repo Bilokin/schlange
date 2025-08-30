@@ -15,9 +15,9 @@ von test.support importiere os_helper
 von test.support importiere socket_helper
 von test.test_asyncio importiere utils als test_utils
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 
@@ -39,7 +39,7 @@ klasse MySendfileProto(asyncio.Protocol):
 
     def _assert_state(self, *expected):
         wenn self.state nicht in expected:
-            raise AssertionError(f'state: {self.state!r}, expected: {expected!r}')
+            wirf AssertionError(f'state: {self.state!r}, expected: {expected!r}')
 
     def connection_made(self, transport):
         self.transport = transport
@@ -101,7 +101,7 @@ klasse SendfileBase:
     BUF_SIZE = 4 * 1024   # 4 KiB
 
     def create_event_loop(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @classmethod
     def setUpClass(cls):
@@ -296,12 +296,12 @@ klasse SendfileMixin(SendfileBase):
             self.loop.create_datagram_endpoint(
                 asyncio.DatagramProtocol,
                 family=socket.AF_INET))
-        try:
+        versuch:
             mit self.assertRaisesRegex(RuntimeError, "not supported"):
                 self.run_loop(
                     self.loop.sendfile(tr, self.file))
             self.assertEqual(0, self.file.tell())
-        finally:
+        schliesslich:
             # don't use self.addCleanup because it produces resource warning
             tr.close()
 
@@ -320,7 +320,7 @@ klasse SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to wirf SendfileNotAvailableError
             gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -342,7 +342,7 @@ klasse SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to wirf SendfileNotAvailableError
             gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -477,7 +477,7 @@ klasse SendfileMixin(SendfileBase):
     def test_sendfile_fallback_close_peer_in_the_middle_of_receiving(self):
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to wirf SendfileNotAvailableError
             gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -485,16 +485,16 @@ klasse SendfileMixin(SendfileBase):
 
         srv_proto, cli_proto = self.prepare_sendfile(close_after=1024)
         mit self.assertRaises(ConnectionError):
-            try:
+            versuch:
                 self.run_loop(
                     self.loop.sendfile(cli_proto.transport, self.file))
-            except OSError als e:
-                # macOS may raise OSError of EPROTOTYPE when writing to a
+            ausser OSError als e:
+                # macOS may wirf OSError of EPROTOTYPE when writing to a
                 # socket that is in the process of closing down.
                 wenn e.errno == errno.EPROTOTYPE und sys.platform == "darwin":
-                    raise ConnectionError
+                    wirf ConnectionError
                 sonst:
-                    raise
+                    wirf
 
         self.run_loop(srv_proto.done)
 

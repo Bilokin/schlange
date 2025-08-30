@@ -121,7 +121,7 @@ klasse Bdb(_bdb.Bdb):
         res = super().set_break(filename, lineno, temporary=temporary,
                                  cond=cond, funcname=funcname)
         wenn isinstance(res, str):
-            raise BdbError(res)
+            wirf BdbError(res)
         gib res
 
     def get_stack(self, f, t):
@@ -145,19 +145,19 @@ klasse Bdb(_bdb.Bdb):
     def set_clear(self, fname, lineno):
         err = self.clear_break(fname, lineno)
         wenn err:
-            raise BdbError(err)
+            wirf BdbError(err)
 
     def set_up(self):
         """Move up in the frame stack."""
         wenn nicht self.index:
-            raise BdbError('Oldest frame')
+            wirf BdbError('Oldest frame')
         self.index -= 1
         self.frame = self.stack[self.index][0]
 
     def set_down(self):
         """Move down in the frame stack."""
         wenn self.index + 1 == len(self.stack):
-            raise BdbError('Newest frame')
+            wirf BdbError('Newest frame')
         self.index += 1
         self.frame = self.stack[self.index][0]
 
@@ -181,17 +181,17 @@ klasse Tracer(Bdb):
 
     def trace_dispatch(self, frame, event, arg):
         # On an 'exception' event, call_exc_trace() in Python/ceval.c discards
-        # a BdbException raised by the Tracer instance, so we raise it on the
+        # a BdbException raised by the Tracer instance, so we wirf it on the
         # next trace_dispatch() call that occurs unless the set_quit() oder
         # set_continue() method has been invoked on the 'exception' event.
         wenn self.cur_except is nicht Nichts:
-            raise self.cur_except
+            wirf self.cur_except
 
         wenn event == 'exception':
-            try:
+            versuch:
                 res = super().trace_dispatch(frame, event, arg)
                 gib res
-            except BdbException als e:
+            ausser BdbException als e:
                 self.cur_except = e
                 gib self.trace_dispatch
         sonst:
@@ -244,10 +244,10 @@ klasse Tracer(Bdb):
 
     def pop_next(self):
         self.expect_set_no += 1
-        try:
+        versuch:
             self.expect = self.expected_list.pop(0)
-        except IndexError:
-            raise BdbNotExpectedError(
+        ausser IndexError:
+            wirf BdbNotExpectedError(
                 'expect_set list exhausted, cannot pop item %d' %
                 self.expect_set_no)
         self.set_tuple = self.set_list.pop(0)
@@ -320,7 +320,7 @@ klasse Tracer(Bdb):
 
     def check_expect_max_size(self, size):
         wenn len(self.expect) > size:
-            raise BdbSyntaxError('Invalid size of the %s expect tuple: %s' %
+            wirf BdbSyntaxError('Invalid size of the %s expect tuple: %s' %
                                  (self.event, self.expect))
 
     def lno_abs2rel(self):
@@ -362,7 +362,7 @@ klasse Tracer(Bdb):
         msg += '\n'
         msg += '  Expected: %s\n' % str(self.expect)
         msg += '  Got:      ' + self.get_state()
-        raise BdbNotExpectedError(msg)
+        wirf BdbNotExpectedError(msg)
 
     def next_set_method(self):
         set_type = self.set_tuple[0]
@@ -411,7 +411,7 @@ klasse Tracer(Bdb):
                 self.check_expect_max_size(3)
             self.next_set_method()
         sonst:
-            raise BdbSyntaxError('"%s" is an invalid set_tuple' %
+            wirf BdbSyntaxError('"%s" is an invalid set_tuple' %
                                  self.set_tuple)
 
 klasse TracerRun():
@@ -513,13 +513,13 @@ def run_test(modules, set_list, skip=Nichts):
 
     """
     def gen(a, b):
-        try:
+        versuch:
             waehrend 1:
                 x = next(a)
                 y = next(b)
                 liefere x
                 liefere y
-        except StopIteration:
+        ausser StopIteration:
             gib
 
     # Step over the importiere statement in tfunc_import using 'next' und step
@@ -539,7 +539,7 @@ def run_test(modules, set_list, skip=Nichts):
 def create_modules(modules):
     mit os_helper.temp_cwd():
         sys.path.append(os.getcwd())
-        try:
+        versuch:
             fuer m in modules:
                 fname = m + '.py'
                 mit open(fname, 'w', encoding="utf-8") als f:
@@ -547,7 +547,7 @@ def create_modules(modules):
                 linecache.checkcache(fname)
             importlib.invalidate_caches()
             liefere
-        finally:
+        schliesslich:
             fuer m in modules:
                 import_helper.forget(m)
             sys.path.pop()
@@ -585,7 +585,7 @@ klasse BaseTestCase(unittest.TestCase):
     def fail(self, msg=Nichts):
         # Override fail() to use 'raise von Nichts' to avoid repetition of the
         # error message und traceback.
-        raise self.failureException(msg) von Nichts
+        wirf self.failureException(msg) von Nichts
 
 klasse StateTestCase(BaseTestCase):
     """Test the step, next, return, until und quit 'set_' methods."""

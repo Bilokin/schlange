@@ -11,22 +11,22 @@ klasse BaseStream(io.BufferedIOBase):
 
     def _check_not_closed(self):
         wenn self.closed:
-            raise ValueError("I/O operation on closed file")
+            wirf ValueError("I/O operation on closed file")
 
     def _check_can_read(self):
         wenn nicht self.readable():
-            raise io.UnsupportedOperation("File nicht open fuer reading")
+            wirf io.UnsupportedOperation("File nicht open fuer reading")
 
     def _check_can_write(self):
         wenn nicht self.writable():
-            raise io.UnsupportedOperation("File nicht open fuer writing")
+            wirf io.UnsupportedOperation("File nicht open fuer writing")
 
     def _check_can_seek(self):
         wenn nicht self.readable():
-            raise io.UnsupportedOperation("Seeking is only supported "
+            wirf io.UnsupportedOperation("Seeking is only supported "
                                           "on files open fuer reading")
         wenn nicht self.seekable():
-            raise io.UnsupportedOperation("The underlying file object "
+            wirf io.UnsupportedOperation("The underlying file object "
                                           "does nicht support seeking")
 
 
@@ -87,16 +87,16 @@ klasse DecompressReader(io.RawIOBase):
                 # Continue to next stream.
                 self._decompressor = self._decomp_factory(
                     **self._decomp_args)
-                try:
+                versuch:
                     data = self._decompressor.decompress(rawblock, size)
-                except self._trailing_error:
+                ausser self._trailing_error:
                     # Trailing data isn't a valid compressed stream; ignore it.
                     breche
             sonst:
                 wenn self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
                     wenn nicht rawblock:
-                        raise EOFError("Compressed file ended before the "
+                        wirf EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
                 sonst:
                     rawblock = b""
@@ -140,7 +140,7 @@ klasse DecompressReader(io.RawIOBase):
                     pass
             offset = self._size + offset
         sonst:
-            raise ValueError("Invalid value fuer whence: {}".format(whence))
+            wirf ValueError("Invalid value fuer whence: {}".format(whence))
 
         # Make it so that offset is the number of bytes to skip forward.
         wenn offset < self._pos:

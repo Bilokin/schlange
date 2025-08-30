@@ -101,9 +101,9 @@ def subhelper():
     global TICKS
     TICKS += 2
     fuer i in range(2):                  # 0
-        try:
+        versuch:
             C().foo                     # 1 x 2
-        except AttributeError:
+        ausser AttributeError:
             TICKS += 3                  # 3 x 2
 
 klasse C:
@@ -112,4 +112,4 @@ klasse C:
         # 1 tick, local
         global TICKS
         TICKS += 1
-        raise AttributeError
+        wirf AttributeError

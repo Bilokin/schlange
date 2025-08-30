@@ -17,12 +17,12 @@ def listcodecs(dir):
             weiter
         name = filename[:-3]
         # Check whether we've found a true codec
-        try:
+        versuch:
             codecs.lookup(name)
-        except LookupError:
+        ausser LookupError:
             # Codec nicht found
             weiter
-        except Exception als reason:
+        ausser Exception als reason:
             # Probably an error von importing the codec; still it's
             # a valid code name
             wenn _debug:

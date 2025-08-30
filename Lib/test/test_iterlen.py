@@ -189,7 +189,7 @@ klasse BadLen(object):
         gib iter(range(10))
 
     def __len__(self):
-        raise RuntimeError('hello')
+        wirf RuntimeError('hello')
 
 
 klasse BadLengthHint(object):
@@ -197,7 +197,7 @@ klasse BadLengthHint(object):
         gib iter(range(10))
 
     def __length_hint__(self):
-        raise RuntimeError('hello')
+        wirf RuntimeError('hello')
 
 
 klasse NichtsLengthHint(object):

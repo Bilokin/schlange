@@ -10,9 +10,9 @@ importiere sysconfig
 MAKEFILE = sysconfig.get_makefile_filename()
 
 wenn nicht support.check_impl_detail(cpython=Wahr):
-    raise unittest.SkipTest('cpython only')
+    wirf unittest.SkipTest('cpython only')
 wenn nicht os.path.exists(MAKEFILE) oder nicht os.path.isfile(MAKEFILE):
-    raise unittest.SkipTest('Makefile could nicht be found')
+    wirf unittest.SkipTest('Makefile could nicht be found')
 
 
 klasse TestMakefile(unittest.TestCase):

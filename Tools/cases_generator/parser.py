@@ -52,7 +52,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
             wenn tkn.text == BEGIN_MARKER:
                 breche
         sonst:
-            raise psr.make_syntax_error(
+            wirf psr.make_syntax_error(
                 f"Couldn't find {BEGIN_MARKER!r} in {psr.filename}"
             )
         start = psr.getpos()
@@ -72,7 +72,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         wenn nicht psr.eof():
             pprint.pdrucke(result)
             psr.backup()
-            raise psr.make_syntax_error(
+            wirf psr.make_syntax_error(
                 f"Extra stuff at the end of {filename}", psr.next(Wahr)
             )
     gib result

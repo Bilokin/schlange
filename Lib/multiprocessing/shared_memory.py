@@ -75,13 +75,13 @@ klasse SharedMemory:
 
     def __init__(self, name=Nichts, create=Falsch, size=0, *, track=Wahr):
         wenn nicht size >= 0:
-            raise ValueError("'size' must be a positive integer")
+            wirf ValueError("'size' must be a positive integer")
         wenn create:
             self._flags = _O_CREX | os.O_RDWR
             wenn size == 0:
-                raise ValueError("'size' must be a positive number different von zero")
+                wirf ValueError("'size' must be a positive number different von zero")
         wenn name is Nichts und nicht self._flags & os.O_EXCL:
-            raise ValueError("'name' can only be Nichts wenn create=Wahr")
+            wirf ValueError("'name' can only be Nichts wenn create=Wahr")
 
         self._track = track
         wenn _USE_POSIX:
@@ -91,13 +91,13 @@ klasse SharedMemory:
             wenn name is Nichts:
                 waehrend Wahr:
                     name = _make_filename()
-                    try:
+                    versuch:
                         self._fd = _posixshmem.shm_open(
                             name,
                             self._flags,
                             mode=self._mode
                         )
-                    except FileExistsError:
+                    ausser FileExistsError:
                         weiter
                     self._name = name
                     breche
@@ -109,15 +109,15 @@ klasse SharedMemory:
                     mode=self._mode
                 )
                 self._name = name
-            try:
+            versuch:
                 wenn create und size:
                     os.ftruncate(self._fd, size)
                 stats = os.fstat(self._fd)
                 size = stats.st_size
                 self._mmap = mmap.mmap(self._fd, size)
-            except OSError:
+            ausser OSError:
                 self.unlink()
-                raise
+                wirf
             wenn self._track:
                 resource_tracker.register(self._name, "shared_memory")
 
@@ -138,11 +138,11 @@ klasse SharedMemory:
                         size & 0xFFFFFFFF,
                         temp_name
                     )
-                    try:
+                    versuch:
                         last_error_code = _winapi.GetLastError()
                         wenn last_error_code == _winapi.ERROR_ALREADY_EXISTS:
                             wenn name is nicht Nichts:
-                                raise FileExistsError(
+                                wirf FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
                                     name,
@@ -151,7 +151,7 @@ klasse SharedMemory:
                             sonst:
                                 weiter
                         self._mmap = mmap.mmap(-1, size, tagname=temp_name)
-                    finally:
+                    schliesslich:
                         _winapi.CloseHandle(h_map)
                     self._name = temp_name
                     breche
@@ -165,7 +165,7 @@ klasse SharedMemory:
                     Falsch,
                     name
                 )
-                try:
+                versuch:
                     p_buf = _winapi.MapViewOfFile(
                         h_map,
                         _winapi.FILE_MAP_READ,
@@ -173,11 +173,11 @@ klasse SharedMemory:
                         0,
                         0
                     )
-                finally:
+                schliesslich:
                     _winapi.CloseHandle(h_map)
-                try:
+                versuch:
                     size = _winapi.VirtualQuerySize(p_buf)
-                finally:
+                schliesslich:
                     _winapi.UnmapViewOfFile(p_buf)
                 self._mmap = mmap.mmap(-1, size, tagname=name)
 
@@ -185,9 +185,9 @@ klasse SharedMemory:
         self._buf = memoryview(self._mmap)
 
     def __del__(self):
-        try:
+        versuch:
             self.close()
-        except OSError:
+        ausser OSError:
             pass
 
     def __reduce__(self):
@@ -382,7 +382,7 @@ klasse ShareableList:
         "Gets the packing format fuer a single value stored in the list."
         position = position wenn position >= 0 sonst position + self._list_len
         wenn (position >= self._list_len) oder (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+            wirf IndexError("Requested position out of range.")
 
         v = struct.unpack_from(
             "8s",
@@ -398,7 +398,7 @@ klasse ShareableList:
         "Gets the back transformation function fuer a single value."
 
         wenn (position >= self._list_len) oder (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+            wirf IndexError("Requested position out of range.")
 
         transform_code = struct.unpack_from(
             "b",
@@ -414,7 +414,7 @@ klasse ShareableList:
         single value in the list at the specified position."""
 
         wenn (position >= self._list_len) oder (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+            wirf IndexError("Requested position out of range.")
 
         struct.pack_into(
             "8s",
@@ -433,15 +433,15 @@ klasse ShareableList:
 
     def __getitem__(self, position):
         position = position wenn position >= 0 sonst position + self._list_len
-        try:
+        versuch:
             offset = self._offset_data_start + self._allocated_offsets[position]
             (v,) = struct.unpack_from(
                 self._get_packing_format(position),
                 self.shm.buf,
                 offset
             )
-        except IndexError:
-            raise IndexError("index out of range")
+        ausser IndexError:
+            wirf IndexError("index out of range")
 
         back_transform = self._get_back_transform(position)
         v = back_transform(v)
@@ -450,12 +450,12 @@ klasse ShareableList:
 
     def __setitem__(self, position, value):
         position = position wenn position >= 0 sonst position + self._list_len
-        try:
+        versuch:
             item_offset = self._allocated_offsets[position]
             offset = self._offset_data_start + item_offset
             current_format = self._get_packing_format(position)
-        except IndexError:
-            raise IndexError("assignment index out of range")
+        ausser IndexError:
+            wirf IndexError("assignment index out of range")
 
         wenn nicht isinstance(value, (str, bytes)):
             new_format = self._types_mapping[type(value)]
@@ -466,7 +466,7 @@ klasse ShareableList:
             encoded_value = (value.encode(_encoding)
                              wenn isinstance(value, str) sonst value)
             wenn len(encoded_value) > allocated_length:
-                raise ValueError("bytes/str item exceeds available storage")
+                wirf ValueError("bytes/str item exceeds available storage")
             wenn current_format[-1] == "s":
                 new_format = current_format
             sonst:
@@ -539,6 +539,6 @@ klasse ShareableList:
             wenn value == entry:
                 gib position
         sonst:
-            raise ValueError("ShareableList.index(x): x nicht in list")
+            wirf ValueError("ShareableList.index(x): x nicht in list")
 
     __class_getitem__ = classmethod(types.GenericAlias)

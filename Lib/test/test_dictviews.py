@@ -299,7 +299,7 @@ klasse DictSetTest(unittest.TestCase):
             def __hash__(self):
                 gib 7
             def __eq__(self, other):
-                raise Exc
+                wirf Exc
 
         k1, k2 = BadEq(), BadEq()
         v1, v2 = BadEq(), BadEq()

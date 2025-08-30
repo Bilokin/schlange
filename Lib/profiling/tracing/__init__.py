@@ -87,9 +87,9 @@ klasse Profile(_lsprof.Profiler):
             wenn entry.calls:
                 func = label(entry.code)
                 fuer subentry in entry.calls:
-                    try:
+                    versuch:
                         callers = callersdicts[id(subentry.code)]
-                    except KeyError:
+                    ausser KeyError:
                         weiter
                     nc = subentry.callcount
                     cc = nc - subentry.reccallcount
@@ -113,18 +113,18 @@ klasse Profile(_lsprof.Profiler):
 
     def runctx(self, cmd, globals, locals):
         self.enable()
-        try:
+        versuch:
             exec(cmd, globals, locals)
-        finally:
+        schliesslich:
             self.disable()
         gib self
 
     # This method is more useful to profile a single function call.
     def runcall(self, func, /, *args, **kw):
         self.enable()
-        try:
+        versuch:
             gib func(*args, **kw)
-        finally:
+        schliesslich:
             self.disable()
 
     def __enter__(self):
@@ -204,9 +204,9 @@ def main():
                 '__cached__': Nichts,
             })
 
-        try:
+        versuch:
             runctx(code, globs, Nichts, options.outfile, options.sort)
-        except BrokenPipeError als exc:
+        ausser BrokenPipeError als exc:
             # Prevent "Exception ignored" during interpreter shutdown.
             sys.stdout = Nichts
             sys.exit(exc.errno)

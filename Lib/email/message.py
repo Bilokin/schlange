@@ -55,9 +55,9 @@ def _formatparam(param, value=Nichts, quote=Wahr):
             value = utils.encode_rfc2231(value[2], value[0], value[1])
             gib '%s=%s' % (param, value)
         sonst:
-            try:
+            versuch:
                 value.encode('ascii')
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 param += '*'
                 value = utils.encode_rfc2231(value, 'utf-8', '')
                 gib '%s=%s' % (param, value)
@@ -108,22 +108,22 @@ def _decode_uu(encoded):
     fuer line in encoded_lines_iter:
         wenn line.startswith(b"begin "):
             mode, _, path = line.removeprefix(b"begin ").partition(b" ")
-            try:
+            versuch:
                 int(mode, base=8)
-            except ValueError:
+            ausser ValueError:
                 weiter
             sonst:
                 breche
     sonst:
-        raise ValueError("`begin` line nicht found")
+        wirf ValueError("`begin` line nicht found")
     fuer line in encoded_lines_iter:
         wenn nicht line:
-            raise ValueError("Truncated input")
+            wirf ValueError("Truncated input")
         sowenn line.strip(b' \t\r\n\f') == b'end':
             breche
-        try:
+        versuch:
             decoded_line = binascii.a2b_uu(line)
-        except binascii.Error:
+        ausser binascii.Error:
             # Workaround fuer broken uuencoders by /Fredrik Lundh
             nbytes = (((line[0]-32) & 63) * 4 + 5) // 3
             decoded_line = binascii.a2b_uu(line[:nbytes])
@@ -234,10 +234,10 @@ klasse Message:
         wenn self._payload is Nichts:
             self._payload = [payload]
         sonst:
-            try:
+            versuch:
                 self._payload.append(payload)
-            except AttributeError:
-                raise TypeError("Attach is nicht valid on a message mit a"
+            ausser AttributeError:
+                wirf TypeError("Attach is nicht valid on a message mit a"
                                 " non-multipart payload")
 
     def get_payload(self, i=Nichts, decode=Falsch):
@@ -284,7 +284,7 @@ klasse Message:
         # For backward compatibility, Use isinstance und this error message
         # instead of the more logical is_multipart test.
         wenn i is nicht Nichts und nicht isinstance(self._payload, list):
-            raise TypeError('Expected list, got %s' % type(self._payload))
+            wirf TypeError('Expected list, got %s' % type(self._payload))
         payload = self._payload
         cte = self.get('content-transfer-encoding', '')
         wenn hasattr(cte, 'cte'):
@@ -295,19 +295,19 @@ klasse Message:
         # payload may be bytes here.
         wenn nicht decode:
             wenn isinstance(payload, str) und utils._has_surrogates(payload):
-                try:
+                versuch:
                     bpayload = payload.encode('ascii', 'surrogateescape')
-                    try:
+                    versuch:
                         payload = bpayload.decode(self.get_content_charset('ascii'), 'replace')
-                    except LookupError:
+                    ausser LookupError:
                         payload = bpayload.decode('ascii', 'replace')
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     pass
             gib payload
         wenn isinstance(payload, str):
-            try:
+            versuch:
                 bpayload = payload.encode('ascii', 'surrogateescape')
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 # This won't happen fuer RFC compliant messages (messages
                 # containing only ASCII code points in the unicode input).
                 # If it does happen, turn the string into bytes in a way
@@ -325,9 +325,9 @@ klasse Message:
                 self.policy.handle_defect(self, defect)
             gib value
         sowenn cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
-            try:
+            versuch:
                 gib _decode_uu(bpayload)
-            except ValueError:
+            ausser ValueError:
                 # Some decoding problem.
                 gib bpayload
         wenn isinstance(payload, str):
@@ -386,17 +386,17 @@ klasse Message:
             self._payload = charset.body_encode(self._payload)
         wenn 'Content-Transfer-Encoding' nicht in self:
             cte = charset.get_body_encoding()
-            try:
+            versuch:
                 cte(self)
-            except TypeError:
+            ausser TypeError:
                 # This 'if' is fuer backward compatibility, it allows unicode
                 # through even though that won't work correctly wenn the
                 # message is serialized.
                 payload = self._payload
                 wenn payload:
-                    try:
+                    versuch:
                         payload = payload.encode('ascii', 'surrogateescape')
-                    except UnicodeError:
+                    ausser UnicodeError:
                         payload = payload.encode(charset.output_charset)
                 self._payload = charset.body_encode(payload)
                 self.add_header('Content-Transfer-Encoding', cte)
@@ -438,14 +438,14 @@ klasse Message:
                 wenn k.lower() == lname:
                     found += 1
                     wenn found >= max_count:
-                        raise ValueError("There may be at most {} {} headers "
+                        wirf ValueError("There may be at most {} {} headers "
                                          "in a message".format(max_count, name))
         self._headers.append(self.policy.header_store_parse(name, val))
 
     def __delitem__(self, name):
         """Delete all occurrences of a header, wenn present.
 
-        Does nicht raise an exception wenn the header is missing.
+        Does nicht wirf an exception wenn the header is missing.
         """
         name = name.lower()
         newheaders = []
@@ -593,7 +593,7 @@ klasse Message:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
                 breche
         sonst:
-            raise KeyError(_name)
+            wirf KeyError(_name)
 
     #
     # Use these three methods instead of the three above.
@@ -644,7 +644,7 @@ klasse Message:
     def get_default_type(self):
         """Return the 'default' content type.
 
-        Most messages have a default content type of text/plain, except for
+        Most messages have a default content type of text/plain, ausser for
         messages that are subparts of multipart/digest containers.  Such
         subparts have a default content type of message/rfc822.
         """
@@ -668,11 +668,11 @@ klasse Message:
             gib failobj
         params = []
         fuer p in _parseparam(value):
-            try:
+            versuch:
                 name, val = p.split('=', 1)
                 name = name.strip()
                 val = val.strip()
-            except ValueError:
+            ausser ValueError:
                 # Must have been a bare attribute
                 name = p.strip()
                 val = ''
@@ -826,7 +826,7 @@ klasse Message:
         """
         # BAW: should we be strict?
         wenn nicht type.count('/') == 1:
-            raise ValueError
+            wirf ValueError
         # Set the Content-Type, you get a MIME-Version
         wenn header.lower() == 'content-type':
             del self['mime-version']
@@ -884,8 +884,8 @@ klasse Message:
         params = self._get_params_preserve(missing, 'content-type')
         wenn params is missing:
             # There was no Content-Type header, und we don't know what type
-            # to set it to, so raise an exception.
-            raise errors.HeaderParseError('No Content-Type header found')
+            # to set it to, so wirf an exception.
+            wirf errors.HeaderParseError('No Content-Type header found')
         newparams = []
         foundp = Falsch
         fuer pk, pv in params:
@@ -896,7 +896,7 @@ klasse Message:
                 newparams.append((pk, pv))
         wenn nicht foundp:
             # The original Content-Type header had no boundary attribute.
-            # Tack one on the end.  BAW: should we raise an exception
+            # Tack one on the end.  BAW: should we wirf an exception
             # instead???
             newparams.append(('boundary', '"%s"' % boundary))
         # Replace the existing Content-Type header mit the new value
@@ -930,18 +930,18 @@ klasse Message:
         wenn isinstance(charset, tuple):
             # RFC 2231 encoded, so decode it, und it better end up als ascii.
             pcharset = charset[0] oder 'us-ascii'
-            try:
+            versuch:
                 # LookupError will be raised wenn the charset isn't known to
                 # Python.  UnicodeError will be raised wenn the encoded text
                 # contains a character nicht in the charset.
                 as_bytes = charset[2].encode('raw-unicode-escape')
                 charset = str(as_bytes, pcharset)
-            except (LookupError, UnicodeError):
+            ausser (LookupError, UnicodeError):
                 charset = charset[2]
         # charset characters must be in us-ascii range
-        try:
+        versuch:
             charset.encode('us-ascii')
-        except UnicodeError:
+        ausser UnicodeError:
             gib failobj
         # RFC 2046, $4.1.2 says charsets are nicht case sensitive
         gib charset.lower()
@@ -1072,7 +1072,7 @@ klasse MIMEPart(Message):
         multipart/related, oder multipart/alternative in the multipart (unless
         they have a 'Content-Disposition: attachment' header) und include all
         remaining subparts in the returned iterator.  When applied to a
-        multipart/related, gib all parts except the root part.  Return an
+        multipart/related, gib all parts ausser the root part.  Return an
         empty iterator when applied to a multipart/alternative oder a
         non-multipart.
         """
@@ -1083,9 +1083,9 @@ klasse MIMEPart(Message):
         # Certain malformed messages can have content type set to `multipart/*`
         # but still have single part body, in which case payload.copy() can
         # fail mit AttributeError.
-        try:
+        versuch:
             parts = payload.copy()
-        except AttributeError:
+        ausser AttributeError:
             # payload is nicht a list, it is most probably a string.
             gib
 
@@ -1143,7 +1143,7 @@ klasse MIMEPart(Message):
             existing_subtype = self.get_content_subtype()
             disallowed_subtypes = disallowed_subtypes + (subtype,)
             wenn existing_subtype in disallowed_subtypes:
-                raise ValueError("Cannot convert {} to {}".format(
+                wirf ValueError("Cannot convert {} to {}".format(
                     existing_subtype, subtype))
         keep_headers = []
         part_headers = []

@@ -125,21 +125,21 @@ klasse CalltipWindow(TooltipBase):
         wenn nicht self.tipwindow:
             gib
 
-        try:
+        versuch:
             self.label.destroy()
-        except TclError:
+        ausser TclError:
             pass
         self.label = Nichts
 
         self.parenline = self.parencol = self.lastline = Nichts
-        try:
+        versuch:
             self.anchor_widget.mark_unset(MARK_RIGHT)
-        except TclError:
+        ausser TclError:
             pass
 
-        try:
+        versuch:
             self._unbind_events()
-        except (TclError, ValueError):
+        ausser (TclError, ValueError):
             # ValueError may be raised by MultiCall
             pass
 

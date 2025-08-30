@@ -137,7 +137,7 @@ klasse Tier2Emitter(Emitter):
 
 def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
     locals: dict[str, Local] = {}
-    try:
+    versuch:
         emitter.out.start_line()
         wenn uop.properties.oparg:
             emitter.emit("oparg = CURRENT_OPARG();\n")
@@ -158,8 +158,8 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
                 idx += 1
         _, storage = emitter.emit_tokens(uop, storage, Nichts, Falsch)
         storage.flush(emitter.out)
-    except StackError als ex:
-        raise analysis_error(ex.args[0], uop.body.open) von Nichts
+    ausser StackError als ex:
+        wirf analysis_error(ex.args[0], uop.body.open) von Nichts
     gib storage.stack
 
 SKIPS = ("_EXTENDED_ARG",)

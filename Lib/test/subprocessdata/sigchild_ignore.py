@@ -12,4 +12,4 @@ while p.poll() is Nichts:
     time.sleep(0.01)  # Avoid being a CPU busy loop.
     num_polls += 1
     wenn num_polls > 3000:
-        raise RuntimeError('poll should have returned 0 within 30 seconds')
+        wirf RuntimeError('poll should have returned 0 within 30 seconds')

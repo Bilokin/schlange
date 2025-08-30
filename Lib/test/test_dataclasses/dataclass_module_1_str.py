@@ -2,7 +2,7 @@ von __future__ importiere annotations
 USING_STRINGS = Wahr
 
 # dataclass_module_1.py und dataclass_module_1_str.py are identical
-# except only the latter uses string annotations.
+# ausser only the latter uses string annotations.
 
 importiere dataclasses
 importiere typing

@@ -175,7 +175,7 @@ klasse Untokenizer:
     def add_whitespace(self, start):
         row, col = start
         wenn row < self.prev_row oder row == self.prev_row und col < self.prev_col:
-            raise ValueError("start ({},{}) precedes previous end ({},{})"
+            wirf ValueError("start ({},{}) precedes previous end ({},{})"
                              .format(row, col, self.prev_row, self.prev_col))
         self.add_backslash_continuation(start)
         col_offset = col - self.prev_col
@@ -367,50 +367,50 @@ def detect_encoding(readline):
     It detects the encoding von the presence of a utf-8 bom oder an encoding
     cookie als specified in pep-0263.  If both a bom und a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie is an
-    invalid charset, raise a SyntaxError.  Note that wenn a utf-8 bom is found,
+    invalid charset, wirf a SyntaxError.  Note that wenn a utf-8 bom is found,
     'utf-8-sig' is returned.
 
     If no encoding is specified, then the default of 'utf-8' will be returned.
     """
-    try:
+    versuch:
         filename = readline.__self__.name
-    except AttributeError:
+    ausser AttributeError:
         filename = Nichts
     bom_found = Falsch
     encoding = Nichts
     default = 'utf-8'
     def read_or_stop():
-        try:
+        versuch:
             gib readline()
-        except StopIteration:
+        ausser StopIteration:
             gib b''
 
     def find_cookie(line):
-        try:
+        versuch:
             # Decode als UTF-8. Either the line is an encoding declaration,
             # in which case it should be pure ASCII, oder it must be UTF-8
             # per default encoding.
             line_string = line.decode('utf-8')
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             msg = "invalid oder missing encoding declaration"
             wenn filename is nicht Nichts:
                 msg = '{} fuer {!r}'.format(msg, filename)
-            raise SyntaxError(msg)
+            wirf SyntaxError(msg)
 
         match = cookie_re.match(line_string)
         wenn nicht match:
             gib Nichts
         encoding = _get_normal_name(match.group(1))
-        try:
+        versuch:
             codec = lookup(encoding)
-        except LookupError:
+        ausser LookupError:
             # This behaviour mimics the Python interpreter
             wenn filename is Nichts:
                 msg = "unknown encoding: " + encoding
             sonst:
                 msg = "unknown encoding fuer {!r}: {}".format(filename,
                         encoding)
-            raise SyntaxError(msg)
+            wirf SyntaxError(msg)
 
         wenn bom_found:
             wenn encoding != 'utf-8':
@@ -419,7 +419,7 @@ def detect_encoding(readline):
                     msg = 'encoding problem: utf-8'
                 sonst:
                     msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
-                raise SyntaxError(msg)
+                wirf SyntaxError(msg)
             encoding += '-sig'
         gib encoding
 
@@ -453,15 +453,15 @@ def open(filename):
     detect_encoding().
     """
     buffer = _builtin_open(filename, 'rb')
-    try:
+    versuch:
         encoding, lines = detect_encoding(buffer.readline)
         buffer.seek(0)
         text = TextIOWrapper(buffer, encoding, line_buffering=Wahr)
         text.mode = 'r'
         gib text
-    except:
+    ausser:
         buffer.close()
-        raise
+        wirf
 
 def tokenize(readline):
     """
@@ -494,7 +494,7 @@ def tokenize(readline):
 def generate_tokens(readline):
     """Tokenize a source reading Python code als unicode strings.
 
-    This has the same API als tokenize(), except that it expects the *readline*
+    This has the same API als tokenize(), ausser that it expects the *readline*
     callable to gib str objects instead of bytes.
     """
     gib _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
@@ -526,7 +526,7 @@ def _main(args=Nichts):
                         help='display token names using the exact type')
     args = parser.parse_args(args)
 
-    try:
+    versuch:
         # Tokenize the input
         wenn args.filename:
             filename = args.filename
@@ -546,21 +546,21 @@ def _main(args=Nichts):
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
             drucke("%-20s%-15s%-15r" %
                   (token_range, tok_name[token_type], token.string))
-    except IndentationError als err:
+    ausser IndentationError als err:
         line, column = err.args[1][1:3]
         error(err.args[0], filename, (line, column))
-    except TokenError als err:
+    ausser TokenError als err:
         line, column = err.args[1]
         error(err.args[0], filename, (line, column))
-    except SyntaxError als err:
+    ausser SyntaxError als err:
         error(err, filename)
-    except OSError als err:
+    ausser OSError als err:
         error(err)
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke("interrupted\n")
-    except Exception als err:
+    ausser Exception als err:
         perror("unexpected error: %s" % err)
-        raise
+        wirf
 
 def _transform_msg(msg):
     """Transform error messages von the C tokenizer into the Python tokenize
@@ -578,14 +578,14 @@ def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Fals
         it = _tokenize.TokenizerIter(source, extra_tokens=extra_tokens)
     sonst:
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)
-    try:
+    versuch:
         fuer info in it:
             liefere TokenInfo._make(info)
-    except SyntaxError als e:
+    ausser SyntaxError als e:
         wenn type(e) != SyntaxError:
-            raise e von Nichts
+            wirf e von Nichts
         msg = _transform_msg(e.msg)
-        raise TokenError(msg, (e.lineno, e.offset)) von Nichts
+        wirf TokenError(msg, (e.lineno, e.offset)) von Nichts
 
 
 wenn __name__ == "__main__":

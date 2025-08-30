@@ -29,9 +29,9 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         self.assertEqual(d['u'], '\xf3')
 
     def test_issue2301(self):
-        try:
+        versuch:
             compile(b"# coding: cp932\nprint '\x94\x4e'", "dummy", "exec")
-        except SyntaxError als v:
+        ausser SyntaxError als v:
             self.assertEqual(v.text.rstrip('\n'), "print '\u5e74'")
         sonst:
             self.fail()
@@ -121,7 +121,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         filename = TESTFN + ".py"
         f = open(filename, "w", encoding="cp1252")
         sys.path.insert(0, os.curdir)
-        try:
+        versuch:
             mit f:
                 f.write("# -*- coding: cp1252 -*-\n")
                 f.write("'''A short string\n")
@@ -130,7 +130,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
 
             importlib.invalidate_caches()
             __import__(TESTFN)
-        finally:
+        schliesslich:
             del sys.path[0]
             unlink(filename)
             unlink(filename + "c")
@@ -152,23 +152,23 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         mit open(TESTFN, "wb") als fd:
             fd.write(b'drucke("""\n\xb1""")\n')
 
-        try:
+        versuch:
             retcode, stdout, stderr = script_helper.assert_python_failure(TESTFN)
 
             self.assertGreater(retcode, 0)
             self.assertIn(b"Non-UTF-8 code starting mit '\\xb1'", stderr)
-        finally:
+        schliesslich:
             os.unlink(TESTFN)
 
     def test_tokenizer_fstring_warning_in_first_line(self):
         source = "0b1and 2"
         mit open(TESTFN, "w") als fd:
             fd.write("{}".format(source))
-        try:
+        versuch:
             retcode, stdout, stderr = script_helper.assert_python_ok(TESTFN)
             self.assertIn(b"SyntaxWarning: invalid binary litera", stderr)
             self.assertEqual(stderr.count(source.encode()), 1)
-        finally:
+        schliesslich:
             os.unlink(TESTFN)
 
 

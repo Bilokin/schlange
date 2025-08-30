@@ -6,7 +6,7 @@ klasse TestUtil(unittest.TestCase):
     def test_safe_repr(self):
         klasse RaisingRepr:
             def __repr__(self):
-                raise ValueError("Invalid repr()")
+                wirf ValueError("Invalid repr()")
 
         klasse LongRepr:
             def __repr__(self):

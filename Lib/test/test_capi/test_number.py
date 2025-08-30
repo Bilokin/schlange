@@ -8,23 +8,23 @@ von test.support importiere import_helper
 _testcapi = import_helper.import_module('_testcapi')
 von _testcapi importiere PY_SSIZE_T_MAX, PY_SSIZE_T_MIN
 
-try:
+versuch:
     von _testbuffer importiere ndarray
-except ImportError:
+ausser ImportError:
     ndarray = Nichts
 
 NULL = Nichts
 
 klasse BadDescr:
     def __get__(self, obj, objtype=Nichts):
-        raise RuntimeError
+        wirf RuntimeError
 
 klasse WithDunder:
     def _meth(self, *args):
         wenn self.val:
             gib self.val
         wenn self.exc:
-            raise self.exc
+            wirf self.exc
     @classmethod
     def with_val(cls, val):
         obj = super().__new__(cls)
@@ -102,9 +102,9 @@ klasse CAPITest(unittest.TestCase):
             # Behave als corresponding unary operation
             op = getattr(operator, name)
             fuer x in [0, 42, -1, 3.14, 1+2j]:
-                try:
+                versuch:
                     op(x)
-                except TypeError:
+                ausser TypeError:
                     self.assertRaises(TypeError, func, x)
                 sonst:
                     self.assertEqual(func(x), op(x))
@@ -150,9 +150,9 @@ klasse CAPITest(unittest.TestCase):
             # Behave als corresponding binary operation
             op = getattr(operator, name, divmod)
             fuer x, y in itertools.combinations(cases, 2):
-                try:
+                versuch:
                     op(x, y)
-                except (TypeError, ValueError, ZeroDivisionError) als exc:
+                ausser (TypeError, ValueError, ZeroDivisionError) als exc:
                     self.assertRaises(exc.__class__, func, x, y)
                 sonst:
                     self.assertEqual(func(x, y), op(x, y))

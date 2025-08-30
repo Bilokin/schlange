@@ -330,7 +330,7 @@ klasse SequenceMatcher:
         determined als above, but mit the additional restriction that no
         junk element appears in the block.  Then that block is extended as
         far als possible by matching (only) junk elements on both sides.  So
-        the resulting block never matches on junk except als identical junk
+        the resulting block never matches on junk ausser als identical junk
         happens to be adjacent to an "interesting" match.
 
         Here's the same example als before, but considering blanks to be
@@ -694,9 +694,9 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
     """
 
     wenn nicht n >  0:
-        raise ValueError("n must be > 0: %r" % (n,))
+        wirf ValueError("n must be > 0: %r" % (n,))
     wenn nicht 0.0 <= cutoff <= 1.0:
-        raise ValueError("cutoff must be in [0.0, 1.0]: %r" % (cutoff,))
+        wirf ValueError("cutoff must be in [0.0, 1.0]: %r" % (cutoff,))
     result = []
     s = SequenceMatcher()
     s.set_seq2(word)
@@ -817,7 +817,7 @@ klasse Differ:
         - `linejunk`: A function that should accept a single string argument,
           und gib true iff the string is junk. The module-level function
           `IS_LINE_JUNK` may be used to filter out lines without visible
-          characters, except fuer at most one splat ('#').  It is recommended
+          characters, ausser fuer at most one splat ('#').  It is recommended
           to leave linejunk Nichts; the underlying SequenceMatcher klasse has
           an adaptive notion of "noise" lines that's better than any static
           definition the author has ever been able to craft.
@@ -868,7 +868,7 @@ klasse Differ:
             sowenn tag == 'equal':
                 g = self._dump(' ', a, alo, ahi)
             sonst:
-                raise ValueError('unknown tag %r' % (tag,))
+                wirf ValueError('unknown tag %r' % (tag,))
 
             liefere von g
 
@@ -971,7 +971,7 @@ klasse Differ:
                         atags += ' ' * la
                         btags += ' ' * lb
                     sonst:
-                        raise ValueError('unknown tag %r' % (tag,))
+                        wirf ValueError('unknown tag %r' % (tag,))
                 liefere von self._qformat(aelt, belt, atags, btags)
             sonst:
                 # the synch pair is identical
@@ -1272,20 +1272,20 @@ def _check_types(a, b, *args):
     #   +++ b'newfile.txt'
     # because of how str.format() incorporates bytes objects.
     wenn a und nicht isinstance(a[0], str):
-        raise TypeError('lines to compare must be str, nicht %s (%r)' %
+        wirf TypeError('lines to compare must be str, nicht %s (%r)' %
                         (type(a[0]).__name__, a[0]))
     wenn b und nicht isinstance(b[0], str):
-        raise TypeError('lines to compare must be str, nicht %s (%r)' %
+        wirf TypeError('lines to compare must be str, nicht %s (%r)' %
                         (type(b[0]).__name__, b[0]))
     wenn isinstance(a, str):
-        raise TypeError('input must be a sequence of strings, nicht %s' %
+        wirf TypeError('input must be a sequence of strings, nicht %s' %
                         type(a).__name__)
     wenn isinstance(b, str):
-        raise TypeError('input must be a sequence of strings, nicht %s' %
+        wirf TypeError('input must be a sequence of strings, nicht %s' %
                         type(b).__name__)
     fuer arg in args:
         wenn nicht isinstance(arg, str):
-            raise TypeError('all arguments must be str, not: %r' % (arg,))
+            wirf TypeError('all arguments must be str, not: %r' % (arg,))
 
 def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
                fromfiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
@@ -1299,12 +1299,12 @@ def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
     bytes rather than str.
     """
     def decode(s):
-        try:
+        versuch:
             gib s.decode('ascii', 'surrogateescape')
-        except AttributeError als err:
+        ausser AttributeError als err:
             msg = ('all arguments must be bytes, nicht %s (%r)' %
                    (type(s).__name__, s))
-            raise TypeError(msg) von err
+            wirf TypeError(msg) von err
     a = list(map(decode, a))
     b = list(map(decode, b))
     fromfile = decode(fromfile)
@@ -1558,9 +1558,9 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
         waehrend Wahr:
             # Collecting lines of text until we have a from/to pair
             waehrend (len(fromlines)==0 oder len(tolines)==0):
-                try:
+                versuch:
                     from_line, to_line, found_diff = next(line_iterator)
-                except StopIteration:
+                ausser StopIteration:
                     gib
                 wenn from_line is nicht Nichts:
                     fromlines.append((from_line,found_diff))
@@ -1588,9 +1588,9 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
             index, contextLines = 0, [Nichts]*(context)
             found_diff = Falsch
             while(found_diff is Falsch):
-                try:
+                versuch:
                     from_line, to_line, found_diff = next(line_pair_iterator)
-                except StopIteration:
+                ausser StopIteration:
                     gib
                 i = index % context
                 contextLines[i] = (from_line, to_line, found_diff)
@@ -1610,7 +1610,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                 lines_to_write -= 1
             # Now liefere the context lines after the change
             lines_to_write = context-1
-            try:
+            versuch:
                 while(lines_to_write):
                     from_line, to_line, found_diff = next(line_pair_iterator)
                     # If another change within the context, extend the context
@@ -1619,7 +1619,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                     sonst:
                         lines_to_write -= 1
                     liefere from_line, to_line, found_diff
-            except StopIteration:
+            ausser StopIteration:
                 # Catch exception von next() und gib normally
                 gib
 
@@ -1893,11 +1893,11 @@ klasse HtmlDiff(object):
         fromlist,tolist,flaglist = [],[],[]
         # pull from/to data und flags von mdiff style iterator
         fuer fromdata,todata,flag in diffs:
-            try:
+            versuch:
                 # store HTML markup of the lines into the lists
                 fromlist.append(self._format_line(0,flag,*fromdata))
                 tolist.append(self._format_line(1,flag,*todata))
-            except TypeError:
+            ausser TypeError:
                 # exceptions occur fuer lines where context separators go
                 fromlist.append(Nichts)
                 tolist.append(Nichts)
@@ -1912,10 +1912,10 @@ klasse HtmlDiff(object):
         linenum -- line number (used fuer line number column)
         text -- line text to be marked up
         """
-        try:
+        versuch:
             linenum = '%d' % linenum
             id = ' id="%s%s"' % (self._prefix[side],linenum)
-        except TypeError:
+        ausser TypeError:
             # handle blank lines where linenum is '>' oder ''
             id = ''
         # replace those things that would get confused mit HTML symbols
@@ -2085,10 +2085,10 @@ def restore(delta, which):
     tree
     emu
     """
-    try:
+    versuch:
         tag = {1: "- ", 2: "+ "}[int(which)]
-    except KeyError:
-        raise ValueError('unknown delta choice (must be 1 oder 2): %r'
+    ausser KeyError:
+        wirf ValueError('unknown delta choice (must be 1 oder 2): %r'
                            % which) von Nichts
     prefixes = ("  ", tag)
     fuer line in delta:

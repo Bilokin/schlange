@@ -172,7 +172,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         self.assertWahr(ttk._format_elemcreate(Nichts), (Nichts, ()))
 
         ## Testing type = image
-        # image type expects at least an image name, so this should raise
+        # image type expects at least an image name, so this should wirf
         # IndexError since it tries to access the index 0 of an empty tuple
         self.assertRaises(IndexError, ttk._format_elemcreate, 'image')
 
@@ -196,7 +196,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         ## Testing type = vsapi
         # vsapi type expects at least a klasse name und a part_id, so this
-        # should raise a ValueError since it tries to get two elements from
+        # should wirf a ValueError since it tries to get two elements from
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
 

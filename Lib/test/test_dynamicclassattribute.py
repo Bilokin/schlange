@@ -42,15 +42,15 @@ klasse SubClass(BaseClass):
     @spam.getter
     def spam(self):
         """SubClass.getter"""
-        raise PropertyGet(self._spam)
+        wirf PropertyGet(self._spam)
 
     @spam.setter
     def spam(self, value):
-        raise PropertySet(self._spam)
+        wirf PropertySet(self._spam)
 
     @spam.deleter
     def spam(self):
-        raise PropertyDel(self._spam)
+        wirf PropertyDel(self._spam)
 
 klasse PropertyDocBase(object):
     _spam = 1
@@ -158,7 +158,7 @@ klasse PropertyTests(unittest.TestCase):
         # right thing when presented mit a value that fails truth testing:
         klasse NotBool(object):
             def __bool__(self):
-                raise ValueError()
+                wirf ValueError()
             __len__ = __bool__
         mit self.assertRaises(ValueError):
             klasse C(object):
@@ -209,17 +209,17 @@ klasse PropertySubclassTests(unittest.TestCase):
     @unittest.skipIf(hasattr(PropertySubSlots, '__doc__'),
             "__doc__ is already present, __slots__ will have no effect")
     def test_slots_docstring_copy_exception(self):
-        try:
+        versuch:
             klasse Foo(object):
                 @PropertySubSlots
                 def spam(self):
-                    """Trying to copy this docstring will raise an exception"""
+                    """Trying to copy this docstring will wirf an exception"""
                     gib 1
                 drucke('\n',spam.__doc__)
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
-            raise Exception("AttributeError nicht raised")
+            wirf Exception("AttributeError nicht raised")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted mit -O2 und above")

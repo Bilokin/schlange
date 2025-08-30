@@ -219,7 +219,7 @@ def read_uint1(f):
     data = f.read(1)
     wenn data:
         gib data[0]
-    raise ValueError("not enough data in stream to read uint1")
+    wirf ValueError("not enough data in stream to read uint1")
 
 uint1 = ArgumentDescriptor(
             name='uint1',
@@ -240,7 +240,7 @@ def read_uint2(f):
     data = f.read(2)
     wenn len(data) == 2:
         gib _unpack("<H", data)[0]
-    raise ValueError("not enough data in stream to read uint2")
+    wirf ValueError("not enough data in stream to read uint2")
 
 uint2 = ArgumentDescriptor(
             name='uint2',
@@ -261,7 +261,7 @@ def read_int4(f):
     data = f.read(4)
     wenn len(data) == 4:
         gib _unpack("<i", data)[0]
-    raise ValueError("not enough data in stream to read int4")
+    wirf ValueError("not enough data in stream to read int4")
 
 int4 = ArgumentDescriptor(
            name='int4',
@@ -282,7 +282,7 @@ def read_uint4(f):
     data = f.read(4)
     wenn len(data) == 4:
         gib _unpack("<I", data)[0]
-    raise ValueError("not enough data in stream to read uint4")
+    wirf ValueError("not enough data in stream to read uint4")
 
 uint4 = ArgumentDescriptor(
             name='uint4',
@@ -303,7 +303,7 @@ def read_uint8(f):
     data = f.read(8)
     wenn len(data) == 8:
         gib _unpack("<Q", data)[0]
-    raise ValueError("not enough data in stream to read uint8")
+    wirf ValueError("not enough data in stream to read uint8")
 
 uint8 = ArgumentDescriptor(
             name='uint8',
@@ -341,19 +341,19 @@ def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
 
     data = f.readline()
     wenn nicht data.endswith(b'\n'):
-        raise ValueError("no newline found when trying to read stringnl")
+        wirf ValueError("no newline found when trying to read stringnl")
     data = data[:-1]    # lose the newline
 
     wenn stripquotes:
         fuer q in (b'"', b"'"):
             wenn data.startswith(q):
                 wenn nicht data.endswith(q):
-                    raise ValueError("strinq quote %r nicht found at both "
+                    wirf ValueError("strinq quote %r nicht found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
                 breche
         sonst:
-            raise ValueError("no string quotes around %r" % data)
+            wirf ValueError("no string quotes around %r" % data)
 
     wenn decode:
         data = codecs.escape_decode(data)[0].decode(encoding)
@@ -420,7 +420,7 @@ def read_string1(f):
     data = f.read(n)
     wenn len(data) == n:
         gib data.decode("latin-1")
-    raise ValueError("expected %d bytes in a string1, but only %d remain" %
+    wirf ValueError("expected %d bytes in a string1, but only %d remain" %
                      (n, len(data)))
 
 string1 = ArgumentDescriptor(
@@ -450,11 +450,11 @@ def read_string4(f):
 
     n = read_int4(f)
     wenn n < 0:
-        raise ValueError("string4 byte count < 0: %d" % n)
+        wirf ValueError("string4 byte count < 0: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib data.decode("latin-1")
-    raise ValueError("expected %d bytes in a string4, but only %d remain" %
+    wirf ValueError("expected %d bytes in a string4, but only %d remain" %
                      (n, len(data)))
 
 string4 = ArgumentDescriptor(
@@ -483,7 +483,7 @@ def read_bytes1(f):
     data = f.read(n)
     wenn len(data) == n:
         gib data
-    raise ValueError("expected %d bytes in a bytes1, but only %d remain" %
+    wirf ValueError("expected %d bytes in a bytes1, but only %d remain" %
                      (n, len(data)))
 
 bytes1 = ArgumentDescriptor(
@@ -513,11 +513,11 @@ def read_bytes4(f):
     n = read_uint4(f)
     assert n >= 0
     wenn n > sys.maxsize:
-        raise ValueError("bytes4 byte count > sys.maxsize: %d" % n)
+        wirf ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib data
-    raise ValueError("expected %d bytes in a bytes4, but only %d remain" %
+    wirf ValueError("expected %d bytes in a bytes4, but only %d remain" %
                      (n, len(data)))
 
 bytes4 = ArgumentDescriptor(
@@ -548,11 +548,11 @@ def read_bytes8(f):
     n = read_uint8(f)
     assert n >= 0
     wenn n > sys.maxsize:
-        raise ValueError("bytes8 byte count > sys.maxsize: %d" % n)
+        wirf ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib data
-    raise ValueError("expected %d bytes in a bytes8, but only %d remain" %
+    wirf ValueError("expected %d bytes in a bytes8, but only %d remain" %
                      (n, len(data)))
 
 bytes8 = ArgumentDescriptor(
@@ -583,11 +583,11 @@ def read_bytearray8(f):
     n = read_uint8(f)
     assert n >= 0
     wenn n > sys.maxsize:
-        raise ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
+        wirf ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib bytearray(data)
-    raise ValueError("expected %d bytes in a bytearray8, but only %d remain" %
+    wirf ValueError("expected %d bytes in a bytearray8, but only %d remain" %
                      (n, len(data)))
 
 bytearray8 = ArgumentDescriptor(
@@ -609,7 +609,7 @@ def read_unicodestringnl(f):
 
     data = f.readline()
     wenn nicht data.endswith(b'\n'):
-        raise ValueError("no newline found when trying to read "
+        wirf ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
     gib str(data, 'raw-unicode-escape')
@@ -649,7 +649,7 @@ def read_unicodestring1(f):
     data = f.read(n)
     wenn len(data) == n:
         gib str(data, 'utf-8', 'surrogatepass')
-    raise ValueError("expected %d bytes in a unicodestring1, but only %d "
+    wirf ValueError("expected %d bytes in a unicodestring1, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring1 = ArgumentDescriptor(
@@ -686,11 +686,11 @@ def read_unicodestring4(f):
     n = read_uint4(f)
     assert n >= 0
     wenn n > sys.maxsize:
-        raise ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
+        wirf ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib str(data, 'utf-8', 'surrogatepass')
-    raise ValueError("expected %d bytes in a unicodestring4, but only %d "
+    wirf ValueError("expected %d bytes in a unicodestring4, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring4 = ArgumentDescriptor(
@@ -727,11 +727,11 @@ def read_unicodestring8(f):
     n = read_uint8(f)
     assert n >= 0
     wenn n > sys.maxsize:
-        raise ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
+        wirf ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
         gib str(data, 'utf-8', 'surrogatepass')
-    raise ValueError("expected %d bytes in a unicodestring8, but only %d "
+    wirf ValueError("expected %d bytes in a unicodestring8, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring8 = ArgumentDescriptor(
@@ -845,7 +845,7 @@ def read_float8(f):
     data = f.read(8)
     wenn len(data) == 8:
         gib _unpack(">d", data)[0]
-    raise ValueError("not enough data in stream to read float8")
+    wirf ValueError("not enough data in stream to read float8")
 
 
 float8 = ArgumentDescriptor(
@@ -888,7 +888,7 @@ def read_long1(f):
     n = read_uint1(f)
     data = f.read(n)
     wenn len(data) != n:
-        raise ValueError("not enough data in stream to read long1")
+        wirf ValueError("not enough data in stream to read long1")
     gib decode_long(data)
 
 long1 = ArgumentDescriptor(
@@ -919,10 +919,10 @@ def read_long4(f):
 
     n = read_int4(f)
     wenn n < 0:
-        raise ValueError("long4 byte count < 0: %d" % n)
+        wirf ValueError("long4 byte count < 0: %d" % n)
     data = f.read(n)
     wenn len(data) != n:
-        raise ValueError("not enough data in stream to read long4")
+        wirf ValueError("not enough data in stream to read long4")
     gib decode_long(data)
 
 long4 = ArgumentDescriptor(
@@ -1226,7 +1226,7 @@ opcodes = [
       proto=0,
       doc="""Push a long integer.
 
-      The same als INT, except that the literal ends mit 'L', und always
+      The same als INT, ausser that the literal ends mit 'L', und always
       unpickles to a Python long.  There doesn't seem a real purpose to the
       trailing 'L'.
 
@@ -2080,10 +2080,10 @@ opcodes = [
 
       As fuer INST, the remainder of the stack above the markobject is
       gathered into an argument tuple, und then the logic seems identical,
-      except that no __safe_for_unpickling__ check is done (XXX this is
+      ausser that no __safe_for_unpickling__ check is done (XXX this is
       a bug).  See INST fuer the gory details.
 
-      NOTE:  In Python 2.3, INST und OBJ are identical except fuer how they
+      NOTE:  In Python 2.3, INST und OBJ are identical ausser fuer how they
       get the klasse object.  That was always the intent; the implementations
       had diverged fuer accidental reasons.
       """),
@@ -2186,7 +2186,7 @@ opcodes = [
       proto=1,
       doc="""Push an object identified by a persistent ID.
 
-      Like PERSID, except the persistent ID is popped off the stack (instead
+      Like PERSID, ausser the persistent ID is popped off the stack (instead
       of being a string embedded in the opcode bytestream).  The persistent
       ID is passed to self.persistent_load(), und whatever object that
       returns is pushed on the stack.  See PERSID fuer more detail.
@@ -2200,10 +2200,10 @@ code2i = {}
 
 fuer i, d in enumerate(opcodes):
     wenn d.name in name2i:
-        raise ValueError("repeated name %r at indices %d und %d" %
+        wirf ValueError("repeated name %r at indices %d und %d" %
                          (d.name, name2i[d.name], i))
     wenn d.code in code2i:
-        raise ValueError("repeated code %r at indices %d und %d" %
+        wirf ValueError("repeated code %r at indices %d und %d" %
                          (d.code, code2i[d.code], i))
 
     name2i[d.name] = i
@@ -2242,7 +2242,7 @@ def assure_pickle_consistency(verbose=Falsch):
                       name, picklecode))
             d = copy[picklecode]
             wenn d.name != name:
-                raise ValueError("for pickle code %r, pickle.py uses name %r "
+                wirf ValueError("for pickle code %r, pickle.py uses name %r "
                                  "but we're using name %r" % (picklecode,
                                                               name,
                                                               d.name))
@@ -2250,14 +2250,14 @@ def assure_pickle_consistency(verbose=Falsch):
             # of a different kind.
             del copy[picklecode]
         sonst:
-            raise ValueError("pickle.py appears to have a pickle opcode mit "
+            wirf ValueError("pickle.py appears to have a pickle opcode mit "
                              "name %r und code %r, but we don't" %
                              (name, picklecode))
     wenn copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
         fuer code, d in copy.items():
             msg.append("    name %r mit code %r" % (d.name, code))
-        raise ValueError("\n".join(msg))
+        wirf ValueError("\n".join(msg))
 
 assure_pickle_consistency()
 del assure_pickle_consistency
@@ -2280,9 +2280,9 @@ def _genops(data, yield_end_pos=Falsch):
         opcode = code2op.get(code.decode("latin-1"))
         wenn opcode is Nichts:
             wenn code == b"":
-                raise ValueError("pickle exhausted before seeing STOP")
+                wirf ValueError("pickle exhausted before seeing STOP")
             sonst:
-                raise ValueError("at position %s, opcode %r unknown" % (
+                wirf ValueError("at position %s, opcode %r unknown" % (
                                  "<unknown>" wenn pos is Nichts sonst pos,
                                  code))
         wenn opcode.arg is Nichts:
@@ -2360,7 +2360,7 @@ def optimize(p):
             opcodes.append((pos, end_pos))
     del oldids
 
-    # Copy the opcodes except fuer PUTS without a corresponding GET
+    # Copy the opcodes ausser fuer PUTS without a corresponding GET
     out = io.BytesIO()
     # Write the PROTO header before any framing
     out.write(protoheader)
@@ -2476,9 +2476,9 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                     stack.pop()
                 stack.pop()
                 # Stop later code von popping too much.
-                try:
+                versuch:
                     numtopop = before.index(markobject)
-                except ValueError:
+                ausser ValueError:
                     assert opcode.name == "POP"
                     numtopop = 0
             sonst:
@@ -2527,11 +2527,11 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
         wenn errormsg:
             # Note that we delayed complaining until the offending opcode
             # was printed.
-            raise ValueError(errormsg)
+            wirf ValueError(errormsg)
 
         # Emulate the stack effects.
         wenn len(stack) < numtopop:
-            raise ValueError("tries to pop %d items von stack mit "
+            wirf ValueError("tries to pop %d items von stack mit "
                              "only %d items" % (numtopop, len(stack)))
         wenn numtopop:
             del stack[-numtopop:]
@@ -2543,7 +2543,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
     drucke("highest protocol among opcodes =", maxproto, file=out)
     wenn stack:
-        raise ValueError("stack nicht empty after STOP: %r" % stack)
+        wirf ValueError("stack nicht empty after STOP: %r" % stack)
 
 # For use in the doctest, simply als an example of a klasse to pickle.
 klasse _Example:
@@ -2871,7 +2871,7 @@ wenn __name__ == "__main__":
         output = sys.stdout
     sonst:
         output = open(args.output, 'w')
-    try:
+    versuch:
         fuer arg in args.pickle_file:
             wenn len(args.pickle_file) > 1:
                 name = '<stdin>' wenn arg == '-' sonst arg
@@ -2882,6 +2882,6 @@ wenn __name__ == "__main__":
             sonst:
                 mit open(arg, 'rb') als f:
                     dis(f, output, memo, args.indentlevel, annotate)
-    finally:
+    schliesslich:
         wenn output is nicht sys.stdout:
             output.close()

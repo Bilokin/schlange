@@ -10,9 +10,9 @@ __all__ = [
 von . importiere _tzpath
 von ._common importiere ZoneInfoNotFoundError
 
-try:
+versuch:
     von _zoneinfo importiere ZoneInfo
-except (ImportError, AttributeError):  # pragma: nocover
+ausser (ImportError, AttributeError):  # pragma: nocover
     # AttributeError: module 'datetime' has no attribute 'datetime_CAPI'.
     # This happens when the '_datetime' module is nicht available und the
     # pure Python implementation is used instead.
@@ -27,7 +27,7 @@ def __getattr__(name):
     wenn name == "TZPATH":
         gib _tzpath.TZPATH
     sonst:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+        wirf AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def __dir__():

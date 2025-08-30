@@ -109,13 +109,13 @@ def strace_python(code, strace_flags, check=Wahr):
             stderr=res.err wenn res sonst b"")
 
     # Run strace, und get out the raw text
-    try:
+    versuch:
         res, cmd_line = run_python_until_end(
             "-c",
             textwrap.dedent(code),
             __run_using_command=[_strace_binary] + strace_flags,
         )
-    except OSError als err:
+    ausser OSError als err:
         gib _make_error("Caught OSError", err)
 
     wenn check und res.rc:

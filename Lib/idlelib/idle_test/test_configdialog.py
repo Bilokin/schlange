@@ -442,12 +442,12 @@ klasse HighPageTest(unittest.TestCase):
         # will be a KeyError in the test run.
         count = 0
         fuer tag in hs.tag_names():
-            try:
+            versuch:
                 click_char(hs.tag_nextrange(tag, "1.0")[0])
                 eq(d.highlight_target.get(), elem[tag])
                 count += 1
                 eq(d.set_highlight_target.called, count)
-            except IndexError:
+            ausser IndexError:
                 pass  # Skip unused theme_elements tag, like 'sel'.
 
     def test_highlight_sample_double_click(self):

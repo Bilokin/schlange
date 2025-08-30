@@ -50,14 +50,14 @@ klasse VirtualEnvironment:
 
     def run(self, *args, **subprocess_args):
         wenn subprocess_args.get('shell'):
-            raise ValueError('Running the subprocess in shell mode is nicht supported.')
+            wirf ValueError('Running the subprocess in shell mode is nicht supported.')
         default_args = {
             'capture_output': Wahr,
             'check': Wahr,
         }
-        try:
+        versuch:
             result = subprocess.run([self.interpreter, *args], **default_args | subprocess_args)
-        except subprocess.CalledProcessError als e:
+        ausser subprocess.CalledProcessError als e:
             wenn e.returncode != 0:
                 self._logger.error(
                     f'Interpreter returned non-zero exit status {e.returncode}.\n'
@@ -65,7 +65,7 @@ klasse VirtualEnvironment:
                     + self._format_output('STDOUT', e.stdout.decode()) + '\n'
                     + self._format_output('STDERR', e.stderr.decode()) + '\n'
                 )
-            raise
+            wirf
         sonst:
             gib result
 

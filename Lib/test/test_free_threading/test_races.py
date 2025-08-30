@@ -103,10 +103,10 @@ klasse TestRaces(TestBase):
 
         klasse C:
             def __init__(self):
-                try:
+                versuch:
                     super().__init__
                     super().__init__()
-                except RuntimeError:
+                ausser RuntimeError:
                     pass  #  happens wenn __class__ is replaced mit non-type
 
         def access():

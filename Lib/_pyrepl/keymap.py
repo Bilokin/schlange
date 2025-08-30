@@ -127,24 +127,24 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
                 s += 2
             sowenn c == "c":
                 wenn key[s + 2] != "-":
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "\\C must be followed by `-' (char %d of %s)"
                         % (s + 2, repr(key))
                     )
                 wenn ctrl:
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "doubled \\C- (char %d of %s)" % (s + 1, repr(key))
                     )
                 ctrl = 1
                 s += 3
             sowenn c == "m":
                 wenn key[s + 2] != "-":
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "\\M must be followed by `-' (char %d of %s)"
                         % (s + 2, repr(key))
                     )
                 wenn meta:
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "doubled \\M- (char %d of %s)" % (s + 1, repr(key))
                     )
                 meta = 1
@@ -160,20 +160,20 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
             sowenn c == "<":
                 t = key.find(">", s)
                 wenn t == -1:
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "unterminated \\< starting at char %d of %s"
                         % (s + 1, repr(key))
                     )
                 ret = key[s + 2 : t].lower()
                 wenn ret nicht in _keynames:
-                    raise KeySpecError(
+                    wirf KeySpecError(
                         "unrecognised keyname `%s' at char %d of %s"
                         % (ret, s + 2, repr(key))
                     )
                 ret = _keynames[ret]
                 s = t + 1
             sonst:
-                raise KeySpecError(
+                wirf KeySpecError(
                     "unknown backslash escape %s at char %d of %s"
                     % (repr(c), s + 2, repr(key))
                 )
@@ -186,7 +186,7 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
         sowenn ret in {"left", "right"}:
             ret = f"ctrl {ret}"
         sonst:
-            raise KeySpecError("\\C- followed by invalid key")
+            wirf KeySpecError("\\C- followed by invalid key")
 
     result = [ret], s
     wenn meta:
@@ -205,7 +205,7 @@ def compile_keymap(keymap, empty=b""):
     fuer key, value in r.items():
         wenn empty in value:
             wenn len(value) != 1:
-                raise KeySpecError("key definitions fuer %s clash" % (value.values(),))
+                wirf KeySpecError("key definitions fuer %s clash" % (value.values(),))
             sonst:
                 r[key] = value[empty]
         sonst:

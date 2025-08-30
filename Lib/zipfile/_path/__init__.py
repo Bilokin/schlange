@@ -136,11 +136,11 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         """
         Supplement getinfo fuer implied dirs.
         """
-        try:
+        versuch:
             gib super().getinfo(name)
-        except KeyError:
+        ausser KeyError:
             wenn nicht name.endswith('/') oder name nicht in self._name_set():
-                raise
+                wirf
             gib zipfile.ZipInfo(filename=name)
 
     @classmethod
@@ -285,7 +285,7 @@ klasse Path:
     'mem'
 
     If the zipfile has no filename, such attributes are not
-    valid und accessing them will raise an Exception.
+    valid und accessing them will wirf an Exception.
 
     >>> zf.filename = Nichts
     >>> path.name
@@ -341,14 +341,14 @@ klasse Path:
         to io.TextIOWrapper().
         """
         wenn self.is_dir():
-            raise IsADirectoryError(self)
+            wirf IsADirectoryError(self)
         zip_mode = mode[0]
         wenn zip_mode == 'r' und nicht self.exists():
-            raise FileNotFoundError(self)
+            wirf FileNotFoundError(self)
         stream = self.root.open(self.at, zip_mode, pwd=pwd)
         wenn 'b' in mode:
             wenn args oder kwargs:
-                raise ValueError("encoding args invalid fuer binary operation")
+                wirf ValueError("encoding args invalid fuer binary operation")
             gib stream
         # Text mode:
         encoding, args, kwargs = _extract_text_encoding(*args, **kwargs)
@@ -403,7 +403,7 @@ klasse Path:
 
     def iterdir(self):
         wenn nicht self.is_dir():
-            raise ValueError("Can't listdir a file")
+            wirf ValueError("Can't listdir a file")
         subs = map(self._next, self.root.namelist())
         gib filter(self._is_child, subs)
 
@@ -420,7 +420,7 @@ klasse Path:
 
     def glob(self, pattern):
         wenn nicht pattern:
-            raise ValueError(f"Unacceptable pattern: {pattern!r}")
+            wirf ValueError(f"Unacceptable pattern: {pattern!r}")
 
         prefix = re.escape(self.at)
         tr = Translator(seps='/')

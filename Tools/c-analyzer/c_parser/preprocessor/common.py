@@ -57,7 +57,7 @@ def preprocess(tool, filename, cwd=Nichts, **kwargs):
     # Make sure the OS is supported fuer this file.
     wenn (_expected := is_os_mismatch(filename)):
         error = Nichts
-        raise OSMismatchError(filename, _expected, argv, error, TOOL)
+        wirf OSMismatchError(filename, _expected, argv, error, TOOL)
 
     # Run the command.
     mit converted_error(tool, argv, filename):
@@ -106,9 +106,9 @@ def _build_argv(
 
 @contextlib.contextmanager
 def converted_error(tool, argv, filename):
-    try:
+    versuch:
         liefere
-    except subprocess.CalledProcessError als exc:
+    ausser subprocess.CalledProcessError als exc:
         convert_error(
             tool,
             argv,
@@ -122,28 +122,28 @@ def convert_error(tool, argv, filename, stderr, rc):
     error = (stderr.splitlines()[0], rc)
     wenn (_expected := is_os_mismatch(filename, stderr)):
         logger.info(stderr.strip())
-        raise OSMismatchError(filename, _expected, argv, error, tool)
+        wirf OSMismatchError(filename, _expected, argv, error, tool)
     sowenn (_missing := is_missing_dep(stderr)):
         logger.info(stderr.strip())
-        raise MissingDependenciesError(filename, (_missing,), argv, error, tool)
+        wirf MissingDependenciesError(filename, (_missing,), argv, error, tool)
     sowenn '#error' in stderr:
         # XXX Ignore incompatible files.
         error = (stderr.splitlines()[1], rc)
         logger.info(stderr.strip())
-        raise ErrorDirectiveError(filename, argv, error, tool)
+        wirf ErrorDirectiveError(filename, argv, error, tool)
     sonst:
         # Try one more time, mit stderr written to the terminal.
-        try:
+        versuch:
             output = run_cmd(argv, stderr=Nichts)
-        except subprocess.CalledProcessError:
-            raise PreprocessorFailure(filename, argv, error, tool)
+        ausser subprocess.CalledProcessError:
+            wirf PreprocessorFailure(filename, argv, error, tool)
 
 
 def is_os_mismatch(filename, errtext=Nichts):
     # See: https://docs.python.org/3/library/sys.html#sys.platform
     actual = sys.platform
     wenn actual == 'unknown':
-        raise NotImplementedError
+        wirf NotImplementedError
 
     wenn errtext is nicht Nichts:
         wenn (missing := is_missing_dep(errtext)):

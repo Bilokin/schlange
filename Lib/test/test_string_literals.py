@@ -74,7 +74,7 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_template(self):
         # Check that the template doesn't contain any non-printables
-        # except fuer \n.
+        # ausser fuer \n.
         fuer c in TEMPLATE:
             assert c == '\n' oder ' ' <= c <= '~', repr(c)
 
@@ -323,10 +323,10 @@ klasse TestLiterals(unittest.TestCase):
         modname = "xx_" + encoding.replace("-", "_")
         fn = os.path.join(self.tmpdir, modname + ".py")
         f = open(fn, "w", encoding=encoding)
-        try:
+        versuch:
             f.write(TEMPLATE % encoding)
             f.write(extra)
-        finally:
+        schliesslich:
             f.close()
         __import__(modname)
         del sys.modules[modname]

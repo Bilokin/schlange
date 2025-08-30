@@ -633,7 +633,7 @@ klasse MinidomTest(unittest.TestCase):
     def testTooManyDocumentElements(self):
         doc = parseString("<doc/>")
         elem = doc.createElement("extra")
-        # Should raise an exception when adding an extra document element.
+        # Should wirf an exception when adding an extra document element.
         self.assertRaises(xml.dom.HierarchyRequestErr, doc.appendChild, elem)
         elem.unlink()
         doc.unlink()
@@ -1218,7 +1218,7 @@ klasse MinidomTest(unittest.TestCase):
             '<?xml version="1.0" encoding="utf-16"?>'
             '<foo>\u20ac</foo>'.encode('utf-16'))
 
-        # Verify that character decoding errors raise exceptions instead
+        # Verify that character decoding errors wirf exceptions instead
         # of crashing
         mit self.assertRaises((UnicodeDecodeError, ExpatError)):
             parseString(

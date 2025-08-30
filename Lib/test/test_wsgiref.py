@@ -73,9 +73,9 @@ def run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
     olderr = sys.stderr
     err = sys.stderr = StringIO()
 
-    try:
+    versuch:
         server.finish_request((inp, out), ("127.0.0.1",8888))
-    finally:
+    schliesslich:
         sys.stderr = olderr
 
     gib out.getvalue(), err.getvalue()
@@ -90,16 +90,16 @@ def compare_generic_iter(make_it, match):
 
     it = make_it()
     wenn nicht iter(it) is it:
-        raise AssertionError
+        wirf AssertionError
     fuer item in match:
         wenn nicht next(it) == item:
-            raise AssertionError
-    try:
+            wirf AssertionError
+    versuch:
         next(it)
-    except StopIteration:
+    ausser StopIteration:
         pass
     sonst:
-        raise AssertionError("Too many items von .__next__()", it)
+        wirf AssertionError("Too many items von .__next__()", it)
 
 
 klasse IntegrationTests(TestCase):
@@ -461,7 +461,7 @@ klasse HeaderTests(TestCase):
         self.assertIsNot(Headers(test).items(), test)  # must be copy!
 
         h = Headers()
-        del h['foo']   # should nicht raise an error
+        del h['foo']   # should nicht wirf an error
 
         h['Foo'] = 'bar'
         fuer m in h.__contains__, h.get, h.get_all, h.__getitem__:
@@ -522,7 +522,7 @@ klasse TestHandler(ErrorHandler):
     """Simple handler subclass fuer testing BaseHandler, w/error passthru"""
 
     def handle_error(self):
-        raise   # fuer testing, we want to see what's happening
+        wirf   # fuer testing, we want to see what's happening
 
 
 klasse HandlerTests(TestCase):
@@ -660,7 +660,7 @@ klasse HandlerTests(TestCase):
             gib []
 
         def error_app(e,s):
-            raise AssertionError("This should be caught by handler")
+            wirf AssertionError("This should be caught by handler")
 
         h = ErrorHandler()
         h.run(non_error_app)
@@ -685,7 +685,7 @@ klasse HandlerTests(TestCase):
         MSG = b"Some output has been sent"
         def error_app(e,s):
             s("200 OK",[])(MSG)
-            raise AssertionError("This should be caught by handler")
+            wirf AssertionError("This should be caught by handler")
 
         h = ErrorHandler()
         h.run(error_app)
@@ -762,7 +762,7 @@ klasse HandlerTests(TestCase):
                 def __iter__(self):
                     waehrend Wahr:
                         liefere b'blah'
-                        raise AssertionError("This should be caught by handler")
+                        wirf AssertionError("This should be caught by handler")
                 def close(self):
                     side_effects['close_called'] = Wahr
             gib CrashyIterable()
@@ -806,7 +806,7 @@ klasse HandlerTests(TestCase):
             mit self.subTest(exception=exception):
                 klasse AbortingWriter:
                     def write(self, b):
-                        raise exception
+                        wirf exception
 
                 stderr = StringIO()
                 h = SimpleHandler(BytesIO(), AbortingWriter(), stderr, environ)
@@ -824,7 +824,7 @@ klasse HandlerTests(TestCase):
         # preserved in case of an exception.
         klasse AbortingWriter:
             def write(self, b):
-                raise CustomException
+                wirf CustomException
 
         stderr = StringIO()
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}

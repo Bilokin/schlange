@@ -11,12 +11,12 @@ von email.message importiere EmailMessage
 von email.generator importiere BytesGenerator
 von test.test_email importiere TestEmailBase, parameterize
 
-# This is like textwrap.dedent fuer bytes, except that it uses \r\n fuer the line
+# This is like textwrap.dedent fuer bytes, ausser that it uses \r\n fuer the line
 # separators on the rebuilt string.
 def dedent(bstr):
     lines = bstr.splitlines()
     wenn nicht lines[0].strip():
-        raise ValueError("First line must contain text")
+        wirf ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     gib b'\r\n'.join(
         [x[stripamt:] wenn len(x)>=stripamt sonst b''

@@ -78,12 +78,12 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     @unittest.skipIf(os.name nicht in ("nt", "posix"), 'test meant fuer nt und posix')
     def test_nt_and_posix_stack_size(self):
-        try:
+        versuch:
             thread.stack_size(4096)
-        except ValueError:
+        ausser ValueError:
             verbose_drucke("caught expected ValueError setting "
                             "stack_size(4096)")
-        except thread.error:
+        ausser thread.error:
             self.skipTest("platform does nicht support changing thread stack "
                           "size")
 
@@ -145,7 +145,7 @@ klasse ThreadRunningTests(BasicThreadTest):
     def test_unraisable_exception(self):
         def task():
             started.release()
-            raise ValueError("task failed")
+            wirf ValueError("task failed")
 
         started = thread.allocate_lock()
         mit support.catch_unraisable_exception() als cm:
@@ -214,11 +214,11 @@ klasse ThreadRunningTests(BasicThreadTest):
 
         def task():
             start_joinable_thread_returned.acquire()
-            try:
+            versuch:
                 handles[0].join()
-            except Exception als e:
+            ausser Exception als e:
                 errors.append(e)
-            finally:
+            schliesslich:
                 task_tried_to_join.release()
 
         mit threading_helper.wait_threads_exit():
@@ -231,7 +231,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
         assert len(errors) == 1
         mit self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
-            raise errors[0]
+            wirf errors[0]
 
     def test_join_then_self_join(self):
         # make sure we can't deadlock in the following scenario with
@@ -255,9 +255,9 @@ klasse ThreadRunningTests(BasicThreadTest):
             self_joiner_started.release()
             self_joiner_barrier.acquire()
 
-            try:
+            versuch:
                 self_joiner_handle.join()
-            except Exception als e:
+            ausser Exception als e:
                 error = e
 
         joiner_started = make_lock()
@@ -287,7 +287,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             joiner_handle.join()
 
             mit self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
-                raise error
+                wirf error
 
     def test_join_with_timeout(self):
         lock = thread.allocate_lock()
@@ -425,10 +425,10 @@ klasse TestForkInThread(unittest.TestCase):
                     gib
 
             # child process
-            try:
+            versuch:
                 os.close(read_fd)
                 os.write(write_fd, b"OK")
-            finally:
+            schliesslich:
                 os._exit(0)
 
         mit threading_helper.wait_threads_exit():
@@ -440,14 +440,14 @@ klasse TestForkInThread(unittest.TestCase):
         support.wait_process(pid, exitcode=0)
 
     def tearDown(self):
-        try:
+        versuch:
             os.close(self.read_fd)
-        except OSError:
+        ausser OSError:
             pass
 
-        try:
+        versuch:
             os.close(self.write_fd)
-        except OSError:
+        ausser OSError:
             pass
 
 

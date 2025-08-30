@@ -155,7 +155,7 @@ def _cli_check(parser, **kwargs):
 def cmd_check(filenames=Nichts, **kwargs):
     filenames = _resolve_filenames(filenames)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
-    try:
+    versuch:
         c_analyzer.cmd_check(
             filenames,
             relroot=REPO_ROOT,
@@ -164,17 +164,17 @@ def cmd_check(filenames=Nichts, **kwargs):
             file_maxsizes=_parser.MAX_SIZES,
             **kwargs
         )
-    except SystemExit als exc:
+    ausser SystemExit als exc:
         num_failed = exc.args[0] wenn getattr(exc, 'args', Nichts) sonst Nichts
         wenn isinstance(num_failed, int):
             wenn num_failed > 0:
                 sys.stderr.flush()
                 drucke(CHECK_EXPLANATION, flush=Wahr)
-        raise  # re-raise
-    except Exception:
+        wirf  # re-raise
+    ausser Exception:
         sys.stderr.flush()
         drucke(CHECK_EXPLANATION, flush=Wahr)
-        raise  # re-raise
+        wirf  # re-raise
 
 
 def cmd_analyze(filenames=Nichts, **kwargs):
@@ -491,10 +491,10 @@ def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
 
 
 def main(cmd, cmd_kwargs):
-    try:
+    versuch:
         run_cmd = COMMANDS[cmd][-1]
-    except KeyError:
-        raise ValueError(f'unsupported cmd {cmd!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported cmd {cmd!r}')
     run_cmd(**cmd_kwargs)
 
 

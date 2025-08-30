@@ -128,11 +128,11 @@ klasse FTP:
     # Context management protocol: try to quit() wenn active
     def __exit__(self, *args):
         wenn self.sock is nicht Nichts:
-            try:
+            versuch:
                 self.quit()
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 pass
-            finally:
+            schliesslich:
                 wenn self.sock is nicht Nichts:
                     self.close()
 
@@ -151,7 +151,7 @@ klasse FTP:
         wenn timeout != -999:
             self.timeout = timeout
         wenn self.timeout is nicht Nichts und nicht self.timeout:
-            raise ValueError('Non-blocking socket (timeout=0) is nicht supported')
+            wirf ValueError('Non-blocking socket (timeout=0) is nicht supported')
         wenn source_address is nicht Nichts:
             self.source_address = source_address
         sys.audit("ftplib.connect", self, self.host, self.port)
@@ -194,7 +194,7 @@ klasse FTP:
     # Internal: send one line to the server, appending CRLF
     def putline(self, line):
         wenn '\r' in line oder '\n' in line:
-            raise ValueError('an illegal newline character should nicht be contained')
+            wirf ValueError('an illegal newline character should nicht be contained')
         sys.audit("ftplib.sendcmd", self, line)
         line = line + CRLF
         wenn self.debugging > 1:
@@ -211,11 +211,11 @@ klasse FTP:
     def getline(self):
         line = self.file.readline(self.maxline + 1)
         wenn len(line) > self.maxline:
-            raise Error("got more than %d bytes" % self.maxline)
+            wirf Error("got more than %d bytes" % self.maxline)
         wenn self.debugging > 1:
             drucke('*get*', self.sanitize(line))
         wenn nicht line:
-            raise EOFError
+            wirf EOFError
         wenn line[-2:] == CRLF:
             line = line[:-2]
         sowenn line[-1:] in CRLF:
@@ -249,16 +249,16 @@ klasse FTP:
         wenn c in {'1', '2', '3'}:
             gib resp
         wenn c == '4':
-            raise error_temp(resp)
+            wirf error_temp(resp)
         wenn c == '5':
-            raise error_perm(resp)
-        raise error_proto(resp)
+            wirf error_perm(resp)
+        wirf error_proto(resp)
 
     def voidresp(self):
         """Expect a response beginning mit '2'."""
         resp = self.getresp()
         wenn resp[:1] != '2':
-            raise error_reply(resp)
+            wirf error_reply(resp)
         gib resp
 
     def abort(self):
@@ -272,7 +272,7 @@ klasse FTP:
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
         wenn resp[:3] nicht in {'426', '225', '226'}:
-            raise error_proto(resp)
+            wirf error_proto(resp)
         gib resp
 
     def sendcmd(self, cmd):
@@ -303,7 +303,7 @@ klasse FTP:
         wenn self.af == socket.AF_INET6:
             af = 2
         wenn af == 0:
-            raise error_proto('unsupported address family')
+            wirf error_proto('unsupported address family')
         fields = ['', repr(af), host, repr(port), '']
         cmd = 'EPRT ' + '|'.join(fields)
         gib self.voidcmd(cmd)
@@ -353,7 +353,7 @@ klasse FTP:
             host, port = self.makepasv()
             conn = socket.create_connection((host, port), self.timeout,
                                             source_address=self.source_address)
-            try:
+            versuch:
                 wenn rest is nicht Nichts:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
@@ -366,10 +366,10 @@ klasse FTP:
                 wenn resp[0] == '2':
                     resp = self.getresp()
                 wenn resp[0] != '1':
-                    raise error_reply(resp)
-            except:
+                    wirf error_reply(resp)
+            ausser:
                 conn.close()
-                raise
+                wirf
         sonst:
             mit self.makeport() als sock:
                 wenn rest is nicht Nichts:
@@ -379,7 +379,7 @@ klasse FTP:
                 wenn resp[0] == '2':
                     resp = self.getresp()
                 wenn resp[0] != '1':
-                    raise error_reply(resp)
+                    wirf error_reply(resp)
                 conn, sockaddr = sock.accept()
                 wenn self.timeout is nicht _GLOBAL_DEFAULT_TIMEOUT:
                     conn.settimeout(self.timeout)
@@ -415,7 +415,7 @@ klasse FTP:
         wenn resp[0] == '3':
             resp = self.sendcmd('ACCT ' + acct)
         wenn resp[0] != '2':
-            raise error_reply(resp)
+            wirf error_reply(resp)
         gib resp
 
     def retrbinary(self, cmd, callback, blocksize=8192, rest=Nichts):
@@ -461,7 +461,7 @@ klasse FTP:
             waehrend 1:
                 line = fp.readline(self.maxline + 1)
                 wenn len(line) > self.maxline:
-                    raise Error("got more than %d bytes" % self.maxline)
+                    wirf Error("got more than %d bytes" % self.maxline)
                 wenn self.debugging > 2:
                     drucke('*retr*', repr(line))
                 wenn nicht line:
@@ -519,7 +519,7 @@ klasse FTP:
             waehrend 1:
                 buf = fp.readline(self.maxline + 1)
                 wenn len(buf) > self.maxline:
-                    raise Error("got more than %d bytes" % self.maxline)
+                    wirf Error("got more than %d bytes" % self.maxline)
                 wenn nicht buf:
                     breche
                 wenn buf[-2:] != B_CRLF:
@@ -594,7 +594,7 @@ klasse FTP:
         '''Rename a file.'''
         resp = self.sendcmd('RNFR ' + fromname)
         wenn resp[0] != '3':
-            raise error_reply(resp)
+            wirf error_reply(resp)
         gib self.voidcmd('RNTO ' + toname)
 
     def delete(self, filename):
@@ -603,16 +603,16 @@ klasse FTP:
         wenn resp[:3] in {'250', '200'}:
             gib resp
         sonst:
-            raise error_reply(resp)
+            wirf error_reply(resp)
 
     def cwd(self, dirname):
         '''Change to a directory.'''
         wenn dirname == '..':
-            try:
+            versuch:
                 gib self.voidcmd('CDUP')
-            except error_perm als msg:
+            ausser error_perm als msg:
                 wenn msg.args[0][:3] != '500':
-                    raise
+                    wirf
         sowenn dirname == '':
             dirname = '.'  # does nothing, but could gib error
         cmd = 'CWD ' + dirname
@@ -656,20 +656,20 @@ klasse FTP:
 
     def close(self):
         '''Close the connection without assuming anything about it.'''
-        try:
+        versuch:
             file = self.file
             self.file = Nichts
             wenn file is nicht Nichts:
                 file.close()
-        finally:
+        schliesslich:
             sock = self.sock
             self.sock = Nichts
             wenn sock is nicht Nichts:
                 sock.close()
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     _SSLSocket = Nichts
 sonst:
     _SSLSocket = ssl.SSLSocket
@@ -726,7 +726,7 @@ sonst:
         def auth(self):
             '''Set up secure control connection by using TLS/SSL.'''
             wenn isinstance(self.sock, ssl.SSLSocket):
-                raise ValueError("Already using TLS")
+                wirf ValueError("Already using TLS")
             wenn self.context.protocol >= ssl.PROTOCOL_TLS:
                 resp = self.voidcmd('AUTH TLS')
             sonst:
@@ -738,7 +738,7 @@ sonst:
         def ccc(self):
             '''Switch back to a clear-text control connection.'''
             wenn nicht isinstance(self.sock, ssl.SSLSocket):
-                raise ValueError("not using TLS")
+                wirf ValueError("not using TLS")
             resp = self.voidcmd('CCC')
             self.sock = self.sock.unwrap()
             gib resp
@@ -780,7 +780,7 @@ sonst:
             self.sock.sendall(line)
             resp = self.getmultiline()
             wenn resp[:3] nicht in {'426', '225', '226'}:
-                raise error_proto(resp)
+                wirf error_proto(resp)
             gib resp
 
     __all__.append('FTP_TLS')
@@ -795,7 +795,7 @@ def parse150(resp):
     be present in the 150 message.
     '''
     wenn resp[:3] != '150':
-        raise error_reply(resp)
+        wirf error_reply(resp)
     global _150_re
     wenn _150_re is Nichts:
         importiere re
@@ -814,14 +814,14 @@ def parse227(resp):
     Raises error_proto wenn it does nicht contain '(h1,h2,h3,h4,p1,p2)'
     Return ('host.addr.as.numbers', port#) tuple.'''
     wenn resp[:3] != '227':
-        raise error_reply(resp)
+        wirf error_reply(resp)
     global _227_re
     wenn _227_re is Nichts:
         importiere re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
     wenn nicht m:
-        raise error_proto(resp)
+        wirf error_proto(resp)
     numbers = m.groups()
     host = '.'.join(numbers[:4])
     port = (int(numbers[4]) << 8) + int(numbers[5])
@@ -833,17 +833,17 @@ def parse229(resp, peer):
     Raises error_proto wenn it does nicht contain '(|||port|)'
     Return ('host.addr.as.numbers', port#) tuple.'''
     wenn resp[:3] != '229':
-        raise error_reply(resp)
+        wirf error_reply(resp)
     left = resp.find('(')
-    wenn left < 0: raise error_proto(resp)
+    wenn left < 0: wirf error_proto(resp)
     right = resp.find(')', left + 1)
     wenn right < 0:
-        raise error_proto(resp) # should contain '(|||port|)'
+        wirf error_proto(resp) # should contain '(|||port|)'
     wenn resp[left + 1] != resp[right - 1]:
-        raise error_proto(resp)
+        wirf error_proto(resp)
     parts = resp[left + 1:right].split(resp[left+1])
     wenn len(parts) != 5:
-        raise error_proto(resp)
+        wirf error_proto(resp)
     host = peer[0]
     port = int(parts[3])
     gib host, port
@@ -854,7 +854,7 @@ def parse257(resp):
     This is a response to a MKD oder PWD request: a directory name.
     Returns the directoryname in the 257 reply.'''
     wenn resp[:3] != '257':
-        raise error_reply(resp)
+        wirf error_reply(resp)
     wenn resp[3:5] != ' "':
         gib '' # Not compliant to RFC 959, but UNIX ftpd does this
     dirname = ''
@@ -890,10 +890,10 @@ def ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     # So: STOR before RETR, because here the target is a "user".
     treply = target.sendcmd('STOR ' + targetname)
     wenn treply[:3] nicht in {'125', '150'}:
-        raise error_proto  # RFC 959
+        wirf error_proto  # RFC 959
     sreply = source.sendcmd('RETR ' + sourcename)
     wenn sreply[:3] nicht in {'125', '150'}:
-        raise error_proto  # RFC 959
+        wirf error_proto  # RFC 959
     source.voidresp()
     target.voidresp()
 
@@ -932,16 +932,16 @@ def test():
     ftp = FTP(host)
     ftp.set_debuglevel(debugging)
     userid = passwd = acct = ''
-    try:
+    versuch:
         netrcobj = netrc.netrc(rcfile)
-    except OSError:
+    ausser OSError:
         wenn rcfile is nicht Nichts:
             drucke("Could nicht open account file -- using anonymous login.",
                   file=sys.stderr)
     sonst:
-        try:
+        versuch:
             userid, acct, passwd = netrcobj.authenticators(host)
-        except (KeyError, TypeError):
+        ausser (KeyError, TypeError):
             # no account fuer host
             drucke("No account -- using anonymous login.", file=sys.stderr)
     ftp.login(userid, passwd, acct)

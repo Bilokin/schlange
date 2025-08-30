@@ -12,7 +12,7 @@ importiere unittest
 von test.support importiere warnings_helper
 
 wenn nicht hasattr(select, "kqueue"):
-    raise unittest.SkipTest("test works only on BSD")
+    wirf unittest.SkipTest("test works only on BSD")
 
 klasse TestKQueue(unittest.TestCase):
     def test_create_queue(self):
@@ -116,13 +116,13 @@ klasse TestKQueue(unittest.TestCase):
         serverSocket = socket.create_server(('127.0.0.1', 0))
         client = socket.socket()
         client.setblocking(Falsch)
-        try:
+        versuch:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
-        except OSError als e:
+        ausser OSError als e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         sonst:
             #raise AssertionError("Connect should have raised EINPROGRESS")
-            pass # FreeBSD doesn't raise an exception here
+            pass # FreeBSD doesn't wirf an exception here
         server, addr = serverSocket.accept()
 
         kq = select.kqueue()
@@ -265,13 +265,13 @@ klasse TestKQueue(unittest.TestCase):
         # gh-110395: kqueue objects must be closed after fork
         kqueue = select.kqueue()
         wenn (pid := os.fork()) == 0:
-            try:
+            versuch:
                 self.assertWahr(kqueue.closed)
                 mit self.assertRaisesRegex(ValueError, "closed kqueue"):
                     kqueue.fileno()
-            except:
+            ausser:
                 os._exit(1)
-            finally:
+            schliesslich:
                 os._exit(0)
         sonst:
             support.wait_process(pid, exitcode=0)

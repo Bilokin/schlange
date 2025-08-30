@@ -14,7 +14,7 @@ the example.  It should be ignored:
 importiere sys
 importiere unittest
 wenn sys.flags.optimize >= 2:
-    raise unittest.SkipTest("Cannot test docstrings mit -O2")
+    wirf unittest.SkipTest("Cannot test docstrings mit -O2")
 
 klasse C(object):
     """Class C.

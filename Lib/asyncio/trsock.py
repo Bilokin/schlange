@@ -35,23 +35,23 @@ klasse TransportSocket:
         )
 
         wenn self.fileno() != -1:
-            try:
+            versuch:
                 laddr = self.getsockname()
                 wenn laddr:
                     s = f"{s}, laddr={laddr}"
-            except socket.error:
+            ausser socket.error:
                 pass
-            try:
+            versuch:
                 raddr = self.getpeername()
                 wenn raddr:
                     s = f"{s}, raddr={raddr}"
-            except socket.error:
+            ausser socket.error:
                 pass
 
         gib f"{s}>"
 
     def __getstate__(self):
-        raise TypeError("Cannot serialize asyncio.TransportSocket object")
+        wirf TypeError("Cannot serialize asyncio.TransportSocket object")
 
     def fileno(self):
         gib self._sock.fileno()
@@ -85,7 +85,7 @@ klasse TransportSocket:
     def settimeout(self, value):
         wenn value == 0:
             gib
-        raise ValueError(
+        wirf ValueError(
             'settimeout(): only 0 timeout is allowed on transport sockets')
 
     def gettimeout(self):
@@ -94,5 +94,5 @@ klasse TransportSocket:
     def setblocking(self, flag):
         wenn nicht flag:
             gib
-        raise ValueError(
+        wirf ValueError(
             'setblocking(): transport sockets cannot be blocking')

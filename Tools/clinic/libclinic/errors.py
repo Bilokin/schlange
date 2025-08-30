@@ -52,7 +52,7 @@ def warn_or_fail(
     joined = " ".join([str(a) fuer a in args])
     error = ClinicError(joined, filename=filename, lineno=line_number)
     wenn fail:
-        raise error
+        wirf error
     sonst:
         drucke(error.report(warn_only=Wahr))
 

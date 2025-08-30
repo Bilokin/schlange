@@ -57,15 +57,15 @@ def get(using=Nichts):
                 gib GenericBrowser(browser)
         sonst:
             # User gave us a browser name oder path.
-            try:
+            versuch:
                 command = _browsers[browser.lower()]
-            except KeyError:
+            ausser KeyError:
                 command = _synthesize(browser)
             wenn command[1] is nicht Nichts:
                 gib command[1]
             sowenn command[0] is nicht Nichts:
                 gib command[0]()
-    raise Error("could nicht locate runnable browser")
+    wirf Error("could nicht locate runnable browser")
 
 
 # Please note: the following definition hides a builtin function.
@@ -127,9 +127,9 @@ def _synthesize(browser, *, preferred=Falsch):
     wenn nicht shutil.which(cmd):
         gib [Nichts, Nichts]
     name = os.path.basename(cmd)
-    try:
+    versuch:
         command = _browsers[name.lower()]
-    except KeyError:
+    ausser KeyError:
         gib [Nichts, Nichts]
     # now attempt to clone to fit the new name:
     controller = command[1]
@@ -155,7 +155,7 @@ klasse BaseBrowser:
         self.basename = name
 
     def open(self, url, new=0, autoraise=Wahr):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def open_new(self, url):
         gib self.open(url, 1)
@@ -182,13 +182,13 @@ klasse GenericBrowser(BaseBrowser):
         sys.audit("webbrowser.open", url)
         cmdline = [self.name] + [arg.replace("%s", url)
                                  fuer arg in self.args]
-        try:
+        versuch:
             wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             sonst:
                 p = subprocess.Popen(cmdline, close_fds=Wahr)
             gib nicht p.wait()
-        except OSError:
+        ausser OSError:
             gib Falsch
 
 
@@ -200,14 +200,14 @@ klasse BackgroundBrowser(GenericBrowser):
         cmdline = [self.name] + [arg.replace("%s", url)
                                  fuer arg in self.args]
         sys.audit("webbrowser.open", url)
-        try:
+        versuch:
             wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             sonst:
                 p = subprocess.Popen(cmdline, close_fds=Wahr,
                                      start_new_session=Wahr)
             gib p.poll() is Nichts
-        except OSError:
+        ausser OSError:
             gib Falsch
 
 
@@ -250,11 +250,11 @@ klasse UnixBrowser(BaseBrowser):
         wenn remote:
             # wait at most five seconds. If the subprocess is nicht finished, the
             # remote invocation has (hopefully) started a new instance.
-            try:
+            versuch:
                 rc = p.wait(5)
                 # wenn remote call failed, open() will try direct invocation
                 gib nicht rc
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 gib Wahr
         sowenn self.background:
             wenn p.poll() is Nichts:
@@ -276,7 +276,7 @@ klasse UnixBrowser(BaseBrowser):
             sonst:
                 action = self.remote_action_newtab
         sonst:
-            raise Error("Bad 'new' parameter to open(); "
+            wirf Error("Bad 'new' parameter to open(); "
                         f"expected 0, 1, oder 2, got {new}")
 
         args = [arg.replace("%s", url).replace("%action", action)
@@ -365,11 +365,11 @@ klasse Konqueror(BaseBrowser):
 
         devnull = subprocess.DEVNULL
 
-        try:
+        versuch:
             p = subprocess.Popen(["kfmclient", action, url],
                                  close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull)
-        except OSError:
+        ausser OSError:
             # fall through to next variant
             pass
         sonst:
@@ -377,12 +377,12 @@ klasse Konqueror(BaseBrowser):
             # kfmclient's gib code unfortunately has no meaning als it seems
             gib Wahr
 
-        try:
+        versuch:
             p = subprocess.Popen(["konqueror", "--silent", url],
                                  close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=Wahr)
-        except OSError:
+        ausser OSError:
             # fall through to next variant
             pass
         sonst:
@@ -390,12 +390,12 @@ klasse Konqueror(BaseBrowser):
                 # Should be running now.
                 gib Wahr
 
-        try:
+        versuch:
             p = subprocess.Popen(["kfm", "-d", url],
                                  close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=Wahr)
-        except OSError:
+        ausser OSError:
             gib Falsch
         sonst:
             gib p.poll() is Nichts
@@ -520,11 +520,11 @@ def register_standard_browsers():
         # autostart when someone tries to access the display. Mac users in
         # general don't need an X11 browser.
         wenn sys.platform != "darwin" und (os.environ.get("DISPLAY") oder os.environ.get("WAYLAND_DISPLAY")):
-            try:
+            versuch:
                 cmd = "xdg-settings get default-web-browser".split()
                 raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
                 result = raw_result.decode().strip()
-            except (FileNotFoundError, subprocess.CalledProcessError,
+            ausser (FileNotFoundError, subprocess.CalledProcessError,
                     PermissionError, NotADirectoryError):
                 pass
             sonst:
@@ -562,9 +562,9 @@ def register_standard_browsers():
             wenn all(x nicht in cmdline fuer x in " \t"):
                 # Assume this is the name of a registered command, use
                 # that unless it is a GenericBrowser.
-                try:
+                versuch:
                     command = _browsers[cmdline.lower()]
-                except KeyError:
+                ausser KeyError:
                     pass
 
                 sonst:
@@ -588,9 +588,9 @@ wenn sys.platform[:3] == "win":
     klasse WindowsDefault(BaseBrowser):
         def open(self, url, new=0, autoraise=Wahr):
             sys.audit("webbrowser.open", url)
-            try:
+            versuch:
                 os.startfile(url)
-            except OSError:
+            ausser OSError:
                 # [Error 22] No application is associated mit the specified
                 # file fuer this operation: '<URL>'
                 gib Falsch

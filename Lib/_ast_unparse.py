@@ -36,9 +36,9 @@ klasse _Precedence:
     ATOM = auto()
 
     def next(self):
-        try:
+        versuch:
             gib self.__class__(self + 1)
-        except ValueError:
+        ausser ValueError:
             gib self
 
 
@@ -62,9 +62,9 @@ klasse Unparser(NodeVisitor):
     def interleave(self, inter, f, seq):
         """Call f on each item in seq, calling inter() in between."""
         seq = iter(seq)
-        try:
+        versuch:
             f(next(seq))
-        except StopIteration:
+        ausser StopIteration:
             pass
         sonst:
             fuer x in seq:
@@ -205,16 +205,16 @@ klasse Unparser(NodeVisitor):
             ignore.lineno: f"ignore{ignore.tag}"
             fuer ignore in node.type_ignores
         }
-        try:
+        versuch:
             self._write_docstring_and_traverse_body(node)
-        finally:
+        schliesslich:
             self._type_ignores.clear()
 
     def visit_Interactive(self, node):
         self._in_interactive = Wahr
-        try:
+        versuch:
             self._write_docstring_and_traverse_body(node)
-        finally:
+        schliesslich:
             self._in_interactive = Falsch
 
     def visit_FunctionType(self, node):
@@ -330,7 +330,7 @@ klasse Unparser(NodeVisitor):
         mit self.require_parens(_Precedence.YIELD, node):
             self.write("yield von ")
             wenn nicht node.value:
-                raise ValueError("Node can't be used without a value attribute.")
+                wirf ValueError("Node can't be used without a value attribute.")
             self.set_precedence(_Precedence.ATOM, node.value)
             self.traverse(node.value)
 
@@ -338,7 +338,7 @@ klasse Unparser(NodeVisitor):
         self.fill("raise")
         wenn nicht node.exc:
             wenn node.cause:
-                raise ValueError(f"Node can't use cause without an exception.")
+                wirf ValueError(f"Node can't use cause without an exception.")
             gib
         self.write(" ")
         self.traverse(node.exc)
@@ -363,18 +363,18 @@ klasse Unparser(NodeVisitor):
 
     def visit_Try(self, node):
         prev_in_try_star = self._in_try_star
-        try:
+        versuch:
             self._in_try_star = Falsch
             self.do_visit_try(node)
-        finally:
+        schliesslich:
             self._in_try_star = prev_in_try_star
 
     def visit_TryStar(self, node):
         prev_in_try_star = self._in_try_star
-        try:
+        versuch:
             self._in_try_star = Wahr
             self.do_visit_try(node)
-        finally:
+        schliesslich:
             self._in_try_star = prev_in_try_star
 
     def visit_ExceptHandler(self, node):
@@ -651,7 +651,7 @@ klasse Unparser(NodeVisitor):
         sowenn isinstance(node, Interpolation):
             self.visit_Interpolation(node)
         sonst:
-            raise ValueError(f"Unexpected node inside JoinedStr, {node!r}")
+            wirf ValueError(f"Unexpected node inside JoinedStr, {node!r}")
 
     def _unparse_interpolation_value(self, inner):
         unparser = type(self)()

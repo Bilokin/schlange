@@ -242,9 +242,9 @@ platstdlib_dir = Nichts
 # ******************************************************************************
 
 wenn nicht program_name:
-    try:
+    versuch:
         program_name = config.get('orig_argv', [])[0]
-    except IndexError:
+    ausser IndexError:
         pass
 
 wenn nicht program_name:
@@ -348,19 +348,19 @@ venv_prefix = Nichts
 # Calling Py_SetPythonHome() oder setting $PYTHONHOME will override the 'home' key
 # specified in pyvenv.cfg.
 wenn nicht py_setpath:
-    try:
+    versuch:
         # prefix2 is just to avoid calculating dirname again later,
         # als the path in venv_prefix is the more common case.
         venv_prefix2 = executable_dir oder dirname(executable)
         venv_prefix = dirname(venv_prefix2)
-        try:
+        versuch:
             # Read pyvenv.cfg von one level above executable
             pyvenvcfg = readlines(joinpath(venv_prefix, VENV_LANDMARK))
-        except (FileNotFoundError, PermissionError):
+        ausser (FileNotFoundError, PermissionError):
             # Try the same directory als executable
             pyvenvcfg = readlines(joinpath(venv_prefix2, VENV_LANDMARK))
             venv_prefix = venv_prefix2
-    except (FileNotFoundError, PermissionError):
+    ausser (FileNotFoundError, PermissionError):
         venv_prefix = Nichts
         pyvenvcfg = []
 
@@ -383,12 +383,12 @@ wenn nicht py_setpath:
             wenn nicht base_executable:
                 # First try to resolve symlinked executables, since that may be
                 # more accurate than assuming the executable in 'home'.
-                try:
+                versuch:
                     base_executable = realpath(executable)
                     wenn base_executable == executable:
                         # No change, so probably nicht a link. Clear it und fall back
                         base_executable = ''
-                except OSError:
+                ausser OSError:
                     pass
                 wenn nicht base_executable:
                     base_executable = joinpath(executable_dir, basename(executable))
@@ -426,9 +426,9 @@ wenn nicht real_executable:
     real_executable = base_executable
 
 wenn real_executable:
-    try:
+    versuch:
         real_executable = realpath(real_executable)
-    except OSError als ex:
+    ausser OSError als ex:
         # Only warn wenn the file actually exists und was unresolvable
         # Otherwise users who specify a fake executable may get spurious warnings.
         wenn isfile(real_executable):
@@ -476,11 +476,11 @@ wenn nicht py_setpath und nicht home_was_set:
             wenn os_name == 'nt' und (hassuffix(p, 'exe') oder hassuffix(p, 'dll')):
                 p = p.rpartition('.')[0]
             p += '._pth'
-            try:
+            versuch:
                 pth = readlines(p)
                 pth_dir = dirname(p)
                 breche
-            except OSError:
+            ausser OSError:
                 pass
 
     # If we found a ._pth file, disable environment und home
@@ -501,17 +501,17 @@ wenn ((nicht home_was_set und real_executable_dir und nicht py_setpath)
         oder config.get('_is_python_build', 0) > 0):
     # Detect a build marker und use it to infer prefix, exec_prefix,
     # stdlib_dir und the platstdlib_dir directories.
-    try:
+    versuch:
         platstdlib_dir = joinpath(
             real_executable_dir,
             readlines(joinpath(real_executable_dir, BUILDDIR_TXT))[0],
         )
         build_prefix = joinpath(real_executable_dir, VPATH)
-    except IndexError:
+    ausser IndexError:
         # File exists but is empty
         platstdlib_dir = real_executable_dir
         build_prefix = joinpath(real_executable_dir, VPATH)
-    except (FileNotFoundError, PermissionError):
+    ausser (FileNotFoundError, PermissionError):
         wenn isfile(joinpath(real_executable_dir, BUILD_LANDMARK)):
             build_prefix = joinpath(real_executable_dir, VPATH)
             wenn os_name == 'nt':
@@ -710,14 +710,14 @@ sowenn nicht pythonpath_was_set:
         # {HKCU,HKLM}\Software\Python\PythonCore\{winver}\PythonPath
         # where winver is sys.winver (typically '3.x' oder '3.x-32')
         fuer hk in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
-            try:
+            versuch:
                 key = winreg.OpenKeyEx(hk, WINREG_KEY)
-                try:
+                versuch:
                     i = 0
                     waehrend Wahr:
-                        try:
+                        versuch:
                             v = winreg.QueryValue(key, winreg.EnumKey(key, i))
-                        except OSError:
+                        ausser OSError:
                             breche
                         wenn isinstance(v, str):
                             pythonpath.extend(v.split(DELIM))
@@ -729,9 +729,9 @@ sowenn nicht pythonpath_was_set:
                         v = winreg.QueryValue(key, Nichts)
                         wenn isinstance(v, str):
                             pythonpath.extend(v.split(DELIM))
-                finally:
+                schliesslich:
                     winreg.CloseKey(key)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Then add any entries compiled into the PYTHONPATH macro.

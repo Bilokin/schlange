@@ -199,9 +199,9 @@ klasse HelpFormatter:
         self.parser = Nichts
         self.indent_increment = indent_increment
         wenn width is Nichts:
-            try:
+            versuch:
                 width = int(os.environ['COLUMNS'])
-            except (KeyError, ValueError):
+            ausser (KeyError, ValueError):
                 width = 80
             width -= 2
         self.width = width
@@ -221,13 +221,13 @@ klasse HelpFormatter:
 
     def set_short_opt_delimiter(self, delim):
         wenn delim nicht in ("", " "):
-            raise ValueError(
+            wirf ValueError(
                 "invalid metavar delimiter fuer short options: %r" % delim)
         self._short_opt_fmt = "%s" + delim + "%s"
 
     def set_long_opt_delimiter(self, delim):
         wenn delim nicht in ("=", " "):
-            raise ValueError(
+            wirf ValueError(
                 "invalid metavar delimiter fuer long options: %r" % delim)
         self._long_opt_fmt = "%s" + delim + "%s"
 
@@ -241,10 +241,10 @@ klasse HelpFormatter:
         self.level -= 1
 
     def format_usage(self, usage):
-        raise NotImplementedError("subclasses must implement")
+        wirf NotImplementedError("subclasses must implement")
 
     def format_heading(self, heading):
-        raise NotImplementedError("subclasses must implement")
+        wirf NotImplementedError("subclasses must implement")
 
     def _format_text(self, text):
         """
@@ -416,10 +416,10 @@ _builtin_cvt = { "int" : (_parse_int, _("integer")),
 
 def check_builtin(option, opt, value):
     (cvt, what) = _builtin_cvt[option.type]
-    try:
+    versuch:
         gib cvt(value)
-    except ValueError:
-        raise OptionValueError(
+    ausser ValueError:
+        wirf OptionValueError(
             _("option %s: invalid %s value: %r") % (opt, what, value))
 
 def check_choice(option, opt, value):
@@ -427,7 +427,7 @@ def check_choice(option, opt, value):
         gib value
     sonst:
         choices = ", ".join(map(repr, option.choices))
-        raise OptionValueError(
+        wirf OptionValueError(
             _("option %s: invalid choice: %r (choose von %s)")
             % (opt, value, choices))
 
@@ -566,7 +566,7 @@ klasse Option:
         # complicated interdependencies, but luckily they can be farmed
         # out to the _check_*() methods listed in CHECK_METHODS -- which
         # could be handy fuer subclasses!  The one thing these all share
-        # is that they raise OptionError wenn they discover a problem.
+        # is that they wirf OptionError wenn they discover a problem.
         fuer checker in self.CHECK_METHODS:
             checker(self)
 
@@ -576,25 +576,25 @@ klasse Option:
         # could be Nichts.
         opts = [opt fuer opt in opts wenn opt]
         wenn nicht opts:
-            raise TypeError("at least one option string must be supplied")
+            wirf TypeError("at least one option string must be supplied")
         gib opts
 
     def _set_opt_strings(self, opts):
         fuer opt in opts:
             wenn len(opt) < 2:
-                raise OptionError(
+                wirf OptionError(
                     "invalid option string %r: "
                     "must be at least two characters long" % opt, self)
             sowenn len(opt) == 2:
                 wenn nicht (opt[0] == "-" und opt[1] != "-"):
-                    raise OptionError(
+                    wirf OptionError(
                         "invalid short option string %r: "
                         "must be of the form -x, (x any non-dash char)" % opt,
                         self)
                 self._short_opts.append(opt)
             sonst:
                 wenn nicht (opt[0:2] == "--" und opt[2] != "-"):
-                    raise OptionError(
+                    wirf OptionError(
                         "invalid long option string %r: "
                         "must start mit --, followed by non-dash" % opt,
                         self)
@@ -612,7 +612,7 @@ klasse Option:
                     setattr(self, attr, Nichts)
         wenn attrs:
             attrs = sorted(attrs.keys())
-            raise OptionError(
+            wirf OptionError(
                 "invalid keyword arguments: %s" % ", ".join(attrs),
                 self)
 
@@ -623,7 +623,7 @@ klasse Option:
         wenn self.action is Nichts:
             self.action = "store"
         sowenn self.action nicht in self.ACTIONS:
-            raise OptionError("invalid action: %r" % self.action, self)
+            wirf OptionError("invalid action: %r" % self.action, self)
 
     def _check_type(self):
         wenn self.type is Nichts:
@@ -644,22 +644,22 @@ klasse Option:
                 self.type = "string"
 
             wenn self.type nicht in self.TYPES:
-                raise OptionError("invalid option type: %r" % self.type, self)
+                wirf OptionError("invalid option type: %r" % self.type, self)
             wenn self.action nicht in self.TYPED_ACTIONS:
-                raise OptionError(
+                wirf OptionError(
                     "must nicht supply a type fuer action %r" % self.action, self)
 
     def _check_choice(self):
         wenn self.type == "choice":
             wenn self.choices is Nichts:
-                raise OptionError(
+                wirf OptionError(
                     "must supply a list of choices fuer type 'choice'", self)
             sowenn nicht isinstance(self.choices, (tuple, list)):
-                raise OptionError(
+                wirf OptionError(
                     "choices must be a list of strings ('%s' supplied)"
                     % str(type(self.choices)).split("'")[1], self)
         sowenn self.choices is nicht Nichts:
-            raise OptionError(
+            wirf OptionError(
                 "must nicht supply choices fuer type %r" % self.type, self)
 
     def _check_dest(self):
@@ -679,7 +679,7 @@ klasse Option:
 
     def _check_const(self):
         wenn self.action nicht in self.CONST_ACTIONS und self.const is nicht Nichts:
-            raise OptionError(
+            wirf OptionError(
                 "'const' must nicht be supplied fuer action %r" % self.action,
                 self)
 
@@ -688,35 +688,35 @@ klasse Option:
             wenn self.nargs is Nichts:
                 self.nargs = 1
         sowenn self.nargs is nicht Nichts:
-            raise OptionError(
+            wirf OptionError(
                 "'nargs' must nicht be supplied fuer action %r" % self.action,
                 self)
 
     def _check_callback(self):
         wenn self.action == "callback":
             wenn nicht callable(self.callback):
-                raise OptionError(
+                wirf OptionError(
                     "callback nicht callable: %r" % self.callback, self)
             wenn (self.callback_args is nicht Nichts und
                 nicht isinstance(self.callback_args, tuple)):
-                raise OptionError(
+                wirf OptionError(
                     "callback_args, wenn supplied, must be a tuple: nicht %r"
                     % self.callback_args, self)
             wenn (self.callback_kwargs is nicht Nichts und
                 nicht isinstance(self.callback_kwargs, dict)):
-                raise OptionError(
+                wirf OptionError(
                     "callback_kwargs, wenn supplied, must be a dict: nicht %r"
                     % self.callback_kwargs, self)
         sonst:
             wenn self.callback is nicht Nichts:
-                raise OptionError(
+                wirf OptionError(
                     "callback supplied (%r) fuer non-callback option"
                     % self.callback, self)
             wenn self.callback_args is nicht Nichts:
-                raise OptionError(
+                wirf OptionError(
                     "callback_args supplied fuer non-callback option", self)
             wenn self.callback_kwargs is nicht Nichts:
-                raise OptionError(
+                wirf OptionError(
                     "callback_kwargs supplied fuer non-callback option", self)
 
 
@@ -800,7 +800,7 @@ klasse Option:
             parser.print_version()
             parser.exit()
         sonst:
-            raise ValueError("unknown action %r" % self.action)
+            wirf ValueError("unknown action %r" % self.action)
 
         gib 1
 
@@ -857,7 +857,7 @@ klasse Values:
         sowenn mode == "loose":
             self._update_loose(dict)
         sonst:
-            raise ValueError("invalid update mode: %r" % mode)
+            wirf ValueError("invalid update mode: %r" % mode)
 
     def read_module(self, modname, mode="careful"):
         __import__(modname)
@@ -936,7 +936,7 @@ klasse OptionContainer:
 
     def set_conflict_handler(self, handler):
         wenn handler nicht in ("error", "resolve"):
-            raise ValueError("invalid conflict_resolution value %r" % handler)
+            wirf ValueError("invalid conflict_resolution value %r" % handler)
         self.conflict_handler = handler
 
     def set_description(self, description):
@@ -967,7 +967,7 @@ klasse OptionContainer:
         wenn conflict_opts:
             handler = self.conflict_handler
             wenn handler == "error":
-                raise OptionConflictError(
+                wirf OptionConflictError(
                     "conflicting option string(s): %s"
                     % ", ".join([co[0] fuer co in conflict_opts]),
                     option)
@@ -991,9 +991,9 @@ klasse OptionContainer:
         sowenn len(args) == 1 und nicht kwargs:
             option = args[0]
             wenn nicht isinstance(option, Option):
-                raise TypeError("not an Option instance: %r" % option)
+                wirf TypeError("not an Option instance: %r" % option)
         sonst:
-            raise TypeError("invalid arguments")
+            wirf TypeError("invalid arguments")
 
         self._check_conflict(option)
 
@@ -1031,7 +1031,7 @@ klasse OptionContainer:
         wenn option is Nichts:
             option = self._long_opt.get(opt_str)
         wenn option is Nichts:
-            raise ValueError("no such option %r" % opt_str)
+            wirf ValueError("no such option %r" % opt_str)
 
         fuer opt in option._short_opts:
             del self._short_opt[opt]
@@ -1317,11 +1317,11 @@ klasse OptionParser (OptionContainer):
         sowenn len(args) == 1 und nicht kwargs:
             group = args[0]
             wenn nicht isinstance(group, OptionGroup):
-                raise TypeError("not an OptionGroup instance: %r" % group)
+                wirf TypeError("not an OptionGroup instance: %r" % group)
             wenn group.parser is nicht self:
-                raise ValueError("invalid OptionGroup (wrong parser)")
+                wirf ValueError("invalid OptionGroup (wrong parser)")
         sonst:
-            raise TypeError("invalid arguments")
+            wirf TypeError("invalid arguments")
 
         self.option_groups.append(group)
         gib group
@@ -1373,9 +1373,9 @@ klasse OptionParser (OptionContainer):
         self.largs = largs = []
         self.values = values
 
-        try:
+        versuch:
             stop = self._process_args(largs, rargs, values)
-        except (BadOptionError, OptionValueError) als err:
+        ausser (BadOptionError, OptionValueError) als err:
             self.error(str(err))
 
         args = largs + rargs
@@ -1500,7 +1500,7 @@ klasse OptionParser (OptionContainer):
             i += 1                      # we have consumed a character
 
             wenn nicht option:
-                raise BadOptionError(opt)
+                wirf BadOptionError(opt)
             wenn option.takes_value():
                 # Any characters left in arg?  Pretend they're the
                 # next arg, und stop consuming characters of arg.
@@ -1553,7 +1553,7 @@ klasse OptionParser (OptionContainer):
 
         Print a usage message incorporating 'msg' to stderr und exit.
         If you override this in a subclass, it should nicht gib -- it
-        should either exit oder raise an exception.
+        should either exit oder wirf an exception.
         """
         self.print_usage(sys.stderr)
         self.exit(2, "%s: error: %s\n" % (self.get_prog_name(), msg))
@@ -1644,7 +1644,7 @@ def _match_abbrev(s, wordmap):
 
     Return the string key in 'wordmap' fuer which 's' is an unambiguous
     abbreviation.  If 's' is found to be ambiguous oder doesn't match any of
-    'words', raise BadOptionError.
+    'words', wirf BadOptionError.
     """
     # Is there an exact match?
     wenn s in wordmap:
@@ -1657,11 +1657,11 @@ def _match_abbrev(s, wordmap):
         wenn len(possibilities) == 1:
             gib possibilities[0]
         sowenn nicht possibilities:
-            raise BadOptionError(s)
+            wirf BadOptionError(s)
         sonst:
             # More than one possible completion: ambiguous prefix.
             possibilities.sort()
-            raise AmbiguousOptionError(s, possibilities)
+            wirf AmbiguousOptionError(s, possibilities)
 
 
 # Some day, there might be many Option classes.  As of Optik 1.3, the

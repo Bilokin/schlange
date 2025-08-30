@@ -18,7 +18,7 @@ def mul(x, y):
 
 def wait_and_raise(e):
     e.wait()
-    raise Exception('this is an exception')
+    wirf Exception('this is an exception')
 
 
 klasse WaitTests:
@@ -37,14 +37,14 @@ klasse WaitTests:
         future1 = self.executor.submit(mul, 21, 2)
         future2 = self.executor.submit(event.wait)
 
-        try:
+        versuch:
             done, not_done = futures.wait(
                     [CANCELLED_FUTURE, future1, future2],
                      return_when=futures.FIRST_COMPLETED)
 
             self.assertEqual(set([future1]), done)
             self.assertEqual(set([CANCELLED_FUTURE, future2]), not_done)
-        finally:
+        schliesslich:
             event.set()
         future2.result()  # wait fuer job to finish
 
@@ -53,7 +53,7 @@ klasse WaitTests:
         event = self.create_event()
         future1 = self.executor.submit(event.wait)
 
-        try:
+        versuch:
             finished, pending = futures.wait(
                      [CANCELLED_AND_NOTIFIED_FUTURE, SUCCESSFUL_FUTURE, future1],
                      return_when=futures.FIRST_COMPLETED)
@@ -62,7 +62,7 @@ klasse WaitTests:
                     set([CANCELLED_AND_NOTIFIED_FUTURE, SUCCESSFUL_FUTURE]),
                     finished)
             self.assertEqual(set([future1]), pending)
-        finally:
+        schliesslich:
             event.set()
         future1.result()  # wait fuer job to finish
 
@@ -70,7 +70,7 @@ klasse WaitTests:
     def test_first_exception(self):
         event1 = self.create_event()
         event2 = self.create_event()
-        try:
+        versuch:
             future1 = self.executor.submit(mul, 2, 21)
             future2 = self.executor.submit(wait_and_raise, event1)
             future3 = self.executor.submit(event2.wait)
@@ -91,7 +91,7 @@ klasse WaitTests:
             self.assertEqual(set([future3]), pending)
 
             threading_helper.join_thread(t)
-        finally:
+        schliesslich:
             event1.set()
             event2.set()
         future3.result()  # wait fuer job to finish
@@ -102,7 +102,7 @@ klasse WaitTests:
         future1 = self.executor.submit(divmod, 21, 0)
         future2 = self.executor.submit(event.wait)
 
-        try:
+        versuch:
             finished, pending = futures.wait(
                     [SUCCESSFUL_FUTURE,
                      CANCELLED_FUTURE,
@@ -114,7 +114,7 @@ klasse WaitTests:
                                   CANCELLED_AND_NOTIFIED_FUTURE,
                                   future1]), finished)
             self.assertEqual(set([CANCELLED_FUTURE, future2]), pending)
-        finally:
+        schliesslich:
             event.set()
         future2.result()  # wait fuer job to finish
 
@@ -123,14 +123,14 @@ klasse WaitTests:
         event = self.create_event()
         future1 = self.executor.submit(event.wait)
 
-        try:
+        versuch:
             finished, pending = futures.wait(
                      [EXCEPTION_FUTURE, future1],
                      return_when=futures.FIRST_EXCEPTION)
 
             self.assertEqual(set([EXCEPTION_FUTURE]), finished)
             self.assertEqual(set([future1]), pending)
-        finally:
+        schliesslich:
             event.set()
         future1.result()  # wait fuer job to finish
 
@@ -161,7 +161,7 @@ klasse WaitTests:
         event = self.create_event()
         future = self.executor.submit(event.wait)
 
-        try:
+        versuch:
             finished, pending = futures.wait(
                     [CANCELLED_AND_NOTIFIED_FUTURE,
                      EXCEPTION_FUTURE,
@@ -175,7 +175,7 @@ klasse WaitTests:
                                   SUCCESSFUL_FUTURE]),
                              finished)
             self.assertEqual(set([future]), pending)
-        finally:
+        schliesslich:
             event.set()
         future.result()  # wait fuer job to finish
 
@@ -190,11 +190,11 @@ klasse ThreadPoolWaitTests(ThreadPoolMixin, WaitTests, BaseTestCase):
             event.wait()
         oldswitchinterval = sys.getswitchinterval()
         support.setswitchinterval(1e-6)
-        try:
+        versuch:
             fs = {self.executor.submit(future_func) fuer i in range(100)}
             event.set()
             futures.wait(fs, return_when=futures.ALL_COMPLETED)
-        finally:
+        schliesslich:
             sys.setswitchinterval(oldswitchinterval)
 
 

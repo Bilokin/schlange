@@ -20,12 +20,12 @@ klasse ScreenEqualMixin:
 
 def multiline_input(reader: ReadlineAlikeReader, namespace: dict | Nichts = Nichts):
     saved = reader.more_lines
-    try:
+    versuch:
         reader.more_lines = partial(more_lines, namespace=namespace)
         reader.ps1 = reader.ps2 = ">>> "
         reader.ps3 = reader.ps4 = "... "
         gib reader.readline()
-    finally:
+    schliesslich:
         reader.more_lines = saved
         reader.paste_mode = Falsch
 
@@ -35,9 +35,9 @@ def more_lines(text: str, namespace: dict | Nichts = Nichts):
         namespace = {}
     src = _strip_final_indent(text)
     console = InteractiveConsole(namespace, filename="<stdin>")
-    try:
+    versuch:
         code = console.compile(src, "<stdin>", "single")
-    except (OverflowError, SyntaxError, ValueError):
+    ausser (OverflowError, SyntaxError, ValueError):
         gib Falsch
     sonst:
         gib code is Nichts
@@ -98,12 +98,12 @@ def handle_all_events(
 ):
     console = prepare_console(events)
     reader = prepare_reader(console)
-    try:
+    versuch:
         waehrend Wahr:
             reader.handle1()
-    except StopIteration:
+    ausser StopIteration:
         pass
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         pass
     gib reader, console
 

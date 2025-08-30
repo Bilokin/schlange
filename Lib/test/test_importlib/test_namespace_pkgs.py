@@ -28,9 +28,9 @@ def sys_modules_context():
     """
     sys_modules_saved = sys.modules
     sys_modules_copy = sys.modules.copy()
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         sys.modules = sys_modules_saved
         sys.modules.clear()
         sys.modules.update(sys_modules_copy)

@@ -116,10 +116,10 @@ def socket(family=Nichts, type=Nichts, proto=Nichts):
 
 def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
                       source_address=Nichts):
-    try:
+    versuch:
         int_port = int(address[1])
-    except ValueError:
-        raise error
+    ausser ValueError:
+        wirf error
     ms = MockSocket()
     wenn timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()

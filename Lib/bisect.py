@@ -32,7 +32,7 @@ def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """
 
     wenn lo < 0:
-        raise ValueError('lo must be non-negative')
+        wirf ValueError('lo must be non-negative')
     wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
@@ -85,7 +85,7 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """
 
     wenn lo < 0:
-        raise ValueError('lo must be non-negative')
+        wirf ValueError('lo must be non-negative')
     wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
@@ -108,9 +108,9 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
 
 
 # Overwrite above definitions mit a fast C implementation
-try:
+versuch:
     von _bisect importiere *
-except ImportError:
+ausser ImportError:
     pass
 
 # Create aliases

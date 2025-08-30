@@ -77,9 +77,9 @@ klasse Textbox:
             # The try-catch ignores the error we trigger von some curses
             # versions by trying to write into the lowest-rightmost spot
             # in the window.
-            try:
+            versuch:
                 self.win.addch(ch)
-            except curses.error:
+            ausser curses.error:
                 pass
             wenn nicht self.insert_mode oder nicht curses.ascii.isdrucke(oldch):
                 breche

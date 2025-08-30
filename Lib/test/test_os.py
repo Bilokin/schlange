@@ -38,33 +38,33 @@ von test.support importiere infinite_recursion
 von test.support importiere warnings_helper
 von platform importiere win32_is_iot
 
-try:
+versuch:
     importiere resource
-except ImportError:
+ausser ImportError:
     resource = Nichts
-try:
+versuch:
     importiere fcntl
-except ImportError:
+ausser ImportError:
     fcntl = Nichts
-try:
+versuch:
     importiere _winapi
-except ImportError:
+ausser ImportError:
     _winapi = Nichts
-try:
+versuch:
     importiere pwd
     all_users = [u.pw_uid fuer u in pwd.getpwall()]
-except (ImportError, AttributeError):
+ausser (ImportError, AttributeError):
     all_users = []
-try:
+versuch:
     importiere _testcapi
     von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
-try:
+versuch:
     importiere mmap
-except ImportError:
+ausser ImportError:
     mmap = Nichts
 
 von test.support.script_helper importiere assert_python_ok
@@ -148,21 +148,21 @@ klasse MiscTests(unittest.TestCase):
                         dirname = dirname[:need]
 
                     path = os.path.join(path, dirname)
-                    try:
+                    versuch:
                         os.mkdir(path)
                         # On Windows, chdir() can fail
                         # even wenn mkdir() succeeded
                         os.chdir(path)
-                    except FileNotFoundError:
+                    ausser FileNotFoundError:
                         # On Windows, catch ERROR_PATH_NOT_FOUND (3) und
                         # ERROR_FILENAME_EXCED_RANGE (206) errors
                         # ("The filename oder extension is too long")
                         breche
-                    except OSError als exc:
+                    ausser OSError als exc:
                         wenn exc.errno == errno.ENAMETOOLONG:
                             breche
                         sonst:
-                            raise
+                            wirf
 
                     expected = path
 
@@ -196,7 +196,7 @@ klasse FileTests(unittest.TestCase):
         # it will mess up other file descriptors (perhaps even the three
         # standard ones).
         second = os.dup(first)
-        try:
+        versuch:
             retries = 0
             waehrend second != first + 1:
                 os.close(first)
@@ -205,7 +205,7 @@ klasse FileTests(unittest.TestCase):
                     # XXX test skipped
                     self.skipTest("couldn't allocate two consecutive fds")
                 first, second = second, os.dup(second)
-        finally:
+        schliesslich:
             os.close(second)
         # close a fd that is open, und one that isn't
         os.closerange(first, first + 2)
@@ -267,7 +267,7 @@ klasse FileTests(unittest.TestCase):
     def test_readinto_non_blocking(self):
         # Verify behavior of a readinto which would block on a non-blocking fd.
         r, w = os.pipe()
-        try:
+        versuch:
             os.set_blocking(r, Falsch)
             mit self.assertRaises(BlockingIOError):
                 os.readinto(r, bytearray(5))
@@ -286,7 +286,7 @@ klasse FileTests(unittest.TestCase):
             self.assertEqual(os.readinto(r, bytearray(5)), 0)
             self.assertEqual(os.readinto(r, bytearray(5)), 0)  # Still EOF
 
-        finally:
+        schliesslich:
             os.close(r)
             wenn w is nicht Nichts:
                 os.close(w)
@@ -327,7 +327,7 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         create_file(os_helper.TESTFN, b'test')
 
-        # Issue #21932: Make sure that os.read() does nicht raise an
+        # Issue #21932: Make sure that os.read() does nicht wirf an
         # OverflowError fuer size larger than INT_MAX
         mit open(os_helper.TESTFN, "rb") als fp:
             data = os.read(fp.fileno(), size)
@@ -349,7 +349,7 @@ klasse FileTests(unittest.TestCase):
 
         # Issue #21932: For readinto the buffer contains the length rather than
         # a length being passed explicitly to read, should still get capped to a
-        # valid size / nicht raise an OverflowError fuer sizes larger than INT_MAX.
+        # valid size / nicht wirf an OverflowError fuer sizes larger than INT_MAX.
         buffer = bytearray(INT_MAX + 10)
         mit open(os_helper.TESTFN, "rb") als fp:
             length = os.readinto(fp.fileno(), buffer)
@@ -423,10 +423,10 @@ klasse FileTests(unittest.TestCase):
 
     def test_symlink_keywords(self):
         symlink = support.get_attribute(os, "symlink")
-        try:
+        versuch:
             symlink(src='target', dst=os_helper.TESTFN,
                 target_is_directory=Falsch, dir_fd=Nichts)
-        except (NotImplementedError, OSError):
+        ausser (NotImplementedError, OSError):
             pass  # No OS support oder unprivileged user
 
     @unittest.skipUnless(hasattr(os, 'copy_file_range'), 'test needs os.copy_file_range()')
@@ -451,14 +451,14 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(out_file.close)
         out_fd = out_file.fileno()
 
-        try:
+        versuch:
             i = os.copy_file_range(in_fd, out_fd, 5)
-        except OSError als e:
+        ausser OSError als e:
             # Handle the case in which Python was compiled
             # in a system mit the syscall but without support
             # in the kernel.
             wenn e.errno != errno.ENOSYS:
-                raise
+                wirf
             self.skipTest(e)
         sonst:
             # The number of copied bytes can be less than
@@ -488,16 +488,16 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(out_file.close)
         out_fd = out_file.fileno()
 
-        try:
+        versuch:
             i = os.copy_file_range(in_fd, out_fd, bytes_to_copy,
                                    offset_src=in_skip,
                                    offset_dst=out_seek)
-        except OSError als e:
+        ausser OSError als e:
             # Handle the case in which Python was compiled
             # in a system mit the syscall but without support
             # in the kernel.
             wenn e.errno != errno.ENOSYS:
-                raise
+                wirf
             self.skipTest(e)
         sonst:
             # The number of copied bytes can be less than
@@ -535,14 +535,14 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(lambda: os.close(read_fd))
         self.addCleanup(lambda: os.close(write_fd))
 
-        try:
+        versuch:
             i = os.splice(in_fd, write_fd, 5)
-        except OSError als e:
+        ausser OSError als e:
             # Handle the case in which Python was compiled
             # in a system mit the syscall but without support
             # in the kernel.
             wenn e.errno != errno.ENOSYS:
-                raise
+                wirf
             self.skipTest(e)
         sonst:
             # The number of copied bytes can be less than
@@ -570,14 +570,14 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(lambda: os.close(read_fd))
         self.addCleanup(lambda: os.close(write_fd))
 
-        try:
+        versuch:
             i = os.splice(in_fd, write_fd, bytes_to_copy, offset_src=in_skip)
-        except OSError als e:
+        ausser OSError als e:
             # Handle the case in which Python was compiled
             # in a system mit the syscall but without support
             # in the kernel.
             wenn e.errno != errno.ENOSYS:
-                raise
+                wirf
             self.skipTest(e)
         sonst:
             # The number of copied bytes can be less than
@@ -610,14 +610,14 @@ klasse FileTests(unittest.TestCase):
         self.addCleanup(out_file.close)
         out_fd = out_file.fileno()
 
-        try:
+        versuch:
             i = os.splice(read_fd, out_fd, bytes_to_copy, offset_dst=out_seek)
-        except OSError als e:
+        ausser OSError als e:
             # Handle the case in which Python was compiled
             # in a system mit the syscall but without support
             # in the kernel.
             wenn e.errno != errno.ENOSYS:
-                raise
+                wirf
             self.skipTest(e)
         sonst:
             # The number of copied bytes can be less than
@@ -668,59 +668,59 @@ klasse StatAttributeTests(unittest.TestCase):
             self.assertAlmostEqual(floaty, nanosecondy, delta=2)
 
         # Ensure both birthtime und birthtime_ns roughly agree, wenn present
-        try:
+        versuch:
             floaty = int(result.st_birthtime * 100000)
             nanosecondy = result.st_birthtime_ns // 10000
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             self.assertAlmostEqual(floaty, nanosecondy, delta=2)
 
-        try:
+        versuch:
             result[200]
             self.fail("No exception raised")
-        except IndexError:
+        ausser IndexError:
             pass
 
         # Make sure that assignment fails
-        try:
+        versuch:
             result.st_mode = 1
             self.fail("No exception raised")
-        except AttributeError:
+        ausser AttributeError:
             pass
 
-        try:
+        versuch:
             result.st_rdev = 1
             self.fail("No exception raised")
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             pass
 
-        try:
+        versuch:
             result.parrot = 1
             self.fail("No exception raised")
-        except AttributeError:
+        ausser AttributeError:
             pass
 
         # Use the stat_result constructor mit a too-short tuple.
-        try:
+        versuch:
             result2 = os.stat_result((10,))
             self.fail("No exception raised")
-        except TypeError:
+        ausser TypeError:
             pass
 
         # Use the constructor mit a too-long tuple.
-        try:
+        versuch:
             result2 = os.stat_result((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14))
-        except TypeError:
+        ausser TypeError:
             pass
 
     def test_stat_attributes(self):
         self.check_stat_attributes(self.fname)
 
     def test_stat_attributes_bytes(self):
-        try:
+        versuch:
             fname = self.fname.encode(sys.getfilesystemencoding())
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             self.skipTest("cannot encode %a fuer the filesystem" % self.fname)
         self.check_stat_attributes(fname)
 
@@ -754,29 +754,29 @@ klasse StatAttributeTests(unittest.TestCase):
         self.assertEqual(len(result), 10)
 
         # Make sure that assignment really fails
-        try:
+        versuch:
             result.f_bfree = 1
             self.fail("No exception raised")
-        except AttributeError:
+        ausser AttributeError:
             pass
 
-        try:
+        versuch:
             result.parrot = 1
             self.fail("No exception raised")
-        except AttributeError:
+        ausser AttributeError:
             pass
 
         # Use the constructor mit a too-short tuple.
-        try:
+        versuch:
             result2 = os.statvfs_result((10,))
             self.fail("No exception raised")
-        except TypeError:
+        ausser TypeError:
             pass
 
         # Use the constructor mit a too-long tuple.
-        try:
+        versuch:
             result2 = os.statvfs_result((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14))
-        except TypeError:
+        ausser TypeError:
             pass
 
     @unittest.skipUnless(hasattr(os, 'statvfs'),
@@ -795,11 +795,11 @@ klasse StatAttributeTests(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
     def test_1686475(self):
         # Verify that an open file can be stat'ed
-        try:
+        versuch:
             os.stat(r"c:\pagefile.sys")
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             self.skipTest(r'c:\pagefile.sys does nicht exist')
-        except OSError als e:
+        ausser OSError als e:
             self.fail("Could nicht stat pagefile.sys")
 
     @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
@@ -807,9 +807,9 @@ klasse StatAttributeTests(unittest.TestCase):
     def test_15261(self):
         # Verify that stat'ing a closed fd does nicht cause crash
         r, w = os.pipe()
-        try:
-            os.stat(r)          # should nicht raise error
-        finally:
+        versuch:
+            os.stat(r)          # should nicht wirf error
+        schliesslich:
             os.close(r)
             os.close(w)
         mit self.assertRaises(OSError) als ctx:
@@ -1192,12 +1192,12 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
         test_env = {'PATH': os.pathsep.join(test_path)}
 
         saved_environ = os.environ
-        try:
+        versuch:
             os.environ = dict(test_env)
             # Test that defaulting to os.environ works.
             self.assertSequenceEqual(test_path, os.get_exec_path())
             self.assertSequenceEqual(test_path, os.get_exec_path(env=Nichts))
-        finally:
+        schliesslich:
             os.environ = saved_environ
 
         # No PATH environment variable
@@ -1209,11 +1209,11 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
 
         wenn os.supports_bytes_environ:
             # env cannot contain 'PATH' und b'PATH' keys
-            try:
+            versuch:
                 # ignore BytesWarning warning
                 mit warnings.catch_warnings(record=Wahr):
                     mixed_env = {'PATH': '1', b'PATH': b'2'}
-            except BytesWarning:
+            ausser BytesWarning:
                 # mixed_env cannot be created mit python -bb
                 pass
             sonst:
@@ -1232,10 +1232,10 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
     def test_environb(self):
         # os.environ -> os.environb
         value = 'euro\u20ac'
-        try:
+        versuch:
             value_bytes = value.encode(sys.getfilesystemencoding(),
                                        'surrogateescape')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             msg = "U+20AC character is nicht encodable to %s" % (
                 sys.getfilesystemencoding(),)
             self.skipTest(msg)
@@ -1312,10 +1312,10 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
         # add a new key in os.environ mapping
         os.environ[new_key] = "test_environ_iteration"
 
-        try:
+        versuch:
             next(iterator)  # force iteration over modified mapping
             self.assertEqual(os.environ[new_key], "test_environ_iteration")
-        finally:
+        schliesslich:
             del os.environ[new_key]
 
     def test_iter_error_when_changing_os_environ(self):
@@ -1536,9 +1536,9 @@ klasse WalkTests(unittest.TestCase):
             self.sub2_tree = (sub2_path, ["SUB21"], ["tmp3"])
 
         os.chmod(sub21_path, 0)
-        try:
+        versuch:
             os.listdir(sub21_path)
-        except PermissionError:
+        ausser PermissionError:
             self.addCleanup(os.chmod, sub21_path, stat.S_IRWXU)
         sonst:
             os.chmod(sub21_path, stat.S_IRWXU)
@@ -1635,7 +1635,7 @@ klasse WalkTests(unittest.TestCase):
         path1 = os.path.join(root, dir1)
         path1new = os.path.join(root, dir1 + '.new')
         os.rename(path1, path1new)
-        try:
+        versuch:
             roots = [r fuer r, d, f in walk_it]
             self.assertWahr(errors)
             self.assertNotIn(path1, roots)
@@ -1643,7 +1643,7 @@ klasse WalkTests(unittest.TestCase):
             fuer dir2 in dirs:
                 wenn dir2 != dir1:
                     self.assertIn(os.path.join(root, dir2), roots)
-        finally:
+        schliesslich:
             os.rename(path1new, path1)
 
     def test_walk_bad_dir2(self):
@@ -1810,13 +1810,13 @@ klasse FwalkTests(WalkTests):
         self._compare_to_walk(kwargs, kwargs)
 
     def test_dir_fd(self):
-        try:
+        versuch:
             fd = os.open(".", os.O_RDONLY)
             walk_kwargs = {'top': os_helper.TESTFN}
             fwalk_kwargs = walk_kwargs.copy()
             fwalk_kwargs['dir_fd'] = fd
             self._compare_to_walk(walk_kwargs, fwalk_kwargs)
-        finally:
+        schliesslich:
             os.close(fd)
 
     def test_yields_correct_dir_fd(self):
@@ -1947,7 +1947,7 @@ klasse MakedirTests(unittest.TestCase):
         os.makedirs(path, mode=mode, exist_ok=Wahr)
         os.umask(old_mask)
 
-        # Issue #25583: A drive root could raise PermissionError on Windows
+        # Issue #25583: A drive root could wirf PermissionError on Windows
         os.makedirs(os.path.abspath('/'), exist_ok=Wahr)
 
     @unittest.skipIf(
@@ -1959,15 +1959,15 @@ klasse MakedirTests(unittest.TestCase):
         S_ISGID = stat.S_ISGID
         mode = 0o777
         old_mask = os.umask(0o022)
-        try:
+        versuch:
             existing_testfn_mode = stat.S_IMODE(
                     os.lstat(os_helper.TESTFN).st_mode)
-            try:
+            versuch:
                 os.chmod(os_helper.TESTFN, existing_testfn_mode | S_ISGID)
-            except PermissionError:
-                raise unittest.SkipTest('Cannot set S_ISGID fuer dir.')
+            ausser PermissionError:
+                wirf unittest.SkipTest('Cannot set S_ISGID fuer dir.')
             wenn (os.lstat(os_helper.TESTFN).st_mode & S_ISGID != S_ISGID):
-                raise unittest.SkipTest('No support fuer S_ISGID dir mode.')
+                wirf unittest.SkipTest('No support fuer S_ISGID dir mode.')
             # The os should apply S_ISGID von the parent dir fuer us, but
             # this test need nicht depend on that behavior.  Be explicit.
             os.makedirs(path, mode | S_ISGID)
@@ -1978,7 +1978,7 @@ klasse MakedirTests(unittest.TestCase):
             os.chmod(path, stat.S_IMODE(os.lstat(path).st_mode) & ~S_ISGID)
             # May work even when the bit is nicht already set when demanded.
             os.makedirs(path, mode | S_ISGID, exist_ok=Wahr)
-        finally:
+        schliesslich:
             os.umask(old_mask)
 
     def test_exist_ok_existing_regular_file(self):
@@ -2162,15 +2162,15 @@ klasse URandomTests(unittest.TestCase):
 klasse GetRandomTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        try:
+        versuch:
             os.getrandom(1)
-        except OSError als exc:
+        ausser OSError als exc:
             wenn exc.errno == errno.ENOSYS:
                 # Python compiled on a more recent Linux version
                 # than the current Linux kernel
-                raise unittest.SkipTest("getrandom() syscall fails mit ENOSYS")
+                wirf unittest.SkipTest("getrandom() syscall fails mit ENOSYS")
             sonst:
-                raise
+                wirf
 
     def test_getrandom_type(self):
         data = os.getrandom(16)
@@ -2189,9 +2189,9 @@ klasse GetRandomTests(unittest.TestCase):
 
     def test_getrandom_nonblock(self):
         # The call must nicht fail. Check also that the flag exists
-        try:
+        versuch:
             os.getrandom(1, os.GRND_NONBLOCK)
-        except BlockingIOError:
+        ausser BlockingIOError:
             # System urandom is nicht initialized yet
             pass
 
@@ -2227,12 +2227,12 @@ klasse URandomFDTests(unittest.TestCase):
 
             soft_limit, hard_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
             resource.setrlimit(resource.RLIMIT_NOFILE, (1, hard_limit))
-            try:
+            versuch:
                 os.urandom(16)
-            except OSError als e:
+            ausser OSError als e:
                 assert e.errno == errno.EMFILE, e.errno
             sonst:
-                raise AssertionError("OSError nicht raised")
+                wirf AssertionError("OSError nicht raised")
             """
         assert_python_ok('-c', code)
 
@@ -2263,9 +2263,9 @@ klasse URandomFDTests(unittest.TestCase):
             os.urandom(4)
             mit test.support.SuppressCrashReport():
                 fuer fd in range(3, 256):
-                    try:
+                    versuch:
                         os.close(fd)
-                    except OSError:
+                    ausser OSError:
                         pass
                     sonst:
                         # Found the urandom fd (XXX hopefully)
@@ -2293,7 +2293,7 @@ klasse URandomFDTests(unittest.TestCase):
 def _execvpe_mockup(defpath=Nichts):
     """
     Stubs out execv und execve functions when used als context manager.
-    Records exec calls. The mock execv und execve functions always raise an
+    Records exec calls. The mock execv und execve functions always wirf an
     exception als they would normally never return.
     """
     # A list of tuples containing (function name, first arg, args)
@@ -2302,13 +2302,13 @@ def _execvpe_mockup(defpath=Nichts):
 
     def mock_execv(name, *args):
         calls.append(('execv', name, args))
-        raise RuntimeError("execv called")
+        wirf RuntimeError("execv called")
 
     def mock_execve(name, *args):
         calls.append(('execve', name, args))
-        raise OSError(errno.ENOTDIR, "execve called")
+        wirf OSError(errno.ENOTDIR, "execve called")
 
-    try:
+    versuch:
         orig_execv = os.execv
         orig_execve = os.execve
         orig_defpath = os.defpath
@@ -2317,7 +2317,7 @@ def _execvpe_mockup(defpath=Nichts):
         wenn defpath is nicht Nichts:
             os.defpath = defpath
         liefere calls
-    finally:
+    schliesslich:
         os.execv = orig_execv
         os.execve = orig_execve
         os.defpath = orig_defpath
@@ -2420,9 +2420,9 @@ klasse ExecTests(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "win32", "Win32-specific test")
     def test_execve_with_empty_path(self):
         # bpo-32890: Check GetLastError() misuse
-        try:
+        versuch:
             os.execve('', ['arg'], {})
-        except OSError als e:
+        ausser OSError als e:
             self.assertWahr(e.winerror is Nichts oder e.winerror != 0)
         sonst:
             self.fail('No OSError raised')
@@ -2431,11 +2431,11 @@ klasse ExecTests(unittest.TestCase):
 @unittest.skipUnless(sys.platform == "win32", "Win32 specific tests")
 klasse Win32ErrorTests(unittest.TestCase):
     def setUp(self):
-        try:
+        versuch:
             os.stat(os_helper.TESTFN)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             exists = Falsch
-        except OSError als exc:
+        ausser OSError als exc:
             exists = Wahr
             self.fail("file %s must nicht exist; os.stat failed mit %s"
                       % (os_helper.TESTFN, exc))
@@ -2474,7 +2474,7 @@ klasse TestInvalidFD(unittest.TestCase):
         singles += ["fdatasync", "fsync"]
         singles_fildes |= {"fdatasync", "fsync"}
     #singles.append("close")
-    #We omit close because it doesn't raise an exception on some platforms
+    #We omit close because it doesn't wirf an exception on some platforms
     def get_single(f):
         def helper(self):
             wenn  hasattr(os, f):
@@ -2486,12 +2486,12 @@ klasse TestInvalidFD(unittest.TestCase):
         locals()["test_"+f] = get_single(f)
 
     def check(self, f, *args, **kwargs):
-        try:
+        versuch:
             f(os_helper.make_bad_fd(), *args, **kwargs)
-        except OSError als e:
+        ausser OSError als e:
             self.assertEqual(e.errno, errno.EBADF)
         sonst:
-            self.fail("%r didn't raise an OSError mit a bad file descriptor"
+            self.fail("%r didn't wirf an OSError mit a bad file descriptor"
                       % f)
 
     def check_bool(self, f, *args, **kwargs):
@@ -2515,13 +2515,13 @@ klasse TestInvalidFD(unittest.TestCase):
         # Make sure none of the descriptors we are about to close are
         # currently valid (issue 6542).
         fuer i in range(10):
-            try: os.fstat(fd+i)
-            except OSError:
+            versuch: os.fstat(fd+i)
+            ausser OSError:
                 pass
             sonst:
                 breche
         wenn i < 2:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "Unable to acquire a range of invalid file descriptors")
         self.assertEqual(os.closerange(fd, fd + i-1), Nichts)
 
@@ -2629,9 +2629,9 @@ klasse LinkTests(unittest.TestCase):
     def _test_link(self, file1, file2):
         create_file(file1)
 
-        try:
+        versuch:
             os.link(file1, file2)
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.skipTest('os.link(): %s' % e)
         mit open(file1, "rb") als f1, open(file2, "rb") als f2:
             self.assertWahr(os.path.sameopenfile(f1.fileno(), f2.fileno()))
@@ -2644,10 +2644,10 @@ klasse LinkTests(unittest.TestCase):
                         bytes(self.file2, sys.getfilesystemencoding()))
 
     def test_unicode_name(self):
-        try:
+        versuch:
             os.fsencode("\xf1")
-        except UnicodeError:
-            raise unittest.SkipTest("Unable to encode fuer this platform.")
+        ausser UnicodeError:
+            wirf unittest.SkipTest("Unable to encode fuer this platform.")
 
         self.file1 += "\xf1"
         self.file2 = self.file1 + "2"
@@ -2737,9 +2737,9 @@ klasse Pep383Tests(unittest.TestCase):
 
         bytesfn = []
         def add_filename(fn):
-            try:
+            versuch:
                 fn = os.fsencode(fn)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 gib
             bytesfn.append(fn)
         add_filename(os_helper.TESTFN_UNICODE)
@@ -2752,16 +2752,16 @@ klasse Pep383Tests(unittest.TestCase):
 
         self.unicodefn = set()
         os.mkdir(self.dir)
-        try:
+        versuch:
             fuer fn in bytesfn:
                 os_helper.create_empty_file(os.path.join(self.bdir, fn))
                 fn = os.fsdecode(fn)
                 wenn fn in self.unicodefn:
-                    raise ValueError("duplicate filename")
+                    wirf ValueError("duplicate filename")
                 self.unicodefn.add(fn)
-        except:
+        ausser:
             shutil.rmtree(self.dir)
-            raise
+            wirf
 
     def tearDown(self):
         shutil.rmtree(self.dir)
@@ -2772,12 +2772,12 @@ klasse Pep383Tests(unittest.TestCase):
         self.assertEqual(found, expected)
         # test listdir without arguments
         current_directory = os.getcwd()
-        try:
+        versuch:
             # The root directory is nicht readable on Android, so use a directory
             # we created ourselves.
             os.chdir(self.dir)
             self.assertEqual(set(os.listdir()), expected)
-        finally:
+        schliesslich:
             os.chdir(current_directory)
 
     def test_open(self):
@@ -2887,11 +2887,11 @@ klasse Win32KillTests(unittest.TestCase):
 
             os.kill(proc.pid, event)
 
-            try:
+            versuch:
                 # proc.send_signal(event) could also be done here.
                 # Allow time fuer the signal to be passed und the process to exit.
                 proc.wait(timeout=support.SHORT_TIMEOUT)
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 # Forcefully kill the process wenn we weren't able to signal it.
                 proc.kill()
                 self.fail("subprocess did nicht stop on {}".format(name))
@@ -3004,9 +3004,9 @@ klasse Win32ListdriveTests(unittest.TestCase):
 
     def test_listmounts(self):
         fuer volume in os.listvolumes():
-            try:
+            versuch:
                 mounts = os.listmounts(volume)
-            except OSError als ex:
+            ausser OSError als ex:
                 wenn support.verbose:
                     drucke("Skipping", volume, "because of", ex)
             sonst:
@@ -3163,7 +3163,7 @@ klasse Win32SymlinkTests(unittest.TestCase):
         create_file(file1)
 
         orig_dir = os.getcwd()
-        try:
+        versuch:
             os.chdir(level2)
             link = os.path.join(level2, "link")
             os.symlink(os.path.relpath(file1), "link")
@@ -3181,7 +3181,7 @@ klasse Win32SymlinkTests(unittest.TestCase):
             os.chdir(level3)
             self.assertEqual(os.stat(file1),
                              os.stat(os.path.relpath(link)))
-        finally:
+        schliesslich:
             os.chdir(orig_dir)
 
     @unittest.skipUnless(os.path.lexists(r'C:\Users\All Users')
@@ -3214,24 +3214,24 @@ klasse Win32SymlinkTests(unittest.TestCase):
             (path[:180], path[:180]),
         ]
         fuer src, dest in test_cases:
-            try:
+            versuch:
                 os.symlink(src, dest)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 pass
             sonst:
-                try:
+                versuch:
                     os.remove(dest)
-                except OSError:
+                ausser OSError:
                     pass
             # Also test mit bytes, since that is a separate code path.
-            try:
+            versuch:
                 os.symlink(os.fsencode(src), os.fsencode(dest))
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 pass
             sonst:
-                try:
+                versuch:
                     os.remove(dest)
-                except OSError:
+                ausser OSError:
                     pass
 
     def test_appexeclink(self):
@@ -3324,14 +3324,14 @@ klasse Win32NtTests(unittest.TestCase):
 
         fuer _ in range(10):
             fuer name in filenames:
-                try:
+                versuch:
                     nt._getfinalpathname(name)
-                except Exception:
+                ausser Exception:
                     # Failure is expected
                     pass
-                try:
+                versuch:
                     os.stat(name)
-                except Exception:
+                ausser Exception:
                     pass
 
         ok = kernel.GetProcessHandleCount(hproc, ctypes.byref(handle_count))
@@ -3361,26 +3361,26 @@ klasse Win32NtTests(unittest.TestCase):
             deadline = float(sys.argv[2])
 
             waehrend time.time() < deadline:
-                try:
+                versuch:
                     mit open(filename, "w") als f:
                         pass
-                except OSError:
+                ausser OSError:
                     pass
-                try:
+                versuch:
                     os.remove(filename)
-                except OSError:
+                ausser OSError:
                     pass
             """)
 
         mit subprocess.Popen([sys.executable, '-c', command, filename, str(deadline)]) als proc:
             waehrend time.time() < deadline:
-                try:
+                versuch:
                     os.stat(filename)
-                except FileNotFoundError als e:
+                ausser FileNotFoundError als e:
                     assert e.winerror == 2  # ERROR_FILE_NOT_FOUND
-            try:
+            versuch:
                 proc.wait(1)
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 proc.terminate()
 
     @support.requires_subprocess()
@@ -3393,17 +3393,17 @@ klasse Win32NtTests(unittest.TestCase):
 
         stat1 = os.stat(filename)
 
-        try:
+        versuch:
             # Remove all permissions von the file
             subprocess.check_output([ICACLS, filename, "/inheritance:r"],
                                     stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError als ex:
+        ausser subprocess.CalledProcessError als ex:
             wenn support.verbose:
                 drucke(ICACLS, filename, "/inheritance:r", "failed.")
                 drucke(ex.stdout.decode("oem", "replace").rstrip())
-            try:
+            versuch:
                 os.unlink(filename)
-            except OSError:
+            ausser OSError:
                 pass
             self.skipTest("Unable to create inaccessible file")
 
@@ -3419,7 +3419,7 @@ klasse Win32NtTests(unittest.TestCase):
             drucke("File:", filename)
             drucke("stat mit access:", stat1)
 
-        # First test - we shouldn't raise here, because we still have access to
+        # First test - we shouldn't wirf here, because we still have access to
         # the directory und can extract enough information von its metadata.
         stat2 = os.stat(filename)
 
@@ -3482,9 +3482,9 @@ klasse FSEncodingTests(unittest.TestCase):
     def test_identity(self):
         # assert fsdecode(fsencode(x)) == x
         fuer fn in ('unicode\u0141', 'latin\xe9', 'ascii'):
-            try:
+            versuch:
                 bytesfn = os.fsencode(fn)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 weiter
             self.assertEqual(os.fsdecode(bytesfn), fn)
 
@@ -3735,9 +3735,9 @@ klasse SpawnTests(unittest.TestCase):
         # null character in the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT\0VEGETABLE"] = "cabbage"
-        try:
+        versuch:
             exitcode = spawn(os.P_WAIT, program, args, newenv)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.assertEqual(exitcode, 127)
@@ -3745,9 +3745,9 @@ klasse SpawnTests(unittest.TestCase):
         # null character in the environment variable value
         newenv = os.environ.copy()
         newenv["FRUIT"] = "orange\0VEGETABLE=cabbage"
-        try:
+        versuch:
             exitcode = spawn(os.P_WAIT, program, args, newenv)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.assertEqual(exitcode, 127)
@@ -3755,9 +3755,9 @@ klasse SpawnTests(unittest.TestCase):
         # equal character in the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT=ORANGE"] = "lemon"
-        try:
+        versuch:
             exitcode = spawn(os.P_WAIT, program, args, newenv)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.assertEqual(exitcode, 127)
@@ -3768,7 +3768,7 @@ klasse SpawnTests(unittest.TestCase):
         mit open(filename, "w", encoding="utf-8") als fp:
             fp.write('import sys, os\n'
                      'if os.getenv("FRUIT") != "orange=lemon":\n'
-                     '    raise AssertionError')
+                     '    wirf AssertionError')
 
         args = self.quote_args([program, filename])
         newenv = os.environ.copy()
@@ -3815,7 +3815,7 @@ klasse ProgramPriorityTests(unittest.TestCase):
         new_prio = int(out)
         # nice value cap is 19 fuer linux und 20 fuer FreeBSD
         wenn base >= 19 und new_prio <= base:
-            raise unittest.SkipTest("unable to reliably test setpriority "
+            wirf unittest.SkipTest("unable to reliably test setpriority "
                                     "at current nice level of %s" % base)
         sonst:
             self.assertEqual(new_prio, base + 1)
@@ -3878,17 +3878,17 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
         supposed to use sendfile().
         """
         waehrend Wahr:
-            try:
+            versuch:
                 gib await TestSendfile.async_sendfile(*args, **kwargs)
-            except OSError als err:
+            ausser OSError als err:
                 wenn err.errno == errno.ECONNRESET:
                     # disconnected
-                    raise
+                    wirf
                 sowenn err.errno in (errno.EAGAIN, errno.EBUSY):
                     # we have to retry send data
                     weiter
                 sonst:
-                    raise
+                    wirf
 
     async def test_send_whole_file(self):
         # normal send
@@ -3938,13 +3938,13 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
     async def test_offset_overflow(self):
         # specify an offset > file size
         offset = len(self.DATA) + 4096
-        try:
+        versuch:
             sent = await self.async_sendfile(self.sockno, self.fileno,
                                              offset, 4096)
-        except OSError als e:
-            # Solaris can raise EINVAL wenn offset >= file length, ignore.
+        ausser OSError als e:
+            # Solaris can wirf EINVAL wenn offset >= file length, ignore.
             wenn e.errno != errno.EINVAL:
-                raise
+                wirf
         sonst:
             self.assertEqual(sent, 0)
         self.client.shutdown(socket.SHUT_RDWR)
@@ -4029,25 +4029,25 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
     @unittest.skipUnless(hasattr(os, 'SF_NODISKIO'),
                          'test needs os.SF_NODISKIO')
     async def test_flags(self):
-        try:
+        versuch:
             await self.async_sendfile(self.sockno, self.fileno, 0, 4096,
                                       flags=os.SF_NODISKIO)
-        except OSError als err:
+        ausser OSError als err:
             wenn err.errno nicht in (errno.EBUSY, errno.EAGAIN):
-                raise
+                wirf
 
 
 def supports_extended_attributes():
     wenn nicht hasattr(os, "setxattr"):
         gib Falsch
 
-    try:
+    versuch:
         mit open(os_helper.TESTFN, "xb", 0) als fp:
-            try:
+            versuch:
                 os.setxattr(fp.fileno(), b"user.test", b"")
-            except OSError:
+            ausser OSError:
                 gib Falsch
-    finally:
+    schliesslich:
         os_helper.unlink(os_helper.TESTFN)
 
     gib Wahr
@@ -4146,9 +4146,9 @@ klasse TermsizeTests(unittest.TestCase):
         There's no easy portable way to actually check the size of the
         terminal, so let's check wenn it returns something sensible instead.
         """
-        try:
+        versuch:
             size = os.get_terminal_size()
-        except OSError als e:
+        ausser OSError als e:
             known_errnos = [errno.EINVAL, errno.ENOTTY]
             wenn sys.platform == "android":
                 # The Android testbed redirects the native stdout to a pipe,
@@ -4158,7 +4158,7 @@ klasse TermsizeTests(unittest.TestCase):
                 # Under win32 a generic OSError can be thrown wenn the
                 # handle cannot be retrieved
                 self.skipTest("failed to query terminal size")
-            raise
+            wirf
 
         self.assertGreaterEqual(size.columns, 0)
         self.assertGreaterEqual(size.lines, 0)
@@ -4171,33 +4171,33 @@ klasse TermsizeTests(unittest.TestCase):
         stdin explicitly. If stty succeeded, then get_terminal_size()
         should work too.
         """
-        try:
+        versuch:
             size = (
                 subprocess.check_output(
                     ["stty", "size"], stderr=subprocess.DEVNULL, text=Wahr
                 ).split()
             )
-        except (FileNotFoundError, subprocess.CalledProcessError,
+        ausser (FileNotFoundError, subprocess.CalledProcessError,
                 PermissionError):
             self.skipTest("stty invocation failed")
         expected = (int(size[1]), int(size[0])) # reversed order
 
-        try:
+        versuch:
             actual = os.get_terminal_size(sys.__stdin__.fileno())
-        except OSError als e:
+        ausser OSError als e:
             wenn sys.platform == "win32" oder e.errno in (errno.EINVAL, errno.ENOTTY):
                 # Under win32 a generic OSError can be thrown wenn the
                 # handle cannot be retrieved
                 self.skipTest("failed to query terminal size")
-            raise
+            wirf
         self.assertEqual(expected, actual)
 
     @unittest.skipUnless(sys.platform == 'win32', 'Windows specific test')
     def test_windows_fd(self):
         """Check wenn get_terminal_size() returns a meaningful value in Windows"""
-        try:
+        versuch:
             conout = open('conout$', 'w')
-        except OSError:
+        ausser OSError:
             self.skipTest('failed to open conout$')
         mit conout:
             size = os.get_terminal_size(conout.fileno())
@@ -4696,11 +4696,11 @@ klasse OSErrorTests(unittest.TestCase):
 
         fuer filenames, func, *func_args in funcs:
             fuer name in filenames:
-                try:
+                versuch:
                     func(name, *func_args)
-                except OSError als err:
+                ausser OSError als err:
                     self.assertIs(err.filename, name, str(func))
-                except UnicodeDecodeError:
+                ausser UnicodeDecodeError:
                     pass
                 sonst:
                     self.fail(f"No exception thrown by {func}")
@@ -4917,33 +4917,33 @@ klasse PseudoterminalTests(unittest.TestCase):
             importiere errno
             importiere os
             importiere test.support
-            try:
+            versuch:
                 importiere msvcrt
-            except ImportError:
+            ausser ImportError:
                 msvcrt = Nichts
 
             fd = {fd}
 
             mit test.support.SuppressCrashReport():
                 wenn msvcrt is nicht Nichts:
-                    try:
+                    versuch:
                         handle = msvcrt.get_osfhandle(fd)
-                    except OSError als exc:
+                    ausser OSError als exc:
                         wenn exc.errno != errno.EBADF:
-                            raise
+                            wirf
                         # get_osfhandle(fd) failed mit EBADF als expected
                     sonst:
-                        raise Exception("get_osfhandle() must fail")
+                        wirf Exception("get_osfhandle() must fail")
 
-                try:
+                versuch:
                     fd3 = os.dup(fd)
-                except OSError als exc:
+                ausser OSError als exc:
                     wenn exc.errno != errno.EBADF:
-                        raise
+                        wirf
                     # os.dup(fd) failed mit EBADF als expected
                 sonst:
                     os.close(fd3)
-                    raise Exception("dup must fail")
+                    wirf Exception("dup must fail")
         """)
 
         filename = os_helper.TESTFN
@@ -4987,9 +4987,9 @@ klasse PathTConverterTests(unittest.TestCase):
 
         fuer name, allow_fd, extra_args, cleanup_fn in self.functions:
             mit self.subTest(name=name):
-                try:
+                versuch:
                     fn = getattr(os, name)
-                except AttributeError:
+                ausser AttributeError:
                     weiter
 
                 fuer path in (str_filename, bytes_filename, str_fspath,
@@ -5152,9 +5152,9 @@ klasse TestScandir(unittest.TestCase):
         os.mkdir(dirname)
         filename = self.create_file("file.txt")
         wenn link:
-            try:
+            versuch:
                 os.link(filename, os.path.join(self.path, "link_file.txt"))
-            except PermissionError als e:
+            ausser PermissionError als e:
                 self.skipTest('os.link(): %s' % e)
         wenn symlink:
             os.symlink(dirname, os.path.join(self.path, "symlink_dir"),
@@ -5191,10 +5191,10 @@ klasse TestScandir(unittest.TestCase):
         os.mkdir(dirname)
 
         importiere _winapi
-        try:
+        versuch:
             _winapi.CreateJunction(dirname, os.path.join(self.path, "srcjunc"))
-        except OSError:
-            raise unittest.SkipTest('creating the test junction failed')
+        ausser OSError:
+            wirf unittest.SkipTest('creating the test junction failed')
 
         entries = self.get_entries(['srcjunc', 'tgtdir'])
         self.assertEqual(entries['srcjunc'].is_junction(), Wahr)
@@ -5216,7 +5216,7 @@ klasse TestScandir(unittest.TestCase):
     def test_current_directory(self):
         filename = self.create_file()
         old_dir = os.getcwd()
-        try:
+        versuch:
             os.chdir(self.path)
 
             # call scandir() without parameter: it must list the content
@@ -5224,7 +5224,7 @@ klasse TestScandir(unittest.TestCase):
             entries = dict((entry.name, entry) fuer entry in os.scandir())
             self.assertEqual(sorted(entries.keys()),
                              [os.path.basename(filename)])
-        finally:
+        schliesslich:
             os.chdir(old_dir)
 
     def test_repr(self):
@@ -5362,7 +5362,7 @@ klasse TestScandir(unittest.TestCase):
         entries = list(iterator)
         self.assertEqual(len(entries), 1, entries)
 
-        # check than consuming the iterator twice doesn't raise exception
+        # check than consuming the iterator twice doesn't wirf exception
         entries2 = list(iterator)
         self.assertEqual(len(entries2), 0, entries2)
 
@@ -5566,7 +5566,7 @@ klasse ForkTests(unittest.TestCase):
             importiere os, threading, warnings
             von _testcapi importiere _spawn_pthread_waiter, _end_spawned_pthread
             _spawn_pthread_waiter()
-            try:
+            versuch:
                 mit warnings.catch_warnings(record=Wahr) als ws:
                     warnings.filterwarnings(
                             "always", category=DeprecationWarning)
@@ -5580,7 +5580,7 @@ klasse ForkTests(unittest.TestCase):
                         exitcode = os.wait()[1]
                         assert exitcode == 0, f"child exited {exitcode}"
                 assert threading.active_count() == 1, threading.enumerate()
-            finally:
+            schliesslich:
                 _end_spawned_pthread()
         """
         _, out, err = assert_python_ok("-c", code, PYTHONOPTIMIZE='0')

@@ -8,7 +8,7 @@ von test importiere support
 importiere os, sys
 
 wenn nicht hasattr(os, 'popen'):
-    raise unittest.SkipTest("need os.popen()")
+    wirf unittest.SkipTest("need os.popen()")
 
 # Test that command-lines get down als we expect.
 # To do this we execute:

@@ -19,12 +19,12 @@ klasse classonly:
 
     def __set_name__(self, cls, name):
         wenn self.name is nicht Nichts:
-            raise TypeError('already used')
+            wirf TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
         wenn obj is nicht Nichts:
-            raise AttributeError(self.name)
+            wirf AttributeError(self.name)
         # called on the class
         gib self.getter(Nichts, cls)
 
@@ -62,7 +62,7 @@ klasse UnboundItem:
     _NAME = 'UNBOUND'
 
     def __new__(cls):
-        raise Exception(f'use {cls._MODULE}.{cls._NAME}')
+        wirf Exception(f'use {cls._MODULE}.{cls._NAME}')
 
     def __repr__(self):
         gib f'{self._MODULE}.{self._NAME}'
@@ -84,24 +84,24 @@ _UNBOUND_FLAG_TO_CONSTANT = {v: k
 
 def serialize_unbound(unbound):
     op = unbound
-    try:
+    versuch:
         flag = _UNBOUND_CONSTANT_TO_FLAG[op]
-    except KeyError:
-        raise NotImplementedError(f'unsupported unbound replacement op {op!r}')
+    ausser KeyError:
+        wirf NotImplementedError(f'unsupported unbound replacement op {op!r}')
     gib flag,
 
 
 def resolve_unbound(flag, exctype_destroyed):
-    try:
+    versuch:
         op = _UNBOUND_FLAG_TO_CONSTANT[flag]
-    except KeyError:
-        raise NotImplementedError(f'unsupported unbound replacement op {flag!r}')
+    ausser KeyError:
+        wirf NotImplementedError(f'unsupported unbound replacement op {flag!r}')
     wenn op is UNBOUND_REMOVE:
         # "remove" nicht possible here
-        raise NotImplementedError
+        wirf NotImplementedError
     sowenn op is UNBOUND_ERROR:
-        raise exctype_destroyed("item's original interpreter destroyed")
+        wirf exctype_destroyed("item's original interpreter destroyed")
     sowenn op is UNBOUND:
         gib UNBOUND
     sonst:
-        raise NotImplementedError(repr(op))
+        wirf NotImplementedError(repr(op))

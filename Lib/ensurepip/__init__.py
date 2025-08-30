@@ -29,9 +29,9 @@ def _find_wheel_pkg_dir_pip():
         gib Nichts
 
     dist_matching_wheels = _WHEEL_PKG_DIR.glob('pip-*.whl')
-    try:
+    versuch:
         last_matching_dist_wheel = sorted(dist_matching_wheels)[-1]
-    except IndexError:
+    ausser IndexError:
         # NOTE: `WHEEL_PKG_DIR` does nicht contain any wheel files fuer `pip`.
         gib Nichts
 
@@ -131,7 +131,7 @@ def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
     Note that calling this function will alter both sys.path und os.environ.
     """
     wenn altinstall und default_pip:
-        raise ValueError("Cannot use altinstall und default_pip together")
+        wirf ValueError("Cannot use altinstall und default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
 
@@ -178,9 +178,9 @@ def _uninstall_helper(*, verbosity=0):
     Note that calling this function may alter os.environ.
     """
     # Nothing to do wenn pip was never installed, oder has been removed
-    try:
+    versuch:
         importiere pip
-    except ImportError:
+    ausser ImportError:
         gib
 
     # If the installed pip version doesn't match the available one,

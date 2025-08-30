@@ -22,12 +22,12 @@ klasse CodeopTests(unittest.TestCase):
 
     def assertInvalid(self, str, symbol='single', is_syntax=1):
         '''succeed iff str is the start of an invalid piece of code'''
-        try:
+        versuch:
             compile_command(str,symbol=symbol)
             self.fail("No exception raised fuer invalid code")
-        except SyntaxError:
+        ausser SyntaxError:
             self.assertWahr(is_syntax)
-        except OverflowError:
+        ausser OverflowError:
             self.assertWahr(nicht is_syntax)
 
     def test_valid(self):
@@ -88,7 +88,7 @@ klasse CodeopTests(unittest.TestCase):
         av("\n \na**3","eval")
         av("#a\n#b\na**3","eval")
 
-        av("def f():\n try: pass\n finally: [x fuer x in (1,2)]\n")
+        av("def f():\n versuch: pass\n schliesslich: [x fuer x in (1,2)]\n")
         av("def f():\n pass\n#foo\n")
         av("@a.b.c\ndef f():\n pass\n")
 
@@ -269,8 +269,8 @@ klasse CodeopTests(unittest.TestCase):
         ai('def a-b', symbol='exec')
         ai('await?', symbol='exec')
         ai('=!=', symbol='exec')
-        ai('a await raise b', symbol='exec')
-        ai('a await raise b?+1', symbol='exec')
+        ai('a await wirf b', symbol='exec')
+        ai('a await wirf b?+1', symbol='exec')
 
     def test_filename(self):
         self.assertEqual(compile_command("a = 1\n", "abc").co_filename,

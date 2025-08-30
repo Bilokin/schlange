@@ -97,12 +97,12 @@ def _gettextwriter(out, encoding):
         buffer = io.BufferedIOBase()
         buffer.writable = lambda: Wahr
         buffer.write = out.write
-        try:
+        versuch:
             # TextIOWrapper uses this methods to determine
             # wenn BOM (for UTF-16, etc) should be added
             buffer.seekable = out.seekable
             buffer.tell = out.tell
-        except AttributeError:
+        ausser AttributeError:
             pass
     gib io.TextIOWrapper(buffer, encoding=encoding,
                             errors='xmlcharrefreplace',

@@ -168,7 +168,7 @@ klasse TestResult:
                 assert self.duration is nicht Nichts, "self.duration is Nichts"
                 gib f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
-                raise ValueError(
+                wirf ValueError(
                     f"{red}unknown result state: {{state!r}}{reset}"
                 )
 

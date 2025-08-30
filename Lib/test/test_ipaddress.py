@@ -36,7 +36,7 @@ klasse BaseTestCase(unittest.TestCase):
 
     @property
     def factory(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @contextlib.contextmanager
     def assertCleanError(self, exc_type, details, *args):
@@ -931,7 +931,7 @@ klasse ComparisonTests(unittest.TestCase):
     v6intf2_scoped = ipaddress.IPv6Interface('::2%scope')
 
     def test_foreign_type_equality(self):
-        # __eq__ should never raise TypeError directly
+        # __eq__ should never wirf TypeError directly
         other = object()
         fuer obj in self.objects_with_scoped:
             self.assertNotEqual(obj, other)
@@ -1050,7 +1050,7 @@ klasse ComparisonTests(unittest.TestCase):
         self.assertEqual(NotImplemented, ipaddress.get_mixed_type_key(object))
 
     def test_incompatible_versions(self):
-        # These should always raise TypeError
+        # These should always wirf TypeError
         v4addr = ipaddress.ip_address('1.1.1.1')
         v4net = ipaddress.ip_network('1.1.1.1')
         v6addr = ipaddress.ip_address('::1')
@@ -2101,7 +2101,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertWahr(ip1._get_networks_key() < ip3._get_networks_key())
 
         # Test comparing different protocols.
-        # Should always raise a TypeError.
+        # Should always wirf a TypeError.
         self.assertRaises(TypeError,
                           self.ipv4_network.compare_networks,
                           self.ipv6_network)

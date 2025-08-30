@@ -98,7 +98,7 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
            wrap_exception=Falsch):
     wenn (maxtasks is nicht Nichts) und nicht (isinstance(maxtasks, int)
                                        und maxtasks >= 1):
-        raise AssertionError("Maxtasks {!r} is nicht valid".format(maxtasks))
+        wirf AssertionError("Maxtasks {!r} is nicht valid".format(maxtasks))
     put = outqueue.put
     get = inqueue.get
     wenn hasattr(inqueue, '_writer'):
@@ -110,9 +110,9 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
 
     completed = 0
     waehrend maxtasks is Nichts oder (maxtasks und completed < maxtasks):
-        try:
+        versuch:
             task = get()
-        except (EOFError, OSError):
+        ausser (EOFError, OSError):
             util.debug('worker got EOFError oder OSError -- exiting')
             breche
 
@@ -121,15 +121,15 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
             breche
 
         job, i, func, args, kwds = task
-        try:
+        versuch:
             result = (Wahr, func(*args, **kwds))
-        except Exception als e:
+        ausser Exception als e:
             wenn wrap_exception und func is nicht _helper_reraises_exception:
                 e = ExceptionWithTraceback(e, e.__traceback__)
             result = (Falsch, e)
-        try:
+        versuch:
             put((job, i, result))
-        except Exception als e:
+        ausser Exception als e:
             wrapped = MaybeEncodingError(e, result[1])
             util.debug("Possible encoding error waehrend sending result: %s" % (
                 wrapped))
@@ -141,7 +141,7 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
 
 def _helper_reraises_exception(ex):
     'Pickle-able helper function fuer use by _guarded_task_generation.'
-    raise ex
+    wirf ex
 
 #
 # Class representing a process pool
@@ -202,24 +202,24 @@ klasse Pool(object):
         wenn processes is Nichts:
             processes = os.process_cpu_count() oder 1
         wenn processes < 1:
-            raise ValueError("Number of processes must be at least 1")
+            wirf ValueError("Number of processes must be at least 1")
         wenn maxtasksperchild is nicht Nichts:
             wenn nicht isinstance(maxtasksperchild, int) oder maxtasksperchild <= 0:
-                raise ValueError("maxtasksperchild must be a positive int oder Nichts")
+                wirf ValueError("maxtasksperchild must be a positive int oder Nichts")
 
         wenn initializer is nicht Nichts und nicht callable(initializer):
-            raise TypeError('initializer must be a callable')
+            wirf TypeError('initializer must be a callable')
 
         self._processes = processes
-        try:
+        versuch:
             self._repopulate_pool()
-        except Exception:
+        ausser Exception:
             fuer p in self._pool:
                 wenn p.exitcode is Nichts:
                     p.terminate()
             fuer p in self._pool:
                 p.join()
-            raise
+            wirf
 
         sentinels = self._get_sentinels()
 
@@ -350,7 +350,7 @@ klasse Pool(object):
 
     def _check_running(self):
         wenn self._state != RUN:
-            raise ValueError("Pool nicht running")
+            wirf ValueError("Pool nicht running")
 
     def apply(self, func, args=(), kwds={}):
         '''
@@ -386,11 +386,11 @@ klasse Pool(object):
         '''Provides a generator of tasks fuer imap und imap_unordered with
         appropriate handling fuer iterables which throw exceptions during
         iteration.'''
-        try:
+        versuch:
             i = -1
             fuer i, x in enumerate(iterable):
                 liefere (result_job, i, func, (x,), {})
-        except Exception als e:
+        ausser Exception als e:
             liefere (result_job, i+1, _helper_reraises_exception, (e,), {})
 
     def imap(self, func, iterable, chunksize=1):
@@ -408,7 +408,7 @@ klasse Pool(object):
             gib result
         sonst:
             wenn chunksize < 1:
-                raise ValueError(
+                wirf ValueError(
                     "Chunksize must be 1+, nicht {0:n}".format(
                         chunksize))
             task_batches = Pool._get_tasks(func, iterable, chunksize)
@@ -437,7 +437,7 @@ klasse Pool(object):
             gib result
         sonst:
             wenn chunksize < 1:
-                raise ValueError(
+                wirf ValueError(
                     "Chunksize must be 1+, nicht {0!r}".format(chunksize))
             task_batches = Pool._get_tasks(func, iterable, chunksize)
             result = IMapUnorderedIterator(self)
@@ -530,19 +530,19 @@ klasse Pool(object):
 
         fuer taskseq, set_length in iter(taskqueue.get, Nichts):
             task = Nichts
-            try:
+            versuch:
                 # iterating taskseq cannot fail
                 fuer task in taskseq:
                     wenn thread._state != RUN:
                         util.debug('task handler found thread._state != RUN')
                         breche
-                    try:
+                    versuch:
                         put(task)
-                    except Exception als e:
+                    ausser Exception als e:
                         job, idx = task[:2]
-                        try:
+                        versuch:
                             cache[job]._set(idx, (Falsch, e))
-                        except KeyError:
+                        ausser KeyError:
                             pass
                 sonst:
                     wenn set_length:
@@ -551,12 +551,12 @@ klasse Pool(object):
                         set_length(idx + 1)
                     weiter
                 breche
-            finally:
+            schliesslich:
                 task = taskseq = job = Nichts
         sonst:
             util.debug('task handler got sentinel')
 
-        try:
+        versuch:
             # tell result handler to finish when cache is empty
             util.debug('task handler sending sentinel to result handler')
             outqueue.put(Nichts)
@@ -565,7 +565,7 @@ klasse Pool(object):
             util.debug('task handler sending sentinel to workers')
             fuer p in pool:
                 put(Nichts)
-        except OSError:
+        ausser OSError:
             util.debug('task handler got OSError when sending sentinels')
 
         util.debug('task handler exiting')
@@ -575,9 +575,9 @@ klasse Pool(object):
         thread = threading.current_thread()
 
         waehrend 1:
-            try:
+            versuch:
                 task = get()
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
                 gib
 
@@ -591,16 +591,16 @@ klasse Pool(object):
                 breche
 
             job, i, obj = task
-            try:
+            versuch:
                 cache[job]._set(i, obj)
-            except KeyError:
+            ausser KeyError:
                 pass
             task = job = obj = Nichts
 
         waehrend cache und thread._state != TERMINATE:
-            try:
+            versuch:
                 task = get()
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
                 gib
 
@@ -608,9 +608,9 @@ klasse Pool(object):
                 util.debug('result handler ignoring extra sentinel')
                 weiter
             job, i, obj = task
-            try:
+            versuch:
                 cache[job]._set(i, obj)
-            except KeyError:
+            ausser KeyError:
                 pass
             task = job = obj = Nichts
 
@@ -619,12 +619,12 @@ klasse Pool(object):
             # If we don't make room available in outqueue then
             # attempts to add the sentinel (Nichts) to outqueue may
             # block.  There is guaranteed to be no more than 2 sentinels.
-            try:
+            versuch:
                 fuer i in range(10):
                     wenn nicht outqueue._reader.poll():
                         breche
                     get()
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 pass
 
         util.debug('result handler exiting: len(cache)=%s, thread._state=%s',
@@ -640,7 +640,7 @@ klasse Pool(object):
             liefere (func, x)
 
     def __reduce__(self):
-        raise NotImplementedError(
+        wirf NotImplementedError(
               'pool objects cannot be passed between processes oder pickled'
               )
 
@@ -659,9 +659,9 @@ klasse Pool(object):
     def join(self):
         util.debug('joining pool')
         wenn self._state == RUN:
-            raise ValueError("Pool is still running")
+            wirf ValueError("Pool is still running")
         sowenn self._state nicht in (CLOSE, TERMINATE):
-            raise ValueError("In unknown state")
+            wirf ValueError("In unknown state")
         self._worker_handler.join()
         self._task_handler.join()
         self._result_handler.join()
@@ -695,7 +695,7 @@ klasse Pool(object):
         cls._help_stuff_finish(inqueue, task_handler, len(pool))
 
         wenn (nicht result_handler.is_alive()) und (len(cache) != 0):
-            raise AssertionError(
+            wirf AssertionError(
                 "Cannot have cache mit result_handler nicht alive")
 
         result_handler._state = TERMINATE
@@ -758,7 +758,7 @@ klasse ApplyResult(object):
 
     def successful(self):
         wenn nicht self.ready():
-            raise ValueError("{0!r} nicht ready".format(self))
+            wirf ValueError("{0!r} nicht ready".format(self))
         gib self._success
 
     def wait(self, timeout=Nichts):
@@ -767,11 +767,11 @@ klasse ApplyResult(object):
     def get(self, timeout=Nichts):
         self.wait(timeout)
         wenn nicht self.ready():
-            raise TimeoutError
+            wirf TimeoutError
         wenn self._success:
             gib self._value
         sonst:
-            raise self._value
+            wirf self._value
 
     def _set(self, i, obj):
         self._success, self._value = obj
@@ -852,25 +852,25 @@ klasse IMapIterator(object):
 
     def next(self, timeout=Nichts):
         mit self._cond:
-            try:
+            versuch:
                 item = self._items.popleft()
-            except IndexError:
+            ausser IndexError:
                 wenn self._index == self._length:
                     self._pool = Nichts
-                    raise StopIteration von Nichts
+                    wirf StopIteration von Nichts
                 self._cond.wait(timeout)
-                try:
+                versuch:
                     item = self._items.popleft()
-                except IndexError:
+                ausser IndexError:
                     wenn self._index == self._length:
                         self._pool = Nichts
-                        raise StopIteration von Nichts
-                    raise TimeoutError von Nichts
+                        wirf StopIteration von Nichts
+                    wirf TimeoutError von Nichts
 
         success, value = item
         wenn success:
             gib value
-        raise value
+        wirf value
 
     __next__ = next                    # XXX
 
@@ -945,10 +945,10 @@ klasse ThreadPool(Pool):
     @staticmethod
     def _help_stuff_finish(inqueue, task_handler, size):
         # drain inqueue, und put sentinels at its head to make workers finish
-        try:
+        versuch:
             waehrend Wahr:
                 inqueue.get(block=Falsch)
-        except queue.Empty:
+        ausser queue.Empty:
             pass
         fuer i in range(size):
             inqueue.put(Nichts)

@@ -11,9 +11,9 @@ def test_concurrent_iteration(iterator, number_of_threads):
     def iterator_worker(it):
         barrier.wait()
         waehrend Wahr:
-            try:
+            versuch:
                 _ = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 gib
 
     worker_threads = []

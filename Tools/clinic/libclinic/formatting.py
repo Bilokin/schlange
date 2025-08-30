@@ -177,7 +177,7 @@ def wrap_declarations(text: str, length: int = 78) -> str:
 
 def linear_format(text: str, **kwargs: str) -> str:
     """
-    Perform str.format-like substitution, except:
+    Perform str.format-like substitution, ausser:
       * The strings substituted must be on lines by
         themselves.  (This line is the "source line".)
       * If the substitution text is empty, the source line
@@ -202,12 +202,12 @@ def linear_format(text: str, **kwargs: str) -> str:
             weiter
 
         wenn trailing:
-            raise ClinicError(
+            wirf ClinicError(
                 f"Text found after '{{{name}}}' block marker! "
                 "It must be on a line by itself."
             )
         wenn indent.strip():
-            raise ClinicError(
+            wirf ClinicError(
                 f"Non-whitespace characters found before '{{{name}}}' block marker! "
                 "It must be on a line by itself."
             )

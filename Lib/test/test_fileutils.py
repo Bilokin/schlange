@@ -13,7 +13,7 @@ klasse PathTests(unittest.TestCase):
 
     def test_capi_normalize_path(self):
         wenn os.name == 'nt':
-            raise unittest.SkipTest('Windows has its own helper fuer this')
+            wirf unittest.SkipTest('Windows has its own helper fuer this')
         sonst:
             von test.test_posixpath importiere PosixPathTest als posixdata
             tests = posixdata.NORMPATH_CASES

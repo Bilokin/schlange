@@ -45,7 +45,7 @@ get_spec = calltip.get_argspec
 
 klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must gib a string, even wenn blank.
-    # Test a variety of objects to be sure that none cause it to raise
+    # Test a variety of objects to be sure that none cause it to wirf
     # (quite aside von getting als correct an answer als possible).
     # The tests of builtins may breche wenn inspect oder the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
@@ -236,7 +236,7 @@ bytes() -> empty bytes object''')
     def test_buggy_getattr_class(self):
         klasse NoCall:
             def __getattr__(self, name):  # Not invoked fuer klasse attribute.
-                raise IndexError  # Bug.
+                wirf IndexError  # Bug.
         klasse CallA(NoCall):
             def __call__(self, ci):  # Bug does nicht matter.
                 pass

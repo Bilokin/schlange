@@ -249,10 +249,10 @@ def getFilesForName(name):
             gib list
 
         # try to find module oder package
-        try:
+        versuch:
             spec = importlib.util.find_spec(name)
             name = spec.origin
-        except ImportError:
+        ausser ImportError:
             name = Nichts
         wenn nicht name:
             gib []
@@ -331,7 +331,7 @@ def parse_spec(spec):
 
     name, args = parts
     wenn nicht args:
-        raise ValueError(f'Invalid keyword spec {spec!r}: '
+        wirf ValueError(f'Invalid keyword spec {spec!r}: '
                          'missing argument positions')
 
     result = {}
@@ -342,23 +342,23 @@ def parse_spec(spec):
             is_context = Wahr
             arg = arg[:-1]
 
-        try:
+        versuch:
             pos = int(arg) - 1
-        except ValueError als e:
-            raise ValueError(f'Invalid keyword spec {spec!r}: '
+        ausser ValueError als e:
+            wirf ValueError(f'Invalid keyword spec {spec!r}: '
                              'position is nicht an integer') von e
 
         wenn pos < 0:
-            raise ValueError(f'Invalid keyword spec {spec!r}: '
+            wirf ValueError(f'Invalid keyword spec {spec!r}: '
                              'argument positions must be strictly positive')
 
         wenn pos in result.values():
-            raise ValueError(f'Invalid keyword spec {spec!r}: '
+            wirf ValueError(f'Invalid keyword spec {spec!r}: '
                              'duplicate positions')
 
         wenn is_context:
             wenn 'msgctxt' in result:
-                raise ValueError(f'Invalid keyword spec {spec!r}: '
+                wirf ValueError(f'Invalid keyword spec {spec!r}: '
                                  'msgctxt can only appear once')
             result['msgctxt'] = pos
         sowenn 'msgid' nicht in result:
@@ -366,11 +366,11 @@ def parse_spec(spec):
         sowenn 'msgid_plural' nicht in result:
             result['msgid_plural'] = pos
         sonst:
-            raise ValueError(f'Invalid keyword spec {spec!r}: '
+            wirf ValueError(f'Invalid keyword spec {spec!r}: '
                              'too many positions')
 
     wenn 'msgid' nicht in result und 'msgctxt' in result:
-        raise ValueError(f'Invalid keyword spec {spec!r}: '
+        wirf ValueError(f'Invalid keyword spec {spec!r}: '
                          'msgctxt cannot appear without msgid')
 
     gib name, result
@@ -461,9 +461,9 @@ klasse GettextVisitor(ast.NodeVisitor):
         self.comments = {}
 
     def visit_file(self, source, filename):
-        try:
+        versuch:
             module_tree = ast.parse(source)
-        except SyntaxError:
+        ausser SyntaxError:
             gib
 
         self.filename = filename
@@ -684,7 +684,7 @@ def write_pot_file(messages, options, fp):
 
 
 def main():
-    try:
+    versuch:
         opts, args = getopt.getopt(
             sys.argv[1:],
             'ac::d:DEhk:Kno:p:S:Vvw:x:X:',
@@ -694,7 +694,7 @@ def main():
              'style=', 'verbose', 'version', 'width=', 'exclude-file=',
              'docstrings', 'no-docstrings',
              ])
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         usage(1, msg)
 
     # fuer holding option values
@@ -760,21 +760,21 @@ def main():
             drucke(f'pygettext.py (xgettext fuer Python) {__version__}')
             sys.exit(0)
         sowenn opt in ('-w', '--width'):
-            try:
+            versuch:
                 options.width = int(arg)
-            except ValueError:
+            ausser ValueError:
                 usage(1, f'--width argument must be an integer: {arg}')
         sowenn opt in ('-x', '--exclude-file'):
             options.excludefilename = arg
         sowenn opt in ('-X', '--no-docstrings'):
             fp = open(arg)
-            try:
+            versuch:
                 waehrend 1:
                     line = fp.readline()
                     wenn nicht line:
                         breche
                     options.nodocstrings[line[:-1]] = 1
-            finally:
+            schliesslich:
                 fp.close()
 
     options.comment_tags = tuple(options.comment_tags)
@@ -783,20 +783,20 @@ def main():
     make_escapes(not options.escape)
 
     # calculate all keywords
-    try:
+    versuch:
         options.keywords = process_keywords(
             options.keywords,
             no_default_keywords=no_default_keywords)
-    except ValueError als e:
+    ausser ValueError als e:
         drucke(e, file=sys.stderr)
         sys.exit(1)
 
     # initialize list of strings to exclude
     wenn options.excludefilename:
-        try:
+        versuch:
             mit open(options.excludefilename) als fp:
                 options.toexclude = fp.readlines()
-        except IOError:
+        ausser IOError:
             drucke(f"Can't read --exclude-file: {options.excludefilename}",
                   file=sys.stderr)
             sys.exit(1)
@@ -836,9 +836,9 @@ def main():
             options.outfile = os.path.join(options.outpath, options.outfile)
         fp = open(options.outfile, 'w')
         closep = 1
-    try:
+    versuch:
         write_pot_file(visitor.messages, options, fp)
-    finally:
+    schliesslich:
         wenn closep:
             fp.close()
 

@@ -217,7 +217,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             # right thing when presented mit a value that fails truth testing:
             klasse NotBool(object):
                 def __bool__(self):
-                    raise ValueError()
+                    wirf ValueError()
                 __len__ = __bool__
             mit self.assertRaises(ValueError):
                 klasse F(C):
@@ -452,7 +452,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             exc_msg = "exception von __subclasses__"
 
             def raise_exc():
-                raise CustomError(exc_msg)
+                wirf CustomError(exc_msg)
 
             klasse S(metaclass=abc_ABCMeta):
                 __subclasses__ = raise_exc

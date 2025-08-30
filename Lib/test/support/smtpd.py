@@ -116,9 +116,9 @@ klasse SMTPChannel(asynchat.async_chat):
 
     @property
     def max_command_size_limit(self):
-        try:
+        versuch:
             gib max(self.command_size_limits.values())
-        except ValueError:
+        ausser ValueError:
             gib self.command_size_limit
 
     def __init__(self, server, conn, addr, data_size_limit=DATA_SIZE_DEFAULT,
@@ -131,7 +131,7 @@ klasse SMTPChannel(asynchat.async_chat):
         self.enable_SMTPUTF8 = enable_SMTPUTF8
         self._decode_data = decode_data
         wenn enable_SMTPUTF8 und decode_data:
-            raise ValueError("decode_data und enable_SMTPUTF8 cannot"
+            wirf ValueError("decode_data und enable_SMTPUTF8 cannot"
                              " be set to Wahr at the same time")
         wenn decode_data:
             self._emptystring = ''
@@ -148,14 +148,14 @@ klasse SMTPChannel(asynchat.async_chat):
         self.extended_smtp = Falsch
         self.command_size_limits.clear()
         self.fqdn = socket.getfqdn()
-        try:
+        versuch:
             self.peer = conn.getpeername()
-        except OSError als err:
+        ausser OSError als err:
             # a race condition  may occur wenn the other end is closing
             # before we can get the peername
             self.close()
             wenn err.errno != errno.ENOTCONN:
-                raise
+                wirf
             gib
         drucke('Peer:', repr(self.peer), file=DEBUGSTREAM)
         self.push('220 %s %s' % (self.fqdn, __version__))
@@ -170,7 +170,7 @@ klasse SMTPChannel(asynchat.async_chat):
         self.set_terminator(b'\r\n')
 
     def _set_rset_state(self):
-        """Reset all state variables except the greeting."""
+        """Reset all state variables ausser the greeting."""
         self._set_post_data_state()
         self.received_data = ''
         self.received_lines = []
@@ -629,10 +629,10 @@ klasse SMTPServer(asyncore.dispatcher):
         self.enable_SMTPUTF8 = enable_SMTPUTF8
         self._decode_data = decode_data
         wenn enable_SMTPUTF8 und decode_data:
-            raise ValueError("decode_data und enable_SMTPUTF8 cannot"
+            wirf ValueError("decode_data und enable_SMTPUTF8 cannot"
                              " be set to Wahr at the same time")
         asyncore.dispatcher.__init__(self, map=map)
-        try:
+        versuch:
             family = 0 wenn socket.has_ipv6 sonst socket.AF_INET
             gai_results = socket.getaddrinfo(*localaddr, family=family,
                                              type=socket.SOCK_STREAM)
@@ -641,9 +641,9 @@ klasse SMTPServer(asyncore.dispatcher):
             self.set_reuse_addr()
             self.bind(localaddr)
             self.listen(5)
-        except:
+        ausser:
             self.close()
-            raise
+            wirf
         sonst:
             drucke('%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
                 self.__class__.__name__, time.ctime(time.time()),
@@ -691,7 +691,7 @@ klasse SMTPServer(asyncore.dispatcher):
         format.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse DebuggingServer(SMTPServer):
@@ -727,7 +727,7 @@ klasse DebuggingServer(SMTPServer):
 klasse PureProxy(SMTPServer):
     def __init__(self, *args, **kwargs):
         wenn 'enable_SMTPUTF8' in kwargs und kwargs['enable_SMTPUTF8']:
-            raise ValueError("PureProxy does nicht support SMTPUTF8.")
+            wirf ValueError("PureProxy does nicht support SMTPUTF8.")
         super(PureProxy, self).__init__(*args, **kwargs)
 
     def process_message(self, peer, mailfrom, rcpttos, data):
@@ -747,17 +747,17 @@ klasse PureProxy(SMTPServer):
     def _deliver(self, mailfrom, rcpttos, data):
         importiere smtplib
         refused = {}
-        try:
+        versuch:
             s = smtplib.SMTP()
             s.connect(self._remoteaddr[0], self._remoteaddr[1])
-            try:
+            versuch:
                 refused = s.sendmail(mailfrom, rcpttos, data)
-            finally:
+            schliesslich:
                 s.quit()
-        except smtplib.SMTPRecipientsRefused als e:
+        ausser smtplib.SMTPRecipientsRefused als e:
             drucke('got SMTPRecipientsRefused', file=DEBUGSTREAM)
             refused = e.recipients
-        except (OSError, smtplib.SMTPException) als e:
+        ausser (OSError, smtplib.SMTPException) als e:
             drucke('got', e.__class__, file=DEBUGSTREAM)
             # All recipients were refused.  If the exception had an associated
             # error code, use it.  Otherwise,fake it mit a non-triggering
@@ -778,12 +778,12 @@ klasse Options:
 
 def parseargs():
     global DEBUGSTREAM
-    try:
+    versuch:
         opts, args = getopt.getopt(
             sys.argv[1:], 'nVhc:s:du',
             ['class=', 'nosetuid', 'version', 'help', 'size=', 'debug',
              'smtputf8'])
-    except getopt.error als e:
+    ausser getopt.error als e:
         usage(1, e)
 
     options = Options()
@@ -802,10 +802,10 @@ def parseargs():
         sowenn opt in ('-u', '--smtputf8'):
             options.enable_SMTPUTF8 = Wahr
         sowenn opt in ('-s', '--size'):
-            try:
+            versuch:
                 int_size = int(arg)
                 options.size_limit = int_size
-            except:
+            ausser:
                 drucke('Invalid size: ' + arg, file=sys.stderr)
                 sys.exit(1)
 
@@ -827,17 +827,17 @@ def parseargs():
     wenn i < 0:
         usage(1, 'Bad local spec: %s' % localspec)
     options.localhost = localspec[:i]
-    try:
+    versuch:
         options.localport = int(localspec[i+1:])
-    except ValueError:
+    ausser ValueError:
         usage(1, 'Bad local port: %s' % localspec)
     i = remotespec.find(':')
     wenn i < 0:
         usage(1, 'Bad remote spec: %s' % remotespec)
     options.remotehost = remotespec[:i]
-    try:
+    versuch:
         options.remoteport = int(remotespec[i+1:])
-    except ValueError:
+    ausser ValueError:
         usage(1, 'Bad remote port: %s' % remotespec)
     gib options
 
@@ -857,18 +857,18 @@ wenn __name__ == '__main__':
                    (options.remotehost, options.remoteport),
                    options.size_limit, enable_SMTPUTF8=options.enable_SMTPUTF8)
     wenn options.setuid:
-        try:
+        versuch:
             importiere pwd
-        except ImportError:
+        ausser ImportError:
             drucke('Cannot importiere module "pwd"; try running mit -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
-        try:
+        versuch:
             os.setuid(nobody)
-        except PermissionError:
+        ausser PermissionError:
             drucke('Cannot setuid "nobody"; try running mit -n option.', file=sys.stderr)
             sys.exit(1)
-    try:
+    versuch:
         asyncore.loop()
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         pass

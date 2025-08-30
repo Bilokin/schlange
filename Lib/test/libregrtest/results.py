@@ -121,14 +121,14 @@ klasse TestResults:
                     self.bad.append(test_name)
                     self.rerun_results.append(result)
                 sonst:
-                    raise ValueError(f"invalid test state: {result.state!r}")
+                    wirf ValueError(f"invalid test state: {result.state!r}")
 
         wenn result.state == State.WORKER_BUG:
             self.worker_bug = Wahr
 
         wenn result.has_meaningful_duration() und nicht rerun:
             wenn result.duration is Nichts:
-                raise ValueError("result.duration is Nichts")
+                wirf ValueError("result.duration is Nichts")
             self.test_times.append((result.duration, test_name))
         wenn result.stats is nicht Nichts:
             self.stats.accumulate(result.stats)
@@ -171,11 +171,11 @@ klasse TestResults:
     def add_junit(self, xml_data: list[str]) -> Nichts:
         importiere xml.etree.ElementTree als ET
         fuer e in xml_data:
-            try:
+            versuch:
                 self.testsuite_xml.append(ET.fromstring(e))
-            except ET.ParseError:
+            ausser ET.ParseError:
                 drucke(xml_data, file=sys.__stderr__)
-                raise
+                wirf
 
     def write_junit(self, filename: StrPath) -> Nichts:
         wenn nicht self.testsuite_xml:
@@ -190,9 +190,9 @@ klasse TestResults:
         fuer suite in self.testsuite_xml:
             root.append(suite)
             fuer k in totals:
-                try:
+                versuch:
                     totals[k] += int(suite.get(k, 0))
-                except ValueError:
+                ausser ValueError:
                     pass
 
         fuer k, v in totals.items():

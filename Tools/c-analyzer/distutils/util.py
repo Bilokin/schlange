@@ -153,10 +153,10 @@ def split_quoted (s):
             sowenn s[end] == '"':         # slurp doubly-quoted string
                 m = _dquote_re.match(s, end)
             sonst:
-                raise RuntimeError("this can't happen (bad char '%c')" % s[end])
+                wirf RuntimeError("this can't happen (bad char '%c')" % s[end])
 
             wenn m is Nichts:
-                raise ValueError("bad string (mismatched %s quotes?)" % s[end])
+                wirf ValueError("bad string (mismatched %s quotes?)" % s[end])
 
             (beg, end) = m.span()
             s = s[:beg] + s[beg+1:end-1] + s[end:]

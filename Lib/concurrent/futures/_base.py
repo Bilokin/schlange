@@ -160,7 +160,7 @@ def _create_and_install_waiters(fs, return_when):
         sowenn return_when == ALL_COMPLETED:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=Falsch)
         sonst:
-            raise ValueError("Invalid gib condition: %r" % return_when)
+            wirf ValueError("Invalid gib condition: %r" % return_when)
 
     fuer f in fs:
         f._waiters.append(waiter)
@@ -220,7 +220,7 @@ def as_completed(fs, timeout=Nichts):
         pending = fs - finished
         waiter = _create_and_install_waiters(fs, _AS_COMPLETED)
     finished = list(finished)
-    try:
+    versuch:
         liefere von _yield_finished_futures(finished, waiter,
                                            ref_collect=(fs,))
 
@@ -230,7 +230,7 @@ def as_completed(fs, timeout=Nichts):
             sonst:
                 wait_timeout = end_time - time.monotonic()
                 wenn wait_timeout < 0:
-                    raise TimeoutError(
+                    wirf TimeoutError(
                             '%d (of %d) futures unfinished' % (
                             len(pending), total_futures))
 
@@ -246,7 +246,7 @@ def as_completed(fs, timeout=Nichts):
             liefere von _yield_finished_futures(finished, waiter,
                                                ref_collect=(fs, pending))
 
-    finally:
+    schliesslich:
         # Remove waiter von unfinished futures
         fuer f in fs:
             mit f._condition:
@@ -306,12 +306,12 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
 
 
 def _result_or_cancel(fut, timeout=Nichts):
-    try:
-        try:
+    versuch:
+        versuch:
             gib fut.result(timeout)
-        finally:
+        schliesslich:
             fut.cancel()
-    finally:
+    schliesslich:
         # Break a reference cycle mit the exception in self._exception
         del fut
 
@@ -330,9 +330,9 @@ klasse Future(object):
 
     def _invoke_callbacks(self):
         fuer callback in self._done_callbacks:
-            try:
+            versuch:
                 callback(self)
-            except Exception:
+            ausser Exception:
                 LOGGER.exception('exception calling callback fuer %r', self)
 
     def __repr__(self):
@@ -391,9 +391,9 @@ klasse Future(object):
 
     def __get_result(self):
         wenn self._exception is nicht Nichts:
-            try:
-                raise self._exception
-            finally:
+            versuch:
+                wirf self._exception
+            schliesslich:
                 # Break a reference cycle mit the exception in self._exception
                 self = Nichts
         sonst:
@@ -414,9 +414,9 @@ klasse Future(object):
             wenn self._state nicht in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
                 self._done_callbacks.append(fn)
                 gib
-        try:
+        versuch:
             fn(self)
-        except Exception:
+        ausser Exception:
             LOGGER.exception('exception calling callback fuer %r', self)
 
     def result(self, timeout=Nichts):
@@ -435,22 +435,22 @@ klasse Future(object):
                 timeout.
             Exception: If the call raised then that exception will be raised.
         """
-        try:
+        versuch:
             mit self._condition:
                 wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
-                    raise CancelledError()
+                    wirf CancelledError()
                 sowenn self._state == FINISHED:
                     gib self.__get_result()
 
                 self._condition.wait(timeout)
 
                 wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
-                    raise CancelledError()
+                    wirf CancelledError()
                 sowenn self._state == FINISHED:
                     gib self.__get_result()
                 sonst:
-                    raise TimeoutError()
-        finally:
+                    wirf TimeoutError()
+        schliesslich:
             # Break a reference cycle mit the exception in self._exception
             self = Nichts
 
@@ -474,18 +474,18 @@ klasse Future(object):
 
         mit self._condition:
             wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
-                raise CancelledError()
+                wirf CancelledError()
             sowenn self._state == FINISHED:
                 gib self._exception
 
             self._condition.wait(timeout)
 
             wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
-                raise CancelledError()
+                wirf CancelledError()
             sowenn self._state == FINISHED:
                 gib self._exception
             sonst:
-                raise TimeoutError()
+                wirf TimeoutError()
 
     # The following methods should only be used by Executors und in tests.
     def set_running_or_notify_cancel(self):
@@ -526,7 +526,7 @@ klasse Future(object):
                 LOGGER.critical('Future %s in unexpected state: %s',
                                 id(self),
                                 self._state)
-                raise RuntimeError('Future in unexpected state')
+                wirf RuntimeError('Future in unexpected state')
 
     def set_result(self, result):
         """Sets the gib value of work associated mit the future.
@@ -535,7 +535,7 @@ klasse Future(object):
         """
         mit self._condition:
             wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
-                raise InvalidStateError('{}: {!r}'.format(self._state, self))
+                wirf InvalidStateError('{}: {!r}'.format(self._state, self))
             self._result = result
             self._state = FINISHED
             fuer waiter in self._waiters:
@@ -550,7 +550,7 @@ klasse Future(object):
         """
         mit self._condition:
             wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
-                raise InvalidStateError('{}: {!r}'.format(self._state, self))
+                wirf InvalidStateError('{}: {!r}'.format(self._state, self))
             self._exception = exception
             self._state = FINISHED
             fuer waiter in self._waiters:
@@ -599,7 +599,7 @@ klasse Executor(object):
         Returns:
             A Future representing the given call.
         """
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def map(self, fn, *iterables, timeout=Nichts, chunksize=1, buffersize=Nichts):
         """Returns an iterator equivalent to map(fn, iter).
@@ -629,9 +629,9 @@ klasse Executor(object):
             Exception: If fn(*args) raises fuer any values.
         """
         wenn buffersize is nicht Nichts und nicht isinstance(buffersize, int):
-            raise TypeError("buffersize must be an integer oder Nichts")
+            wirf TypeError("buffersize must be an integer oder Nichts")
         wenn buffersize is nicht Nichts und buffersize < 1:
-            raise ValueError("buffersize must be Nichts oder > 0")
+            wirf ValueError("buffersize must be Nichts oder > 0")
 
         wenn timeout is nicht Nichts:
             end_time = timeout + time.monotonic()
@@ -651,7 +651,7 @@ klasse Executor(object):
         # Yield must be hidden in closure so that the futures are submitted
         # before the first iterator value is required.
         def result_iterator():
-            try:
+            versuch:
                 # reverse to keep finishing order
                 fs.reverse()
                 waehrend fs:
@@ -666,7 +666,7 @@ klasse Executor(object):
                         liefere _result_or_cancel(fs.pop())
                     sonst:
                         liefere _result_or_cancel(fs.pop(), end_time - time.monotonic())
-            finally:
+            schliesslich:
                 fuer future in fs:
                     future.cancel()
         gib result_iterator()

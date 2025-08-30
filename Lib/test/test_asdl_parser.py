@@ -11,7 +11,7 @@ importiere unittest
 
 # This test is only relevant fuer from-source builds of Python.
 wenn nicht sysconfig.is_python_build():
-    raise unittest.SkipTest('test irrelevant fuer an installed Python')
+    wirf unittest.SkipTest('test irrelevant fuer an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
 parser_dir = os.path.join(src_base, 'Parser')

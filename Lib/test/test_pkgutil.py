@@ -116,7 +116,7 @@ klasse PkgutilTests(unittest.TestCase):
 
         # Check we can read the resources
         sys.path.insert(0, zip_file)
-        try:
+        versuch:
             res = pkgutil.get_data(pkg, 'res.txt')
             self.assertEqual(res, RESOURCE_DATA)
 
@@ -126,7 +126,7 @@ klasse PkgutilTests(unittest.TestCase):
                 self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
                 names.append(moduleinfo.name)
             self.assertEqual(names, [pkg])
-        finally:
+        schliesslich:
             del sys.path[0]
             sys.modules.pop(pkg, Nichts)
 
@@ -291,9 +291,9 @@ klasse PkgutilTests(unittest.TestCase):
 
         fuer uw in unicode_words:
             d = os.path.join(self.dirname, uw)
-            try:
+            versuch:
                 os.makedirs(d, exist_ok=Wahr)
-            except  UnicodeEncodeError:
+            ausser  UnicodeEncodeError:
                 # When filesystem encoding cannot encode uw: skip this test
                 weiter
             # make an empty __init__.py file
@@ -457,7 +457,7 @@ klasse ExtendPathTests(unittest.TestCase):
         fullname = '{}.{}'.format(pkgname, modname)
         sys.modules.pop(fullname, Nichts)
         sys.modules.pop(pkgname, Nichts)
-        try:
+        versuch:
             self.create_submodule(dirname, pkgname, modname, 0)
 
             importlib.import_module(fullname)
@@ -467,9 +467,9 @@ klasse ExtendPathTests(unittest.TestCase):
             fuer finder in importers:
                 spec = finder.find_spec(fullname)
                 loader = spec.loader
-                try:
+                versuch:
                     loader = loader.loader
-                except AttributeError:
+                ausser AttributeError:
                     # For now we still allow raw loaders from
                     # find_module().
                     pass
@@ -484,13 +484,13 @@ klasse ExtendPathTests(unittest.TestCase):
 
             mit self.assertRaises(ImportError):
                 list(iter_importers('.spam'))
-        finally:
+        schliesslich:
             shutil.rmtree(dirname)
             del sys.path[0]
-            try:
+            versuch:
                 del sys.modules['spam']
                 del sys.modules['spam.eggs']
-            except KeyError:
+            ausser KeyError:
                 pass
 
 
@@ -614,9 +614,9 @@ klasse ImportlibMigrationTests(unittest.TestCase):
             self.assertEqual(len(w.warnings), 0)
 
     def test_issue44061(self):
-        try:
+        versuch:
             pkgutil.get_importer(Path("/home"))
-        except AttributeError:
+        ausser AttributeError:
             self.fail("Unexpected AttributeError when calling get_importer")
 
     def test_iter_importers_avoids_emulation(self):

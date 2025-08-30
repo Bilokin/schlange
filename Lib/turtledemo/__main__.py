@@ -352,13 +352,13 @@ klasse DemoWindow(object):
         self.screen.mode("standard")
         self.state = RUNNING
 
-        try:
+        versuch:
             result = self.module.main()
             wenn result == "EVENTLOOP":
                 self.state = EVENTDRIVEN
             sonst:
                 self.state = DONE
-        except turtle.Terminator:
+        ausser turtle.Terminator:
             wenn self.root is Nichts:
                 gib
             self.state = DONE

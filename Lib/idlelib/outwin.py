@@ -41,17 +41,17 @@ def file_line_helper(line):
         match = prog.search(line)
         wenn match:
             filename, lineno = match.group(1, 2)
-            try:
+            versuch:
                 f = open(filename)
                 f.close()
                 breche
-            except OSError:
+            ausser OSError:
                 weiter
     sonst:
         gib Nichts
-    try:
+    versuch:
         gib filename, int(lineno)
-    except TypeError:
+    ausser TypeError:
         gib Nichts
 
 

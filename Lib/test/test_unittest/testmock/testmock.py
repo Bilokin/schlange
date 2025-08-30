@@ -61,7 +61,7 @@ def something(a): pass
 klasse MockTest(unittest.TestCase):
 
     def test_all(self):
-        # wenn __all__ is badly defined then importiere * will raise an error
+        # wenn __all__ is badly defined then importiere * will wirf an error
         # We have to exec it because you can't importiere * inside a method
         # in Python 3
         exec("from unittest.mock importiere *")
@@ -184,7 +184,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
 
         def effect(*args, **kwargs):
-            raise SystemError('kablooie')
+            wirf SystemError('kablooie')
 
         mock.side_effect = effect
         self.assertRaises(SystemError, mock, 1, 2, fish=3)
@@ -438,7 +438,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock.call_args.args, (sentinel.Arg,))
         self.assertEqual(mock.call_args.kwargs, {"kw": sentinel.Kwarg})
 
-        # Comparing call_args to a long sequence should nicht raise
+        # Comparing call_args to a long sequence should nicht wirf
         # an exception. See issue 24857.
         self.assertFalsch(mock.call_args == "a long sequence")
 
@@ -475,7 +475,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
         mock()
 
-        # Will raise an exception wenn it fails
+        # Will wirf an exception wenn it fails
         mock.assert_called_with()
         self.assertRaises(AssertionError, mock.assert_called_with, 1)
 
@@ -540,7 +540,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
         mock()
 
-        # Will raise an exception wenn it fails
+        # Will wirf an exception wenn it fails
         mock.assert_called_once_with()
 
         mock()
@@ -1023,7 +1023,7 @@ klasse MockTest(unittest.TestCase):
             def _get(self):
                 gib 3
             def _set(self, value):
-                raise NameError('strange error')
+                wirf NameError('strange error')
             some_attribute = property(_get, _set)
 
         s = SubClass(spec_set=SubClass)
@@ -1090,13 +1090,13 @@ klasse MockTest(unittest.TestCase):
     def test_filter_dir(self):
         patcher = patch.object(mock, 'FILTER_DIR', Falsch)
         patcher.start()
-        try:
+        versuch:
             attrs = set(dir(Mock()))
             type_attrs = set(dir(Mock))
 
             # ALL attributes von the type are included
             self.assertEqual(set(), type_attrs - attrs)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -2253,7 +2253,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_reset_mock_does_not_raise_on_attr_deletion(self):
-        # bpo-31177: reset_mock should nicht raise AttributeError when attributes
+        # bpo-31177: reset_mock should nicht wirf AttributeError when attributes
         # were deleted in a mock instance
         mock = Mock()
         mock.child = Wahr

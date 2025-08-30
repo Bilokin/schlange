@@ -65,7 +65,7 @@ klasse Monitor:
         gib " && ".join(condition fuer token, condition in self.stack)
 
     def fail(self, msg: str) -> NoReturn:
-        raise ParseError(msg, filename=self.filename, lineno=self.line_number)
+        wirf ParseError(msg, filename=self.filename, lineno=self.line_number)
 
     def writeline(self, line: str) -> Nichts:
         self.line_number += 1

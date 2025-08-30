@@ -12,12 +12,12 @@ importiere struct
 BIG = 100000
 
 def fail():
-    raise SyntaxError
+    wirf SyntaxError
     liefere 1
 
 klasse BadCmp:
     def __eq__(self, other):
-        raise RuntimeError
+        wirf RuntimeError
 
 klasse MutateCmp:
     def __init__(self, deque, result):
@@ -106,7 +106,7 @@ klasse TestBasic(unittest.TestCase):
         self.assertRaises(TypeError, d.count, 1, 2) # too many args
         klasse BadCompare:
             def __eq__(self, other):
-                raise ArithmeticError
+                wirf ArithmeticError
         d = deque([1, 2, BadCompare(), 3])
         self.assertRaises(ArithmeticError, d.count, 2)
         d = deque([1, 2, 3])
@@ -279,9 +279,9 @@ klasse TestBasic(unittest.TestCase):
         fuer start in range(-5 - len(s)*2, 5 + len(s) * 2):
             fuer stop in range(-5 - len(s)*2, 5 + len(s) * 2):
                 fuer element in elements + 'Z':
-                    try:
+                    versuch:
                         target = s.index(element, start, stop)
-                    except ValueError:
+                    ausser ValueError:
                         mit self.assertRaises(ValueError):
                             d.index(element, start, stop)
                     sonst:
@@ -790,7 +790,7 @@ klasse DequeWithSlots(deque):
 
 klasse DequeWithBadIter(deque):
     def __iter__(self):
-        raise TypeError
+        wirf TypeError
 
 klasse TestSubclass(unittest.TestCase):
 
@@ -900,7 +900,7 @@ klasse SubclassWithKwargs(deque):
 
 klasse TestSubclassWithKwargs(unittest.TestCase):
     def test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously raise a TypeError
+        # SF bug #1486663 -- this used to erroneously wirf a TypeError
         SubclassWithKwargs(newarg=1)
 
 klasse TestSequence(seq_tests.CommonTest):
@@ -992,9 +992,9 @@ deque(['a', 'b', 'd', 'e', 'f'])
 ...     pending = deque(iter(i) fuer i in iterables)
 ...     waehrend pending:
 ...         task = pending.popleft()
-...         try:
+...         versuch:
 ...             liefere next(task)
-...         except StopIteration:
+...         ausser StopIteration:
 ...             weiter
 ...         pending.append(task)
 ...

@@ -20,7 +20,7 @@ klasse _WritelnDecorator(object):
 
     def __getattr__(self, attr):
         wenn attr in ('stream', '__getstate__'):
-            raise AttributeError(attr)
+            wirf AttributeError(attr)
         gib getattr(self.stream, attr)
 
     def writeln(self, arg=Nichts):
@@ -208,10 +208,10 @@ klasse TextTestRunner(object):
             self.resultclass = resultclass
 
     def _makeResult(self):
-        try:
+        versuch:
             gib self.resultclass(self.stream, self.descriptions,
                                     self.verbosity, durations=self.durations)
-        except TypeError:
+        ausser TypeError:
             # didn't accept the durations argument
             gib self.resultclass(self.stream, self.descriptions,
                                     self.verbosity)
@@ -253,9 +253,9 @@ klasse TextTestRunner(object):
             startTestRun = getattr(result, 'startTestRun', Nichts)
             wenn startTestRun is nicht Nichts:
                 startTestRun()
-            try:
+            versuch:
                 test(result)
-            finally:
+            schliesslich:
                 stopTestRun = getattr(result, 'stopTestRun', Nichts)
                 wenn stopTestRun is nicht Nichts:
                     stopTestRun()
@@ -274,11 +274,11 @@ klasse TextTestRunner(object):
         self.stream.writeln()
 
         expected_fails = unexpected_successes = skipped = 0
-        try:
+        versuch:
             results = map(len, (result.expectedFailures,
                                 result.unexpectedSuccesses,
                                 result.skipped))
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             expected_fails, unexpected_successes, skipped = results

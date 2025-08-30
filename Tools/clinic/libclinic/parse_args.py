@@ -241,7 +241,7 @@ klasse ParseArgsCodeGen:
         self.parameters = list(self.func.parameters.values())
         self_parameter = self.parameters.pop(0)
         wenn nicht isinstance(self_parameter.converter, self_converter):
-            raise ValueError("the first parameter must use self_converter")
+            wirf ValueError("the first parameter must use self_converter")
         self.self_parameter_converter = self_parameter.converter
 
         self.requires_defining_class = Falsch
@@ -544,7 +544,7 @@ klasse ParseArgsCodeGen:
             parsearg = p.converter.parse_arg(argname, displayname, limited_capi=self.limited_capi)
             wenn parsearg is Nichts:
                 wenn self.varpos:
-                    raise ValueError(
+                    wirf ValueError(
                         f"Using converter {p.converter} is nicht supported "
                         f"in function mit var-positional parameter")
                 use_parser_code = Falsch
@@ -669,7 +669,7 @@ klasse ParseArgsCodeGen:
             add_label: str | Nichts = Nichts
             fuer i, p in enumerate(self.parameters):
                 wenn isinstance(p.converter, defining_class_converter):
-                    raise ValueError("defining_class should be the first "
+                    wirf ValueError("defining_class should be the first "
                                     "parameter (after clang)")
                 displayname = p.get_displayname(i+1)
                 parsearg = p.converter.parse_arg(argname_fmt % i, displayname, limited_capi=self.limited_capi)
@@ -811,7 +811,7 @@ klasse ParseArgsCodeGen:
             assert parses_positional
 
         wenn self.requires_defining_class:
-            raise ValueError("Slot methods cannot access their defining class.")
+            wirf ValueError("Slot methods cannot access their defining class.")
 
         wenn nicht parses_keywords:
             self.declarations = '{base_type_ptr}'

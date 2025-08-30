@@ -13,9 +13,9 @@ import_helper.import_module('winreg', required_on=['win'])
 # Now importiere everything
 von winreg importiere *
 
-try:
+versuch:
     REMOTE_NAME = sys.argv[sys.argv.index("--remote")+1]
-except (IndexError, ValueError):
+ausser (IndexError, ValueError):
     REMOTE_NAME = Nichts
 
 # tuple of (major, minor)
@@ -69,15 +69,15 @@ klasse BaseWinregTests(unittest.TestCase):
         self.delete_tree(HKEY_CURRENT_USER, test_key_name)
 
     def delete_tree(self, root, subkey):
-        try:
+        versuch:
             hkey = OpenKey(root, subkey, 0, KEY_ALL_ACCESS)
-        except OSError:
+        ausser OSError:
             # subkey does nicht exist
             gib
         waehrend Wahr:
-            try:
+            versuch:
                 subsubkey = EnumKey(hkey, 0)
-            except OSError:
+            ausser OSError:
                 # no more subkeys
                 breche
             self.delete_tree(hkey, subsubkey)
@@ -110,20 +110,20 @@ klasse BaseWinregTests(unittest.TestCase):
         # us to test that the key really gets closed).
         int_sub_key = int(sub_key)
         CloseKey(sub_key)
-        try:
+        versuch:
             QueryInfoKey(int_sub_key)
             self.fail("It appears the CloseKey() function does "
                       "not close the actual key!")
-        except OSError:
+        ausser OSError:
             pass
         # ... und close that key that way :-)
         int_key = int(key)
         key.Close()
-        try:
+        versuch:
             QueryInfoKey(int_key)
             self.fail("It appears the key.Close() function "
                       "does nicht close the actual key!")
-        except OSError:
+        ausser OSError:
             pass
     def _read_test_data(self, root_key, subkeystr="sub_key", OpenKey=OpenKey):
         # Check we can get default value fuer this key.
@@ -137,9 +137,9 @@ klasse BaseWinregTests(unittest.TestCase):
             # Check I can enumerate over the values.
             index = 0
             waehrend 1:
-                try:
+                versuch:
                     data = EnumValue(sub_key, index)
-                except OSError:
+                ausser OSError:
                     breche
                 self.assertEqual(data in test_data, Wahr,
                                  "Didn't read back the correct test data")
@@ -157,10 +157,10 @@ klasse BaseWinregTests(unittest.TestCase):
         # Enumerate our main key.
         read_val = EnumKey(key, 0)
         self.assertEqual(read_val, subkeystr, "Read subkey value wrong")
-        try:
+        versuch:
             EnumKey(key, 1)
             self.fail("Was able to get a second key when I only have one!")
-        except OSError:
+        ausser OSError:
             pass
 
         key.Close()
@@ -180,19 +180,19 @@ klasse BaseWinregTests(unittest.TestCase):
         sub_key.Close()
         DeleteKey(key, subkeystr)
 
-        try:
+        versuch:
             # Shouldn't be able to delete it twice!
             DeleteKey(key, subkeystr)
             self.fail("Deleting the key twice succeeded")
-        except OSError:
+        ausser OSError:
             pass
         key.Close()
         DeleteKey(root_key, test_key_name)
         # Opening should now fail!
-        try:
+        versuch:
             key = OpenKey(root_key, test_key_name)
             self.fail("Could open the non-existent key")
-        except OSError: # Use this error name this time
+        ausser OSError: # Use this error name this time
             pass
 
     def _test_all(self, root_key, subkeystr="sub_key"):
@@ -252,16 +252,16 @@ klasse LocalWinregTests(BaseWinregTests):
 
     def test_context_manager(self):
         # ensure that the handle is closed wenn an exception occurs
-        try:
+        versuch:
             mit ConnectRegistry(Nichts, HKEY_LOCAL_MACHINE) als h:
                 self.assertNotEqual(h.handle, 0)
-                raise OSError
-        except OSError:
+                wirf OSError
+        ausser OSError:
             self.assertEqual(h.handle, 0)
 
     def test_changing_value(self):
         # Issue2810: A race condition in 2.6 und 3.1 may cause
-        # EnumValue oder QueryValue to raise "WindowsError: More data is
+        # EnumValue oder QueryValue to wirf "WindowsError: More data is
         # available"
         done = Falsch
 
@@ -277,7 +277,7 @@ klasse LocalWinregTests(BaseWinregTests):
 
         thread = VeryActiveThread()
         thread.start()
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER,
                            test_key_name+'\\changing_value') als key:
                 fuer _ in range(1000):
@@ -285,7 +285,7 @@ klasse LocalWinregTests(BaseWinregTests):
                     fuer i in range(num_values):
                         name = EnumValue(key, i)
                         QueryValue(key, name[0])
-        finally:
+        schliesslich:
             done = Wahr
             thread.join()
             DeleteKey(HKEY_CURRENT_USER, test_key_name+'\\changing_value')
@@ -296,32 +296,32 @@ klasse LocalWinregTests(BaseWinregTests):
         # characters, EnumKey raised "WindowsError: More data is
         # available"
         name = 'x'*256
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als key:
                 SetValue(key, name, REG_SZ, 'x')
                 num_subkeys, num_values, t = QueryInfoKey(key)
                 EnumKey(key, 0)
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, '\\'.join((test_key_name, name)))
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_dynamic_key(self):
         # Issue2810, when the value is dynamically generated, these
-        # raise "WindowsError: More data is available" in 2.6 und 3.1
-        try:
+        # wirf "WindowsError: More data is available" in 2.6 und 3.1
+        versuch:
             EnumValue(HKEY_PERFORMANCE_DATA, 0)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno in (errno.EPERM, errno.EACCES):
                 self.skipTest("access denied to registry key "
                               "(are you running in a non-interactive session?)")
-            raise
+            wirf
         QueryValueEx(HKEY_PERFORMANCE_DATA, "")
 
     # Reflection requires XP x64/Vista at a minimum. XP doesn't have this stuff
     # oder DeleteKeyEx so make sure their use raises NotImplementedError
     @unittest.skipUnless(WIN_VER < (5, 2), "Requires Windows XP")
     def test_reflection_unsupported(self):
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 self.assertNotEqual(ck.handle, 0)
 
@@ -336,7 +336,7 @@ klasse LocalWinregTests(BaseWinregTests):
                 QueryReflectionKey(key)
             mit self.assertRaises(NotImplementedError):
                 DeleteKeyEx(HKEY_CURRENT_USER, test_key_name)
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_setvalueex_value_range(self):
@@ -344,11 +344,11 @@ klasse LocalWinregTests(BaseWinregTests):
         # Py2Reg, which gets called by SetValueEx, was using PyLong_AsLong,
         # thus raising OverflowError. The implementation now uses
         # PyLong_AsUnsignedLong to match DWORD's size.
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 self.assertNotEqual(ck.handle, 0)
                 SetValueEx(ck, "test_name", Nichts, REG_DWORD, 0x80000000)
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_setvalueex_negative_one_check(self):
@@ -357,7 +357,7 @@ klasse LocalWinregTests(BaseWinregTests):
         # value by PyLong_AsUnsignedLong, thus setting -1 als value in the registry.
         # The implementation now checks PyLong_AsUnsignedLong gib value to assure
         # the value set was nicht -1.
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 mit self.assertRaises(OverflowError):
                     SetValueEx(ck, "test_name_dword", Nichts, REG_DWORD, -1)
@@ -365,7 +365,7 @@ klasse LocalWinregTests(BaseWinregTests):
                 self.assertRaises(FileNotFoundError, QueryValueEx, ck, "test_name_dword")
                 self.assertRaises(FileNotFoundError, QueryValueEx, ck, "test_name_qword")
 
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_queryvalueex_return_value(self):
@@ -373,7 +373,7 @@ klasse LocalWinregTests(BaseWinregTests):
         # Reg2Py, which gets called by QueryValueEx, was returning a value
         # generated by PyLong_FromLong. The implementation now uses
         # PyLong_FromUnsignedLong to match DWORD's size.
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = 0x80000000
@@ -381,12 +381,12 @@ klasse LocalWinregTests(BaseWinregTests):
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_DWORD)
                 self.assertEqual(ret_val, test_val)
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_setvalueex_crash_with_none_arg(self):
         # Test fuer Issue #21151, segfault when Nichts is passed to SetValueEx
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = Nichts
@@ -394,12 +394,12 @@ klasse LocalWinregTests(BaseWinregTests):
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_BINARY)
                 self.assertEqual(ret_val, test_val)
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_read_string_containing_null(self):
         # Test fuer issue 25778: REG_SZ should nicht contain null characters
-        try:
+        versuch:
             mit CreateKey(HKEY_CURRENT_USER, test_key_name) als ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = "A string\x00 mit a null"
@@ -407,7 +407,7 @@ klasse LocalWinregTests(BaseWinregTests):
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_SZ)
                 self.assertEqual(ret_val, "A string")
-        finally:
+        schliesslich:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
 
@@ -445,7 +445,7 @@ klasse Win64WinregTests(BaseWinregTests):
         # area. Because we are doing this in a key which gets reflected,
         # test the differences of 32 und 64-bit keys before und after the
         # reflection occurs (ie. when the created key is closed).
-        try:
+        versuch:
             mit CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                              KEY_ALL_ACCESS | KEY_WOW64_32KEY) als created_key:
                 self.assertNotEqual(created_key.handle, 0)
@@ -479,14 +479,14 @@ klasse Win64WinregTests(BaseWinregTests):
             mit OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                          KEY_READ | KEY_WOW64_32KEY) als key:
                 self.assertEqual("64KEY", QueryValue(key, ""))
-        finally:
+        schliesslich:
             DeleteKeyEx(HKEY_CURRENT_USER, test_reflect_key_name,
                         KEY_WOW64_32KEY, 0)
 
     @unittest.skipUnless(HAS_REFLECTION, "OS doesn't support reflection")
     def test_disable_reflection(self):
         # Make use of a key which gets redirected und reflected
-        try:
+        versuch:
             mit CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                              KEY_ALL_ACCESS | KEY_WOW64_32KEY) als created_key:
                 # QueryReflectionKey returns whether oder nicht the key is disabled
@@ -509,7 +509,7 @@ klasse Win64WinregTests(BaseWinregTests):
             mit OpenKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
                            KEY_READ | KEY_WOW64_32KEY) als key:
                 self.assertNotEqual(key.handle, 0)
-        finally:
+        schliesslich:
             DeleteKeyEx(HKEY_CURRENT_USER, test_reflect_key_name,
                         KEY_WOW64_32KEY, 0)
 

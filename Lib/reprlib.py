@@ -17,9 +17,9 @@ def recursive_repr(fillvalue='...'):
             wenn key in repr_running:
                 gib fillvalue
             repr_running.add(key)
-            try:
+            versuch:
                 result = user_function(self)
-            finally:
+            schliesslich:
                 repr_running.discard(key)
             gib result
 
@@ -98,14 +98,14 @@ klasse Repr:
         indent = self.indent
         wenn isinstance(indent, int):
             wenn indent < 0:
-                raise ValueError(
+                wirf ValueError(
                     f'Repr.indent cannot be negative int (was {indent!r})'
                 )
             indent *= ' '
-        try:
+        versuch:
             sep = ',\n' + (self.maxlevel - level + 1) * indent
-        except TypeError als error:
-            raise TypeError(
+        ausser TypeError als error:
+            wirf TypeError(
                 f'Repr.indent must be a str, int oder Nichts, nicht {type(indent)}'
             ) von error
         gib sep.join(('', *pieces, ''))[1:-len(indent) oder Nichts]
@@ -181,9 +181,9 @@ klasse Repr:
         gib s
 
     def repr_int(self, x, level):
-        try:
+        versuch:
             s = builtins.repr(x)
-        except ValueError als exc:
+        ausser ValueError als exc:
             assert 'sys.set_int_max_str_digits()' in str(exc)
             # Those imports must be deferred due to Python's build system
             # where the reprlib module is imported before the math module.
@@ -204,11 +204,11 @@ klasse Repr:
         gib s
 
     def repr_instance(self, x, level):
-        try:
+        versuch:
             s = builtins.repr(x)
             # Bugs in x.__repr__() can cause arbitrary
             # exceptions -- then make up something
-        except Exception:
+        ausser Exception:
             gib '<%s instance at %#x>' % (x.__class__.__name__, id(x))
         wenn len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
@@ -219,11 +219,11 @@ klasse Repr:
 
 def _possibly_sorted(x):
     # Since nicht all sequences of items can be sorted und comparison
-    # functions may raise arbitrary exceptions, gib an unsorted
+    # functions may wirf arbitrary exceptions, gib an unsorted
     # sequence in that case.
-    try:
+    versuch:
         gib sorted(x)
-    except Exception:
+    ausser Exception:
         gib list(x)
 
 aRepr = Repr()

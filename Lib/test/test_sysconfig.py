@@ -277,12 +277,12 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                                        '-fwrapv -O3 -Wall -Wstrict-prototypes')
 
         maxint = sys.maxsize
-        try:
+        versuch:
             sys.maxsize = 2147483647
             self.assertEqual(get_platform(), 'macosx-10.3-ppc')
             sys.maxsize = 9223372036854775807
             self.assertEqual(get_platform(), 'macosx-10.3-ppc64')
-        finally:
+        schliesslich:
             sys.maxsize = maxint
 
         self._set_uname(('Darwin', 'macziade', '8.11.1',
@@ -295,12 +295,12 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         get_config_vars()['CFLAGS'] = ('-fno-strict-aliasing -DNDEBUG -g '
                                        '-fwrapv -O3 -Wall -Wstrict-prototypes')
         maxint = sys.maxsize
-        try:
+        versuch:
             sys.maxsize = 2147483647
             self.assertEqual(get_platform(), 'macosx-10.3-i386')
             sys.maxsize = 9223372036854775807
             self.assertEqual(get_platform(), 'macosx-10.3-x86_64')
-        finally:
+        schliesslich:
             sys.maxsize = maxint
 
         # macbook mit fat binaries (fat, universal oder fat64)

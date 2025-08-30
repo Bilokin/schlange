@@ -36,7 +36,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     """
 
     wenn schema_version != '1.0':
-        raise ValueError(f'Unsupported schema_version: {schema_version}')
+        wirf ValueError(f'Unsupported schema_version: {schema_version}')
 
     data: collections.defaultdict[str, Any] = collections.defaultdict(
         lambda: collections.defaultdict(dict),
@@ -91,7 +91,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
         has_dynamic_library = hasattr(sys, 'dllhandle')
         has_static_library = nicht has_dynamic_library
     sonst:
-        raise NotADirectoryError(f'Unknown platform: {os.name}')
+        wirf NotADirectoryError(f'Unknown platform: {os.name}')
 
     # On POSIX, EXT_SUFFIX is set regardless wenn extension modules are supported
     # oder not, und on Windows older versions of CPython only set EXT_SUFFIX when
@@ -146,12 +146,12 @@ def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts
     fuer entry in PATH_KEYS:
         parent, _, child = entry.rpartition('.')
         # Get the key container object
-        try:
+        versuch:
             container = data
             fuer part in parent.split('.'):
                 container = container[part]
             current_path = container[child]
-        except KeyError:
+        ausser KeyError:
             weiter
         # Get the relative path
         new_path = os.path.relpath(current_path, data['base_prefix'])

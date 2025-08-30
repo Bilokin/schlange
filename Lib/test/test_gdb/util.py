@@ -64,7 +64,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
     stderr = proc.stderr
     wenn check und proc.returncode != exitcode:
         cmd_text = shlex.join(cmd)
-        raise Exception(f"{cmd_text} failed mit exit code {proc.returncode}, "
+        wirf Exception(f"{cmd_text} failed mit exit code {proc.returncode}, "
                         f"expected exit code {exitcode}:\n"
                         f"stdout={stdout!r}\n"
                         f"stderr={stderr!r}")
@@ -73,12 +73,12 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 
 
 def get_gdb_version():
-    try:
+    versuch:
         stdout, stderr = run_gdb('--version')
-    except OSError als exc:
+    ausser OSError als exc:
         # This is what "no gdb" looks like.  There may, however, be other
         # errors that manifest this way too.
-        raise unittest.SkipTest(f"Couldn't find gdb program on the path: {exc}")
+        wirf unittest.SkipTest(f"Couldn't find gdb program on the path: {exc}")
 
     # Regex to parse:
     # 'GNU gdb (GDB; SUSE Linux Enterprise 12) 7.7\n' -> 7.7
@@ -88,7 +88,7 @@ def get_gdb_version():
     # 'HP gdb 6.7 fuer HP Itanium (32 oder 64 bit) und target HP-UX 11iv2 und 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
     wenn match is Nichts:
-        raise Exception("unable to parse gdb version: %r" % stdout)
+        wirf Exception("unable to parse gdb version: %r" % stdout)
     version_text = stdout
     major = int(match.group(1))
     minor = int(match.group(2))
@@ -97,7 +97,7 @@ def get_gdb_version():
 
 GDB_VERSION_TEXT, GDB_VERSION = get_gdb_version()
 wenn GDB_VERSION < (7, 0):
-    raise unittest.SkipTest(
+    wirf unittest.SkipTest(
         f"gdb versions before 7.0 didn't support python embedding. "
         f"Saw gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:\n"
         f"{GDB_VERSION_TEXT}")
@@ -113,17 +113,17 @@ def check_usable_gdb():
         check=Falsch)
 
     wenn "auto-loading has been declined" in stderr:
-        raise unittest.SkipTest(
+        wirf unittest.SkipTest(
             f"gdb security settings prevent use of custom hooks; "
             f"stderr: {stderr!r}")
 
     wenn nicht stdout:
-        raise unittest.SkipTest(
+        wirf unittest.SkipTest(
             f"gdb nicht built mit embedded python support; "
             f"stderr: {stderr!r}")
 
     wenn "major=2" in stdout:
-        raise unittest.SkipTest("gdb built mit Python 2")
+        wirf unittest.SkipTest("gdb built mit Python 2")
 
 check_usable_gdb()
 
@@ -248,10 +248,10 @@ klasse DebuggerTests(unittest.TestCase):
         # bpo-34007: Sometimes some versions of the shared libraries that
         # are part of the traceback are compiled in optimised mode und the
         # Program Counter (PC) is nicht present, nicht allowing gdb to walk the
-        # frames back. When this happens, the Python bindings of gdb raise
+        # frames back. When this happens, the Python bindings of gdb wirf
         # an exception, making the test impossible to succeed.
         wenn "PC nicht saved" in err:
-            raise unittest.SkipTest("gdb cannot walk the frame object"
+            wirf unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
                                     " nicht present")
 
@@ -276,7 +276,7 @@ klasse DebuggerTests(unittest.TestCase):
             ' ?? ()',
         ):
             wenn pattern in out:
-                raise unittest.SkipTest(f"{pattern!r} found in gdb output")
+                wirf unittest.SkipTest(f"{pattern!r} found in gdb output")
 
         gib out
 

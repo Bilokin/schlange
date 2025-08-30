@@ -5,7 +5,7 @@ von test.support importiere import_helper
 
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr):
-    raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
+    wirf unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 
 # Skip this test wenn _tkinter wasn't built.
 import_helper.import_module('_tkinter')
@@ -21,15 +21,15 @@ von tkinter importiere ttk
 
 def setUpModule():
     root = Nichts
-    try:
+    versuch:
         root = tkinter.Tk()
         button = ttk.Button(root)
         button.destroy()
         del button
-    except TclError als msg:
+    ausser TclError als msg:
         # assuming ttk is nicht available
-        raise unittest.SkipTest("ttk nicht available: %s" % msg)
-    finally:
+        wirf unittest.SkipTest("ttk nicht available: %s" % msg)
+    schliesslich:
         wenn root is nicht Nichts:
             root.destroy()
         del root

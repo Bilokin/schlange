@@ -9,13 +9,13 @@ importiere sysconfig
 importiere time
 importiere threading
 importiere unittest
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 von test.support importiere skip_if_buggy_ucrt_strfptime, SuppressCrashReport
@@ -143,9 +143,9 @@ klasse TimeTestCase(unittest.TestCase):
                          'need time.clock_settime()')
     def test_clock_settime(self):
         t = time.clock_gettime(time.CLOCK_REALTIME)
-        try:
+        versuch:
             time.clock_settime(time.CLOCK_REALTIME, t)
-        except PermissionError:
+        ausser PermissionError:
             pass
 
         wenn hasattr(time, 'CLOCK_MONOTONIC'):
@@ -190,9 +190,9 @@ klasse TimeTestCase(unittest.TestCase):
                           'j', 'm', 'M', 'p', 'S',
                           'U', 'w', 'W', 'x', 'X', 'y', 'Y', 'Z', '%'):
             format = ' %' + directive
-            try:
+            versuch:
                 time.strftime(format, tt)
-            except ValueError:
+            ausser ValueError:
                 self.fail('conversion specifier: %r failed.' % format)
 
         self.assertRaises(TypeError, time.strftime, b'%S', tt)
@@ -203,9 +203,9 @@ klasse TimeTestCase(unittest.TestCase):
             fuer i in range(1, 128):
                 format = ' %' + chr(i)
                 mit self.subTest(format=format):
-                    try:
+                    versuch:
                         time.strftime(format, tt)
-                    except ValueError als exc:
+                    ausser ValueError als exc:
                         self.assertEqual(str(exc), 'Invalid format string')
 
     def test_strftime_special(self):
@@ -298,14 +298,14 @@ klasse TimeTestCase(unittest.TestCase):
     def test_strftime_format_check(self):
         # Test that strftime does nicht crash on invalid format strings
         # that may trigger a buffer overread. When nicht triggered,
-        # strftime may succeed oder raise ValueError depending on
+        # strftime may succeed oder wirf ValueError depending on
         # the platform.
         fuer x in [ '', 'A', '%A', '%AA' ]:
             fuer y in range(0x0, 0x10):
                 fuer z in [ '%', 'A%', 'AA%', '%A%', 'A%A%', '%#' ]:
-                    try:
+                    versuch:
                         time.strftime(x * y + z)
-                    except ValueError:
+                    ausser ValueError:
                         pass
 
     def test_default_values_for_zero(self):
@@ -330,9 +330,9 @@ klasse TimeTestCase(unittest.TestCase):
             wenn directive == 'd':
                 format += ',%Y'  # Avoid GH-70647.
             strf_output = time.strftime(format, tt)
-            try:
+            versuch:
                 time.strptime(strf_output, format)
-            except ValueError:
+            ausser ValueError:
                 self.fail("conversion specifier %r failed mit '%s' input." %
                           (format, strf_output))
 
@@ -381,9 +381,9 @@ klasse TimeTestCase(unittest.TestCase):
         t = time.mktime((2000, 1, 1, 0, 0, 0, 0, 0, -1))
         self.assertEqual(time.ctime(t), 'Sat Jan  1 00:00:00 2000')
         fuer year in [-100, 100, 1000, 2000, 2050, 10000]:
-            try:
+            versuch:
                 testval = time.mktime((year, 1, 10) + (0,)*6)
-            except (ValueError, OverflowError):
+            ausser (ValueError, OverflowError):
                 # If mktime fails, ctime will fail too.  This may happen
                 # on some platforms.
                 pass
@@ -410,7 +410,7 @@ klasse TimeTestCase(unittest.TestCase):
         utc='UTC+0'
 
         org_TZ = environ.get('TZ',Nichts)
-        try:
+        versuch:
             # Make sure we can switch to UTC time und results are correct
             # Note that unknown timezones default to UTC.
             # Note that altzone is undefined in UTC, als there is no DST
@@ -456,7 +456,7 @@ klasse TimeTestCase(unittest.TestCase):
             self.assertEqual(time.altzone, -39600)
             self.assertEqual(time.localtime(xmas2002).tm_isdst, 1)
 
-        finally:
+        schliesslich:
             # Repair TZ environment variable in case any other tests
             # rely on it.
             wenn org_TZ is nicht Nichts:
@@ -477,7 +477,7 @@ klasse TimeTestCase(unittest.TestCase):
     def test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
         # at any time.  Make sure these are at least accepted und
-        # don't raise errors.
+        # don't wirf errors.
         time.ctime()
         time.ctime(Nichts)
 
@@ -498,9 +498,9 @@ klasse TimeTestCase(unittest.TestCase):
     def test_mktime(self):
         # Issue #1726687
         fuer t in (-2, -1, 0, 1):
-            try:
+            versuch:
                 tt = time.localtime(t)
-            except (OverflowError, OSError):
+            ausser (OverflowError, OSError):
                 pass
             sonst:
                 self.assertEqual(time.mktime(tt), t)
@@ -516,9 +516,9 @@ klasse TimeTestCase(unittest.TestCase):
         tt = time.gmtime(self.t)
         tzname = time.strftime('%Z', tt)
         self.assertNotEqual(tzname, 'LMT')
-        try:
+        versuch:
             time.mktime((-1, 1, 1, 0, 0, 0, -1, -1, -1))
-        except OverflowError:
+        ausser OverflowError:
             pass
         self.assertEqual(time.strftime('%Z', tt), tzname)
 
@@ -593,9 +593,9 @@ klasse TimeTestCase(unittest.TestCase):
         t1 = time.monotonic()
         realtime = time.clock_gettime(time.CLOCK_REALTIME)
         # jump backward mit an offset of 1 hour
-        try:
+        versuch:
             time.clock_settime(time.CLOCK_REALTIME, realtime - 3600)
-        except PermissionError als err:
+        ausser PermissionError als err:
             self.skipTest(err)
         t2 = time.monotonic()
         time.clock_settime(time.CLOCK_REALTIME, realtime)
@@ -606,11 +606,11 @@ klasse TimeTestCase(unittest.TestCase):
         # Issue #13847: check fuer localtime() failure
         invalid_time_t = Nichts
         fuer time_t in (-1, 2**30, 2**33, 2**60):
-            try:
+            versuch:
                 time.localtime(time_t)
-            except OverflowError:
+            ausser OverflowError:
                 self.skipTest("need 64-bit time_t")
-            except OSError:
+            ausser OSError:
                 invalid_time_t = time_t
                 breche
         wenn invalid_time_t is Nichts:
@@ -696,9 +696,9 @@ klasse _TestStrftimeYear:
 
     def skip_if_not_supported(y):
         msg = f"strftime() does nicht support year {y} on this platform"
-        try:
+        versuch:
             time.strftime('%Y', (y,) + (0,) * 8)
-        except ValueError:
+        ausser ValueError:
             cond = Falsch
         sonst:
             cond = Wahr
@@ -904,10 +904,10 @@ klasse CPyTimeTestCase:
 
                 fuer value in valid_values:
                     debug_info = {'value': value, 'rounding': decimal_rnd}
-                    try:
+                    versuch:
                         result = pytime_converter(value, time_rnd)
                         expected = expected_func(value)
-                    except Exception:
+                    ausser Exception:
                         self.fail("Error on timestamp conversion: %s" % debug_info)
                     self.assertEqual(result,
                                      expected,
@@ -1174,7 +1174,7 @@ klasse TestTimeWeaklinking(unittest.TestCase):
         config_vars = sysconfig.get_config_vars()
         var_name = "HAVE_CLOCK_GETTIME"
         wenn var_name nicht in config_vars oder nicht config_vars[var_name]:
-            raise unittest.SkipTest(f"{var_name} is nicht available")
+            wirf unittest.SkipTest(f"{var_name} is nicht available")
 
         mac_ver = tuple(int(x) fuer x in platform.mac_ver()[0].split("."))
 

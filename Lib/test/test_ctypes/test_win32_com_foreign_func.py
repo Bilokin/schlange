@@ -6,7 +6,7 @@ von ctypes importiere POINTER, byref, c_void_p
 von ctypes.wintypes importiere BYTE, DWORD, WORD
 
 wenn sys.platform != "win32":
-    raise unittest.SkipTest("Windows-specific test")
+    wirf unittest.SkipTest("Windows-specific test")
 
 
 von ctypes importiere COMError, CopyComPointer, HRESULT

@@ -27,9 +27,9 @@ def bench(name, cleanup=lambda: Nichts, *, seconds=1, repeat=3):
         total_time = 0
         count = 0
         waehrend total_time < seconds:
-            try:
+            versuch:
                 total_time += timer.timeit(1)
-            finally:
+            schliesslich:
                 cleanup()
             count += 1
         sonst:
@@ -62,7 +62,7 @@ def builtin_mod(seconds, repeat):
 def source_wo_bytecode(seconds, repeat):
     """Source w/o bytecode: small"""
     sys.dont_write_bytecode = Wahr
-    try:
+    versuch:
         name = '__importlib_test_benchmark__'
         # Clears out sys.modules und puts an entry at the front of sys.path.
         mit util.create_modules(name) als mapping:
@@ -73,7 +73,7 @@ def source_wo_bytecode(seconds, repeat):
             sys.path_hooks.append(importlib.machinery.FileFinder.path_hook(loader))
             liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                              seconds=seconds)
-    finally:
+    schliesslich:
         sys.dont_write_bytecode = Falsch
 
 
@@ -85,10 +85,10 @@ def _wo_bytecode(module):
         wenn os.path.exists(bytecode_path):
             os.unlink(bytecode_path)
         sys.dont_write_bytecode = Wahr
-        try:
+        versuch:
             liefere von bench(name, lambda: sys.modules.pop(name),
                              repeat=repeat, seconds=seconds)
-        finally:
+        schliesslich:
             sys.dont_write_bytecode = Falsch
 
     benchmark_wo_bytecode.__doc__ = benchmark_wo_bytecode.__doc__.format(name)

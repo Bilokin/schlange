@@ -160,9 +160,9 @@ def iter_global_strings():
     id_regex = re.compile(r'\b_Py_ID\((\w+)\)')
     str_regex = re.compile(r'\b_Py_DECLARE_STR\((\w+), "(.*?)"\)')
     fuer filename in iter_files():
-        try:
+        versuch:
             infile = open(filename, encoding='utf-8')
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             # The file must have been a temporary file.
             weiter
         mit infile:
@@ -192,10 +192,10 @@ klasse Printer:
     @contextlib.contextmanager
     def indent(self):
         save_level = self.level
-        try:
+        versuch:
             self.level += 1
             liefere
-        finally:
+        schliesslich:
             self.level = save_level
 
     def write(self, arg):
@@ -285,7 +285,7 @@ def generate_runtime_init(identifiers, strings):
                 nsmallnegints = int(line.split()[-1])
                 breche
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError
     assert nsmallposints
     assert nsmallnegints
 
@@ -433,16 +433,16 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
             wenn len(string) == 1 und ord(string) < 256:
                 # Give a nice message fuer common mistakes.
                 # To cover tricky cases (like "\n") we also generate C asserts.
-                raise ValueError(
+                wirf ValueError(
                     'do nicht use &_Py_ID oder &_Py_STR fuer one-character latin-1 '
                     f'strings, use _Py_LATIN1_CHR instead: {string!r}')
             wenn string nicht in strings:
                 strings[string] = name
             sowenn name != strings[string]:
-                raise ValueError(f'name mismatch fuer string {string!r} ({name!r} != {strings[string]!r}')
+                wirf ValueError(f'name mismatch fuer string {string!r} ({name!r} != {strings[string]!r}')
     overlap = identifiers & set(strings.keys())
     wenn overlap:
-        raise ValueError(
+        wirf ValueError(
             'do nicht use both _Py_ID und _Py_DECLARE_STR fuer the same string: '
             + repr(overlap))
     gib identifiers, strings

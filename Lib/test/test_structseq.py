@@ -164,7 +164,7 @@ klasse StructSeqTest(unittest.TestCase):
         # Devious code could crash structseqs' constructors
         klasse C:
             def __getitem__(self, i):
-                raise Exc
+                wirf Exc
             def __len__(self):
                 gib 9
 

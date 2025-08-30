@@ -12,13 +12,13 @@ importiere builtins
 importiere tempfile
 importiere unittest
 
-try:
+versuch:
     importiere bz2
-except ImportError:
+ausser ImportError:
     bz2 = Nichts
-try:
+versuch:
     importiere gzip
-except ImportError:
+ausser ImportError:
     gzip = Nichts
 
 von io importiere BytesIO, StringIO
@@ -54,9 +54,9 @@ klasse LineReader:
 
     @property
     def linesread(self):
-        try:
+        versuch:
             gib self._linesread[:]
-        finally:
+        schliesslich:
             self._linesread = []
 
     def openhook(self, filename, mode):
@@ -127,14 +127,14 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
             drucke('4. Stdin')
         fi = FileInput(files=(t1, t2, t3, t4, '-'), encoding="utf-8")
         savestdin = sys.stdin
-        try:
+        versuch:
             sys.stdin = StringIO("Line 1 of stdin\nLine 2 of stdin\n")
             lines = list(fi)
             self.assertEqual(len(lines), 33)
             self.assertEqual(lines[32], 'Line 2 of stdin\n')
             self.assertEqual(fi.filename(), '<stdin>')
             fi.nextfile()
-        finally:
+        schliesslich:
             sys.stdin = savestdin
 
         wenn verbose:
@@ -149,13 +149,13 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         wenn verbose:
             drucke('6. Inplace')
         savestdout = sys.stdout
-        try:
+        versuch:
             fi = FileInput(files=(t1, t2, t3, t4), inplace=Wahr, encoding="utf-8")
             fuer line in fi:
                 line = line[:-1].upper()
                 drucke(line)
             fi.close()
-        finally:
+        schliesslich:
             sys.stdout = savestdout
 
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
@@ -172,7 +172,7 @@ klasse UnconditionallyRaise:
         self.invoked = Falsch
     def __call__(self, *args, **kwargs):
         self.invoked = Wahr
-        raise self.exception_type()
+        wirf self.exception_type()
 
 klasse FileInputTests(BaseTests, unittest.TestCase):
 
@@ -243,27 +243,27 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_detached_stdin_binary_mode(self):
         orig_stdin = sys.stdin
-        try:
+        versuch:
             sys.stdin = BytesIO(b'spam, bacon, sausage, und spam')
             self.assertNotHasAttr(sys.stdin, 'buffer')
             fi = FileInput(files=['-'], mode='rb')
             lines = list(fi)
             self.assertEqual(lines, [b'spam, bacon, sausage, und spam'])
-        finally:
+        schliesslich:
             sys.stdin = orig_stdin
 
     def test_file_opening_hook(self):
-        try:
+        versuch:
             # cannot use openhook und inplace mode
             fi = FileInput(inplace=Wahr, openhook=lambda f, m: Nichts)
-            self.fail("FileInput should raise wenn both inplace "
+            self.fail("FileInput should wirf wenn both inplace "
                              "and openhook arguments are given")
-        except ValueError:
+        ausser ValueError:
             pass
-        try:
+        versuch:
             fi = FileInput(openhook=1)
             self.fail("FileInput should check openhook fuer being callable")
-        except ValueError:
+        ausser ValueError:
             pass
 
         klasse CustomOpenHook:
@@ -290,11 +290,11 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
         mit FileInput(files=TESTFN,
                        openhook=hook_encoded('ascii')) als fi:
-            try:
+            versuch:
                 self.assertEqual(fi.readline(), 'A\n')
                 self.assertEqual(fi.readline(), 'B\n')
                 self.assertEqual(fi.readline(), 'C\n')
-            except UnicodeDecodeError:
+            ausser UnicodeDecodeError:
                 self.fail('Read to end of file')
             mit self.assertRaises(UnicodeDecodeError):
                 # Read to the end of file.
@@ -355,10 +355,10 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_close_on_exception(self):
         t1 = self.writeTmp("")
-        try:
+        versuch:
             mit FileInput(files=t1, encoding="utf-8") als fi:
-                raise OSError
-        except OSError:
+                wirf OSError
+        ausser OSError:
             self.assertEqual(fi._files, ())
 
     def test_empty_files_list_specified_to_constructor(self):
@@ -367,19 +367,19 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_nextfile_oserror_deleting_backup(self):
         """Tests invoking FileInput.nextfile() when the attempt to delete
-           the backup file would raise OSError.  This error is expected to be
+           the backup file would wirf OSError.  This error is expected to be
            silently ignored"""
 
         os_unlink_orig = os.unlink
         os_unlink_replacement = UnconditionallyRaise(OSError)
-        try:
+        versuch:
             t = self.writeTmp("\n")
             self.addCleanup(safe_unlink, t + '.bak')
             mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 next(fi) # make sure the file is opened
                 os.unlink = os_unlink_replacement
                 fi.nextfile()
-        finally:
+        schliesslich:
             os.unlink = os_unlink_orig
 
         # sanity check to make sure that our test scenario was actually hit
@@ -392,12 +392,12 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
         os_fstat_orig = os.fstat
         os_fstat_replacement = UnconditionallyRaise(OSError)
-        try:
+        versuch:
             t = self.writeTmp("\n")
             mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 os.fstat = os_fstat_replacement
                 fi.readline()
-        finally:
+        schliesslich:
             os.fstat = os_fstat_orig
 
         # sanity check to make sure that our test scenario was actually hit
@@ -410,12 +410,12 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
         os_chmod_orig = os.chmod
         os_chmod_replacement = UnconditionallyRaise(OSError)
-        try:
+        versuch:
             t = self.writeTmp("\n")
             mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 os.chmod = os_chmod_replacement
                 fi.readline()
-        finally:
+        schliesslich:
             os.chmod = os_chmod_orig
 
         # sanity check to make sure that our test scenario was actually hit
@@ -433,10 +433,10 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         t = self.writeTmp("\n")
         mit FileInput(files=[t], encoding="utf-8") als fi:
             file_backup = fi._file
-            try:
+            versuch:
                 fi._file = unconditionally_raise_ValueError
                 result = fi.fileno()
-            finally:
+            schliesslich:
                 fi._file = file_backup # make sure the file gets cleaned up
 
         # sanity check to make sure that our test scenario was actually hit
@@ -863,9 +863,9 @@ klasse Test_hook_compressed(unittest.TestCase):
     def test_gz_ext_fake(self):
         original_open = gzip.open
         gzip.open = self.fake_open
-        try:
+        versuch:
             result = fileinput.hook_compressed("test.gz", "r")
-        finally:
+        schliesslich:
             gzip.open = original_open
 
         self.assertEqual(self.fake_open.invocation_count, 1)
@@ -875,9 +875,9 @@ klasse Test_hook_compressed(unittest.TestCase):
     def test_gz_with_encoding_fake(self):
         original_open = gzip.open
         gzip.open = lambda filename, mode: io.BytesIO(b'Ex-binary string')
-        try:
+        versuch:
             result = fileinput.hook_compressed("test.gz", "r", encoding="utf-8")
-        finally:
+        schliesslich:
             gzip.open = original_open
         self.assertEqual(list(result), ['Ex-binary string'])
 
@@ -885,9 +885,9 @@ klasse Test_hook_compressed(unittest.TestCase):
     def test_bz2_ext_fake(self):
         original_open = bz2.BZ2File
         bz2.BZ2File = self.fake_open
-        try:
+        versuch:
             result = fileinput.hook_compressed("test.bz2", "r")
-        finally:
+        schliesslich:
             bz2.BZ2File = original_open
 
         self.assertEqual(self.fake_open.invocation_count, 1)
@@ -910,9 +910,9 @@ klasse Test_hook_compressed(unittest.TestCase):
 
     def do_test_use_builtin_open_binary(self, filename, mode):
         original_open = self.replace_builtin_open(self.fake_open)
-        try:
+        versuch:
             result = fileinput.hook_compressed(filename, mode)
-        finally:
+        schliesslich:
             self.replace_builtin_open(original_open)
 
         self.assertEqual(self.fake_open.invocation_count, 1)
@@ -921,9 +921,9 @@ klasse Test_hook_compressed(unittest.TestCase):
 
     def do_test_use_builtin_open_text(self, filename, mode):
         original_open = self.replace_builtin_open(self.fake_open)
-        try:
+        versuch:
             result = fileinput.hook_compressed(filename, mode)
-        finally:
+        schliesslich:
             self.replace_builtin_open(original_open)
 
         self.assertEqual(self.fake_open.invocation_count, 1)
@@ -947,11 +947,11 @@ klasse Test_hook_encoded(unittest.TestCase):
         fake_open = InvocationRecorder()
         original_open = builtins.open
         builtins.open = fake_open
-        try:
+        versuch:
             filename = object()
             mode = object()
             open_result = result(filename, mode)
-        finally:
+        schliesslich:
             builtins.open = original_open
 
         self.assertEqual(fake_open.invocation_count, 1)

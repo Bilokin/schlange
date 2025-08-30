@@ -9,9 +9,9 @@ importiere sys
 
 def import_singlephase():
     assert '_testsinglephase' nicht in sys.modules
-    try:
+    versuch:
         importiere _testsinglephase  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         sys.modules.pop('_testsinglephase', Nichts)
         gib Falsch
     sonst:
@@ -69,9 +69,9 @@ def run_singlephase_check(override, outfd):
     mit os.fdopen(outfd, 'w') als outfile:
         sys.stdout = outfile
         sys.stderr = outfile
-        try:
+        versuch:
             results = check_singlephase(override)
             json.dump(results, outfile)
-        finally:
+        schliesslich:
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__

@@ -78,13 +78,13 @@ klasse PyMemDebugTests(unittest.TestCase):
         self.assertIn(expected, out)
 
     def test_pymem_malloc_without_gil(self):
-        # Debug hooks must raise an error wenn PyMem_Malloc() is called
+        # Debug hooks must wirf an error wenn PyMem_Malloc() is called
         # without holding the GIL
         code = 'import _testcapi; _testcapi.pymem_malloc_without_gil()'
         self.check_malloc_without_gil(code)
 
     def test_pyobject_malloc_without_gil(self):
-        # Debug hooks must raise an error wenn PyObject_Malloc() is called
+        # Debug hooks must wirf an error wenn PyObject_Malloc() is called
         # without holding the GIL
         code = 'import _testcapi; _testcapi.pyobject_malloc_without_gil()'
         self.check_malloc_without_gil(code)
@@ -138,9 +138,9 @@ klasse PyMemDebugTests(unittest.TestCase):
                             _testcapi.set_nomemory(start)
                         sonst:
                             _testcapi.set_nomemory(start, start + 1)
-                    try:
+                    versuch:
                         C()
-                    except MemoryError als e:
+                    ausser MemoryError als e:
                         wenn outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
                         drucke('MemoryError', outer_cnt, j)

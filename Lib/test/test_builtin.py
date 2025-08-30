@@ -39,9 +39,9 @@ von test.support.testcase importiere ComplexesAreIdenticalMixin
 von test.support.warnings_helper importiere check_warnings
 von test.support importiere requires_IEEE_754
 von unittest.mock importiere MagicMock, patch
-try:
+versuch:
     importiere pty, signal
-except ImportError:
+ausser ImportError:
     pty = signal = Nichts
 
 
@@ -62,7 +62,7 @@ klasse Squares:
     def __len__(self): gib len(self.sofar)
 
     def __getitem__(self, i):
-        wenn nicht 0 <= i < self.max: raise IndexError
+        wenn nicht 0 <= i < self.max: wirf IndexError
         n = len(self.sofar)
         waehrend n <= i:
             self.sofar.append(n*n)
@@ -80,7 +80,7 @@ klasse StrSquares:
 
     def __getitem__(self, i):
         wenn nicht 0 <= i < self.max:
-            raise IndexError
+            wirf IndexError
         n = len(self.sofar)
         waehrend n <= i:
             self.sofar.append(str(n*n))
@@ -137,11 +137,11 @@ test_conv_sign = [
 
 klasse TestFailingBool:
     def __bool__(self):
-        raise RuntimeError
+        wirf RuntimeError
 
 klasse TestFailingIter:
     def __iter__(self):
-        raise RuntimeError
+        wirf RuntimeError
 
 def filter_char(arg):
     gib ord(arg) > ord("d")
@@ -163,9 +163,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         #test the iterator after dropping one von it
         it = pickle.loads(d)
-        try:
+        versuch:
             next(it)
-        except StopIteration:
+        ausser StopIteration:
             gib
         d = pickle.dumps(it, proto)
         it = pickle.loads(d)
@@ -268,26 +268,26 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         global all, any, tuple
         saved = all, any, tuple
-        try:
+        versuch:
             all = lambda x : "all"
             any = lambda x : "any"
             tuple = lambda x : "tuple"
 
             overridden_outputs = [f() fuer f in funcs]
-        finally:
+        schliesslich:
             all, any, tuple = saved
 
         self.assertEqual(overridden_outputs, ['all', 'any', 'tuple'])
 
         # Now repeat, overriding the builtins module als well
         saved = all, any, tuple
-        try:
+        versuch:
             builtins.all = all = lambda x : "all"
             builtins.any = any = lambda x : "any"
             builtins.tuple = tuple = lambda x : "tuple"
 
             overridden_outputs = [f() fuer f in funcs]
-        finally:
+        schliesslich:
             all, any, tuple = saved
             builtins.all, builtins.any, builtins.tuple = saved
 
@@ -420,9 +420,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         debug_enabled = Falsch
         wenn __debug__:
             debug_enabled = Wahr
-        try:
+        versuch:
             assert Falsch
-        except AssertionError:
+        ausser AssertionError:
             gib (Wahr, f.__doc__, debug_enabled, __debug__)
         sonst:
             gib (Falsch, f.__doc__, debug_enabled, __debug__)
@@ -712,9 +712,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, dir, f)
 
         # dir(traceback)
-        try:
-            raise IndexError
-        except IndexError als e:
+        versuch:
+            wirf IndexError
+        ausser IndexError als e:
             self.assertEqual(len(dir(e.__traceback__)), 4)
 
         # test that object has a __dir__()
@@ -773,7 +773,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse X:
             def __getitem__(self, key):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, eval, "foo", {}, X())
 
     def test_eval_kwargs(self):
@@ -789,7 +789,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __getitem__(self, key):
                 wenn key == 'a':
                     gib 12
-                raise KeyError
+                wirf KeyError
             def keys(self):
                 gib list('xyz')
 
@@ -845,7 +845,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # SF bug #1004669
         klasse C:
             def __getitem__(self, item):
-                raise KeyError(item)
+                wirf KeyError(item)
             def keys(self):
                 gib 1 # used to be 'a' but that's no longer an error
         self.assertRaises(TypeError, eval, 'dir()', globals(), C())
@@ -902,7 +902,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse frozendict(dict):
             def __setitem__(self, key, value):
-                raise frozendict_error("frozendict is readonly")
+                wirf frozendict_error("frozendict is readonly")
 
         # read-only builtins
         wenn isinstance(__builtins__, types.ModuleType):
@@ -929,13 +929,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                           exec, code, namespace)
 
     def test_exec_globals_error_on_get(self):
-        # custom `globals` oder `builtins` can raise errors on item access
+        # custom `globals` oder `builtins` can wirf errors on item access
         klasse setonlyerror(Exception):
             pass
 
         klasse setonlydict(dict):
             def __getitem__(self, key):
-                raise setonlyerror
+                wirf setonlyerror
 
         # globals' `__getitem__` raises
         code = compile("globalname", "test", "exec")
@@ -987,12 +987,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_exec_redirected(self):
         savestdout = sys.stdout
         sys.stdout = Nichts # Whatever that cannot flush()
-        try:
-            # Used to raise SystemError('error gib without exception set')
+        versuch:
+            # Used to wirf SystemError('error gib without exception set')
             exec('a')
-        except NameError:
+        ausser NameError:
             pass
-        finally:
+        schliesslich:
             sys.stdout = savestdout
 
     def test_exec_closure(self):
@@ -1103,7 +1103,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __getitem__(self, index):
                 wenn index<4:
                     gib 42
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, list, filter(lambda x: x, BadSeq()))
         def badfunc():
             pass
@@ -1156,11 +1156,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # AttributeError.
         klasse A:
             def __getattr__(self, what):
-                raise SystemExit
+                wirf SystemExit
         self.assertRaises(SystemExit, hasattr, A(), "b")
         klasse B:
             def __getattr__(self, what):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, hasattr, B(), "b")
 
     def test_hash(self):
@@ -1254,7 +1254,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(len({'a':1, 'b': 2}), 2)
         klasse BadSeq:
             def __len__(self):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, len, BadSeq())
         klasse InvalidLen:
             def __len__(self):
@@ -1284,9 +1284,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             list(map(lambda x: x*x, range(1,4))),
             [1, 4, 9]
         )
-        try:
+        versuch:
             von math importiere sqrt
-        except ImportError:
+        ausser ImportError:
             def sqrt(x):
                 gib pow(x, 0.5)
         self.assertEqual(
@@ -1332,11 +1332,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, map, lambda x: x, 42)
         klasse BadSeq:
             def __iter__(self):
-                raise ValueError
+                wirf ValueError
                 liefere Nichts
         self.assertRaises(ValueError, list, map(lambda x: x, BadSeq()))
         def badfunc(x):
-            raise RuntimeError
+            wirf RuntimeError
         self.assertRaises(RuntimeError, list, map(badfunc, range(5)))
 
     def test_map_pickle(self):
@@ -1397,7 +1397,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __next__(self):
                 self.size -= 1
                 wenn self.size < 0:
-                    raise Error
+                    wirf Error
                 gib self.size
 
         l1 = self.iter_error(map(pack, "AB", Iter(1), strict=Wahr), Error)
@@ -1427,7 +1427,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __next__(self):
                 self.size -= 1
                 wenn self.size < 0:
-                    raise StopIteration
+                    wirf StopIteration
                 gib self.size
 
         l1 = self.iter_error(map(pack, "AB", Iter(1), strict=Wahr), ValueError)
@@ -1471,7 +1471,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             max(())
         klasse BadSeq:
             def __getitem__(self, index):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, max, BadSeq())
 
         fuer stmt in (
@@ -1484,9 +1484,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "max(1, 2, key=int, abc=int)",  # two many keywords
             "max(1, 2, key=1)",             # keyfunc is nicht callable
             ):
-            try:
+            versuch:
                 exec(stmt, globals())
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
                 self.fail(stmt)
@@ -1534,7 +1534,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             min(())
         klasse BadSeq:
             def __getitem__(self, index):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, min, BadSeq())
 
         fuer stmt in (
@@ -1547,9 +1547,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             "min(1, 2, key=int, abc=int)",  # two many keywords
             "min(1, 2, key=1)",             # keyfunc is nicht callable
             ):
-            try:
+            versuch:
                 exec(stmt, globals())
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
                 self.fail(stmt)
@@ -1585,7 +1585,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise StopIteration
+                wirf StopIteration
 
         it = iter(Iter())
         self.assertEqual(next(it, 42), 42)
@@ -1748,7 +1748,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         fp = open(TESTFN, encoding="utf-8")
         savestdin = sys.stdin
         savestdout = sys.stdout # Eats the echo
-        try:
+        versuch:
             sys.stdin = fp
             sys.stdout = BitBucket()
             self.assertEqual(input(), "1+1")
@@ -1773,7 +1773,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertRaises(RuntimeError, input, 'prompt')
             del sys.stdin
             self.assertRaises(RuntimeError, input, 'prompt')
-        finally:
+        schliesslich:
             sys.stdin = savestdin
             sys.stdout = savestdout
             fp.close()
@@ -1927,9 +1927,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_setattr(self):
         setattr(sys, 'spam', 1)
-        try:
+        versuch:
             self.assertEqual(sys.spam, 1)
-        finally:
+        schliesslich:
             del sys.spam
         self.assertRaises(TypeError, setattr)
         self.assertRaises(TypeError, setattr, sys)
@@ -1988,7 +1988,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse BadSeq:
             def __getitem__(self, index):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, sum, BadSeq())
 
         empty = []
@@ -2076,7 +2076,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(list(zip(a, b)), t)
         klasse I:
             def __getitem__(self, i):
-                wenn i < 0 oder i > 2: raise IndexError
+                wenn i < 0 oder i > 2: wirf IndexError
                 gib i + 4
         self.assertEqual(list(zip(a, I())), t)
         self.assertEqual(list(zip()), [])
@@ -2093,7 +2093,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse SequenceWithoutALength:
             def __getitem__(self, i):
                 wenn i == 5:
-                    raise IndexError
+                    wirf IndexError
                 sonst:
                     gib i
         self.assertEqual(
@@ -2104,7 +2104,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse BadSeq:
             def __getitem__(self, i):
                 wenn i == 5:
-                    raise ValueError
+                    wirf ValueError
                 sonst:
                     gib i
         self.assertRaises(ValueError, list, zip(BadSeq(), BadSeq()))
@@ -2140,7 +2140,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse BadIterable:
             def __iter__(self):
-                raise exception
+                wirf exception
 
         mit self.assertRaises(TypeError) als cm:
             zip(BadIterable())
@@ -2179,7 +2179,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __next__(self):
                 self.size -= 1
                 wenn self.size < 0:
-                    raise Error
+                    wirf Error
                 gib self.size
 
         l1 = self.iter_error(zip("AB", Iter(1), strict=Wahr), Error)
@@ -2209,7 +2209,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __next__(self):
                 self.size -= 1
                 wenn self.size < 0:
-                    raise StopIteration
+                    wirf StopIteration
                 gib self.size
 
         l1 = self.iter_error(zip("AB", Iter(1), strict=Wahr), ValueError)
@@ -2535,37 +2535,37 @@ klasse PtyTests(unittest.TestCase):
     @staticmethod
     def handle_sighup(signum, frame):
         # bpo-40140: wenn the process is the session leader, os.close(fd)
-        # of "pid, fd = pty.fork()" can raise SIGHUP signal:
+        # of "pid, fd = pty.fork()" can wirf SIGHUP signal:
         # just ignore the signal.
         pass
 
     def run_child(self, child, terminal_input):
         old_sighup = signal.signal(signal.SIGHUP, self.handle_sighup)
-        try:
+        versuch:
             gib self._run_child(child, terminal_input)
-        finally:
+        schliesslich:
             signal.signal(signal.SIGHUP, old_sighup)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def _run_child(self, child, terminal_input):
         r, w = os.pipe()  # Pipe test results von child back to parent
-        try:
+        versuch:
             pid, fd = pty.fork()
-        except (OSError, AttributeError) als e:
+        ausser (OSError, AttributeError) als e:
             os.close(r)
             os.close(w)
             self.skipTest("pty.fork() raised {}".format(e))
-            raise
+            wirf
 
         wenn pid == 0:
             # Child
-            try:
+            versuch:
                 os.close(r)
                 mit open(w, "w") als wpipe:
                     child(wpipe)
-            except:
+            ausser:
                 traceback.print_exc()
-            finally:
+            schliesslich:
                 # We don't want to gib to unittest...
                 os._exit(0)
 
@@ -2589,9 +2589,9 @@ klasse PtyTests(unittest.TestCase):
             # Beware of Linux raising EIO when the slave is closed
             child_output = bytearray()
             waehrend Wahr:
-                try:
+                versuch:
                     chunk = os.read(fd, 3000)
-                except OSError:  # Assume EIO
+                ausser OSError:  # Assume EIO
                     breche
                 wenn nicht chunk:
                     breche
@@ -2625,9 +2625,9 @@ klasse PtyTests(unittest.TestCase):
                                               encoding=stdio_encoding,
                                               errors=stdout_errors)
             drucke("tty =", sys.stdin.isatty() und sys.stdout.isatty(), file=wpipe)
-            try:
+            versuch:
                 drucke(ascii(input(prompt)), file=wpipe)
-            except BaseException als e:
+            ausser BaseException als e:
                 drucke(ascii(f'{e.__class__.__name__}: {e!s}'), file=wpipe)
         mit self.detach_readline():
             lines = self.run_child(child, terminal_input + b"\r\n")
@@ -2657,9 +2657,9 @@ klasse PtyTests(unittest.TestCase):
             fp_api = "PyOS_ReadlineFunctionPointer"
             prev_value = c.c_void_p.in_dll(c.pythonapi, fp_api).value
             c.c_void_p.in_dll(c.pythonapi, fp_api).value = Nichts
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 c.c_void_p.in_dll(c.pythonapi, fp_api).value = prev_value
         sonst:
             liefere

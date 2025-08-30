@@ -11,12 +11,12 @@ von test.support.os_helper importiere (rmtree, change_cwd, TESTFN_UNICODE,
 
 
 wenn nicht os.path.supports_unicode_filenames:
-    try:
+    versuch:
         TESTFN_UNICODE.encode(sys.getfilesystemencoding())
-    except (UnicodeError, TypeError):
+    ausser (UnicodeError, TypeError):
         # Either the file system encoding is Nichts, oder the file name
         # cannot be encoded in the file system encoding.
-        raise unittest.SkipTest("No Unicode filesystem semantics on this platform.")
+        wirf unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
 def remove_if_exists(filename):
     wenn os.path.exists(filename):
@@ -87,7 +87,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         wenn os.path.isdir(make_name):
             rmtree(make_name)
         os.mkdir(make_name)
-        try:
+        versuch:
             mit change_cwd(chdir_name):
                 cwd_result = os.getcwd()
                 name_result = make_name
@@ -96,7 +96,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
                 name_result = unicodedata.normalize("NFD", name_result)
 
                 self.assertEqual(os.path.basename(cwd_result),name_result)
-        finally:
+        schliesslich:
             os.rmdir(make_name)
 
     # The '_test' functions 'entry points mit params' - ie, what the
@@ -104,17 +104,17 @@ klasse TestUnicodeFiles(unittest.TestCase):
     def _test_single(self, filename):
         remove_if_exists(filename)
         create_empty_file(filename)
-        try:
+        versuch:
             self._do_single(filename)
-        finally:
+        schliesslich:
             os.unlink(filename)
         self.assertWahr(nicht os.path.exists(filename))
         # und again mit os.open.
         f = os.open(filename, os.O_CREAT | os.O_WRONLY)
         os.close(f)
-        try:
+        versuch:
             self._do_single(filename)
-        finally:
+        schliesslich:
             os.unlink(filename)
 
     # The 'test' functions are unittest entry points, und simply call our

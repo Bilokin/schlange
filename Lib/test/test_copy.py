@@ -83,7 +83,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __getattribute__(self, name):
                 wenn name.startswith("__reduce"):
-                    raise AttributeError(name)
+                    wirf AttributeError(name)
                 gib object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.copy, x)
@@ -346,7 +346,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __getattribute__(self, name):
                 wenn name.startswith("__reduce"):
-                    raise AttributeError(name)
+                    wirf AttributeError(name)
                 gib object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.deepcopy, x)
@@ -788,7 +788,7 @@ klasse TestCopy(unittest.TestCase):
     def test_getstate_exc(self):
         klasse EvilState(object):
             def __getstate__(self):
-                raise ValueError("ain't got no stickin' state")
+                wirf ValueError("ain't got no stickin' state")
         self.assertRaises(ValueError, copy.copy, EvilState())
 
     def test_copy_function(self):

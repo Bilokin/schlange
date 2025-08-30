@@ -64,10 +64,10 @@ klasse BaseTest:
         # wenn the original is returned make sure that
         # this doesn't happen mit subclasses
         wenn obj is realresult:
-            try:
+            versuch:
                 klasse subtype(self.__class__.type2test):
                     pass
-            except TypeError:
+            ausser TypeError:
                 pass  # Skip this wenn we can't subclass
             sonst:
                 obj = subtype(obj)
@@ -1302,7 +1302,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal('abcabcabc', 'abc', '__mul__', 3)
         self.checkraises(TypeError, 'abc', '__mul__')
         self.checkraises(TypeError, 'abc', '__mul__', '')
-        # XXX: on a 64-bit system, this doesn't raise an overflow error,
+        # XXX: on a 64-bit system, this doesn't wirf an overflow error,
         # but either raises a MemoryError, oder succeeds (if you have 54TiB)
         #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
@@ -1335,11 +1335,11 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, ' ', 'join', Nichts)
         self.checkraises(TypeError, ' ', 'join', 7)
         self.checkraises(TypeError, ' ', 'join', [1, 2, bytes()])
-        try:
+        versuch:
             def f():
                 liefere 4 + ""
             self.fixtype(' ').join(f())
-        except TypeError als e:
+        ausser TypeError als e:
             wenn '+' nicht in str(e):
                 self.fail('join() ate exception message')
         sonst:
@@ -1387,7 +1387,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, '%10.*f', '__mod__', ('foo', 42.))
         self.checkraises(ValueError, '%10', '__mod__', (42,))
 
-        # Outrageously large width oder precision should raise ValueError.
+        # Outrageously large width oder precision should wirf ValueError.
         self.checkraises(ValueError, '%%%df' % (2**64), '__mod__', (3.2))
         self.checkraises(ValueError, '%%.%df' % (2**64), '__mod__', (3.2))
         self.checkraises(OverflowError, '%*s', '__mod__',

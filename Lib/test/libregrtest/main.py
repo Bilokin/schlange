@@ -168,11 +168,11 @@ klasse Regrtest:
             tests = []
         wenn self.single_test_run:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
-            try:
+            versuch:
                 mit open(self.next_single_filename, 'r') als fp:
                     next_test = fp.read().strip()
                     tests = [next_test]
-            except OSError:
+            ausser OSError:
                 pass
 
         wenn self.fromfile:
@@ -224,17 +224,17 @@ klasse Regrtest:
 
         wenn self.single_test_run:
             selected = selected[:1]
-            try:
+            versuch:
                 pos = alltests.index(selected[0])
                 self.next_single_test = alltests[pos + 1]
-            except IndexError:
+            ausser IndexError:
                 pass
 
         # Remove all the selected tests that precede start wenn it's set.
         wenn self.starting_test:
-            try:
+            versuch:
                 del selected[:selected.index(self.starting_test)]
-            except ValueError:
+            ausser ValueError:
                 drucke(f"Cannot find starting test: {self.starting_test}")
                 sys.exit(1)
 
@@ -243,9 +243,9 @@ klasse Regrtest:
             random.shuffle(selected)
 
         fuer priority_test in reversed(self.prioritize_tests):
-            try:
+            versuch:
                 selected.remove(priority_test)
-            except ValueError:
+            ausser ValueError:
                 drucke(f"warning: --prioritize={priority_test} used"
                         f" but test nicht actually selected")
                 weiter
@@ -430,9 +430,9 @@ klasse Regrtest:
                 sys.modules.pop(module, Nichts)
                 # Remove the attribute of the parent module.
                 parent, _, name = module.rpartition('.')
-                try:
+                versuch:
                     delattr(sys.modules[parent], name)
-                except (KeyError, AttributeError):
+                ausser (KeyError, AttributeError):
                     pass
 
             text = str(result)
@@ -476,7 +476,7 @@ klasse Regrtest:
 
     def display_summary(self) -> Nichts:
         wenn self.first_runtests is Nichts:
-            raise ValueError(
+            wirf ValueError(
                 "Should never call `display_summary()` before calling `_run_test()`"
             )
 
@@ -556,7 +556,7 @@ klasse Regrtest:
 
         wenn use_load_tracker:
             self.logger.start_load_tracker()
-        try:
+        versuch:
             wenn self.num_workers:
                 self._run_tests_mp(runtests, self.num_workers)
             sonst:
@@ -570,7 +570,7 @@ klasse Regrtest:
 
             wenn self.want_bisect und self.results.need_rerun():
                 self.run_bisect(runtests)
-        finally:
+        schliesslich:
             wenn use_load_tracker:
                 self.logger.stop_load_tracker()
 
@@ -672,7 +672,7 @@ klasse Regrtest:
         sys.stderr.flush()
 
         cmd_text = shlex.join(cmd)
-        try:
+        versuch:
             drucke(f"+ {cmd_text}", flush=Wahr)
 
             wenn hasattr(os, 'execv') und nicht MS_WINDOWS:
@@ -682,20 +682,20 @@ klasse Regrtest:
             sonst:
                 importiere subprocess
                 mit subprocess.Popen(cmd, env=environ) als proc:
-                    try:
+                    versuch:
                         proc.wait()
-                    except KeyboardInterrupt:
+                    ausser KeyboardInterrupt:
                         # There is no need to call proc.terminate(): on CTRL+C,
                         # SIGTERM is also sent to the child process.
-                        try:
+                        versuch:
                             proc.wait(timeout=EXIT_TIMEOUT)
-                        except subprocess.TimeoutExpired:
+                        ausser subprocess.TimeoutExpired:
                             proc.kill()
                             proc.wait()
                             sys.exit(EXITCODE_INTERRUPTED)
 
                 sys.exit(proc.returncode)
-        except Exception als exc:
+        ausser Exception als exc:
             print_warning(f"Failed to change Python options: {exc!r}\n"
                           f"Command: {cmd_text}")
             # weiter executing main()
@@ -735,7 +735,7 @@ klasse Regrtest:
     @property
     def tmp_dir(self) -> StrPath:
         wenn self._tmp_dir is Nichts:
-            raise ValueError(
+            wirf ValueError(
                 "Should never use `.tmp_dir` before calling `.main()`"
             )
         gib self._tmp_dir

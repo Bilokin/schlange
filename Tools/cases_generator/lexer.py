@@ -335,7 +335,7 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
             lineend = src.find("\n", start)
             wenn lineend == -1:
                 lineend = len(src)
-            raise make_syntax_error(
+            wirf make_syntax_error(
                 f"Bad token: {text}",
                 filename,
                 line,

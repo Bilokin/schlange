@@ -13,12 +13,12 @@ into a program:
 The simple form, "assert expression", is equivalent to
 
    wenn __debug__:
-       wenn nicht expression: raise AssertionError
+       wenn nicht expression: wirf AssertionError
 
 The extended form, "assert expression1, expression2", is equivalent to
 
    wenn __debug__:
-       wenn nicht expression1: raise AssertionError(expression2)
+       wenn nicht expression1: wirf AssertionError(expression2)
 
 These equivalences assume that "__debug__" und "AssertionError" refer
 to the built-in variables mit those names.  In the current
@@ -61,7 +61,7 @@ Assignment is defined recursively depending on the form of the target
 (list). When a target is part of a mutable object (an attribute
 reference, subscription oder slicing), the mutable object must
 ultimately perform the assignment und decide about its validity, und
-may raise an exception wenn the assignment is unacceptable.  The rules
+may wirf an exception wenn the assignment is unacceptable.  The rules
 observed by various types und the exceptions raised are given mit the
 definition of the object types (see section The standard type
 hierarchy).
@@ -262,7 +262,7 @@ scopes.
 If the right hand side is present, an annotated assignment performs
 the actual assignment als wenn there was no annotation present. If the
 right hand side is nicht present fuer an expression target, then the
-interpreter evaluates the target except fuer the last "__setitem__()"
+interpreter evaluates the target ausser fuer the last "__setitem__()"
 or "__setattr__()" call.
 
 See also:
@@ -374,9 +374,9 @@ Is semantically equivalent to:
    running = Wahr
 
    waehrend running:
-       try:
+       versuch:
            TARGET = await type(iter).__anext__(iter)
-       except StopAsyncIteration:
+       ausser StopAsyncIteration:
            running = Falsch
        sonst:
            SUITE
@@ -410,14 +410,14 @@ is semantically equivalent to:
    value = await aenter(manager)
    hit_except = Falsch
 
-   try:
+   versuch:
        TARGET = value
        SUITE
-   except:
+   ausser:
        hit_except = Wahr
        wenn nicht await aexit(manager, *sys.exc_info()):
-           raise
-   finally:
+           wirf
+   schliesslich:
        wenn nicht hit_except:
            await aexit(manager, Nichts, Nichts, Nichts)
 
@@ -520,7 +520,7 @@ object.__getattr__(self, name)
    "AttributeError" because *name* is nicht an instance attribute oder an
    attribute in the klasse tree fuer "self"; oder "__get__()" of a *name*
    property raises "AttributeError").  This method should either
-   gib the (computed) attribute value oder raise an "AttributeError"
+   gib the (computed) attribute value oder wirf an "AttributeError"
    exception. The "object" klasse itself does nicht provide this method.
 
    Note that wenn the attribute is found through the normal mechanism,
@@ -540,7 +540,7 @@ object.__getattribute__(self, name)
    instances of the class. If the klasse also defines "__getattr__()",
    the latter will nicht be called unless "__getattribute__()" either
    calls it explicitly oder raises an "AttributeError". This method
-   should gib the (computed) attribute value oder raise an
+   should gib the (computed) attribute value oder wirf an
    "AttributeError" exception. In order to avoid infinite recursion in
    this method, its implementation should always call the base class
    method mit the same name to access any attributes it needs, for
@@ -591,7 +591,7 @@ Customizing module attribute access
 Special names "__getattr__" und "__dir__" can be also used to
 customize access to module attributes. The "__getattr__" function at
 the module level should accept one argument which is the name of an
-attribute und gib the computed value oder raise an "AttributeError".
+attribute und gib the computed value oder wirf an "AttributeError".
 If an attribute is nicht found on a module object through the normal
 lookup, i.e. "object.__getattribute__()", then "__getattr__" is
 searched in the module "__dict__" before raising an "AttributeError".
@@ -656,7 +656,7 @@ object.__get__(self, instance, owner=Nichts)
    *instance* is the instance that the attribute was accessed through,
    oder "Nichts" when the attribute is accessed through the *owner*.
 
-   This method should gib the computed attribute value oder raise an
+   This method should gib the computed attribute value oder wirf an
    "AttributeError" exception.
 
    **PEP 252** specifies that "__get__()" is callable mit one oder two
@@ -831,7 +831,7 @@ Notes on using *__slots__*:
 * Multiple inheritance mit multiple slotted parent classes can be
   used, but only one parent is allowed to have attributes created by
   slots (the other bases must have empty slot layouts) - violations
-  raise "TypeError".
+  wirf "TypeError".
 
 * If an *iterator* is used fuer *__slots__* then a *descriptor* is
   created fuer each of the iterator’s values. However, the *__slots__*
@@ -1395,7 +1395,7 @@ comparison methods* may gib non-boolean values. In this case Python
 will call "bool()" on such value in boolean contexts.
 
 Comparisons can be chained arbitrarily, e.g., "x < y <= z" is
-equivalent to "x < y und y <= z", except that "y" is evaluated only
+equivalent to "x < y und y <= z", ausser that "y" is evaluated only
 once (but in both cases "z" is nicht evaluated at all when "x < y" is
 found to be false).
 
@@ -1509,7 +1509,7 @@ important built-in types.
   have equal "(key, value)" pairs. Equality comparison of the keys und
   values enforces reflexivity.
 
-  Order comparisons ("<", ">", "<=", und ">=") raise "TypeError".
+  Order comparisons ("<", ">", "<=", und ">=") wirf "TypeError".
 
 * Sets (instances of "set" oder "frozenset") can be compared within und
   across their types.
@@ -1782,7 +1782,7 @@ fuer a group of statements:
 
 Additional information on exceptions can be found in section
 Exceptions, und information on using the "raise" statement to generate
-exceptions may be found in section The raise statement.
+exceptions may be found in section The wirf statement.
 
 Changed in version 3.14: Support fuer optionally dropping grouping
 parentheses when using multiple exception types. See **PEP 758**.
@@ -1829,15 +1829,15 @@ handler, the outer handler will nicht handle the exception.)
 When an exception has been assigned using "as target", it is cleared
 at the end of the "except" clause.  This is als if
 
-   except E als N:
+   ausser E als N:
        foo
 
 was translated to
 
-   except E als N:
-       try:
+   ausser E als N:
+       versuch:
            foo
-       finally:
+       schliesslich:
            del N
 
 This means the exception must be assigned to a different name to be
@@ -1854,13 +1854,13 @@ to its previous value:
 
    >>> drucke(sys.exception())
    Nichts
-   >>> try:
-   ...     raise TypeError
-   ... except:
+   >>> versuch:
+   ...     wirf TypeError
+   ... ausser:
    ...     drucke(repr(sys.exception()))
-   ...     try:
-   ...          raise ValueError
-   ...     except:
+   ...     versuch:
+   ...          wirf ValueError
+   ...     ausser:
    ...         drucke(repr(sys.exception()))
    ...     drucke(repr(sys.exception()))
    ...
@@ -1884,8 +1884,8 @@ exception group of all matching exceptions.  Each exception in the
 group is handled by at most one "except*" clause, the first that
 matches it.
 
-   >>> try:
-   ...     raise ExceptionGroup("eg",
+   >>> versuch:
+   ...     wirf ExceptionGroup("eg",
    ...         [ValueError(1), TypeError(2), OSError(3), OSError(4)])
    ... except* TypeError als e:
    ...     drucke(f'caught {type(e)} mit nested {e.exceptions}')
@@ -1910,8 +1910,8 @@ If the raised exception is nicht an exception group und its type matches
 one of the "except*" clauses, it is caught und wrapped by an exception
 group mit an empty message string.
 
-   >>> try:
-   ...     raise BlockingIOError
+   >>> versuch:
+   ...     wirf BlockingIOError
    ... except* BlockingIOError als e:
    ...     drucke(repr(e))
    ...
@@ -1948,9 +1948,9 @@ clause executes a "return", "break" oder "continue" statement, the saved
 exception is discarded. For example, this function returns 42.
 
    def f():
-       try:
+       versuch:
            1/0
-       finally:
+       schliesslich:
            gib 42
 
 The exception information is nicht available to the program during
@@ -1966,9 +1966,9 @@ statement executed.  Since the "finally" clause always executes, a
 last one executed. The following function returns ‘finally’.
 
    def foo():
-       try:
+       versuch:
            gib 'try'
-       finally:
+       schliesslich:
            gib 'finally'
 
 Changed in version 3.8: Prior to Python 3.8, a "continue" statement
@@ -2045,14 +2045,14 @@ is semantically equivalent to:
    value = enter(manager)
    hit_except = Falsch
 
-   try:
+   versuch:
        TARGET = value
        SUITE
-   except:
+   ausser:
        hit_except = Wahr
        wenn nicht exit(manager, *sys.exc_info()):
-           raise
-   finally:
+           wirf
+   schliesslich:
        wenn nicht hit_except:
            exit(manager, Nichts, Nichts, Nichts)
 
@@ -2519,8 +2519,8 @@ double star pattern must be the last subpattern in the mapping
 pattern.
 
 Duplicate keys in mapping patterns are disallowed. Duplicate literal
-keys will raise a "SyntaxError". Two keys that otherwise have the same
-value will raise a "ValueError" at runtime.
+keys will wirf a "SyntaxError". Two keys that otherwise have the same
+value will wirf a "ValueError" at runtime.
 
 The following is the logical flow fuer matching a mapping pattern
 against a subject value:
@@ -2573,7 +2573,7 @@ The same keyword should nicht be repeated in klasse patterns.
 The following is the logical flow fuer matching a klasse pattern against
 a subject value:
 
-1. If "name_or_attr" is nicht an instance of the builtin "type" , raise
+1. If "name_or_attr" is nicht an instance of the builtin "type" , wirf
    "TypeError".
 
 2. If the subject value is nicht an instance of "name_or_attr" (tested
@@ -2736,7 +2736,7 @@ is roughly equivalent to
    def func(): pass
    func = f1(arg)(f2(func))
 
-except that the original function is nicht temporarily bound to the name
+ausser that the original function is nicht temporarily bound to the name
 "func".
 
 Changed in version 3.9: Functions may be decorated mit any valid
@@ -2990,9 +2990,9 @@ Is semantically equivalent to:
    running = Wahr
 
    waehrend running:
-       try:
+       versuch:
            TARGET = await type(iter).__anext__(iter)
-       except StopAsyncIteration:
+       ausser StopAsyncIteration:
            running = Falsch
        sonst:
            SUITE
@@ -3026,14 +3026,14 @@ is semantically equivalent to:
    value = await aenter(manager)
    hit_except = Falsch
 
-   try:
+   versuch:
        TARGET = value
        SUITE
-   except:
+   ausser:
        hit_except = Wahr
        wenn nicht await aexit(manager, *sys.exc_info()):
-           raise
-   finally:
+           wirf
+   schliesslich:
        wenn nicht hit_except:
            await aexit(manager, Nichts, Nichts, Nichts)
 
@@ -3300,7 +3300,7 @@ Functions may also carry a gib annotation following an arrow:
 Annotations are conventionally used fuer *type hints*, but this is not
 enforced by the language, und in general annotations may contain
 arbitrary expressions. The presence of annotations does nicht change the
-runtime semantics of the code, except wenn some mechanism is used that
+runtime semantics of the code, ausser wenn some mechanism is used that
 introspects und uses the annotations (such als "dataclasses" oder
 "functools.singledispatch()").
 
@@ -3321,7 +3321,7 @@ present, all annotations are instead stored als strings:
 -[ Footnotes ]-
 
 [1] The exception is propagated to the invocation stack unless there
-    is a "finally" clause which happens to raise another exception.
+    is a "finally" clause which happens to wirf another exception.
     That new exception causes the old one to be lost.
 
 [2] In pattern matching, a sequence is defined als one of the
@@ -3658,7 +3658,7 @@ object.__ge__(self, other)
 
    By default, the "object" klasse provides implementations consistent
    mit Value comparisons: equality compares according to object
-   identity, und order comparisons raise "TypeError". Each default
+   identity, und order comparisons wirf "TypeError". Each default
    method may generate these results directly, but may also gib
    "NotImplemented".
 
@@ -3723,7 +3723,7 @@ object.__hash__(self)
    A klasse that overrides "__eq__()" und does nicht define "__hash__()"
    will have its "__hash__()" implicitly set to "Nichts".  When the
    "__hash__()" method of a klasse is "Nichts", instances of the class
-   will raise an appropriate "TypeError" when a program attempts to
+   will wirf an appropriate "TypeError" when a program attempts to
    retrieve their hash value, und will also be correctly identified as
    unhashable when checking "isinstance(obj,
    collections.abc.Hashable)".
@@ -4332,7 +4332,7 @@ p expression
 
 pp expression
 
-   Like the "p" command, except the value of *expression* is pretty-
+   Like the "p" command, ausser the value of *expression* is pretty-
    printed using the "pprint" module.
 
 whatis expression
@@ -4519,16 +4519,16 @@ exceptions [excnumber]
    Example:
 
       def out():
-          try:
+          versuch:
               middle()
-          except Exception als e:
-              raise ValueError("reraise middle() error") von e
+          ausser Exception als e:
+              wirf ValueError("reraise middle() error") von e
 
       def middle():
-          try:
+          versuch:
               gib inner(0)
-          except Exception als e:
-              raise ValueError("Middle fail")
+          ausser Exception als e:
+              wirf ValueError("Middle fail")
 
       def inner(x):
           1 / x
@@ -4538,7 +4538,7 @@ exceptions [excnumber]
    calling "pdb.pm()" will allow to move between exceptions:
 
       > example.py(5)out()
-      -> raise ValueError("reraise middle() error") von e
+      -> wirf ValueError("reraise middle() error") von e
 
       (Pdb) exceptions
         0 ZeroDivisionError('division by zero')
@@ -4679,7 +4679,7 @@ the error occurred.
 
 The Python interpreter raises an exception when it detects a run-time
 error (such als division by zero).  A Python program can also
-explicitly raise an exception mit the "raise" statement. Exception
+explicitly wirf an exception mit the "raise" statement. Exception
 handlers are specified mit the "try" … "except" statement.  The
 "finally" clause of such a statement can be used to specify cleanup
 code which does nicht handle the exception, but is executed whether an
@@ -4693,7 +4693,7 @@ von the top).
 
 When an exception is nicht handled at all, the interpreter terminates
 execution of the program, oder returns to its interactive main loop.  In
-either case, it prints a stack traceback, except when the exception is
+either case, it prints a stack traceback, ausser when the exception is
 "SystemExit".
 
 Exceptions are identified by klasse instances.  The "except" clause is
@@ -4710,7 +4710,7 @@ Note:
   versions of the interpreter.
 
 See also the description of the "try" statement in section The try
-statement und "raise" statement in section The raise statement.
+statement und "raise" statement in section The wirf statement.
 
 -[ Footnotes ]-
 
@@ -4778,7 +4778,7 @@ The following constructs bind names:
 * type parameter lists.
 
 The "import" statement of the form "from ... importiere *" binds all names
-defined in the imported module, except those beginning mit an
+defined in the imported module, ausser those beginning mit an
 underscore. This form may only be used at the module level.
 
 A target occurring in a "del" statement is also considered bound for
@@ -5036,7 +5036,7 @@ the error occurred.
 
 The Python interpreter raises an exception when it detects a run-time
 error (such als division by zero).  A Python program can also
-explicitly raise an exception mit the "raise" statement. Exception
+explicitly wirf an exception mit the "raise" statement. Exception
 handlers are specified mit the "try" … "except" statement.  The
 "finally" clause of such a statement can be used to specify cleanup
 code which does nicht handle the exception, but is executed whether an
@@ -5050,7 +5050,7 @@ von the top).
 
 When an exception is nicht handled at all, the interpreter terminates
 execution of the program, oder returns to its interactive main loop.  In
-either case, it prints a stack traceback, except when the exception is
+either case, it prints a stack traceback, ausser when the exception is
 "SystemExit".
 
 Exceptions are identified by klasse instances.  The "except" clause is
@@ -5067,7 +5067,7 @@ Note:
   versions of the interpreter.
 
 See also the description of the "try" statement in section The try
-statement und "raise" statement in section The raise statement.
+statement und "raise" statement in section The wirf statement.
 
 -[ Footnotes ]-
 
@@ -5198,7 +5198,7 @@ The grammar fuer a replacement field is als follows:
    arg_name:          [identifier | digit+]
    attribute_name:    identifier
    element_index:     digit+ | index_string
-   index_string:      <any source character except "]"> +
+   index_string:      <any source character ausser "]"> +
    conversion:        "r" | "s" | "a"
    format_spec:       format-spec:format_spec
 
@@ -5465,7 +5465,7 @@ The available integer presentation types are:
    |           | specified, the prefix "'0x'" will be upper-cased to "'0X'" |
    |           | als well.                                                   |
    +-----------+------------------------------------------------------------+
-   | "'n'"     | Number. This is the same als "'d'", except that it uses the |
+   | "'n'"     | Number. This is the same als "'d'", ausser that it uses the |
    |           | current locale setting to insert the appropriate digit     |
    |           | group separators.                                          |
    +-----------+------------------------------------------------------------+
@@ -5492,7 +5492,7 @@ The available presentation types fuer "float" und "Decimal" values are:
    |           | coefficient digits fuer "Decimal".  If "p=0", the decimal   |
    |           | point is omitted unless the "#" option is used.            |
    +-----------+------------------------------------------------------------+
-   | "'E'"     | Scientific notation. Same als "'e'" except it uses an upper |
+   | "'E'"     | Scientific notation. Same als "'e'" ausser it uses an upper |
    |           | case ‘E’ als the separator character.                       |
    +-----------+------------------------------------------------------------+
    | "'f'"     | Fixed-point notation. For a given precision "p", formats   |
@@ -5533,18 +5533,18 @@ The available presentation types fuer "float" und "Decimal" values are:
    |           | formatted als "inf", "-inf", "0", "-0" und "nan"            |
    |           | respectively, regardless of the precision.                 |
    +-----------+------------------------------------------------------------+
-   | "'G'"     | General format. Same als "'g'" except switches to "'E'" wenn  |
+   | "'G'"     | General format. Same als "'g'" ausser switches to "'E'" wenn  |
    |           | the number gets too large. The representations of infinity |
    |           | und NaN are uppercased, too.                               |
    +-----------+------------------------------------------------------------+
-   | "'n'"     | Number. This is the same als "'g'", except that it uses the |
+   | "'n'"     | Number. This is the same als "'g'", ausser that it uses the |
    |           | current locale setting to insert the appropriate digit     |
    |           | group separators fuer the integral part of a number.        |
    +-----------+------------------------------------------------------------+
    | "'%'"     | Percentage. Multiplies the number by 100 und displays in   |
    |           | fixed ("'f'") format, followed by a percent sign.          |
    +-----------+------------------------------------------------------------+
-   | Nichts      | For "float" this is like the "'g'" type, except that when  |
+   | Nichts      | For "float" this is like the "'g'" type, ausser that when  |
    |           | fixed- point notation is used to format the result, it     |
    |           | always includes at least one digit past the decimal point, |
    |           | und switches to the scientific notation when "exp >= p -   |
@@ -5771,7 +5771,7 @@ is roughly equivalent to
    def func(): pass
    func = f1(arg)(f2(func))
 
-except that the original function is nicht temporarily bound to the name
+ausser that the original function is nicht temporarily bound to the name
 "func".
 
 Changed in version 3.9: Functions may be decorated mit any valid
@@ -5954,7 +5954,7 @@ annex UAX-31, mit elaboration und changes als defined below; see also
 
 Within the ASCII range (U+0001..U+007F), the valid characters for
 identifiers include the uppercase und lowercase letters "A" through
-"Z", the underscore "_" and, except fuer the first character, the
+"Z", the underscore "_" and, ausser fuer the first character, the
 digits "0" through "9". Python 3.0 introduced additional characters
 von outside the ASCII range (see **PEP 3131**).  For these
 characters, the classification uses the version of the Unicode
@@ -6011,7 +6011,7 @@ the language, und cannot be used als ordinary identifiers.  They must
 be spelled exactly als written here:
 
    Falsch      await      sonst       importiere     pass
-   Nichts       breche      except     in         raise
+   Nichts       breche      ausser     in         wirf
    Wahr       klasse      finally    is         gib
    und        weiter   fuer        lambda     try
    als         def        von       nonlocal   while
@@ -6205,7 +6205,7 @@ imported und used within the module).
 
 The wild card form of importiere — "from module importiere *" — is only
 allowed at the module level.  Attempting to use it in klasse oder
-function definitions will raise a "SyntaxError".
+function definitions will wirf a "SyntaxError".
 
 When specifying what module to importiere you do nicht have to specify the
 absolute name of the module. When a module oder package is contained
@@ -6455,7 +6455,7 @@ The following constructs bind names:
 * type parameter lists.
 
 The "import" statement of the form "from ... importiere *" binds all names
-defined in the imported module, except those beginning mit an
+defined in the imported module, ausser those beginning mit an
 underscore. This form may only be used at the module level.
 
 A target occurring in a "del" statement is also considered bound for
@@ -6846,7 +6846,7 @@ object.__ior__(self, other)
    "NotImplemented", "x.__add__(y)" und "y.__radd__(x)" are
    considered, als mit the evaluation of "x + y". In certain
    situations, augmented assignment can result in unexpected errors
-   (see Why does a_tuple[i] += [‘item’] raise an exception when the
+   (see Why does a_tuple[i] += [‘item’] wirf an exception when the
    addition works?), but this behavior is in fact part of the data
    model.
 
@@ -7159,7 +7159,7 @@ create an exception und set your own traceback in one step using the
 "with_traceback()" exception method (which returns the same exception
 instance, mit its traceback set to its argument), like so:
 
-   raise Exception("foo occurred").with_traceback(tracebackobj)
+   wirf Exception("foo occurred").with_traceback(tracebackobj)
 
 The "from" clause is used fuer exception chaining: wenn given, the second
 *expression* must be another exception klasse oder instance. If the
@@ -7170,10 +7170,10 @@ and the resulting exception instance will be attached to the raised
 exception als the "__cause__" attribute. If the raised exception is not
 handled, both exceptions will be printed:
 
-   >>> try:
+   >>> versuch:
    ...     drucke(1 / 0)
-   ... except Exception als exc:
-   ...     raise RuntimeError("Something bad happened") von exc
+   ... ausser Exception als exc:
+   ...     wirf RuntimeError("Something bad happened") von exc
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
@@ -7185,7 +7185,7 @@ handled, both exceptions will be printed:
 
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
-       raise RuntimeError("Something bad happened") von exc
+       wirf RuntimeError("Something bad happened") von exc
    RuntimeError: Something bad happened
 
 A similar mechanism works implicitly wenn a new exception is raised when
@@ -7194,10 +7194,10 @@ when an "except" oder "finally" clause, oder a "with" statement, is used.
 The previous exception is then attached als the new exception’s
 "__context__" attribute:
 
-   >>> try:
+   >>> versuch:
    ...     drucke(1 / 0)
-   ... except:
-   ...     raise RuntimeError("Something bad happened")
+   ... ausser:
+   ...     wirf RuntimeError("Something bad happened")
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
@@ -7209,16 +7209,16 @@ The previous exception is then attached als the new exception’s
 
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
-       raise RuntimeError("Something bad happened")
+       wirf RuntimeError("Something bad happened")
    RuntimeError: Something bad happened
 
 Exception chaining can be explicitly suppressed by specifying "Nichts"
 in the "from" clause:
 
-   >>> try:
+   >>> versuch:
    ...     drucke(1 / 0)
-   ... except:
-   ...     raise RuntimeError("Something bad happened") von Nichts
+   ... ausser:
+   ...     wirf RuntimeError("Something bad happened") von Nichts
    ...
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
@@ -7308,7 +7308,7 @@ object.__len__(self)
 
    **CPython implementation detail:** In CPython, the length is
    required to be at most "sys.maxsize". If the length is larger than
-   "sys.maxsize" some features (such als "len()") may raise
+   "sys.maxsize" some features (such als "len()") may wirf
    "OverflowError".  To prevent raising "OverflowError" by truth value
    testing, an object must define a "__bool__()" method.
 
@@ -7520,14 +7520,14 @@ defining methods mit special names. This is Python’s approach to
 with respect to language operators.  For instance, wenn a klasse defines
 a method named "__getitem__()", und "x" is an instance of this class,
 then "x[i]" is roughly equivalent to "type(x).__getitem__(x, i)".
-Except where mentioned, attempts to execute an operation raise an
+Except where mentioned, attempts to execute an operation wirf an
 exception when no appropriate method is defined (typically
 "AttributeError" oder "TypeError").
 
 Setting a special method to "Nichts" indicates that the corresponding
 operation is nicht available.  For example, wenn a klasse sets "__iter__()"
 to "Nichts", the klasse is nicht iterable, so calling "iter()" on its
-instances will raise a "TypeError" (without falling back to
+instances will wirf a "TypeError" (without falling back to
 "__getitem__()"). [2]
 
 When implementing a klasse that emulates any built-in type, it is
@@ -7740,7 +7740,7 @@ object.__ge__(self, other)
 
    By default, the "object" klasse provides implementations consistent
    mit Value comparisons: equality compares according to object
-   identity, und order comparisons raise "TypeError". Each default
+   identity, und order comparisons wirf "TypeError". Each default
    method may generate these results directly, but may also gib
    "NotImplemented".
 
@@ -7805,7 +7805,7 @@ object.__hash__(self)
    A klasse that overrides "__eq__()" und does nicht define "__hash__()"
    will have its "__hash__()" implicitly set to "Nichts".  When the
    "__hash__()" method of a klasse is "Nichts", instances of the class
-   will raise an appropriate "TypeError" when a program attempts to
+   will wirf an appropriate "TypeError" when a program attempts to
    retrieve their hash value, und will also be correctly identified as
    unhashable when checking "isinstance(obj,
    collections.abc.Hashable)".
@@ -7862,7 +7862,7 @@ object.__getattr__(self, name)
    "AttributeError" because *name* is nicht an instance attribute oder an
    attribute in the klasse tree fuer "self"; oder "__get__()" of a *name*
    property raises "AttributeError").  This method should either
-   gib the (computed) attribute value oder raise an "AttributeError"
+   gib the (computed) attribute value oder wirf an "AttributeError"
    exception. The "object" klasse itself does nicht provide this method.
 
    Note that wenn the attribute is found through the normal mechanism,
@@ -7882,7 +7882,7 @@ object.__getattribute__(self, name)
    instances of the class. If the klasse also defines "__getattr__()",
    the latter will nicht be called unless "__getattribute__()" either
    calls it explicitly oder raises an "AttributeError". This method
-   should gib the (computed) attribute value oder raise an
+   should gib the (computed) attribute value oder wirf an
    "AttributeError" exception. In order to avoid infinite recursion in
    this method, its implementation should always call the base class
    method mit the same name to access any attributes it needs, for
@@ -7933,7 +7933,7 @@ Customizing module attribute access
 Special names "__getattr__" und "__dir__" can be also used to
 customize access to module attributes. The "__getattr__" function at
 the module level should accept one argument which is the name of an
-attribute und gib the computed value oder raise an "AttributeError".
+attribute und gib the computed value oder wirf an "AttributeError".
 If an attribute is nicht found on a module object through the normal
 lookup, i.e. "object.__getattribute__()", then "__getattr__" is
 searched in the module "__dict__" before raising an "AttributeError".
@@ -7998,7 +7998,7 @@ object.__get__(self, instance, owner=Nichts)
    *instance* is the instance that the attribute was accessed through,
    oder "Nichts" when the attribute is accessed through the *owner*.
 
-   This method should gib the computed attribute value oder raise an
+   This method should gib the computed attribute value oder wirf an
    "AttributeError" exception.
 
    **PEP 252** specifies that "__get__()" is callable mit one oder two
@@ -8173,7 +8173,7 @@ Notes on using *__slots__*:
 * Multiple inheritance mit multiple slotted parent classes can be
   used, but only one parent is allowed to have attributes created by
   slots (the other bases must have empty slot layouts) - violations
-  raise "TypeError".
+  wirf "TypeError".
 
 * If an *iterator* is used fuer *__slots__* then a *descriptor* is
   created fuer each of the iterator’s values. However, the *__slots__*
@@ -8557,9 +8557,9 @@ follows something like the following process to decide whether
        sowenn isclass(obj) und hasattr(obj, '__class_getitem__'):
            gib obj.__class_getitem__(x)
 
-       # Else, raise an exception
+       # Else, wirf an exception
        sonst:
-           raise TypeError(
+           wirf TypeError(
                f"'{class_of_obj.__name__}' object is nicht subscriptable"
            )
 
@@ -8665,7 +8665,7 @@ object.__len__(self)
 
    **CPython implementation detail:** In CPython, the length is
    required to be at most "sys.maxsize". If the length is larger than
-   "sys.maxsize" some features (such als "len()") may raise
+   "sys.maxsize" some features (such als "len()") may wirf
    "OverflowError".  To prevent raising "OverflowError" by truth value
    testing, an object must define a "__bool__()" method.
 
@@ -8884,7 +8884,7 @@ object.__ior__(self, other)
    "NotImplemented", "x.__add__(y)" und "y.__radd__(x)" are
    considered, als mit the evaluation of "x + y". In certain
    situations, augmented assignment can result in unexpected errors
-   (see Why does a_tuple[i] += [‘item’] raise an exception when the
+   (see Why does a_tuple[i] += [‘item’] wirf an exception when the
    addition works?), but this behavior is in fact part of the data
    model.
 
@@ -9058,7 +9058,7 @@ object.__annotations__
 
    This attribute contains the annotations fuer an object. It is lazily
    evaluated, so accessing the attribute may execute arbitrary code
-   und raise exceptions. If evaluation is successful, the attribute is
+   und wirf exceptions. If evaluation is successful, the attribute is
    set to a dictionary mapping von variable names to annotations.
 
    Changed in version 3.14: Annotations are now lazily evaluated.
@@ -9074,12 +9074,12 @@ object.__annotate__(format)
    corresponding to a member of the enum.
 
    If an annotate function doesn’t support the requested format, it
-   must raise "NotImplementedError". Annotate functions must always
-   support "VALUE" format; they must nicht raise "NotImplementedError()"
+   must wirf "NotImplementedError". Annotate functions must always
+   support "VALUE" format; they must nicht wirf "NotImplementedError()"
    when called mit this format.
 
-   When called mit  "VALUE" format, an annotate function may raise
-   "NameError"; it must nicht raise "NameError" when called requesting
+   When called mit  "VALUE" format, an annotate function may wirf
+   "NameError"; it must nicht wirf "NameError" when called requesting
    any other format.
 
    If an object does nicht have any annotations, "__annotate__" should
@@ -9325,7 +9325,7 @@ str.format(*args, **kwargs)
 
 str.format_map(mapping, /)
 
-   Similar to "str.format(**mapping)", except that "mapping" is used
+   Similar to "str.format(**mapping)", ausser that "mapping" is used
    directly und nicht copied to a "dict".  This is useful wenn fuer example
    "mapping" is a dict subclass:
 
@@ -9340,7 +9340,7 @@ str.format_map(mapping, /)
 
 str.index(sub[, start[, end]])
 
-   Like "find()", but raise "ValueError" when the substring is not
+   Like "find()", but wirf "ValueError" when the substring is not
    found.
 
 str.isalnum()
@@ -9433,7 +9433,7 @@ str.isprintable()
    database (see "unicodedata") have a general category in group
    Letter, Mark, Number, Punctuation, oder Symbol (L, M, N, P, oder S);
    plus the ASCII space 0x20. Nonprintable characters are those in
-   group Separator oder Other (Z oder C), except the ASCII space.
+   group Separator oder Other (Z oder C), ausser the ASCII space.
 
 str.isspace()
 
@@ -9810,7 +9810,7 @@ str.translate(table)
    table object can do any of the following: gib a Unicode ordinal
    oder a string, to map the character to one oder more other characters;
    gib "Nichts", to delete the character von the gib string; oder
-   raise a "LookupError" exception, to map the character to itself.
+   wirf a "LookupError" exception, to map the character to itself.
 
    You can use "str.maketrans()" to create a translation map from
    character-to-character mappings in different formats.
@@ -9856,8 +9856,8 @@ String literals are described by the following lexical definitions:
    longstring:      "\'\'\'" longstringitem* "\'\'\'" | '"""' longstringitem* '"""'
    shortstringitem: shortstringchar | stringescapeseq
    longstringitem:  longstringchar | stringescapeseq
-   shortstringchar: <any source character except "\\" oder newline oder the quote>
-   longstringchar:  <any source character except "\\">
+   shortstringchar: <any source character ausser "\\" oder newline oder the quote>
+   longstringchar:  <any source character ausser "\\">
    stringescapeseq: "\\" <any source character>
 
    bytesliteral:   bytesprefix(shortbytes | longbytes)
@@ -9866,8 +9866,8 @@ String literals are described by the following lexical definitions:
    longbytes:      "\'\'\'" longbytesitem* "\'\'\'" | '"""' longbytesitem* '"""'
    shortbytesitem: shortbyteschar | bytesescapeseq
    longbytesitem:  longbyteschar | bytesescapeseq
-   shortbyteschar: <any ASCII character except "\\" oder newline oder the quote>
-   longbyteschar:  <any ASCII character except "\\">
+   shortbyteschar: <any ASCII character ausser "\\" oder newline oder the quote>
+   longbyteschar:  <any ASCII character ausser "\\">
    bytesescapeseq: "\\" <any ASCII character>
 
 One syntactic restriction nicht indicated by these productions is that
@@ -9908,7 +9908,7 @@ but nicht mit "'b'" oder "'u'", therefore raw formatted strings are
 possible, but formatted bytes literals are not.
 
 In triple-quoted literals, unescaped newlines und quotes are allowed
-(and are retained), except that three unescaped quotes in a row
+(and are retained), ausser that three unescaped quotes in a row
 terminate the literal.  (A “quote” is the character used to open the
 literal, i.e. either "'" oder """.)
 
@@ -10126,7 +10126,7 @@ fuer a group of statements:
 
 Additional information on exceptions can be found in section
 Exceptions, und information on using the "raise" statement to generate
-exceptions may be found in section The raise statement.
+exceptions may be found in section The wirf statement.
 
 Changed in version 3.14: Support fuer optionally dropping grouping
 parentheses when using multiple exception types. See **PEP 758**.
@@ -10173,15 +10173,15 @@ handler, the outer handler will nicht handle the exception.)
 When an exception has been assigned using "as target", it is cleared
 at the end of the "except" clause.  This is als if
 
-   except E als N:
+   ausser E als N:
        foo
 
 was translated to
 
-   except E als N:
-       try:
+   ausser E als N:
+       versuch:
            foo
-       finally:
+       schliesslich:
            del N
 
 This means the exception must be assigned to a different name to be
@@ -10198,13 +10198,13 @@ to its previous value:
 
    >>> drucke(sys.exception())
    Nichts
-   >>> try:
-   ...     raise TypeError
-   ... except:
+   >>> versuch:
+   ...     wirf TypeError
+   ... ausser:
    ...     drucke(repr(sys.exception()))
-   ...     try:
-   ...          raise ValueError
-   ...     except:
+   ...     versuch:
+   ...          wirf ValueError
+   ...     ausser:
    ...         drucke(repr(sys.exception()))
    ...     drucke(repr(sys.exception()))
    ...
@@ -10228,8 +10228,8 @@ exception group of all matching exceptions.  Each exception in the
 group is handled by at most one "except*" clause, the first that
 matches it.
 
-   >>> try:
-   ...     raise ExceptionGroup("eg",
+   >>> versuch:
+   ...     wirf ExceptionGroup("eg",
    ...         [ValueError(1), TypeError(2), OSError(3), OSError(4)])
    ... except* TypeError als e:
    ...     drucke(f'caught {type(e)} mit nested {e.exceptions}')
@@ -10254,8 +10254,8 @@ If the raised exception is nicht an exception group und its type matches
 one of the "except*" clauses, it is caught und wrapped by an exception
 group mit an empty message string.
 
-   >>> try:
-   ...     raise BlockingIOError
+   >>> versuch:
+   ...     wirf BlockingIOError
    ... except* BlockingIOError als e:
    ...     drucke(repr(e))
    ...
@@ -10292,9 +10292,9 @@ clause executes a "return", "break" oder "continue" statement, the saved
 exception is discarded. For example, this function returns 42.
 
    def f():
-       try:
+       versuch:
            1/0
-       finally:
+       schliesslich:
            gib 42
 
 The exception information is nicht available to the program during
@@ -10310,9 +10310,9 @@ statement executed.  Since the "finally" clause always executes, a
 last one executed. The following function returns ‘finally’.
 
    def foo():
-       try:
+       versuch:
            gib 'try'
-       finally:
+       schliesslich:
            gib 'finally'
 
 Changed in version 3.8: Prior to Python 3.8, a "continue" statement
@@ -11603,7 +11603,7 @@ Special read-only attributes:
 
 The line number und last instruction in the traceback may differ from
 the line number of its frame object wenn the exception occurred in a
-"try" statement mit no matching except clause oder mit a "finally"
+"try" statement mit no matching ausser clause oder mit a "finally"
 clause.
 
 traceback.tb_next
@@ -11912,7 +11912,7 @@ klasse dict(iterable, **kwargs)
 
    Dictionaries compare equal wenn und only wenn they have the same "(key,
    value)" pairs (regardless of ordering). Order comparisons (‘<’,
-   ‘<=’, ‘>=’, ‘>’) raise "TypeError".
+   ‘<=’, ‘>=’, ‘>’) wirf "TypeError".
 
    Dictionaries preserve insertion order.  Note that updating a key
    does nicht affect the order.  Keys added after deletion are inserted
@@ -11983,7 +11983,7 @@ iter(dictview)
    "pairs = [(v, k) fuer (k, v) in d.items()]".
 
    Iterating views waehrend adding oder deleting entries in the dictionary
-   may raise a "RuntimeError" oder fail to iterate over all entries.
+   may wirf a "RuntimeError" oder fail to iterate over all entries.
 
    Changed in version 3.7: Dictionary order is guaranteed to be
    insertion order.
@@ -12501,7 +12501,7 @@ klasse tuple([iterable])
    given, the constructor creates a new empty tuple, "()".
 
    Note that it is actually the comma which makes a tuple, nicht the
-   parentheses. The parentheses are optional, except in the empty
+   parentheses. The parentheses are optional, ausser in the empty
    tuple case, oder when they are needed to avoid syntactic ambiguity.
    For example, "f(a, b, c)" is a function call mit three arguments,
    waehrend "f((a, b, c))" is a function call mit a 3-tuple als the sole
@@ -12543,7 +12543,7 @@ klasse range(start, stop[, step])
    the positive indices.
 
    Ranges containing absolute values larger than "sys.maxsize" are
-   permitted but some features (such als "len()") may raise
+   permitted but some features (such als "len()") may wirf
    "OverflowError".
 
    Range examples:
@@ -12825,14 +12825,14 @@ is semantically equivalent to:
    value = enter(manager)
    hit_except = Falsch
 
-   try:
+   versuch:
        TARGET = value
        SUITE
-   except:
+   ausser:
        hit_except = Wahr
        wenn nicht exit(manager, *sys.exc_info()):
-           raise
-   finally:
+           wirf
+   schliesslich:
        wenn nicht hit_except:
            exit(manager, Nichts, Nichts, Nichts)
 

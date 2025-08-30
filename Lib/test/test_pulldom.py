@@ -152,11 +152,11 @@ klasse PullDOMTestCase(unittest.TestCase):
         fuer evt, node in items:
             wenn evt == pulldom.END_ELEMENT und node.tagName == "html":
                 breche
-        try:
+        versuch:
             # Assert that the next node is END_DOCUMENT:
             evt, node = next(items)
             self.assertEqual(pulldom.END_DOCUMENT, evt)
-        except StopIteration:
+        ausser StopIteration:
             self.fail(
                 "Ran out of events, but should have received END_DOCUMENT")
 

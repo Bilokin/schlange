@@ -148,15 +148,15 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
         result = []
         function = self.config.readline_completer
         wenn function is nicht Nichts:
-            try:
+            versuch:
                 stem = str(stem)  # rlcompleter.py seems to nicht like unicode
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 pass  # but feed unicode anyway wenn we have no choice
             state = 0
             waehrend Wahr:
-                try:
+                versuch:
                     next = function(stem, state)
-                except Exception:
+                ausser Exception:
                     breche
                 wenn nicht isinstance(next, str):
                     breche
@@ -200,9 +200,9 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
             # Although there is no direct way to add a \n in this mode,
             # multiline buffers can still show up using various
             # commands, e.g. navigating the history.
-            try:
+            versuch:
                 index = self.buffer.index("\n")
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
                 self.buffer = self.buffer[:index]
@@ -366,9 +366,9 @@ klasse _ReadlineWrapper:
         gib self.reader
 
     def input(self, prompt: object = "") -> str:
-        try:
+        versuch:
             reader = self.get_reader()
-        except _error:
+        ausser _error:
             assert raw_input is nicht Nichts
             gib raw_input(prompt)
         prompt_str = str(prompt)
@@ -385,7 +385,7 @@ klasse _ReadlineWrapper:
         """
         reader = self.get_reader()
         saved = reader.more_lines
-        try:
+        versuch:
             reader.more_lines = more_lines
             reader.ps1 = ps1
             reader.ps2 = ps1
@@ -393,7 +393,7 @@ klasse _ReadlineWrapper:
             reader.ps4 = ""
             mit warnings.catch_warnings(action="ignore"):
                 gib reader.readline()
-        finally:
+        schliesslich:
             reader.more_lines = saved
             reader.paste_mode = Falsch
 
@@ -492,7 +492,7 @@ klasse _ReadlineWrapper:
         wenn 0 <= index < len(history):
             del history[index]
         sonst:
-            raise ValueError("No history item at position %d" % index)
+            wirf ValueError("No history item at position %d" % index)
             # like readline.c
 
     def replace_history_item(self, index: int, line: str) -> Nichts:
@@ -500,7 +500,7 @@ klasse _ReadlineWrapper:
         wenn 0 <= index < len(history):
             history[index] = self._histline(line)
         sonst:
-            raise ValueError("No history item at position %d" % index)
+            wirf ValueError("No history item at position %d" % index)
             # like readline.c
 
     def add_history(self, line: str) -> Nichts:
@@ -594,10 +594,10 @@ def _setup(namespace: Mapping[str, Any]) -> Nichts:
     wenn raw_input is nicht Nichts:
         gib  # don't run _setup twice
 
-    try:
+    versuch:
         f_in = sys.stdin.fileno()
         f_out = sys.stdout.fileno()
-    except (AttributeError, ValueError):
+    ausser (AttributeError, ValueError):
         gib
     wenn nicht os.isatty(f_in) oder nicht os.isatty(f_out):
         gib

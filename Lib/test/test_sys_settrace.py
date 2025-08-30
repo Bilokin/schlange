@@ -13,9 +13,9 @@ importiere tempfile
 importiere textwrap
 importiere subprocess
 importiere warnings
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 klasse tracecontext:
@@ -55,9 +55,9 @@ def clean_asynciter(test):
             it = asynciter(iterable)
             cleanups.append(it.aclose)
             gib it
-        try:
+        versuch:
             gib await test(*args, **kwargs, asynciter=wrapped_asynciter)
-        finally:
+        schliesslich:
             waehrend cleanups:
                 await cleanups.pop()()
     gib wrapper
@@ -181,12 +181,12 @@ call.events = [(0, 'call'),
                (1, 'return')]
 
 def raises():
-    raise Exception
+    wirf Exception
 
 def test_raise():
-    try:
+    versuch:
         raises()
-    except Exception:
+    ausser Exception:
         pass
 
 test_raise.events = [(0, 'call'),
@@ -212,11 +212,11 @@ settrace_and_return.events = [(1, 'return')]
 def _settrace_and_raise(tracefunc):
     sys.settrace(tracefunc)
     sys._getframe().f_back.f_trace = tracefunc
-    raise RuntimeError
+    wirf RuntimeError
 def settrace_and_raise(tracefunc):
-    try:
+    versuch:
         _settrace_and_raise(tracefunc)
-    except RuntimeError:
+    ausser RuntimeError:
         pass
 
 settrace_and_raise.events = [(2, 'exception'),
@@ -250,11 +250,11 @@ ireturn_example.events = [(0, 'call'),
 # Tight loop mit while(1) example (SF #765624)
 def tightloop_example():
     items = range(0, 3)
-    try:
+    versuch:
         i = 0
         waehrend 1:
             b = items[i]; i+=1
-    except IndexError:
+    ausser IndexError:
         pass
 
 tightloop_example.events = [(0, 'call'),
@@ -276,10 +276,10 @@ tightloop_example.events = [(0, 'call'),
 
 def tighterloop_example():
     items = range(1, 4)
-    try:
+    versuch:
         i = 0
         waehrend 1: i = items[i]
-    except IndexError:
+    ausser IndexError:
         pass
 
 tighterloop_example.events = [(0, 'call'),
@@ -296,10 +296,10 @@ tighterloop_example.events = [(0, 'call'),
                             (6, 'return')]
 
 def generator_function():
-    try:
+    versuch:
         liefere Wahr
         "continued"
-    finally:
+    schliesslich:
         "finally"
 def generator_example():
     # any() will leave the generator before its end
@@ -408,9 +408,9 @@ klasse TraceTestCase(unittest.TestCase):
             pass
 
         sys.settrace(fn)
-        try:
+        versuch:
             assert sys.gettrace() is fn
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
 
     def test_01_basic(self):
@@ -519,14 +519,14 @@ klasse TraceTestCase(unittest.TestCase):
 
     def test_18_except_with_name(self):
         def func():
-            try:
-                try:
-                    raise Exception
-                except Exception als e:
-                    raise
+            versuch:
+                versuch:
+                    wirf Exception
+                ausser Exception als e:
+                    wirf
                     x = "Something"
                     y = "Something"
-            except Exception:
+            ausser Exception:
                 pass
 
         self.run_and_compare(func,
@@ -543,12 +543,12 @@ klasse TraceTestCase(unittest.TestCase):
 
     def test_19_except_with_finally(self):
         def func():
-            try:
-                try:
-                    raise Exception
-                finally:
+            versuch:
+                versuch:
+                    wirf Exception
+                schliesslich:
                     y = "Something"
-            except Exception:
+            ausser Exception:
                 b = 23
 
         self.run_and_compare(func,
@@ -571,10 +571,10 @@ klasse TraceTestCase(unittest.TestCase):
                 gib self
 
             async def __anext__(self):
-                try:
+                versuch:
                     gib next(self._it)
-                except StopIteration:
-                    raise StopAsyncIteration
+                ausser StopIteration:
+                    wirf StopAsyncIteration
 
         async def doit_async():
             async fuer letter in AsyncIteratorWrapper("abc"):
@@ -583,10 +583,10 @@ klasse TraceTestCase(unittest.TestCase):
 
         def run(tracer):
             x = doit_async()
-            try:
+            versuch:
                 sys.settrace(tracer)
                 x.send(Nichts)
-            finally:
+            schliesslich:
                 sys.settrace(Nichts)
 
         tracer = self.make_tracer()
@@ -631,9 +631,9 @@ klasse TraceTestCase(unittest.TestCase):
                 (1, 'exception'),
                 (3, 'line'),
                 (3, 'return')]
-        try:
+        versuch:
             run(tracer.trace)
-        except Exception:
+        ausser Exception:
             pass
         self.compare_events(doit_async.__code__.co_firstlineno,
                             tracer.events, events)
@@ -649,12 +649,12 @@ klasse TraceTestCase(unittest.TestCase):
 
         tracer = self.make_tracer()
         coro = f()
-        try:
+        versuch:
             sys.settrace(tracer.trace)
             coro.send(Nichts)
-        except Exception:
+        ausser Exception:
             pass
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
 
         events = [
@@ -705,10 +705,10 @@ klasse TraceTestCase(unittest.TestCase):
         # https://bugs.python.org/issue41670
 
         def func():
-            try:
+            versuch:
                 fuer i in []: pass
                 gib 1
-            except:
+            ausser:
                 gib 2
 
         self.run_and_compare(func,
@@ -721,9 +721,9 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_no_exception(self):
 
         def func():
-            try:
+            versuch:
                 2
-            except:
+            ausser:
                 4
             sonst:
                 6
@@ -733,7 +733,7 @@ klasse TraceTestCase(unittest.TestCase):
                     10
                 wenn func.__name__ == 'Fred':
                     12
-            finally:
+            schliesslich:
                 14
 
         self.run_and_compare(func,
@@ -750,19 +750,19 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_exception_in_else(self):
 
         def func():
-            try:
-                try:
+            versuch:
+                versuch:
                     3
-                except:
+                ausser:
                     5
                 sonst:
                     7
-                    raise Exception
-                finally:
+                    wirf Exception
+                schliesslich:
                     10
-            except:
+            ausser:
                 12
-            finally:
+            schliesslich:
                 14
 
         self.run_and_compare(func,
@@ -834,16 +834,16 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             a, c, d, i = 1, 1, 1, 99
-            try:
+            versuch:
                 fuer i in range(3):
-                    try:
+                    versuch:
                         a = 5
                         wenn i > 0:
                             breche                   # line 7
                         a = 8
-                    finally:
+                    schliesslich:
                         c = 10
-            except:
+            ausser:
                 d = 12                              # line 12
             assert a == 5 und c == 10 und d == 1    # line 13
 
@@ -869,16 +869,16 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             a, b, c, d, i = 1, 1, 1, 1, 99
-            try:
+            versuch:
                 fuer i in range(2):
-                    try:
+                    versuch:
                         a = 5
                         wenn i > 0:
                             weiter                # line 7
                         b = 8
-                    finally:
+                    schliesslich:
                         c = 10
-            except:
+            ausser:
                 d = 12                              # line 12
             assert (a, b, c, d) == (5, 8, 10, 1)    # line 13
 
@@ -904,9 +904,9 @@ klasse TraceTestCase(unittest.TestCase):
     def test_return_through_finally(self):
 
         def func():
-            try:
+            versuch:
                 gib 2
-            finally:
+            schliesslich:
                 4
 
         self.run_and_compare(func,
@@ -919,14 +919,14 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_with_wrong_type(self):
 
         def func():
-            try:
-                try:
+            versuch:
+                versuch:
                     2/0
-                except IndexError:
+                ausser IndexError:
                     5
-                finally:
+                schliesslich:
                     7
-            except:
+            ausser:
                 pass
             gib 10
 
@@ -948,14 +948,14 @@ klasse TraceTestCase(unittest.TestCase):
         # See gh-105658
         condition = Wahr
         def func():
-            try:
-                try:
-                    raise Exception
-                finally:
+            versuch:
+                versuch:
+                    wirf Exception
+                schliesslich:
                     wenn condition:
                         result = 1
                 result = 2
-            except:
+            ausser:
                 result = 3
             gib result
 
@@ -1083,11 +1083,11 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             x = "hello"
-            try:
+            versuch:
                 3/0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 wenn x == 'raise':
-                    raise ValueError()   # line 6
+                    wirf ValueError()   # line 6
             f = 7
 
         self.run_and_compare(func,
@@ -1130,10 +1130,10 @@ klasse TraceTestCase(unittest.TestCase):
     def test_if_false_in_try_except(self):
 
         def func():
-            try:
+            versuch:
                 wenn Falsch:
                     pass
-            except Exception:
+            ausser Exception:
                 X
 
         self.run_and_compare(func,
@@ -1163,12 +1163,12 @@ klasse TraceTestCase(unittest.TestCase):
 
     def test_try_in_try(self):
         def func():
-            try:
-                try:
+            versuch:
+                versuch:
                     pass
-                except Exception als ex:
+                ausser Exception als ex:
                     pass
-            except Exception:
+            ausser Exception:
                 pass
 
         self.run_and_compare(func,
@@ -1181,12 +1181,12 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_in_try_with_exception(self):
 
         def func():
-            try:
-                try:
-                    raise TypeError
-                except ValueError als ex:
+            versuch:
+                versuch:
+                    wirf TypeError
+                ausser ValueError als ex:
                     5
-            except TypeError:
+            ausser TypeError:
                 7
 
         self.run_and_compare(func,
@@ -1201,12 +1201,12 @@ klasse TraceTestCase(unittest.TestCase):
              (7, 'return')])
 
         def func():
-            try:
-                try:
-                    raise ValueError
-                except ValueError als ex:
+            versuch:
+                versuch:
+                    wirf ValueError
+                ausser ValueError als ex:
                     5
-            except TypeError:
+            ausser TypeError:
                 7
 
         self.run_and_compare(func,
@@ -1286,9 +1286,9 @@ klasse TraceTestCase(unittest.TestCase):
 
         def foo(x):
             wenn x:
-                try:
+                versuch:
                     1/(x - 1)
-                except ZeroDivisionError:
+                ausser ZeroDivisionError:
                     pass
             gib x
 
@@ -1322,11 +1322,11 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             x = 0
-            try:
+            versuch:
                 1/x
-            except ZeroDivisionError als error:
+            ausser ZeroDivisionError als error:
                 wenn x:
-                    raise
+                    wirf
             gib "done"
 
         self.run_and_compare(func,
@@ -1349,10 +1349,10 @@ klasse TraceTestCase(unittest.TestCase):
                 pass
 
         def func():
-            try:
+            versuch:
                 mit NullCtx():
                     1/0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 pass
 
         self.run_and_compare(func,
@@ -1375,7 +1375,7 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_no_exception(self):
 
         def func():
-            try:
+            versuch:
                 2
             except* Exception:
                 4
@@ -1387,7 +1387,7 @@ klasse TraceTestCase(unittest.TestCase):
                     10
                 wenn func.__name__ == 'Fred':
                     12
-            finally:
+            schliesslich:
                 14
 
         self.run_and_compare(func,
@@ -1404,13 +1404,13 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_named_no_exception(self):
 
         def func():
-            try:
+            versuch:
                 2
             except* Exception als e:
                 4
             sonst:
                 6
-            finally:
+            schliesslich:
                 8
 
         self.run_and_compare(func,
@@ -1424,13 +1424,13 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_exception_caught(self):
 
         def func():
-            try:
-                raise ValueError(2)
+            versuch:
+                wirf ValueError(2)
             except* ValueError:
                 4
             sonst:
                 6
-            finally:
+            schliesslich:
                 8
 
         self.run_and_compare(func,
@@ -1446,13 +1446,13 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_named_exception_caught(self):
 
         def func():
-            try:
-                raise ValueError(2)
+            versuch:
+                wirf ValueError(2)
             except* ValueError als e:
                 4
             sonst:
                 6
-            finally:
+            schliesslich:
                 8
 
         self.run_and_compare(func,
@@ -1468,12 +1468,12 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_exception_not_caught(self):
 
         def func():
-            try:
-                try:
-                    raise ValueError(3)
+            versuch:
+                versuch:
+                    wirf ValueError(3)
                 except* TypeError:
                     5
-            except ValueError:
+            ausser ValueError:
                 7
 
         self.run_and_compare(func,
@@ -1490,12 +1490,12 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_named_exception_not_caught(self):
 
         def func():
-            try:
-                try:
-                    raise ValueError(3)
+            versuch:
+                versuch:
+                    wirf ValueError(3)
                 except* TypeError als e:
                     5
-            except ValueError:
+            ausser ValueError:
                 7
 
         self.run_and_compare(func,
@@ -1512,9 +1512,9 @@ klasse TraceTestCase(unittest.TestCase):
     def test_try_except_star_nested(self):
 
         def func():
-            try:
-                try:
-                    raise ExceptionGroup(
+            versuch:
+                versuch:
+                    wirf ExceptionGroup(
                         'eg',
                         [ValueError(5), TypeError('bad type')])
                 except* TypeError als e:
@@ -1522,10 +1522,10 @@ klasse TraceTestCase(unittest.TestCase):
                 except* OSError:
                     9
                 except* ValueError:
-                    raise
+                    wirf
             except* ValueError:
-                try:
-                    raise TypeError(14)
+                versuch:
+                    wirf TypeError(14)
                 except* OSError:
                     16
                 except* TypeError als e:
@@ -1709,14 +1709,14 @@ klasse TraceTestCase(unittest.TestCase):
             nonlocal raised
             wenn nicht raised:
                 raised = Wahr
-                raise Exception
+                wirf Exception
             gib error
 
-        try:
+        versuch:
             sys._getframe().f_trace = error_once
             sys.settrace(error_once)
             len([])
-        except Exception als ex:
+        ausser Exception als ex:
             count = 0
             tb = ex.__traceback__
             waehrend tb:
@@ -1729,7 +1729,7 @@ klasse TraceTestCase(unittest.TestCase):
                 self.fail("Traceback has frame more than once")
         sonst:
             self.fail("No exception raised")
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
 
     @support.cpython_only
@@ -1738,10 +1738,10 @@ klasse TraceTestCase(unittest.TestCase):
         # Skip this test wenn the _testcapi module isn't available.
         _testcapi = import_helper.import_module('_testcapi')
 
-        try:
+        versuch:
             _testcapi.settrace_to_error([])
             len([])
-        except Exception als ex:
+        ausser Exception als ex:
             count = 0
             tb = ex.__traceback__
             waehrend tb:
@@ -1754,7 +1754,7 @@ klasse TraceTestCase(unittest.TestCase):
                 self.fail("Traceback has frame more than once")
         sonst:
             self.fail("No exception raised")
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
 
     def test_very_large_function(self):
@@ -1839,11 +1839,11 @@ klasse TraceOpcodesTestCase(TraceTestCase):
         tmp = tempfile.NamedTemporaryFile(delete=Falsch, suffix='.py')
         tmp.write(code.encode('utf-8'))
         tmp.close()
-        try:
+        versuch:
             p = subprocess.Popen([sys.executable, tmp.name], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             out = p.stdout.read()
-        finally:
+        schliesslich:
             os.remove(tmp.name)
             p.stdout.close()
             p.stderr.close()
@@ -1858,7 +1858,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
         """A trace function that raises an exception in response to a
         specific trace event."""
         wenn event == self.raiseOnEvent:
-            raise ValueError # just something that isn't RuntimeError
+            wirf ValueError # just something that isn't RuntimeError
         sonst:
             gib self.trace
 
@@ -1875,16 +1875,16 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
         """Tests that an exception raised in response to the given event is
         handled OK."""
         self.raiseOnEvent = event
-        try:
+        versuch:
             fuer i in range(sys.getrecursionlimit() + 1):
                 sys.settrace(self.trace)
-                try:
+                versuch:
                     self.f()
-                except ValueError:
+                ausser ValueError:
                     pass
                 sonst:
                     self.fail("exception nicht raised!")
-        except RuntimeError:
+        ausser RuntimeError:
             self.fail("recursion counter nicht reset")
 
     # Test the handling of exceptions raised by each kind of trace event.
@@ -1900,18 +1900,18 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
     def test_trash_stack(self):
         def f():
             fuer i in range(5):
-                drucke(i)  # line tracing will raise an exception at this line
+                drucke(i)  # line tracing will wirf an exception at this line
 
         def g(frame, why, extra):
             wenn (why == 'line' und
                 frame.f_lineno == f.__code__.co_firstlineno + 2):
-                raise RuntimeError("i am crashing")
+                wirf RuntimeError("i am crashing")
             gib g
 
         sys.settrace(g)
-        try:
+        versuch:
             f()
-        except RuntimeError:
+        ausser RuntimeError:
             # the test is really that this doesn't segfault:
             importiere gc
             gc.collect()
@@ -1922,7 +1922,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
     def test_exception_arguments(self):
         def f():
             x = 0
-            # this should raise an error
+            # this should wirf an error
             x.no_such_attr
         def g(frame, event, arg):
             wenn (event == 'exception'):
@@ -1931,21 +1931,21 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
             gib g
 
         existing = sys.gettrace()
-        try:
+        versuch:
             sys.settrace(g)
-            try:
+            versuch:
                 f()
-            except AttributeError:
+            ausser AttributeError:
                 # this is expected
                 pass
-        finally:
+        schliesslich:
             sys.settrace(existing)
 
     def test_line_event_raises_before_opcode_event(self):
         exception = ValueError("BOOM!")
         def trace(frame, event, arg):
             wenn event == "line":
-                raise exception
+                wirf exception
             frame.f_trace_opcodes = Wahr
             gib trace
         def f():
@@ -1991,34 +1991,34 @@ klasse JumpTracer:
             wenn f is nicht Nichts:
                 # Cope mit non-integer self.jumpTo (because of
                 # no_jump_to_non_integers below).
-                try:
+                versuch:
                     frame.f_lineno = self.firstLine + self.jumpTo
-                except TypeError:
+                ausser TypeError:
                     frame.f_lineno = self.jumpTo
                 self.done = Wahr
         gib self.trace
 
 # This verifies the line-numbers-must-be-integers rule.
 def no_jump_to_non_integers(output):
-    try:
+    versuch:
         output.append(2)
-    except ValueError als e:
+    ausser ValueError als e:
         output.append('integer' in str(e))
 
 # This verifies that you can't set f_lineno via _getframe oder similar
 # trickery.
 def no_jump_without_trace_function():
-    try:
+    versuch:
         previous_frame = sys._getframe().f_back
         previous_frame.f_lineno = previous_frame.f_lineno
-    except ValueError als e:
+    ausser ValueError als e:
         # This is the exception we wanted; make sure the error message
         # talks about trace functions.
         wenn 'trace' nicht in str(e):
-            raise
+            wirf
     sonst:
         # Something's wrong - the expected exception wasn't raised.
-        raise AssertionError("Trace-function-less jump failed to fail")
+        wirf AssertionError("Trace-function-less jump failed to fail")
 
 
 klasse JumpTestCase(unittest.TestCase):
@@ -2200,38 +2200,38 @@ klasse JumpTestCase(unittest.TestCase):
     # Tests jumping within a finally block, und over one.
     @jump_test(4, 9, [2, 9])
     def test_jump_in_nested_finally(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             output.append(4)
-            try:
+            versuch:
                 output.append(6)
-            finally:
+            schliesslich:
                 output.append(8)
             output.append(9)
 
     @jump_test(6, 7, [2, 7], (ZeroDivisionError, ''))
     def test_jump_in_nested_finally_2(output):
-        try:
+        versuch:
             output.append(2)
             1/0
             gib
-        finally:
+        schliesslich:
             output.append(6)
             output.append(7)
         output.append(8)
 
     @jump_test(6, 11, [2, 11], (ZeroDivisionError, ''))
     def test_jump_in_nested_finally_3(output):
-        try:
+        versuch:
             output.append(2)
             1/0
             gib
-        finally:
+        schliesslich:
             output.append(6)
-            try:
+            versuch:
                 output.append(8)
-            finally:
+            schliesslich:
                 output.append(10)
             output.append(11)
         output.append(12)
@@ -2285,65 +2285,65 @@ klasse JumpTestCase(unittest.TestCase):
 
     @jump_test(2, 5, [5])
     def test_jump_forwards_out_of_try_finally_block(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             output.append(4)
         output.append(5)
 
     @jump_test(3, 1, [1, 1, 3, 5])
     def test_jump_backwards_out_of_try_finally_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        finally:
+        schliesslich:
             output.append(5)
 
     @jump_test(2, 6, [6])
     def test_jump_forwards_out_of_try_except_block(output):
-        try:
+        versuch:
             output.append(2)
-        except:
+        ausser:
             output.append(4)
-            raise
+            wirf
         output.append(6)
 
     @jump_test(3, 1, [1, 1, 3])
     def test_jump_backwards_out_of_try_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        except:
+        ausser:
             output.append(5)
-            raise
+            wirf
 
     @jump_test(5, 7, [4, 7, 8])
     def test_jump_between_except_blocks(output):
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             output.append(4)
             output.append(5)
-        except FloatingPointError:
+        ausser FloatingPointError:
             output.append(7)
         output.append(8)
 
     @jump_test(5, 7, [4, 7, 8])
     def test_jump_from_except_to_finally(output):
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             output.append(4)
             output.append(5)
-        finally:
+        schliesslich:
             output.append(7)
         output.append(8)
 
     @jump_test(5, 6, [4, 6, 7])
     def test_jump_within_except_block(output):
-        try:
+        versuch:
             1/0
-        except:
+        ausser:
             output.append(4)
             output.append(5)
             output.append(6)
@@ -2352,9 +2352,9 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(6, 1, [1, 5, 1, 5], warning=(RuntimeWarning, unbound_locals))
     def test_jump_over_try_except(output):
         output.append(1)
-        try:
+        versuch:
             1 / 0
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             output.append(5)
         x = 42  # has to be a two-instruction block
 
@@ -2412,9 +2412,9 @@ klasse JumpTestCase(unittest.TestCase):
 
     @jump_test(5, 6, [2, 4, 6, 7])
     def test_jump_out_of_with_block_within_finally_block(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             mit tracecontext(output, 4):
                 output.append(5)
             output.append(6)
@@ -2422,9 +2422,9 @@ klasse JumpTestCase(unittest.TestCase):
 
     @async_jump_test(5, 6, [2, 4, 6, 7])
     async def test_jump_out_of_async_with_block_within_finally_block(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             async mit asynctracecontext(output, 4):
                 output.append(5)
             output.append(6)
@@ -2437,10 +2437,10 @@ klasse JumpTestCase(unittest.TestCase):
             output.append(3)
             fuer j in [1, 2]:
                 output.append(5)
-                try:
+                versuch:
                     fuer k in [1, 2]:
                         output.append(8)
-                finally:
+                schliesslich:
                     output.append(10)
             output.append(11)
         output.append(12)
@@ -2464,12 +2464,12 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(3, 6, [1, 6, 8, 9])
     def test_jump_over_return_in_try_finally_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
             wenn nicht output: # always false
                 gib
             output.append(6)
-        finally:
+        schliesslich:
             output.append(8)
         output.append(9)
 
@@ -2478,12 +2478,12 @@ klasse JumpTestCase(unittest.TestCase):
         output.append(1)
         waehrend Wahr:
             output.append(3)
-            try:
+            versuch:
                 output.append(5)
                 wenn nicht output: # always false
                     breche
                 output.append(8)
-            finally:
+            schliesslich:
                 output.append(10)
             output.append(11)
             breche
@@ -2526,35 +2526,35 @@ klasse JumpTestCase(unittest.TestCase):
     # Test each kind of 'except' line.
     @jump_test(2, 3, [4], (ValueError, 'except'))
     def test_no_jump_to_except_1(output):
-        try:
+        versuch:
             output.append(2)
-        except:
+        ausser:
             output.append(4)
-            raise
+            wirf
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     def test_no_jump_to_except_2(output):
-        try:
+        versuch:
             output.append(2)
-        except ValueError:
+        ausser ValueError:
             output.append(4)
-            raise
+            wirf
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     def test_no_jump_to_except_3(output):
-        try:
+        versuch:
             output.append(2)
-        except ValueError als e:
+        ausser ValueError als e:
             output.append(4)
-            raise e
+            wirf e
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     def test_no_jump_to_except_4(output):
-        try:
+        versuch:
             output.append(2)
-        except (ValueError, RuntimeError) als e:
+        ausser (ValueError, RuntimeError) als e:
             output.append(4)
-            raise e
+            wirf e
 
     @jump_test(1, 3, [], (ValueError, 'into'))
     def test_no_jump_forwards_into_for_block(output):
@@ -2609,63 +2609,63 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(1, 3, [3, 5])
     def test_jump_forwards_into_try_finally_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        finally:
+        schliesslich:
             output.append(5)
 
     @jump_test(5, 2, [2, 4, 2, 4, 5])
     def test_jump_backwards_into_try_finally_block(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             output.append(4)
         output.append(5)
 
     @jump_test(1, 3, [3])
     def test_jump_forwards_into_try_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        except:
+        ausser:
             output.append(5)
-            raise
+            wirf
 
     @jump_test(6, 2, [2, 2, 6])
     def test_jump_backwards_into_try_except_block(output):
-        try:
+        versuch:
             output.append(2)
-        except:
+        ausser:
             output.append(4)
-            raise
+            wirf
         output.append(6)
 
     # 'except' mit a variable creates an implicit finally block
     @jump_test(5, 7, [4, 7, 8], warning=(RuntimeWarning, unbound_locals))
     def test_jump_between_except_blocks_2(output):
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             output.append(4)
             output.append(5)
-        except FloatingPointError als e:
+        ausser FloatingPointError als e:
             output.append(7)
         output.append(8)
 
     @jump_test(1, 5, [5])
     def test_jump_into_finally_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        finally:
+        schliesslich:
             output.append(5)
 
     @jump_test(3, 6, [2, 6, 7])
     def test_jump_into_finally_block_from_try_block(output):
-        try:
+        versuch:
             output.append(2)
             output.append(3)
-        finally:  # still executed wenn the jump is failed
+        schliesslich:  # still executed wenn the jump is failed
             output.append(5)
             output.append(6)
         output.append(7)
@@ -2673,66 +2673,66 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(5, 1, [1, 3, 1, 3, 5])
     def test_jump_out_of_finally_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        finally:
+        schliesslich:
             output.append(5)
 
     @jump_test(1, 5, [], (ValueError, "can't jump into an 'except' block als there's no exception"))
     def test_no_jump_into_bare_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        except:
+        ausser:
             output.append(5)
 
     @jump_test(1, 5, [], (ValueError, "can't jump into an 'except' block als there's no exception"))
     def test_no_jump_into_qualified_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
-        except Exception:
+        ausser Exception:
             output.append(5)
 
     @jump_test(3, 6, [2, 5, 6], (ValueError, "can't jump into an 'except' block als there's no exception"))
     def test_no_jump_into_bare_except_block_from_try_block(output):
-        try:
+        versuch:
             output.append(2)
             output.append(3)
-        except:  # executed wenn the jump is failed
+        ausser:  # executed wenn the jump is failed
             output.append(5)
             output.append(6)
-            raise
+            wirf
         output.append(8)
 
     @jump_test(3, 6, [2], (ValueError, "can't jump into an 'except' block als there's no exception"))
     def test_no_jump_into_qualified_except_block_from_try_block(output):
-        try:
+        versuch:
             output.append(2)
             output.append(3)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             output.append(5)
             output.append(6)
-            raise
+            wirf
         output.append(8)
 
     @jump_test(7, 1, [1, 3, 6, 1, 3, 6, 7])
     def test_jump_out_of_bare_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
             1/0
-        except:
+        ausser:
             output.append(6)
             output.append(7)
 
     @jump_test(7, 1, [1, 3, 6, 1, 3, 6, 7])
     def test_jump_out_of_qualified_except_block(output):
         output.append(1)
-        try:
+        versuch:
             output.append(3)
             1/0
-        except Exception:
+        ausser Exception:
             output.append(6)
             output.append(7)
 
@@ -2754,9 +2754,9 @@ klasse JumpTestCase(unittest.TestCase):
 
     @jump_test(5, 7, [2, 4], (ValueError, "after"))
     def test_no_jump_over_return_out_of_finally_block(output):
-        try:
+        versuch:
             output.append(2)
-        finally:
+        schliesslich:
             output.append(4)
             output.append(5)
         gib

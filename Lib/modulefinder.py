@@ -54,7 +54,7 @@ def _find_module(name, path=Nichts):
     spec = importlib.machinery.PathFinder.find_spec(name, path)
 
     wenn spec is Nichts:
-        raise ImportError("No module named {name!r}".format(name=name), name=name)
+        wirf ImportError("No module named {name!r}".format(name=name), name=name)
 
     # Some special cases:
 
@@ -190,7 +190,7 @@ klasse ModuleFinder:
                 self.msgout(4, "determine_parent ->", parent)
                 gib parent
             wenn pname.count(".") < level:
-                raise ImportError("relative importpath too deep")
+                wirf ImportError("relative importpath too deep")
             pname = ".".join(pname.split(".")[:-level])
             parent = self.modules[pname]
             self.msgout(4, "determine_parent ->", parent)
@@ -235,7 +235,7 @@ klasse ModuleFinder:
                 self.msgout(4, "find_head_package ->", (q, tail))
                 gib q, tail
         self.msgout(4, "raise ImportError: No module named", qname)
-        raise ImportError("No module named " + qname)
+        wirf ImportError("No module named " + qname)
 
     def load_tail(self, q, tail):
         self.msgin(4, "load_tail", q, tail)
@@ -248,7 +248,7 @@ klasse ModuleFinder:
             m = self.import_module(head, mname, m)
             wenn nicht m:
                 self.msgout(4, "raise ImportError: No module named", mname)
-                raise ImportError("No module named " + mname)
+                wirf ImportError("No module named " + mname)
         self.msgout(4, "load_tail ->", m)
         gib m
 
@@ -264,7 +264,7 @@ klasse ModuleFinder:
                 subname = "%s.%s" % (m.__name__, sub)
                 submod = self.import_module(sub, subname, m)
                 wenn nicht submod:
-                    raise ImportError("No module named " + subname)
+                    wirf ImportError("No module named " + subname)
 
     def find_all_submodules(self, m):
         wenn nicht m.__path__:
@@ -278,9 +278,9 @@ klasse ModuleFinder:
         suffixes += importlib.machinery.SOURCE_SUFFIXES[:]
         suffixes += importlib.machinery.BYTECODE_SUFFIXES[:]
         fuer dir in m.__path__:
-            try:
+            versuch:
                 names = os.listdir(dir)
-            except OSError:
+            ausser OSError:
                 self.msg(2, "can't list directory", dir)
                 weiter
             fuer name in names:
@@ -296,9 +296,9 @@ klasse ModuleFinder:
 
     def import_module(self, partname, fqname, parent):
         self.msgin(3, "import_module", partname, fqname, parent)
-        try:
+        versuch:
             m = self.modules[fqname]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             self.msgout(3, "import_module ->", m)
@@ -309,16 +309,16 @@ klasse ModuleFinder:
         wenn parent und parent.__path__ is Nichts:
             self.msgout(3, "import_module -> Nichts")
             gib Nichts
-        try:
+        versuch:
             fp, pathname, stuff = self.find_module(partname,
                                                    parent und parent.__path__, parent)
-        except ImportError:
+        ausser ImportError:
             self.msgout(3, "import_module ->", Nichts)
             gib Nichts
 
-        try:
+        versuch:
             m = self.load_module(fqname, fp, pathname, stuff)
-        finally:
+        schliesslich:
             wenn fp:
                 fp.close()
         wenn parent:
@@ -336,12 +336,12 @@ klasse ModuleFinder:
         wenn type == _PY_SOURCE:
             co = compile(fp.read(), pathname, 'exec')
         sowenn type == _PY_COMPILED:
-            try:
+            versuch:
                 data = fp.read()
                 importlib._bootstrap_external._classify_pyc(data, fqname, {})
-            except ImportError als exc:
+            ausser ImportError als exc:
                 self.msgout(2, "raise ImportError: " + str(exc), pathname)
-                raise
+                wirf
             co = marshal.loads(memoryview(data)[16:])
         sonst:
             co = Nichts
@@ -364,16 +364,16 @@ klasse ModuleFinder:
             self.badmodules[name]["-"] = 1
 
     def _safe_import_hook(self, name, caller, fromlist, level=-1):
-        # wrapper fuer self.import_hook() that won't raise ImportError
+        # wrapper fuer self.import_hook() that won't wirf ImportError
         wenn name in self.badmodules:
             self._add_badmodule(name, caller)
             gib
-        try:
+        versuch:
             self.import_hook(name, caller, level=level)
-        except ImportError als msg:
+        ausser ImportError als msg:
             self.msg(2, "ImportError:", str(msg))
             self._add_badmodule(name, caller)
-        except SyntaxError als msg:
+        ausser SyntaxError als msg:
             self.msg(2, "SyntaxError:", str(msg))
             self._add_badmodule(name, caller)
         sonst:
@@ -383,9 +383,9 @@ klasse ModuleFinder:
                     wenn fullname in self.badmodules:
                         self._add_badmodule(fullname, caller)
                         weiter
-                    try:
+                    versuch:
                         self.import_hook(name, caller, [sub], level=level)
-                    except ImportError als msg:
+                    ausser ImportError als msg:
                         self.msg(2, "ImportError:", str(msg))
                         self._add_badmodule(fullname, caller)
 
@@ -442,7 +442,7 @@ klasse ModuleFinder:
                     self._safe_import_hook(parent.__name__, Nichts, fromlist, level=0)
             sonst:
                 # We don't expect anything sonst von the generator.
-                raise RuntimeError(what)
+                wirf RuntimeError(what)
 
         fuer c in co.co_consts:
             wenn isinstance(c, type(co)):
@@ -461,11 +461,11 @@ klasse ModuleFinder:
         m.__path__ = m.__path__ + packagePathMap.get(fqname, [])
 
         fp, buf, stuff = self.find_module("__init__", m.__path__)
-        try:
+        versuch:
             self.load_module(fqname, fp, buf, stuff)
             self.msgout(2, "load_package ->", m)
             gib m
-        finally:
+        schliesslich:
             wenn fp:
                 fp.close()
 
@@ -483,7 +483,7 @@ klasse ModuleFinder:
             fullname = name
         wenn fullname in self.excludes:
             self.msgout(3, "find_module -> Excluded", fullname)
-            raise ImportError(name)
+            wirf ImportError(name)
 
         wenn path is Nichts:
             wenn name in sys.builtin_module_names:
@@ -608,9 +608,9 @@ klasse ModuleFinder:
 def test():
     # Parse command line
     importiere getopt
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         drucke(msg)
         gib
 
@@ -665,7 +665,7 @@ def test():
 
 
 wenn __name__ == '__main__':
-    try:
+    versuch:
         mf = test()
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke("\n[interrupted]")

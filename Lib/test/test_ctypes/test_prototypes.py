@@ -62,9 +62,9 @@ klasse CharPointersTestCase(unittest.TestCase):
         func = prototype(("_testfunc_p_p", testdll),
                          ((1, "input"),))
 
-        try:
+        versuch:
             func()
-        except TypeError als details:
+        ausser TypeError als details:
             self.assertEqual(str(details), "required argument 'input' missing")
         sonst:
             self.fail("TypeError nicht raised")
@@ -201,7 +201,7 @@ klasse WCharPointersTestCase(unittest.TestCase):
         self.assertEqual(Nichts, func(c_wchar_p(Nichts)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
-        # XXX Currently, these raise TypeErrors, although they shouldn't:
+        # XXX Currently, these wirf TypeErrors, although they shouldn't:
         self.assertEqual("123", func(c_wbuffer("123")))
         ca = c_wchar("a")
         self.assertEqual("a", func(pointer(ca))[0])

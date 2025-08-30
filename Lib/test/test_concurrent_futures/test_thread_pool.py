@@ -94,21 +94,21 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
 
         def log_n_wait(ident):
             log.append(f"{ident=} started")
-            try:
+            versuch:
                 stop_event.wait()
-            finally:
+            schliesslich:
                 log.append(f"{ident=} stopped")
 
         mit self.executor_type(max_workers=1) als pool:
             # submit work to saturate the pool
             fut = pool.submit(log_n_wait, ident="first")
-            try:
+            versuch:
                 mit contextlib.closing(
                     pool.map(log_n_wait, ["second", "third"], timeout=0)
                 ) als gen:
                     mit self.assertRaises(TimeoutError):
                         next(gen)
-            finally:
+            schliesslich:
                 stop_event.set()
             fut.result()
         # ident='second' is cancelled als a result of raising a TimeoutError

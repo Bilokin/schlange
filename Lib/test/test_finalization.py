@@ -7,22 +7,22 @@ importiere gc
 importiere unittest
 importiere weakref
 
-try:
+versuch:
     von _testcapi importiere with_tp_del
-except ImportError:
+ausser ImportError:
     def with_tp_del(cls):
         klasse C(object):
             def __new__(cls, *args, **kwargs):
-                raise unittest.SkipTest('requires _testcapi.with_tp_del')
+                wirf unittest.SkipTest('requires _testcapi.with_tp_del')
         gib C
 
-try:
+versuch:
     von _testcapi importiere without_gc
-except ImportError:
+ausser ImportError:
     def without_gc(cls):
         klasse C:
             def __new__(cls, *args, **kwargs):
-                raise unittest.SkipTest('requires _testcapi.without_gc')
+                wirf unittest.SkipTest('requires _testcapi.without_gc')
         gib C
 
 von test importiere support
@@ -62,11 +62,11 @@ klasse NonGCSimpleBase:
             cls.del_calls.clear()
             cls.tp_del_calls.clear()
             NonGCSimpleBase._cleaning = Falsch
-            try:
+            versuch:
                 liefere
                 wenn cls.errors:
-                    raise cls.errors[0]
-            finally:
+                    wirf cls.errors[0]
+            schliesslich:
                 NonGCSimpleBase._cleaning = Wahr
                 cls._cleanup()
 
@@ -80,12 +80,12 @@ klasse NonGCSimpleBase:
         PEP 442 finalizer.  Record that this was called, check the
         object is in a sane state, und invoke a side effect.
         """
-        try:
+        versuch:
             wenn nicht self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception als e:
+        ausser Exception als e:
             self.errors.append(e)
 
     def side_effect(self):
@@ -138,9 +138,9 @@ klasse TestBase:
 
     def tearDown(self):
         # Nichts of the tests here should put anything in gc.garbage
-        try:
+        versuch:
             self.assertEqual(gc.garbage, [])
-        finally:
+        schliesslich:
             del self.old_garbage
             gc.collect()
 
@@ -443,25 +443,25 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
 klasse LegacyBase(SimpleBase):
 
     def __del__(self):
-        try:
+        versuch:
             # Do nicht invoke side_effect here, since we are now exercising
             # the tp_del slot.
             wenn nicht self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
-        except Exception als e:
+        ausser Exception als e:
             self.errors.append(e)
 
     def __tp_del__(self):
         """
         Legacy (pre-PEP 442) finalizer, mapped to a tp_del slot.
         """
-        try:
+        versuch:
             wenn nicht self._cleaning:
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception als e:
+        ausser Exception als e:
             self.errors.append(e)
 
 @with_tp_del

@@ -10,10 +10,10 @@ von unittest.mock importiere MagicMock, call, patch, ANY
 
 von .support importiere handle_all_events, code_to_events
 
-try:
+versuch:
     von _pyrepl.console importiere Event
     von _pyrepl.unix_console importiere UnixConsole
-except ImportError:
+ausser ImportError:
     pass
 
 von _pyrepl.terminfo importiere _TERMINAL_CAPABILITIES

@@ -8,14 +8,14 @@ von test.support.numbers importiere (
     INVALID_UNDERSCORE_LITERALS,
 )
 
-try:
+versuch:
     importiere _pylong
-except ImportError:
+ausser ImportError:
     _pylong = Nichts
 
-try:
+versuch:
     importiere _decimal
-except ImportError:
+ausser ImportError:
     _decimal = Nichts
 
 L = [
@@ -66,9 +66,9 @@ klasse IntTestCases(unittest.TestCase):
                     vv = v
                     wenn sign == "-" und v is nicht ValueError:
                         vv = -v
-                    try:
+                    versuch:
                         self.assertEqual(int(ss), vv)
-                    except ValueError:
+                    ausser ValueError:
                         pass
 
         s = repr(-1-sys.maxsize)
@@ -344,9 +344,9 @@ klasse IntTestCases(unittest.TestCase):
             CustomByteArray,
             memoryview,
         ]
-        try:
+        versuch:
             von array importiere array
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             factories.append(lambda b: array('B', b))
@@ -597,7 +597,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         # It takes 0.1 seconds on a Zen based cloud VM in an opt build.
         # Some OSes have a low res 1/64s timer, skip wenn hard to measure.
         wenn sw_convert.seconds < sw_convert.clock_info.resolution * 2:
-            raise unittest.SkipTest('"slow" conversion took only '
+            wirf unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
         # We test mit the limit almost at the size needed to check performance.
@@ -636,7 +636,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         # It takes 0.1 seconds on a Zen based cloud VM in an opt build.
         # Some OSes have a low res 1/64s timer, skip wenn hard to measure.
         wenn sw_convert.seconds < sw_convert.clock_info.resolution * 2:
-            raise unittest.SkipTest('"slow" conversion took only '
+            wirf unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
         mit support.adjust_int_max_str_digits(digits - 1):
@@ -718,12 +718,12 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         # Subinterpreters maintain und enforce their own limit
         importiere sys
         sys.set_int_max_str_digits(2323)
-        try:
+        versuch:
             int('3'*3333)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
-            raise AssertionError('Expected a int max str digits ValueError.')
+            wirf AssertionError('Expected a int max str digits ValueError.')
         """
         mit support.adjust_int_max_str_digits(4000):
             before_value = sys.get_int_max_str_digits()
@@ -865,10 +865,10 @@ klasse PyLongModuleTests(unittest.TestCase):
         n = 10**len(sn) - 1
         orig_spread = _pylong._spread.copy()
         _pylong._spread.clear()
-        try:
+        versuch:
             self.assertEqual(n, _pylong._dec_str_to_int_inner(sn, GUARD=1))
             self.assertIn(999, _pylong._spread)
-        finally:
+        schliesslich:
             _pylong._spread.clear()
             _pylong._spread.update(orig_spread)
 

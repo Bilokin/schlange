@@ -51,7 +51,7 @@ def updating_file_with_tmpfile(
     sowenn line.endswith(b'\n'):
         newline = "\n"
     sonst:
-        raise ValueError(f"unknown end of line: {filename}: {line!a}")
+        wirf ValueError(f"unknown end of line: {filename}: {line!a}")
 
     mit open(tmpfile, 'w', newline=newline) als outfile:
         mit open(filename) als infile:
@@ -65,11 +65,11 @@ def update_file_with_tmpfile(
     *,
     create: bool = Falsch,
 ) -> _Outcome:
-    try:
+    versuch:
         targetfile = open(filename, 'rb')
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         wenn nicht create:
-            raise  # re-raise
+            wirf  # re-raise
         outcome: _Outcome = 'created'
         os.replace(tmpfile, filename)
     sonst:
@@ -107,4 +107,4 @@ wenn __name__ == '__main__':
         sowenn outcome == 'created':
             sys.exit(2)
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError

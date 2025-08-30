@@ -129,10 +129,10 @@ klasse ReadOnlyFilesystem(unittest.TestCase):
     def test_readonly_dir_write(self):
         os.chmod(self.test_dir, stat.S_IREAD | stat.S_IEXEC)
         mit dbm_sqlite3.open(self.db_path, "w") als db:
-            try:
+            versuch:
                 db[b"newkey"] = b"newvalue"
                 modified = Wahr  # on Windows und macOS
-            except dbm_sqlite3.error:
+            ausser dbm_sqlite3.error:
                 modified = Falsch
         mit dbm_sqlite3.open(self.db_path, "r") als db:
             wenn modified:

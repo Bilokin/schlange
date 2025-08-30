@@ -6,10 +6,10 @@
 importiere sys
 importiere unittest
 von test.support.import_helper importiere import_module
-try:
+versuch:
     von _testcapi importiere get_feature_macros
-except ImportError:
-    raise unittest.SkipTest("requires _testcapi")
+ausser ImportError:
+    wirf unittest.SkipTest("requires _testcapi")
 
 feature_macros = get_feature_macros()
 
@@ -17,7 +17,7 @@ feature_macros = get_feature_macros()
 # layout differences.
 # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
 wenn feature_macros['Py_TRACE_REFS']:
-    raise unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
+    wirf unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
 
 ctypes_test = import_module('ctypes')
 

@@ -10,9 +10,9 @@ klasse TestUntestedModules(unittest.TestCase):
         untested = ('encodings',)
         mit warnings_helper.check_warnings(quiet=Wahr):
             fuer name in untested:
-                try:
+                versuch:
                     import_helper.import_module('test.test_{}'.format(name))
-                except unittest.SkipTest:
+                ausser unittest.SkipTest:
                     importlib.import_module(name)
                 sonst:
                     self.fail('{} has tests even though test_sundry claims '
@@ -20,10 +20,10 @@ klasse TestUntestedModules(unittest.TestCase):
 
             importiere html.entities  # noqa: F401
 
-            try:
+            versuch:
                 # Not available on Windows
                 importiere tty  # noqa: F401
-            except ImportError:
+            ausser ImportError:
                 wenn support.verbose:
                     drucke("skipping tty")
 

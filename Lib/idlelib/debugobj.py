@@ -33,10 +33,10 @@ klasse ObjectTreeItem(TreeItem):
     def IsEditable(self):
         gib self.setfunction is nicht Nichts
     def SetText(self, text):
-        try:
+        versuch:
             value = eval(text)
             self.setfunction(value)
-        except:
+        ausser:
             pass
         sonst:
             self.object = value
@@ -46,9 +46,9 @@ klasse ObjectTreeItem(TreeItem):
         keys = dir(self.object)
         sublist = []
         fuer key in keys:
-            try:
+            versuch:
                 value = getattr(self.object, key)
-            except AttributeError:
+            ausser AttributeError:
                 weiter
             item = make_objecttreeitem(
                 str(key) + " =",
@@ -83,9 +83,9 @@ klasse SequenceTreeItem(ObjectTreeItem):
     def GetSubList(self):
         sublist = []
         fuer key in self.keys():
-            try:
+            versuch:
                 value = self.object[key]
-            except KeyError:
+            ausser KeyError:
                 weiter
             def setfunction(value, key=key, object_=self.object):
                 object_[key] = value
@@ -97,9 +97,9 @@ klasse DictTreeItem(SequenceTreeItem):
     def keys(self):
         # TODO gib sorted(self.object)
         keys = list(self.object)
-        try:
+        versuch:
             keys.sort()
-        except:
+        ausser:
             pass
         gib keys
 

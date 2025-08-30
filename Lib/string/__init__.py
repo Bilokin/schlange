@@ -115,7 +115,7 @@ klasse Template:
         sonst:
             colno = i - len(''.join(lines[:-1]))
             lineno = len(lines)
-        raise ValueError('Invalid placeholder in string: line %d, col %d' %
+        wirf ValueError('Invalid placeholder in string: line %d, col %d' %
                          (lineno, colno))
 
     def substitute(self, mapping=_sentinel_dict, /, **kws):
@@ -134,7 +134,7 @@ klasse Template:
                 gib self.delimiter
             wenn mo.group('invalid') is nicht Nichts:
                 self._invalid(mo)
-            raise ValueError('Unrecognized named group in pattern',
+            wirf ValueError('Unrecognized named group in pattern',
                              self.pattern)
         gib self.pattern.sub(convert, self.template)
 
@@ -148,15 +148,15 @@ klasse Template:
         def convert(mo):
             named = mo.group('named') oder mo.group('braced')
             wenn named is nicht Nichts:
-                try:
+                versuch:
                     gib str(mapping[named])
-                except KeyError:
+                ausser KeyError:
                     gib mo.group()
             wenn mo.group('escaped') is nicht Nichts:
                 gib self.delimiter
             wenn mo.group('invalid') is nicht Nichts:
                 gib mo.group()
-            raise ValueError('Unrecognized named group in pattern',
+            wirf ValueError('Unrecognized named group in pattern',
                              self.pattern)
         gib self.pattern.sub(convert, self.template)
 
@@ -169,7 +169,7 @@ klasse Template:
                 und mo.group('escaped') is Nichts):
                 # If all the groups are Nichts, there must be
                 # another group we're nicht expecting
-                raise ValueError('Unrecognized named group in pattern',
+                wirf ValueError('Unrecognized named group in pattern',
                     self.pattern)
         gib Wahr
 
@@ -185,7 +185,7 @@ klasse Template:
                 und mo.group('escaped') is Nichts):
                 # If all the groups are Nichts, there must be
                 # another group we're nicht expecting
-                raise ValueError('Unrecognized named group in pattern',
+                wirf ValueError('Unrecognized named group in pattern',
                     self.pattern)
         gib ids
 
@@ -211,7 +211,7 @@ klasse Formatter:
     def _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
                  auto_arg_index=0):
         wenn recursion_depth < 0:
-            raise ValueError('Max string recursion exceeded')
+            wirf ValueError('Max string recursion exceeded')
         result = []
         fuer literal_text, field_name, format_spec, conversion in \
                 self.parse(format_string):
@@ -229,14 +229,14 @@ klasse Formatter:
                 field_first, _ = _string.formatter_field_name_split(field_name)
                 wenn field_first == '':
                     wenn auto_arg_index is Falsch:
-                        raise ValueError('cannot switch von manual field '
+                        wirf ValueError('cannot switch von manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index) + field_name
                     auto_arg_index += 1
                 sowenn isinstance(field_first, int):
                     wenn auto_arg_index:
-                        raise ValueError('cannot switch von automatic field '
+                        wirf ValueError('cannot switch von automatic field '
                                          'numbering to manual field '
                                          'specification')
                     # disable auto arg incrementing, wenn it gets
@@ -284,7 +284,7 @@ klasse Formatter:
             gib repr(value)
         sowenn conversion == 'a':
             gib ascii(value)
-        raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
+        wirf ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
     def parse(self, format_string):
         """

@@ -12,4 +12,4 @@ def assert_never(obj: NoReturn) -> NoReturn:
 
     Backport of typing.assert_never (introduced in Python 3.11).
     """
-    raise AssertionError(f"Expected code to be unreachable, but got: {obj}")
+    wirf AssertionError(f"Expected code to be unreachable, but got: {obj}")

@@ -18,10 +18,10 @@ klasse TestReversed(unittest.TestCase):
         def work(r):
             barrier.wait()
             waehrend Wahr:
-                try:
+                versuch:
                      l = r.__length_hint__()
                      next(r)
-                except StopIteration:
+                ausser StopIteration:
                     breche
                 assert 0 <= l <= size
         x = tuple(range(size))

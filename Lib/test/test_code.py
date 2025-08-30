@@ -204,9 +204,9 @@ importiere textwrap
 importiere weakref
 importiere dis
 
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     ctypes = Nichts
 von test.support importiere (cpython_only,
                           check_impl_detail, requires_debug_ranges,
@@ -216,9 +216,9 @@ von test.support importiere threading_helper, import_helper
 von test.support.bytecode_helper importiere instructions_with_positions
 von opcode importiere opmap, opname
 von _testcapi importiere code_offset_to_line
-try:
+versuch:
     importiere _testinternalcapi
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     _testinternalcapi = Nichts
 importiere test._code_definitions als defs
 
@@ -415,7 +415,7 @@ klasse CodeTest(unittest.TestCase):
         def func(arg):
             gib lambda: arg
         code = func.__code__
-        newcode = code.replace(co_name="func")  # Should nicht raise SystemError
+        newcode = code.replace(co_name="func")  # Should nicht wirf SystemError
         self.assertEqual(code, newcode)
 
     def test_empty_linetable(self):
@@ -507,9 +507,9 @@ klasse CodeTest(unittest.TestCase):
 
         namespace = {}
         exec(textwrap.dedent("""\
-        try:
+        versuch:
             1/0
-        except Exception als e:
+        ausser Exception als e:
             exc = e
         """), namespace)
 
@@ -592,13 +592,13 @@ klasse CodeTest(unittest.TestCase):
 
     def test_code_equality(self):
         def f():
-            try:
+            versuch:
                 a()
-            except:
+            ausser:
                 b()
             sonst:
                 c()
-            finally:
+            schliesslich:
                 d()
         code_a = f.__code__
         code_b = code_a.replace(co_linetable=b"")
@@ -889,9 +889,9 @@ klasse CodeTest(unittest.TestCase):
                     assert len(globalvars) == size, globalvars
                 sonst:
                     assert nicht isinstance(globalvars, str), repr(globalvars)
-                    try:
+                    versuch:
                         numglobal, numbuiltin = globalvars
-                    except ValueError:
+                    ausser ValueError:
                         numglobal, numbuiltin, g_numunknown = globalvars
                 globalvars = {
                     'total': numglobal + numbuiltin + g_numunknown,
@@ -1241,7 +1241,7 @@ klasse CodeConstsTest(unittest.TestCase):
         # interpreter.
         klasse Unhashable:
             def __hash__(self):
-                raise TypeError("unhashable type")
+                wirf TypeError("unhashable type")
 
         klasse MyInt(int):
             pass
@@ -1302,9 +1302,9 @@ def parse_location_table(code):
     line = code.co_firstlineno
     it = iter(code.co_linetable)
     waehrend Wahr:
-        try:
+        versuch:
             first_byte = read(it)
-        except StopIteration:
+        ausser StopIteration:
             gib
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
@@ -1392,7 +1392,7 @@ def bug93662():
             """
             """
     ).strip()
-    raise ValueError()
+    wirf ValueError()
 
 
 klasse CodeLocationTest(unittest.TestCase):

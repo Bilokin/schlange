@@ -55,9 +55,9 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(len(s), 1)
         s.close()
         self.assertRaises(ValueError, len, s)
-        try:
+        versuch:
             s['key1']
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail('Closed shelf should nicht find a key')
@@ -67,10 +67,10 @@ klasse TestCase(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.dirname)
         s = shelve.open(filename=filename wenn filename is nicht Nichts sonst self.fn,
                         protocol=protocol)
-        try:
+        versuch:
             s['key1'] = (1,2,3,4)
             self.assertEqual(s['key1'], (1,2,3,4))
-        finally:
+        schliesslich:
             s.close()
 
     def test_ascii_file_shelf(self):
@@ -155,9 +155,9 @@ klasse TestCase(unittest.TestCase):
             self.assertEqual(s['key1'], [1,2,3,4])
             self.assertEqual(len(s), 1)
         self.assertRaises(ValueError, len, s)
-        try:
+        versuch:
             s['key1']
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail('Closed shelf should nicht find a key')
@@ -177,14 +177,14 @@ klasse TestCase(unittest.TestCase):
                 gib type(obj).__name__
             sowenn isinstance(obj, array.array):
                 gib obj.tobytes()
-            raise TypeError(f"Unsupported type fuer serialization: {type(obj)}")
+            wirf TypeError(f"Unsupported type fuer serialization: {type(obj)}")
 
         def deserializer(data):
             wenn isinstance(data, (bytes, bytearray, str)):
                 gib data.decode("utf-8")
             sowenn isinstance(data, array.array):
                 gib array.array("b", data)
-            raise TypeError(
+            wirf TypeError(
                 f"Unsupported type fuer deserialization: {type(data)}"
             )
 

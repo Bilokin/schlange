@@ -41,7 +41,7 @@ def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
     wenn sock in r:
         gib sock.recv(n)
     sonst:
-        raise RuntimeError("timed out on %r" % (sock,))
+        wirf RuntimeError("timed out on %r" % (sock,))
 
 
 @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -51,13 +51,13 @@ def simple_subprocess(testcase):
     """Tests that a custom child process is nicht waited on (Issue 1540386)"""
     pid = os.fork()
     wenn pid == 0:
-        # Don't raise an exception; it would be caught by the test harness.
+        # Don't wirf an exception; it would be caught by the test harness.
         os._exit(72)
-    try:
+    versuch:
         liefere Nichts
-    except:
-        raise
-    finally:
+    ausser:
+        wirf
+    schliesslich:
         test.support.wait_process(pid, exitcode=72)
 
 
@@ -72,9 +72,9 @@ klasse SocketServerTest(unittest.TestCase):
         reap_children()
 
         fuer fn in self.test_files:
-            try:
+            versuch:
                 os.remove(fn)
-            except OSError:
+            ausser OSError:
                 pass
         self.test_files[:] = []
 
@@ -92,7 +92,7 @@ klasse SocketServerTest(unittest.TestCase):
         klasse MyServer(svrcls):
             def handle_error(self, request, client_address):
                 self.close_request(request)
-                raise
+                wirf
 
         klasse MyHandler(hdlrbase):
             def handle(self):
@@ -100,9 +100,9 @@ klasse SocketServerTest(unittest.TestCase):
                 self.wfile.write(line)
 
         wenn verbose: drucke("creating server")
-        try:
+        versuch:
             server = MyServer(addr, MyHandler)
-        except PermissionError als e:
+        ausser PermissionError als e:
             # Issue 29184: cannot bind() a Unix socket on Android.
             self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
@@ -344,9 +344,9 @@ klasse BaseErrorTestServer(socketserver.TCPServer):
         super().__init__((HOST, 0), BadHandler)
         mit socket.create_connection(self.server_address):
             pass
-        try:
+        versuch:
             self.handle_request()
-        finally:
+        schliesslich:
             self.server_close()
         self.wait_done()
 
@@ -362,7 +362,7 @@ klasse BadHandler(socketserver.BaseRequestHandler):
     def handle(self):
         mit open(os_helper.TESTFN, 'a') als log:
             log.write('Handler called\n')
-        raise self.server.exception('Test error')
+        wirf self.server.exception('Test error')
 
 
 klasse ThreadingErrorTestServer(socketserver.ThreadingMixIn,

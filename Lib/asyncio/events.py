@@ -90,11 +90,11 @@ klasse Handle:
         gib self._cancelled
 
     def _run(self):
-        try:
+        versuch:
             self._context.run(self._callback, *self._args)
-        except (SystemExit, KeyboardInterrupt):
-            raise
-        except BaseException als exc:
+        ausser (SystemExit, KeyboardInterrupt):
+            wirf
+        ausser BaseException als exc:
             cb = format_helpers._format_callback_source(
                 self._callback, self._args,
                 debug=self._loop.get_debug())
@@ -206,23 +206,23 @@ klasse AbstractServer:
 
     def close(self):
         """Stop serving.  This leaves existing connections open."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def close_clients(self):
         """Close all active connections."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def abort_clients(self):
         """Close all active connections immediately."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_loop(self):
         """Get the event loop the Server object is attached to."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def is_serving(self):
         """Return Wahr wenn the server is accepting connections."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def start_serving(self):
         """Start accepting connections.
@@ -230,18 +230,18 @@ klasse AbstractServer:
         This method is idempotent, so it can be called when
         the server is already being serving.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def serve_forever(self):
         """Start accepting connections until the coroutine is cancelled.
 
         The server is closed when the coroutine is cancelled.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def wait_closed(self):
         """Coroutine to wait until service is closed."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def __aenter__(self):
         gib self
@@ -258,14 +258,14 @@ klasse AbstractEventLoop:
 
     def run_forever(self):
         """Run the event loop until stop() is called."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def run_until_complete(self, future):
         """Run the event loop until a Future is done.
 
-        Return the Future's result, oder raise its exception.
+        Return the Future's result, oder wirf its exception.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def stop(self):
         """Stop the event loop als soon als reasonable.
@@ -273,15 +273,15 @@ klasse AbstractEventLoop:
         Exactly how soon that is may depend on the implementation, but
         no more I/O callbacks should be scheduled.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def is_running(self):
         """Return whether the event loop is currently running."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def is_closed(self):
         """Returns Wahr wenn the event loop was closed."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def close(self):
         """Close the loop.
@@ -292,61 +292,61 @@ klasse AbstractEventLoop:
 
         No other methods should be called after this one.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def shutdown_asyncgens(self):
         """Shutdown all active asynchronous generators."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def shutdown_default_executor(self):
         """Schedule the shutdown of the default executor."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Methods scheduling callbacks.  All these gib Handles.
 
     def _timer_handle_cancelled(self, handle):
         """Notification that a TimerHandle has been cancelled."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def call_soon(self, callback, *args, context=Nichts):
         gib self.call_later(0, callback, *args, context=context)
 
     def call_later(self, delay, callback, *args, context=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def call_at(self, when, callback, *args, context=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def time(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def create_future(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Method scheduling a coroutine object: create a task.
 
     def create_task(self, coro, **kwargs):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Methods fuer interacting mit threads.
 
     def call_soon_threadsafe(self, callback, *args, context=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def run_in_executor(self, executor, func, *args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_default_executor(self, executor):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Network I/O methods returning Futures.
 
     async def getaddrinfo(self, host, port, *,
                           family=0, type=0, proto=0, flags=0):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def getnameinfo(self, sockaddr, flags=0):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def create_connection(
             self, protocol_factory, host=Nichts, port=Nichts,
@@ -356,7 +356,7 @@ klasse AbstractEventLoop:
             ssl_handshake_timeout=Nichts,
             ssl_shutdown_timeout=Nichts,
             happy_eyeballs_delay=Nichts, interleave=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def create_server(
             self, protocol_factory, host=Nichts, port=Nichts,
@@ -418,7 +418,7 @@ klasse AbstractEventLoop:
         the user should await Server.start_serving() oder Server.serve_forever()
         to make the server to start accepting connections.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sendfile(self, transport, file, offset=0, count=Nichts,
                        *, fallback=Wahr):
@@ -426,7 +426,7 @@ klasse AbstractEventLoop:
 
         Return an amount of sent bytes.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def start_tls(self, transport, protocol, sslcontext, *,
                         server_side=Falsch,
@@ -438,7 +438,7 @@ klasse AbstractEventLoop:
         Return a new transport that *protocol* should start using
         immediately.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def create_unix_connection(
             self, protocol_factory, path=Nichts, *,
@@ -446,7 +446,7 @@ klasse AbstractEventLoop:
             server_hostname=Nichts,
             ssl_handshake_timeout=Nichts,
             ssl_shutdown_timeout=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def create_unix_server(
             self, protocol_factory, path=Nichts, *,
@@ -482,7 +482,7 @@ klasse AbstractEventLoop:
         the user should await Server.start_serving() oder Server.serve_forever()
         to make the server to start accepting connections.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def connect_accepted_socket(
             self, protocol_factory, sock,
@@ -497,7 +497,7 @@ klasse AbstractEventLoop:
         This method is a coroutine.  When completed, the coroutine
         returns a (transport, protocol) pair.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def create_datagram_endpoint(self, protocol_factory,
                                        local_addr=Nichts, remote_addr=Nichts, *,
@@ -532,7 +532,7 @@ klasse AbstractEventLoop:
         sock can optionally be specified in order to use a preexisting
         socket object.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Pipes und subprocesses.
 
@@ -547,7 +547,7 @@ klasse AbstractEventLoop:
         # is: we need to own pipe und close it at transport finishing
         # Can got complicated errors wenn pass f.fileno(),
         # close fd in pipe transport then close f und vice versa.
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def connect_write_pipe(self, protocol_factory, pipe):
         """Register write pipe in event loop.
@@ -560,21 +560,21 @@ klasse AbstractEventLoop:
         # is: we need to own pipe und close it at transport finishing
         # Can got complicated errors wenn pass f.fileno(),
         # close fd in pipe transport then close f und vice versa.
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def subprocess_shell(self, protocol_factory, cmd, *,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                **kwargs):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def subprocess_exec(self, protocol_factory, *args,
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
                               **kwargs):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Ready-based callback registration methods.
     # The add_*() methods gib Nichts.
@@ -582,84 +582,84 @@ klasse AbstractEventLoop:
     # Falsch wenn there was nothing to delete.
 
     def add_reader(self, fd, callback, *args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def remove_reader(self, fd):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def add_writer(self, fd, callback, *args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def remove_writer(self, fd):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Completion based I/O methods returning Futures.
 
     async def sock_recv(self, sock, nbytes):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_recv_into(self, sock, buf):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_recvfrom(self, sock, bufsize):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_recvfrom_into(self, sock, buf, nbytes=0):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_sendall(self, sock, data):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_sendto(self, sock, data, address):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_connect(self, sock, address):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_accept(self, sock):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     async def sock_sendfile(self, sock, file, offset=0, count=Nichts,
                             *, fallback=Nichts):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Signal handling.
 
     def add_signal_handler(self, sig, callback, *args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def remove_signal_handler(self, sig):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Task factory.
 
     def set_task_factory(self, factory):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_task_factory(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Error handlers.
 
     def get_exception_handler(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_exception_handler(self, handler):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def default_exception_handler(self, context):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def call_exception_handler(self, context):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Debug flag management.
 
     def get_debug(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_debug(self, enabled):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse _AbstractEventLoopPolicy:
@@ -673,17 +673,17 @@ klasse _AbstractEventLoopPolicy:
         current context und the current policy does nicht specify to create one.
 
         It should never gib Nichts."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_event_loop(self, loop):
         """Set the event loop fuer the current context to loop."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def new_event_loop(self):
         """Create und gib a new event loop object according to this
         policy's rules. If there's need to set this loop als the event loop for
         the current context, set_event_loop must be called explicitly."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
 klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
     """Default policy implementation fuer accessing the event loop.
@@ -712,7 +712,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
         Returns an instance of EventLoop oder raises an exception.
         """
         wenn self._local._loop is Nichts:
-            raise RuntimeError('There is no current event loop in thread %r.'
+            wirf RuntimeError('There is no current event loop in thread %r.'
                                % threading.current_thread().name)
 
         gib self._local._loop
@@ -720,7 +720,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
     def set_event_loop(self, loop):
         """Set the event loop."""
         wenn loop is nicht Nichts und nicht isinstance(loop, AbstractEventLoop):
-            raise TypeError(f"loop must be an instance of AbstractEventLoop oder Nichts, nicht '{type(loop).__name__}'")
+            wirf TypeError(f"loop must be an instance of AbstractEventLoop oder Nichts, nicht '{type(loop).__name__}'")
         self._local._loop = loop
 
     def new_event_loop(self):
@@ -758,7 +758,7 @@ def get_running_loop():
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     loop = _get_running_loop()
     wenn loop is Nichts:
-        raise RuntimeError('no running event loop')
+        wirf RuntimeError('no running event loop')
     gib loop
 
 
@@ -811,7 +811,7 @@ def _set_event_loop_policy(policy):
     If policy is Nichts, the default policy is restored."""
     global _event_loop_policy
     wenn policy is nicht Nichts und nicht isinstance(policy, _AbstractEventLoopPolicy):
-        raise TypeError(f"policy must be an instance of AbstractEventLoopPolicy oder Nichts, nicht '{type(policy).__name__}'")
+        wirf TypeError(f"policy must be an instance of AbstractEventLoopPolicy oder Nichts, nicht '{type(policy).__name__}'")
     _event_loop_policy = policy
 
 def set_event_loop_policy(policy):
@@ -851,13 +851,13 @@ _py_get_running_loop = get_running_loop
 _py_get_event_loop = get_event_loop
 
 
-try:
+versuch:
     # get_event_loop() is one of the most frequently called
     # functions in asyncio.  Pure Python implementation is
     # about 4 times slower than C-accelerated.
     von _asyncio importiere (_get_running_loop, _set_running_loop,
                           get_running_loop, get_event_loop)
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     # Alias C implementations fuer testing purposes.

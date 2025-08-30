@@ -22,7 +22,7 @@ klasse TestSyslog(unittest.TestCase):
             """
             thread_id = threading.get_ident()
             syslog.openlog(f"thread-id: {thread_id}")
-            try:
+            versuch:
                 fuer _ in range(5):
                     syslog.syslog("logline")
                     syslog.setlogmask(syslog.LOG_MASK(syslog.LOG_INFO))
@@ -30,7 +30,7 @@ klasse TestSyslog(unittest.TestCase):
                     syslog.setlogmask(syslog.LOG_MASK(syslog.LOG_ERR))
                     syslog.syslog(syslog.LOG_ERR, "logline LOG_ERR")
                     syslog.setlogmask(syslog.LOG_UPTO(syslog.LOG_DEBUG))
-            finally:
+            schliesslich:
                 syslog.closelog()
 
         # Run the worker concurrently to exercise all these syslog functions

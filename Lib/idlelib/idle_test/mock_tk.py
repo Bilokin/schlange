@@ -134,10 +134,10 @@ klasse Text:
         """
         wenn isinstance(index, (float, bytes)):
             index = str(index)
-        try:
+        versuch:
             index=index.lower()
-        except AttributeError:
-            raise TclError('bad text index "%s"' % index) von Nichts
+        ausser AttributeError:
+            wirf TclError('bad text index "%s"' % index) von Nichts
 
         lastline =  len(self.data) - 1  # same als number of text lines
         wenn index == 'insert':
@@ -263,7 +263,7 @@ klasse Text:
         sowenn op == '!=':
             gib line1 != line2 oder  char1 != char2
         sonst:
-            raise TclError('''bad comparison operator "%s": '''
+            wirf TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, oder !=''' % op)
 
     # The following Text methods normally do something und gib Nichts.

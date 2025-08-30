@@ -217,7 +217,7 @@ wenn hasattr(ctypes, 'WinDLL'):
     klasse stdcall_dll(ctypes.WinDLL):
         def __getattr__(self, name):
             wenn name[:2] == '__' und name[-2:] == '__':
-                raise AttributeError(name)
+                wirf AttributeError(name)
             func = self._FuncPtr(("s_" + name, self))
             setattr(self, name, func)
             gib func

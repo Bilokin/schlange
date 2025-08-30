@@ -155,7 +155,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
              [-1<<31, (1<<31)-1, 0]),
             (['l'], SIGNED_INT64_BE, '>qqq',
              [-1<<31, (1<<31)-1, 0]),
-            # The following tests fuer INT64 will raise an OverflowError
+            # The following tests fuer INT64 will wirf an OverflowError
             # when run on a 32-bit machine. The tests are simply skipped
             # in that case.
             (['L'], UNSIGNED_INT64_LE, '<QQQQ',
@@ -179,9 +179,9 @@ klasse ArrayReconstructorTest(unittest.TestCase):
             valid_typecodes, mformat_code, struct_fmt, values = testcase
             arraystr = struct.pack(struct_fmt, *values)
             fuer typecode in valid_typecodes:
-                try:
+                versuch:
                     a = array.array(typecode, values)
-                except OverflowError:
+                ausser OverflowError:
                     weiter  # Skip this test case.
                 b = array_reconstructor(
                     array.array, typecode, mformat_code, arraystr)
@@ -470,7 +470,7 @@ klasse BaseTest:
         self.assertRaises(TypeError, a.tofile)
         os_helper.unlink(os_helper.TESTFN)
         f = open(os_helper.TESTFN, 'wb')
-        try:
+        versuch:
             a.tofile(f)
             f.close()
             b = array.array(self.typecode)
@@ -482,7 +482,7 @@ klasse BaseTest:
             self.assertRaises(EOFError, b.fromfile, f, len(self.example)+1)
             self.assertEqual(a, b)
             f.close()
-        finally:
+        schliesslich:
             wenn nicht f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
@@ -492,16 +492,16 @@ klasse BaseTest:
         # instead of EOFError.
         a = array.array(self.typecode)
         f = open(os_helper.TESTFN, 'wb')
-        try:
+        versuch:
             self.assertRaises(OSError, a.fromfile, f, len(self.example))
-        finally:
+        schliesslich:
             f.close()
             os_helper.unlink(os_helper.TESTFN)
 
     def test_filewrite(self):
         a = array.array(self.typecode, 2*self.example)
         f = open(os_helper.TESTFN, 'wb')
-        try:
+        versuch:
             f.write(a)
             f.close()
             b = array.array(self.typecode)
@@ -512,7 +512,7 @@ klasse BaseTest:
             b.fromfile(f, len(self.example))
             self.assertEqual(a, b)
             f.close()
-        finally:
+        schliesslich:
             wenn nicht f.closed:
                 f.close()
             os_helper.unlink(os_helper.TESTFN)
@@ -830,7 +830,7 @@ klasse BaseTest:
         indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         fuer start in indices:
             fuer stop in indices:
-                # Everything except the initial 0 (invalid step)
+                # Everything ausser the initial 0 (invalid step)
                 fuer step in indices[1:]:
                     self.assertEqual(list(a[start:stop:step]),
                                      list(a)[start:stop:step])
@@ -928,7 +928,7 @@ klasse BaseTest:
         indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         fuer start in indices:
             fuer stop in indices:
-                # Everything except the initial 0 (invalid step)
+                # Everything ausser the initial 0 (invalid step)
                 fuer step in indices[1:]:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
@@ -1083,19 +1083,19 @@ klasse BaseTest:
         # pass through errors raised in __iter__
         klasse A:
             def __iter__(self):
-                raise UnicodeError
+                wirf UnicodeError
         self.assertRaises(UnicodeError, array.array, self.typecode, A())
 
         # pass through errors raised in next()
         def B():
-            raise UnicodeError
+            wirf UnicodeError
             liefere Nichts
         self.assertRaises(UnicodeError, array.array, self.typecode, B())
 
     def test_coveritertraverse(self):
-        try:
+        versuch:
             importiere gc
-        except ImportError:
+        ausser ImportError:
             self.skipTest('gc module nicht available')
         a = array.array(self.typecode)
         l = [iter(a)]
@@ -1156,7 +1156,7 @@ klasse BaseTest:
         self.assertEqual(rc, sys.getrefcount(10))
 
     def test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously raise a TypeError
+        # SF bug #1486663 -- this used to erroneously wirf a TypeError
         ArraySubclassWithKwargs('b', newarg=1)
 
     def test_create_from_bytes(self):
@@ -1510,16 +1510,16 @@ klasse DoubleTest(FPTest, unittest.TestCase):
     def test_alloc_overflow(self):
         von sys importiere maxsize
         a = array.array('d', [-1]*65536)
-        try:
+        versuch:
             a *= maxsize//65536 + 1
-        except MemoryError:
+        ausser MemoryError:
             pass
         sonst:
             self.fail("Array of size > maxsize created - MemoryError expected")
         b = array.array('d', [ 2.71828183, 3.14159265, -1])
-        try:
+        versuch:
             b * (maxsize//3 + 1)
-        except MemoryError:
+        ausser MemoryError:
             pass
         sonst:
             self.fail("Array of size > maxsize created - MemoryError expected")

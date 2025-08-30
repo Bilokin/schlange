@@ -101,7 +101,7 @@ def test_boundaries():
 
 def test_underflow_boundary():
     # test values close to 2**-1075, the underflow boundary; similar
-    # to boundary_tests, except that the random error doesn't scale
+    # to boundary_tests, ausser that the random error doesn't scale
     # mit n
     fuer exponent in range(-400, -320):
         base = 10**-exponent // 2**1075

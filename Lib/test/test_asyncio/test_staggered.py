@@ -41,7 +41,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_first_error_second_successful(self):
         async def coro(index):
             wenn index == 0:
-                raise ValueError(index)
+                wirf ValueError(index)
             gib f'Res: {index}'
 
         winner, index, excs = await staggered_race(
@@ -80,7 +80,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_none_successful(self):
         async def coro(index):
-            raise ValueError(index)
+            wirf ValueError(index)
 
         winner, index, excs = await staggered_race(
             [
@@ -131,21 +131,21 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                 async def coro_fn():
                     cs_inner.reschedule(-1)
                     await asyncio.sleep(0)
-                    try:
+                    versuch:
                         await asyncio.sleep(0)
-                    except asyncio.CancelledError:
+                    ausser asyncio.CancelledError:
                         log.append("cancelled 1")
 
                     cs_outer.reschedule(-1)
                     await asyncio.sleep(0)
-                    try:
+                    versuch:
                         await asyncio.sleep(0)
-                    except asyncio.CancelledError:
+                    ausser asyncio.CancelledError:
                         log.append("cancelled 2")
-                try:
+                versuch:
                     await staggered_race([coro_fn], delay=Nichts)
-                except asyncio.CancelledError:
+                ausser asyncio.CancelledError:
                     log.append("cancelled 3")
-                    raise
+                    wirf
 
         self.assertListEqual(log, ["cancelled 1", "cancelled 2", "cancelled 3"])

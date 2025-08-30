@@ -172,9 +172,9 @@ klasse Reader:
 
     def r_object(self) -> Any:
         old_level = self.level
-        try:
+        versuch:
             gib self._r_object()
-        finally:
+        schliesslich:
             self.level = old_level
 
     def _r_object(self) -> Any:
@@ -297,7 +297,7 @@ klasse Reader:
             gib retval
         sonst:
             breakpoint()
-            raise AssertionError(f"Unknown type {type} {chr(type)!r}")
+            wirf AssertionError(f"Unknown type {type} {chr(type)!r}")
 
 
 def loads(data: bytes) -> Any:

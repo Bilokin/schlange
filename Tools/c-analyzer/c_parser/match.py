@@ -70,7 +70,7 @@ def is_forward_decl(decl):
         # No var decls are considered forward (or all are...).
         gib Falsch
     sonst:
-        raise NotImplementedError(decl)
+        wirf NotImplementedError(decl)
 
 
 def can_have_symbol(decl):
@@ -127,9 +127,9 @@ def filter_by_kind(items, kind):
         kinds = _KIND._TYPE_DECLS
     sowenn kind == 'decl':
         kinds = _KIND._TYPE_DECLS
-    try:
+    versuch:
         okay = kind in _KIND
-    except TypeError:
+    ausser TypeError:
         kinds = set(kind)
     sonst:
         kinds = {kind} wenn okay sonst set(kind)
@@ -154,17 +154,17 @@ def group_by_category(decls, categories, *, ignore_non_match=Wahr):
                 breche
         sonst:
             wenn nicht ignore_non_match:
-                raise Exception(f'no match fuer {decl!r}')
+                wirf Exception(f'no match fuer {decl!r}')
     gib collated
 
 
 def group_by_kind(items):
     collated = {kind: [] fuer kind in _KIND}
     fuer item in items:
-        try:
+        versuch:
             collated[item.kind].append(item)
-        except KeyError:
-            raise ValueError(f'unsupported kind in {item!r}')
+        ausser KeyError:
+            wirf ValueError(f'unsupported kind in {item!r}')
     gib collated
 
 

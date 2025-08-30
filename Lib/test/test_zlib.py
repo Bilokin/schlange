@@ -147,11 +147,11 @@ klasse ChecksumCombineMixin:
         gib self._checksum(data, iv)
 
     def _checksum(self, data, init):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def combine(self, a, b, blen):
         """Combine two checksums together."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_random_data(self, data_len, *, iv=Nichts):
         """Get a triplet (data, iv, checksum)."""
@@ -296,25 +296,25 @@ klasse BaseCompressTestCase(object):
         # such spread out redundancy.
         data = random.randbytes(_1M * 10)
         data = data * (size // len(data) + 1)
-        try:
+        versuch:
             compress_func(data)
-        finally:
+        schliesslich:
             # Release memory
             data = Nichts
 
     def check_big_decompress_buffer(self, size, decompress_func):
         data = b'x' * size
-        try:
+        versuch:
             compressed = zlib.compress(data, 1)
-        finally:
+        schliesslich:
             # Release memory
             data = Nichts
         data = decompress_func(compressed)
         # Sanity check
-        try:
+        versuch:
             self.assertEqual(len(data), size)
             self.assertEqual(len(data.strip(b'x')), 0)
-        finally:
+        schliesslich:
             data = Nichts
 
 
@@ -379,10 +379,10 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
     @bigmemtest(size=_4G + 100, memuse=4)
     def test_64bit_compress(self, size):
         data = b'x' * size
-        try:
+        versuch:
             comp = zlib.compress(data, 0)
             self.assertEqual(zlib.decompress(comp), data)
-        finally:
+        schliesslich:
             comp = data = Nichts
 
 
@@ -882,11 +882,11 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = b'x' * size
         co = zlib.compressobj(0)
         do = zlib.decompressobj()
-        try:
+        versuch:
             comp = co.compress(data) + co.flush()
             uncomp = do.decompress(comp) + do.flush()
             self.assertEqual(uncomp, data)
-        finally:
+        schliesslich:
             comp = uncomp = data = Nichts
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
@@ -896,11 +896,11 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         unused = b'x' * size
         comp = zlib.compress(data) + unused
         do = zlib.decompressobj()
-        try:
+        versuch:
             uncomp = do.decompress(comp) + do.flush()
             self.assertEqual(unused, do.unused_data)
             self.assertEqual(uncomp, data)
-        finally:
+        schliesslich:
             unused = comp = do = Nichts
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
@@ -908,12 +908,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     def test_large_unconsumed_tail(self, size):
         data = b'x' * size
         do = zlib.decompressobj()
-        try:
+        versuch:
             comp = zlib.compress(data, 0)
             uncomp = do.decompress(comp, 1) + do.flush()
             self.assertEqual(uncomp, data)
             self.assertEqual(do.unconsumed_tail, b'')
-        finally:
+        schliesslich:
             comp = uncomp = data = Nichts
 
     def test_wbits(self):
@@ -1095,13 +1095,13 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         # "Test zlib._ZlibDecompressor.decompress() mit >4GiB input"
         blocksize = min(10 * 1024 * 1024, size)
         block = random.randbytes(blocksize)
-        try:
+        versuch:
             data = block * ((size-1) // blocksize + 1)
             compressed = zlib.compress(data)
             zlibd = zlib._ZlibDecompressor()
             decompressed = zlibd.decompress(compressed)
             self.assertWahr(decompressed == data)
-        finally:
+        schliesslich:
             data = Nichts
             compressed = Nichts
             decompressed = Nichts

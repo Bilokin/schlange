@@ -106,14 +106,14 @@ klasse FinderTests:
                               *self.importlib._bootstrap_external._get_supported_file_loaders())]
         missing = object()
         email = sys.modules.pop('email', missing)
-        try:
+        versuch:
             mit util.import_state(meta_path=sys.meta_path[:],
                                    path=new_path,
                                    path_importer_cache=new_path_importer_cache,
                                    path_hooks=new_path_hooks):
                 module = self.importlib.import_module('email')
                 self.assertIsInstance(module, ModuleType)
-        finally:
+        schliesslich:
             wenn email is nicht missing:
                 sys.modules['email'] = email
 
@@ -137,18 +137,18 @@ klasse FinderTests:
         old_dir = os.getcwd()
         self.addCleanup(os.chdir, old_dir)
         new_dir = tempfile.mkdtemp()
-        try:
+        versuch:
             os.chdir(new_dir)
-            try:
+            versuch:
                 os.rmdir(new_dir)
-            except OSError:
+            ausser OSError:
                 # EINVAL on Solaris, EBUSY on AIX, ENOTEMPTY on Windows
                 self.skipTest("platform does nicht allow "
                               "the deletion of the cwd")
-        except:
+        ausser:
             os.chdir(old_dir)
             os.rmdir(new_dir)
-            raise
+            wirf
 
         mit util.import_state(path=['']):
             # Do nicht want FileNotFoundError raised.
@@ -160,7 +160,7 @@ klasse FinderTests:
         # particular during early stages of interpreter startup.
 
         def noop_hook(*args):
-            raise ImportError
+            wirf ImportError
 
         mit (
             os_helper.temp_dir() als new_dir,
@@ -171,9 +171,9 @@ klasse FinderTests:
             # chmod() is done here (inside the 'with' block) because the order
             # of teardown operations cannot be the reverse of setup order. See
             # https://github.com/python/cpython/pull/116131#discussion_r1739649390
-            try:
+            versuch:
                 os.chmod(new_dir, 0o000)
-            except OSError:
+            ausser OSError:
                 self.skipTest("platform does nicht allow "
                               "changing mode of the cwd")
 
@@ -246,7 +246,7 @@ klasse PathEntryFinderTests:
             path_location = 'test_finder_with_find_spec'
             def __init__(self, path):
                 wenn path != self.path_location:
-                    raise ImportError
+                    wirf ImportError
 
             @staticmethod
             def find_spec(fullname, target=Nichts):

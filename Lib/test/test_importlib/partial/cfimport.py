@@ -9,16 +9,16 @@ NTHREADS = 30
 
 
 def t1():
-    try:
+    versuch:
         von concurrent.futures importiere ThreadPoolExecutor
-    except Exception:
+    ausser Exception:
         traceback.print_exc()
         os._exit(1)
 
 def t2():
-    try:
+    versuch:
         von concurrent.futures.thread importiere ThreadPoolExecutor
-    except Exception:
+    ausser Exception:
         traceback.print_exc()
         os._exit(1)
 

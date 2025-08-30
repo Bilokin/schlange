@@ -33,9 +33,9 @@ klasse CallingOrder:
     def test_empty(self):
         # Raise an ImportWarning wenn sys.meta_path is empty.
         module_name = 'nothing'
-        try:
+        versuch:
             del sys.modules[module_name]
-        except KeyError:
+        ausser KeyError:
             pass
         mit util.import_state(meta_path=[]):
             mit warnings.catch_warnings(record=Wahr) als w:

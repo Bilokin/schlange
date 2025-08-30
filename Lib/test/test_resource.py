@@ -38,7 +38,7 @@ klasse ResourceTest(unittest.TestCase):
         # RLIMIT_FSIZE should be RLIM_INFINITY, which will be a really big
         # number on a platform mit large file support.  On these platforms,
         # we need to test that the get/setrlimit functions properly convert
-        # the number to a C long long und that the conversion doesn't raise
+        # the number to a C long long und that the conversion doesn't wirf
         # an error.
         self.assertGreater(resource.RLIM_INFINITY, 0)
         self.assertEqual(resource.RLIM_INFINITY, max)
@@ -57,17 +57,17 @@ klasse ResourceTest(unittest.TestCase):
         # write() should gib EFBIG when the limit is exceeded.
 
         # At least one platform has an unlimited RLIMIT_FSIZE und attempts
-        # to change it raise ValueError instead.
-        try:
-            try:
+        # to change it wirf ValueError instead.
+        versuch:
+            versuch:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (1024, max))
                 limit_set = Wahr
-            except ValueError:
+            ausser ValueError:
                 limit_set = Falsch
             f = open(os_helper.TESTFN, "wb")
-            try:
+            versuch:
                 f.write(b"X" * 1024)
-                try:
+                versuch:
                     f.write(b"Y")
                     f.flush()
                     # On some systems (e.g., Ubuntu on hppa) the flush()
@@ -78,16 +78,16 @@ klasse ResourceTest(unittest.TestCase):
                     fuer i in range(5):
                         time.sleep(.1)
                         f.flush()
-                except OSError:
+                ausser OSError:
                     wenn nicht limit_set:
-                        raise
+                        wirf
                 wenn limit_set:
                     # Close will attempt to flush the byte we wrote
                     # Restore limit first to avoid getting a spurious error
                     resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
-            finally:
+            schliesslich:
                 f.close()
-        finally:
+        schliesslich:
             wenn limit_set:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
             os_helper.unlink(os_helper.TESTFN)
@@ -99,13 +99,13 @@ klasse ResourceTest(unittest.TestCase):
         # Be sure that setrlimit is checking fuer really large values
         too_big = 10**50
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
-        try:
+        versuch:
             resource.setrlimit(resource.RLIMIT_FSIZE, (too_big, max))
-        except (OverflowError, ValueError):
+        ausser (OverflowError, ValueError):
             pass
-        try:
+        versuch:
             resource.setrlimit(resource.RLIMIT_FSIZE, (max, too_big))
-        except (OverflowError, ValueError):
+        ausser (OverflowError, ValueError):
             pass
 
     @unittest.skipIf(sys.platform == "vxworks",
@@ -132,18 +132,18 @@ klasse ResourceTest(unittest.TestCase):
         resource.setrlimit(resource.RLIMIT_FSIZE, (2**32-5, max))
         self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**32-5))
 
-        try:
+        versuch:
             resource.setrlimit(resource.RLIMIT_FSIZE, (2**32, max))
-        except OverflowError:
+        ausser OverflowError:
             pass
         sonst:
             self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**32))
 
             resource.setrlimit(resource.RLIMIT_FSIZE, (2**63-5, max))
             self.assertIn(resource.getrlimit(resource.RLIMIT_FSIZE), expected(2**63-5))
-            try:
+            versuch:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (2**63, max))
-            except ValueError:
+            ausser ValueError:
                 # There is a hard limit on macOS.
                 pass
             sonst:
@@ -177,13 +177,13 @@ klasse ResourceTest(unittest.TestCase):
         usageself = resource.getrusage(resource.RUSAGE_SELF)
         usagechildren = resource.getrusage(resource.RUSAGE_CHILDREN)
         # May nicht be available on all systems.
-        try:
+        versuch:
             usageboth = resource.getrusage(resource.RUSAGE_BOTH)
-        except (ValueError, AttributeError):
+        ausser (ValueError, AttributeError):
             pass
-        try:
+        versuch:
             usage_thread = resource.getrusage(resource.RUSAGE_THREAD)
-        except (ValueError, AttributeError):
+        ausser (ValueError, AttributeError):
             pass
 
     # Issue 6083: Reference counting bug
@@ -198,7 +198,7 @@ klasse ResourceTest(unittest.TestCase):
             def __getitem__(self, key):
                 wenn key in (0, 1):
                     gib len(tuple(range(1000000)))
-                raise IndexError
+                wirf IndexError
 
         resource.setrlimit(resource.RLIMIT_CPU, BadSequence())
 

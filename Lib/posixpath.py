@@ -78,7 +78,7 @@ def join(a, /, *p):
     a = os.fspath(a)
     sep = _get_sep(a)
     path = a
-    try:
+    versuch:
         fuer b in p:
             b = os.fspath(b)
             wenn b.startswith(sep) oder nicht path:
@@ -87,9 +87,9 @@ def join(a, /, *p):
                 path += b
             sonst:
                 path += sep + b
-    except (TypeError, AttributeError, BytesWarning):
+    ausser (TypeError, AttributeError, BytesWarning):
         genericpath._check_arg_types('join', a, *p)
-        raise
+        wirf
     gib path
 
 
@@ -136,9 +136,9 @@ def splitdrive(p, /):
     gib p[:0], p
 
 
-try:
+versuch:
     von posix importiere _path_splitroot_ex als splitroot
-except ImportError:
+ausser ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root und tail.
 
@@ -190,9 +190,9 @@ def dirname(p, /):
 
 def ismount(path):
     """Test whether a path is a mount point"""
-    try:
+    versuch:
         s1 = os.lstat(path)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         # It doesn't exist -- so nicht a mount point. :-)
         gib Falsch
     sonst:
@@ -205,13 +205,13 @@ def ismount(path):
         parent = join(path, b'..')
     sonst:
         parent = join(path, '..')
-    try:
+    versuch:
         s2 = os.lstat(parent)
-    except OSError:
+    ausser OSError:
         parent = realpath(parent)
-        try:
+        versuch:
             s2 = os.lstat(parent)
-        except OSError:
+        ausser OSError:
             gib Falsch
 
     # path/.. on a different device als path oder the same i-node als path
@@ -243,31 +243,31 @@ def expanduser(path):
         i = len(path)
     wenn i == 1:
         wenn 'HOME' nicht in os.environ:
-            try:
+            versuch:
                 importiere pwd
-            except ImportError:
+            ausser ImportError:
                 # pwd module unavailable, gib path unchanged
                 gib path
-            try:
+            versuch:
                 userhome = pwd.getpwuid(os.getuid()).pw_dir
-            except KeyError:
+            ausser KeyError:
                 # bpo-10496: wenn the current user identifier doesn't exist in the
                 # password database, gib the path unchanged
                 gib path
         sonst:
             userhome = os.environ['HOME']
     sonst:
-        try:
+        versuch:
             importiere pwd
-        except ImportError:
+        ausser ImportError:
             # pwd module unavailable, gib path unchanged
             gib path
         name = path[1:i]
         wenn isinstance(name, bytes):
             name = os.fsdecode(name)
-        try:
+        versuch:
             pwent = pwd.getpwnam(name)
-        except KeyError:
+        ausser KeyError:
             # bpo-10496: wenn the user name von the path doesn't exist in the
             # password database, gib the path unchanged
             gib path
@@ -322,12 +322,12 @@ def expandvars(path):
         name = m.group(1)
         wenn name.startswith(start) und name.endswith(end):
             name = name[1:-1]
-        try:
+        versuch:
             wenn environ is Nichts:
                 value = os.fsencode(os.environ[os.fsdecode(name)])
             sonst:
                 value = environ[name]
-        except KeyError:
+        ausser KeyError:
             i = j
         sonst:
             tail = path[j:]
@@ -341,10 +341,10 @@ def expandvars(path):
 # It should be understood that this may change the meaning of the path
 # wenn it contains symbolic links!
 
-try:
+versuch:
     von posix importiere _path_normpath als normpath
 
-except ImportError:
+ausser ImportError:
     def normpath(path):
         """Normalize path, eliminating double slashes, etc."""
         path = os.fspath(path)
@@ -459,12 +459,12 @@ symbolic links encountered in the path."""
             newpath = path + name
         sonst:
             newpath = path + sep + name
-        try:
+        versuch:
             st_mode = lstat(newpath).st_mode
             wenn nicht stat.S_ISLNK(st_mode):
                 wenn (strict und (part_count oder trailing_sep)
                     und nicht stat.S_ISDIR(st_mode)):
-                    raise OSError(errno.ENOTDIR, os.strerror(errno.ENOTDIR),
+                    wirf OSError(errno.ENOTDIR, os.strerror(errno.ENOTDIR),
                                   newpath)
                 path = newpath
                 weiter
@@ -472,7 +472,7 @@ symbolic links encountered in the path."""
                 link_count += 1
                 wenn link_count > maxlinks:
                     wenn strict:
-                        raise OSError(errno.ELOOP, os.strerror(errno.ELOOP),
+                        wirf OSError(errno.ELOOP, os.strerror(errno.ELOOP),
                                       newpath)
                     path = newpath
                     weiter
@@ -484,14 +484,14 @@ symbolic links encountered in the path."""
                     weiter
                 # The symlink is nicht resolved, so we must have a symlink loop.
                 wenn strict:
-                    raise OSError(errno.ELOOP, os.strerror(errno.ELOOP),
+                    wirf OSError(errno.ELOOP, os.strerror(errno.ELOOP),
                                   newpath)
                 path = newpath
                 weiter
             target = readlink(newpath)
-        except ignored_error:
+        ausser ignored_error:
             wenn strict is ALL_BUT_LAST und part_count:
-                raise
+                wirf
         sonst:
             # Resolve the symbolic link
             wenn target.startswith(sep):
@@ -523,7 +523,7 @@ def relpath(path, start=Nichts):
 
     path = os.fspath(path)
     wenn nicht path:
-        raise ValueError("no path specified")
+        wirf ValueError("no path specified")
 
     wenn isinstance(path, bytes):
         curdir = b'.'
@@ -539,7 +539,7 @@ def relpath(path, start=Nichts):
     sonst:
         start = os.fspath(start)
 
-    try:
+    versuch:
         start_tail = abspath(start).lstrip(sep)
         path_tail = abspath(path).lstrip(sep)
         start_list = start_tail.split(sep) wenn start_tail sonst []
@@ -551,9 +551,9 @@ def relpath(path, start=Nichts):
         wenn nicht rel_list:
             gib curdir
         gib sep.join(rel_list)
-    except (TypeError, AttributeError, BytesWarning, DeprecationWarning):
+    ausser (TypeError, AttributeError, BytesWarning, DeprecationWarning):
         genericpath._check_arg_types('relpath', path, start)
-        raise
+        wirf
 
 
 # Return the longest common sub-path of the sequence of paths given als input.
@@ -567,7 +567,7 @@ def commonpath(paths):
     paths = tuple(map(os.fspath, paths))
 
     wenn nicht paths:
-        raise ValueError('commonpath() arg is an empty sequence')
+        wirf ValueError('commonpath() arg is an empty sequence')
 
     wenn isinstance(paths[0], bytes):
         sep = b'/'
@@ -576,13 +576,13 @@ def commonpath(paths):
         sep = '/'
         curdir = '.'
 
-    try:
+    versuch:
         split_paths = [path.split(sep) fuer path in paths]
 
-        try:
+        versuch:
             isabs, = {p.startswith(sep) fuer p in paths}
-        except ValueError:
-            raise ValueError("Can't mix absolute und relative paths") von Nichts
+        ausser ValueError:
+            wirf ValueError("Can't mix absolute und relative paths") von Nichts
 
         split_paths = [[c fuer c in s wenn c und c != curdir] fuer s in split_paths]
         s1 = min(split_paths)
@@ -595,6 +595,6 @@ def commonpath(paths):
 
         prefix = sep wenn isabs sonst sep[:0]
         gib prefix + sep.join(common)
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)
-        raise
+        wirf

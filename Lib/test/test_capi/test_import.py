@@ -40,7 +40,7 @@ klasse ImportTests(unittest.TestCase):
 
     def check_import_fresh_module(self, import_module):
         old_modules = dict(sys.modules)
-        try:
+        versuch:
             fuer name in ('colorsys', 'math'):
                 mit self.subTest(name=name):
                     sys.modules.pop(name, Nichts)
@@ -48,7 +48,7 @@ klasse ImportTests(unittest.TestCase):
                     self.assertIsInstance(module, types.ModuleType)
                     self.assertIs(module, sys.modules[name])
                     self.assertEqual(module.__name__, name)
-        finally:
+        schliesslich:
             sys.modules.clear()
             sys.modules.update(old_modules)
 
@@ -76,12 +76,12 @@ klasse ImportTests(unittest.TestCase):
         fuer name in names:
             mit self.subTest(name=name):
                 self.assertNotIn(name, sys.modules)
-                try:
+                versuch:
                     module = add_module(name)
                     self.assertIsInstance(module, types.ModuleType)
                     self.assertEqual(module.__name__, name)
                     self.assertIs(module, sys.modules[name])
-                finally:
+                schliesslich:
                     sys.modules.pop(name, Nichts)
 
         # get an existing module
@@ -146,12 +146,12 @@ klasse ImportTests(unittest.TestCase):
         # Importing a frozen module executes its code, so start by unloading
         # the module to execute the code in a new (temporary) module.
         old_zipimport = sys.modules.pop('zipimport')
-        try:
+        versuch:
             self.assertEqual(import_frozen_module('zipimport'), 1)
 
             # importiere zipimport again
             self.assertEqual(import_frozen_module('zipimport'), 1)
-        finally:
+        schliesslich:
             sys.modules['zipimport'] = old_zipimport
 
         # nicht a frozen module
@@ -218,7 +218,7 @@ klasse ImportTests(unittest.TestCase):
 
     def check_executecodemodule(self, execute_code, *args):
         name = 'test_import_executecode'
-        try:
+        versuch:
             # Create a temporary module where the code will be executed
             self.assertNotIn(name, sys.modules)
             module = _testlimitedcapi.PyImport_AddModuleRef(name)
@@ -231,7 +231,7 @@ klasse ImportTests(unittest.TestCase):
 
             # Check the function side effects
             self.assertEqual(module.attr, 1)
-        finally:
+        schliesslich:
             sys.modules.pop(name, Nichts)
         gib module.__spec__.origin
 

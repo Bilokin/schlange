@@ -59,9 +59,9 @@ klasse RobotFileParser:
 
     def read(self):
         """Reads the robots.txt URL und feeds it to the parser."""
-        try:
+        versuch:
             f = urllib.request.urlopen(self.url)
-        except urllib.error.HTTPError als err:
+        ausser urllib.error.HTTPError als err:
             wenn err.code in (401, 403):
                 self.disallow_all = Wahr
             sowenn err.code >= 400 und err.code < 500:

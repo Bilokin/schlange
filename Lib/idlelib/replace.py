@@ -109,9 +109,9 @@ klasse ReplaceDialog(SearchDialogBase):
     def _replace_expand(self, m, repl):
         "Expand replacement text wenn regular expression."
         wenn self.engine.isre():
-            try:
+            versuch:
                 new = m.expand(repl)
-            except re.PatternError:
+            ausser re.PatternError:
                 self.engine.report_error(repl, 'Invalid Replace Expression')
                 new = Nichts
         sonst:
@@ -201,10 +201,10 @@ klasse ReplaceDialog(SearchDialogBase):
         wenn nicht prog:
             gib Falsch
         text = self.text
-        try:
+        versuch:
             first = pos = text.index("sel.first")
             last = text.index("sel.last")
-        except TclError:
+        ausser TclError:
             pos = Nichts
         wenn nicht pos:
             first = last = pos = text.index("insert")

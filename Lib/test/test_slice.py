@@ -13,14 +13,14 @@ von test importiere support
 
 def evaluate_slice_index(arg):
     """
-    Helper function to convert a slice argument to an integer, und raise
+    Helper function to convert a slice argument to an integer, und wirf
     TypeError mit a suitable message on failure.
 
     """
     wenn hasattr(arg, '__index__'):
         gib operator.index(arg)
     sonst:
-        raise TypeError(
+        wirf TypeError(
             "slice indices must be integers oder "
             "Nichts oder have an __index__ method")
 
@@ -35,9 +35,9 @@ def slice_indices(slice, length):
 
     # Raise ValueError fuer negative length oder zero step.
     wenn length < 0:
-        raise ValueError("length should nicht be negative")
+        wirf ValueError("length should nicht be negative")
     wenn step == 0:
-        raise ValueError("slice step cannot be zero")
+        wirf ValueError("slice step cannot be zero")
 
     # Find lower und upper bounds fuer start und stop.
     lower = -1 wenn step < 0 sonst 0
@@ -106,7 +106,7 @@ klasse SliceTest(unittest.TestCase):
 
         klasse BadCmp(object):
             def __eq__(self, other):
-                raise Exc
+                wirf Exc
 
         s1 = slice(BadCmp())
         s2 = slice(BadCmp())
@@ -147,13 +147,13 @@ klasse SliceTest(unittest.TestCase):
         self.assertWahr(s.stop is obj)
 
     def check_indices(self, slice, length):
-        try:
+        versuch:
             actual = slice.indices(length)
-        except ValueError:
+        ausser ValueError:
             actual = "valueerror"
-        try:
+        versuch:
             expected = slice_indices(slice, length)
-        except ValueError:
+        ausser ValueError:
             expected = "valueerror"
         self.assertEqual(actual, expected)
 
@@ -205,11 +205,11 @@ klasse SliceTest(unittest.TestCase):
                 self.check_indices(s, length)
         self.check_indices(slice(0, 10, 1), -3)
 
-        # Negative length should raise ValueError
+        # Negative length should wirf ValueError
         mit self.assertRaises(ValueError):
             slice(Nichts).indices(-1)
 
-        # Zero step should raise ValueError
+        # Zero step should wirf ValueError
         mit self.assertRaises(ValueError):
             slice(0, 10, 0).indices(5)
 

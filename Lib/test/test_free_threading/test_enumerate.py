@@ -18,9 +18,9 @@ klasse EnumerateThreading(unittest.TestCase):
         def work(enum):
             barrier.wait()
             waehrend Wahr:
-                try:
+                versuch:
                     _ = next(enum)
-                except StopIteration:
+                ausser StopIteration:
                     breche
 
         fuer it in range(number_of_iterations):

@@ -369,7 +369,7 @@ klasse MorselTests(unittest.TestCase):
             # Test that valid key values come out fine
             self.assertEqual(M[i], '%s_value' % i)
         fuer i in "the holy hand grenade".split():
-            # Test that invalid keys raise CookieError
+            # Test that invalid keys wirf CookieError
             self.assertRaises(cookies.CookieError,
                               M.__setitem__, i, '%s_value' % i)
 

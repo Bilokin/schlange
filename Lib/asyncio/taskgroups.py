@@ -54,13 +54,13 @@ klasse TaskGroup:
 
     async def __aenter__(self):
         wenn self._entered:
-            raise RuntimeError(
+            wirf RuntimeError(
                 f"TaskGroup {self!r} has already been entered")
         wenn self._loop is Nichts:
             self._loop = events.get_running_loop()
         self._parent_task = tasks.current_task(self._loop)
         wenn self._parent_task is Nichts:
-            raise RuntimeError(
+            wirf RuntimeError(
                 f'TaskGroup {self!r} cannot determine the parent task')
         self._entered = Wahr
 
@@ -68,9 +68,9 @@ klasse TaskGroup:
 
     async def __aexit__(self, et, exc, tb):
         tb = Nichts
-        try:
+        versuch:
             gib await self._aexit(et, exc)
-        finally:
+        schliesslich:
             # Exceptions are heavy objects that can have object
             # cycles (bad fuer GC); let's nicht keep a reference to
             # a bunch of them. It would be nicer to use a try/finally
@@ -117,9 +117,9 @@ klasse TaskGroup:
             wenn self._on_completed_fut is Nichts:
                 self._on_completed_fut = self._loop.create_future()
 
-            try:
+            versuch:
                 await self._on_completed_fut
-            except exceptions.CancelledError als ex:
+            ausser exceptions.CancelledError als ex:
                 wenn nicht self._aborting:
                     # Our parent task is being cancelled:
                     #
@@ -137,9 +137,9 @@ klasse TaskGroup:
         assert nicht self._tasks
 
         wenn self._base_error is nicht Nichts:
-            try:
-                raise self._base_error
-            finally:
+            versuch:
+                wirf self._base_error
+            schliesslich:
                 exc = Nichts
 
         wenn self._parent_cancel_requested:
@@ -149,15 +149,15 @@ klasse TaskGroup:
                 # don't propagate CancelledError.
                 propagate_cancellation_error = Nichts
 
-        # Propagate CancelledError wenn there is one, except wenn there
+        # Propagate CancelledError wenn there is one, ausser wenn there
         # are other errors -- those have priority.
-        try:
+        versuch:
             wenn propagate_cancellation_error is nicht Nichts und nicht self._errors:
-                try:
-                    raise propagate_cancellation_error
-                finally:
+                versuch:
+                    wirf propagate_cancellation_error
+                schliesslich:
                     exc = Nichts
-        finally:
+        schliesslich:
             propagate_cancellation_error = Nichts
 
         wenn et is nicht Nichts und nicht issubclass(et, exceptions.CancelledError):
@@ -170,12 +170,12 @@ klasse TaskGroup:
             wenn self._parent_task.cancelling():
                 self._parent_task.uncancel()
                 self._parent_task.cancel()
-            try:
-                raise BaseExceptionGroup(
+            versuch:
+                wirf BaseExceptionGroup(
                     'unhandled errors in a TaskGroup',
                     self._errors,
                 ) von Nichts
-            finally:
+            schliesslich:
                 exc = Nichts
 
 
@@ -186,13 +186,13 @@ klasse TaskGroup:
         """
         wenn nicht self._entered:
             coro.close()
-            raise RuntimeError(f"TaskGroup {self!r} has nicht been entered")
+            wirf RuntimeError(f"TaskGroup {self!r} has nicht been entered")
         wenn self._exiting und nicht self._tasks:
             coro.close()
-            raise RuntimeError(f"TaskGroup {self!r} is finished")
+            wirf RuntimeError(f"TaskGroup {self!r} is finished")
         wenn self._aborting:
             coro.close()
-            raise RuntimeError(f"TaskGroup {self!r} is shutting down")
+            wirf RuntimeError(f"TaskGroup {self!r} is shutting down")
         task = self._loop.create_task(coro, **kwargs)
 
         futures.future_add_to_awaited_by(task, self._parent_task)
@@ -203,15 +203,15 @@ klasse TaskGroup:
         # the current task too early. gh-128550, gh-128588
         self._tasks.add(task)
         task.add_done_callback(self._on_task_done)
-        try:
+        versuch:
             gib task
-        finally:
+        schliesslich:
             # gh-128552: prevent a refcycle of
             # task.exception().__traceback__->TaskGroup.create_task->task
             del task
 
     # Since Python 3.8 Tasks propagate all exceptions correctly,
-    # except fuer KeyboardInterrupt und SystemExit which are
+    # ausser fuer KeyboardInterrupt und SystemExit which are
     # still considered special.
 
     def _is_base_error(self, exc: BaseException) -> bool:
@@ -264,13 +264,13 @@ klasse TaskGroup:
             # we need to handle:
             #
             #    async def foo():
-            #        try:
+            #        versuch:
             #            async mit TaskGroup() als g:
             #                g.create_task(crash_soon())
             #                await something  # <- this needs to be canceled
             #                                 #    by the TaskGroup, e.g.
             #                                 #    foo() needs to be cancelled
-            #        except Exception:
+            #        ausser Exception:
             #            # Ignore any exceptions raised in the TaskGroup
             #            pass
             #        await something_else     # this line has to be called

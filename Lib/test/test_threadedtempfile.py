@@ -39,10 +39,10 @@ klasse TempFileGreedy(threading.Thread):
         self.errors = io.StringIO()
         startEvent.wait()
         fuer i in range(FILES_PER_THREAD):
-            try:
+            versuch:
                 f = tempfile.TemporaryFile("w+b")
                 f.close()
-            except:
+            ausser:
                 self.error_count += 1
                 print_exc(file=self.errors)
             sonst:

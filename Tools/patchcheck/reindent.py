@@ -69,10 +69,10 @@ def errdrucke(*args):
 def main():
     importiere getopt
     global verbose, recurse, dryrun, makebackup, spec_newline
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], "drnvh",
             ["dryrun", "recurse", "nobackup", "verbose", "newline=", "help"])
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         usage(msg)
         gib
     fuer o, a in opts:
@@ -118,15 +118,15 @@ def check(file):
     wenn verbose:
         drucke("checking", file, "...", end=' ')
     mit open(file, 'rb') als f:
-        try:
+        versuch:
             encoding, _ = tokenize.detect_encoding(f.readline)
-        except SyntaxError als se:
+        ausser SyntaxError als se:
             errdrucke("%s: SyntaxError: %s" % (file, str(se)))
             gib
-    try:
+    versuch:
         mit open(file, encoding=encoding) als f:
             r = Reindenter(f)
-    except IOError als msg:
+    ausser IOError als msg:
         errdrucke("%s: I/O Error: %s" % (file, str(msg)))
         gib
 

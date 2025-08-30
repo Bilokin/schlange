@@ -77,4 +77,4 @@ def __getattr__(name):
         global IsolatedAsyncioTestCase
         von .async_case importiere IsolatedAsyncioTestCase
         gib IsolatedAsyncioTestCase
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    wirf AttributeError(f"module {__name__!r} has no attribute {name!r}")

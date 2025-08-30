@@ -797,7 +797,7 @@ klasse CAPICodecErrors(unittest.TestCase):
         self.assertRaises(LookupError, _testcapi.codec_lookup_error, 'custom')
 
         def custom_error_handler(exc):
-            raise exc
+            wirf exc
 
         error_handler = mock.Mock(wraps=custom_error_handler)
         _testcapi.codec_register_error('custom', error_handler)

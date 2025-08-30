@@ -32,14 +32,14 @@ klasse HTTPSServer(_HTTPServer):
 
     def get_request(self):
         # override this to wrap socket mit SSL
-        try:
+        versuch:
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=Wahr)
-        except OSError als e:
+        ausser OSError als e:
             # socket errors are silenced by the caller, print them here
             wenn support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
-            raise
+            wirf
         gib sslconn, addr
 
 klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
@@ -138,9 +138,9 @@ klasse HTTPSServerThread(threading.Thread):
     def run(self):
         wenn self.flag:
             self.flag.set()
-        try:
+        versuch:
             self.server.serve_forever(0.05)
-        finally:
+        schliesslich:
             self.server.server_close()
 
     def stop(self):

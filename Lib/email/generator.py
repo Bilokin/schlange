@@ -106,7 +106,7 @@ klasse Generator:
         # they are processed by this code.
         old_gen_policy = self.policy
         old_msg_policy = msg.policy
-        try:
+        versuch:
             self.policy = policy
             msg.policy = policy
             wenn unixfrom:
@@ -115,7 +115,7 @@ klasse Generator:
                     ufrom = 'From nobody ' + time.ctime(time.time())
                 self.write(ufrom + self._NL)
             self._write(msg)
-        finally:
+        schliesslich:
             self.policy = old_gen_policy
             msg.policy = old_msg_policy
 
@@ -176,11 +176,11 @@ klasse Generator:
         # Do The Right Thing, und can still modify the Content-Type: header if
         # necessary.
         oldfp = self._fp
-        try:
+        versuch:
             self._munge_cte = Nichts
             self._fp = sfp = self._new_buffer()
             self._dispatch(msg)
-        finally:
+        schliesslich:
             self._fp = oldfp
             munge_cte = self._munge_cte
             del self._munge_cte
@@ -228,10 +228,10 @@ klasse Generator:
             wenn self.policy.verify_generated_headers:
                 linesep = self.policy.linesep
                 wenn nicht folded.endswith(linesep):
-                    raise HeaderWriteError(
+                    wirf HeaderWriteError(
                         f'folded header does nicht end mit {linesep!r}: {folded!r}')
                 wenn NEWLINE_WITHOUT_FWSP.search(folded.removesuffix(linesep)):
-                    raise HeaderWriteError(
+                    wirf HeaderWriteError(
                         f'folded header contains newline: {folded!r}')
             self.write(folded)
         # A blank line always separates headers von body
@@ -246,7 +246,7 @@ klasse Generator:
         wenn payload is Nichts:
             gib
         wenn nicht isinstance(payload, str):
-            raise TypeError('string payload expected: %s' % type(payload))
+            wirf TypeError('string payload expected: %s' % type(payload))
         wenn _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
             wenn charset is nicht Nichts:
@@ -329,9 +329,9 @@ klasse Generator:
         # RDM: This isn't enough to completely preserve the part, but it helps.
         p = self.policy
         self.policy = p.clone(max_line_length=0)
-        try:
+        versuch:
             self._handle_multipart(msg)
-        finally:
+        schliesslich:
             self.policy = p
 
     def _handle_message_delivery_status(self, msg):
@@ -406,7 +406,7 @@ klasse Generator:
 klasse BytesGenerator(Generator):
     """Generates a bytes version of a Message object tree.
 
-    Functionally identical to the base Generator except that the output is
+    Functionally identical to the base Generator ausser that the output is
     bytes und nicht string.  When surrogates were used in the input to encode
     bytes, these are decoded back to bytes fuer output.  If the policy has
     cte_type set to 7bit, then the message is transformed such that the
@@ -426,7 +426,7 @@ klasse BytesGenerator(Generator):
         gib s.encode('ascii')
 
     def _write_headers(self, msg):
-        # This is almost the same als the string version, except fuer handling
+        # This is almost the same als the string version, ausser fuer handling
         # strings mit 8bit bytes.
         fuer h, v in msg.raw_items():
             self._fp.write(self.policy.fold_binary(h, v))
@@ -458,12 +458,12 @@ _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'
 klasse DecodedGenerator(Generator):
     """Generates a text representation of a message.
 
-    Like the Generator base class, except that non-text parts are substituted
+    Like the Generator base class, ausser that non-text parts are substituted
     mit a format string representing the part.
     """
     def __init__(self, outfp, mangle_from_=Nichts, maxheaderlen=Nichts, fmt=Nichts, *,
                  policy=Nichts):
-        """Like Generator.__init__() except that an additional optional
+        """Like Generator.__init__() ausser that an additional optional
         argument is allowed.
 
         Walks through all subparts of a message.  If the subpart is of main

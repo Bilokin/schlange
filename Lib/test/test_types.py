@@ -102,29 +102,29 @@ klasse TypesTests(unittest.TestCase):
         self.assertRaises(ValueError, float, '5_5\0')
 
     def test_zero_division(self):
-        try: 5.0 / 0.0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5.0 / 0.0 didn't raise ZeroDivisionError")
+        versuch: 5.0 / 0.0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5.0 / 0.0 didn't wirf ZeroDivisionError")
 
-        try: 5.0 // 0.0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5.0 // 0.0 didn't raise ZeroDivisionError")
+        versuch: 5.0 // 0.0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5.0 // 0.0 didn't wirf ZeroDivisionError")
 
-        try: 5.0 % 0.0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5.0 % 0.0 didn't raise ZeroDivisionError")
+        versuch: 5.0 % 0.0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5.0 % 0.0 didn't wirf ZeroDivisionError")
 
-        try: 5 / 0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5 / 0 didn't raise ZeroDivisionError")
+        versuch: 5 / 0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5 / 0 didn't wirf ZeroDivisionError")
 
-        try: 5 // 0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5 // 0 didn't raise ZeroDivisionError")
+        versuch: 5 // 0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5 // 0 didn't wirf ZeroDivisionError")
 
-        try: 5 % 0
-        except ZeroDivisionError: pass
-        sonst: self.fail("5 % 0 didn't raise ZeroDivisionError")
+        versuch: 5 % 0
+        ausser ZeroDivisionError: pass
+        sonst: self.fail("5 % 0 didn't wirf ZeroDivisionError")
 
     def test_numeric_types(self):
         wenn 0 != 0.0 oder 1 != 1.0 oder -1 != -1.0:
@@ -212,12 +212,12 @@ klasse TypesTests(unittest.TestCase):
         self.assertIsInstance(-x - 2, int,
                               "(-sys.maxsize - 2) should have returned int")
 
-        try: 5 << -5
-        except ValueError: pass
+        versuch: 5 << -5
+        ausser ValueError: pass
         sonst: self.fail('int negative shift <<')
 
-        try: 5 >> -5
-        except ValueError: pass
+        versuch: 5 >> -5
+        ausser ValueError: pass
         sonst: self.fail('int negative shift >>')
 
     def test_floats(self):
@@ -461,7 +461,7 @@ klasse TypesTests(unittest.TestCase):
 
         test(0.0, 'f', '0.000000')
 
-        # the default is 'g', except fuer empty format spec
+        # the default is 'g', ausser fuer empty format spec
         test(0.0, '', '0.0')
         test(0.01, '', '0.01')
         test(0.01, 'g', '0.01')
@@ -684,9 +684,9 @@ klasse TypesTests(unittest.TestCase):
         self.assertIsInstance(Nichts, types.NoneType)
 
     def test_traceback_and_frame_types(self):
-        try:
-            raise OSError
-        except OSError als e:
+        versuch:
+            wirf OSError
+        ausser OSError als e:
             exc = e
         self.assertIsInstance(exc.__traceback__, types.TracebackType)
         self.assertIsInstance(exc.__traceback__.tb_frame, types.FrameType)
@@ -705,9 +705,9 @@ klasse TypesTests(unittest.TestCase):
 
         fuer _ in range(3):
             call(['a'])
-        try:
+        versuch:
             call(list)
-        except TypeError:
+        ausser TypeError:
             pass
         """
         assert_python_ok("-c", code)
@@ -773,7 +773,7 @@ klasse UnionTests(unittest.TestCase):
         x = int | str
         self.assertEqual(x, int | str)
         self.assertEqual(x, str | int)
-        self.assertNotEqual(x, {})  # should nicht raise exception
+        self.assertNotEqual(x, {})  # should nicht wirf exception
         mit self.assertRaises(TypeError):
             x < x
         mit self.assertRaises(TypeError):
@@ -816,7 +816,7 @@ klasse UnionTests(unittest.TestCase):
                 wenn is_hashable:
                     gib 1
                 sonst:
-                    raise TypeError("not hashable")
+                    wirf TypeError("not hashable")
 
         klasse A(metaclass=UnhashableMeta): ...
         klasse B(metaclass=UnhashableMeta): ...
@@ -1880,7 +1880,7 @@ klasse ClassCreationTests(unittest.TestCase):
                 super_new = super().__new__
                 new_class = super_new(cls, name, bases, {})
                 wenn name != "Model":
-                    raise RuntimeWarning(f"{name=}")
+                    wirf RuntimeWarning(f"{name=}")
                 gib new_class
 
         klasse Model(metaclass=ModelBase):
@@ -2129,10 +2129,10 @@ klasse SimpleNamespaceTests(unittest.TestCase):
 
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             pname = "protocol {}".format(protocol)
-            try:
+            versuch:
                 ns_pickled = pickle.dumps(ns, protocol)
-            except TypeError als e:
-                raise TypeError(pname) von e
+            ausser TypeError als e:
+                wirf TypeError(pname) von e
             ns_roundtrip = pickle.loads(ns_pickled)
 
             self.assertEqual(ns, ns_roundtrip, pname)
@@ -2336,9 +2336,9 @@ klasse CoroutineTests(unittest.TestCase):
         # Test exceptions propagation
         error = Exception()
         gen.throw.side_effect = error
-        try:
+        versuch:
             wrapper.throw(1)
-        except Exception als ex:
+        ausser Exception als ex:
             self.assertIs(ex, error)
         sonst:
             self.fail('wrapper did nicht propagate an exception')
@@ -2380,20 +2380,20 @@ klasse CoroutineTests(unittest.TestCase):
             def __next__(self):
                 gib self.send(Nichts)
             def send(self, v):
-                try:
+                versuch:
                     wenn self._i == 0:
                         assert v is Nichts
                         gib self._fut
                     wenn self._i == 1:
-                        raise StopIteration(v * 2)
+                        wirf StopIteration(v * 2)
                     wenn self._i > 1:
-                        raise StopIteration
-                finally:
+                        wirf StopIteration
+                schliesslich:
                     self._i += 1
             def throw(self, tp, *exc):
                 self._i = 100
                 wenn tp is nicht GeneratorExit:
-                    raise tp
+                    wirf tp
             def close(self):
                 self.throw(GeneratorExit)
 
@@ -2408,9 +2408,9 @@ klasse CoroutineTests(unittest.TestCase):
         coro = corofunc()
 
         self.assertEqual(coro.send(Nichts), 'spam')
-        try:
+        versuch:
             coro.send(20)
-        except StopIteration als ex:
+        ausser StopIteration als ex:
             self.assertEqual(ex.args[0], 140)
         sonst:
             self.fail('StopIteration was expected')
@@ -2562,10 +2562,10 @@ klasse SubinterpreterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         global interpreters
-        try:
+        versuch:
             von concurrent importiere interpreters
-        except ModuleNotFoundError:
-            raise unittest.SkipTest('subinterpreters required')
+        ausser ModuleNotFoundError:
+            wirf unittest.SkipTest('subinterpreters required')
         von test.support importiere channels  # noqa: F401
         cls.create_channel = staticmethod(channels.create)
 

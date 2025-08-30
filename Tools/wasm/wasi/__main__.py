@@ -4,9 +4,9 @@ importiere argparse
 importiere contextlib
 importiere functools
 importiere os
-try:
+versuch:
     von os importiere process_cpu_count als cpu_count
-except ImportError:
+ausser ImportError:
     von os importiere cpu_count
 importiere pathlib
 importiere shutil
@@ -41,10 +41,10 @@ def updated_env(updates={}):
     env_defaults = {}
     # https://reproducible-builds.org/docs/source-date-epoch/
     git_epoch_cmd = ["git", "log", "-1", "--pretty=%ct"]
-    try:
+    versuch:
         epoch = subprocess.check_output(git_epoch_cmd, encoding="utf-8").strip()
         env_defaults["SOURCE_DATE_EPOCH"] = epoch
-    except subprocess.CalledProcessError:
+    ausser subprocess.CalledProcessError:
         pass  # Might be building von a tarball.
     # This layering lets SOURCE_DATE_EPOCH von os.environ takes precedence.
     environment = env_defaults | os.environ | updates
@@ -70,10 +70,10 @@ def subdir(working_dir, *, clean_ok=Falsch):
 
             wenn callable(working_dir):
                 working_dir = working_dir(context)
-            try:
+            versuch:
                 tput_output = subprocess.check_output(["tput", "cols"],
                                                       encoding="utf-8")
-            except subprocess.CalledProcessError:
+            ausser subprocess.CalledProcessError:
                 terminal_width = 80
             sonst:
                 terminal_width = int(tput_output.strip())
@@ -103,7 +103,7 @@ def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
         quiet = context.quiet
         logdir = context.logdir
     sowenn quiet und logdir is Nichts:
-        raise ValueError("When quiet is Wahr, logdir must be specified")
+        wirf ValueError("When quiet is Wahr, logdir must be specified")
 
     drucke("❯", " ".join(map(str, command)))
     wenn nicht quiet:
@@ -127,7 +127,7 @@ def build_python_path():
     wenn nicht binary.is_file():
         binary = binary.with_suffix(".exe")
         wenn nicht binary.is_file():
-            raise FileNotFoundError("Unable to find `python(.exe)` in "
+            wirf FileNotFoundError("Unable to find `python(.exe)` in "
                                     f"{BUILD_DIR}")
 
     gib binary
@@ -230,7 +230,7 @@ def wasi_sdk_env(context):
 def configure_wasi_python(context, working_dir):
     """Configure the WASI/host build."""
     wenn nicht context.wasi_sdk_path oder nicht context.wasi_sdk_path.exists():
-        raise ValueError("WASI-SDK nicht found; "
+        wirf ValueError("WASI-SDK nicht found; "
                         "download von "
                         "https://github.com/WebAssembly/wasi-sdk and/or "
                         "specify via $WASI_SDK_PATH oder --wasi-sdk")
@@ -259,7 +259,7 @@ def configure_wasi_python(context, working_dir):
         wenn wasmtime := shutil.which("wasmtime"):
             args[WASMTIME_VAR_NAME] = wasmtime
         sonst:
-            raise FileNotFoundError("wasmtime nicht found; download von "
+            wirf FileNotFoundError("wasmtime nicht found; download von "
                                     "https://github.com/bytecodealliance/wasmtime")
     host_runner = context.host_runner.format_map(args)
     env_additions = {"CONFIG_SITE": config_site, "HOSTRUNNER": host_runner}

@@ -37,7 +37,7 @@ von test.libregrtest.result importiere TestStats
 von test.libregrtest.utils importiere normalize_test_name
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 ROOT_DIR = os.path.join(os.path.dirname(__file__), '..', '..')
 ROOT_DIR = os.path.abspath(os.path.normpath(ROOT_DIR))
@@ -62,9 +62,9 @@ EXITCODE_INTERRUPTED = 130
 
 TEST_INTERRUPTED = textwrap.dedent("""
     von signal importiere SIGINT, raise_signal
-    try:
+    versuch:
         raise_signal(SIGINT)
-    except ImportError:
+    ausser ImportError:
         importiere os
         os.kill(os.getpid(), SIGINT)
     """)
@@ -541,13 +541,13 @@ klasse BaseTestCase(unittest.TestCase):
 
         self.addCleanup(os_helper.unlink, path)
         # Use 'x' mode to ensure that we do nicht override existing tests
-        try:
+        versuch:
             mit open(path, 'x', encoding='utf-8') als fp:
                 fp.write(code)
-        except PermissionError als exc:
+        ausser PermissionError als exc:
             wenn nicht sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
-            raise
+            wirf
         gib name
 
     def regex_search(self, regex, output):
@@ -955,7 +955,7 @@ klasse ArgsTestCase(BaseTestCase):
     def test_skip(self):
         code = textwrap.dedent("""
             importiere unittest
-            raise unittest.SkipTest("nope")
+            wirf unittest.SkipTest("nope")
         """)
         test_ok = self.create_test('ok')
         test_skip = self.create_test('skip', code=code)
@@ -1527,7 +1527,7 @@ klasse ArgsTestCase(BaseTestCase):
             klasse ExampleTests(unittest.TestCase):
                 @classmethod
                 def setUpClass(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 def test_success(self):
                     gib
@@ -1550,7 +1550,7 @@ klasse ArgsTestCase(BaseTestCase):
             klasse ExampleTests(unittest.TestCase):
                 @classmethod
                 def tearDownClass(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 def test_success(self):
                     gib
@@ -1571,7 +1571,7 @@ klasse ArgsTestCase(BaseTestCase):
             importiere unittest
 
             def setUpModule():
-                raise RuntimeError('Fail')
+                wirf RuntimeError('Fail')
 
             klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
@@ -1593,7 +1593,7 @@ klasse ArgsTestCase(BaseTestCase):
             importiere unittest
 
             def tearDownModule():
-                raise RuntimeError('Fail')
+                wirf RuntimeError('Fail')
 
             klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
@@ -1616,7 +1616,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.TestCase):
                 def setUp(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 def test_success(self):
                     gib
@@ -1638,7 +1638,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.TestCase):
                 def tearDown(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 def test_success(self):
                     gib
@@ -1660,7 +1660,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncSetUp(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 async def test_success(self):
                     gib
@@ -1681,7 +1681,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.IsolatedAsyncioTestCase):
                 async def asyncTearDown(self):
-                    raise RuntimeError('Fail')
+                    wirf RuntimeError('Fail')
 
                 async def test_success(self):
                     gib
@@ -1802,9 +1802,9 @@ klasse ArgsTestCase(BaseTestCase):
         code = textwrap.dedent(r"""
             importiere time
             importiere unittest
-            try:
+            versuch:
                 importiere faulthandler
-            except ImportError:
+            ausser ImportError:
                 faulthandler = Nichts
 
             klasse Tests(unittest.TestCase):
@@ -1838,7 +1838,7 @@ klasse ArgsTestCase(BaseTestCase):
                 pass
 
             def weakref_callback(obj):
-                raise Exception("weakref callback bug")
+                wirf Exception("weakref callback bug")
 
             klasse Tests(unittest.TestCase):
                 def test_unraisable_exc(self):
@@ -1873,7 +1873,7 @@ klasse ArgsTestCase(BaseTestCase):
                 pass
 
             def func_bug():
-                raise Exception("bug in thread")
+                wirf Exception("bug in thread")
 
             klasse Tests(unittest.TestCase):
                 def test_threading_excepthook(self):
@@ -1906,7 +1906,7 @@ klasse ArgsTestCase(BaseTestCase):
                 pass
 
             def func_bug():
-                raise Exception("bug in thread")
+                wirf Exception("bug in thread")
 
             klasse Tests(unittest.TestCase):
                 def test_print_warning(self):
@@ -2003,9 +2003,9 @@ klasse ArgsTestCase(BaseTestCase):
         # decoded each letter is follow by a NUL character.
         assertion_failed = 'Assertion failed: tstate_is_alive(tstate)\n'
         corrupted_output += assertion_failed.encode('utf-16-le')
-        try:
+        versuch:
             corrupted_output.decode(encoding)
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             pass
         sonst:
             self.skipTest(f"{encoding} can decode non-ASCII bytes")
@@ -2162,9 +2162,9 @@ klasse ArgsTestCase(BaseTestCase):
             importiere sys
             importiere unittest
             von test importiere support
-            try:
+            versuch:
                 von _testcapi importiere config_get
-            except ImportError:
+            ausser ImportError:
                 config_get = Nichts
 
             # WASI/WASM buildbots don't use -E option

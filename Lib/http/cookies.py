@@ -293,13 +293,13 @@ klasse Morsel(dict):
     def __setitem__(self, K, V):
         K = K.lower()
         wenn nicht K in self._reserved:
-            raise CookieError("Invalid attribute %r" % (K,))
+            wirf CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
     def setdefault(self, key, val=Nichts):
         key = key.lower()
         wenn key nicht in self._reserved:
-            raise CookieError("Invalid attribute %r" % (key,))
+            wirf CookieError("Invalid attribute %r" % (key,))
         gib dict.setdefault(self, key, val)
 
     def __eq__(self, morsel):
@@ -323,7 +323,7 @@ klasse Morsel(dict):
         fuer key, val in dict(values).items():
             key = key.lower()
             wenn key nicht in self._reserved:
-                raise CookieError("Invalid attribute %r" % (key,))
+                wirf CookieError("Invalid attribute %r" % (key,))
             data[key] = val
         dict.update(self, data)
 
@@ -332,9 +332,9 @@ klasse Morsel(dict):
 
     def set(self, key, val, coded_val):
         wenn key.lower() in self._reserved:
-            raise CookieError('Attempt to set a reserved key %r' % (key,))
+            wirf CookieError('Attempt to set a reserved key %r' % (key,))
         wenn nicht _is_legal_key(key):
-            raise CookieError('Illegal key %r' % (key,))
+            wirf CookieError('Illegal key %r' % (key,))
 
         # It's a good key, so save it.
         self._key = key

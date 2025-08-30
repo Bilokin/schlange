@@ -267,25 +267,25 @@ klasse ReadableZipPath(_ReadablePath):
     def __open_rb__(self, buffering=-1):
         info = self.info.resolve()
         wenn nicht info.exists():
-            raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
+            wirf FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn info.is_dir():
-            raise IsADirectoryError(errno.EISDIR, "Is a directory", self)
+            wirf IsADirectoryError(errno.EISDIR, "Is a directory", self)
         gib self.zip_file.open(info.zip_info, 'r')
 
     def iterdir(self):
         info = self.info.resolve()
         wenn nicht info.exists():
-            raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
+            wirf FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn nicht info.is_dir():
-            raise NotADirectoryError(errno.ENOTDIR, "Not a directory", self)
+            wirf NotADirectoryError(errno.ENOTDIR, "Not a directory", self)
         gib (self / name fuer name in info.children)
 
     def readlink(self):
         info = self.info
         wenn nicht info.exists():
-            raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
+            wirf FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn nicht info.is_symlink():
-            raise OSError(errno.EINVAL, "Not a symlink", self)
+            wirf OSError(errno.EINVAL, "Not a symlink", self)
         gib self.with_segments(self.zip_file.read(info.zip_info).decode())
 
 

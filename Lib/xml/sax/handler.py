@@ -31,11 +31,11 @@ klasse ErrorHandler:
 
     def error(self, exception):
         "Handle a recoverable error."
-        raise exception
+        wirf exception
 
     def fatalError(self, exception):
         "Handle a non-recoverable error."
-        raise exception
+        wirf exception
 
     def warning(self, exception):
         "Handle a warning."

@@ -185,11 +185,11 @@ klasse AutoCompleteWindow:
         self.autocompletewindow = acw = Toplevel(self.widget)
         acw.withdraw()
         acw.wm_overrideredirect(1)
-        try:
+        versuch:
             # Prevent grabbing focus on macOS.
             acw.tk.call("::tk::unsupported::MacWindowStyle", "style", acw._w,
                         "help", "noActivates")
-        except TclError:
+        ausser TclError:
             pass
         self.scrollbar = scrollbar = Scrollbar(acw, orient=VERTICAL)
         self.listbox = listbox = Listbox(acw, yscrollcommand=scrollbar.set,
@@ -241,7 +241,7 @@ klasse AutoCompleteWindow:
 
         # Since the <Configure> event may occur after the completion window is gone,
         # catch potential TclError exceptions when accessing acw.  See: bpo-41611.
-        try:
+        versuch:
             # Position the completion list window
             text = self.widget
             text.see(self.startindex)
@@ -268,16 +268,16 @@ klasse AutoCompleteWindow:
             acw.wm_geometry("+%d+%d" % (new_x, new_y))
             acw.deiconify()
             acw.update_idletasks()
-        except TclError:
+        ausser TclError:
             pass
 
         wenn platform.system().startswith('Windows'):
             # See issue 15786.  When on Windows platform, Tk will misbehave
             # to call winconfig_event multiple times, we need to prevent this,
             # otherwise mouse button double click will nicht be able to used.
-            try:
+            versuch:
                 acw.unbind(WINCONFIG_SEQUENCE, self.winconfigid)
-            except TclError:
+            ausser TclError:
                 pass
             self.winconfigid = Nichts
 
@@ -287,10 +287,10 @@ klasse AutoCompleteWindow:
         wenn nicht self.autocompletewindow:
             gib
 
-        try:
+        versuch:
             wenn nicht self.autocompletewindow.focus_get():
                 self.hide_window()
-        except KeyError:
+        ausser KeyError:
             # See issue 734176, when user click on menu, acw.focus_get()
             # will get KeyError.
             self.hide_window()

@@ -39,9 +39,9 @@ klasse StupidGit:
         self.argue(a, b, c)
 # line 40
     def argue(self, a, b, c):
-        try:
+        versuch:
             spam(a, b, c)
-        except BaseException als e:
+        ausser BaseException als e:
             self.ex = e
             self.tr = inspect.trace()
 
@@ -76,9 +76,9 @@ async def lobbest(grenade):
     pass
 
 currentframe = inspect.currentframe()
-try:
-    raise Exception()
-except BaseException als e:
+versuch:
+    wirf Exception()
+ausser BaseException als e:
     tb = e.__traceback__
 
 klasse Callable:

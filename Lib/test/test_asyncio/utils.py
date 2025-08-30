@@ -20,9 +20,9 @@ von unittest importiere mock
 von http.server importiere HTTPServer
 von wsgiref.simple_server importiere WSGIRequestHandler, WSGIServer
 
-try:
+versuch:
     importiere ssl
-except ImportError:  # pragma: no cover
+ausser ImportError:  # pragma: no cover
     ssl = Nichts
 
 von asyncio importiere base_events
@@ -48,7 +48,7 @@ def data_file(*filename):
     fullname = os.path.join(os.path.dirname(__file__), '..', *filename)
     wenn os.path.isfile(fullname):
         gib fullname
-    raise FileNotFoundError(os.path.join(filename))
+    wirf FileNotFoundError(os.path.join(filename))
 
 
 ONLYCERT = data_file('certdata', 'ssl_cert.pem')
@@ -89,9 +89,9 @@ def run_briefly(loop):
     # Don't log a warning wenn the task is nicht done after run_until_complete().
     # It occurs wenn the loop is stopped oder wenn a task raises a BaseException.
     t._log_destroy_pending = Falsch
-    try:
+    versuch:
         loop.run_until_complete(t)
-    finally:
+    schliesslich:
         gen.close()
 
 
@@ -103,7 +103,7 @@ def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
         loop.run_until_complete(tasks.sleep(delay))
         delay = max(delay * 2, 1.0)
     sonst:
-        raise TimeoutError()
+        wirf TimeoutError()
 
 
 def run_once(loop):
@@ -150,10 +150,10 @@ klasse SSLWSGIServerMixin:
         context.load_cert_chain(ONLYCERT, ONLYKEY)
 
         ssock = context.wrap_socket(request, server_side=Wahr)
-        try:
+        versuch:
             self.RequestHandlerClass(ssock, client_address, self)
             ssock.close()
-        except OSError:
+        ausser OSError:
             # maybe socket has been closed by peer
             pass
 
@@ -189,9 +189,9 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
     server_thread = threading.Thread(
         target=lambda: httpd.serve_forever(poll_interval=0.05))
     server_thread.start()
-    try:
+    versuch:
         liefere httpd
-    finally:
+    schliesslich:
         httpd.shutdown()
         httpd.server_close()
         server_thread.join()
@@ -244,12 +244,12 @@ wenn hasattr(socket, 'AF_UNIX'):
     @contextlib.contextmanager
     def unix_socket_path():
         path = gen_unix_socket_path()
-        try:
+        versuch:
             liefere path
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 os.unlink(path)
-            except OSError:
+            ausser OSError:
                 pass
 
 
@@ -287,9 +287,9 @@ def run_udp_echo_server(*, host='127.0.0.1', port=0):
     sockname = sock.getsockname()
     thread = threading.Thread(target=lambda: echo_datagrams(sock))
     thread.start()
-    try:
+    versuch:
         liefere sockname
-    finally:
+    schliesslich:
         # gh-122187: use a separate socket to send the stop message to avoid
         # TSan reported race on the same socket.
         sock2 = socket.socket(family, type, proto)
@@ -381,12 +381,12 @@ klasse TestLoop(base_events.BaseEventLoop):
     def close(self):
         super().close()
         wenn self._check_on_close:
-            try:
+            versuch:
                 self._gen.send(0)
-            except StopIteration:
+            ausser StopIteration:
                 pass
             sonst:  # pragma: no cover
-                raise AssertionError("Time generator is nicht finished")
+                wirf AssertionError("Time generator is nicht finished")
 
     def _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, Nichts)
@@ -401,18 +401,18 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def assert_reader(self, fd, callback, *args):
         wenn fd nicht in self.readers:
-            raise AssertionError(f'fd {fd} is nicht registered')
+            wirf AssertionError(f'fd {fd} is nicht registered')
         handle = self.readers[fd]
         wenn handle._callback != callback:
-            raise AssertionError(
+            wirf AssertionError(
                 f'unexpected callback: {handle._callback} != {callback}')
         wenn handle._args != args:
-            raise AssertionError(
+            wirf AssertionError(
                 f'unexpected callback args: {handle._args} != {args}')
 
     def assert_no_reader(self, fd):
         wenn fd in self.readers:
-            raise AssertionError(f'fd {fd} is registered')
+            wirf AssertionError(f'fd {fd} is registered')
 
     def _add_writer(self, fd, callback, *args):
         self.writers[fd] = events.Handle(callback, args, self, Nichts)
@@ -427,27 +427,27 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def assert_writer(self, fd, callback, *args):
         wenn fd nicht in self.writers:
-            raise AssertionError(f'fd {fd} is nicht registered')
+            wirf AssertionError(f'fd {fd} is nicht registered')
         handle = self.writers[fd]
         wenn handle._callback != callback:
-            raise AssertionError(f'{handle._callback!r} != {callback!r}')
+            wirf AssertionError(f'{handle._callback!r} != {callback!r}')
         wenn handle._args != args:
-            raise AssertionError(f'{handle._args!r} != {args!r}')
+            wirf AssertionError(f'{handle._args!r} != {args!r}')
 
     def _ensure_fd_no_transport(self, fd):
         wenn nicht isinstance(fd, int):
-            try:
+            versuch:
                 fd = int(fd.fileno())
-            except (AttributeError, TypeError, ValueError):
+            ausser (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
-                raise ValueError("Invalid file object: "
+                wirf ValueError("Invalid file object: "
                                  "{!r}".format(fd)) von Nichts
-        try:
+        versuch:
             transport = self._transports[fd]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
-            raise RuntimeError(
+            wirf RuntimeError(
                 'File descriptor {!r} is used by transport {!r}'.format(
                     fd, transport))
 
@@ -521,7 +521,7 @@ klasse MockInstanceOf:
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
     wenn source is Nichts:
-        raise ValueError("unable to get the source of %r" % (func,))
+        wirf ValueError("unable to get the source of %r" % (func,))
     gib source
 
 
@@ -537,7 +537,7 @@ klasse TestCase(unittest.TestCase):
 
     def set_event_loop(self, loop, *, cleanup=Wahr):
         wenn loop is Nichts:
-            raise AssertionError('loop is Nichts')
+            wirf AssertionError('loop is Nichts')
         # ensure that the event loop is passed explicitly in asyncio
         events.set_event_loop(Nichts)
         wenn cleanup:
@@ -555,7 +555,7 @@ klasse TestCase(unittest.TestCase):
         events.set_event_loop(Nichts)
 
         # Detect CPython bug #23353: ensure that yield/yield-from is nicht used
-        # in an except block of a generator
+        # in an ausser block of a generator
         self.assertIsNichts(sys.exception())
 
         self.doCleanups()
@@ -570,10 +570,10 @@ def disable_logger():
     For example, it can be used to ignore warnings in debug mode.
     """
     old_level = logger.level
-    try:
+    versuch:
         logger.setLevel(logging.CRITICAL+1)
         liefere
-    finally:
+    schliesslich:
         logger.setLevel(old_level)
 
 
@@ -591,16 +591,16 @@ def mock_nonblocking_socket(proto=socket.IPPROTO_TCP, type=socket.SOCK_STREAM,
 async def await_without_task(coro):
     exc = Nichts
     def func():
-        try:
+        versuch:
             fuer _ in coro.__await__():
                 pass
-        except BaseException als err:
+        ausser BaseException als err:
             nonlocal exc
             exc = err
     asyncio.get_running_loop().call_soon(func)
     await asyncio.sleep(0)
     wenn exc is nicht Nichts:
-        raise exc
+        wirf exc
 
 
 wenn sys.platform == 'win32':

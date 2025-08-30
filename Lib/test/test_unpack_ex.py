@@ -55,7 +55,7 @@ Unpack generic sequence
     >>> klasse Seq:
     ...     def __getitem__(self, i):
     ...         wenn i >= 0 und i < 3: gib i
-    ...         raise IndexError
+    ...         wirf IndexError
     ...
     >>> a, *b = Seq()
     >>> a == 0 und b == [1, 2]
@@ -306,9 +306,9 @@ error
     ...         wenn i >= 0 und i < 3:
     ...             gib i
     ...         sowenn i == 3:
-    ...             raise BozoError
+    ...             wirf BozoError
     ...         sonst:
-    ...             raise IndexError
+    ...             wirf IndexError
     ...
 
 Trigger code waehrend nicht expecting an IndexError (unpack sequence too long, wrong

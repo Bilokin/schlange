@@ -131,7 +131,7 @@ klasse TestBasicOps:
         klasse NA(list):
             "Simulate numpy.array() behavior"
             def __bool__(self):
-                raise RuntimeError
+                wirf RuntimeError
 
         mit self.assertRaises(IndexError):
             choice(NA([]))
@@ -598,9 +598,9 @@ klasse TestBasicOps:
         self.assertIsInstance(self.gen.gauss(), float)
 
 
-try:
+versuch:
     random.SystemRandom().random()
-except NotImplementedError:
+ausser NotImplementedError:
     SystemRandom_available = Falsch
 sonst:
     SystemRandom_available = Wahr
@@ -610,7 +610,7 @@ klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.SystemRandom()
 
     def test_autoseed(self):
-        # Doesn't need to do anything except nicht fail
+        # Doesn't need to do anything ausser nicht fail
         self.gen.seed()
 
     def test_saverestore(self):
@@ -618,7 +618,7 @@ klasse SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(NotImplementedError, self.gen.setstate, Nichts)
 
     def test_seedargs(self):
-        # Doesn't need to do anything except nicht fail
+        # Doesn't need to do anything ausser nicht fail
         self.gen.seed(100)
 
     def test_gauss(self):
@@ -688,9 +688,9 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         klasse BadInt(int):
             def __abs__(self):
                 gib Nichts
-        try:
+        versuch:
             self.gen.seed(BadInt())
-        except TypeError:
+        ausser TypeError:
             pass
 
     def test_bug_31482(self):
@@ -744,7 +744,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(self.gen.getrandbits(100), bits100)
 
         # Little trick to make "tuple(x % (2**32) fuer x in internalstate)"
-        # raise ValueError. I cannot think of a simple way to achieve this, so
+        # wirf ValueError. I cannot think of a simple way to achieve this, so
         # I am opting fuer using a generator als the middle argument of setstate
         # which attempts to cast a NaN to integer.
         state_values = self.gen.getstate()[1]
@@ -1062,9 +1062,9 @@ klasse TestDistributions(unittest.TestCase):
             g.random = x[:].pop
             y = []
             fuer i in range(len(x)):
-                try:
+                versuch:
                     y.append(variate(*args))
-                except IndexError:
+                ausser IndexError:
                     pass
             s1 = s2 = 0
             fuer e in y:
@@ -1299,7 +1299,7 @@ klasse TestDistributions(unittest.TestCase):
 
 klasse TestRandomSubclassing(unittest.TestCase):
     def test_random_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously raise a TypeError
+        # SF bug #1486663 -- this used to erroneously wirf a TypeError
         klasse Subclass(random.Random):
             def __init__(self, newarg=Nichts):
                 random.Random.__init__(self)
@@ -1409,11 +1409,11 @@ klasse TestModule(unittest.TestCase):
         pid = os.fork()
         wenn pid == 0:
             # child process
-            try:
+            versuch:
                 val = random.getrandbits(128)
                 mit open(w, "w") als f:
                     f.write(str(val))
-            finally:
+            schliesslich:
                 os._exit(0)
         sonst:
             # parent process

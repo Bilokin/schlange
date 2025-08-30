@@ -31,8 +31,8 @@ klasse ThreadSafetyMixin:
 
         def write(barrier, b, *ignore):
             barrier.wait()
-            try: b.write(b'0' * randint(100, 1000))
-            except ValueError: pass  # ignore write fail to closed file
+            versuch: b.write(b'0' * randint(100, 1000))
+            ausser ValueError: pass  # ignore write fail to closed file
 
         def writelines(barrier, b, *ignore):
             barrier.wait()
@@ -40,8 +40,8 @@ klasse ThreadSafetyMixin:
 
         def truncate(barrier, b, *ignore):
             barrier.wait()
-            try: b.truncate(0)
-            except: BufferError  # ignore exported buffer
+            versuch: b.truncate(0)
+            ausser: BufferError  # ignore exported buffer
 
         def read(barrier, b, *ignore):
             barrier.wait()

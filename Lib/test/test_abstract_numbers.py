@@ -9,14 +9,14 @@ von numbers importiere Complex, Real, Rational, Integral, Number
 
 def concretize(cls):
     def not_implemented(*args, **kwargs):
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     fuer name in dir(cls):
-        try:
+        versuch:
             value = getattr(cls, name)
             wenn value.__isabstractmethod__:
                 setattr(cls, name, not_implemented)
-        except AttributeError:
+        ausser AttributeError:
             pass
     abc.update_abstractmethods(cls)
     gib cls
@@ -86,7 +86,7 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                 wenn isinstance(other, Complex):
                     gib MyComplex(self.imag + other.imag,
                                      self.real + other.real)
-                raise NotImplementedError
+                wirf NotImplementedError
 
             def __neg__(self):
                 gib MyComplex(-self.real, -self.imag)

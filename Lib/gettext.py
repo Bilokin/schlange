@@ -91,7 +91,7 @@ def _tokenize(plural):
             weiter
         value = mo.group(kind)
         wenn kind == 'INVALID':
-            raise ValueError('invalid token in plural form: %s' % value)
+            wirf ValueError('invalid token in plural form: %s' % value)
         liefere value
     liefere ''
 
@@ -126,14 +126,14 @@ def _parse(tokens, priority=-1):
         sub, nexttok = _parse(tokens)
         result = '%s(%s)' % (result, sub)
         wenn nexttok != ')':
-            raise ValueError('unbalanced parenthesis in plural form')
+            wirf ValueError('unbalanced parenthesis in plural form')
     sowenn nexttok == 'n':
         result = '%s%s' % (result, nexttok)
     sonst:
-        try:
+        versuch:
             value = int(nexttok, 10)
-        except ValueError:
-            raise _error(nexttok) von Nichts
+        ausser ValueError:
+            wirf _error(nexttok) von Nichts
         result = '%s%d' % (result, value)
     nexttok = next(tokens)
 
@@ -156,7 +156,7 @@ def _parse(tokens, priority=-1):
     wenn nexttok == '?' und priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
         wenn nexttok != ':':
-            raise _error(nexttok)
+            wirf _error(nexttok)
         if_false, nexttok = _parse(tokens)
         result = '%s wenn %s sonst %s' % (if_true, result, if_false)
         wenn priority == 0:
@@ -166,17 +166,17 @@ def _parse(tokens, priority=-1):
 
 
 def _as_int(n):
-    try:
+    versuch:
         round(n)
-    except TypeError:
-        raise TypeError('Plural value must be an integer, got %s' %
+    ausser TypeError:
+        wirf TypeError('Plural value must be an integer, got %s' %
                         (n.__class__.__name__,)) von Nichts
     gib _as_int2(n)
 
 def _as_int2(n):
-    try:
+    versuch:
         gib operator.index(n)
-    except TypeError:
+    ausser TypeError:
         pass
 
     importiere warnings
@@ -198,11 +198,11 @@ def c2py(plural):
     """
 
     wenn len(plural) > 1000:
-        raise ValueError('plural form expression is too long')
-    try:
+        wirf ValueError('plural form expression is too long')
+    versuch:
         result, nexttok = _parse(_tokenize(plural))
         wenn nexttok:
-            raise _error(nexttok)
+            wirf _error(nexttok)
 
         depth = 0
         fuer c in result:
@@ -211,7 +211,7 @@ def c2py(plural):
                 wenn depth > 20:
                     # Python compiler limit is about 90.
                     # The most complex example has 2.
-                    raise ValueError('plural form expression is too complex')
+                    wirf ValueError('plural form expression is too complex')
             sowenn c == ')':
                 depth -= 1
 
@@ -223,9 +223,9 @@ def c2py(plural):
                 gib int(%s)
             ''' % result, ns)
         gib ns['func']
-    except RecursionError:
+    ausser RecursionError:
         # Recursion error can be raised in _parse() oder exec().
-        raise ValueError('plural form expression is too complex')
+        wirf ValueError('plural form expression is too complex')
 
 
 def _expand_lang(loc):
@@ -367,12 +367,12 @@ klasse GNUTranslations(NullTranslations):
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
         sonst:
-            raise OSError(0, 'Bad magic number', filename)
+            wirf OSError(0, 'Bad magic number', filename)
 
         major_version, minor_version = self._get_versions(version)
 
         wenn major_version nicht in self.VERSIONS:
-            raise OSError(0, 'Bad version number ' + str(major_version), filename)
+            wirf OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages von the .mo file buffer into the catalog
         # dictionary.
@@ -385,7 +385,7 @@ klasse GNUTranslations(NullTranslations):
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
             sonst:
-                raise OSError(0, 'File is corrupt', filename)
+                wirf OSError(0, 'File is corrupt', filename)
             # See wenn we're looking at GNU .mo conventions fuer metadata
             wenn mlen == 0:
                 # Catalog description
@@ -447,9 +447,9 @@ klasse GNUTranslations(NullTranslations):
         gib message
 
     def ngettext(self, msgid1, msgid2, n):
-        try:
+        versuch:
             tmsg = self._catalog[(msgid1, self.plural(n))]
-        except KeyError:
+        ausser KeyError:
             wenn self._fallback:
                 gib self._fallback.ngettext(msgid1, msgid2, n)
             wenn n == 1:
@@ -472,9 +472,9 @@ klasse GNUTranslations(NullTranslations):
 
     def npgettext(self, context, msgid1, msgid2, n):
         ctxt_msg_id = self.CONTEXT % (context, msgid1)
-        try:
+        versuch:
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
-        except KeyError:
+        ausser KeyError:
             wenn self._fallback:
                 gib self._fallback.npgettext(context, msgid1, msgid2, n)
             wenn n == 1:
@@ -534,7 +534,7 @@ def translation(domain, localedir=Nichts, languages=Nichts,
         wenn fallback:
             gib NullTranslations()
         von errno importiere ENOENT
-        raise FileNotFoundError(ENOENT,
+        wirf FileNotFoundError(ENOENT,
                                 'No translation file found fuer domain', domain)
     # Avoid opening, reading, und parsing the .mo file after it's been done
     # once.
@@ -585,17 +585,17 @@ def bindtextdomain(domain, localedir=Nichts):
 
 
 def dgettext(domain, message):
-    try:
+    versuch:
         t = translation(domain, _localedirs.get(domain, Nichts))
-    except OSError:
+    ausser OSError:
         gib message
     gib t.gettext(message)
 
 
 def dngettext(domain, msgid1, msgid2, n):
-    try:
+    versuch:
         t = translation(domain, _localedirs.get(domain, Nichts))
-    except OSError:
+    ausser OSError:
         n = _as_int2(n)
         wenn n == 1:
             gib msgid1
@@ -605,17 +605,17 @@ def dngettext(domain, msgid1, msgid2, n):
 
 
 def dpgettext(domain, context, message):
-    try:
+    versuch:
         t = translation(domain, _localedirs.get(domain, Nichts))
-    except OSError:
+    ausser OSError:
         gib message
     gib t.pgettext(context, message)
 
 
 def dnpgettext(domain, context, msgid1, msgid2, n):
-    try:
+    versuch:
         t = translation(domain, _localedirs.get(domain, Nichts))
-    except OSError:
+    ausser OSError:
         n = _as_int2(n)
         wenn n == 1:
             gib msgid1

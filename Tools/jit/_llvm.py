@@ -43,15 +43,15 @@ async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> st
     async mit _CORES:
         wenn echo:
             drucke(shlex.join(command))
-        try:
+        versuch:
             process = await asyncio.create_subprocess_exec(
                 *command, stdout=subprocess.PIPE
             )
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             gib Nichts
         out, _ = await process.communicate()
     wenn process.returncode:
-        raise RuntimeError(f"{tool} exited mit gib code {process.returncode}")
+        wirf RuntimeError(f"{tool} exited mit gib code {process.returncode}")
     gib out.decode()
 
 
@@ -101,8 +101,8 @@ async def maybe_run(
 
 
 async def run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str:
-    """Run an LLVM tool wenn it can be found. Otherwise, raise RuntimeError."""
+    """Run an LLVM tool wenn it can be found. Otherwise, wirf RuntimeError."""
     output = await maybe_run(tool, args, echo=echo)
     wenn output is Nichts:
-        raise RuntimeError(f"Can't find {tool}-{_LLVM_VERSION}!")
+        wirf RuntimeError(f"Can't find {tool}-{_LLVM_VERSION}!")
     gib output

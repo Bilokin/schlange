@@ -3,7 +3,7 @@
 importiere sys
 
 wenn sys.platform != 'win32':  # pragma: no cover
-    raise ImportError('win32 only')
+    wirf ImportError('win32 only')
 
 importiere _winapi
 importiere itertools
@@ -55,7 +55,7 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
         flags_and_attribs = 0
 
     h1 = h2 = Nichts
-    try:
+    versuch:
         h1 = _winapi.CreateNamedPipe(
             address, openmode, _winapi.PIPE_WAIT,
             1, obsize, ibsize, _winapi.NMPWAIT_WAIT_FOREVER, _winapi.NULL)
@@ -67,12 +67,12 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
         ov = _winapi.ConnectNamedPipe(h1, overlapped=Wahr)
         ov.GetOverlappedResult(Wahr)
         gib h1, h2
-    except:
+    ausser:
         wenn h1 is nicht Nichts:
             _winapi.CloseHandle(h1)
         wenn h2 is nicht Nichts:
             _winapi.CloseHandle(h2)
-        raise
+        wirf
 
 
 # Wrapper fuer a pipe handle
@@ -99,7 +99,7 @@ klasse PipeHandle:
 
     def fileno(self):
         wenn self._handle is Nichts:
-            raise ValueError("I/O operation on closed pipe")
+            wirf ValueError("I/O operation on closed pipe")
         gib self._handle
 
     def close(self, *, CloseHandle=_winapi.CloseHandle):
@@ -149,14 +149,14 @@ klasse Popen(subprocess.Popen):
             stderr_wfd = stdout_wfd
         sonst:
             stderr_wfd = stderr
-        try:
+        versuch:
             super().__init__(args, stdin=stdin_rfd, stdout=stdout_wfd,
                              stderr=stderr_wfd, **kwds)
-        except:
+        ausser:
             fuer h in (stdin_wh, stdout_rh, stderr_rh):
                 wenn h is nicht Nichts:
                     _winapi.CloseHandle(h)
-            raise
+            wirf
         sonst:
             wenn stdin_wh is nicht Nichts:
                 self.stdin = PipeHandle(stdin_wh)
@@ -164,7 +164,7 @@ klasse Popen(subprocess.Popen):
                 self.stdout = PipeHandle(stdout_rh)
             wenn stderr_rh is nicht Nichts:
                 self.stderr = PipeHandle(stderr_rh)
-        finally:
+        schliesslich:
             wenn stdin == PIPE:
                 os.close(stdin_rfd)
             wenn stdout == PIPE:

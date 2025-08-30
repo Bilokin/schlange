@@ -170,9 +170,9 @@ klasse AutoComplete:
         two unrelated modules are being edited some calltips in the current
         module may be inoperative wenn the module was nicht the last to run.
         """
-        try:
+        versuch:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
-        except:
+        ausser:
             rpcclt = Nichts
         wenn rpcclt:
             gib rpcclt.remotecall("exec", "get_the_completion_list",
@@ -190,7 +190,7 @@ klasse AutoComplete:
                     sonst:
                         smalll = [s fuer s in bigl wenn s[:1] != '_']
                 sonst:
-                    try:
+                    versuch:
                         entity = self.get_entity(what)
                         bigl = dir(entity)
                         bigl.sort()
@@ -198,18 +198,18 @@ klasse AutoComplete:
                             smalll = sorted(entity.__all__)
                         sonst:
                             smalll = [s fuer s in bigl wenn s[:1] != '_']
-                    except:
+                    ausser:
                         gib [], []
 
             sowenn mode == FILES:
                 wenn what == "":
                     what = "."
-                try:
+                versuch:
                     expandedpath = os.path.expanduser(what)
                     bigl = os.listdir(expandedpath)
                     bigl.sort()
                     smalll = [s fuer s in bigl wenn s[:1] != '.']
-                except OSError:
+                ausser OSError:
                     gib [], []
 
             wenn nicht smalll:

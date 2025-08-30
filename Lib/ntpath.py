@@ -41,7 +41,7 @@ def _get_bothseps(path):
 # Other normalizations (such als optimizing '../' away) are nicht done
 # (this is done by normpath).
 
-try:
+versuch:
     von _winapi importiere (
         LCMapStringEx als _LCMapStringEx,
         LOCALE_NAME_INVARIANT als _LOCALE_NAME_INVARIANT,
@@ -65,7 +65,7 @@ try:
             gib _LCMapStringEx(_LOCALE_NAME_INVARIANT,
                                   _LCMAP_LOWERCASE,
                                   s.replace('/', '\\'))
-except ImportError:
+ausser ImportError:
     def normcase(s, /):
         """Normalize case of pathname.
 
@@ -106,7 +106,7 @@ def join(path, /, *paths):
         sep = '\\'
         seps = '\\/'
         colon_seps = ':\\/'
-    try:
+    versuch:
         result_drive, result_root, result_path = splitroot(path)
         fuer p in paths:
             p_drive, p_root, p_path = splitroot(p)
@@ -135,9 +135,9 @@ def join(path, /, *paths):
             result_drive und result_drive[-1] nicht in colon_seps):
             gib result_drive + sep + result_path
         gib result_drive + result_root + result_path
-    except (TypeError, AttributeError, BytesWarning):
+    ausser (TypeError, AttributeError, BytesWarning):
         genericpath._check_arg_types('join', path, *paths)
-        raise
+        wirf
 
 
 # Split a path in a drive specification (a drive letter followed by a
@@ -166,9 +166,9 @@ def splitdrive(p, /):
     gib drive, root + tail
 
 
-try:
+versuch:
     von nt importiere _path_splitroot_ex als splitroot
-except ImportError:
+ausser ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root und tail.
 
@@ -273,9 +273,9 @@ def dirname(p, /):
 # detecting mounted volumes (querying the reparse tag) fails fuer the most
 # common case: drive letter roots. The alternative which uses GetVolumePathName
 # fails wenn the drive letter is the result of a SUBST.
-try:
+versuch:
     von nt importiere _getvolumepathname
-except ImportError:
+ausser ImportError:
     _getvolumepathname = Nichts
 def ismount(path):
     """Test whether a path is a mount point (a drive root, the root of a
@@ -398,7 +398,7 @@ def expanduser(path):
 #       - varnames can be made out of letters, digits und the characters '_-'
 #         (though is nicht verified in the ${varname} und %varname% cases)
 # XXX With COMMAND.COM you can use any characters in a variable name,
-# XXX except '^|<>='.
+# XXX ausser '^|<>='.
 
 def expandvars(path):
     """Expand shell variables of the forms $var, ${var} und %var%.
@@ -435,10 +435,10 @@ def expandvars(path):
         wenn c == quote:   # no expansion within single quotes
             path = path[index + 1:]
             pathlen = len(path)
-            try:
+            versuch:
                 index = path.index(c)
                 res += c + path[:index + 1]
-            except ValueError:
+            ausser ValueError:
                 res += c + path
                 index = pathlen - 1
         sowenn c == percent:  # variable oder '%'
@@ -448,19 +448,19 @@ def expandvars(path):
             sonst:
                 path = path[index+1:]
                 pathlen = len(path)
-                try:
+                versuch:
                     index = path.index(percent)
-                except ValueError:
+                ausser ValueError:
                     res += percent + path
                     index = pathlen - 1
                 sonst:
                     var = path[:index]
-                    try:
+                    versuch:
                         wenn environ is Nichts:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
                         sonst:
                             value = environ[var]
-                    except KeyError:
+                    ausser KeyError:
                         value = percent + var + percent
                     res += value
         sowenn c == dollar:  # variable oder '$$'
@@ -470,19 +470,19 @@ def expandvars(path):
             sowenn path[index + 1:index + 2] == brace:
                 path = path[index+2:]
                 pathlen = len(path)
-                try:
+                versuch:
                     index = path.index(rbrace)
-                except ValueError:
+                ausser ValueError:
                     res += dollar + brace + path
                     index = pathlen - 1
                 sonst:
                     var = path[:index]
-                    try:
+                    versuch:
                         wenn environ is Nichts:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
                         sonst:
                             value = environ[var]
-                    except KeyError:
+                    ausser KeyError:
                         value = dollar + brace + var + rbrace
                     res += value
             sonst:
@@ -493,12 +493,12 @@ def expandvars(path):
                     var += c
                     index += 1
                     c = path[index:index + 1]
-                try:
+                versuch:
                     wenn environ is Nichts:
                         value = os.fsencode(os.environ[os.fsdecode(var)])
                     sonst:
                         value = environ[var]
-                except KeyError:
+                ausser KeyError:
                     value = dollar + var
                 res += value
                 wenn c:
@@ -512,10 +512,10 @@ def expandvars(path):
 # Normalize a path, e.g. A//B, A/./B und A/foo/../B all become A\B.
 # Previously, this function also truncated pathnames to 8+3 format,
 # but als this module is called "ntpath", that's obviously wrong!
-try:
+versuch:
     von nt importiere _path_normpath als normpath
 
-except ImportError:
+ausser ImportError:
     def normpath(path):
         """Normalize path, eliminating double slashes, etc."""
         path = os.fspath(path)
@@ -554,10 +554,10 @@ except ImportError:
 
 
 # Return an absolute path.
-try:
+versuch:
     von nt importiere _getfullpathname
 
-except ImportError: # nicht running on Windows - mock up something sensible
+ausser ImportError: # nicht running on Windows - mock up something sensible
     def abspath(path):
         """Return the absolute version of a path."""
         path = os.fspath(path)
@@ -572,9 +572,9 @@ except ImportError: # nicht running on Windows - mock up something sensible
 sonst:  # use native Windows method on Windows
     def abspath(path):
         """Return the absolute version of a path."""
-        try:
+        versuch:
             gib _getfullpathname(normpath(path))
-        except (OSError, ValueError):
+        ausser (OSError, ValueError):
             # See gh-75230, handle outside fuer cleaner traceback
             pass
         path = os.fspath(path)
@@ -588,18 +588,18 @@ sonst:  # use native Windows method on Windows
             drive, root, path = splitroot(path)
             # Either drive oder root can be nonempty, but nicht both.
             wenn drive oder root:
-                try:
+                versuch:
                     path = join(_getfullpathname(drive + root), path)
-                except (OSError, ValueError):
+                ausser (OSError, ValueError):
                     # Drive "\0:" cannot exist; use the root directory.
                     path = drive + sep + path
             sonst:
                 path = join(getcwd(), path)
         gib normpath(path)
 
-try:
+versuch:
     von nt importiere _findfirstfile, _getfinalpathname, readlink als _nt_readlink
-except ImportError:
+ausser ImportError:
     # realpath is a no-op on systems without _getfinalpathname support.
     def realpath(path, /, *, strict=Falsch):
         gib abspath(path)
@@ -624,7 +624,7 @@ sonst:
         seen = set()
         waehrend normcase(path) nicht in seen:
             seen.add(normcase(path))
-            try:
+            versuch:
                 old_path = path
                 path = _nt_readlink(path)
                 # Links may be relative, so resolve them against their
@@ -637,11 +637,11 @@ sonst:
                         path = old_path
                         breche
                     path = normpath(join(dirname(old_path), path))
-            except ignored_error als ex:
+            ausser ignored_error als ex:
                 wenn ex.winerror in allowed_winerror:
                     breche
-                raise
-            except ValueError:
+                wirf
+            ausser ValueError:
                 # Stop on reparse points that are nicht symlinks
                 breche
         gib path
@@ -671,13 +671,13 @@ sonst:
         # als we can und join the rest.
         tail = path[:0]
         waehrend path:
-            try:
+            versuch:
                 path = _getfinalpathname(path)
                 gib join(path, tail) wenn tail sonst path
-            except ignored_error als ex:
+            ausser ignored_error als ex:
                 wenn ex.winerror nicht in allowed_winerror:
-                    raise
-                try:
+                    wirf
+                versuch:
                     # The OS could nicht resolve this path fully, so we attempt
                     # to follow the link ourselves. If we succeed, join the tail
                     # und return.
@@ -685,15 +685,15 @@ sonst:
                                               ignored_error=ignored_error)
                     wenn new_path != path:
                         gib join(new_path, tail) wenn tail sonst new_path
-                except ignored_error:
+                ausser ignored_error:
                     # If we fail to readlink(), let's keep traversing
                     pass
                 # If we get these errors, try to get the real name of the file without accessing it.
                 wenn ex.winerror in (1, 5, 32, 50, 87, 1920, 1921):
-                    try:
+                    versuch:
                         name = _findfirstfile(path)
                         path, _ = split(path)
-                    except ignored_error:
+                    ausser ignored_error:
                         path, name = split(path)
                 sonst:
                     path, name = split(path)
@@ -735,24 +735,24 @@ sonst:
 
         wenn nicht had_prefix und nicht isabs(path):
             path = join(cwd, path)
-        try:
+        versuch:
             path = _getfinalpathname(path)
             initial_winerror = 0
-        except ValueError als ex:
+        ausser ValueError als ex:
             # gh-106242: Raised fuer embedded null characters
             # In strict modes, we convert into an OSError.
             # Non-strict mode returns the path as-is, since we've already
             # made it absolute.
             wenn strict:
-                raise OSError(str(ex)) von Nichts
+                wirf OSError(str(ex)) von Nichts
             path = normpath(path)
-        except ignored_error als ex:
+        ausser ignored_error als ex:
             wenn strict is ALL_BUT_LAST:
                 dirname, basename = split(path)
                 wenn nicht basename:
                     dirname, basename = split(path)
                 wenn nicht isdir(dirname):
-                    raise
+                    wirf
             initial_winerror = ex.winerror
             path = _getfinalpathname_nonstrict(path,
                                                ignored_error=ignored_error)
@@ -767,14 +767,14 @@ sonst:
             sonst:
                 spath = path[len(prefix):]
             # Ensure that the non-prefixed path resolves to the same path
-            try:
+            versuch:
                 wenn _getfinalpathname(spath) == path:
                     path = spath
-            except ValueError als ex:
+            ausser ValueError als ex:
                 # Unexpected, als an invalid path should nicht have gained a prefix
                 # at any point, but we ignore this error just in case.
                 pass
-            except OSError als ex:
+            ausser OSError als ex:
                 # If the path does nicht exist und originally did nicht exist, then
                 # strip the prefix anyway.
                 wenn ex.winerror == initial_winerror:
@@ -789,7 +789,7 @@ def relpath(path, start=Nichts):
     """Return a relative version of a path"""
     path = os.fspath(path)
     wenn nicht path:
-        raise ValueError("no path specified")
+        wirf ValueError("no path specified")
 
     wenn isinstance(path, bytes):
         sep = b'\\'
@@ -805,13 +805,13 @@ def relpath(path, start=Nichts):
     sonst:
         start = os.fspath(start)
 
-    try:
+    versuch:
         start_abs = abspath(start)
         path_abs = abspath(path)
         start_drive, _, start_rest = splitroot(start_abs)
         path_drive, _, path_rest = splitroot(path_abs)
         wenn normcase(start_drive) != normcase(path_drive):
-            raise ValueError("path is on mount %r, start on mount %r" % (
+            wirf ValueError("path is on mount %r, start on mount %r" % (
                 path_drive, start_drive))
 
         start_list = start_rest.split(sep) wenn start_rest sonst []
@@ -827,9 +827,9 @@ def relpath(path, start=Nichts):
         wenn nicht rel_list:
             gib curdir
         gib sep.join(rel_list)
-    except (TypeError, ValueError, AttributeError, BytesWarning, DeprecationWarning):
+    ausser (TypeError, ValueError, AttributeError, BytesWarning, DeprecationWarning):
         genericpath._check_arg_types('relpath', path, start)
-        raise
+        wirf
 
 
 # Return the longest common sub-path of the iterable of paths given als input.
@@ -846,7 +846,7 @@ def commonpath(paths):
     """Given an iterable of path names, returns the longest common sub-path."""
     paths = tuple(map(os.fspath, paths))
     wenn nicht paths:
-        raise ValueError('commonpath() arg is an empty iterable')
+        wirf ValueError('commonpath() arg is an empty iterable')
 
     wenn isinstance(paths[0], bytes):
         sep = b'\\'
@@ -857,7 +857,7 @@ def commonpath(paths):
         altsep = '/'
         curdir = '.'
 
-    try:
+    versuch:
         drivesplits = [splitroot(p.replace(altsep, sep).lower()) fuer p in paths]
         split_paths = [p.split(sep) fuer d, r, p in drivesplits]
 
@@ -865,14 +865,14 @@ def commonpath(paths):
         # now otherwise type errors fuer mixing strings und bytes would nicht be
         # caught.
         wenn len({d fuer d, r, p in drivesplits}) != 1:
-            raise ValueError("Paths don't have the same drive")
+            wirf ValueError("Paths don't have the same drive")
 
         drive, root, path = splitroot(paths[0].replace(altsep, sep))
         wenn len({r fuer d, r, p in drivesplits}) != 1:
             wenn drive:
-                raise ValueError("Can't mix absolute und relative paths")
+                wirf ValueError("Can't mix absolute und relative paths")
             sonst:
-                raise ValueError("Can't mix rooted und not-rooted paths")
+                wirf ValueError("Can't mix rooted und not-rooted paths")
 
         common = path.split(sep)
         common = [c fuer c in common wenn c und c != curdir]
@@ -888,12 +888,12 @@ def commonpath(paths):
             common = common[:len(s1)]
 
         gib drive + root + sep.join(common)
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)
-        raise
+        wirf
 
 
-try:
+versuch:
     # The isdir(), isfile(), islink(), exists() und lexists() implementations
     # in genericpath use os.stat(). This is overkill on Windows. Use simpler
     # builtin functions wenn they are available.
@@ -903,19 +903,19 @@ try:
     von nt importiere _path_isjunction als isjunction
     von nt importiere _path_exists als exists
     von nt importiere _path_lexists als lexists
-except ImportError:
+ausser ImportError:
     # Use genericpath.* als imported above
     pass
 
 
-try:
+versuch:
     von nt importiere _path_isdevdrive
     def isdevdrive(path):
         """Determines whether the specified path is on a Windows Dev Drive."""
-        try:
+        versuch:
             gib _path_isdevdrive(abspath(path))
-        except OSError:
+        ausser OSError:
             gib Falsch
-except ImportError:
+ausser ImportError:
     # Use genericpath.isdevdrive als imported above
     pass

@@ -82,9 +82,9 @@ klasse SearchEngine:
         flags = 0
         wenn nicht self.iscase():
             flags = flags | re.IGNORECASE
-        try:
+        versuch:
             prog = re.compile(pat, flags)
-        except re.PatternError als e:
+        ausser re.PatternError als e:
             self.report_error(pat, e.msg, e.pos)
             gib Nichts
         gib prog
@@ -212,10 +212,10 @@ def search_reverse(prog, chars, col):
 def get_selection(text):
     '''Return tuple of 'line.col' indexes von selection oder insert mark.
     '''
-    try:
+    versuch:
         first = text.index("sel.first")
         last = text.index("sel.last")
-    except TclError:
+    ausser TclError:
         first = last = Nichts
     wenn nicht first:
         first = text.index("insert")

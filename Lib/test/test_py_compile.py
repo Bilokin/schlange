@@ -81,9 +81,9 @@ klasse PyCompileTestsBase:
     def test_do_not_overwrite_symlinks(self):
         # In the face of a cfile argument being a symlink, bail out.
         # Issue #17222
-        try:
+        versuch:
             os.symlink(self.pyc_path + '.actual', self.pyc_path)
-        except (NotImplementedError, OSError):
+        ausser (NotImplementedError, OSError):
             self.skipTest('need to be able to create a symlink fuer a file')
         sonst:
             assert os.path.islink(self.pyc_path)
@@ -125,10 +125,10 @@ klasse PyCompileTestsBase:
         # http://bugs.python.org/issue17244
         mode = os.stat(self.directory)
         os.chmod(self.directory, stat.S_IREAD)
-        try:
+        versuch:
             mit self.assertRaises(IOError):
                 py_compile.compile(self.source_path, self.pyc_path)
-        finally:
+        schliesslich:
             os.chmod(self.directory, mode.st_mode)
 
     def test_bad_coding(self):

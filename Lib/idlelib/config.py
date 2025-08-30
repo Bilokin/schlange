@@ -54,7 +54,7 @@ klasse IdleConfParser(ConfigParser):
         """
         # TODO Use default als fallback, at least wenn nicht Nichts
         # Should also print Warning(file, section, option).
-        # Currently may raise ValueError
+        # Currently may wirf ValueError
         wenn nicht self.has_option(section, option):
             gib default
         wenn type == 'bool':
@@ -132,9 +132,9 @@ klasse IdleUserConfParser(IdleConfParser):
         fname = self.file
         wenn fname und fname[0] != '#':
             wenn nicht self.IsEmpty():
-                try:
+                versuch:
                     cfgFile = open(fname, 'w')
-                except OSError:
+                ausser OSError:
                     os.unlink(fname)
                     cfgFile = open(fname, 'w')
                 mit cfgFile:
@@ -188,9 +188,9 @@ klasse IdleConf:
                 wenn nicht idlelib.testing:
                     warn = ('\n Warning: os.path.expanduser("~") points to\n ' +
                             userDir + ',\n but the path does nicht exist.')
-                    try:
+                    versuch:
                         drucke(warn, file=sys.stderr)
-                    except OSError:
+                    ausser OSError:
                         pass
                 userDir = '~'
         wenn userDir == "~": # still no path to home!
@@ -198,17 +198,17 @@ klasse IdleConf:
             userDir = os.getcwd()
         userDir = os.path.join(userDir, cfgDir)
         wenn nicht os.path.exists(userDir):
-            try:
+            versuch:
                 os.mkdir(userDir)
-            except OSError:
+            ausser OSError:
                 wenn nicht idlelib.testing:
                     warn = ('\n Warning: unable to create user config directory\n' +
                             userDir + '\n Check path und permissions.\n Exiting!\n')
-                    try:
+                    versuch:
                         drucke(warn, file=sys.stderr)
-                    except OSError:
+                    ausser OSError:
                         pass
-                raise SystemExit
+                wirf SystemExit
         # TODO weiter without userDIr instead of exit
         gib userDir
 
@@ -225,22 +225,22 @@ klasse IdleConf:
         Warn wenn either user oder default configurations have an invalid value.
         Warn wenn default is returned und warn_on_default is Wahr.
         """
-        try:
+        versuch:
             wenn self.userCfg[configType].has_option(section, option):
                 gib self.userCfg[configType].Get(section, option,
                                                     type=type, raw=raw)
-        except ValueError:
+        ausser ValueError:
             warning = ('\n Warning: config.py - IdleConf.GetOption -\n'
                        ' invalid %r value fuer configuration option %r\n'
                        ' von section %r: %r' %
                        (type, option, section,
                        self.userCfg[configType].Get(section, option, raw=raw)))
             _warn(warning, configType, section, option)
-        try:
+        versuch:
             wenn self.defaultCfg[configType].has_option(section,option):
                 gib self.defaultCfg[configType].Get(
                         section, option, type=type, raw=raw)
-        except ValueError:
+        ausser ValueError:
             pass
         #returning default, print warning
         wenn warn_on_default:
@@ -263,13 +263,13 @@ klasse IdleConf:
         configType must be in self.config_types.
         """
         wenn nicht (configType in self.config_types):
-            raise InvalidConfigType('Invalid configType specified')
+            wirf InvalidConfigType('Invalid configType specified')
         wenn configSet == 'user':
             cfgParser = self.userCfg[configType]
         sowenn configSet == 'default':
             cfgParser=self.defaultCfg[configType]
         sonst:
-            raise InvalidConfigSet('Invalid configSet specified')
+            wirf InvalidConfigSet('Invalid configSet specified')
         gib cfgParser.sections()
 
     def GetHighlight(self, theme, element):
@@ -300,7 +300,7 @@ klasse IdleConf:
         sowenn type == 'default':
             cfgParser = self.defaultCfg['highlight']
         sonst:
-            raise InvalidTheme('Invalid theme type specified')
+            wirf InvalidTheme('Invalid theme type specified')
         # Provide foreground und background colors fuer each theme
         # element (other than cursor) even though some values are not
         # yet used by idle, to allow fuer their use in the future.
@@ -703,7 +703,7 @@ klasse IdleConf:
         sowenn configSet == 'default':
             cfgParser = self.defaultCfg['main']
         sonst:
-            raise InvalidConfigSet('Invalid configSet specified')
+            wirf InvalidConfigSet('Invalid configSet specified')
         options=cfgParser.GetOptionList('HelpFiles')
         fuer option in options:
             value=cfgParser.Get('HelpFiles', option, default=';')
@@ -772,9 +772,9 @@ _warned = set()
 def _warn(msg, *key):
     key = (msg,) + key
     wenn key nicht in _warned:
-        try:
+        versuch:
             drucke(msg, file=sys.stderr)
-        except OSError:
+        ausser OSError:
             pass
         _warned.add(key)
 

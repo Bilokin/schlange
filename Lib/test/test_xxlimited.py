@@ -56,7 +56,7 @@ klasse TestXXLimited(CommonTests, unittest.TestCase):
 
     def test_error(self):
         mit self.assertRaises(self.module.Error):
-            raise self.module.Error
+            wirf self.module.Error
 
     def test_buffer(self):
         xxo = self.module.Xxo()

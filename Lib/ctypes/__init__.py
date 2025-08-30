@@ -17,7 +17,7 @@ von _ctypes importiere CField
 von struct importiere calcsize als _calcsize
 
 wenn __version__ != _ctypes_version:
-    raise Exception("Version number mismatch", __version__, _ctypes_version)
+    wirf Exception("Version number mismatch", __version__, _ctypes_version)
 
 wenn _os.name == "nt":
     von _ctypes importiere COMError, CopyComPointer, FormatError
@@ -65,7 +65,7 @@ def create_string_buffer(init, size=Nichts):
         buftype = c_char * init
         buf = buftype()
         gib buf
-    raise TypeError(init)
+    wirf TypeError(init)
 
 # Alias to create_string_buffer() fuer backward compatibility
 c_buffer = create_string_buffer
@@ -93,11 +93,11 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     wenn kw.pop("use_last_error", Falsch):
         flags |= _FUNCFLAG_USE_LASTERROR
     wenn kw:
-        raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
+        wirf ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
-    try:
+    versuch:
         gib _c_functype_cache[(restype, argtypes, flags)]
-    except KeyError:
+    ausser KeyError:
         pass
 
     klasse CFunctionType(_CFuncPtr):
@@ -120,11 +120,11 @@ wenn _os.name == "nt":
         wenn kw.pop("use_last_error", Falsch):
             flags |= _FUNCFLAG_USE_LASTERROR
         wenn kw:
-            raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
+            wirf ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
-        try:
+        versuch:
             gib _win_functype_cache[(restype, argtypes, flags)]
-        except KeyError:
+        ausser KeyError:
             pass
 
         klasse WinFunctionType(_CFuncPtr):
@@ -152,15 +152,15 @@ def _check_size(typ, typecode=Nichts):
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
     wenn actual != required:
-        raise SystemError("sizeof(%s) wrong: %d instead of %d" % \
+        wirf SystemError("sizeof(%s) wrong: %d instead of %d" % \
                           (typ, actual, required))
 
 klasse py_object(_SimpleCData):
     _type_ = "O"
     def __repr__(self):
-        try:
+        versuch:
             gib super().__repr__()
-        except ValueError:
+        ausser ValueError:
             gib "%s(<NULL>)" % type(self).__name__
     __class_getitem__ = classmethod(_types.GenericAlias)
 _check_size(py_object, "P")
@@ -207,7 +207,7 @@ klasse c_longdouble(_SimpleCData):
 wenn sizeof(c_longdouble) == sizeof(c_double):
     c_longdouble = c_double
 
-try:
+versuch:
     klasse c_double_complex(_SimpleCData):
         _type_ = "D"
     _check_size(c_double_complex)
@@ -216,7 +216,7 @@ try:
     _check_size(c_float_complex)
     klasse c_longdouble_complex(_SimpleCData):
         _type_ = "G"
-except AttributeError:
+ausser AttributeError:
     pass
 
 wenn _calcsize("l") == _calcsize("q"):
@@ -274,17 +274,17 @@ def POINTER(cls):
     """
     wenn cls is Nichts:
         gib c_void_p
-    try:
+    versuch:
         gib cls.__pointer_type__
-    except AttributeError:
+    ausser AttributeError:
         pass
     wenn isinstance(cls, str):
         # handle old-style incomplete types (see test_ctypes.test_incomplete)
         importiere warnings
         warnings._deprecated("ctypes.POINTER mit string", remove=(3, 19))
-        try:
+        versuch:
             gib _pointer_type_cache_fallback[cls]
-        except KeyError:
+        ausser KeyError:
             result = type(f'LP_{cls}', (_Pointer,), {})
             _pointer_type_cache_fallback[cls] = result
             gib result
@@ -306,25 +306,25 @@ klasse _PointerTypeCache:
     def __setitem__(self, cls, pointer_type):
         importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
-        try:
+        versuch:
             cls.__pointer_type__ = pointer_type
-        except AttributeError:
+        ausser AttributeError:
             _pointer_type_cache_fallback[cls] = pointer_type
 
     def __getitem__(self, cls):
         importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
-        try:
+        versuch:
             gib cls.__pointer_type__
-        except AttributeError:
+        ausser AttributeError:
             gib _pointer_type_cache_fallback[cls]
 
     def get(self, cls, default=Nichts):
         importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
-        try:
+        versuch:
             gib cls.__pointer_type__
-        except AttributeError:
+        ausser AttributeError:
             gib _pointer_type_cache_fallback.get(cls, default)
 
     def __contains__(self, cls):
@@ -377,7 +377,7 @@ def create_unicode_buffer(init, size=Nichts):
         buftype = c_wchar * init
         buf = buftype()
         gib buf
-    raise TypeError(init)
+    wirf TypeError(init)
 
 def ARRAY(typ, len):
     gib typ * len
@@ -465,7 +465,7 @@ klasse CDLL(object):
 
     def __getattr__(self, name):
         wenn name.startswith('__') und name.endswith('__'):
-            raise AttributeError(name)
+            wirf AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
         gib func
@@ -503,7 +503,7 @@ wenn _os.name == "nt":
         # The _check_retval_ method is implemented in C, so that the
         # method definition itself is nicht included in the traceback
         # when it raises an error - that is what we want (and Python
-        # doesn't have a way to raise an exception in the caller's
+        # doesn't have a way to wirf an exception in the caller's
         # frame).
         _check_retval_ = _check_HRESULT
 
@@ -522,11 +522,11 @@ klasse LibraryLoader(object):
 
     def __getattr__(self, name):
         wenn name[0] == '_':
-            raise AttributeError(name)
-        try:
+            wirf AttributeError(name)
+        versuch:
             dll = self._dlltype(name)
-        except OSError:
-            raise AttributeError(name)
+        ausser OSError:
+            wirf AttributeError(name)
         setattr(self, name, dll)
         gib dll
 
@@ -612,9 +612,9 @@ def memoryview_at(ptr, size, readonly=Falsch):
     Return a memoryview representing the memory at void *ptr."""
     gib _memoryview_at(ptr, size, bool(readonly))
 
-try:
+versuch:
     von _ctypes importiere _wstring_at_addr
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     _wstring_at = PYFUNCTYPE(py_object, c_void_p, c_int)(_wstring_at_addr)
@@ -627,17 +627,17 @@ sonst:
 
 wenn _os.name == "nt": # COM stuff
     def DllGetClassObject(rclsid, riid, ppv):
-        try:
+        versuch:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        ausser ImportError:
             gib -2147221231 # CLASS_E_CLASSNOTAVAILABLE
         sonst:
             gib ccom.DllGetClassObject(rclsid, riid, ppv)
 
     def DllCanUnloadNow():
-        try:
+        versuch:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        ausser ImportError:
             gib 0 # S_OK
         gib ccom.DllCanUnloadNow()
 
@@ -662,6 +662,6 @@ wenn SIZEOF_TIME_T == 8:
 sowenn SIZEOF_TIME_T == 4:
     c_time_t = c_int32
 sonst:
-    raise SystemError(f"Unexpected sizeof(time_t): {SIZEOF_TIME_T=}")
+    wirf SystemError(f"Unexpected sizeof(time_t): {SIZEOF_TIME_T=}")
 
 _reset_cache()

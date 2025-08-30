@@ -15,9 +15,9 @@ importiere urllib.error
 von test importiere support
 von http.client importiere HTTPException
 
-try:
+versuch:
     von _testcapi importiere INT_MAX, PY_SSIZE_T_MAX, UINT_MAX
-except ImportError:
+ausser ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 
 klasse UnicodeNamesTest(unittest.TestCase):
@@ -179,13 +179,13 @@ klasse UnicodeNamesTest(unittest.TestCase):
             gib unicodedata.unidata_version in hdr
         url = ("http://www.pythontest.net/unicode/%s/NamedSequences.txt" %
                unicodedata.unidata_version)
-        try:
+        versuch:
             testdata = support.open_urlresource(url, encoding="utf-8",
                                                 check=check_version)
-        except urllib.error.HTTPError als exc:
+        ausser urllib.error.HTTPError als exc:
             exc.close()
             self.skipTest(f"Could nicht retrieve {url}: {exc!r}")
-        except (OSError, HTTPException) als exc:
+        ausser (OSError, HTTPException) als exc:
             self.skipTest(f"Could nicht retrieve {url}: {exc!r}")
         mit testdata:
             fuer line in testdata:

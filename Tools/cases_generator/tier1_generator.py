@@ -50,10 +50,10 @@ def declare_variable(var: StackItem, out: CWriter) -> Nichts:
 
 
 def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
-    try:
+    versuch:
         stack = get_stack_effect(inst)
-    except StackError als ex:
-        raise analysis_error(ex.args[0], inst.where) von Nichts
+    ausser StackError als ex:
+        wirf analysis_error(ex.args[0], inst.where) von Nichts
     seen = {"unused"}
     fuer part in inst.parts:
         wenn nicht isinstance(part, Uop):

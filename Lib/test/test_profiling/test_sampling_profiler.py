@@ -24,11 +24,11 @@ von test.support importiere requires_subprocess, is_emscripten
 
 PROCESS_VM_READV_SUPPORTED = Falsch
 
-try:
+versuch:
     von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
     importiere _remote_debugging
-except ImportError:
-    raise unittest.SkipTest(
+ausser ImportError:
+    wirf unittest.SkipTest(
         "Test only runs when _remote_debugging is available"
     )
 sonst:
@@ -89,16 +89,16 @@ _test_sock.sendall(b"ready")
     )
 
     client_socket = Nichts
-    try:
+    versuch:
         # Wait fuer process to connect und send ready signal
         client_socket, _ = server_socket.accept()
         server_socket.close()
         response = client_socket.recv(1024)
         wenn response != b"ready":
-            raise RuntimeError(f"Unexpected response von subprocess: {response}")
+            wirf RuntimeError(f"Unexpected response von subprocess: {response}")
 
         liefere proc
-    finally:
+    schliesslich:
         wenn client_socket is nicht Nichts:
             client_socket.close()
         wenn proc.poll() is Nichts:
@@ -1450,14 +1450,14 @@ wenn __name__ == "__main__":
             io.StringIO() als captured_output,
             mock.patch("sys.stdout", captured_output),
         ):
-            try:
+            versuch:
                 profiling.sampling.sample.sample(
                     proc.pid,
                     duration_sec=2,
                     sample_interval_usec=1000,  # 1ms
                     show_summary=Falsch,
                 )
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
@@ -1482,14 +1482,14 @@ wenn __name__ == "__main__":
                 io.StringIO() als captured_output,
                 mock.patch("sys.stdout", captured_output),
             ):
-                try:
+                versuch:
                     profiling.sampling.sample.sample(
                         proc.pid,
                         duration_sec=1,
                         filename=pstats_out.name,
                         sample_interval_usec=10000,
                     )
-                except PermissionError:
+                ausser PermissionError:
                     self.skipTest(
                         "Insufficient permissions fuer remote profiling"
                     )
@@ -1527,7 +1527,7 @@ wenn __name__ == "__main__":
                 io.StringIO() als captured_output,
                 mock.patch("sys.stdout", captured_output),
             ):
-                try:
+                versuch:
                     profiling.sampling.sample.sample(
                         proc.pid,
                         duration_sec=1,
@@ -1535,7 +1535,7 @@ wenn __name__ == "__main__":
                         output_format="collapsed",
                         sample_interval_usec=10000,
                     )
-                except PermissionError:
+                ausser PermissionError:
                     self.skipTest(
                         "Insufficient permissions fuer remote profiling"
                     )
@@ -1575,7 +1575,7 @@ wenn __name__ == "__main__":
             io.StringIO() als captured_output,
             mock.patch("sys.stdout", captured_output),
         ):
-            try:
+            versuch:
                 profiling.sampling.sample.sample(
                     proc.pid,
                     duration_sec=1,
@@ -1583,7 +1583,7 @@ wenn __name__ == "__main__":
                     sample_interval_usec=10000,
                     show_summary=Falsch,
                 )
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
 
         # Just verify that sampling completed without error
@@ -1602,9 +1602,9 @@ wenn __name__ == "__main__":
             io.StringIO() als captured_output,
             mock.patch("sys.stdout", captured_output),
         ):
-            try:
+            versuch:
                 profiling.sampling.sample.main()
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
@@ -1636,9 +1636,9 @@ wenn __name__ == "__main__":
             # Change to temp directory so subprocess can find the module
             contextlib.chdir(tempdir.name),
         ):
-            try:
+            versuch:
                 profiling.sampling.sample.main()
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
@@ -1668,13 +1668,13 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
                 io.StringIO() als captured_output,
                 mock.patch("sys.stdout", captured_output),
             ):
-                try:
+                versuch:
                     profiling.sampling.sample.sample(
                         proc.pid,
                         duration_sec=2,  # Longer than process lifetime
                         sample_interval_usec=50000,
                     )
-                except PermissionError:
+                ausser PermissionError:
                     self.skipTest(
                         "Insufficient permissions fuer remote profiling"
                     )
@@ -1706,16 +1706,16 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
                     output_format="unknown_format",
                 )
 
-            # Should raise ValueError mit the invalid format name
+            # Should wirf ValueError mit the invalid format name
             self.assertIn(
                 "Invalid output format: unknown_format", str(cm.exception)
             )
 
     def test_is_process_running(self):
         mit test_subprocess("import time; time.sleep(1000)") als proc:
-            try:
+            versuch:
                 profiler = SampleProfiler(pid=proc.pid, sample_interval_usec=1000, all_threads=Falsch)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
@@ -1732,9 +1732,9 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "linux", "Only valid on Linux")
     def test_esrch_signal_handling(self):
         mit test_subprocess("import time; time.sleep(1000)") als proc:
-            try:
+            versuch:
                 unwinder = _remote_debugging.RemoteUnwinder(proc.pid)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )

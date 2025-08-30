@@ -12,7 +12,7 @@ klasse Func:
     self.called - increment call number even wenn no args, kwds passed.
     self.args - capture positional arguments.
     self.kwds - capture keyword arguments.
-    self.result - gib oder raise value set in __init__.
+    self.result - gib oder wirf value set in __init__.
     self.return_self - gib self instead, to mock query klasse return.
 
     Most common use will probably be to mock instance methods.
@@ -30,7 +30,7 @@ klasse Func:
         self.args = args
         self.kwds = kwds
         wenn isinstance(self.result, BaseException):
-            raise self.result
+            wirf self.result
         sowenn self.return_self:
             gib self
         sonst:

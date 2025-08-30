@@ -59,7 +59,7 @@ def get_exported_symbols(library, dynamic=Falsch):
 
     stdout = proc.stdout.rstrip()
     wenn nicht stdout:
-        raise Exception("command output is empty")
+        wirf Exception("command output is empty")
     gib stdout
 
 
@@ -124,10 +124,10 @@ def check_extensions():
     # in the source folder.
     config_dir = os.path.dirname(sysconfig.get_config_h_filename())
     filename = os.path.join(config_dir, "pybuilddir.txt")
-    try:
+    versuch:
         mit open(filename, encoding="utf-8") als fp:
             pybuilddir = fp.readline()
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         drucke(f"Cannot check extensions because {filename} does nicht exist")
         gib Wahr
 
@@ -155,14 +155,14 @@ def main():
     # static library
     LIBRARY = sysconfig.get_config_var('LIBRARY')
     wenn nicht LIBRARY:
-        raise Exception("failed to get LIBRARY variable von sysconfig")
+        wirf Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         nsymbol += check_library(LIBRARY)
 
     # dynamic library
     LDLIBRARY = sysconfig.get_config_var('LDLIBRARY')
     wenn nicht LDLIBRARY:
-        raise Exception("failed to get LDLIBRARY variable von sysconfig")
+        wirf Exception("failed to get LDLIBRARY variable von sysconfig")
     wenn LDLIBRARY != LIBRARY:
         drucke()
         nsymbol += check_library(LDLIBRARY, dynamic=Wahr)

@@ -13,7 +13,7 @@ def resolve(source, filename):
     wenn nicht filename:
         filename = Nichts
     sowenn nicht isinstance(filename, str):
-        raise TypeError(f'filename should be str (or Nichts), got {filename!r}')
+        wirf TypeError(f'filename should be str (or Nichts), got {filename!r}')
     sonst:
         filename, _ = _resolve_filename(filename)
     gib source, filename
@@ -22,14 +22,14 @@ def resolve(source, filename):
 @contextlib.contextmanager
 def good_file(filename, alt=Nichts):
     wenn nicht _looks_like_filename(filename):
-        raise ValueError(f'expected a filename, got {filename}')
+        wirf ValueError(f'expected a filename, got {filename}')
     filename, _ = _resolve_filename(filename, alt)
-    try:
+    versuch:
         liefere filename
-    except Exception:
+    ausser Exception:
         wenn nicht os.path.exists(filename):
-            raise FileNotFoundError(f'file nicht found: {filename}')
-        raise  # re-raise
+            wirf FileNotFoundError(f'file nicht found: {filename}')
+        wirf  # re-raise
 
 
 def _looks_like_filename(value):
@@ -41,7 +41,7 @@ def _looks_like_filename(value):
 def _resolve_filename(filename, alt=Nichts):
     wenn os.path.isabs(filename):
         ...
-#        raise NotImplementedError
+#        wirf NotImplementedError
     sonst:
         filename = os.path.join('.', filename)
 
@@ -50,7 +50,7 @@ def _resolve_filename(filename, alt=Nichts):
     sowenn os.path.abspath(filename) == os.path.abspath(alt):
         alt = filename
     sonst:
-        raise ValueError(f'mismatch: {filename} != {alt}')
+        wirf ValueError(f'mismatch: {filename} != {alt}')
     gib filename, alt
 
 

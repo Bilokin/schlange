@@ -21,9 +21,9 @@ von test.support importiere warnings_helper
 von test importiere support, string_tests
 von test.support.script_helper importiere assert_python_failure
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 # Error handling (bad decoder return)
@@ -1011,13 +1011,13 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_case_operation_overflow(self):
         # Issue #22643
         size = 2**32//12 + 1
-        try:
+        versuch:
             s = "ü" * size
-        except MemoryError:
+        ausser MemoryError:
             self.skipTest('no enough memory (%.0f MiB required)' % (size / 2**20))
-        try:
+        versuch:
             self.assertRaises(OverflowError, s.upper)
-        finally:
+        schliesslich:
             del s
 
     def test_contains(self):
@@ -1592,9 +1592,9 @@ klasse StrTest(string_tests.StringLikeTest,
 
         klasse RaisingNumber:
             def __int__(self):
-                raise RuntimeError('int')  # should nicht be `TypeError`
+                wirf RuntimeError('int')  # should nicht be `TypeError`
             def __index__(self):
-                raise RuntimeError('index')  # should nicht be `TypeError`
+                wirf RuntimeError('index')  # should nicht be `TypeError`
 
         rn = RaisingNumber()
         self.assertRaisesRegex(RuntimeError, 'int', operator.mod, '%d', rn)
@@ -2396,9 +2396,9 @@ klasse StrTest(string_tests.StringLikeTest,
         x = y.decode("raw-unicode-escape").encode("raw-unicode-escape")
         self.assertEqual(x, y)
 
-        try:
+        versuch:
             br'\U11111111'.decode("raw-unicode-escape")
-        except UnicodeDecodeError als e:
+        ausser UnicodeDecodeError als e:
             self.assertEqual(e.start, 0)
             self.assertEqual(e.end, 10)
         sonst:
@@ -2618,47 +2618,47 @@ klasse StrTest(string_tests.StringLikeTest,
             encodings = {encodings!r}
 
             fuer data in (b'', b'short string'):
-                try:
+                versuch:
                     str(data, encoding={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(21)
 
-                try:
+                versuch:
                     str(data, errors={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(22)
 
                 fuer encoding in encodings:
-                    try:
+                    versuch:
                         str(data, encoding, errors={invalid!r})
-                    except LookupError:
+                    ausser LookupError:
                         pass
                     sonst:
                         sys.exit(22)
 
             fuer data in ('', 'short string'):
-                try:
+                versuch:
                     data.encode(encoding={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(23)
 
-                try:
+                versuch:
                     data.encode(errors={invalid!r})
-                except LookupError:
+                ausser LookupError:
                     pass
                 sonst:
                     sys.exit(24)
 
                 fuer encoding in encodings:
-                    try:
+                    versuch:
                         data.encode(encoding, errors={invalid!r})
-                    except LookupError:
+                    ausser LookupError:
                         pass
                     sonst:
                         sys.exit(24)

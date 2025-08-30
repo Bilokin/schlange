@@ -20,9 +20,9 @@ klasse MiscTests(unittest.TestCase):
     def test_length_overflow(self, size):
         data = b'x' * size
         parser = cET.XMLParser()
-        try:
+        versuch:
             self.assertRaises(OverflowError, parser.feed, data)
-        finally:
+        schliesslich:
             data = Nichts
 
     def test_del_attribute(self):
@@ -77,9 +77,9 @@ klasse MiscTests(unittest.TestCase):
             parser = cET.XMLParser()
             # Create a reference cycle using an exception to keep the frame
             # alive, so the parser will be destroyed by the garbage collector
-            try:
-                raise ValueError
-            except ValueError als exc:
+            versuch:
+                wirf ValueError
+            ausser ValueError als exc:
                 err = exc
 
         # Create a parser part of reference cycle

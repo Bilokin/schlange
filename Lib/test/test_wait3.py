@@ -9,10 +9,10 @@ von test.fork_wait importiere ForkWait
 von test importiere support
 
 wenn nicht support.has_fork_support:
-    raise unittest.SkipTest("requires working os.fork()")
+    wirf unittest.SkipTest("requires working os.fork()")
 
 wenn nicht hasattr(os, 'wait3'):
-    raise unittest.SkipTest("os.wait3 nicht defined")
+    wirf unittest.SkipTest("os.wait3 nicht defined")
 
 klasse Wait3Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
@@ -36,12 +36,12 @@ klasse Wait3Test(ForkWait):
         # structure. See bpo-36279.
         args = [sys.executable, '-c', 'import sys; sys.stdin.read()']
         proc = subprocess.Popen(args, stdin=subprocess.PIPE)
-        try:
+        versuch:
             pid, status, rusage = os.wait3(os.WNOHANG)
             self.assertEqual(0, pid)
             self.assertEqual(0, status)
             self.assertEqual(0, sum(rusage))
-        finally:
+        schliesslich:
             proc.stdin.close()
             proc.wait()
 

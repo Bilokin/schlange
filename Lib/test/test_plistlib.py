@@ -407,9 +407,9 @@ INVALID_BINARY_PLISTS = [
 klasse TestPlistlib(unittest.TestCase):
 
     def tearDown(self):
-        try:
+        versuch:
             os.unlink(os_helper.TESTFN)
-        except:
+        ausser:
             pass
 
     def _create(self, fmt=Nichts):
@@ -972,9 +972,9 @@ klasse TestBinaryPlistlib(unittest.TestCase):
     def test_deep_nesting(self):
         fuer N in [50, 300, 100_000]:
             chunks = [b'\xa1' + (i + 1).to_bytes(4, 'big') fuer i in range(N)]
-            try:
+            versuch:
                 result = self.decode(*chunks, b'\x54seed', offset_size=4, ref_size=4)
-            except RecursionError:
+            ausser RecursionError:
                 self.assertGreater(N, sys.getrecursionlimit())
             sonst:
                 fuer i in range(N):

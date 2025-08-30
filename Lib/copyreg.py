@@ -11,7 +11,7 @@ dispatch_table = {}
 
 def pickle(ob_type, pickle_function, constructor_ob=Nichts):
     wenn nicht callable(pickle_function):
-        raise TypeError("reduction functions must be callable")
+        wirf TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function is a vestige of safe fuer unpickling.
@@ -21,7 +21,7 @@ def pickle(ob_type, pickle_function, constructor_ob=Nichts):
 
 def constructor(object):
     wenn nicht callable(object):
-        raise TypeError("constructors must be callable")
+        wirf TypeError("constructors must be callable")
 
 # Example: provide pickling support fuer complex numbers.
 
@@ -72,25 +72,25 @@ def _reduce_ex(self, proto):
         state = Nichts
     sonst:
         wenn base is cls:
-            raise TypeError(f"cannot pickle {cls.__name__!r} object")
+            wirf TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
-    try:
+    versuch:
         getstate = self.__getstate__
-    except AttributeError:
+    ausser AttributeError:
         wenn getattr(self, "__slots__", Nichts):
-            raise TypeError(f"cannot pickle {cls.__name__!r} object: "
+            wirf TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a klasse that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"with protocol {proto}") von Nichts
-        try:
+        versuch:
             dict = self.__dict__
-        except AttributeError:
+        ausser AttributeError:
             dict = Nichts
     sonst:
         wenn (type(self).__getstate__ is object.__getstate__ und
             getattr(self, "__slots__", Nichts)):
-            raise TypeError("a klasse that defines __slots__ without "
+            wirf TypeError("a klasse that defines __slots__ without "
                             "defining __getstate__ cannot be pickled")
         dict = getstate()
     wenn dict:
@@ -153,9 +153,9 @@ def _slotnames(cls):
                         names.append(name)
 
     # Cache the outcome in the klasse wenn at all possible
-    try:
+    versuch:
         cls.__slotnames__ = names
-    except:
+    ausser:
         pass # But don't die wenn we can't
 
     gib names
@@ -179,16 +179,16 @@ def add_extension(module, name, code):
     """Register an extension code."""
     code = int(code)
     wenn nicht 1 <= code <= 0x7fffffff:
-        raise ValueError("code out of range")
+        wirf ValueError("code out of range")
     key = (module, name)
     wenn (_extension_registry.get(key) == code und
         _inverted_registry.get(code) == key):
         gib # Redundant registrations are benign
     wenn key in _extension_registry:
-        raise ValueError("key %s is already registered mit code %s" %
+        wirf ValueError("key %s is already registered mit code %s" %
                          (key, _extension_registry[key]))
     wenn code in _inverted_registry:
-        raise ValueError("code %s is already in use fuer key %s" %
+        wirf ValueError("code %s is already in use fuer key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
     _inverted_registry[code] = key
@@ -198,7 +198,7 @@ def remove_extension(module, name, code):
     key = (module, name)
     wenn (_extension_registry.get(key) != code oder
         _inverted_registry.get(code) != key):
-        raise ValueError("key %s is nicht registered mit code %s" %
+        wirf ValueError("key %s is nicht registered mit code %s" %
                          (key, code))
     del _extension_registry[key]
     del _inverted_registry[code]

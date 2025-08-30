@@ -30,7 +30,7 @@ klasse MIMEApplication(MIMENonMultipart):
         header.
         """
         wenn _subtype is Nichts:
-            raise TypeError('Invalid application MIME subtype')
+            wirf TypeError('Invalid application MIME subtype')
         MIMENonMultipart.__init__(self, 'application', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_data)

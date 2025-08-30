@@ -114,10 +114,10 @@ klasse SlicesTestCase(unittest.TestCase):
 
         dll.my_strdup.restype = allocated_c_char_p
         dll.my_strdup.errcheck = errcheck
-        try:
+        versuch:
             res = dll.my_strdup(s)
             self.assertEqual(res, s)
-        finally:
+        schliesslich:
             del dll.my_strdup.errcheck
 
 

@@ -27,7 +27,7 @@ instances:
 Doing so can be expensive fuer complicated graphs of objects, und could take
 some time, so we also have a "write_repr" method that writes a representation
 of the data to a file-like object.  This allows us to stop the traversal by
-having the file-like object raise an exception wenn it gets too much data.
+having the file-like object wirf an exception wenn it gets too much data.
 
 With both "proxyval" und "write_repr" we keep track of the set of all addresses
 visited so far in the traversal, to avoid infinite recursion due to cycles in
@@ -145,7 +145,7 @@ klasse TruncatedStringIO(object):
             wenn len(data) + len(self._val) > self.maxlen:
                 # Truncation:
                 self._val += data[0:self.maxlen - len(self._val)]
-                raise StringTruncated()
+                wirf StringTruncated()
 
         self._val += data
 
@@ -189,7 +189,7 @@ klasse PyObjectPtr(object):
         the "ob_type" is most easily accessed by casting back to a (PyObject*).
         '''
         wenn self.is_null():
-            raise NullPyObjectPtr(self)
+            wirf NullPyObjectPtr(self)
 
         wenn name == 'ob_type':
             pyo_ptr = self._gdbval.cast(PyObjectPtr.get_gdb_type())
@@ -222,9 +222,9 @@ klasse PyObjectPtr(object):
         (ending the object graph traversal als soon als you do)
         '''
         out = TruncatedStringIO(maxlen)
-        try:
+        versuch:
             self.write_repr(out, set())
-        except StringTruncated:
+        ausser StringTruncated:
             # Truncation occurred:
             gib out.getvalue() + '...(truncated)'
 
@@ -250,14 +250,14 @@ klasse PyObjectPtr(object):
         gib self._gdbval.is_optimized_out
 
     def safe_tp_name(self):
-        try:
+        versuch:
             ob_type = self.type()
             tp_name = ob_type.field('tp_name')
             gib tp_name.string()
         # NullPyObjectPtr: NULL tp_name?
         # RuntimeError: Can't even read the object at all?
         # UnicodeDecodeError: Failed to decode tp_name bytestring
-        except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
+        ausser (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
             gib 'unknown'
 
     def proxyval(self, visited):
@@ -328,12 +328,12 @@ klasse PyObjectPtr(object):
         tp_name fuer some special-cases that don't seem to be visible through
         flags
         '''
-        try:
+        versuch:
             tp_name = t.field('tp_name').string()
             tp_flags = int(t.field('tp_flags'))
         # RuntimeError: NULL pointers
         # UnicodeDecodeError: string() fails to decode the bytestring
-        except (RuntimeError, UnicodeDecodeError):
+        ausser (RuntimeError, UnicodeDecodeError):
             # Handle any kind of error e.g. NULL ptrs by simply using the base
             # class
             gib cls
@@ -382,11 +382,11 @@ klasse PyObjectPtr(object):
         Try to locate the appropriate derived klasse dynamically, und cast
         the pointer accordingly.
         '''
-        try:
+        versuch:
             p = PyObjectPtr(gdbval)
             cls = cls.subclass_from_type(p.type())
             gib cls(gdbval, cast_to=cls.get_gdb_type())
-        except RuntimeError:
+        ausser RuntimeError:
             # Handle any kind of error e.g. NULL ptrs by simply using the base
             # class
             pass
@@ -474,7 +474,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
         Get the PyDictObject ptr representing the attribute dictionary
         (or Nichts wenn there's a problem)
         '''
-        try:
+        versuch:
             typeobj = self.type()
             dictoffset = int_from_int(typeobj.field('tp_dictoffset'))
             wenn dictoffset != 0:
@@ -497,7 +497,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
                 wenn int(dictptr.dereference()) & 1:
                     gib Nichts
                 gib PyObjectPtr.from_pyobject_ptr(dictptr.dereference())
-        except RuntimeError:
+        ausser RuntimeError:
             # Corrupt data somewhere; fail safe
             pass
 
@@ -633,9 +633,9 @@ klasse PyCFunctionObjectPtr(PyObjectPtr):
 
     def proxyval(self, visited):
         m_ml = self.field('m_ml') # m_ml is a (PyMethodDef*)
-        try:
+        versuch:
             ml_name = m_ml['ml_name'].string()
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             ml_name = '<ml_name:UnicodeDecodeError>'
 
         pyop_m_self = self.pyop_field('m_self')
@@ -670,9 +670,9 @@ def parse_location_table(firstlineno, linetable):
     addr = 0
     it = iter(linetable)
     waehrend Wahr:
-        try:
+        versuch:
             first_byte = read(it)
-        except StopIteration:
+        ausser StopIteration:
             gib
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
@@ -1046,7 +1046,7 @@ klasse PyFramePtr:
         self._gdbval = gdbval
 
         wenn nicht self.is_optimized_out():
-            try:
+            versuch:
                 self.co = self._f_code()
                 self.co_name = self.co.pyop_field('co_name')
                 self.co_filename = self.co.pyop_field('co_filename')
@@ -1056,7 +1056,7 @@ klasse PyFramePtr:
                 pnames = self.co.field('co_localsplusnames')
                 self.co_localsplusnames = PyTupleObjectPtr.from_pyobject_ptr(pnames)
                 self._is_code = Wahr
-            except:
+            ausser:
                 self._is_code = Falsch
 
     def is_optimized_out(self):
@@ -1172,9 +1172,9 @@ klasse PyFramePtr:
         '''
         wenn self.is_optimized_out():
             gib Nichts
-        try:
+        versuch:
             gib self.co.addr2line(self.f_lasti)
-        except Exception als ex:
+        ausser Exception als ex:
             # bpo-34989: addr2line() is a complex function, it can fail in many
             # ways. For example, it fails mit a TypeError on "FakeRepr" if
             # gdb fails to load debug symbols. Use a catch-all "except
@@ -1193,16 +1193,16 @@ klasse PyFramePtr:
             gib '(failed to get frame line number)'
 
         filename = self.filename()
-        try:
+        versuch:
             mit open(os.fsencode(filename), 'r', encoding="utf-8") als fp:
                 lines = fp.readlines()
-        except IOError:
+        ausser IOError:
             gib Nichts
 
-        try:
+        versuch:
             # Convert von 1-based current_line_num to 0-based list offset
             gib lines[lineno - 1]
-        except IndexError:
+        ausser IndexError:
             gib Nichts
 
     def write_repr(self, out, visited):
@@ -1249,9 +1249,9 @@ klasse PyFramePtr:
         (ending the object graph traversal als soon als you do)
         '''
         out = TruncatedStringIO(maxlen)
-        try:
+        versuch:
             self.write_repr(out, set())
-        except StringTruncated:
+        ausser StringTruncated:
             # Truncation occurred:
             gib out.getvalue() + '...(truncated)'
 
@@ -1492,13 +1492,13 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
 
                 printable = ucs.isprintable()
                 wenn printable:
-                    try:
+                    versuch:
                         ucs.encode(ENCODING)
-                    except UnicodeEncodeError:
+                    ausser UnicodeEncodeError:
                         printable = Falsch
 
                 # Map Unicode whitespace und control characters
-                # (categories Z* und C* except ASCII space)
+                # (categories Z* und C* ausser ASCII space)
                 wenn nicht printable:
                     wenn ch2 is nicht Nichts:
                         # Match Python's representation of non-printable
@@ -1545,23 +1545,23 @@ klasse wrapperobject(PyObjectPtr):
     _typename = 'wrapperobject'
 
     def safe_name(self):
-        try:
+        versuch:
             name = self.field('descr')['d_base']['name'].string()
             gib repr(name)
-        except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
+        ausser (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
             gib '<unknown name>'
 
     def safe_tp_name(self):
-        try:
+        versuch:
             gib self.field('self')['ob_type']['tp_name'].string()
-        except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
+        ausser (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
             gib '<unknown tp_name>'
 
     def safe_self_addresss(self):
-        try:
+        versuch:
             address = int(self.field('self'))
             gib '%#x' % address
-        except (NullPyObjectPtr, RuntimeError):
+        ausser (NullPyObjectPtr, RuntimeError):
             gib '<failed to get self address>'
 
     def proxyval(self, visited):
@@ -1759,25 +1759,25 @@ klasse Frame(object):
             # PyCFunctionObject instance
             #   "f" is the same value, but cast to (PyCFunctionObject*)
             #   "self" is the (PyObject*) of the 'self'
-            try:
+            versuch:
                 # Use the prettyprinter fuer the func:
                 func = frame.read_var(arg_name)
                 gib str(func)
-            except ValueError:
+            ausser ValueError:
                 gib ('PyCFunction invocation (unable to read %s: '
                         'missing debuginfos?)' % arg_name)
-            except RuntimeError:
+            ausser RuntimeError:
                 gib 'PyCFunction invocation (unable to read %s)' % arg_name
 
         wenn caller == 'wrapper_call':
             arg_name = 'wp'
-            try:
+            versuch:
                 func = frame.read_var(arg_name)
                 gib str(func)
-            except ValueError:
+            ausser ValueError:
                 gib ('<wrapper_call invocation (unable to read %s: '
                         'missing debuginfos?)>' % arg_name)
-            except RuntimeError:
+            ausser RuntimeError:
                 gib '<wrapper_call invocation (unable to read %s)>' % arg_name
 
         # This frame isn't worth reporting:
@@ -1798,7 +1798,7 @@ klasse Frame(object):
         )
 
     def get_pyop(self):
-        try:
+        versuch:
             frame = self._gdbframe.read_var('frame')
             frame = PyFramePtr(frame)
             wenn nicht frame.is_optimized_out():
@@ -1810,7 +1810,7 @@ klasse Frame(object):
             wenn frame und nicht frame.is_optimized_out():
                 gib frame
             gib Nichts
-        except ValueError:
+        ausser ValueError:
             gib Nichts
 
     @classmethod
@@ -1824,9 +1824,9 @@ klasse Frame(object):
     def get_selected_python_frame(cls):
         '''Try to obtain the Frame fuer the python-related code in the selected
         frame, oder Nichts'''
-        try:
+        versuch:
             frame = cls.get_selected_frame()
-        except gdb.error:
+        ausser gdb.error:
             # No frame: Python didn't start yet
             gib Nichts
 
@@ -1957,9 +1957,9 @@ klasse PyList(gdb.Command):
         wenn start<1:
             start = 1
 
-        try:
+        versuch:
             f = open(os.fsencode(filename), 'r', encoding="utf-8")
-        except IOError als err:
+        ausser IOError als err:
             sys.stdout.write('Unable to open %s: %s\n'
                              % (filename, err))
             gib

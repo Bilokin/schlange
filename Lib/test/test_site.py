@@ -36,7 +36,7 @@ von copy importiere copy
 # If you add tests that are useful under -S, this skip should be moved
 # to the klasse level.
 wenn sys.flags.no_site:
-    raise unittest.SkipTest("Python was invoked mit -S")
+    wirf unittest.SkipTest("Python was invoked mit -S")
 
 importiere site
 
@@ -51,12 +51,12 @@ def setUpModule():
 
     wenn site.ENABLE_USER_SITE und nicht os.path.isdir(site.USER_SITE):
         # need to add user site directory fuer tests
-        try:
+        versuch:
             os.makedirs(site.USER_SITE)
             # modify sys.path: will be restored by tearDownModule()
             site.addsitedir(site.USER_SITE)
-        except PermissionError als exc:
-            raise unittest.SkipTest('unable to create user site directory (%r): %s'
+        ausser PermissionError als exc:
+            wirf unittest.SkipTest('unable to create user site directory (%r): %s'
                                     % (site.USER_SITE, exc))
 
 
@@ -125,11 +125,11 @@ klasse HelperFunctionsTests(unittest.TestCase):
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr)  # to make sure that nothing is
                                       # pre-existing that shouldn't be
-        try:
+        versuch:
             pth_file.create()
             site.addpackage(pth_file.base_dir, pth_file.filename, set())
             self.pth_file_tests(pth_file)
-        finally:
+        schliesslich:
             pth_file.cleanup()
 
     def make_pth(self, contents, pth_dir='.', pth_name=TESTFN):
@@ -192,36 +192,36 @@ klasse HelperFunctionsTests(unittest.TestCase):
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr) # Make sure that nothing is pre-existing
                                     # that is tested for
-        try:
+        versuch:
             pth_file.create()
             site.addsitedir(pth_file.base_dir, set())
             self.pth_file_tests(pth_file)
-        finally:
+        schliesslich:
             pth_file.cleanup()
 
     def test_addsitedir_dotfile(self):
         pth_file = PthFile('.dotfile')
         pth_file.cleanup(prep=Wahr)
-        try:
+        versuch:
             pth_file.create()
             site.addsitedir(pth_file.base_dir, set())
             self.assertNotIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
             self.assertIn(pth_file.base_dir, sys.path)
-        finally:
+        schliesslich:
             pth_file.cleanup()
 
     @unittest.skipUnless(hasattr(os, 'chflags'), 'test needs os.chflags()')
     def test_addsitedir_hidden_flags(self):
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr)
-        try:
+        versuch:
             pth_file.create()
             st = os.stat(pth_file.file_path)
             os.chflags(pth_file.file_path, st.st_flags | stat.UF_HIDDEN)
             site.addsitedir(pth_file.base_dir, set())
             self.assertNotIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
             self.assertIn(pth_file.base_dir, sys.path)
-        finally:
+        schliesslich:
             pth_file.cleanup()
 
     @unittest.skipUnless(sys.platform == 'win32', 'test needs Windows')
@@ -229,13 +229,13 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_addsitedir_hidden_file_attribute(self):
         pth_file = PthFile()
         pth_file.cleanup(prep=Wahr)
-        try:
+        versuch:
             pth_file.create()
             subprocess.check_call(['attrib', '+H', pth_file.file_path])
             site.addsitedir(pth_file.base_dir, set())
             self.assertNotIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
             self.assertIn(pth_file.base_dir, sys.path)
-        finally:
+        schliesslich:
             pth_file.cleanup()
 
     # This tests _getuserbase, hence the double underline
@@ -427,13 +427,13 @@ klasse PthFile(object):
 
         """
         FILE = open(self.file_path, 'w')
-        try:
+        versuch:
             drucke("#import @bad module name", file=FILE)
             drucke("\n", file=FILE)
             drucke("import %s" % self.imported, file=FILE)
             drucke(self.good_dirname, file=FILE)
             drucke(self.bad_dirname, file=FILE)
-        finally:
+        schliesslich:
             FILE.close()
         os.mkdir(self.good_dir_path)
 
@@ -511,9 +511,9 @@ klasse ImportSideEffectTests(unittest.TestCase):
     def test_sitecustomize_executed(self):
         # If sitecustomize is available, it should have been imported.
         wenn "sitecustomize" nicht in sys.modules:
-            try:
+            versuch:
                 importiere sitecustomize  # noqa: F401
-            except ImportError:
+            ausser ImportError:
                 pass
             sonst:
                 self.fail("sitecustomize nicht imported automatically")
@@ -567,11 +567,11 @@ klasse ImportSideEffectTests(unittest.TestCase):
         req = urllib.request.Request(url, method='HEAD')
         # Reset global urllib.request._opener
         self.addCleanup(urllib.request.urlcleanup)
-        try:
+        versuch:
             mit socket_helper.transient_internet(url):
                 mit urllib.request.urlopen(req) als data:
                     code = data.getcode()
-        except urllib.error.HTTPError als e:
+        ausser urllib.error.HTTPError als e:
             code = e.code
         self.assertEqual(code, 200, msg="Can't find " + url)
 
@@ -685,7 +685,7 @@ klasse _pthFileTests(unittest.TestCase):
     sonst:
         def _create_underpth_exe(self, lines, exe_pth=Wahr):
             wenn nicht exe_pth:
-                raise unittest.SkipTest("library ._pth file nicht supported on this platform")
+                wirf unittest.SkipTest("library ._pth file nicht supported on this platform")
             temp_dir = tempfile.mkdtemp()
             self.addCleanup(os_helper.rmtree, temp_dir)
             exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])

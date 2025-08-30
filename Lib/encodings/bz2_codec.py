@@ -49,9 +49,9 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
         self.decompressobj = bz2.BZ2Decompressor()
 
     def decode(self, input, final=Falsch):
-        try:
+        versuch:
             gib self.decompressobj.decompress(input)
-        except EOFError:
+        ausser EOFError:
             gib ''
 
     def reset(self):

@@ -295,16 +295,16 @@ klasse HistoricalReader(Reader):
 
     @contextmanager
     def suspend_history(self) -> SimpleContextManager:
-        try:
+        versuch:
             old_history = self.history[:]
             del self.history[:]
             liefere
-        finally:
+        schliesslich:
             self.history[:] = old_history
 
     def prepare(self) -> Nichts:
         super().prepare()
-        try:
+        versuch:
             self.transient_history = {}
             wenn self.next_history is nicht Nichts und self.next_history < len(self.history):
                 self.historyi = self.next_history
@@ -314,9 +314,9 @@ klasse HistoricalReader(Reader):
             sonst:
                 self.historyi = len(self.history)
             self.next_history = Nichts
-        except:
+        ausser:
             self.restore()
-            raise
+            wirf
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         wenn cursor_on_line und self.isearch_direction != ISEARCH_DIRECTION_NONE:

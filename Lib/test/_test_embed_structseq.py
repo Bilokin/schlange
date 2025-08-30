@@ -47,7 +47,7 @@ klasse TestStructSeq(unittest.TestCase):
                 self.check_structseq(type(obj))
 
 
-try:
+versuch:
     unittest.main(
         module=(
             '__main__'
@@ -56,7 +56,7 @@ try:
             sonst sys.modules['test._test_embed_structseq']
         )
     )
-except SystemExit als exc:
+ausser SystemExit als exc:
     wenn exc.args[0] != 0:
-        raise
+        wirf
 drucke("Tests passed")

@@ -43,12 +43,12 @@ def status(message, modal=Falsch, info=Nichts):
 def get_git_branch():
     """Get the symbolic name fuer the current git branch"""
     cmd = "git rev-parse --abbrev-ref HEAD".split()
-    try:
+    versuch:
         gib subprocess.check_output(cmd,
                                        stderr=subprocess.DEVNULL,
                                        cwd=SRCDIR,
                                        encoding='UTF-8')
-    except subprocess.CalledProcessError:
+    ausser subprocess.CalledProcessError:
         gib Nichts
 
 
@@ -82,7 +82,7 @@ def get_git_upstream_remote():
     remotes_found = "\n".join(
         {remote fuer remote in output.split('\n') wenn remote.endswith("(fetch)")}
     )
-    raise ValueError(
+    wirf ValueError(
         f"Patchcheck was unable to find an unambiguous upstream remote, "
         f"with URL matching 'https://github.com/python/cpython'. "
         f"For help creating an upstream remote, see Dev Guide: "
@@ -100,13 +100,13 @@ def get_git_remote_default_branch(remote_name):
     cmd = f"git remote show {remote_name}".split()
     env = os.environ.copy()
     env['LANG'] = 'C'
-    try:
+    versuch:
         remote_info = subprocess.check_output(cmd,
                                               stderr=subprocess.DEVNULL,
                                               cwd=SRCDIR,
                                               encoding='UTF-8',
                                               env=env)
-    except subprocess.CalledProcessError:
+    ausser subprocess.CalledProcessError:
         gib Nichts
     fuer line in remote_info.splitlines():
         wenn "HEAD branch:" in line:

@@ -133,10 +133,10 @@ klasse HTTPSServer(HTTPServer):
     def __init__(self, server_address, RequestHandlerClass,
                  bind_and_activate=Wahr, *, certfile, keyfile=Nichts,
                  password=Nichts, alpn_protocols=Nichts):
-        try:
+        versuch:
             importiere ssl
-        except ImportError:
-            raise RuntimeError("SSL module is missing; "
+        ausser ImportError:
+            wirf RuntimeError("SSL module is missing; "
                                "HTTPS support is unavailable")
 
         self.ssl = ssl
@@ -314,9 +314,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         wenn len(words) >= 3:  # Enough to determine protocol version
             version = words[-1]
-            try:
+            versuch:
                 wenn nicht version.startswith('HTTP/'):
-                    raise ValueError
+                    wirf ValueError
                 base_version_number = version.split('/', 1)[1]
                 version_number = base_version_number.split(".")
                 # RFC 2145 section 3.1 says there can be only one "." und
@@ -326,13 +326,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 #      turn is lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
                 wenn len(version_number) != 2:
-                    raise ValueError
+                    wirf ValueError
                 wenn any(nicht component.isdigit() fuer component in version_number):
-                    raise ValueError("non digit in http version")
+                    wirf ValueError("non digit in http version")
                 wenn any(len(component) > 10 fuer component in version_number):
-                    raise ValueError("unreasonable length http version")
+                    wirf ValueError("unreasonable length http version")
                 version_number = int(version_number[0]), int(version_number[1])
-            except (ValueError, IndexError):
+            ausser (ValueError, IndexError):
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad request version (%r)" % version)
@@ -369,16 +369,16 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             self.path = '/' + self.path.lstrip('/')  # Reduce to a single /
 
         # Examine the headers und look fuer a Connection directive.
-        try:
+        versuch:
             self.headers = http.client.parse_headers(self.rfile,
                                                      _class=self.MessageClass)
-        except http.client.LineTooLong als err:
+        ausser http.client.LineTooLong als err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Line too long",
                 str(err))
             gib Falsch
-        except http.client.HTTPException als err:
+        ausser http.client.HTTPException als err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Too many headers",
@@ -427,7 +427,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         commands such als GET und POST.
 
         """
-        try:
+        versuch:
             self.raw_requestline = self.rfile.readline(65537)
             wenn len(self.raw_requestline) > 65536:
                 self.requestline = ''
@@ -450,7 +450,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             method = getattr(self, mname)
             method()
             self.wfile.flush() #actually send the response wenn nicht already done.
-        except TimeoutError als e:
+        ausser TimeoutError als e:
             #a read oder a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = Wahr
@@ -482,9 +482,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         """
 
-        try:
+        versuch:
             shortmsg, longmsg = self.responses[code]
-        except KeyError:
+        ausser KeyError:
             shortmsg, longmsg = '???', '???'
         wenn message is Nichts:
             message = shortmsg
@@ -678,7 +678,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     subdirectories.  The MIME type fuer files is determined by
     calling the .guess_type() method.
 
-    The GET und HEAD requests are identical except that the HEAD
+    The GET und HEAD requests are identical ausser that the HEAD
     request omits the actual contents of the file.
 
     """
@@ -702,9 +702,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Serve a GET request."""
         f = self.send_head()
         wenn f:
-            try:
+            versuch:
                 self.copyfile(f, self.wfile)
-            finally:
+            schliesslich:
                 f.close()
 
     def do_HEAD(self):
@@ -754,22 +754,22 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         wenn path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File nicht found")
             gib Nichts
-        try:
+        versuch:
             f = open(path, 'rb')
-        except OSError:
+        ausser OSError:
             self.send_error(HTTPStatus.NOT_FOUND, "File nicht found")
             gib Nichts
 
-        try:
+        versuch:
             fs = os.fstat(f.fileno())
             # Use browser cache wenn possible
             wenn ("If-Modified-Since" in self.headers
                     und "If-Nichts-Match" nicht in self.headers):
                 # compare If-Modified-Since und time of last file modification
-                try:
+                versuch:
                     ims = email.utils.parsedate_to_datetime(
                         self.headers["If-Modified-Since"])
-                except (TypeError, IndexError, OverflowError, ValueError):
+                ausser (TypeError, IndexError, OverflowError, ValueError):
                     # ignore ill-formed values
                     pass
                 sonst:
@@ -797,9 +797,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.date_time_string(fs.st_mtime))
             self.end_headers()
             gib f
-        except:
+        ausser:
             f.close()
-            raise
+            wirf
 
     def list_directory(self, path):
         """Helper to produce a directory listing (absent index.html).
@@ -809,9 +809,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         interface the same als fuer send_head().
 
         """
-        try:
+        versuch:
             list = os.listdir(path)
-        except OSError:
+        ausser OSError:
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No permission to list directory")
@@ -821,10 +821,10 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         displaypath = self.path
         displaypath = displaypath.split('#', 1)[0]
         displaypath = displaypath.split('?', 1)[0]
-        try:
+        versuch:
             displaypath = urllib.parse.unquote(displaypath,
                                                errors='surrogatepass')
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             displaypath = urllib.parse.unquote(displaypath)
         displaypath = html.escape(displaypath, quote=Falsch)
         enc = sys.getfilesystemencoding()
@@ -874,9 +874,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         path = path.split('#', 1)[0]
         path = path.split('?', 1)[0]
         # Don't forget explicit trailing slash when normalizing. Issue17324
-        try:
+        versuch:
             path = urllib.parse.unquote(path, errors='surrogatepass')
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             path = urllib.parse.unquote(path)
         trailing_slash = path.endswith('/')
         path = posixpath.normpath(path)
@@ -941,13 +941,13 @@ def nobody_uid():
     global nobody
     wenn nobody:
         gib nobody
-    try:
+    versuch:
         importiere pwd
-    except ImportError:
+    ausser ImportError:
         gib -1
-    try:
+    versuch:
         nobody = pwd.getpwnam('nobody')[2]
-    except KeyError:
+    ausser KeyError:
         nobody = 1 + max(x[2] fuer x in pwd.getpwall())
     gib nobody
 
@@ -993,9 +993,9 @@ def test(HandlerClass=BaseHTTPRequestHandler,
             f"Serving {protocol} on {host} port {port} "
             f"({protocol.lower()}://{url_host}:{port}/) ..."
         )
-        try:
+        versuch:
             httpd.serve_forever()
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             drucke("\nKeyboard interrupt received, exiting.")
             sys.exit(0)
 
@@ -1034,10 +1034,10 @@ def _main(args=Nichts):
         wenn nicht args.tls_cert:
             parser.error("--tls-password-file requires --tls-cert to be set")
 
-        try:
+        versuch:
             mit open(args.tls_password_file, "r", encoding="utf-8") als f:
                 tls_key_password = f.read().strip()
-        except OSError als e:
+        ausser OSError als e:
             parser.error(f"Failed to read TLS password file: {e}")
 
     # ensure dual-stack is nicht disabled; ref #38907

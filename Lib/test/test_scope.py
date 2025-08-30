@@ -239,7 +239,7 @@ klasse ScopeTests(unittest.TestCase):
             wenn x >= 0:
                 gib fact(x)
             sonst:
-                raise ValueError("x must be >= 0")
+                wirf ValueError("x must be >= 0")
 
         self.assertEqual(f(6), 720)
 
@@ -346,9 +346,9 @@ klasse ScopeTests(unittest.TestCase):
             global_x = 1
             def f():
                 global_x += 1
-            try:
+            versuch:
                 f()
-            except UnboundLocalError:
+            ausser UnboundLocalError:
                 pass
             sonst:
                 fail('scope of global_x nicht correctly determined')
@@ -566,7 +566,7 @@ klasse ScopeTests(unittest.TestCase):
             def f(self):
                 gib x
 
-        self.assertEqual(x, 12) # Used to raise UnboundLocalError
+        self.assertEqual(x, 12) # Used to wirf UnboundLocalError
 
     def testBoundAndFree(self):
         # var is bound und free in class
@@ -613,18 +613,18 @@ klasse ScopeTests(unittest.TestCase):
         g = f(3)
         self.assertRaises(TypeError, eval, g.__code__)
 
-        try:
+        versuch:
             exec(g.__code__, {})
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("exec should have failed, because code contained free vars")
 
     def testListCompLocalVars(self):
 
-        try:
+        versuch:
             drucke(bad)
-        except NameError:
+        ausser NameError:
             pass
         sonst:
             drucke("bad should nicht be defined")
@@ -633,9 +633,9 @@ klasse ScopeTests(unittest.TestCase):
             [bad fuer s in 'a b' fuer bad in s.split()]
 
         x()
-        try:
+        versuch:
             drucke(bad)
-        except NameError:
+        ausser NameError:
             pass
 
     def testEvalFreeVars(self):
@@ -798,9 +798,9 @@ klasse ScopeTests(unittest.TestCase):
             def dig(self):
                 wenn 0:
                     lambda: self
-                try:
+                versuch:
                     1/0
-                except Exception als exc:
+                ausser Exception als exc:
                     self.exc = exc
                 self = Nichts  # Break the cycle
         tester = Tester()

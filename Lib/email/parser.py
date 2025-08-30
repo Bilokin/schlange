@@ -101,9 +101,9 @@ klasse BytesParser:
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
-        try:
+        versuch:
             gib self.parser.parse(fp, headersonly)
-        finally:
+        schliesslich:
             fp.detach()
 
 

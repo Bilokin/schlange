@@ -127,7 +127,7 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
         mit tempfile.NamedTemporaryFile(delete=Falsch) als f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
-    try:
+    versuch:
         req = req_template.format(
             hostname=hostname,
             extra_san=extra_san,
@@ -168,7 +168,7 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
         mit open(key_file, 'r') als f:
             key = f.read()
         gib cert, key
-    finally:
+    schliesslich:
         fuer name in tempnames:
             os.remove(name)
 

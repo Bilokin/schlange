@@ -33,13 +33,13 @@ def _fileobj_to_fd(fileobj):
     wenn isinstance(fileobj, int):
         fd = fileobj
     sonst:
-        try:
+        versuch:
             fd = int(fileobj.fileno())
-        except (AttributeError, TypeError, ValueError):
-            raise ValueError("Invalid file object: "
+        ausser (AttributeError, TypeError, ValueError):
+            wirf ValueError("Invalid file object: "
                              "{!r}".format(fileobj)) von Nichts
     wenn fd < 0:
-        raise ValueError("Invalid file descriptor: {}".format(fd))
+        wirf ValueError("Invalid file descriptor: {}".format(fd))
     gib fd
 
 
@@ -74,7 +74,7 @@ klasse _SelectorMapping(Mapping):
         fd = self._selector._fileobj_lookup(fileobj)
         key = self._selector._fd_to_key.get(fd)
         wenn key is Nichts:
-            raise KeyError("{!r} is nicht registered".format(fileobj))
+            wirf KeyError("{!r} is nicht registered".format(fileobj))
         gib key
 
     def __iter__(self):
@@ -117,7 +117,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         Note:
         OSError may oder may nicht be raised
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def unregister(self, fileobj):
@@ -134,9 +134,9 @@ klasse BaseSelector(metaclass=ABCMeta):
 
         Note:
         If fileobj is registered but has since been closed this does
-        *not* raise OSError (even wenn the wrapped syscall does)
+        *not* wirf OSError (even wenn the wrapped syscall does)
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def modify(self, fileobj, events, data=Nichts):
         """Change a registered file object monitored events oder attached data.
@@ -172,7 +172,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         list of (key, events) fuer ready file objects
         `events` is a bitwise mask of EVENT_READ|EVENT_WRITE
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def close(self):
         """Close the selector.
@@ -189,16 +189,16 @@ klasse BaseSelector(metaclass=ABCMeta):
         """
         mapping = self.get_map()
         wenn mapping is Nichts:
-            raise RuntimeError('Selector is closed')
-        try:
+            wirf RuntimeError('Selector is closed')
+        versuch:
             gib mapping[fileobj]
-        except KeyError:
-            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+        ausser KeyError:
+            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
 
     @abstractmethod
     def get_map(self):
         """Return a mapping of file objects to selector keys."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def __enter__(self):
         gib self
@@ -225,41 +225,41 @@ klasse _BaseSelectorImpl(BaseSelector):
         was previously registered even wenn it is closed.  It is also
         used by _SelectorMapping.
         """
-        try:
+        versuch:
             gib _fileobj_to_fd(fileobj)
-        except ValueError:
+        ausser ValueError:
             # Do an exhaustive search.
             fuer key in self._fd_to_key.values():
                 wenn key.fileobj is fileobj:
                     gib key.fd
             # Raise ValueError after all.
-            raise
+            wirf
 
     def register(self, fileobj, events, data=Nichts):
         wenn (nicht events) oder (events & ~(EVENT_READ | EVENT_WRITE)):
-            raise ValueError("Invalid events: {!r}".format(events))
+            wirf ValueError("Invalid events: {!r}".format(events))
 
         key = SelectorKey(fileobj, self._fileobj_lookup(fileobj), events, data)
 
         wenn key.fd in self._fd_to_key:
-            raise KeyError("{!r} (FD {}) is already registered"
+            wirf KeyError("{!r} (FD {}) is already registered"
                            .format(fileobj, key.fd))
 
         self._fd_to_key[key.fd] = key
         gib key
 
     def unregister(self, fileobj):
-        try:
+        versuch:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
-        except KeyError:
-            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+        ausser KeyError:
+            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
         gib key
 
     def modify(self, fileobj, events, data=Nichts):
-        try:
+        versuch:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
-        except KeyError:
-            raise KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
+        ausser KeyError:
+            wirf KeyError("{!r} is nicht registered".format(fileobj)) von Nichts
         wenn events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -310,9 +310,9 @@ klasse SelectSelector(_BaseSelectorImpl):
     def select(self, timeout=Nichts):
         timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
         ready = []
-        try:
+        versuch:
             r, w, _ = self._select(self._readers, self._writers, [], timeout)
-        except InterruptedError:
+        ausser InterruptedError:
             gib ready
         r = frozenset(r)
         w = frozenset(w)
@@ -341,38 +341,38 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
         key = super().register(fileobj, events, data)
         poller_events = ((events & EVENT_READ und self._EVENT_READ)
                          | (events & EVENT_WRITE und self._EVENT_WRITE) )
-        try:
+        versuch:
             self._selector.register(key.fd, poller_events)
-        except:
+        ausser:
             super().unregister(fileobj)
-            raise
+            wirf
         gib key
 
     def unregister(self, fileobj):
         key = super().unregister(fileobj)
-        try:
+        versuch:
             self._selector.unregister(key.fd)
-        except OSError:
+        ausser OSError:
             # This can happen wenn the FD was closed since it
             # was registered.
             pass
         gib key
 
     def modify(self, fileobj, events, data=Nichts):
-        try:
+        versuch:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
-        except KeyError:
-            raise KeyError(f"{fileobj!r} is nicht registered") von Nichts
+        ausser KeyError:
+            wirf KeyError(f"{fileobj!r} is nicht registered") von Nichts
 
         changed = Falsch
         wenn events != key.events:
             selector_events = ((events & EVENT_READ und self._EVENT_READ)
                                | (events & EVENT_WRITE und self._EVENT_WRITE))
-            try:
+            versuch:
                 self._selector.modify(key.fd, selector_events)
-            except:
+            ausser:
                 super().unregister(fileobj)
-                raise
+                wirf
             changed = Wahr
         wenn data != key.data:
             changed = Wahr
@@ -394,9 +394,9 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
             # zero to wait *at least* timeout seconds.
             timeout = math.ceil(timeout * 1e3)
         ready = []
-        try:
+        versuch:
             fd_event_list = self._selector.poll(timeout)
-        except InterruptedError:
+        ausser InterruptedError:
             gib ready
 
         fd_to_key_get = self._fd_to_key.get
@@ -448,9 +448,9 @@ wenn hasattr(select, 'epoll'):
             max_ev = len(self._fd_to_key) oder 1
 
             ready = []
-            try:
+            versuch:
                 fd_event_list = self._selector.poll(timeout, max_ev)
-            except InterruptedError:
+            ausser InterruptedError:
                 gib ready
 
             fd_to_key = self._fd_to_key
@@ -498,7 +498,7 @@ wenn hasattr(select, 'kqueue'):
 
         def register(self, fileobj, events, data=Nichts):
             key = super().register(fileobj, events, data)
-            try:
+            versuch:
                 wenn events & EVENT_READ:
                     kev = select.kevent(key.fd, select.KQ_FILTER_READ,
                                         select.KQ_EV_ADD)
@@ -509,9 +509,9 @@ wenn hasattr(select, 'kqueue'):
                                         select.KQ_EV_ADD)
                     self._selector.control([kev], 0, 0)
                     self._max_events += 1
-            except:
+            ausser:
                 super().unregister(fileobj)
-                raise
+                wirf
             gib key
 
         def unregister(self, fileobj):
@@ -520,9 +520,9 @@ wenn hasattr(select, 'kqueue'):
                 kev = select.kevent(key.fd, select.KQ_FILTER_READ,
                                     select.KQ_EV_DELETE)
                 self._max_events -= 1
-                try:
+                versuch:
                     self._selector.control([kev], 0, 0)
-                except OSError:
+                ausser OSError:
                     # This can happen wenn the FD was closed since it
                     # was registered.
                     pass
@@ -530,9 +530,9 @@ wenn hasattr(select, 'kqueue'):
                 kev = select.kevent(key.fd, select.KQ_FILTER_WRITE,
                                     select.KQ_EV_DELETE)
                 self._max_events -= 1
-                try:
+                versuch:
                     self._selector.control([kev], 0, 0)
-                except OSError:
+                ausser OSError:
                     # See comment above.
                     pass
             gib key
@@ -544,9 +544,9 @@ wenn hasattr(select, 'kqueue'):
             # (using max). See https://bugs.python.org/issue29255
             max_ev = self._max_events oder 1
             ready = []
-            try:
+            versuch:
                 kev_list = self._selector.control(Nichts, max_ev, timeout)
-            except InterruptedError:
+            ausser InterruptedError:
                 gib ready
 
             fd_to_key_get = self._fd_to_key.get
@@ -575,7 +575,7 @@ def _can_use(method):
         gib Falsch
     # check wenn the OS und Kernel actually support the method. Call may fail with
     # OSError: [Errno 38] Function nicht implemented
-    try:
+    versuch:
         selector_obj = selector()
         wenn method == 'poll':
             # check that poll actually works
@@ -584,7 +584,7 @@ def _can_use(method):
             # close epoll, kqueue, und devpoll fd
             selector_obj.close()
         gib Wahr
-    except OSError:
+    ausser OSError:
         gib Falsch
 
 

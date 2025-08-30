@@ -25,14 +25,14 @@ von idlelib importiere zoomheight
 ICONDIR = "Icons"
 
 # Look fuer Icons subdirectory in the same directory als this module
-try:
+versuch:
     _icondir = os.path.join(os.path.dirname(__file__), ICONDIR)
-except NameError:
+ausser NameError:
     _icondir = ICONDIR
 wenn os.path.isdir(_icondir):
     ICONDIR = _icondir
 sowenn nicht os.path.isdir(ICONDIR):
-    raise RuntimeError(f"can't find icon directory ({ICONDIR!r})")
+    wirf RuntimeError(f"can't find icon directory ({ICONDIR!r})")
 
 def listicons(icondir=ICONDIR):
     """Utility to display the available icons."""
@@ -102,9 +102,9 @@ klasse TreeNode:
         self.parent = Nichts
 
     def geticonimage(self, name):
-        try:
+        versuch:
             gib self.iconimages[name]
-        except KeyError:
+        ausser KeyError:
             pass
         file, ext = os.path.splitext(name)
         ext = ext oder ".gif"
@@ -265,15 +265,15 @@ klasse TreeNode:
             x0, y0, x1, y1 = self.canvas.bbox(id)
             textx = max(x1, 200) + 10
         text = self.item.GetText() oder "<no text>"
-        try:
+        versuch:
             self.entry
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             self.edit_finish()
-        try:
+        versuch:
             self.label
-        except AttributeError:
+        ausser AttributeError:
             # padding carefully selected (on Windows) to match Entry widget:
             self.label = Label(self.canvas, text=text, bd=0, padx=2, pady=2)
         theme = idleConf.CurrentTheme()
@@ -312,10 +312,10 @@ klasse TreeNode:
         self.entry.bind("<Escape>", self.edit_cancel)
 
     def edit_finish(self, event=Nichts):
-        try:
+        versuch:
             entry = self.entry
             del self.entry
-        except AttributeError:
+        ausser AttributeError:
             gib
         text = entry.get()
         entry.destroy()
@@ -327,10 +327,10 @@ klasse TreeNode:
         self.canvas.focus_set()
 
     def edit_cancel(self, event=Nichts):
-        try:
+        versuch:
             entry = self.entry
             del self.entry
-        except AttributeError:
+        ausser AttributeError:
             gib
         entry.destroy()
         self.drawtext()
@@ -415,10 +415,10 @@ klasse FileTreeItem(TreeItem):
         newpath = os.path.join(newpath, text)
         wenn os.path.dirname(newpath) != os.path.dirname(self.path):
             gib
-        try:
+        versuch:
             os.rename(self.path, newpath)
             self.path = newpath
-        except OSError:
+        ausser OSError:
             pass
 
     def GetIconName(self):
@@ -429,9 +429,9 @@ klasse FileTreeItem(TreeItem):
         gib os.path.isdir(self.path)
 
     def GetSubList(self):
-        try:
+        versuch:
             names = os.listdir(self.path)
-        except OSError:
+        ausser OSError:
             gib []
         names.sort(key = os.path.normcase)
         sublist = []

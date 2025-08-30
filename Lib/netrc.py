@@ -13,10 +13,10 @@ def _can_security_check():
 
 
 def _getpwuid(uid):
-    try:
+    versuch:
         importiere pwd
         gib pwd.getpwuid(uid)[0]
-    except (ImportError, LookupError):
+    ausser (ImportError, LookupError):
         gib f'uid {uid}'
 
 
@@ -83,10 +83,10 @@ klasse netrc:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
-        try:
+        versuch:
             mit open(file, encoding="utf-8") als fp:
                 self._parse(file, fp, default_netrc)
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             mit open(file, encoding="locale") als fp:
                 self._parse(file, fp, default_netrc)
 
@@ -112,7 +112,7 @@ klasse netrc:
                 waehrend 1:
                     line = lexer.instream.readline()
                     wenn nicht line:
-                        raise NetrcParseError(
+                        wirf NetrcParseError(
                             "Macro definition missing null line terminator.",
                             file, lexer.lineno)
                     wenn line == '\n':
@@ -123,11 +123,11 @@ klasse netrc:
                     self.macros[entryname].append(line)
                 weiter
             sonst:
-                raise NetrcParseError(
+                wirf NetrcParseError(
                     "bad toplevel token %r" % tt, file, lexer.lineno)
 
             wenn nicht entryname:
-                raise NetrcParseError("missing %r name" % tt, file, lexer.lineno)
+                wirf NetrcParseError("missing %r name" % tt, file, lexer.lineno)
 
             # We're looking at start of an entry fuer a named machine oder default.
             login = account = password = ''
@@ -150,7 +150,7 @@ klasse netrc:
                 sowenn tt == 'password':
                     password = lexer.get_token()
                 sonst:
-                    raise NetrcParseError("bad follower token %r" % tt,
+                    wirf NetrcParseError("bad follower token %r" % tt,
                                           file, lexer.lineno)
             self._security_check(fp, default_netrc, self.hosts[entryname][0])
 
@@ -161,11 +161,11 @@ klasse netrc:
             wenn prop.st_uid != current_user_id:
                 fowner = _getpwuid(prop.st_uid)
                 user = _getpwuid(current_user_id)
-                raise NetrcParseError(
+                wirf NetrcParseError(
                     f"~/.netrc file owner ({fowner}) does nicht match"
                     f" current user ({user})")
             wenn (prop.st_mode & (stat.S_IRWXG | stat.S_IRWXO)):
-                raise NetrcParseError(
+                wirf NetrcParseError(
                     "~/.netrc access too permissive: access"
                     " permissions must restrict access to only"
                     " the owner")

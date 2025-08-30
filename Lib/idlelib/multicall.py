@@ -103,12 +103,12 @@ klasse _SimpleBinder:
 
     def __del__(self):
         wenn self.handlerid:
-            try:
+            versuch:
                 self.widget.unbind(self.widgetinst, self.sequence,
                         self.handlerid)
-            except tkinter.TclError als e:
+            ausser tkinter.TclError als e:
                 wenn nicht APPLICATION_GONE in e.args[0]:
-                    raise
+                    wirf
 
 # An int in range(1 << len(_modifiers)) represents a combination of modifiers
 # (if the least significant bit is on, _modifiers[0] is on, und so on).
@@ -237,11 +237,11 @@ klasse _ComplexBinder:
 
     def __del__(self):
         fuer seq, id in self.handlerids:
-            try:
+            versuch:
                 self.widget.unbind(self.widgetinst, seq, id)
-            except tkinter.TclError als e:
+            ausser tkinter.TclError als e:
                 wenn nicht APPLICATION_GONE in e.args[0]:
-                    raise
+                    wirf
 
 # define the list of event types to be handled by MultiEvent. the order is
 # compatible mit the definition of event type constants.
@@ -404,11 +404,11 @@ def MultiCallCreator(widget):
                 func, triplets = self.__eventinfo[virtual]
                 wenn func:
                     fuer triplet in triplets:
-                        try:
+                        versuch:
                             self.__binders[triplet[1]].unbind(triplet, func)
-                        except tkinter.TclError als e:
+                        ausser tkinter.TclError als e:
                             wenn nicht APPLICATION_GONE in e.args[0]:
-                                raise
+                                wirf
 
     _multicall_dict[widget] = MultiCall
     gib MultiCall

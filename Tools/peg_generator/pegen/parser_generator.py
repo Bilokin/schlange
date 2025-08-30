@@ -89,11 +89,11 @@ klasse RuleCheckingVisitor(GrammarVisitor):
 
     def visit_NameLeaf(self, node: NameLeaf) -> Nichts:
         wenn node.value nicht in self.rules und node.value nicht in self.tokens:
-            raise GrammarError(f"Dangling reference to rule {node.value!r}")
+            wirf GrammarError(f"Dangling reference to rule {node.value!r}")
 
     def visit_NamedItem(self, node: NamedItem) -> Nichts:
         wenn node.name und node.name.startswith("_"):
-            raise GrammarError(f"Variable names cannot start mit underscore: '{node.name}'")
+            wirf GrammarError(f"Variable names cannot start mit underscore: '{node.name}'")
         self.visit(node.item)
 
 
@@ -108,7 +108,7 @@ klasse ParserGenerator:
         self.rules = grammar.rules
         self.validate_rule_names()
         wenn "trailer" nicht in grammar.metas und "start" nicht in self.rules:
-            raise GrammarError("Grammar without a trailer must have a 'start' rule")
+            wirf GrammarError("Grammar without a trailer must have a 'start' rule")
         checker = RuleCheckingVisitor(self.rules, self.tokens)
         fuer rule in self.rules.values():
             checker.visit(rule)
@@ -123,7 +123,7 @@ klasse ParserGenerator:
     def validate_rule_names(self) -> Nichts:
         fuer rule in self.rules:
             wenn rule.startswith("_"):
-                raise GrammarError(f"Rule names cannot start mit underscore: '{rule}'")
+                wirf GrammarError(f"Rule names cannot start mit underscore: '{rule}'")
 
     @contextlib.contextmanager
     def local_variable_context(self) -> Iterator[Nichts]:
@@ -137,14 +137,14 @@ klasse ParserGenerator:
 
     @abstractmethod
     def generate(self, filename: str) -> Nichts:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @contextlib.contextmanager
     def indent(self) -> Iterator[Nichts]:
         self.level += 1
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             self.level -= 1
 
     def drucke(self, *args: object) -> Nichts:
@@ -360,7 +360,7 @@ def compute_left_recursives(
                     # drucke("Cycle:", " -> ".join(cycle))
                     leaders -= scc - set(cycle)
                     wenn nicht leaders:
-                        raise ValueError(
+                        wirf ValueError(
                             f"SCC {scc} has no leadership candidate (no element is included in all cycles)"
                         )
             # drucke("Leaders:", leaders)

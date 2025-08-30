@@ -31,11 +31,11 @@ klasse Slot:
 
     def __set_name__(self, cls, name):
         wenn self.name is nicht Nichts:
-            raise TypeError('already used')
+            wirf TypeError('already used')
         self.name = name
-        try:
+        versuch:
             slotnames = cls.__slot_names__
-        except AttributeError:
+        ausser AttributeError:
             slotnames = cls.__slot_names__ = []
         slotnames.append(name)
         self._ensure___del__(cls, slotnames)
@@ -43,34 +43,34 @@ klasse Slot:
     def __get__(self, obj, cls):
         wenn obj is Nichts:  # called on the class
             gib self
-        try:
+        versuch:
             value = self.instances[id(obj)]
-        except KeyError:
+        ausser KeyError:
             wenn self.initial is _NOT_SET:
                 value = self.default
             sonst:
                 value = self.initial
             self.instances[id(obj)] = value
         wenn value is _NOT_SET:
-            raise AttributeError(self.name)
+            wirf AttributeError(self.name)
         # XXX Optionally make a copy?
         gib value
 
     def __set__(self, obj, value):
         wenn self.readonly:
-            raise AttributeError(f'{self.name} is readonly')
+            wirf AttributeError(f'{self.name} is readonly')
         # XXX Optionally coerce?
         self.instances[id(obj)] = value
 
     def __delete__(self, obj):
         wenn self.readonly:
-            raise AttributeError(f'{self.name} is readonly')
+            wirf AttributeError(f'{self.name} is readonly')
         self.instances[id(obj)] = self.default  # XXX refleak?
 
     def _ensure___del__(self, cls, slotnames):  # See the comment in __init__().
-        try:
+        versuch:
             old___del__ = cls.__del__
-        except AttributeError:
+        ausser AttributeError:
             old___del__ = (lambda s: Nichts)
         sonst:
             wenn getattr(old___del__, '_slotted', Falsch):
@@ -107,11 +107,11 @@ klasse classonly:
 
     def __set_name__(self, cls, name):
         wenn self.name is nicht Nichts:
-            raise TypeError('already used')
+            wirf TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
         wenn obj is nicht Nichts:
-            raise AttributeError(self.name)
+            wirf AttributeError(self.name)
         # called on the class
         gib self.getter(Nichts, cls)

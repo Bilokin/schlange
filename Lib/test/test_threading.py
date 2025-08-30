@@ -27,9 +27,9 @@ von unittest importiere mock
 von test importiere lock_tests
 von test importiere support
 
-try:
+versuch:
     von concurrent importiere interpreters
-except ImportError:
+ausser ImportError:
     interpreters = Nichts
 
 threading_helper.requires_working_threading(module=Wahr)
@@ -249,10 +249,10 @@ klasse ThreadTests(BaseTestCase):
     def test_various_ops_small_stack(self):
         wenn verbose:
             drucke('with 256 KiB thread stack size...')
-        try:
+        versuch:
             threading.stack_size(262144)
-        except _thread.error:
-            raise unittest.SkipTest(
+        ausser _thread.error:
+            wirf unittest.SkipTest(
                 'platform does nicht support changing thread stack size')
         self.test_various_ops()
         threading.stack_size(0)
@@ -261,10 +261,10 @@ klasse ThreadTests(BaseTestCase):
     def test_various_ops_large_stack(self):
         wenn verbose:
             drucke('with 1 MiB thread stack size...')
-        try:
+        versuch:
             threading.stack_size(0x100000)
-        except _thread.error:
-            raise unittest.SkipTest(
+        ausser _thread.error:
+            wirf unittest.SkipTest(
                 'platform does nicht support changing thread stack size')
         self.test_various_ops()
         threading.stack_size(0)
@@ -274,7 +274,7 @@ klasse ThreadTests(BaseTestCase):
         dummy_thread = Nichts
         error = Nichts
         def f(mutex):
-            try:
+            versuch:
                 nonlocal dummy_thread
                 nonlocal error
                 # Calling current_thread() forces an entry fuer the foreign
@@ -290,9 +290,9 @@ klasse ThreadTests(BaseTestCase):
                     'Expected _DummyThread to be considered alive.'
                 )
                 self.assertIn('_DummyThread', repr(dummy_thread))
-            except BaseException als e:
+            ausser BaseException als e:
                 error = e
-            finally:
+            schliesslich:
                 mutex.release()
 
         mutex = threading.Lock()
@@ -302,7 +302,7 @@ klasse ThreadTests(BaseTestCase):
             # Wait fuer the thread to finish.
             mutex.acquire()
         wenn error is nicht Nichts:
-            raise error
+            wirf error
         self.assertEqual(tid, dummy_thread.ident)
         # Issue gh-106236:
         mit self.assertRaises(RuntimeError):
@@ -339,21 +339,21 @@ klasse ThreadTests(BaseTestCase):
         self.assertIsInstance(tid, int)
         self.assertGreater(tid, 0)
 
-        try:
+        versuch:
             result = set_async_exc(tid, exception)
             # The exception is async, so we might have to keep the VM busy until
             # it notices.
             waehrend Wahr:
                 pass
-        except AsyncExc:
+        ausser AsyncExc:
             pass
         sonst:
             # This code is unreachable but it reflects the intent. If we wanted
             # to be smarter the above loop wouldn't be infinite.
             self.fail("AsyncExc nicht raised")
-        try:
+        versuch:
             self.assertEqual(result, 1) # one thread state modified
-        except UnboundLocalError:
+        ausser UnboundLocalError:
             # The exception was raised too quickly fuer us to get the result.
             pass
 
@@ -369,11 +369,11 @@ klasse ThreadTests(BaseTestCase):
                 self.id = threading.get_ident()
                 self.finished = Falsch
 
-                try:
+                versuch:
                     waehrend Wahr:
                         worker_started.set()
                         time.sleep(0.1)
-                except AsyncExc:
+                ausser AsyncExc:
                     self.finished = Wahr
                     worker_saw_exception.set()
 
@@ -389,7 +389,7 @@ klasse ThreadTests(BaseTestCase):
         result = set_async_exc(-1, exception)
         self.assertEqual(result, 0)  # no thread states modified
 
-        # Now raise an exception in the worker thread.
+        # Now wirf an exception in the worker thread.
         wenn verbose:
             drucke("    waiting fuer worker thread to get started")
         ret = worker_started.wait()
@@ -398,7 +398,7 @@ klasse ThreadTests(BaseTestCase):
             drucke("    verifying worker hasn't exited")
         self.assertFalsch(t.finished)
         wenn verbose:
-            drucke("    attempting to raise asynch exception in worker")
+            drucke("    attempting to wirf asynch exception in worker")
         result = set_async_exc(t.id, exception)
         self.assertEqual(result, 1) # one thread state modified
         wenn verbose:
@@ -414,16 +414,16 @@ klasse ThreadTests(BaseTestCase):
     def test_limbo_cleanup(self):
         # Issue 7481: Failure to start thread should cleanup the limbo map.
         def fail_new_thread(*args, **kwargs):
-            raise threading.ThreadError()
+            wirf threading.ThreadError()
         _start_joinable_thread = threading._start_joinable_thread
         threading._start_joinable_thread = fail_new_thread
-        try:
+        versuch:
             t = threading.Thread(target=lambda: Nichts)
             self.assertRaises(threading.ThreadError, t.start)
             self.assertFalsch(
                 t in threading._limbo,
                 "Failed to cleanup _limbo map on failure of Thread.start().")
-        finally:
+        schliesslich:
             threading._start_joinable_thread = _start_joinable_thread
 
     def test_finalize_running_thread(self):
@@ -507,7 +507,7 @@ klasse ThreadTests(BaseTestCase):
                     drucke("Woke up, sleep function is:", sleep)
 
                 threading.Thread(target=child).start()
-                raise SystemExit
+                wirf SystemExit
             """)
         self.assertEqual(out.strip(),
             b"Woke up, sleep function is: <built-in function sleep>")
@@ -518,7 +518,7 @@ klasse ThreadTests(BaseTestCase):
         # threading.enumerate() after it has been join()ed.
         enum = threading.enumerate
         old_interval = sys.getswitchinterval()
-        try:
+        versuch:
             fuer i in range(1, 100):
                 support.setswitchinterval(i * 0.0002)
                 t = threading.Thread(target=lambda: Nichts)
@@ -527,7 +527,7 @@ klasse ThreadTests(BaseTestCase):
                 l = enum()
                 self.assertNotIn(t, l,
                     "#1703448 triggered after %d trials: %s" % (i, l))
-        finally:
+        schliesslich:
             sys.setswitchinterval(old_interval)
 
     @support.bigmemtest(size=20, memuse=72*2**20, dry_run=Falsch)
@@ -539,9 +539,9 @@ klasse ThreadTests(BaseTestCase):
             time.sleep(0.005)
 
         def joiner(thread):
-            try:
+            versuch:
                 thread.join()
-            except Exception als e:
+            ausser Exception als e:
                 errors.append(e)
 
         fuer N in range(2, 20):
@@ -555,7 +555,7 @@ klasse ThreadTests(BaseTestCase):
             fuer t in threads:
                 t.join()
             wenn errors:
-                raise errors[0]
+                wirf errors[0]
 
     def test_join_with_timeout(self):
         lock = _thread.allocate_lock()
@@ -585,7 +585,7 @@ klasse ThreadTests(BaseTestCase):
 
             def _run(self, other_ref, yet_another):
                 wenn self.should_raise:
-                    raise SystemExit
+                    wirf SystemExit
 
         restore_default_excepthook(self)
 
@@ -813,22 +813,22 @@ klasse ThreadTests(BaseTestCase):
                     # stdout is fully buffered because nicht a tty,
                     # we have to flush before exit.
                     sys.stdout.flush()
-                    try:
+                    versuch:
                         threading._shutdown()
                         os._exit(0)
-                    except:
+                    ausser:
                         traceback.print_exc()
                         sys.stderr.flush()
                         os._exit(1)
                 sonst:
-                    try:
+                    versuch:
                         support.wait_process(pid, exitcode=0)
-                    except Exception:
+                    ausser Exception:
                         # avoid 'could nicht acquire lock for
                         # <_io.BufferedWriter name='<stderr>'> at interpreter shutdown,'
                         traceback.print_exc()
                         sys.stderr.flush()
-                    finally:
+                    schliesslich:
                         lock.release()
 
             join_lock = _thread.allocate_lock()
@@ -945,7 +945,7 @@ klasse ThreadTests(BaseTestCase):
         t.join()
 
     def test_BoundedSemaphore_limit(self):
-        # BoundedSemaphore should raise ValueError wenn released too often.
+        # BoundedSemaphore should wirf ValueError wenn released too often.
         fuer limit in range(1, 10):
             bs = threading.BoundedSemaphore(limit)
             threads = [threading.Thread(target=bs.acquire)
@@ -987,7 +987,7 @@ klasse ThreadTests(BaseTestCase):
 
         old_trace = sys.gettrace()
         sys.settrace(noop_trace)
-        try:
+        versuch:
             # Install a trace function
             threading.settrace(noop_trace)
 
@@ -999,7 +999,7 @@ klasse ThreadTests(BaseTestCase):
             fuer test in range(3):
                 # The trace function is still called here
                 callback()
-        finally:
+        schliesslich:
             sys.settrace(old_trace)
             threading.settrace(old_trace)
 
@@ -1008,11 +1008,11 @@ klasse ThreadTests(BaseTestCase):
             # no operation
             gib noop_trace
         old_trace = threading.gettrace()
-        try:
+        versuch:
             threading.settrace(noop_trace)
             trace_func = threading.gettrace()
             self.assertEqual(noop_trace,trace_func)
-        finally:
+        schliesslich:
             threading.settrace(old_trace)
 
     def test_gettrace_all_threads(self):
@@ -1028,7 +1028,7 @@ klasse ThreadTests(BaseTestCase):
             second_check.wait()
             trace_funcs.append(sys.gettrace())
 
-        try:
+        versuch:
             t = threading.Thread(target=checker)
             t.start()
             first_check.wait()
@@ -1038,7 +1038,7 @@ klasse ThreadTests(BaseTestCase):
             self.assertEqual(trace_funcs, [Nichts, fn])
             self.assertEqual(threading.gettrace(), fn)
             self.assertEqual(sys.gettrace(), fn)
-        finally:
+        schliesslich:
             threading.settrace_all_threads(old_trace)
 
         self.assertEqual(threading.gettrace(), old_trace)
@@ -1047,10 +1047,10 @@ klasse ThreadTests(BaseTestCase):
     def test_getprofile(self):
         def fn(*args): pass
         old_profile = threading.getprofile()
-        try:
+        versuch:
             threading.setprofile(fn)
             self.assertEqual(fn, threading.getprofile())
-        finally:
+        schliesslich:
             threading.setprofile(old_profile)
 
     def test_getprofile_all_threads(self):
@@ -1066,7 +1066,7 @@ klasse ThreadTests(BaseTestCase):
             second_check.wait()
             profile_funcs.append(sys.getprofile())
 
-        try:
+        versuch:
             t = threading.Thread(target=checker)
             t.start()
             first_check.wait()
@@ -1076,7 +1076,7 @@ klasse ThreadTests(BaseTestCase):
             self.assertEqual(profile_funcs, [Nichts, fn])
             self.assertEqual(threading.getprofile(), fn)
             self.assertEqual(sys.getprofile(), fn)
-        finally:
+        schliesslich:
             threading.setprofile_all_threads(old_profile)
 
         self.assertEqual(threading.getprofile(), old_profile)
@@ -1142,7 +1142,7 @@ klasse ThreadTests(BaseTestCase):
                 event.release()
 
             wenn 'threading' in sys.modules:
-                raise Exception('threading is already imported')
+                wirf Exception('threading is already imported')
 
             _thread.start_new_thread(import_threading, ())
 
@@ -1151,7 +1151,7 @@ klasse ThreadTests(BaseTestCase):
             event.release()
 
             wenn 'threading' nicht in sys.modules:
-                raise Exception('threading is nicht imported')
+                wirf Exception('threading is nicht imported')
 
             # don't wait until the thread completes
         ''')
@@ -1181,7 +1181,7 @@ klasse ThreadTests(BaseTestCase):
         # code, so join() can nicht succeed unless the thread is already done.
         # (Non-Python threads, that is `threading._DummyThread`, can't be
         # joined at all.)
-        # We raise an exception rather than hang.
+        # We wirf an exception rather than hang.
         fuer timeout in (Nichts, 10):
             mit self.subTest(timeout=timeout):
                 code = textwrap.dedent(f"""
@@ -1202,9 +1202,9 @@ klasse ThreadTests(BaseTestCase):
 
                         def __del__(self):
                             assert self.thr.is_alive()
-                            try:
+                            versuch:
                                 self.thr.join(timeout={timeout})
-                            except PythonFinalizationError:
+                            ausser PythonFinalizationError:
                                 assert self.thr.is_alive()
                                 drucke('got the correct exception!')
 
@@ -1252,7 +1252,7 @@ klasse ThreadTests(BaseTestCase):
         # gh-123940: Py_Finalize() prevents other threads von running Python
         # code (and so, releasing locks), so acquiring a locked lock can not
         # succeed.
-        # We raise an exception rather than hang.
+        # We wirf an exception rather than hang.
         code = textwrap.dedent(f"""
             importiere threading
             importiere time
@@ -1287,9 +1287,9 @@ klasse ThreadTests(BaseTestCase):
                         uncontested_lock.acquire()
 
                     # Acquiring a locked one fails
-                    try:
+                    versuch:
                         lock.acquire()
-                    except PythonFinalizationError:
+                    ausser PythonFinalizationError:
                         assert self.thr.is_alive()
                         drucke('got the correct exception!')
 
@@ -1307,9 +1307,9 @@ klasse ThreadTests(BaseTestCase):
         # due to failure of underlying PyThread_start_new_thread() call,
         # its state should be removed von interpreter' thread states list
         # to avoid its double cleanup
-        try:
+        versuch:
             von resource importiere setrlimit, RLIMIT_NPROC  # noqa: F401
-        except ImportError als err:
+        ausser ImportError als err:
             self.skipTest(err)  # RLIMIT_NPROC is specific to Linux und BSD
         code = """if 1:
             importiere resource
@@ -1322,9 +1322,9 @@ klasse ThreadTests(BaseTestCase):
             [_, hard] = limits
             resource.setrlimit(resource.RLIMIT_NPROC, (0, hard))
 
-            try:
+            versuch:
                 handle = _thread.start_joinable_thread(f)
-            except RuntimeError:
+            ausser RuntimeError:
                 drucke('ok')
             sonst:
                 drucke('!skip!')
@@ -1351,10 +1351,10 @@ klasse ThreadTests(BaseTestCase):
             lock.acquire()
             thread_started_event = threading.Event()
             def thread_func():
-                try:
+                versuch:
                     thread_started_event.set()
                     _testcapi.finalize_thread_hang(lock.acquire)
-                finally:
+                schliesslich:
                     # Control must nicht reach here.
                     os._exit(2)
 
@@ -1417,10 +1417,10 @@ klasse ThreadTests(BaseTestCase):
                 drucke(threading.current_thread().native_id, flush=Wahr)
                 assert threading.current_thread().native_id == threading.get_native_id()
             sonst:
-                try:
+                versuch:
                     assert parent_thread_native_id == threading.current_thread().native_id
                     assert parent_thread_native_id == threading.get_native_id()
-                finally:
+                schliesslich:
                     support.wait_process(childpid, exitcode=0)
             """
         rc, out, err = assert_python_ok('-c', script)
@@ -1618,7 +1618,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
             threads.append(t)
             t.start()
 
-        try:
+        versuch:
             # Ignore the warning about fork mit threads.
             mit warnings.catch_warnings(category=DeprecationWarning,
                                          action="ignore"):
@@ -1631,7 +1631,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
                         os._exit(52)
                 sonst:
                     support.wait_process(pid, exitcode=51)
-        finally:
+        schliesslich:
             fuer t in threads:
                 t.join()
 
@@ -1875,9 +1875,9 @@ klasse ThreadingExceptionTests(BaseTestCase):
                 gib recurse()
 
             def outer():
-                try:
+                versuch:
                     recurse()
-                except RecursionError:
+                ausser RecursionError:
                     pass
 
             w = threading.Thread(target=outer)
@@ -1982,14 +1982,14 @@ klasse ThreadingExceptionTests(BaseTestCase):
             importiere _thread
 
             def f():
-                try:
+                versuch:
                     f()
-                except RecursionError:
+                ausser RecursionError:
                     f()
 
             def g():
-                try:
-                    raise ValueError()
+                versuch:
+                    wirf ValueError()
                 except* ValueError:
                     f()
 
@@ -2007,15 +2007,15 @@ klasse ThreadingExceptionTests(BaseTestCase):
 
     def test_bare_raise_in_brand_new_thread(self):
         def bare_raise():
-            raise
+            wirf
 
         klasse Issue27558(threading.Thread):
             exc = Nichts
 
             def run(self):
-                try:
+                versuch:
                     bare_raise()
-                except Exception als exc:
+                ausser Exception als exc:
                     self.exc = exc
 
         thread = Issue27558()
@@ -2062,7 +2062,7 @@ klasse ThreadingExceptionTests(BaseTestCase):
 
 klasse ThreadRunFail(threading.Thread):
     def run(self):
-        raise ValueError("run failed")
+        wirf ValueError("run failed")
 
 
 klasse ExceptHookTests(BaseTestCase):
@@ -2080,7 +2080,7 @@ klasse ExceptHookTests(BaseTestCase):
         stderr = stderr.getvalue().strip()
         self.assertIn(f'Exception in thread {thread.name}:\n', stderr)
         self.assertIn('Traceback (most recent call last):\n', stderr)
-        self.assertIn('  raise ValueError("run failed")', stderr)
+        self.assertIn('  wirf ValueError("run failed")', stderr)
         self.assertIn('ValueError: run failed', stderr)
 
     @support.cpython_only
@@ -2089,20 +2089,20 @@ klasse ExceptHookTests(BaseTestCase):
         # threading.excepthook called mit thread=Nichts: log the thread
         # identifier in this case.
         mit support.captured_output("stderr") als stderr:
-            try:
-                raise ValueError("bug")
-            except Exception als exc:
+            versuch:
+                wirf ValueError("bug")
+            ausser Exception als exc:
                 args = threading.ExceptHookArgs([*sys.exc_info(), Nichts])
-                try:
+                versuch:
                     threading.excepthook(args)
-                finally:
+                schliesslich:
                     # Explicitly breche a reference cycle
                     args = Nichts
 
         stderr = stderr.getvalue().strip()
         self.assertIn(f'Exception in thread {threading.get_ident()}:\n', stderr)
         self.assertIn('Traceback (most recent call last):\n', stderr)
-        self.assertIn('  raise ValueError("bug")', stderr)
+        self.assertIn('  wirf ValueError("bug")', stderr)
         self.assertIn('ValueError: bug', stderr)
 
     def test_system_exit(self):
@@ -2125,7 +2125,7 @@ klasse ExceptHookTests(BaseTestCase):
             nonlocal args
             args = hook_args
 
-        try:
+        versuch:
             mit support.swap_attr(threading, 'excepthook', hook):
                 thread = ThreadRunFail()
                 thread.start()
@@ -2135,13 +2135,13 @@ klasse ExceptHookTests(BaseTestCase):
             self.assertEqual(str(args.exc_value), 'run failed')
             self.assertEqual(args.exc_traceback, args.exc_value.__traceback__)
             self.assertIs(args.thread, thread)
-        finally:
+        schliesslich:
             # Break reference cycle
             args = Nichts
 
     def test_custom_excepthook_fail(self):
         def threading_hook(args):
-            raise ValueError("threading_hook failed")
+            wirf ValueError("threading_hook failed")
 
         err_str = Nichts
 
@@ -2396,21 +2396,21 @@ klasse InterruptMainTests(unittest.TestCase):
 
     def check_interrupt_main_noerror(self, signum):
         handler = signal.getsignal(signum)
-        try:
+        versuch:
             # No exception should arise.
             signal.signal(signum, signal.SIG_IGN)
             _thread.interrupt_main(signum)
 
             signal.signal(signum, signal.SIG_DFL)
             _thread.interrupt_main(signum)
-        finally:
+        schliesslich:
             # Restore original handler
             signal.signal(signum, handler)
 
     @requires_gil_enabled("gh-118433: Flaky due to a longstanding bug")
     def test_interrupt_main_subthread(self):
         # Calling start_new_thread mit a function that executes interrupt_main
-        # should raise KeyboardInterrupt upon completion.
+        # should wirf KeyboardInterrupt upon completion.
         def call_interrupt():
             _thread.interrupt_main()
         t = threading.Thread(target=call_interrupt)
@@ -2497,7 +2497,7 @@ klasse AtexitTests(unittest.TestCase):
     @force_not_colorized
     def test_atexit_after_shutdown(self):
         # The only way to do this is by registering an atexit within
-        # an atexit, which is intended to raise an exception.
+        # an atexit, which is intended to wirf an exception.
         rc, out, err = assert_python_ok("-c", """if Wahr:
             importiere threading
 

@@ -104,18 +104,18 @@ def _iter_ignored(infile, relroot):
                               fuer v in varidinfo)
         wenn reason in bogus:
             reason = Nichts
-        try:
+        versuch:
             varid = _info.DeclID.from_row(varidinfo)
-        except BaseException als e:
+        ausser BaseException als e:
             e.add_note(f"Error occurred when processing row {varidinfo} in {infile}.")
             e.add_note(f"Could it be that you added a row which is nicht tab-delimited?")
-            raise e
+            wirf e
         varid = varid.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
         liefere varid, reason
 
 
 def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
-    raise NotImplementedError
+    wirf NotImplementedError
     wenn relroot und relroot is nicht fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     reason = '???'

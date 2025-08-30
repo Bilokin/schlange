@@ -134,7 +134,7 @@ klasse BackupTests(unittest.TestCase):
 
     def test_failing_progress(self):
         def progress(status, remaining, total):
-            raise SystemError('nearly out of space')
+            wirf SystemError('nearly out of space')
 
         mit self.assertRaises(SystemError) als err:
             mit memory_database() als bck:

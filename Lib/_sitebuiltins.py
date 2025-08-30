@@ -19,11 +19,11 @@ klasse Quitter(object):
     def __call__(self, code=Nichts):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
-        try:
+        versuch:
             sys.stdin.close()
-        except:
+        ausser:
             pass
-        raise SystemExit(code)
+        wirf SystemExit(code)
 
 
 klasse _Printer(object):
@@ -46,11 +46,11 @@ klasse _Printer(object):
             gib
         data = Nichts
         fuer filename in self.__filenames:
-            try:
+            versuch:
                 mit open(filename, encoding='utf-8') als fp:
                     data = fp.read()
                 breche
-            except OSError:
+            ausser OSError:
                 pass
         wenn nicht data:
             data = self.__data
@@ -69,10 +69,10 @@ klasse _Printer(object):
         prompt = 'Hit Return fuer more, oder q (and Return) to quit: '
         lineno = 0
         waehrend 1:
-            try:
+            versuch:
                 fuer i in range(lineno, lineno + self.MAXLINES):
                     drucke(self.__lines[i])
-            except IndexError:
+            ausser IndexError:
                 breche
             sonst:
                 lineno += self.MAXLINES

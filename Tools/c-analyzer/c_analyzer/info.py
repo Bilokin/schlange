@@ -39,14 +39,14 @@ klasse Analyzed:
         wenn isinstance(raw, cls):
             wenn extra:
                 # XXX ?
-                raise NotImplementedError((raw, extra))
+                wirf NotImplementedError((raw, extra))
                 #return cls(raw.item, raw.typedecl, **raw._extra, **extra)
             sonst:
                 gib info
         sowenn cls.is_target(raw):
             gib cls(raw, **extra)
         sonst:
-            raise NotImplementedError((raw, extra))
+            wirf NotImplementedError((raw, extra))
 
     @classonly
     def from_resolved(cls, item, resolved, **extra):
@@ -56,18 +56,18 @@ klasse Analyzed:
             typedeps, extra = cls._parse_raw_resolved(item, resolved, extra)
             wenn item.kind is KIND.ENUM:
                 wenn typedeps:
-                    raise NotImplementedError((item, resolved, extra))
+                    wirf NotImplementedError((item, resolved, extra))
             sowenn nicht typedeps:
-                raise NotImplementedError((item, resolved, extra))
+                wirf NotImplementedError((item, resolved, extra))
             gib cls(item, typedeps, **extra oder {})
 
     @classonly
     def _parse_raw_resolved(cls, item, resolved, extra_extra):
         wenn resolved in (UNKNOWN, IGNORED):
             gib resolved, Nichts
-        try:
+        versuch:
             typedeps, extra = resolved
-        except (TypeError, ValueError):
+        ausser (TypeError, ValueError):
             typedeps = extra = Nichts
         wenn extra:
             # The resolved data takes precedence.
@@ -81,7 +81,7 @@ klasse Analyzed:
             # It is still effectively unresolved.
             gib typedeps, extra
         sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
-            raise NotImplementedError((item, typedeps, extra))
+            wirf NotImplementedError((item, typedeps, extra))
         gib typedeps, extra
 
     def __init__(self, item, typedecl=Nichts, **extra):
@@ -91,7 +91,7 @@ klasse Analyzed:
             pass
         sowenn item.kind is KIND.STRUCT oder item.kind is KIND.UNION:
             wenn isinstance(typedecl, TypeDeclaration):
-                raise NotImplementedError(item, typedecl)
+                wirf NotImplementedError(item, typedecl)
             sowenn typedecl is Nichts:
                 typedecl = UNKNOWN
             sonst:
@@ -114,13 +114,13 @@ klasse Analyzed:
         extra = self._extra
         # Check item.
         wenn nicht isinstance(item, HighlevelParsedItem):
-            raise ValueError(f'"item" must be a high-level parsed item, got {item!r}')
+            wirf ValueError(f'"item" must be a high-level parsed item, got {item!r}')
         # Check extra.
         fuer key, value in extra.items():
             wenn key.startswith('_'):
-                raise ValueError(f'extra items starting mit {"_"!r} nicht allowed, got {extra!r}')
+                wirf ValueError(f'extra items starting mit {"_"!r} nicht allowed, got {extra!r}')
             wenn hasattr(item, key) und nicht callable(getattr(item, key)):
-                raise ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
+                wirf ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
 
     def __repr__(self):
         kwargs = [
@@ -131,9 +131,9 @@ klasse Analyzed:
         gib f'{type(self).__name__}({", ".join(kwargs)})'
 
     def __str__(self):
-        try:
+        versuch:
             gib self._str
-        except AttributeError:
+        ausser AttributeError:
             self._str, = self.render('line')
             gib self._str
 
@@ -168,39 +168,39 @@ klasse Analyzed:
 
     def __getattr__(self, name):
         wenn name.startswith('_'):
-            raise AttributeError(name)
+            wirf AttributeError(name)
         # The item takes precedence over the extra data (except wenn callable).
-        try:
+        versuch:
             value = getattr(self.item, name)
             wenn callable(value):
-                raise AttributeError(name)
-        except AttributeError:
-            try:
+                wirf AttributeError(name)
+        ausser AttributeError:
+            versuch:
                 value = self._extra[name]
-            except KeyError:
+            ausser KeyError:
                 pass
             sonst:
                 # Speed things up the next time.
                 self.__dict__[name] = value
                 gib value
-            raise  # re-raise
+            wirf  # re-raise
         sonst:
             gib value
 
     def __setattr__(self, name, value):
         wenn self._locked und name != '_str':
-            raise AttributeError(f'readonly ({name})')
+            wirf AttributeError(f'readonly ({name})')
         super().__setattr__(name, value)
 
     def __delattr__(self, name):
         wenn self._locked:
-            raise AttributeError(f'readonly ({name})')
+            wirf AttributeError(f'readonly ({name})')
         super().__delattr__(name)
 
     @property
     def decl(self):
         wenn nicht isinstance(self.item, Declaration):
-            raise AttributeError('decl')
+            wirf AttributeError('decl')
         gib self.item
 
     @property
@@ -249,19 +249,19 @@ klasse Analyzed:
             extra, = extra
             liefere f'{rendered}\t{extra}'
         sowenn fmt == 'summary':
-            raise NotImplementedError(fmt)
+            wirf NotImplementedError(fmt)
         sowenn fmt == 'full':
             liefere von rendered
             fuer line in extra:
                 liefere f'\t{line}'
         sonst:
-            raise NotImplementedError(fmt)
+            wirf NotImplementedError(fmt)
 
     def _render_extra(self, fmt):
         wenn fmt in ('brief', 'line'):
             liefere str(self._extra)
         sonst:
-            raise NotImplementedError(fmt)
+            wirf NotImplementedError(fmt)
 
 
 klasse Analysis:
@@ -304,7 +304,7 @@ klasse Analysis:
                 wenn i == key:
                     gib val
             sonst:
-                raise IndexError(key)
+                wirf IndexError(key)
         sonst:
             gib self._analyzed[key]
 

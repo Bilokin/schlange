@@ -33,9 +33,9 @@ klasse WeakSet:
         gib len(self.data)
 
     def __contains__(self, item):
-        try:
+        versuch:
             wr = ref(item)
-        except TypeError:
+        ausser TypeError:
             gib Falsch
         gib wr in self.data
 
@@ -53,10 +53,10 @@ klasse WeakSet:
 
     def pop(self):
         waehrend Wahr:
-            try:
+            versuch:
                 itemref = self.data.pop()
-            except KeyError:
-                raise KeyError('pop von empty WeakSet') von Nichts
+            ausser KeyError:
+                wirf KeyError('pop von empty WeakSet') von Nichts
             item = itemref()
             wenn item is nicht Nichts:
                 gib item

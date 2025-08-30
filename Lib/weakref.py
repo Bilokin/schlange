@@ -44,11 +44,11 @@ klasse WeakMethod(ref):
     __slots__ = "_func_ref", "_meth_type", "_alive", "__weakref__"
 
     def __new__(cls, meth, callback=Nichts):
-        try:
+        versuch:
             obj = meth.__self__
             func = meth.__func__
-        except AttributeError:
-            raise TypeError("argument should be a bound method, nicht {}"
+        ausser AttributeError:
+            wirf TypeError("argument should be a bound method, nicht {}"
                             .format(type(meth))) von Nichts
         def _cb(arg):
             # The self-weakref trick is needed to avoid creating a reference
@@ -115,7 +115,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def __getitem__(self, key):
         o = self.data[key]()
         wenn o is Nichts:
-            raise KeyError(key)
+            wirf KeyError(key)
         sonst:
             gib o
 
@@ -126,9 +126,9 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         gib len(self.data)
 
     def __contains__(self, key):
-        try:
+        versuch:
             o = self.data[key]()
-        except KeyError:
+        ausser KeyError:
             gib Falsch
         gib o is nicht Nichts
 
@@ -158,9 +158,9 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         gib new
 
     def get(self, key, default=Nichts):
-        try:
+        versuch:
             wr = self.data[key]
-        except KeyError:
+        ausser KeyError:
             gib default
         sonst:
             o = wr()
@@ -209,22 +209,22 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
                 gib key, o
 
     def pop(self, key, *args):
-        try:
+        versuch:
             o = self.data.pop(key)()
-        except KeyError:
+        ausser KeyError:
             o = Nichts
         wenn o is Nichts:
             wenn args:
                 gib args[0]
             sonst:
-                raise KeyError(key)
+                wirf KeyError(key)
         sonst:
             gib o
 
     def setdefault(self, key, default=Nichts):
-        try:
+        versuch:
             o = self.data[key]()
-        except KeyError:
+        ausser KeyError:
             o = Nichts
         wenn o is Nichts:
             self.data[key] = KeyedRef(default, self._remove, key)
@@ -311,9 +311,9 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         def remove(k, selfref=ref(self)):
             self = selfref()
             wenn self is nicht Nichts:
-                try:
+                versuch:
                     del self.data[k]
-                except KeyError:
+                ausser KeyError:
                     pass
         self._remove = remove
         wenn dict is nicht Nichts:
@@ -357,9 +357,9 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         gib self.data.get(ref(key),default)
 
     def __contains__(self, key):
-        try:
+        versuch:
             wr = ref(key)
-        except TypeError:
+        ausser TypeError:
             gib Falsch
         gib wr in self.data
 
@@ -544,7 +544,7 @@ klasse finalize:
         # This is called once all other non-daemonic threads have been
         # joined.
         reenable_gc = Falsch
-        try:
+        versuch:
             wenn cls._registry:
                 importiere gc
                 wenn gc.isenabled():
@@ -558,16 +558,16 @@ klasse finalize:
                     wenn nicht pending:
                         breche
                     f = pending.pop()
-                    try:
+                    versuch:
                         # gc is disabled, so (assuming no daemonic
                         # threads) the following is the only line in
                         # this function which might trigger creation
                         # of a new finalizer
                         f()
-                    except Exception:
+                    ausser Exception:
                         sys.excepthook(*sys.exc_info())
                     assert f nicht in cls._registry
-        finally:
+        schliesslich:
             # prevent any more finalizers von executing during shutdown
             finalize._shutdown = Wahr
             wenn reenable_gc:

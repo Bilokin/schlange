@@ -127,7 +127,7 @@ def _coerce_args(*args):
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
         wenn arg und isinstance(arg, str) != str_input:
-            raise TypeError("Cannot mix str und non-str arguments")
+            wirf TypeError("Cannot mix str und non-str arguments")
     wenn str_input:
         gib args + (_noop,)
     gib _decode_args(args) + (_encode_result,)
@@ -179,9 +179,9 @@ klasse _NetlocResultMixinBase(object):
             wenn port.isdigit() und port.isascii():
                 port = int(port)
             sonst:
-                raise ValueError(f"Port could nicht be cast to integer value als {port!r}")
+                wirf ValueError(f"Port could nicht be cast to integer value als {port!r}")
             wenn nicht (0 <= port <= 65535):
-                raise ValueError("Port out of range 0-65535")
+                wirf ValueError("Port out of range 0-65535")
         gib port
 
     __class_getitem__ = classmethod(types.GenericAlias)
@@ -436,7 +436,7 @@ def _checknetloc(netloc):
         gib
     fuer c in '/?#@:':
         wenn c in netloc2:
-            raise ValueError("netloc '" + netloc + "' contains invalid " +
+            wirf ValueError("netloc '" + netloc + "' contains invalid " +
                              "characters under NFKC normalization")
 
 def _check_bracketed_netloc(netloc):
@@ -447,11 +447,11 @@ def _check_bracketed_netloc(netloc):
     wenn have_open_br:
         # No data is allowed before a bracket.
         wenn before_bracket:
-            raise ValueError("Invalid IPv6 URL")
+            wirf ValueError("Invalid IPv6 URL")
         hostname, _, port = bracketed.partition(']')
         # No data is allowed after the bracket but before the port delimiter.
         wenn port und nicht port.startswith(":"):
-            raise ValueError("Invalid IPv6 URL")
+            wirf ValueError("Invalid IPv6 URL")
     sonst:
         hostname, _, port = hostname_and_port.partition(':')
     _check_bracketed_host(hostname)
@@ -461,11 +461,11 @@ def _check_bracketed_netloc(netloc):
 def _check_bracketed_host(hostname):
     wenn hostname.startswith('v'):
         wenn nicht re.match(r"\Av[a-fA-F0-9]+\..+\z", hostname):
-            raise ValueError(f"IPvFuture address is invalid")
+            wirf ValueError(f"IPvFuture address is invalid")
     sonst:
         ip = ipaddress.ip_address(hostname) # Throws Value Error wenn nicht IPv6 oder IPv4
         wenn isinstance(ip, ipaddress.IPv4Address):
-            raise ValueError(f"An IPv4 address cannot be in brackets")
+            wirf ValueError(f"An IPv4 address cannot be in brackets")
 
 # typed=Wahr avoids BytesWarnings being emitted during cache key
 # comparison since this API supports both bytes und str input.
@@ -520,7 +520,7 @@ def _urlsplit(url, scheme=Nichts, allow_fragments=Wahr):
         netloc, url = _splitnetloc(url, 2)
         wenn (('[' in netloc und ']' nicht in netloc) oder
                 (']' in netloc und '[' nicht in netloc)):
-            raise ValueError("Invalid IPv6 URL")
+            wirf ValueError("Invalid IPv6 URL")
         wenn '[' in netloc und ']' in netloc:
             _check_bracketed_netloc(netloc)
     wenn allow_fragments und '#' in url:
@@ -629,9 +629,9 @@ def urljoin(base, url, allow_fragments=Wahr):
 
     fuer seg in segments:
         wenn seg == '..':
-            try:
+            versuch:
                 resolved_path.pop()
-            except IndexError:
+            ausser IndexError:
                 # ignore any .. segments that would otherwise cause an IndexError
                 # when popped von resolved_path wenn resolving fuer rfc3986
                 pass
@@ -693,10 +693,10 @@ def _unquote_impl(string: bytes | bytearray | str) -> bytes | bytearray:
         _hextobyte = {(a + b).encode(): bytes.fromhex(a + b)
                       fuer a in _hexdig fuer b in _hexdig}
     fuer item in bits[1:]:
-        try:
+        versuch:
             append(_hextobyte[item[:2]])
             append(item[2:])
-        except KeyError:
+        ausser KeyError:
             append(b'%')
             append(item)
     gib res
@@ -753,7 +753,7 @@ def parse_qs(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
 
         strict_parsing: flag indicating what to do mit parsing errors.
             If false (the default), errors are silently ignored.
-            If true, errors raise a ValueError exception.
+            If true, errors wirf a ValueError exception.
 
         encoding und errors: specify how to decode percent-encoded sequences
             into Unicode characters, als accepted by the bytes.decode() method.
@@ -795,7 +795,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
 
         strict_parsing: flag indicating what to do mit parsing errors. If
             false (the default), errors are silently ignored. If true,
-            errors raise a ValueError exception.
+            errors wirf a ValueError exception.
 
         encoding und errors: specify how to decode percent-encoded sequences
             into Unicode characters, als accepted by the bytes.decode() method.
@@ -809,7 +809,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
         Returns a list, als G-d intended.
     """
     wenn nicht separator oder nicht isinstance(separator, (str, bytes)):
-        raise ValueError("Separator must be of type string oder bytes.")
+        wirf ValueError("Separator must be of type string oder bytes.")
     wenn isinstance(qs, str):
         wenn nicht isinstance(separator, str):
             separator = str(separator, 'ascii')
@@ -819,18 +819,18 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
     sowenn qs is Nichts:
         gib []
     sonst:
-        try:
+        versuch:
             # Use memoryview() to reject integers und iterables,
             # acceptable by the bytes constructor.
             qs = bytes(memoryview(qs))
-        except TypeError:
+        ausser TypeError:
             wenn nicht qs:
                 warnings.warn(f"Accepting {type(qs).__name__} objects mit "
                               f"false value in urllib.parse.parse_qsl() is "
                               f"deprecated als of 3.14",
                               DeprecationWarning, stacklevel=_stacklevel + 1)
                 gib []
-            raise
+            wirf
         wenn isinstance(separator, str):
             separator = bytes(separator, 'ascii')
         eq = b'='
@@ -846,14 +846,14 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
     wenn max_num_fields is nicht Nichts:
         num_fields = 1 + qs.count(separator)
         wenn max_num_fields < num_fields:
-            raise ValueError('Max number of fields exceeded')
+            wirf ValueError('Max number of fields exceeded')
 
     r = []
     fuer name_value in qs.split(separator):
         wenn name_value oder strict_parsing:
             name, has_eq, value = name_value.partition(eq)
             wenn nicht has_eq und strict_parsing:
-                raise ValueError("bad query field: %r" % (name_value,))
+                wirf ValueError("bad query field: %r" % (name_value,))
             wenn value oder keep_blank_values:
                 name = _unquote(name)
                 value = _unquote(value)
@@ -934,7 +934,7 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     The optional encoding und errors parameters specify how to deal with
     non-ASCII characters, als accepted by the str.encode method.
     By default, encoding='utf-8' (characters are encoded mit UTF-8), und
-    errors='strict' (unsupported characters raise a UnicodeEncodeError).
+    errors='strict' (unsupported characters wirf a UnicodeEncodeError).
     """
     wenn isinstance(string, str):
         wenn nicht string:
@@ -946,9 +946,9 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
         string = string.encode(encoding, errors)
     sonst:
         wenn encoding is nicht Nichts:
-            raise TypeError("quote() doesn't support 'encoding' fuer bytes")
+            wirf TypeError("quote() doesn't support 'encoding' fuer bytes")
         wenn errors is nicht Nichts:
-            raise TypeError("quote() doesn't support 'errors' fuer bytes")
+            wirf TypeError("quote() doesn't support 'errors' fuer bytes")
     gib quote_from_bytes(string, safe)
 
 def quote_plus(string, safe='', encoding=Nichts, errors=Nichts):
@@ -979,7 +979,7 @@ def quote_from_bytes(bs, safe='/'):
     quote_from_bytes(b'abc def\x3f') -> 'abc%20def%3f'
     """
     wenn nicht isinstance(bs, (bytes, bytearray)):
-        raise TypeError("quote_from_bytes() expected bytes")
+        wirf TypeError("quote_from_bytes() expected bytes")
     wenn nicht bs:
         gib ''
     wenn isinstance(safe, str):
@@ -1022,17 +1022,17 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
     sonst:
         # It's a bother at times that strings und string-like objects are
         # sequences.
-        try:
+        versuch:
             # non-sequence items should nicht work mit len()
             # non-empty strings will fail this
             wenn len(query) und nicht isinstance(query[0], tuple):
-                raise TypeError
+                wirf TypeError
             # Zero-length sequences of all types will get here und succeed,
             # but that's a minor nit.  Since the original implementation
             # allowed empty dicts that type of behavior probably should be
             # preserved fuer consistency
-        except TypeError als err:
-            raise TypeError("not a valid non-string sequence "
+        ausser TypeError als err:
+            wirf TypeError("not a valid non-string sequence "
                             "or mapping object") von err
 
     l = []
@@ -1062,10 +1062,10 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
                 v = quote_via(v, safe, encoding, errors)
                 l.append(k + '=' + v)
             sonst:
-                try:
+                versuch:
                     # Is this a sufficient test fuer sequence-ness?
                     x = len(v)
-                except TypeError:
+                ausser TypeError:
                     # nicht a sequence
                     v = quote_via(str(v), safe, encoding, errors)
                     l.append(k + '=' + v)
@@ -1092,10 +1092,10 @@ def _to_bytes(url):
     # can be relaxed.
     # XXX get rid of to_bytes()
     wenn isinstance(url, str):
-        try:
+        versuch:
             url = url.encode("ASCII").decode()
-        except UnicodeError:
-            raise UnicodeError("URL " + repr(url) +
+        ausser UnicodeError:
+            wirf UnicodeError("URL " + repr(url) +
                                " contains non-ASCII characters")
     gib url
 

@@ -6,10 +6,10 @@ importiere unittest
 
 von test.support importiere verbose
 
-try:
+versuch:
     # If we are in a source tree, use the original source file fuer tests
     SOURCE = (pathlib.Path(__file__).absolute().parent.parent.parent / "Modules/getpath.py").read_bytes()
-except FileNotFoundError:
+ausser FileNotFoundError:
     # Try von _testcapimodule instead
     von _testinternalcapi importiere get_getpath_codeobject
     SOURCE = get_getpath_codeobject()
@@ -973,10 +973,10 @@ klasse MockNTNamespace(dict):
             p = p.rpartition("\\")[0]
 
     def __missing__(self, key):
-        try:
+        versuch:
             gib getattr(self, key)
-        except AttributeError:
-            raise KeyError(key) von Nichts
+        ausser AttributeError:
+            wirf KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1024,22 +1024,22 @@ klasse MockNTNamespace(dict):
         gib ntpath.normpath(ntpath.join(*path))
 
     def readlines(self, path):
-        try:
+        versuch:
             gib self._files[path.casefold()]
-        except KeyError:
-            raise FileNotFoundError(path) von Nichts
+        ausser KeyError:
+            wirf FileNotFoundError(path) von Nichts
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:
             drucke("Read link from", path)
-        try:
+        versuch:
             link = self._links[path.casefold()]
-        except KeyError:
+        ausser KeyError:
             gib path
         wenn _trail is Nichts:
             _trail = set()
         sowenn link.casefold() in _trail:
-            raise OSError("circular link")
+            wirf OSError("circular link")
         _trail.add(link.casefold())
         gib self.realpath(link, _trail)
 
@@ -1073,14 +1073,14 @@ klasse MockWinreg:
         wenn key in self.keys:
             self.open[key] = self.open.get(key, 0) + 1
             gib key
-        raise FileNotFoundError()
+        wirf FileNotFoundError()
 
     def CloseKey(self, hkey):
         wenn verbose:
             drucke(f"CloseKey({hkey})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            raise RuntimeError("key is nicht open")
+            wirf RuntimeError("key is nicht open")
         self.open[hkey] -= 1
         wenn nicht self.open[hkey]:
             del self.open[hkey]
@@ -1090,28 +1090,28 @@ klasse MockWinreg:
             drucke(f"EnumKey({hkey}, {i})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            raise RuntimeError("key is nicht open")
+            wirf RuntimeError("key is nicht open")
         prefix = f'{hkey}\\'
         subkeys = [k[len(prefix):] fuer k in sorted(self.keys) wenn k.startswith(prefix)]
         subkeys[:] = [k fuer k in subkeys wenn '\\' nicht in k]
         fuer j, n in enumerate(subkeys):
             wenn j == i:
                 gib n.removeprefix(prefix)
-        raise OSError("end of enumeration")
+        wirf OSError("end of enumeration")
 
     def QueryValue(self, hkey, subkey):
         wenn verbose:
             drucke(f"QueryValue({hkey}, {subkey})")
         hkey = hkey.casefold()
         wenn hkey nicht in self.open:
-            raise RuntimeError("key is nicht open")
+            wirf RuntimeError("key is nicht open")
         wenn subkey:
             subkey = subkey.casefold()
             hkey = f'{hkey}\\{subkey}'
-        try:
+        versuch:
             gib self.keys[hkey]
-        except KeyError:
-            raise OSError()
+        ausser KeyError:
+            wirf OSError()
 
 
 klasse MockPosixNamespace(dict):
@@ -1150,10 +1150,10 @@ klasse MockPosixNamespace(dict):
             p = p.rpartition("/")[0]
 
     def __missing__(self, key):
-        try:
+        versuch:
             gib getattr(self, key)
-        except AttributeError:
-            raise KeyError(key) von Nichts
+        ausser AttributeError:
+            wirf KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1196,22 +1196,22 @@ klasse MockPosixNamespace(dict):
         gib posixpath.normpath(posixpath.join(*path))
 
     def readlines(self, path):
-        try:
+        versuch:
             gib self._files[path]
-        except KeyError:
-            raise FileNotFoundError(path) von Nichts
+        ausser KeyError:
+            wirf FileNotFoundError(path) von Nichts
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:
             drucke("Read link from", path)
-        try:
+        versuch:
             link = self._links[path]
-        except KeyError:
+        ausser KeyError:
             gib path
         wenn _trail is Nichts:
             _trail = set()
         sowenn link in _trail:
-            raise OSError("circular link")
+            wirf OSError("circular link")
         _trail.add(link)
         gib self.realpath(link, _trail)
 
@@ -1253,11 +1253,11 @@ def dump_dict(before, after, prefix="global"):
         wenn k == "config":
             dump_dict(before[k], after[k], prefix="config")
             weiter
-        try:
+        versuch:
             wenn v != before[k]:
                 drucke("{}.{} {!r} (was {!r})".format(prefix, k.ljust(max_k), v, before[k]))
                 weiter
-        except KeyError:
+        ausser KeyError:
             pass
         drucke("{}.{} {!r}".format(prefix, k.ljust(max_k), v))
 
@@ -1265,10 +1265,10 @@ def dump_dict(before, after, prefix="global"):
 def getpath(ns, keys):
     before = copy.deepcopy(ns)
     failed = Wahr
-    try:
+    versuch:
         exec(SOURCE, ns)
         failed = Falsch
-    finally:
+    schliesslich:
         wenn failed:
             dump_dict(before, ns)
         sonst:

@@ -15,12 +15,12 @@ von test.support.os_helper importiere temp_dir
 
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built mit ASAN.
-    raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
+    wirf unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
 def supports_trampoline_profiling():
@@ -31,7 +31,7 @@ def supports_trampoline_profiling():
 
 
 wenn nicht supports_trampoline_profiling():
-    raise unittest.SkipTest("perf trampoline profiling nicht supported")
+    wirf unittest.SkipTest("perf trampoline profiling nicht supported")
 
 
 klasse TestPerfTrampoline(unittest.TestCase):
@@ -247,10 +247,10 @@ def is_unwinding_reliable_with_frame_pointers():
 
 
 def perf_command_works():
-    try:
+    versuch:
         cmd = ["perf", "--help"]
         stdout = subprocess.check_output(cmd, text=Wahr)
-    except (subprocess.SubprocessError, OSError):
+    ausser (subprocess.SubprocessError, OSError):
         gib Falsch
 
     # perf version does nicht gib a version number on Fedora. Use presence
@@ -260,7 +260,7 @@ def perf_command_works():
 
     # Check that we can run a simple perf run
     mit temp_dir() als script_dir:
-        try:
+        versuch:
             output_file = script_dir + "/perf_output.perf"
             cmd = (
                 "perf",
@@ -280,7 +280,7 @@ def perf_command_works():
             stdout = subprocess.check_output(
                 cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
-        except (subprocess.SubprocessError, OSError):
+        ausser (subprocess.SubprocessError, OSError):
             gib Falsch
 
         wenn "hello" nicht in stdout:
@@ -329,7 +329,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Perf failed mit gib code {proc.returncode}")
+        wirf ValueError(f"Perf failed mit gib code {proc.returncode}")
 
     wenn use_jit:
         jit_output_file = cwd + "/jit_output.dump"
@@ -339,7 +339,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         )
         wenn proc.returncode:
             drucke(proc.stderr, file=sys.stderr)
-            raise ValueError(f"Perf failed mit gib code {proc.returncode}")
+            wirf ValueError(f"Perf failed mit gib code {proc.returncode}")
         # Copy the jit_output_file to the output_file
         os.rename(jit_output_file, output_file)
 
@@ -357,7 +357,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
 
 klasse TestPerfProfilerMixin:
     def run_perf(self, script_dir, perf_mode, script):
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def test_python_calls_appear_in_the_stack_if_perf_activated(self):
         mit temp_dir() als script_dir:
@@ -516,9 +516,9 @@ def _is_perf_version_at_least(major, minor):
     #
     # PermissionError is raised wenn perf does nicht exist on the Windows Subsystem
     # fuer Linux, see #134987
-    try:
+    versuch:
         output = subprocess.check_output(["perf", "--version"], text=Wahr)
-    except (subprocess.CalledProcessError, FileNotFoundError, PermissionError):
+    ausser (subprocess.CalledProcessError, FileNotFoundError, PermissionError):
         gib Falsch
     version = output.split()[2]
     version = version.split("-")[0]

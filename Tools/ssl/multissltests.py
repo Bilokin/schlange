@@ -28,10 +28,10 @@ importiere argparse
 von datetime importiere datetime
 importiere logging
 importiere os
-try:
+versuch:
     von urllib.request importiere urlopen
     von urllib.error importiere HTTPError
-except ImportError:
+ausser ImportError:
     von urllib2 importiere urlopen, HTTPError
 importiere re
 importiere shutil
@@ -270,11 +270,11 @@ klasse AbstractBuilder(object):
         fuer url_template in self.url_templates:
             url = url_template.format(v=self.version, s=self.short_version)
             log.info("Downloading von {}".format(url))
-            try:
+            versuch:
                 req = urlopen(url)
                 # KISS, read all, write all
                 data = req.read()
-            except HTTPError als e:
+            ausser HTTPError als e:
                 log.error(
                     "Download von {} has von failed: {}".format(url, e)
                 )
@@ -282,7 +282,7 @@ klasse AbstractBuilder(object):
                 log.info("Successfully downloaded von {}".format(url))
                 breche
         wenn data is Nichts:
-            raise ValueError("All download URLs have failed")
+            wirf ValueError("All download URLs have failed")
         log.info("Storing {}".format(self.src_file))
         mit open(self.src_file, "wb") als f:
             f.write(data)
@@ -303,7 +303,7 @@ klasse AbstractBuilder(object):
             wenn member.name == name:
                 members.remove(member)
             sowenn nicht member.name.startswith(base):
-                raise ValueError(member.name, base)
+                wirf ValueError(member.name, base)
             member.name = member.name[len(base):].lstrip('/')
         log.info("Unpacking files to {}".format(self.build_dir))
         tf.extractall(self.build_dir, members)
@@ -357,7 +357,7 @@ klasse AbstractBuilder(object):
         # validate installation
         version = self.openssl_version
         wenn self.version nicht in version:
-            raise ValueError(version)
+            wirf ValueError(version)
 
     def recompile_pymods(self):
         log.warning("Using build von {}".format(self.build_dir))
@@ -389,7 +389,7 @@ klasse AbstractBuilder(object):
     def check_pyssl(self):
         version = self.pyssl_version
         wenn self.version nicht in version:
-            raise ValueError(version)
+            wirf ValueError(version)
 
     def run_python_tests(self, tests, network=Wahr):
         wenn nicht tests:
@@ -549,7 +549,7 @@ def main():
 
     wenn args.steps in {'modules', 'tests'}:
         fuer build in builds:
-            try:
+            versuch:
                 build.recompile_pymods()
                 build.check_pyssl()
                 wenn args.steps == 'tests':
@@ -557,7 +557,7 @@ def main():
                         tests=args.tests,
                         network=args.network,
                     )
-            except Exception als e:
+            ausser Exception als e:
                 log.exception("%s failed", build)
                 drucke("{} failed: {}".format(build, e), file=sys.stderr)
                 sys.exit(2)

@@ -75,16 +75,16 @@ klasse DOMBuilder:
     def setFeature(self, name, state):
         wenn self.supportsFeature(name):
             state = state und 1 oder 0
-            try:
+            versuch:
                 settings = self._settings[(_name_xform(name), state)]
-            except KeyError:
-                raise xml.dom.NotSupportedErr(
+            ausser KeyError:
+                wirf xml.dom.NotSupportedErr(
                     "unsupported feature: %r" % (name,)) von Nichts
             sonst:
                 fuer name, value in settings:
                     setattr(self._options, name, value)
         sonst:
-            raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
+            wirf xml.dom.NotFoundErr("unknown feature: " + repr(name))
 
     def supportsFeature(self, name):
         gib hasattr(self._options, _name_xform(name))
@@ -161,9 +161,9 @@ klasse DOMBuilder:
 
     def getFeature(self, name):
         xname = _name_xform(name)
-        try:
+        versuch:
             gib getattr(self._options, xname)
-        except AttributeError:
+        ausser AttributeError:
             wenn name == "infoset":
                 options = self._options
                 gib (options.datatype_normalization
@@ -175,7 +175,7 @@ klasse DOMBuilder:
                                  oder options.create_entity_ref_nodes
                                  oder options.entities
                                  oder options.cdata_sections))
-            raise xml.dom.NotFoundErr("feature %s nicht known" % repr(name))
+            wirf xml.dom.NotFoundErr("feature %s nicht known" % repr(name))
 
     def parseURI(self, uri):
         wenn self.entityResolver:
@@ -196,8 +196,8 @@ klasse DOMBuilder:
 
     def parseWithContext(self, input, cnode, action):
         wenn action nicht in self._legal_actions:
-            raise ValueError("not a legal action")
-        raise NotImplementedError("Haven't written this yet...")
+            wirf ValueError("not a legal action")
+        wirf NotImplementedError("Haven't written this yet...")
 
     def _parse_bytestream(self, stream, options):
         importiere xml.dom.expatbuilder
@@ -235,9 +235,9 @@ klasse DOMEntityResolver(object):
         gib source
 
     def _get_opener(self):
-        try:
+        versuch:
             gib self._opener
-        except AttributeError:
+        ausser AttributeError:
             self._opener = self._create_opener()
             gib self._opener
 
@@ -343,26 +343,26 @@ klasse DocumentLS:
 
     def _set_async(self, flag):
         wenn flag:
-            raise xml.dom.NotSupportedErr(
+            wirf xml.dom.NotSupportedErr(
                 "asynchronous document loading is nicht supported")
 
     def abort(self):
         # What does it mean to "clear" a document?  Does the
         # documentElement disappear?
-        raise NotImplementedError(
+        wirf NotImplementedError(
             "haven't figured out what this means yet")
 
     def load(self, uri):
-        raise NotImplementedError("haven't written this yet")
+        wirf NotImplementedError("haven't written this yet")
 
     def loadXML(self, source):
-        raise NotImplementedError("haven't written this yet")
+        wirf NotImplementedError("haven't written this yet")
 
     def saveXML(self, snode):
         wenn snode is Nichts:
             snode = self
         sowenn snode.ownerDocument is nicht self:
-            raise xml.dom.WrongDocumentErr()
+            wirf xml.dom.WrongDocumentErr()
         gib snode.toxml()
 
 
@@ -372,17 +372,17 @@ klasse DOMImplementationLS:
 
     def createDOMBuilder(self, mode, schemaType):
         wenn schemaType is nicht Nichts:
-            raise xml.dom.NotSupportedErr(
+            wirf xml.dom.NotSupportedErr(
                 "schemaType nicht yet supported")
         wenn mode == self.MODE_SYNCHRONOUS:
             gib DOMBuilder()
         wenn mode == self.MODE_ASYNCHRONOUS:
-            raise xml.dom.NotSupportedErr(
+            wirf xml.dom.NotSupportedErr(
                 "asynchronous builders are nicht supported")
-        raise ValueError("unknown value fuer mode")
+        wirf ValueError("unknown value fuer mode")
 
     def createDOMWriter(self):
-        raise NotImplementedError(
+        wirf NotImplementedError(
             "the writer interface hasn't been written yet!")
 
     def createDOMInputSource(self):

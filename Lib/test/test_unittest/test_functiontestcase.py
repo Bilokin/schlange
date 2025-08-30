@@ -25,7 +25,7 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
         def setUp():
             events.append('setUp')
-            raise RuntimeError('raised by setUp')
+            wirf RuntimeError('raised by setUp')
 
         def test():
             events.append('test')
@@ -53,7 +53,7 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
         def test():
             events.append('test')
-            raise RuntimeError('raised by test')
+            wirf RuntimeError('raised by test')
 
         def tearDown():
             events.append('tearDown')
@@ -108,7 +108,7 @@ klasse Test_FunctionTestCase(unittest.TestCase):
 
         def tearDown():
             events.append('tearDown')
-            raise RuntimeError('raised by tearDown')
+            wirf RuntimeError('raised by tearDown')
 
         expected = ['startTest', 'setUp', 'test', 'tearDown', 'addError',
                     'stopTest']

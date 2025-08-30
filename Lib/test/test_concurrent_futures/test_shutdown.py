@@ -57,11 +57,11 @@ klasse ExecutorShutdownTest:
             importiere atexit
             @atexit.register
             def run_last():
-                try:
+                versuch:
                     t.submit(id, Nichts)
-                except RuntimeError:
+                ausser RuntimeError:
                     drucke("runtime-error")
-                    raise
+                    wirf
             von concurrent.futures importiere {executor_type}
             wenn __name__ == "__main__":
                 context = '{context}'
@@ -116,7 +116,7 @@ klasse ExecutorShutdownTest:
         See https://github.com/python/cpython/issues/83386.
         """
         wenn self.executor_type == futures.ProcessPoolExecutor:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "Hangs, see https://github.com/python/cpython/issues/83386")
 
         rc, out, err = assert_python_ok('-c', """if Wahr:
@@ -140,11 +140,11 @@ klasse ExecutorShutdownTest:
         See https://github.com/python/cpython/issues/94440.
         """
         wenn nicht hasattr(signal, 'alarm'):
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "Tested platform does nicht support the alarm signal")
 
         def timeout(_signum, _frame):
-            raise RuntimeError("timed out waiting fuer shutdown")
+            wirf RuntimeError("timed out waiting fuer shutdown")
 
         kwargs = {}
         wenn getattr(self, 'ctx', Nichts):
@@ -152,11 +152,11 @@ klasse ExecutorShutdownTest:
         executor = self.executor_type(max_workers=1, **kwargs)
         executor.submit(int).result()
         old_handler = signal.signal(signal.SIGALRM, timeout)
-        try:
+        versuch:
             signal.alarm(5)
             executor.submit(int).cancel()
             executor.shutdown(wait=Wahr)
-        finally:
+        schliesslich:
             signal.alarm(0)
             signal.signal(signal.SIGALRM, old_handler)
 
@@ -345,7 +345,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
 
     @classmethod
     def _failing_task_gh_132969(cls, n):
-        raise ValueError("failing task")
+        wirf ValueError("failing task")
 
     @classmethod
     def _good_task_gh_132969(cls, n):
@@ -372,11 +372,11 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         f2 = executor.submit(ProcessPoolShutdownTest._failing_task_gh_132969, 2)
         f3 = executor.submit(ProcessPoolShutdownTest._good_task_gh_132969, 3)
         result = 0
-        try:
+        versuch:
             result += f1.result()
             result += f2.result()
             result += f3.result()
-        except ValueError:
+        ausser ValueError:
             # stop processing results upon first exception
             pass
 

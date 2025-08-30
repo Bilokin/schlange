@@ -58,11 +58,11 @@ klasse Test_MultibyteCodec(unittest.TestCase):
             self.assertEqual(data.encode(enc, "test.ignore"), b'')
 
     def test_codingspec(self):
-        try:
+        versuch:
             fuer enc in ALL_CJKENCODINGS:
                 code = '# coding: {}\n'.format(enc)
                 exec(code)
-        finally:
+        schliesslich:
             os_helper.unlink(TESTFN)
 
     def test_init_segfault(self):
@@ -73,7 +73,7 @@ klasse Test_MultibyteCodec(unittest.TestCase):
                           _multibytecodec.MultibyteStreamWriter, Nichts)
 
     def test_decode_unicode(self):
-        # Trying to decode a unicode string should raise a TypeError
+        # Trying to decode a unicode string should wirf a TypeError
         fuer enc in ALL_CJKENCODINGS:
             self.assertRaises(TypeError, codecs.getdecoder(enc), "")
 
@@ -223,7 +223,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
             encoder = codecs.getincrementalencoder(encoding)()
             text2 = encoder.encode(text).decode(encoding)
             wenn text2 != text:
-                raise ValueError(f"encoding issue: {text2!a} != {text!a}")
+                wirf ValueError(f"encoding issue: {text2!a} != {text!a}")
         """) % (encoding, text)
         res = _testcapi.run_in_subinterp(code)
         self.assertEqual(res, 0)
@@ -266,7 +266,7 @@ klasse Test_IncrementalDecoder(unittest.TestCase):
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
 
     def test_decode_unicode(self):
-        # Trying to decode a unicode string should raise a TypeError
+        # Trying to decode a unicode string should wirf a TypeError
         fuer enc in ALL_CJKENCODINGS:
             decoder = codecs.getincrementaldecoder(enc)()
             self.assertRaises(TypeError, decoder.decode, "")
@@ -308,19 +308,19 @@ klasse Test_IncrementalDecoder(unittest.TestCase):
 
 klasse Test_StreamReader(unittest.TestCase):
     def test_bug1728403(self):
-        try:
+        versuch:
             f = open(TESTFN, 'wb')
-            try:
+            versuch:
                 f.write(b'\xa1')
-            finally:
+            schliesslich:
                 f.close()
             mit self.assertWarns(DeprecationWarning):
                 f = codecs.open(TESTFN, encoding='cp949')
-            try:
+            versuch:
                 self.assertRaises(UnicodeDecodeError, f.read, 2)
-            finally:
+            schliesslich:
                 f.close()
-        finally:
+        schliesslich:
             os_helper.unlink(TESTFN)
 
 klasse Test_StreamWriter(unittest.TestCase):

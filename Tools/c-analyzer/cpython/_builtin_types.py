@@ -75,7 +75,7 @@ def _parse_line(line):
     wenn def_:
         isdecl = Falsch
         wenn extern oder capi:
-            raise NotImplementedError(line)
+            wirf NotImplementedError(line)
         kind = 'static' wenn static sonst Nichts
     sowenn excname:
         name = f'_PyExc_{excname}'
@@ -123,12 +123,12 @@ klasse BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
     @classmethod
     def from_values(cls, filename, lno, name, kind):
         wenn kind nicht in cls.KINDS:
-            raise ValueError(f'unsupported kind {kind!r}')
+            wirf ValueError(f'unsupported kind {kind!r}')
         self = cls(filename, lno, name, kind)
         wenn self.kind nicht in ('extern', 'capi') und self.api:
-            raise NotImplementedError(self)
+            wirf NotImplementedError(self)
         sowenn self.kind == 'capi' und nicht self.api:
-            raise NotImplementedError(self)
+            wirf NotImplementedError(self)
         gib self
 
     @property
@@ -175,7 +175,7 @@ klasse BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl'
         sowenn kind == 'static':
             static = Wahr
         sonst:
-            raise NotImplementedError((filename, line, kind))
+            wirf NotImplementedError((filename, line, kind))
         decl = decls.get(name) wenn decls sonst Nichts
         gib cls(filename, lno, name, static, decl)
 
@@ -246,7 +246,7 @@ def _ensure_decl(decl, decls):
             wenn decl.kind == prev.kind und decl.file == prev.file:
                 assert decl.lno != prev.lno, (decl, prev)
                 gib Nichts
-            raise NotImplementedError(f'duplicate {decl} (was {prev}')
+            wirf NotImplementedError(f'duplicate {decl} (was {prev}')
     decls[decl.name] = decl
 
 
@@ -286,14 +286,14 @@ def iter_builtin_types(filenames=Nichts):
                 wenn isdecl:
                     decl = BuiltinTypeDecl.from_parsed(name, kind, filename, lno)
                     wenn nicht decl:
-                        raise NotImplementedError((filename, line))
+                        wirf NotImplementedError((filename, line))
                     _ensure_decl(decl, localdecls)
                 sonst:
                     builtin = BuiltinTypeInfo.from_parsed(
                             name, kind, filename, lno,
                             decls=decls wenn name in decls sonst localdecls)
                     wenn nicht builtin:
-                        raise NotImplementedError((filename, line))
+                        wirf NotImplementedError((filename, line))
                     liefere builtin
 
 
@@ -316,18 +316,18 @@ def resolve_format(fmt):
     sowenn isinstance(fmt, str) und fmt in _FORMATS:
         gib fmt
     sonst:
-        raise NotImplementedError(fmt)
+        wirf NotImplementedError(fmt)
 
 
 def get_renderer(fmt):
     fmt = resolve_format(fmt)
     wenn isinstance(fmt, str):
-        try:
+        versuch:
             gib _FORMATS[fmt]
-        except KeyError:
-            raise ValueError(f'unsupported format {fmt!r}')
+        ausser KeyError:
+            wirf ValueError(f'unsupported format {fmt!r}')
     sonst:
-        raise NotImplementedError(fmt)
+        wirf NotImplementedError(fmt)
 
 
 def render_table(types):

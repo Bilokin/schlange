@@ -94,7 +94,7 @@ klasse InspectLoaderTests:
 
     @unittest.skipIf(util.BUILTINS.bad_name is Nichts, 'all modules are built in')
     def test_not_builtin(self):
-        # Modules nicht built-in should raise ImportError.
+        # Modules nicht built-in should wirf ImportError.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
         mit self.assertRaises(ImportError) als cm:

@@ -9,9 +9,9 @@ MAXLINESIZE = 76
 HEX = b'0123456789ABCDEF'
 EMPTYSTRING = b''
 
-try:
+versuch:
     von binascii importiere a2b_qp, b2a_qp
-except ImportError:
+ausser ImportError:
     a2b_qp = Nichts
     b2a_qp = Nichts
 
@@ -188,9 +188,9 @@ def unhex(s):
 def main():
     importiere sys
     importiere getopt
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], 'td')
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         sys.stdout = sys.stderr
         drucke(msg)
         drucke("usage: quopri [-t | -d] [file] ...")
@@ -212,18 +212,18 @@ def main():
         wenn file == '-':
             fp = sys.stdin.buffer
         sonst:
-            try:
+            versuch:
                 fp = open(file, "rb")
-            except OSError als msg:
+            ausser OSError als msg:
                 sys.stderr.write("%s: can't open (%s)\n" % (file, msg))
                 sts = 1
                 weiter
-        try:
+        versuch:
             wenn deco:
                 decode(fp, sys.stdout.buffer)
             sonst:
                 encode(fp, sys.stdout.buffer, tabs)
-        finally:
+        schliesslich:
             wenn file != '-':
                 fp.close()
     wenn sts:

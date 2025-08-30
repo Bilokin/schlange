@@ -44,16 +44,16 @@ klasse BaseTestSuite(object):
     def addTest(self, test):
         # sanity checks
         wenn nicht callable(test):
-            raise TypeError("{} is nicht callable".format(repr(test)))
+            wirf TypeError("{} is nicht callable".format(repr(test)))
         wenn isinstance(test, type) und issubclass(test,
                                                  (case.TestCase, TestSuite)):
-            raise TypeError("TestCases und TestSuites must be instantiated "
+            wirf TypeError("TestCases und TestSuites must be instantiated "
                             "before passing them to addTest()")
         self._tests.append(test)
 
     def addTests(self, tests):
         wenn isinstance(tests, str):
-            raise TypeError("tests must be an iterable of tests, nicht a string")
+            wirf TypeError("tests must be an iterable of tests, nicht a string")
         fuer test in tests:
             self.addTest(test)
 
@@ -68,9 +68,9 @@ klasse BaseTestSuite(object):
 
     def _removeTestAtIndex(self, index):
         """Stop holding a reference to the TestCase at index."""
-        try:
+        versuch:
             test = self._tests[index]
-        except TypeError:
+        ausser TypeError:
             # support fuer suite implementations that have overridden self._tests
             pass
         sonst:
@@ -150,9 +150,9 @@ klasse TestSuite(BaseTestSuite):
             gib
 
         failed = Falsch
-        try:
+        versuch:
             currentClass._classSetupFailed = Falsch
-        except TypeError:
+        ausser TypeError:
             # test may actually be a function
             # so its klasse will be a builtin-type
             pass
@@ -161,16 +161,16 @@ klasse TestSuite(BaseTestSuite):
         doClassCleanups = getattr(currentClass, 'doClassCleanups', Nichts)
         wenn setUpClass is nicht Nichts:
             _call_if_exists(result, '_setupStdout')
-            try:
-                try:
+            versuch:
+                versuch:
                     setUpClass()
-                except Exception als e:
+                ausser Exception als e:
                     wenn isinstance(result, _DebugResult):
-                        raise
+                        wirf
                     failed = Wahr
-                    try:
+                    versuch:
                         currentClass._classSetupFailed = Wahr
-                    except TypeError:
+                    ausser TypeError:
                         pass
                     className = util.strclass(currentClass)
                     self._createClassOrModuleLevelException(result, e,
@@ -182,7 +182,7 @@ klasse TestSuite(BaseTestSuite):
                         self._createClassOrModuleLevelException(
                                 result, exc_info[1], 'setUpClass', className,
                                 info=exc_info)
-            finally:
+            schliesslich:
                 _call_if_exists(result, '_restoreStdout')
 
     def _get_previous_module(self, result):
@@ -203,36 +203,36 @@ klasse TestSuite(BaseTestSuite):
 
 
         result._moduleSetUpFailed = Falsch
-        try:
+        versuch:
             module = sys.modules[currentModule]
-        except KeyError:
+        ausser KeyError:
             gib
         setUpModule = getattr(module, 'setUpModule', Nichts)
         wenn setUpModule is nicht Nichts:
             _call_if_exists(result, '_setupStdout')
-            try:
-                try:
+            versuch:
+                versuch:
                     setUpModule()
-                except Exception als e:
+                ausser Exception als e:
                     wenn isinstance(result, _DebugResult):
-                        raise
+                        wirf
                     result._moduleSetUpFailed = Wahr
                     self._createClassOrModuleLevelException(result, e,
                                                             'setUpModule',
                                                             currentModule)
                 wenn result._moduleSetUpFailed:
-                    try:
+                    versuch:
                         case.doModuleCleanups()
-                    except ExceptionGroup als eg:
+                    ausser ExceptionGroup als eg:
                         fuer e in eg.exceptions:
                             self._createClassOrModuleLevelException(result, e,
                                                                     'setUpModule',
                                                                     currentModule)
-                    except Exception als e:
+                    ausser Exception als e:
                         self._createClassOrModuleLevelException(result, e,
                                                                 'setUpModule',
                                                                 currentModule)
-            finally:
+            schliesslich:
                 _call_if_exists(result, '_restoreStdout')
 
     def _createClassOrModuleLevelException(self, result, exc, method_name,
@@ -259,39 +259,39 @@ klasse TestSuite(BaseTestSuite):
         wenn result._moduleSetUpFailed:
             gib
 
-        try:
+        versuch:
             module = sys.modules[previousModule]
-        except KeyError:
+        ausser KeyError:
             gib
 
         _call_if_exists(result, '_setupStdout')
-        try:
+        versuch:
             tearDownModule = getattr(module, 'tearDownModule', Nichts)
             wenn tearDownModule is nicht Nichts:
-                try:
+                versuch:
                     tearDownModule()
-                except Exception als e:
+                ausser Exception als e:
                     wenn isinstance(result, _DebugResult):
-                        raise
+                        wirf
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
-            try:
+            versuch:
                 case.doModuleCleanups()
-            except ExceptionGroup als eg:
+            ausser ExceptionGroup als eg:
                 wenn isinstance(result, _DebugResult):
-                    raise
+                    wirf
                 fuer e in eg.exceptions:
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
-            except Exception als e:
+            ausser Exception als e:
                 wenn isinstance(result, _DebugResult):
-                    raise
+                    wirf
                 self._createClassOrModuleLevelException(result, e,
                                                         'tearDownModule',
                                                         previousModule)
-        finally:
+        schliesslich:
             _call_if_exists(result, '_restoreStdout')
 
     def _tearDownPreviousClass(self, test, result):
@@ -312,13 +312,13 @@ klasse TestSuite(BaseTestSuite):
             gib
 
         _call_if_exists(result, '_setupStdout')
-        try:
+        versuch:
             wenn tearDownClass is nicht Nichts:
-                try:
+                versuch:
                     tearDownClass()
-                except Exception als e:
+                ausser Exception als e:
                     wenn isinstance(result, _DebugResult):
-                        raise
+                        wirf
                     className = util.strclass(previousClass)
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownClass',
@@ -327,13 +327,13 @@ klasse TestSuite(BaseTestSuite):
                 doClassCleanups()
                 fuer exc_info in previousClass.tearDown_exceptions:
                     wenn isinstance(result, _DebugResult):
-                        raise exc_info[1]
+                        wirf exc_info[1]
                     className = util.strclass(previousClass)
                     self._createClassOrModuleLevelException(result, exc_info[1],
                                                             'tearDownClass',
                                                             className,
                                                             info=exc_info)
-        finally:
+        schliesslich:
             _call_if_exists(result, '_restoreStdout')
 
 
@@ -377,9 +377,9 @@ klasse _ErrorHolder(object):
 
 def _isnotsuite(test):
     "A crude way to tell apart testcases und suites mit duck-typing"
-    try:
+    versuch:
         iter(test)
-    except TypeError:
+    ausser TypeError:
         gib Wahr
     gib Falsch
 

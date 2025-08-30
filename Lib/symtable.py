@@ -391,9 +391,9 @@ klasse Symbol:
         oder no namespace.
         """
         wenn len(self.__namespaces) == 0:
-            raise ValueError("name is nicht bound to any namespaces")
+            wirf ValueError("name is nicht bound to any namespaces")
         sowenn len(self.__namespaces) > 1:
-            raise ValueError("name is bound to multiple namespaces")
+            wirf ValueError("name is bound to multiple namespaces")
         sonst:
             gib self.__namespaces[0]
 

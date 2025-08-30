@@ -42,14 +42,14 @@ klasse TransactionTests(unittest.TestCase):
         self.cur2 = self.con2.cursor()
 
     def tearDown(self):
-        try:
+        versuch:
             self.cur1.close()
             self.con1.close()
 
             self.cur2.close()
             self.con2.close()
 
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_dml_does_not_auto_commit_before(self):
@@ -359,11 +359,11 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     @contextmanager
     def check_stmt_trace(self, cx, expected, reset=Wahr):
-        try:
+        versuch:
             traced = []
             cx.set_trace_callback(lambda stmt: traced.append(stmt))
             liefere
-        finally:
+        schliesslich:
             self.assertEqual(traced, expected)
             wenn reset:
                 cx.set_trace_callback(Nichts)

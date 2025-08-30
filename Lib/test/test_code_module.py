@@ -89,7 +89,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             wenn 'antioch' in ''.join(call[1]):
                 breche
         sonst:
-            raise AssertionError("no console stdout")
+            wirf AssertionError("no console stdout")
 
     def test_syntax_error(self):
         self.infunc.side_effect = ["def f():",
@@ -142,7 +142,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
 
     def test_sysexcepthook(self):
         self.infunc.side_effect = ["def f():",
-                                   "    raise ValueError('BOOM!')",
+                                   "    wirf ValueError('BOOM!')",
                                    "",
                                    "f()",
                                     EOFError('Finished')]
@@ -220,7 +220,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.infunc.side_effect = ["1/0", "a = 123", "drucke(a)", EOFError('Finished')]
         s = "not so fast"
         def raise_base(*args, **kwargs):
-            raise BaseException(s)
+            wirf BaseException(s)
         self.sysmod.excepthook = raise_base
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
@@ -233,7 +233,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
     def test_sysexcepthook_raising_SystemExit_gets_through(self):
         self.infunc.side_effect = ["1/0"]
         def raise_base(*args, **kwargs):
-            raise SystemExit
+            wirf SystemExit
         self.sysmod.excepthook = raise_base
         mit self.assertRaises(SystemExit):
             self.console.interact()

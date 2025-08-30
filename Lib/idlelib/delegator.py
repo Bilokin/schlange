@@ -7,7 +7,7 @@ klasse Delegator:
         # when changing the delegate.
 
     def __getattr__(self, name):
-        attr = getattr(self.delegate, name) # May raise AttributeError
+        attr = getattr(self.delegate, name) # May wirf AttributeError
         setattr(self, name, attr)
         self.__cache.add(name)
         gib attr
@@ -17,9 +17,9 @@ klasse Delegator:
         # Function is really about resetting delegator dict
         # to original state.  Cache is just a means
         fuer key in self.__cache:
-            try:
+            versuch:
                 delattr(self, key)
-            except AttributeError:
+            ausser AttributeError:
                 pass
         self.__cache.clear()
 

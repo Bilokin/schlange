@@ -43,9 +43,9 @@ def _common_shorten_repr(*args):
                  fuer s in args)
 
 def safe_repr(obj, short=Falsch):
-    try:
+    versuch:
         result = repr(obj)
-    except Exception:
+    ausser Exception:
         result = object.__repr__(obj)
     wenn nicht short oder len(result) < _MAX_LENGTH:
         gib result
@@ -66,7 +66,7 @@ def sorted_list_difference(expected, actual):
     missing = []
     unexpected = []
     waehrend Wahr:
-        try:
+        versuch:
             e = expected[i]
             a = actual[j]
             wenn e < a:
@@ -81,14 +81,14 @@ def sorted_list_difference(expected, actual):
                     j += 1
             sonst:
                 i += 1
-                try:
+                versuch:
                     waehrend expected[i] == e:
                         i += 1
-                finally:
+                schliesslich:
                     j += 1
                     waehrend actual[j] == a:
                         j += 1
-        except IndexError:
+        ausser IndexError:
             missing.extend(expected[i:])
             unexpected.extend(actual[j:])
             breche
@@ -104,9 +104,9 @@ def unorderable_list_difference(expected, actual):
     missing = []
     waehrend expected:
         item = expected.pop()
-        try:
+        versuch:
             actual.remove(item)
-        except ValueError:
+        ausser ValueError:
             missing.append(item)
 
     # anything left in actual is unexpected

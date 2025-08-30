@@ -122,9 +122,9 @@ klasse ListTest(list_tests.CommonTest):
         klasse Obj:
             @staticmethod
             def __repr__():
-                try:
+                versuch:
                     mylist.pop()
-                except IndexError:
+                ausser IndexError:
                     pass
                 gib 'obj'
 
@@ -354,12 +354,12 @@ klasse ListTest(list_tests.CommonTest):
                 l.append((x, y))
             fuer x in range(3):
                 lappend(l, Nichts, Nichts)
-            try:
+            versuch:
                 lappend(list, Nichts, Nichts)
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
-                raise AssertionError
+                wirf AssertionError
         """)
 
         rc, _, _ = assert_python_ok("-c", code)

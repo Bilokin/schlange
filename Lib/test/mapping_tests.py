@@ -214,7 +214,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         d = self._empty_mapping()
         klasse FailingUserDict:
             def keys(self):
-                raise Exc
+                wirf Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d.clear()
@@ -230,7 +230,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                         wenn self.i:
                             self.i = 0
                             gib 'a'
-                        raise Exc
+                        wirf Exc
                 gib BogonIter()
             def __getitem__(self, key):
                 gib key
@@ -248,10 +248,10 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                             rtn = chr(self.i)
                             self.i += 1
                             gib rtn
-                        raise StopIteration
+                        wirf StopIteration
                 gib BogonIter()
             def __getitem__(self, key):
-                raise Exc
+                wirf Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d = self._empty_mapping()
@@ -259,7 +259,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, d.update, badseq())
 
@@ -449,7 +449,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
 
         klasse baddict1(self.type2test):
             def __init__(self, *args, **kwargs):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, baddict1.fromkeys, [1])
 
@@ -457,13 +457,13 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, self.type2test.fromkeys, BadSeq())
 
         klasse baddict2(self.type2test):
             def __setitem__(self, key, value):
-                raise Exc()
+                wirf Exc()
 
         self.assertRaises(Exc, baddict2.fromkeys, [1])
 
@@ -541,7 +541,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
 
         klasse BadEq(object):
             def __eq__(self, other):
-                raise Exc()
+                wirf Exc()
             def __hash__(self):
                 gib 24
 
@@ -553,7 +553,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 
@@ -581,7 +581,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 
@@ -594,14 +594,14 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
     def test_mutatingiteration(self):
         d = self._empty_mapping()
         d[1] = 1
-        try:
+        versuch:
             count = 0
             fuer i in d:
                 d[i+1] = 1
                 wenn count >= 1:
-                    self.fail("changing dict size during iteration doesn't raise Error")
+                    self.fail("changing dict size during iteration doesn't wirf Error")
                 count += 1
-        except RuntimeError:
+        ausser RuntimeError:
             pass
 
     def test_repr(self):
@@ -617,7 +617,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
 
         klasse BadRepr(object):
             def __repr__(self):
-                raise Exc()
+                wirf Exc()
 
         d = self._full_mapping({1: BadRepr()})
         self.assertRaises(Exc, repr, d)
@@ -642,7 +642,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
 
         klasse BadCmp(object):
             def __eq__(self, other):
-                raise Exc()
+                wirf Exc()
             def __hash__(self):
                 gib 1
 
@@ -660,7 +660,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             fail = Falsch
             def __hash__(self):
                 wenn self.fail:
-                    raise Exc()
+                    wirf Exc()
                 sonst:
                     gib 42
 

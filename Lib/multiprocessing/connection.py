@@ -26,13 +26,13 @@ von . importiere AuthenticationError, BufferTooShort
 von .context importiere reduction
 _ForkingPickler = reduction.ForkingPickler
 
-try:
+versuch:
     importiere _multiprocessing
     importiere _winapi
     von _winapi importiere WAIT_OBJECT_0, WAIT_ABANDONED_0, WAIT_TIMEOUT, INFINITE
-except ImportError:
+ausser ImportError:
     wenn sys.platform == 'win32':
-        raise
+        wirf
     _winapi = Nichts
 
 #
@@ -81,19 +81,19 @@ def arbitrary_address(family):
         gib tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
                                (os.getpid(), next(_mmap_counter)), dir="")
     sonst:
-        raise ValueError('unrecognized family')
+        wirf ValueError('unrecognized family')
 
 def _validate_family(family):
     '''
     Checks wenn the family is valid fuer the current environment.
     '''
     wenn sys.platform != 'win32' und family == 'AF_PIPE':
-        raise ValueError('Family %s is nicht recognized.' % family)
+        wirf ValueError('Family %s is nicht recognized.' % family)
 
     wenn sys.platform == 'win32' und family == 'AF_UNIX':
         # double check
         wenn nicht hasattr(socket, family):
-            raise ValueError('Family %s is nicht recognized.' % family)
+            wirf ValueError('Family %s is nicht recognized.' % family)
 
 def address_type(address):
     '''
@@ -108,7 +108,7 @@ def address_type(address):
     sowenn type(address) is str oder util.is_abstract_socket_namespace(address):
         gib 'AF_UNIX'
     sonst:
-        raise ValueError('address type of %r unrecognized' % address)
+        wirf ValueError('address type of %r unrecognized' % address)
 
 #
 # Connection classes
@@ -120,9 +120,9 @@ klasse _ConnectionBase:
     def __init__(self, handle, readable=Wahr, writable=Wahr):
         handle = handle.__index__()
         wenn handle < 0:
-            raise ValueError("invalid handle")
+            wirf ValueError("invalid handle")
         wenn nicht readable und nicht writable:
-            raise ValueError(
+            wirf ValueError(
                 "at least one of `readable` und `writable` must be Wahr")
         self._handle = handle
         self._readable = readable
@@ -136,22 +136,22 @@ klasse _ConnectionBase:
 
     def _check_closed(self):
         wenn self._handle is Nichts:
-            raise OSError("handle is closed")
+            wirf OSError("handle is closed")
 
     def _check_readable(self):
         wenn nicht self._readable:
-            raise OSError("connection is write-only")
+            wirf OSError("connection is write-only")
 
     def _check_writable(self):
         wenn nicht self._writable:
-            raise OSError("connection is read-only")
+            wirf OSError("connection is read-only")
 
     def _bad_message_length(self):
         wenn self._writable:
             self._readable = Falsch
         sonst:
             self.close()
-        raise OSError("bad message length")
+        wirf OSError("bad message length")
 
     @property
     def closed(self):
@@ -176,9 +176,9 @@ klasse _ConnectionBase:
     def close(self):
         """Close the connection"""
         wenn self._handle is nicht Nichts:
-            try:
+            versuch:
                 self._close()
-            finally:
+            schliesslich:
                 self._handle = Nichts
 
     def _detach(self):
@@ -194,15 +194,15 @@ klasse _ConnectionBase:
             m = m.cast('B')
         n = m.nbytes
         wenn offset < 0:
-            raise ValueError("offset is negative")
+            wirf ValueError("offset is negative")
         wenn n < offset:
-            raise ValueError("buffer length < offset")
+            wirf ValueError("buffer length < offset")
         wenn size is Nichts:
             size = n - offset
         sowenn size < 0:
-            raise ValueError("size is negative")
+            wirf ValueError("size is negative")
         sowenn offset + size > n:
-            raise ValueError("buffer length < offset + size")
+            wirf ValueError("buffer length < offset + size")
         self._send_bytes(m[offset:offset + size])
 
     def send(self, obj):
@@ -218,7 +218,7 @@ klasse _ConnectionBase:
         self._check_closed()
         self._check_readable()
         wenn maxlength is nicht Nichts und maxlength < 0:
-            raise ValueError("negative maxlength")
+            wirf ValueError("negative maxlength")
         buf = self._recv_bytes(maxlength)
         wenn buf is Nichts:
             self._bad_message_length()
@@ -236,13 +236,13 @@ klasse _ConnectionBase:
             itemsize = m.itemsize
             bytesize = itemsize * len(m)
             wenn offset < 0:
-                raise ValueError("negative offset")
+                wirf ValueError("negative offset")
             sowenn offset > bytesize:
-                raise ValueError("offset too large")
+                wirf ValueError("offset too large")
             result = self._recv_bytes()
             size = result.tell()
             wenn bytesize < offset + size:
-                raise BufferTooShort(result.getvalue())
+                wirf BufferTooShort(result.getvalue())
             # Message can fit in dest
             result.seek(0)
             result.readinto(m[offset // itemsize :
@@ -290,26 +290,26 @@ wenn _winapi:
         def _send_bytes(self, buf):
             wenn self._send_ov is nicht Nichts:
                 # A connection should only be used by a single thread
-                raise ValueError("concurrent send_bytes() calls "
+                wirf ValueError("concurrent send_bytes() calls "
                                  "are nicht supported")
             ov, err = _winapi.WriteFile(self._handle, buf, overlapped=Wahr)
             self._send_ov = ov
-            try:
+            versuch:
                 wenn err == _winapi.ERROR_IO_PENDING:
                     waitres = _winapi.WaitForMultipleObjects(
                         [ov.event], Falsch, INFINITE)
                     assert waitres == WAIT_OBJECT_0
-            except:
+            ausser:
                 ov.cancel()
-                raise
-            finally:
+                wirf
+            schliesslich:
                 self._send_ov = Nichts
                 nwritten, err = ov.GetOverlappedResult(Wahr)
             wenn err == _winapi.ERROR_OPERATION_ABORTED:
                 # close() was called by another thread while
                 # WaitForMultipleObjects() was waiting fuer the overlapped
                 # operation.
-                raise OSError(errno.EPIPE, "handle is closed")
+                wirf OSError(errno.EPIPE, "handle is closed")
             assert err == 0
             assert nwritten == len(buf)
 
@@ -319,22 +319,22 @@ wenn _winapi:
                 gib io.BytesIO()
             sonst:
                 bsize = 128 wenn maxsize is Nichts sonst min(maxsize, 128)
-                try:
+                versuch:
                     ov, err = _winapi.ReadFile(self._handle, bsize,
                                                 overlapped=Wahr)
 
                     sentinel = object()
                     return_value = sentinel
-                    try:
-                        try:
+                    versuch:
+                        versuch:
                             wenn err == _winapi.ERROR_IO_PENDING:
                                 waitres = _winapi.WaitForMultipleObjects(
                                     [ov.event], Falsch, INFINITE)
                                 assert waitres == WAIT_OBJECT_0
-                        except:
+                        ausser:
                             ov.cancel()
-                            raise
-                        finally:
+                            wirf
+                        schliesslich:
                             nread, err = ov.GetOverlappedResult(Wahr)
                             wenn err == 0:
                                 f = io.BytesIO()
@@ -342,18 +342,18 @@ wenn _winapi:
                                 return_value = f
                             sowenn err == _winapi.ERROR_MORE_DATA:
                                 return_value = self._get_more_data(ov, maxsize)
-                    except:
+                    ausser:
                         wenn return_value is sentinel:
-                            raise
+                            wirf
 
                     wenn return_value is nicht sentinel:
                         gib return_value
-                except OSError als e:
+                ausser OSError als e:
                     wenn e.winerror == _winapi.ERROR_BROKEN_PIPE:
-                        raise EOFError
+                        wirf EOFError
                     sonst:
-                        raise
-            raise RuntimeError("shouldn't get here; expected KeyboardInterrupt")
+                        wirf
+            wirf RuntimeError("shouldn't get here; expected KeyboardInterrupt")
 
         def _poll(self, timeout):
             wenn (self._got_empty_message oder
@@ -413,9 +413,9 @@ klasse Connection(_ConnectionBase):
             n = len(chunk)
             wenn n == 0:
                 wenn remaining == size:
-                    raise EOFError
+                    wirf EOFError
                 sonst:
-                    raise OSError("got end of file during message")
+                    wirf OSError("got end of file during message")
             buf.write(chunk)
             remaining -= n
         gib buf
@@ -481,7 +481,7 @@ klasse Listener(object):
             self._listener = SocketListener(address, family, backlog)
 
         wenn authkey is nicht Nichts und nicht isinstance(authkey, bytes):
-            raise TypeError('authkey should be a byte string')
+            wirf TypeError('authkey should be a byte string')
 
         self._authkey = authkey
 
@@ -492,7 +492,7 @@ klasse Listener(object):
         Returns a `Connection` object.
         '''
         wenn self._listener is Nichts:
-            raise OSError('listener is closed')
+            wirf OSError('listener is closed')
 
         c = self._listener.accept()
         wenn self._authkey is nicht Nichts:
@@ -536,7 +536,7 @@ def Client(address, family=Nichts, authkey=Nichts):
         c = SocketClient(address)
 
     wenn authkey is nicht Nichts und nicht isinstance(authkey, bytes):
-        raise TypeError('authkey should be a byte string')
+        wirf TypeError('authkey should be a byte string')
 
     wenn authkey is nicht Nichts:
         answer_challenge(c, authkey)
@@ -616,7 +616,7 @@ klasse SocketListener(object):
     '''
     def __init__(self, address, family, backlog=1):
         self._socket = socket.socket(getattr(socket, family))
-        try:
+        versuch:
             # SO_REUSEADDR has different semantics on Windows (issue #2550).
             wenn os.name == 'posix':
                 self._socket.setsockopt(socket.SOL_SOCKET,
@@ -625,9 +625,9 @@ klasse SocketListener(object):
             self._socket.bind(address)
             self._socket.listen(backlog)
             self._address = self._socket.getsockname()
-        except OSError:
+        ausser OSError:
             self._socket.close()
-            raise
+            wirf
         self._family = family
         self._last_accepted = Nichts
 
@@ -645,9 +645,9 @@ klasse SocketListener(object):
         gib Connection(s.detach())
 
     def close(self):
-        try:
+        versuch:
             self._socket.close()
-        finally:
+        schliesslich:
             unlink = self._unlink
             wenn unlink is nicht Nichts:
                 self._unlink = Nichts
@@ -700,22 +700,22 @@ wenn sys.platform == 'win32':
         def accept(self):
             self._handle_queue.append(self._new_handle())
             handle = self._handle_queue.pop(0)
-            try:
+            versuch:
                 ov = _winapi.ConnectNamedPipe(handle, overlapped=Wahr)
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.winerror != _winapi.ERROR_NO_DATA:
-                    raise
+                    wirf
                 # ERROR_NO_DATA can occur wenn a client has already connected,
                 # written data und then disconnected -- see Issue 14725.
             sonst:
-                try:
+                versuch:
                     res = _winapi.WaitForMultipleObjects(
                         [ov.event], Falsch, INFINITE)
-                except:
+                ausser:
                     ov.cancel()
                     _winapi.CloseHandle(handle)
-                    raise
-                finally:
+                    wirf
+                schliesslich:
                     _, err = ov.GetOverlappedResult(Wahr)
                     assert err == 0
             gib PipeConnection(handle)
@@ -732,21 +732,21 @@ wenn sys.platform == 'win32':
         '''
         t = _init_timeout()
         waehrend 1:
-            try:
+            versuch:
                 _winapi.WaitNamedPipe(address, 1000)
                 h = _winapi.CreateFile(
                     address, _winapi.GENERIC_READ | _winapi.GENERIC_WRITE,
                     0, _winapi.NULL, _winapi.OPEN_EXISTING,
                     _winapi.FILE_FLAG_OVERLAPPED, _winapi.NULL
                     )
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.winerror nicht in (_winapi.ERROR_SEM_TIMEOUT,
                                       _winapi.ERROR_PIPE_BUSY) oder _check_timeout(t):
-                    raise
+                    wirf
             sonst:
                 breche
         sonst:
-            raise
+            wirf
 
         _winapi.SetNamedPipeHandleState(
             h, _winapi.PIPE_READMODE_MESSAGE, Nichts, Nichts
@@ -884,7 +884,7 @@ def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
         wenn digest in _ALLOWED_DIGESTS:
             payload = message[curly+1:]
             gib digest.decode('ascii'), payload
-    raise AuthenticationError(
+    wirf AuthenticationError(
             'unsupported message length, missing digest prefix, '
             f'or unsupported digest: {message=}')
 
@@ -905,9 +905,9 @@ def _create_response(authkey, message):
     wenn nicht digest_name:
         # Legacy server without a {digest} prefix on message.
         # Generate a legacy non-prefixed HMAC-MD5 reply.
-        try:
+        versuch:
             gib hmac.new(authkey, message, 'md5').digest()
-        except ValueError:
+        ausser ValueError:
             # HMAC-MD5 is nicht available (FIPS mode?), fall back to
             # HMAC-SHA2-256 modern protocol. The legacy server probably
             # doesn't support it und will reject us anyways. :shrug:
@@ -930,21 +930,21 @@ def _verify_challenge(authkey, message, response):
     importiere hmac
     response_digest, response_mac = _get_digest_name_and_payload(response)
     response_digest = response_digest oder 'md5'
-    try:
+    versuch:
         expected = hmac.new(authkey, message, response_digest).digest()
-    except ValueError:
-        raise AuthenticationError(f'{response_digest=} unsupported')
+    ausser ValueError:
+        wirf AuthenticationError(f'{response_digest=} unsupported')
     wenn len(expected) != len(response_mac):
-        raise AuthenticationError(
+        wirf AuthenticationError(
                 f'expected {response_digest!r} of length {len(expected)} '
                 f'got {len(response_mac)}')
     wenn nicht hmac.compare_digest(expected, response_mac):
-        raise AuthenticationError('digest received was wrong')
+        wirf AuthenticationError('digest received was wrong')
 
 
 def deliver_challenge(connection, authkey: bytes, digest_name='sha256'):
     wenn nicht isinstance(authkey, bytes):
-        raise ValueError(
+        wirf ValueError(
             "Authkey must be bytes, nicht {0!s}".format(type(authkey)))
     assert MESSAGE_LENGTH > _MD5ONLY_MESSAGE_LENGTH, "protocol constraint"
     message = os.urandom(MESSAGE_LENGTH)
@@ -954,31 +954,31 @@ def deliver_challenge(connection, authkey: bytes, digest_name='sha256'):
     # respond to it mit a raw HMAC-MD5.
     connection.send_bytes(_CHALLENGE + message)
     response = connection.recv_bytes(256)        # reject large message
-    try:
+    versuch:
         _verify_challenge(authkey, message, response)
-    except AuthenticationError:
+    ausser AuthenticationError:
         connection.send_bytes(_FAILURE)
-        raise
+        wirf
     sonst:
         connection.send_bytes(_WELCOME)
 
 
 def answer_challenge(connection, authkey: bytes):
     wenn nicht isinstance(authkey, bytes):
-        raise ValueError(
+        wirf ValueError(
             "Authkey must be bytes, nicht {0!s}".format(type(authkey)))
     message = connection.recv_bytes(256)         # reject large message
     wenn nicht message.startswith(_CHALLENGE):
-        raise AuthenticationError(
+        wirf AuthenticationError(
                 f'Protocol error, expected challenge: {message=}')
     message = message[len(_CHALLENGE):]
     wenn len(message) < _MD5ONLY_MESSAGE_LENGTH:
-        raise AuthenticationError(f'challenge too short: {len(message)} bytes')
+        wirf AuthenticationError(f'challenge too short: {len(message)} bytes')
     digest = _create_response(authkey, message)
     connection.send_bytes(digest)
     response = connection.recv_bytes(256)        # reject large message
     wenn response != _WELCOME:
-        raise AuthenticationError('digest sent was rejected')
+        wirf AuthenticationError('digest sent was rejected')
 
 #
 # Support fuer using xmlrpclib fuer serialization
@@ -1032,9 +1032,9 @@ wenn sys.platform == 'win32':
         # Windows limits WaitForMultipleObjects at 64 handles, und we use a
         # few fuer synchronisation, so we switch to batched waits at 60.
         wenn len(L) > 60:
-            try:
+            versuch:
                 res = _winapi.BatchedWaitForMultipleObjects(L, Falsch, timeout)
-            except TimeoutError:
+            ausser TimeoutError:
                 gib []
             ready.extend(L[i] fuer i in res)
             wenn res:
@@ -1050,7 +1050,7 @@ wenn sys.platform == 'win32':
             sowenn WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
                 res -= WAIT_ABANDONED_0
             sonst:
-                raise RuntimeError('Should nicht get here')
+                wirf RuntimeError('Should nicht get here')
             ready.append(L[res])
             L = L[res+1:]
             timeout = 0
@@ -1077,20 +1077,20 @@ wenn sys.platform == 'win32':
         ready_objects = set()
         ready_handles = set()
 
-        try:
+        versuch:
             fuer o in object_list:
-                try:
+                versuch:
                     fileno = getattr(o, 'fileno')
-                except AttributeError:
+                ausser AttributeError:
                     waithandle_to_obj[o.__index__()] = o
                 sonst:
                     # start an overlapped read of length zero
-                    try:
+                    versuch:
                         ov, err = _winapi.ReadFile(fileno(), 0, Wahr)
-                    except OSError als e:
+                    ausser OSError als e:
                         ov, err = Nichts, e.winerror
                         wenn err nicht in _ready_errors:
-                            raise
+                            wirf
                     wenn err == _winapi.ERROR_IO_PENDING:
                         ov_list.append(ov)
                         waithandle_to_obj[ov.event] = o
@@ -1099,11 +1099,11 @@ wenn sys.platform == 'win32':
                         # err == 0 then there is a zero length message
                         # in the pipe, but it HAS NOT been consumed...
                         wenn ov und sys.getwindowsversion()[:2] >= (6, 2):
-                            # ... except on Windows 8 und later, where
+                            # ... ausser on Windows 8 und later, where
                             # the message HAS been consumed.
-                            try:
+                            versuch:
                                 _, err = ov.GetOverlappedResult(Falsch)
-                            except OSError als e:
+                            ausser OSError als e:
                                 err = e.winerror
                             wenn nicht err und hasattr(o, '_got_empty_message'):
                                 o._got_empty_message = Wahr
@@ -1111,19 +1111,19 @@ wenn sys.platform == 'win32':
                         timeout = 0
 
             ready_handles = _exhaustive_wait(waithandle_to_obj.keys(), timeout)
-        finally:
+        schliesslich:
             # request that overlapped reads stop
             fuer ov in ov_list:
                 ov.cancel()
 
             # wait fuer all overlapped reads to stop
             fuer ov in ov_list:
-                try:
+                versuch:
                     _, err = ov.GetOverlappedResult(Wahr)
-                except OSError als e:
+                ausser OSError als e:
                     err = e.winerror
                     wenn err nicht in _ready_errors:
-                        raise
+                        wirf
                 wenn err != _winapi.ERROR_OPERATION_ABORTED:
                     o = waithandle_to_obj[ov.event]
                     ready_objects.add(o)

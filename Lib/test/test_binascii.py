@@ -54,10 +54,10 @@ klasse BinASCIITest(unittest.TestCase):
         fuer fa, fb in zip(a2b_functions, b2a_functions):
             a2b = getattr(binascii, fa)
             b2a = getattr(binascii, fb)
-            try:
+            versuch:
                 a = b2a(self.type2test(raw))
                 res = a2b(self.type2test(a))
-            except Exception als err:
+            ausser Exception als err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))
@@ -114,7 +114,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(res, self.rawdata)
 
         # Test base64 mit just invalid characters, which should gib
-        # empty strings. TBD: shouldn't it raise an exception instead ?
+        # empty strings. TBD: shouldn't it wirf an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
     def test_base64_strict_mode(self):
@@ -316,12 +316,12 @@ klasse BinASCIITest(unittest.TestCase):
         a2b_qp(data=b"", header=Falsch)  # Keyword arguments allowed
 
         # A test fuer SF bug 534347 (segfaults without the proper fix)
-        try:
+        versuch:
             a2b_qp(b"", **{1:1})
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
-            self.fail("binascii.a2b_qp(**{1:1}) didn't raise TypeError")
+            self.fail("binascii.a2b_qp(**{1:1}) didn't wirf TypeError")
 
         self.assertEqual(a2b_qp(type2test(b"=")), b"")
         self.assertEqual(a2b_qp(type2test(b"= ")), b"= ")
@@ -434,17 +434,17 @@ klasse BinASCIITest(unittest.TestCase):
                 binascii.crc_hqx(empty, 0)
                 weiter
             f = getattr(binascii, func)
-            try:
+            versuch:
                 f(empty)
-            except Exception als err:
+            ausser Exception als err:
                 self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
     def test_unicode_b2a(self):
         # Unicode strings are nicht accepted by b2a_* functions.
         fuer func in set(all_functions) - set(a2b_functions):
-            try:
+            versuch:
                 self.assertRaises(TypeError, getattr(binascii, func), "test")
-            except Exception als err:
+            ausser Exception als err:
                 self.fail('{}("test") raises {!r}'.format(func, err))
         # crc_hqx needs 2 arguments
         self.assertRaises(TypeError, binascii.crc_hqx, "test", 0)
@@ -456,12 +456,12 @@ klasse BinASCIITest(unittest.TestCase):
         fuer fa, fb in zip(a2b_functions, b2a_functions):
             a2b = getattr(binascii, fa)
             b2a = getattr(binascii, fb)
-            try:
+            versuch:
                 a = b2a(self.type2test(raw))
                 binary_res = a2b(a)
                 a = a.decode('ascii')
                 res = a2b(a)
-            except Exception als err:
+            ausser Exception als err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))

@@ -1162,9 +1162,9 @@ klasse TestAsyncioToolsTree(unittest.TestCase):
     def test_asyncio_utils_cycles(self):
         fuer input_, cycles in TEST_INPUTS_CYCLES_TREE:
             mit self.subTest(input_):
-                try:
+                versuch:
                     tools.build_async_tree(input_)
-                except tools.CycleFoundException als e:
+                ausser tools.CycleFoundException als e:
                     self.assertEqual(e.cycles, cycles)
 
 
@@ -1544,7 +1544,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
 klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
 
     def test_task_awaits_self(self):
-        """A task directly awaits itself - should raise a cycle."""
+        """A task directly awaits itself - should wirf a cycle."""
         input_ = [
             AwaitedInfo(
                 thread_id=1,

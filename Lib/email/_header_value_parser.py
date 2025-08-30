@@ -787,17 +787,17 @@ klasse MimeParameters(TokenList):
                 i += 1
                 value = param.param_value
                 wenn param.extended:
-                    try:
+                    versuch:
                         value = urllib.parse.unquote_to_bytes(value)
-                    except UnicodeEncodeError:
+                    ausser UnicodeEncodeError:
                         # source had surrogate escaped bytes.  What we do now
                         # is a bit of an open question.  I'm nicht sure this is
                         # the best choice, but it is what the old algorithm did
                         value = urllib.parse.unquote(value, encoding='latin-1')
                     sonst:
-                        try:
+                        versuch:
                             value = value.decode(charset, 'surrogateescape')
-                        except (LookupError, UnicodeEncodeError):
+                        ausser (LookupError, UnicodeEncodeError):
                             # XXX: there should really be a custom defect for
                             # unknown character set to make it easy to find,
                             # because otherwise unknown charset is a silent
@@ -1061,11 +1061,11 @@ def get_encoded_word(value, terminal_type='vtext'):
     """
     ew = EncodedWord()
     wenn nicht value.startswith('=?'):
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     tok, *remainder = value[2:].split('?=', 1)
     wenn tok == value[2:]:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     remstr = ''.join(remainder)
     wenn (len(remstr) > 1 und
@@ -1080,10 +1080,10 @@ def get_encoded_word(value, terminal_type='vtext'):
             "whitespace inside encoded word"))
     ew.cte = value
     value = ''.join(remainder)
-    try:
+    versuch:
         text, charset, lang, defects = _ew.decode('=?' + tok + '?=')
-    except (ValueError, KeyError):
-        raise _InvalidEwError(
+    ausser (ValueError, KeyError):
+        wirf _InvalidEwError(
             "encoded word format invalid: '{}'".format(ew.cte))
     ew.charset = charset
     ew.lang = lang
@@ -1109,7 +1109,7 @@ def get_unstructured(value):
        obs-unstruct = *((*LF *CR *(obs-utext) *LF *CR)) / FWS)
        obs-utext = %d0 / obs-NO-WS-CTL / LF / CR
 
-       obs-NO-WS-CTL is control characters except WSP/CR/LF.
+       obs-NO-WS-CTL is control characters ausser WSP/CR/LF.
 
     So, basically, we have printable runs, plus control characters oder nulls in
     the obsolete syntax, separated by whitespace.  Since RFC 2047 uses the
@@ -1135,11 +1135,11 @@ def get_unstructured(value):
             weiter
         valid_ew = Wahr
         wenn value.startswith('=?'):
-            try:
+            versuch:
                 token, value = get_encoded_word(value, 'utext')
-            except _InvalidEwError:
+            ausser _InvalidEwError:
                 valid_ew = Falsch
-            except errors.HeaderParseError:
+            ausser errors.HeaderParseError:
                 # XXX: Need to figure out how to register defects when
                 # appropriate here.
                 pass
@@ -1172,10 +1172,10 @@ def get_unstructured(value):
     gib unstructured
 
 def get_qp_ctext(value):
-    r"""ctext = <printable ascii except \ ( )>
+    r"""ctext = <printable ascii ausser \ ( )>
 
     This is nicht the RFC ctext, since we are handling nested comments in comment
-    und unquoting quoted-pairs here.  We allow anything except the '()'
+    und unquoting quoted-pairs here.  We allow anything ausser the '()'
     characters, but wenn we find any ASCII other than the RFC defined printable
     ASCII, a NonPrintableDefect is added to the token's defects list.  Since
     quoted pairs are converted to their unquoted values, what is returned is
@@ -1191,7 +1191,7 @@ def get_qp_ctext(value):
 def get_qcontent(value):
     """qcontent = qtext / quoted-pair
 
-    We allow anything except the DQUOTE character, but wenn we find any ASCII
+    We allow anything ausser the DQUOTE character, but wenn we find any ASCII
     other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Any quoted pairs are converted to their
     unquoted values, so what is returned is a 'ptext' token.  In this case it
@@ -1211,7 +1211,7 @@ def get_atext(value):
     """
     m = _non_atom_end_matcher(value)
     wenn nicht m:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected atext but found '{}'".format(value))
     atext = m.group()
     value = value[len(atext):]
@@ -1227,7 +1227,7 @@ def get_bare_quoted_string(value):
     preserved und quoted pairs decoded.
     """
     wenn nicht value oder value[0] != '"':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected '\"' but found '{}'".format(value))
     bare_quoted_string = BareQuotedString()
     value = value[1:]
@@ -1239,12 +1239,12 @@ def get_bare_quoted_string(value):
             token, value = get_fws(value)
         sowenn value[:2] == '=?':
             valid_ew = Falsch
-            try:
+            versuch:
                 token, value = get_encoded_word(value)
                 bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
                     "encoded word inside quoted string"))
                 valid_ew = Wahr
-            except errors.HeaderParseError:
+            ausser errors.HeaderParseError:
                 token, value = get_qcontent(value)
             # Collapse the whitespace between two encoded words that occur in a
             # bare-quoted-string.
@@ -1269,7 +1269,7 @@ def get_comment(value):
     We handle nested comments here, und quoted-pair in our qp-ctext routine.
     """
     wenn value und value[0] != '(':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected '(' but found '{}'".format(value))
     comment = Comment()
     value = value[1:]
@@ -1328,12 +1328,12 @@ def get_atom(value):
         token, value = get_cfws(value)
         atom.append(token)
     wenn value und value[0] in ATOM_ENDS:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected atom but found '{}'".format(value))
     wenn value.startswith('=?'):
-        try:
+        versuch:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_atext(value)
@@ -1351,7 +1351,7 @@ def get_dot_atom_text(value):
     """
     dot_atom_text = DotAtomText()
     wenn nicht value oder value[0] in ATOM_ENDS:
-        raise errors.HeaderParseError("expected atom at a start of "
+        wirf errors.HeaderParseError("expected atom at a start of "
             "dot-atom-text but found '{}'".format(value))
     waehrend value und value[0] nicht in ATOM_ENDS:
         token, value = get_atext(value)
@@ -1360,7 +1360,7 @@ def get_dot_atom_text(value):
             dot_atom_text.append(DOT)
             value = value[1:]
     wenn dot_atom_text[-1] is DOT:
-        raise errors.HeaderParseError("expected atom at end of dot-atom-text "
+        wirf errors.HeaderParseError("expected atom at end of dot-atom-text "
             "but found '{}'".format('.'+value))
     gib dot_atom_text, value
 
@@ -1375,9 +1375,9 @@ def get_dot_atom(value):
         token, value = get_cfws(value)
         dot_atom.append(token)
     wenn value.startswith('=?'):
-        try:
+        versuch:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_dot_atom_text(value)
@@ -1410,12 +1410,12 @@ def get_word(value):
     sonst:
         leader = Nichts
     wenn nicht value:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "Expected 'atom' oder 'quoted-string' but found nothing.")
     wenn value[0]=='"':
         token, value = get_quoted_string(value)
     sowenn value[0] in SPECIALS:
-        raise errors.HeaderParseError("Expected 'atom' oder 'quoted-string' "
+        wirf errors.HeaderParseError("Expected 'atom' oder 'quoted-string' "
                                       "but found '{}'".format(value))
     sonst:
         token, value = get_atom(value)
@@ -1436,10 +1436,10 @@ def get_phrase(value):
 
     """
     phrase = Phrase()
-    try:
+    versuch:
         token, value = get_word(value)
         phrase.append(token)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         phrase.defects.append(errors.InvalidHeaderDefect(
             "phrase does nicht start mit word"))
     waehrend value und value[0] nicht in PHRASE_ENDS:
@@ -1449,15 +1449,15 @@ def get_phrase(value):
                 "period in 'phrase'"))
             value = value[1:]
         sonst:
-            try:
+            versuch:
                 token, value = get_word(value)
-            except errors.HeaderParseError:
+            ausser errors.HeaderParseError:
                 wenn value[0] in CFWS_LEADER:
                     token, value = get_cfws(value)
                     phrase.defects.append(errors.ObsoleteHeaderDefect(
                         "comment found without atom"))
                 sonst:
-                    raise
+                    wirf
             phrase.append(token)
     gib phrase, value
 
@@ -1470,16 +1470,16 @@ def get_local_part(value):
     wenn value und value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn nicht value:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected local-part but found '{}'".format(value))
-    try:
+    versuch:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             token, value = get_word(value)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             wenn value[0] != '\\' und value[0] in PHRASE_ENDS:
-                raise
+                wirf
             token = TokenList()
     wenn leader is nicht Nichts:
         token[:0] = [leader]
@@ -1493,9 +1493,9 @@ def get_local_part(value):
             local_part.defects.append(errors.ObsoleteHeaderDefect(
                 "local-part is nicht a dot-atom (contains CFWS)"))
         local_part[0] = obs_local_part
-    try:
+    versuch:
         local_part.value.encode('ascii')
-    except UnicodeEncodeError:
+    ausser UnicodeEncodeError:
         local_part.defects.append(errors.NonASCIILocalPartDefect(
                 "local-part contains non-ASCII characters)"))
     gib local_part, value
@@ -1525,16 +1525,16 @@ def get_obs_local_part(value):
         wenn obs_local_part und obs_local_part[-1].token_type != 'dot':
             obs_local_part.defects.append(errors.InvalidHeaderDefect(
                 "missing '.' between words"))
-        try:
+        versuch:
             token, value = get_word(value)
             last_non_ws_was_dot = Falsch
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             wenn value[0] nicht in CFWS_LEADER:
-                raise
+                wirf
             token, value = get_cfws(value)
         obs_local_part.append(token)
     wenn nicht obs_local_part:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected obs-local-part but found '{}'".format(value))
     wenn (obs_local_part[0].token_type == 'dot' oder
             obs_local_part[0].token_type=='cfws' und
@@ -1553,10 +1553,10 @@ def get_obs_local_part(value):
     gib obs_local_part, value
 
 def get_dtext(value):
-    r""" dtext = <printable ascii except \ [ ]> / obs-dtext
+    r""" dtext = <printable ascii ausser \ [ ]> / obs-dtext
         obs-dtext = obs-NO-WS-CTL / quoted-pair
 
-    We allow anything except the excluded characters, but wenn we find any
+    We allow anything ausser the excluded characters, but wenn we find any
     ASCII other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Quoted pairs are converted to their
     unquoted values, so what is returned is a ptext token, in this case a
@@ -1589,9 +1589,9 @@ def get_domain_literal(value):
         token, value = get_cfws(value)
         domain_literal.append(token)
     wenn nicht value:
-        raise errors.HeaderParseError("expected domain-literal")
+        wirf errors.HeaderParseError("expected domain-literal")
     wenn value[0] != '[':
-        raise errors.HeaderParseError("expected '[' at start of domain-literal "
+        wirf errors.HeaderParseError("expected '[' at start of domain-literal "
                 "but found '{}'".format(value))
     value = value[1:]
     domain_literal.append(ValueTerminal('[', 'domain-literal-start'))
@@ -1610,7 +1610,7 @@ def get_domain_literal(value):
     wenn _check_for_early_dl_end(value, domain_literal):
         gib domain_literal, value
     wenn value[0] != ']':
-        raise errors.HeaderParseError("expected ']' at end of domain-literal "
+        wirf errors.HeaderParseError("expected ']' at end of domain-literal "
                 "but found '{}'".format(value))
     domain_literal.append(ValueTerminal(']', 'domain-literal-end'))
     value = value[1:]
@@ -1629,7 +1629,7 @@ def get_domain(value):
     wenn value und value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn nicht value:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected domain but found '{}'".format(value))
     wenn value[0] == '[':
         token, value = get_domain_literal(value)
@@ -1637,12 +1637,12 @@ def get_domain(value):
             token[:0] = [leader]
         domain.append(token)
         gib domain, value
-    try:
+    versuch:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         token, value = get_atom(value)
     wenn value und value[0] == '@':
-        raise errors.HeaderParseError('Invalid Domain')
+        wirf errors.HeaderParseError('Invalid Domain')
     wenn leader is nicht Nichts:
         token[:0] = [leader]
     domain.append(token)
@@ -1689,7 +1689,7 @@ def get_obs_route(value):
             obs_route.append(ListSeparator)
             value = value[1:]
     wenn nicht value oder value[0] != '@':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected obs-route domain but found '{}'".format(value))
     obs_route.append(RouteComponentMarker)
     token, value = get_domain(value[1:])
@@ -1709,9 +1709,9 @@ def get_obs_route(value):
             token, value = get_domain(value[1:])
             obs_route.append(token)
     wenn nicht value:
-        raise errors.HeaderParseError("end of header waehrend parsing obs-route")
+        wirf errors.HeaderParseError("end of header waehrend parsing obs-route")
     wenn value[0] != ':':
-        raise errors.HeaderParseError( "expected ':' marking end of "
+        wirf errors.HeaderParseError( "expected ':' marking end of "
             "obs-route but found '{}'".format(value))
     obs_route.append(ValueTerminal(':', 'end-of-obs-route-marker'))
     gib obs_route, value[1:]
@@ -1726,7 +1726,7 @@ def get_angle_addr(value):
         token, value = get_cfws(value)
         angle_addr.append(token)
     wenn nicht value oder value[0] != '<':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected angle-addr but found '{}'".format(value))
     angle_addr.append(ValueTerminal('<', 'angle-addr-start'))
     value = value[1:]
@@ -1738,15 +1738,15 @@ def get_angle_addr(value):
             "null addr-spec in angle-addr"))
         value = value[1:]
         gib angle_addr, value
-    try:
+    versuch:
         token, value = get_addr_spec(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             token, value = get_obs_route(value)
             angle_addr.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete route specification in angle-addr"))
-        except errors.HeaderParseError:
-            raise errors.HeaderParseError(
+        ausser errors.HeaderParseError:
+            wirf errors.HeaderParseError(
                 "expected addr-spec oder obs-route but found '{}'".format(value))
         angle_addr.append(token)
         token, value = get_addr_spec(value)
@@ -1785,20 +1785,20 @@ def get_name_addr(value):
     # Both the optional display name und the angle-addr can start mit cfws.
     leader = Nichts
     wenn nicht value:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected name-addr but found '{}'".format(value))
     wenn value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
         wenn nicht value:
-            raise errors.HeaderParseError(
+            wirf errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(leader))
     wenn value[0] != '<':
         wenn value[0] in PHRASE_ENDS:
-            raise errors.HeaderParseError(
+            wirf errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(value))
         token, value = get_display_name(value)
         wenn nicht value:
-            raise errors.HeaderParseError(
+            wirf errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(token))
         wenn leader is nicht Nichts:
             wenn isinstance(token[0], TokenList):
@@ -1820,13 +1820,13 @@ def get_mailbox(value):
     # The only way to figure out wenn we are dealing mit a name-addr oder an
     # addr-spec is to try parsing each one.
     mailbox = Mailbox()
-    try:
+    versuch:
         token, value = get_name_addr(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             token, value = get_addr_spec(value)
-        except errors.HeaderParseError:
-            raise errors.HeaderParseError(
+        ausser errors.HeaderParseError:
+            wirf errors.HeaderParseError(
                 "expected mailbox but found '{}'".format(value))
     wenn any(isinstance(x, errors.InvalidHeaderDefect)
                        fuer x in token.all_defects):
@@ -1866,10 +1866,10 @@ def get_mailbox_list(value):
     """
     mailbox_list = MailboxList()
     waehrend value und value[0] != ';':
-        try:
+        versuch:
             token, value = get_mailbox(value)
             mailbox_list.append(token)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -1953,7 +1953,7 @@ def get_group(value):
     group = Group()
     token, value = get_display_name(value)
     wenn nicht value oder value[0] != ':':
-        raise errors.HeaderParseError("expected ':' at end of group "
+        wirf errors.HeaderParseError("expected ':' at end of group "
             "display name but found '{}'".format(value))
     group.append(token)
     group.append(ValueTerminal(':', 'group-display-name-terminator'))
@@ -1967,7 +1967,7 @@ def get_group(value):
         group.defects.append(errors.InvalidHeaderDefect(
             "end of header in group"))
     sowenn value[0] != ';':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected ';' at end of group but found {}".format(value))
     group.append(ValueTerminal(';', 'group-terminator'))
     value = value[1:]
@@ -1994,13 +1994,13 @@ def get_address(value):
     # fuer a phrase und then branching based on the next character, but that
     # would be a premature optimization.
     address = Address()
-    try:
+    versuch:
         token, value = get_group(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             token, value = get_mailbox(value)
-        except errors.HeaderParseError:
-            raise errors.HeaderParseError(
+        ausser errors.HeaderParseError:
+            wirf errors.HeaderParseError(
                 "expected address but found '{}'".format(value))
     address.append(token)
     gib address, value
@@ -2017,10 +2017,10 @@ def get_address_list(value):
     """
     address_list = AddressList()
     waehrend value:
-        try:
+        versuch:
             token, value = get_address(value)
             address_list.append(token)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -2065,10 +2065,10 @@ def get_no_fold_literal(value):
     """
     no_fold_literal = NoFoldLiteral()
     wenn nicht value:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected no-fold-literal but found '{}'".format(value))
     wenn value[0] != '[':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected '[' at the start of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal('[', 'no-fold-literal-start'))
@@ -2076,7 +2076,7 @@ def get_no_fold_literal(value):
     token, value = get_dtext(value)
     no_fold_literal.append(token)
     wenn nicht value oder value[0] != ']':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected ']' at the end of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal(']', 'no-fold-literal-end'))
@@ -2093,21 +2093,21 @@ def get_msg_id(value):
         token, value = get_cfws(value)
         msg_id.append(token)
     wenn nicht value oder value[0] != '<':
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected msg-id but found '{}'".format(value))
     msg_id.append(ValueTerminal('<', 'msg-id-start'))
     value = value[1:]
     # Parse id-left.
-    try:
+    versuch:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             # obs-id-left is same als local-part of add-spec.
             token, value = get_obs_local_part(value)
             msg_id.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete id-left in msg-id"))
-        except errors.HeaderParseError:
-            raise errors.HeaderParseError(
+        ausser errors.HeaderParseError:
+            wirf errors.HeaderParseError(
                 "expected dot-atom-text oder obs-id-left"
                 " but found '{}'".format(value))
     msg_id.append(token)
@@ -2124,18 +2124,18 @@ def get_msg_id(value):
     msg_id.append(ValueTerminal('@', 'address-at-symbol'))
     value = value[1:]
     # Parse id-right.
-    try:
+    versuch:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
-        try:
+    ausser errors.HeaderParseError:
+        versuch:
             token, value = get_no_fold_literal(value)
-        except errors.HeaderParseError:
-            try:
+        ausser errors.HeaderParseError:
+            versuch:
                 token, value = get_domain(value)
                 msg_id.defects.append(errors.ObsoleteHeaderDefect(
                     "obsolete id-right in msg-id"))
-            except errors.HeaderParseError:
-                raise errors.HeaderParseError(
+            ausser errors.HeaderParseError:
+                wirf errors.HeaderParseError(
                     "expected dot-atom-text, no-fold-literal oder obs-id-right"
                     " but found '{}'".format(value))
     msg_id.append(token)
@@ -2155,10 +2155,10 @@ def parse_message_id(value):
     """message-id      =   "Message-ID:" msg-id CRLF
     """
     message_id = MessageID()
-    try:
+    versuch:
         token, value = get_msg_id(value)
         message_id.append(token)
-    except errors.HeaderParseError als ex:
+    ausser errors.HeaderParseError als ex:
         token = get_unstructured(value)
         message_id = InvalidMessageID(token)
         message_id.defects.append(
@@ -2276,7 +2276,7 @@ def get_ttext(value):
     """
     m = _non_token_end_matcher(value)
     wenn nicht m:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected ttext but found '{}'".format(value))
     ttext = m.group()
     value = value[len(ttext):]
@@ -2287,7 +2287,7 @@ def get_ttext(value):
 def get_token(value):
     """token = [CFWS] 1*ttext [CFWS]
 
-    The RFC equivalent of ttext is any US-ASCII chars except space, ctls, oder
+    The RFC equivalent of ttext is any US-ASCII chars ausser space, ctls, oder
     tspecials.  We also exclude tabs even though the RFC doesn't.
 
     The RFC implies the CFWS but is nicht explicit about it in the BNF.
@@ -2298,7 +2298,7 @@ def get_token(value):
         token, value = get_cfws(value)
         mtoken.append(token)
     wenn value und value[0] in TOKEN_ENDS:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_ttext(value)
     mtoken.append(token)
@@ -2318,7 +2318,7 @@ def get_attrtext(value):
     """
     m = _non_attribute_end_matcher(value)
     wenn nicht m:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2340,7 +2340,7 @@ def get_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     wenn value und value[0] in ATTRIBUTE_ENDS:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_attrtext(value)
     attribute.append(token)
@@ -2359,7 +2359,7 @@ def get_extended_attrtext(value):
     """
     m = _non_extended_attribute_end_matcher(value)
     wenn nicht m:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected extended attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2370,7 +2370,7 @@ def get_extended_attrtext(value):
 def get_extended_attribute(value):
     """ [CFWS] 1*extended_attrtext [CFWS]
 
-    This is like the non-extended version except we allow % characters, so that
+    This is like the non-extended version ausser we allow % characters, so that
     we can pick up an encoded value als a single string.
 
     """
@@ -2380,7 +2380,7 @@ def get_extended_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     wenn value und value[0] in EXTENDED_ATTRIBUTE_ENDS:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_extended_attrtext(value)
     attribute.append(token)
@@ -2400,12 +2400,12 @@ def get_section(value):
     """
     section = Section()
     wenn nicht value oder value[0] != '*':
-        raise errors.HeaderParseError("Expected section but found {}".format(
+        wirf errors.HeaderParseError("Expected section but found {}".format(
                                         value))
     section.append(ValueTerminal('*', 'section-marker'))
     value = value[1:]
     wenn nicht value oder nicht value[0].isdigit():
-        raise errors.HeaderParseError("Expected section number but "
+        wirf errors.HeaderParseError("Expected section number but "
                                       "found {}".format(value))
     digits = ''
     waehrend value und value[0].isdigit():
@@ -2425,12 +2425,12 @@ def get_value(value):
     """
     v = Value()
     wenn nicht value:
-        raise errors.HeaderParseError("Expected value but found end of string")
+        wirf errors.HeaderParseError("Expected value but found end of string")
     leader = Nichts
     wenn value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn nicht value:
-        raise errors.HeaderParseError("Expected value but found "
+        wirf errors.HeaderParseError("Expected value but found "
                                       "only {}".format(leader))
     wenn value[0] == '"':
         token, value = get_quoted_string(value)
@@ -2460,20 +2460,20 @@ def get_parameter(value):
             "name ({}) but no value".format(token)))
         gib param, value
     wenn value[0] == '*':
-        try:
+        versuch:
             token, value = get_section(value)
             param.sectioned = Wahr
             param.append(token)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             pass
         wenn nicht value:
-            raise errors.HeaderParseError("Incomplete parameter")
+            wirf errors.HeaderParseError("Incomplete parameter")
         wenn value[0] == '*':
             param.append(ValueTerminal('*', 'extended-parameter-marker'))
             value = value[1:]
             param.extended = Wahr
     wenn value[0] != '=':
-        raise errors.HeaderParseError("Parameter nicht followed by '='")
+        wirf errors.HeaderParseError("Parameter nicht followed by '='")
     param.append(ValueTerminal('=', 'parameter-separator'))
     value = value[1:]
     wenn value und value[0] in CFWS_LEADER:
@@ -2496,9 +2496,9 @@ def get_parameter(value):
                 wenn rest und rest[0] == "'":
                     semi_valid = Wahr
         sonst:
-            try:
+            versuch:
                 token, rest = get_extended_attrtext(inner_value)
-            except:
+            ausser:
                 pass
             sonst:
                 wenn nicht rest:
@@ -2548,7 +2548,7 @@ def get_parameter(value):
             appendto.append(t)
             param.charset = t.value
         wenn value[0] != "'":
-            raise errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+            wirf errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                           "delimiter, but found {!r}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
@@ -2557,7 +2557,7 @@ def get_parameter(value):
             appendto.append(token)
             param.lang = token.value
             wenn nicht value oder value[0] != "'":
-                raise errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+                wirf errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                   "delimiter, but found {}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
@@ -2597,10 +2597,10 @@ def parse_mime_parameters(value):
     """
     mime_parameters = MimeParameters()
     waehrend value:
-        try:
+        versuch:
             token, value = get_parameter(value)
             mime_parameters.append(token)
-        except errors.HeaderParseError:
+        ausser errors.HeaderParseError:
             leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -2662,9 +2662,9 @@ def parse_content_type_header(value):
         ctype.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content type specification"))
         gib ctype
-    try:
+    versuch:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content maintype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
@@ -2681,9 +2681,9 @@ def parse_content_type_header(value):
     ctype.maintype = token.value.strip().lower()
     ctype.append(ValueTerminal('/', 'content-type-separator'))
     value = value[1:]
-    try:
+    versuch:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content subtype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
@@ -2715,9 +2715,9 @@ def parse_content_disposition_header(value):
         disp_header.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content disposition"))
         gib disp_header
-    try:
+    versuch:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         disp_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content disposition but found {!r}".format(value)))
         _find_mime_parameters(disp_header, value)
@@ -2746,9 +2746,9 @@ def parse_content_transfer_encoding_header(value):
         cte_header.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content transfer encoding"))
         gib cte_header
-    try:
+    versuch:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    ausser errors.HeaderParseError:
         cte_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content transfer encoding but found {!r}".format(value)))
     sonst:
@@ -2821,10 +2821,10 @@ def _refold_parse_tree(parse_tree, *, policy):
             sonst:
                 # Encode wenn tstr contains newlines.
                 want_encoding = nicht NLSET.isdisjoint(tstr)
-        try:
+        versuch:
             tstr.encode(encoding)
             charset = encoding
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             wenn any(isinstance(x, errors.UndecodableBytesDefect)
                    fuer x in part.all_defects):
                 charset = 'unknown-8bit'
@@ -2983,7 +2983,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, 
     chrome_len = len(encode_as) + 7
 
     wenn (chrome_len + 1) >= maxlen:
-        raise errors.HeaderParseError(
+        wirf errors.HeaderParseError(
             "max_line_length is too small to fit an encoded word")
 
     waehrend to_encode:
@@ -3046,10 +3046,10 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
             lines[-1] += ';'
         charset = encoding
         error_handler = 'strict'
-        try:
+        versuch:
             value.encode(encoding)
             encoding_required = Falsch
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             encoding_required = Wahr
             wenn utils._has_surrogates(value):
                 charset = 'unknown-8bit'

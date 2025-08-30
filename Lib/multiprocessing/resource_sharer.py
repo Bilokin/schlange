@@ -134,18 +134,18 @@ klasse _ResourceSharer(object):
         wenn hasattr(signal, 'pthread_sigmask'):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         waehrend 1:
-            try:
+            versuch:
                 mit self._listener.accept() als conn:
                     msg = conn.recv()
                     wenn msg is Nichts:
                         breche
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)
-                    try:
+                    versuch:
                         send(conn, destination_pid)
-                    finally:
+                    schliesslich:
                         close()
-            except:
+            ausser:
                 wenn nicht util.is_exiting():
                     sys.excepthook(*sys.exc_info())
 

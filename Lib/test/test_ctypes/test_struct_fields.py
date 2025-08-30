@@ -131,7 +131,7 @@ klasse FieldsTestBase(StructCheckMixin):
             self.assertEqual(S.largeField.bit_size, size * 8)
 
 
-    # __set__ und __get__ should raise a TypeError in case their self
+    # __set__ und __get__ should wirf a TypeError in case their self
     # argument is nicht a ctype instance.
     def test___set__(self):
         klasse MyCStruct(self.cls):

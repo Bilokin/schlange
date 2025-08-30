@@ -22,7 +22,7 @@ von test.support importiere script_helper, threading_helper
 threading_helper.requires_working_threading(module=Wahr)
 
 def task(N, done, done_tasks, errors):
-    try:
+    versuch:
         # We don't use modulefinder but still importiere it in order to stress
         # importing of different modules von several threads.
         wenn len(done_tasks) % 2:
@@ -33,9 +33,9 @@ def task(N, done, done_tasks, errors):
             importiere modulefinder
         # This will fail wenn random is nicht completely initialized
         x = random.randrange(1, 3)
-    except Exception als e:
+    ausser Exception als e:
         errors.append(e.with_traceback(Nichts))
-    finally:
+    schliesslich:
         done_tasks.append(threading.get_ident())
         finished = len(done_tasks) == N
         wenn finished:
@@ -105,7 +105,7 @@ klasse ThreadedImportTests(unittest.TestCase):
     def check_parallel_module_init(self, mock_os):
         wenn imp.lock_held():
             # This triggers on, e.g., von test importiere autotest.
-            raise unittest.SkipTest("can't run when importiere lock is held")
+            wirf unittest.SkipTest("can't run when importiere lock is held")
 
         done = threading.Event()
         fuer N in (20, 50) * 3:
@@ -113,9 +113,9 @@ klasse ThreadedImportTests(unittest.TestCase):
                 drucke("Trying", N, "threads ...", end=' ')
             # Make sure that random und modulefinder get reimported freshly
             fuer modname in ['random', 'modulefinder']:
-                try:
+                versuch:
                     del sys.modules[modname]
-                except KeyError:
+                ausser KeyError:
                     pass
             errors = []
             done_tasks = []
@@ -143,11 +143,11 @@ klasse ThreadedImportTests(unittest.TestCase):
     def test_parallel_meta_path(self, size):
         finder = Finder()
         sys.meta_path.insert(0, finder)
-        try:
+        versuch:
             self.check_parallel_module_init()
             self.assertGreater(finder.numcalls, 0)
             self.assertEqual(finder.x, finder.numcalls)
-        finally:
+        schliesslich:
             sys.meta_path.remove(finder)
 
     @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
@@ -161,25 +161,25 @@ klasse ThreadedImportTests(unittest.TestCase):
         flushing_finder = FlushingFinder()
         def path_hook(path):
             finder.find_spec('')
-            raise ImportError
+            wirf ImportError
         sys.path_hooks.insert(0, path_hook)
         sys.meta_path.append(flushing_finder)
-        try:
+        versuch:
             # Flush the cache a first time
             flushing_finder.find_spec('')
             numtests = self.check_parallel_module_init()
             self.assertGreater(finder.numcalls, 0)
             self.assertEqual(finder.x, finder.numcalls)
-        finally:
+        schliesslich:
             sys.meta_path.remove(flushing_finder)
             sys.path_hooks.remove(path_hook)
 
     def test_import_hangers(self):
         # In case this test is run again, make sure the helper module
         # gets loaded von scratch again.
-        try:
+        versuch:
             del sys.modules['test.test_importlib.threaded_import_hangers']
-        except KeyError:
+        ausser KeyError:
             pass
         importiere test.test_importlib.threaded_import_hangers
         self.assertFalsch(test.test_importlib.threaded_import_hangers.errors)
@@ -263,11 +263,11 @@ klasse ThreadedImportTests(unittest.TestCase):
 def setUpModule():
     thread_info = threading_helper.threading_setup()
     unittest.addModuleCleanup(threading_helper.threading_cleanup, *thread_info)
-    try:
+    versuch:
         old_switchinterval = sys.getswitchinterval()
         unittest.addModuleCleanup(sys.setswitchinterval, old_switchinterval)
         support.setswitchinterval(1e-5)
-    except AttributeError:
+    ausser AttributeError:
         pass
 
 

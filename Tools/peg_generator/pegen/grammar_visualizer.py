@@ -49,9 +49,9 @@ klasse ASTGrammarPrinter:
 def main() -> Nichts:
     args = argparser.parse_args()
 
-    try:
+    versuch:
         grammar, parser, tokenizer = build_parser(args.filename)
-    except Exception als err:
+    ausser Exception als err:
         drucke("ERROR: Failed to parse grammar file", file=sys.stderr)
         sys.exit(1)
 

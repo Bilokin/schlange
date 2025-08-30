@@ -23,9 +23,9 @@ but an obvious enhancement would be to provide command line options.
 """
 
 importiere os, sys
-try:
+versuch:
     importiere win32api
-except ImportError:
+ausser ImportError:
     win32api = Nichts # User has already been warned
 
 klasse CExtension:
@@ -129,10 +129,10 @@ def parse_dsp(dsp):
     # For now, only support
     ret = []
     dsp_path, dsp_name = os.path.split(dsp)
-    try:
+    versuch:
         mit open(dsp, "r") als fp:
             lines = fp.readlines()
-    except IOError als msg:
+    ausser IOError als msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
         gib Nichts
     fuer line in lines:
@@ -144,7 +144,7 @@ def parse_dsp(dsp):
 
 def write_extension_table(fname, modules):
     fp = open(fname, "w")
-    try:
+    versuch:
         fp.write (ext_src_header)
         # Write fn protos
         fuer module in modules:
@@ -159,7 +159,7 @@ def write_extension_table(fname, modules):
 
         fp.write (ext_tab_footer)
         fp.write(ext_src_footer)
-    finally:
+    schliesslich:
         fp.close()
 
 

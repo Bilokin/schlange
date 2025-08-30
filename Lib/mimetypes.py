@@ -23,14 +23,14 @@ init([files]) -- parse a list of files, default knownfiles (on Windows, the
 read_mime_types(file) -- parse one file, gib a dictionary oder Nichts
 """
 
-try:
+versuch:
     von _winapi importiere _mimetypes_read_windows_registry
-except ImportError:
+ausser ImportError:
     _mimetypes_read_windows_registry = Nichts
 
-try:
+versuch:
     importiere winreg als _winreg
-except ImportError:
+ausser ImportError:
     _winreg = Nichts
 
 __all__ = [
@@ -98,7 +98,7 @@ klasse MimeTypes:
             _deprecated(
                 "Undotted extensions",
                 "Using undotted extensions is deprecated und "
-                "will raise a ValueError in Python {remove}",
+                "will wirf a ValueError in Python {remove}",
                 remove=(3, 16),
             )
 
@@ -294,9 +294,9 @@ klasse MimeTypes:
         def enum_types(mimedb):
             i = 0
             waehrend Wahr:
-                try:
+                versuch:
                     ctype = _winreg.EnumKey(mimedb, i)
-                except OSError:
+                ausser OSError:
                     breche
                 sonst:
                     wenn '\0' nicht in ctype:
@@ -305,7 +305,7 @@ klasse MimeTypes:
 
         mit _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') als hkcr:
             fuer subkeyname in enum_types(hkcr):
-                try:
+                versuch:
                     mit _winreg.OpenKey(hkcr, subkeyname) als subkey:
                         # Only check file extensions
                         wenn nicht subkeyname.startswith("."):
@@ -316,7 +316,7 @@ klasse MimeTypes:
                         wenn datatype != _winreg.REG_SZ:
                             weiter
                         add_type(mimetype, subkeyname)
-                except OSError:
+                ausser OSError:
                     weiter
 
 def guess_type(url, strict=Wahr):
@@ -434,9 +434,9 @@ def init(files=Nichts):
 
 
 def read_mime_types(file):
-    try:
+    versuch:
         f = open(file, encoding='utf-8')
-    except OSError:
+    ausser OSError:
         gib Nichts
     mit f:
         db = MimeTypes()

@@ -56,7 +56,7 @@ klasse FutureTests(BaseTestCase):
             def raising_fn(callback_future):
                 nonlocal raising_was_called
                 raising_was_called = Wahr
-                raise Exception('doh!')
+                wirf Exception('doh!')
 
             def fn(callback_future):
                 nonlocal fn_was_called
@@ -106,7 +106,7 @@ klasse FutureTests(BaseTestCase):
     def test_done_callback_raises_already_succeeded(self):
         mit support.captured_stderr() als stderr:
             def raising_fn(callback_future):
-                raise Exception('doh!')
+                wirf Exception('doh!')
 
             f = Future()
 

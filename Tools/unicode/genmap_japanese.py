@@ -60,12 +60,12 @@ def loadmap_jisx0213(fo):
             uniprefix = eval('0x' + row[1][2:6]) # body
             uni = eval('0x' + row[1][7:11]) # modifier
             wenn level != 3:
-                raise ValueError("invalid map")
+                wirf ValueError("invalid map")
             decmap3_pair.setdefault(uniprefix, {})
             m = decmap3_pair[uniprefix]
 
         wenn m is Nichts:
-            raise ValueError("invalid map")
+            wirf ValueError("invalid map")
         m.setdefault((loc >> 8), {})
         m[(loc >> 8)][(loc & 0xff)] = uni
 
@@ -87,7 +87,7 @@ def main():
     jis3decmap, jis4decmap, jis3_2_decmap, jis4_2_decmap, jis3_pairdecmap = loadmap_jisx0213(jisx0213file)
 
     wenn jis3decmap[0x21][0x24] != 0xff0c:
-        raise SystemExit('Please adjust your JIS X 0213 map using jisx0213-2000-std.txt.diff')
+        wirf SystemExit('Please adjust your JIS X 0213 map using jisx0213-2000-std.txt.diff')
 
     sjisencmap, cp932encmap = {}, {}
     jisx0208_0212encmap = {}
@@ -141,7 +141,7 @@ def main():
                     wenn nicht jis3decmap[c1]:
                         del jis3decmap[c1]
                 sonst:
-                    raise ValueError("Difference between JIS X 0208 und JIS X 0213 Plane 1 is found.")
+                    wirf ValueError("Difference between JIS X 0208 und JIS X 0213 Plane 1 is found.")
             sonst:
                 jisx0213bmpencmap.setdefault(code >> 8, {})
                 wenn code nicht in jis3_pairdecmap:

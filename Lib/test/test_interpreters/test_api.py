@@ -35,9 +35,9 @@ WHENCE_STR_STDLIB = '_interpreters module'
 
 
 def is_pickleable(obj):
-    try:
+    versuch:
         pickle.dumps(obj)
-    except Exception:
+    ausser Exception:
         gib Falsch
     gib Wahr
 
@@ -51,9 +51,9 @@ def defined_in___main__(name, script, *, remove=Falsch):
     wenn remove:
         liefere mainns.pop(name)
     sonst:
-        try:
+        versuch:
             liefere mainns[name]
-        finally:
+        schliesslich:
             mainns.pop(name, Nichts)
 
 
@@ -495,10 +495,10 @@ klasse TestInterpreterIsRunning(TestBase):
             """)
         def parse_results(text):
             self.assertNotEqual(text, "")
-            try:
+            versuch:
                 gib eval(text)
-            except Exception:
-                raise Exception(repr(text))
+            ausser Exception:
+                wirf Exception(repr(text))
 
         mit self.subTest('running __main__ (from self)'):
             mit self.interpreter_from_capi() als interpid:
@@ -586,9 +586,9 @@ klasse TestInterpreterClose(TestBase):
         out = _run_output(interp, dedent(f"""
             von concurrent importiere interpreters
             interp = interpreters.Interpreter({interp.id})
-            try:
+            versuch:
                 interp.close()
-            except interpreters.InterpreterError:
+            ausser interpreters.InterpreterError:
                 drucke('failed')
             """))
         self.assertEqual(out.strip(), 'failed')
@@ -802,7 +802,7 @@ klasse TestInterpreterExec(TestBase):
         tempdir = self.temp_dir()
         modfile = self.make_module('spam', tempdir, text="""
             def ham():
-                raise RuntimeError('uh-oh!')
+                wirf RuntimeError('uh-oh!')
 
             def eggs():
                 ham()
@@ -828,7 +828,7 @@ klasse TestInterpreterExec(TestBase):
                 interp.exec(script)
                 ~~~~~~~~~~~^^^^^^^^
               {interpmod_line.strip()}
-                raise ExecutionFailed(excinfo)
+                wirf ExecutionFailed(excinfo)
             concurrent.interpreters.ExecutionFailed: RuntimeError: uh-oh!
 
             Uncaught in the interpreter:
@@ -841,7 +841,7 @@ klasse TestInterpreterExec(TestBase):
                 ham()
                 ~~~^^
               File "{modfile}", line 3, in ham
-                raise RuntimeError('uh-oh!')
+                wirf RuntimeError('uh-oh!')
             RuntimeError: uh-oh!
             """))
         self.assertEqual(stdout, '')
@@ -873,9 +873,9 @@ klasse TestInterpreterExec(TestBase):
             expected = 'spam spam spam spam spam'
             script = dedent(f"""
                 importiere os
-                try:
+                versuch:
                     os.fork()
-                except RuntimeError:
+                ausser RuntimeError:
                     mit open('{file.name}', 'w', encoding='utf-8') als out:
                         out.write('{expected}')
                 """)
@@ -1026,41 +1026,41 @@ klasse Spam:
 
 def call_func_complex(op, /, value=Nichts, *args, exc=Nichts, **kwargs):
     wenn exc is nicht Nichts:
-        raise exc
+        wirf exc
     wenn op == '':
-        raise ValueError('missing op')
+        wirf ValueError('missing op')
     sowenn op == 'ident':
         wenn args oder kwargs:
-            raise Exception((args, kwargs))
+            wirf Exception((args, kwargs))
         gib value
     sowenn op == 'full-ident':
         gib (value, args, kwargs)
     sowenn op == 'globals':
         wenn value is nicht Nichts oder args oder kwargs:
-            raise Exception((value, args, kwargs))
+            wirf Exception((value, args, kwargs))
         gib __name__
     sowenn op == 'interpid':
         wenn value is nicht Nichts oder args oder kwargs:
-            raise Exception((value, args, kwargs))
+            wirf Exception((value, args, kwargs))
         gib interpreters.get_current().id
     sowenn op == 'closure':
         wenn args oder kwargs:
-            raise Exception((args, kwargs))
+            wirf Exception((args, kwargs))
         gib get_call_func_closure(value)
     sowenn op == 'custom':
         wenn args oder kwargs:
-            raise Exception((args, kwargs))
+            wirf Exception((args, kwargs))
         gib Spam(value)
     sowenn op == 'custom-inner':
         wenn args oder kwargs:
-            raise Exception((args, kwargs))
+            wirf Exception((args, kwargs))
         klasse Eggs(Spam):
             pass
         gib Eggs(value)
     sowenn nicht isinstance(op, str):
-        raise TypeError(op)
+        wirf TypeError(op)
     sonst:
-        raise NotImplementedError(op)
+        wirf NotImplementedError(op)
 
 
 klasse TestInterpreterCall(TestBase):
@@ -2254,7 +2254,7 @@ klasse LowLevelTests(TestBase):
         mit self.subTest('uncaught exception'):
             interpid = _interpreters.create()
             script, results = _captured_script("""
-                raise Exception('uh-oh!')
+                wirf Exception('uh-oh!')
                 drucke("it worked!", end="")
                 """)
             mit results:

@@ -1,8 +1,8 @@
 von contextlib importiere contextmanager
 
-try:
+versuch:
     von _sqlite3 importiere SQLITE_KEYWORDS
-except ImportError:
+ausser ImportError:
     SQLITE_KEYWORDS = ()
 
 CLI_COMMANDS = ('.quit', '.help', '.version')
@@ -19,22 +19,22 @@ def _complete(text, state):
         sonst:
             text_upper = text.upper()
             _completion_matches = [c fuer c in SQLITE_KEYWORDS wenn c.startswith(text_upper)]
-    try:
+    versuch:
         gib _completion_matches[state] + " "
-    except IndexError:
+    ausser IndexError:
         gib Nichts
 
 
 @contextmanager
 def completer():
-    try:
+    versuch:
         importiere readline
-    except ImportError:
+    ausser ImportError:
         liefere
         gib
 
     old_completer = readline.get_completer()
-    try:
+    versuch:
         readline.set_completer(_complete)
         wenn readline.backend == "editline":
             # libedit uses "^I" instead of "tab"
@@ -43,5 +43,5 @@ def completer():
             command_string = "tab: complete"
         readline.parse_and_bind(command_string)
         liefere
-    finally:
+    schliesslich:
         readline.set_completer(old_completer)

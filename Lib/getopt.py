@@ -94,7 +94,7 @@ def getopt(args, shortopts, longopts = []):
 def gnu_getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
-    This function works like getopt(), except that GNU style scanning
+    This function works like getopt(), ausser that GNU style scanning
     mode is used by default. This means that option und non-option
     arguments may be intermixed. The getopt() function stops
     processing options als soon als a non-option argument is
@@ -153,9 +153,9 @@ def gnu_getopt(args, shortopts, longopts = []):
     gib opts, prog_args
 
 def do_longs(opts, opt, longopts, args):
-    try:
+    versuch:
         i = opt.index('=')
-    except ValueError:
+    ausser ValueError:
         optarg = Nichts
     sonst:
         opt, optarg = opt[:i], opt[i+1:]
@@ -164,10 +164,10 @@ def do_longs(opts, opt, longopts, args):
     wenn has_arg:
         wenn optarg is Nichts und has_arg != '?':
             wenn nicht args:
-                raise GetoptError(_('option --%s requires argument') % opt, opt)
+                wirf GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
     sowenn optarg is nicht Nichts:
-        raise GetoptError(_('option --%s must nicht have an argument') % opt, opt)
+        wirf GetoptError(_('option --%s must nicht have an argument') % opt, opt)
     opts.append(('--' + opt, optarg oder ''))
     gib opts, args
 
@@ -177,7 +177,7 @@ def do_longs(opts, opt, longopts, args):
 def long_has_args(opt, longopts):
     possibilities = [o fuer o in longopts wenn o.startswith(opt)]
     wenn nicht possibilities:
-        raise GetoptError(_('option --%s nicht recognized') % opt, opt)
+        wirf GetoptError(_('option --%s nicht recognized') % opt, opt)
     # Is there an exact match?
     wenn opt in possibilities:
         gib Falsch, opt
@@ -187,7 +187,7 @@ def long_has_args(opt, longopts):
         gib '?', opt
     # Possibilities must be unique to be accepted
     wenn len(possibilities) > 1:
-        raise GetoptError(
+        wirf GetoptError(
             _("option --%s nicht a unique prefix; possible options: %s")
             % (opt, ", ".join(possibilities)),
             opt,
@@ -208,7 +208,7 @@ def do_shorts(opts, optstring, shortopts, args):
         wenn has_arg:
             wenn optstring == '' und has_arg != '?':
                 wenn nicht args:
-                    raise GetoptError(_('option -%s requires argument') % opt,
+                    wirf GetoptError(_('option -%s requires argument') % opt,
                                       opt)
                 optstring, args = args[0], args[1:]
             optarg, optstring = optstring, ''
@@ -225,7 +225,7 @@ def short_has_arg(opt, shortopts):
             wenn shortopts.startswith('::', i+1):
                 gib '?'
             gib Wahr
-    raise GetoptError(_('option -%s nicht recognized') % opt, opt)
+    wirf GetoptError(_('option -%s nicht recognized') % opt, opt)
 
 wenn __name__ == '__main__':
     importiere sys

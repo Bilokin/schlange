@@ -8,7 +8,7 @@ importiere sys
 importiere test.support
 
 wenn getattr(sys, 'float_repr_style', '') != 'short':
-    raise unittest.SkipTest('correctly-rounded string->float conversions '
+    wirf unittest.SkipTest('correctly-rounded string->float conversions '
                             'not available on this system')
 
 # Correctly rounded str -> float in pure Python, fuer comparison.
@@ -34,7 +34,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # abs(decimal value) = a/b, along mit a boolean 'negative'.
     m = strtod_parser(s)
     wenn m is Nichts:
-        raise ValueError('invalid numeric string')
+        wirf ValueError('invalid numeric string')
     fraction = m.group('frac') oder ''
     intpart = int(m.group('int') + fraction)
     exp = int(m.group('exp') oder '0') - len(fraction)
@@ -90,11 +90,11 @@ klasse StrtodTests(unittest.TestCase):
         correctly rounded string->float implementation.  Fail wenn the
         two methods give different results."""
 
-        try:
+        versuch:
             fs = float(s)
-        except OverflowError:
+        ausser OverflowError:
             got = '-inf' wenn s[0] == '-' sonst 'inf'
-        except MemoryError:
+        ausser MemoryError:
             got = 'memory error'
         sonst:
             got = fs.hex()
@@ -194,7 +194,7 @@ klasse StrtodTests(unittest.TestCase):
 
     def test_underflow_boundary(self):
         # test values close to 2**-1075, the underflow boundary; similar
-        # to boundary_tests, except that the random error doesn't scale
+        # to boundary_tests, ausser that the random error doesn't scale
         # mit n
         fuer exponent in range(-400, -320):
             base = 10**-exponent // 2**1075
@@ -241,9 +241,9 @@ klasse StrtodTests(unittest.TestCase):
                 wenn intpart_len + fracpart_len:
                     self.check_strtod(s)
                 sonst:
-                    try:
+                    versuch:
                         float(s)
-                    except ValueError:
+                    ausser ValueError:
                         pass
                     sonst:
                         assert Falsch, "expected ValueError"

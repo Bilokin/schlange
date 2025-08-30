@@ -8,9 +8,9 @@ importiere _contextvars
 von time importiere monotonic als _time
 von _weakrefset importiere WeakSet
 von itertools importiere count als _count
-try:
+versuch:
     von _collections importiere deque als _deque
-except ImportError:
+ausser ImportError:
     von collections importiere deque als _deque
 
 # Note regarding PEP 8 compliant names
@@ -42,20 +42,20 @@ _ThreadHandle = _thread._ThreadHandle
 get_ident = _thread.get_ident
 _get_main_thread_ident = _thread._get_main_thread_ident
 _is_main_interpreter = _thread._is_main_interpreter
-try:
+versuch:
     get_native_id = _thread.get_native_id
     _HAVE_THREAD_NATIVE_ID = Wahr
     __all__.append('get_native_id')
-except AttributeError:
+ausser AttributeError:
     _HAVE_THREAD_NATIVE_ID = Falsch
-try:
+versuch:
     _set_name = _thread.set_name
-except AttributeError:
+ausser AttributeError:
     _set_name = Nichts
 ThreadError = _thread.error
-try:
+versuch:
     _CRLock = _thread.RLock
-except AttributeError:
+ausser AttributeError:
     _CRLock = Nichts
 TIMEOUT_MAX = _thread.TIMEOUT_MAX
 del _thread
@@ -63,9 +63,9 @@ del _thread
 # get thread-local implementation, either von the thread
 # module, oder von the python fallback
 
-try:
+versuch:
     von _thread importiere _local als local
-except ImportError:
+ausser ImportError:
     von _threading_local importiere local
 
 # Support fuer profile und trace hooks
@@ -153,9 +153,9 @@ klasse _RLock:
 
     def __repr__(self):
         owner = self._owner
-        try:
+        versuch:
             owner = _active[owner].name
-        except KeyError:
+        ausser KeyError:
             pass
         gib "<%s %s.%s object owner=%r count=%d at %s>" % (
             "locked" wenn self.locked() sonst "unlocked",
@@ -226,7 +226,7 @@ klasse _RLock:
 
         """
         wenn self._owner != get_ident():
-            raise RuntimeError("cannot release un-acquired lock")
+            wirf RuntimeError("cannot release un-acquired lock")
         self._count = count = self._count - 1
         wenn nicht count:
             self._owner = Nichts
@@ -247,7 +247,7 @@ klasse _RLock:
 
     def _release_save(self):
         wenn self._count == 0:
-            raise RuntimeError("cannot release un-acquired lock")
+            wirf RuntimeError("cannot release un-acquired lock")
         count = self._count
         self._count = 0
         owner = self._owner
@@ -351,13 +351,13 @@ klasse Condition:
 
         """
         wenn nicht self._is_owned():
-            raise RuntimeError("cannot wait on un-acquired lock")
+            wirf RuntimeError("cannot wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
         saved_state = self._release_save()
         gotit = Falsch
-        try:    # restore state no matter what (e.g., KeyboardInterrupt)
+        versuch:    # restore state no matter what (e.g., KeyboardInterrupt)
             wenn timeout is Nichts:
                 waiter.acquire()
                 gotit = Wahr
@@ -367,12 +367,12 @@ klasse Condition:
                 sonst:
                     gotit = waiter.acquire(Falsch)
             gib gotit
-        finally:
+        schliesslich:
             self._acquire_restore(saved_state)
             wenn nicht gotit:
-                try:
+                versuch:
                     self._waiters.remove(waiter)
-                except ValueError:
+                ausser ValueError:
                     pass
 
     def wait_for(self, predicate, timeout=Nichts):
@@ -409,13 +409,13 @@ klasse Condition:
 
         """
         wenn nicht self._is_owned():
-            raise RuntimeError("cannot notify on un-acquired lock")
+            wirf RuntimeError("cannot notify on un-acquired lock")
         waiters = self._waiters
         waehrend waiters und n > 0:
             waiter = waiters[0]
-            try:
+            versuch:
                 waiter.release()
-            except RuntimeError:
+            ausser RuntimeError:
                 # gh-92530: The previous call of notify() released the lock,
                 # but was interrupted before removing it von the queue.
                 # It can happen wenn a signal handler raises an exception,
@@ -423,9 +423,9 @@ klasse Condition:
                 pass
             sonst:
                 n -= 1
-            try:
+            versuch:
                 waiters.remove(waiter)
-            except ValueError:
+            ausser ValueError:
                 pass
 
     def notify_all(self):
@@ -463,7 +463,7 @@ klasse Semaphore:
 
     def __init__(self, value=1):
         wenn value < 0:
-            raise ValueError("semaphore initial value must be >= 0")
+            wirf ValueError("semaphore initial value must be >= 0")
         self._cond = Condition(Lock())
         self._value = value
 
@@ -497,7 +497,7 @@ klasse Semaphore:
 
         """
         wenn nicht blocking und timeout is nicht Nichts:
-            raise ValueError("can't specify timeout fuer non-blocking acquire")
+            wirf ValueError("can't specify timeout fuer non-blocking acquire")
         rc = Falsch
         endtime = Nichts
         mit self._cond:
@@ -527,7 +527,7 @@ klasse Semaphore:
 
         """
         wenn n < 1:
-            raise ValueError('n must be one oder more')
+            wirf ValueError('n must be one oder more')
         mit self._cond:
             self._value += n
             self._cond.notify(n)
@@ -569,14 +569,14 @@ klasse BoundedSemaphore(Semaphore):
         to become larger than zero again, wake up that thread.
 
         If the number of releases exceeds the number of acquires,
-        raise a ValueError.
+        wirf a ValueError.
 
         """
         wenn n < 1:
-            raise ValueError('n must be one oder more')
+            wirf ValueError('n must be one oder more')
         mit self._cond:
             wenn self._value + n > self._initial_value:
-                raise ValueError("Semaphore released too many times")
+                wirf ValueError("Semaphore released too many times")
             self._value += n
             self._cond.notify(n)
 
@@ -653,7 +653,7 @@ klasse Event:
         (or fractions thereof).
 
         This method returns the internal flag on exit, so it will always gib
-        Wahr except wenn a timeout is given und the operation times out.
+        Wahr ausser wenn a timeout is given und the operation times out.
 
         """
         mit self._cond:
@@ -672,7 +672,7 @@ klasse Event:
 # We maintain two main states, 'filling' und 'draining' enabling the barrier
 # to be cyclic.  Threads are nicht allowed into it until it has fully drained
 # since the previous cycle.  In addition, a 'resetting' state exists which is
-# similar to 'draining' except that threads leave mit a BrokenBarrierError,
+# similar to 'draining' ausser that threads leave mit a BrokenBarrierError,
 # und a 'broken' state in which all threads get the exception.
 klasse Barrier:
     """Implements a Barrier.
@@ -693,7 +693,7 @@ klasse Barrier:
 
         """
         wenn parties < 1:
-            raise ValueError("parties must be >= 1")
+            wirf ValueError("parties must be >= 1")
         self._cond = Condition(Lock())
         self._action = action
         self._timeout = timeout
@@ -723,7 +723,7 @@ klasse Barrier:
             self._enter() # Block waehrend the barrier drains.
             index = self._count
             self._count += 1
-            try:
+            versuch:
                 wenn index + 1 == self._parties:
                     # We release the barrier
                     self._release()
@@ -731,12 +731,12 @@ klasse Barrier:
                     # We wait until someone releases us
                     self._wait(timeout)
                 gib index
-            finally:
+            schliesslich:
                 self._count -= 1
                 # Wake up any threads waiting fuer barrier to drain.
                 self._exit()
 
-    # Block until the barrier is ready fuer us, oder raise an exception
+    # Block until the barrier is ready fuer us, oder wirf an exception
     # wenn it is broken.
     def _enter(self):
         waehrend self._state in (-1, 1):
@@ -744,22 +744,22 @@ klasse Barrier:
             self._cond.wait()
         #see wenn the barrier is in a broken state
         wenn self._state < 0:
-            raise BrokenBarrierError
+            wirf BrokenBarrierError
         assert self._state == 0
 
     # Optionally run the 'action' und release the threads waiting
     # in the barrier.
     def _release(self):
-        try:
+        versuch:
             wenn self._action:
                 self._action()
             # enter draining state
             self._state = 1
             self._cond.notify_all()
-        except:
+        ausser:
             #an exception during the _action handler.  Break und reraise
             self._break()
-            raise
+            wirf
 
     # Wait in the barrier until we are released.  Raise an exception
     # wenn the barrier is reset oder broken.
@@ -767,9 +767,9 @@ klasse Barrier:
         wenn nicht self._cond.wait_for(lambda : self._state != 0, timeout):
             #timed out.  Break the barrier
             self._break()
-            raise BrokenBarrierError
+            wirf BrokenBarrierError
         wenn self._state < 0:
-            raise BrokenBarrierError
+            wirf BrokenBarrierError
         assert self._state == 1
 
     # If we are the last thread to exit the barrier, signal any threads
@@ -908,10 +908,10 @@ klasse Thread:
         sonst:
             name = _newname("Thread-%d")
             wenn target is nicht Nichts:
-                try:
+                versuch:
                     target_name = target.__name__
                     name += f" ({target_name})"
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         self._target = target
@@ -920,7 +920,7 @@ klasse Thread:
         self._kwargs = kwargs
         wenn daemon is nicht Nichts:
             wenn daemon und nicht _daemon_threads_allowed():
-                raise RuntimeError('daemon threads are disabled in this (sub)interpreter')
+                wirf RuntimeError('daemon threads are disabled in this (sub)interpreter')
             self._daemonic = daemon
         sonst:
             self._daemonic = current_thread().daemon
@@ -970,15 +970,15 @@ klasse Thread:
         It must be called at most once per thread object. It arranges fuer the
         object's run() method to be invoked in a separate thread of control.
 
-        This method will raise a RuntimeError wenn called more than once on the
+        This method will wirf a RuntimeError wenn called more than once on the
         same thread object.
 
         """
         wenn nicht self._initialized:
-            raise RuntimeError("thread.__init__() nicht called")
+            wirf RuntimeError("thread.__init__() nicht called")
 
         wenn self._started.is_set():
-            raise RuntimeError("threads can only be started once")
+            wirf RuntimeError("threads can only be started once")
 
         mit _active_limbo_lock:
             _limbo[self] = self
@@ -992,14 +992,14 @@ klasse Thread:
                 # start mit an empty context
                 self._context = _contextvars.Context()
 
-        try:
+        versuch:
             # Start joinable thread
             _start_joinable_thread(self._bootstrap, handle=self._os_thread_handle,
                                    daemon=self.daemon)
-        except Exception:
+        ausser Exception:
             mit _active_limbo_lock:
                 del _limbo[self]
-            raise
+            wirf
         self._started.wait()  # Will set ident und native_id
 
     def run(self):
@@ -1011,10 +1011,10 @@ klasse Thread:
         von the args und kwargs arguments, respectively.
 
         """
-        try:
+        versuch:
             wenn self._target is nicht Nichts:
                 self._target(*self._args, **self._kwargs)
-        finally:
+        schliesslich:
             # Avoid a refcycle wenn the thread is running a function with
             # an argument that has a member that points to the thread.
             del self._target, self._args, self._kwargs
@@ -1032,12 +1032,12 @@ klasse Thread:
         # _bootstrap_inner() during normal business hours are properly
         # reported.  Also, we only suppress them fuer daemonic threads;
         # wenn a non-daemonic encounters this, something sonst is wrong.
-        try:
+        versuch:
             self._bootstrap_inner()
-        except:
+        ausser:
             wenn self._daemonic und _sys is Nichts:
                 gib
-            raise
+            wirf
 
     def _set_ident(self):
         self._ident = get_ident()
@@ -1049,13 +1049,13 @@ klasse Thread:
     def _set_os_name(self):
         wenn _set_name is Nichts oder nicht self._name:
             gib
-        try:
+        versuch:
             _set_name(self._name)
-        except OSError:
+        ausser OSError:
             pass
 
     def _bootstrap_inner(self):
-        try:
+        versuch:
             self._set_ident()
             wenn _HAVE_THREAD_NATIVE_ID:
                 self._set_native_id()
@@ -1070,11 +1070,11 @@ klasse Thread:
             wenn _profile_hook:
                 _sys.setprofile(_profile_hook)
 
-            try:
+            versuch:
                 self._context.run(self.run)
-            except:
+            ausser:
                 self._invoke_excepthook(self)
-        finally:
+        schliesslich:
             self._delete()
 
     def _delete(self):
@@ -1111,11 +1111,11 @@ klasse Thread:
 
         """
         wenn nicht self._initialized:
-            raise RuntimeError("Thread.__init__() nicht called")
+            wirf RuntimeError("Thread.__init__() nicht called")
         wenn nicht self._started.is_set():
-            raise RuntimeError("cannot join thread before it is started")
+            wirf RuntimeError("cannot join thread before it is started")
         wenn self is current_thread():
-            raise RuntimeError("cannot join current thread")
+            wirf RuntimeError("cannot join current thread")
 
         # the behavior of a negative timeout isn't documented, but
         # historically .join(timeout=x) fuer x<0 has acted als wenn timeout=0
@@ -1195,11 +1195,11 @@ klasse Thread:
     @daemon.setter
     def daemon(self, daemonic):
         wenn nicht self._initialized:
-            raise RuntimeError("Thread.__init__() nicht called")
+            wirf RuntimeError("Thread.__init__() nicht called")
         wenn daemonic und nicht _daemon_threads_allowed():
-            raise RuntimeError('daemon threads are disabled in this interpreter')
+            wirf RuntimeError('daemon threads are disabled in this interpreter')
         wenn self._started.is_set():
-            raise RuntimeError("cannot set daemon status of active thread")
+            wirf RuntimeError("cannot set daemon status of active thread")
         self._daemonic = daemonic
 
     def isDaemon(self):
@@ -1247,10 +1247,10 @@ klasse Thread:
         self.name = name
 
 
-try:
+versuch:
     von _thread importiere (_excepthook als excepthook,
                          _ExceptHookArgs als ExceptHookArgs)
-except ImportError:
+ausser ImportError:
     # Simple Python implementation wenn _thread._excepthook() is nicht available
     von traceback importiere print_exception als _print_exception
     von collections importiere namedtuple
@@ -1305,9 +1305,9 @@ def _make_invoke_excepthook():
     old_excepthook = excepthook
     old_sys_excepthook = _sys.excepthook
     wenn old_excepthook is Nichts:
-        raise RuntimeError("threading.excepthook is Nichts")
+        wirf RuntimeError("threading.excepthook is Nichts")
     wenn old_sys_excepthook is Nichts:
-        raise RuntimeError("sys.excepthook is Nichts")
+        wirf RuntimeError("sys.excepthook is Nichts")
 
     sys_exc_info = _sys.exc_info
     local_print = drucke
@@ -1315,7 +1315,7 @@ def _make_invoke_excepthook():
 
     def invoke_excepthook(thread):
         global excepthook
-        try:
+        versuch:
             hook = excepthook
             wenn hook is Nichts:
                 hook = old_excepthook
@@ -1323,7 +1323,7 @@ def _make_invoke_excepthook():
             args = ExceptHookArgs([*sys_exc_info(), thread])
 
             hook(args)
-        except Exception als exc:
+        ausser Exception als exc:
             exc.__suppress_context__ = Wahr
             del exc
 
@@ -1341,7 +1341,7 @@ def _make_invoke_excepthook():
                 sys_excepthook = old_sys_excepthook
 
             sys_excepthook(*sys_exc_info())
-        finally:
+        schliesslich:
             # Break reference cycle (exception stored in a variable)
             args = Nichts
 
@@ -1444,10 +1444,10 @@ klasse _DummyThread(Thread):
     def is_alive(self):
         wenn nicht self._os_thread_handle.is_done() und self._started.is_set():
             gib Wahr
-        raise RuntimeError("thread is nicht alive")
+        wirf RuntimeError("thread is nicht alive")
 
     def join(self, timeout=Nichts):
-        raise RuntimeError("cannot join a dummy thread")
+        wirf RuntimeError("cannot join a dummy thread")
 
     def _after_fork(self, new_ident=Nichts):
         wenn new_ident is nicht Nichts:
@@ -1466,9 +1466,9 @@ def current_thread():
     module, a dummy thread object mit limited functionality is returned.
 
     """
-    try:
+    versuch:
         gib _active[get_ident()]
-    except KeyError:
+    ausser KeyError:
         gib _DummyThread()
 
 def currentThread():
@@ -1535,7 +1535,7 @@ def _register_atexit(func, *arg, **kwargs):
     For similarity to atexit, the registered functions are called in reverse.
     """
     wenn _SHUTTING_DOWN:
-        raise RuntimeError("can't register atexit after shutdown")
+        wirf RuntimeError("can't register atexit after shutdown")
 
     _threading_atexits.append(lambda: func(*arg, **kwargs))
 
@@ -1597,9 +1597,9 @@ def _after_fork():
     # fork() only copied the current thread; clear references to others.
     new_active = {}
 
-    try:
+    versuch:
         current = _active[get_ident()]
-    except KeyError:
+    ausser KeyError:
         # fork() was called in a thread which was nicht spawned
         # by threading.Thread. For example, a thread spawned
         # by thread.start_new_thread().

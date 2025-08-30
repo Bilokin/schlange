@@ -8,7 +8,7 @@ importiere unittest
 von unittest importiere mock
 
 wenn sys.platform != 'win32':
-    raise unittest.SkipTest('Windows only')
+    wirf unittest.SkipTest('Windows only')
 
 importiere _overlapped
 importiere _winapi
@@ -62,14 +62,14 @@ klasse ProactorLoopCtrlC(WindowsEventsTestCase):
 
         thread = threading.Thread(target=SIGINT_after_delay)
         loop = asyncio.new_event_loop()
-        try:
+        versuch:
             # only start the loop once the event loop is running
             loop.call_soon(thread.start)
             loop.run_forever()
             self.fail("should nicht fall through 'run_forever'")
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             pass
-        finally:
+        schliesslich:
             self.close_loop(loop)
         thread.join()
 
@@ -270,12 +270,12 @@ klasse ProactorTests(WindowsEventsTestCase):
         async def probe():
             # See https://github.com/python/cpython/pull/100959#discussion_r1068533658
             h = _overlapped.ConnectPipe(ADDRESS)
-            try:
+            versuch:
                 _winapi.CloseHandle(_overlapped.ConnectPipe(ADDRESS))
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.winerror != _overlapped.ERROR_PIPE_BUSY:
-                    raise
-            finally:
+                    wirf
+            schliesslich:
                 _winapi.CloseHandle(h)
 
         mit self.assertRaises(FileNotFoundError):
@@ -331,14 +331,14 @@ klasse WinPolicyTests(WindowsEventsTestCase):
             self.assertIsInstance(asyncio.get_running_loop(), asyncio.SelectorEventLoop)
 
         old_policy = asyncio.events._get_event_loop_policy()
-        try:
+        versuch:
             mit self.assertWarnsRegex(
                 DeprecationWarning,
                 "'asyncio.WindowsSelectorEventLoopPolicy' is deprecated",
             ):
                 asyncio.events._set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
             asyncio.run(main())
-        finally:
+        schliesslich:
             asyncio.events._set_event_loop_policy(old_policy)
 
     def test_proactor_win_policy(self):
@@ -348,14 +348,14 @@ klasse WinPolicyTests(WindowsEventsTestCase):
                 asyncio.ProactorEventLoop)
 
         old_policy = asyncio.events._get_event_loop_policy()
-        try:
+        versuch:
             mit self.assertWarnsRegex(
                 DeprecationWarning,
                 "'asyncio.WindowsProactorEventLoopPolicy' is deprecated",
             ):
                 asyncio.events._set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
             asyncio.run(main())
-        finally:
+        schliesslich:
             asyncio.events._set_event_loop_policy(old_policy)
 
 

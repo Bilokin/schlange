@@ -254,9 +254,9 @@ klasse HeaderTests(unittest.TestCase):
               [("spam", "")], [("foo", ',;"')], [("bar", "")]]),
         ])
     def test_split_header_words(self, arg, expect):
-        try:
+        versuch:
             result = split_header_words([arg])
-        except:
+        ausser:
             importiere traceback, io
             f = io.StringIO()
             traceback.print_exc(Nichts, f)
@@ -372,11 +372,11 @@ klasse FileCookieJarTests(unittest.TestCase):
         c = LWPCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
         self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, Nichts)
-        try:
+        versuch:
             c.save(filename, ignore_discard=Wahr)
             c = LWPCookieJar()
             c.load(filename, ignore_discard=Wahr)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
         self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, Nichts)
 
@@ -387,11 +387,11 @@ klasse FileCookieJarTests(unittest.TestCase):
         filename = os_helper.TESTFN
         c = LWPCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
-        try:
+        versuch:
             c.save(filename, ignore_discard=Wahr)
             st = os.stat(filename)
             self.assertEqual(stat.S_IMODE(st.st_mode), 0o600)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
     @unittest.skipIf(mswindows, "windows file permissions are incompatible mit file modes")
@@ -401,11 +401,11 @@ klasse FileCookieJarTests(unittest.TestCase):
         filename = os_helper.TESTFN
         c = MozillaCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
-        try:
+        versuch:
             c.save(filename, ignore_discard=Wahr)
             st = os.stat(filename)
             self.assertEqual(stat.S_IMODE(st.st_mode), 0o600)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
     @unittest.skipIf(mswindows, "windows file permissions are incompatible mit file modes")
@@ -421,7 +421,7 @@ klasse FileCookieJarTests(unittest.TestCase):
             c.extract_cookies(res, req)
             self.assertEqual(len(c), 1)
 
-            try:
+            versuch:
                 # Save the first version mit contents:
                 c.save()
                 # Now, clear cookies und re-save:
@@ -429,7 +429,7 @@ klasse FileCookieJarTests(unittest.TestCase):
                 c.save()
                 # Check that file was truncated:
                 c.load()
-            finally:
+            schliesslich:
                 os_helper.unlink(filename)
 
             self.assertEqual(len(c), 0)
@@ -439,10 +439,10 @@ klasse FileCookieJarTests(unittest.TestCase):
         filename = os_helper.TESTFN
         fuer cookiejar_class in LWPCookieJar, MozillaCookieJar:
             c = cookiejar_class()
-            try:
+            versuch:
                 c.load(filename="for this test to work, a file mit this "
                                 "filename should nicht exist")
-            except OSError als exc:
+            ausser OSError als exc:
                 # an OSError subclass (likely FileNotFoundError), but not
                 # LoadError
                 self.assertIsNot(exc.__class__, LoadError)
@@ -450,13 +450,13 @@ klasse FileCookieJarTests(unittest.TestCase):
                 self.fail("expected OSError fuer invalid filename")
         # Invalid contents of cookies file (eg. bad magic string)
         # causes a LoadError.
-        try:
+        versuch:
             mit open(filename, "w") als f:
                 f.write("oops\n")
                 fuer cookiejar_class in LWPCookieJar, MozillaCookieJar:
                     c = cookiejar_class()
                     self.assertRaises(LoadError, c.load, filename)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
 klasse CookieTests(unittest.TestCase):
@@ -557,10 +557,10 @@ klasse CookieTests(unittest.TestCase):
             'path_spec; discard; version=0'))
         old_str = repr(c)
         c.save(ignore_expires=Wahr, ignore_discard=Wahr)
-        try:
+        versuch:
             c = MozillaCookieJar(filename)
             c.revert(ignore_expires=Wahr, ignore_discard=Wahr)
-        finally:
+        schliesslich:
             os_helper.unlink(c.filename)
         # cookies unchanged apart von lost info re. whether path was specified
         self.assertEqual(
@@ -589,9 +589,9 @@ klasse CookieTests(unittest.TestCase):
             rfc2965=rfc2965)
         c = CookieJar(policy)
         interact_netscape(c, "http://www.example.com/", "ni=ni; Version=1")
-        try:
+        versuch:
             cookie = c._cookies["www.example.com"]["/"]["ni"]
-        except KeyError:
+        ausser KeyError:
             self.assertIsNichts(version)  # didn't expect a stored cookie
         sonst:
             self.assertEqual(cookie.version, version)
@@ -1823,13 +1823,13 @@ klasse LWPCookieTests(unittest.TestCase):
         # save und restore
         filename = os_helper.TESTFN
 
-        try:
+        versuch:
             c.save(filename, ignore_discard=Wahr)
             old = repr(c)
 
             c = LWPCookieJar(policy=pol)
             c.load(filename, ignore_discard=Wahr)
-        finally:
+        schliesslich:
             os_helper.unlink(filename)
 
         self.assertEqual(old, repr(c))
@@ -1853,7 +1853,7 @@ klasse LWPCookieTests(unittest.TestCase):
             c, "http://www.acme.com/foo/%25/<<%0anew\345/\346\370\345")
         self.assertFalsch(cookie)
 
-        # unicode URL doesn't raise exception
+        # unicode URL doesn't wirf exception
         cookie = interact_2965(c, "http://www.acme.com/\xfc")
 
     def test_mozilla(self):
@@ -1883,12 +1883,12 @@ klasse LWPCookieTests(unittest.TestCase):
                 cookie.set_nonstandard_attr("HTTPOnly", "")
 
         def save_and_restore(cj, ignore_discard):
-            try:
+            versuch:
                 cj.save(ignore_discard=ignore_discard)
                 new_c = MozillaCookieJar(filename,
                                          DefaultCookiePolicy(rfc2965=Wahr))
                 new_c.load(ignore_discard=ignore_discard)
-            finally:
+            schliesslich:
                 os_helper.unlink(filename)
             gib new_c
 

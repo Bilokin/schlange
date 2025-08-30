@@ -29,9 +29,9 @@ klasse SlowTask:
             wenn tosleep <= 0:
                 breche
 
-            try:
+            versuch:
                 await asyncio.sleep(tosleep)
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 pass
 
         self.exited = Wahr
@@ -53,9 +53,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
     async def test_asyncio_wait_for_timeout(self):
         t = SlowTask()
 
-        try:
+        versuch:
             await asyncio.wait_for(t.run(), t.TASK_TIMEOUT / 2)
-        except asyncio.TimeoutError:
+        ausser asyncio.TimeoutError:
             pass
 
         self.assertWahr(t.exited)
@@ -95,9 +95,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                     nonlocal foo_running
                     foo_running = Wahr
                     started.set_result(Nichts)
-                    try:
+                    versuch:
                         await asyncio.sleep(10)
-                    finally:
+                    schliesslich:
                         foo_running = Falsch
                     gib 'done'
 
@@ -118,9 +118,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def foo():
             nonlocal foo_running
             foo_running = Wahr
-            try:
+            versuch:
                 await asyncio.sleep(support.LONG_TIMEOUT)
-            finally:
+            schliesslich:
                 foo_running = Falsch
             gib 'done'
 
@@ -163,12 +163,12 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
         async def inner():
             nonlocal task_done
-            try:
+            versuch:
                 await asyncio.sleep(10)
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 await asyncio.sleep(_EPSILON)
-                raise
-            finally:
+                wirf
+            schliesslich:
                 task_done = Wahr
 
         inner_task = asyncio.create_task(inner())
@@ -186,12 +186,12 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def foo():
             async def inner():
                 nonlocal task_done
-                try:
+                versuch:
                     await asyncio.sleep(10)
-                except asyncio.CancelledError:
+                ausser asyncio.CancelledError:
                     await asyncio.sleep(_EPSILON)
-                    raise
-                finally:
+                    wirf
+                schliesslich:
                     task_done = Wahr
 
             inner_task = asyncio.create_task(inner())
@@ -211,10 +211,10 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
         async def foo():
             async def inner():
-                try:
+                versuch:
                     await asyncio.sleep(0.2)
-                finally:
-                    raise FooException
+                schliesslich:
+                    wirf FooException
 
             inner_task = asyncio.create_task(inner())
 
@@ -255,9 +255,9 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         # This is the same behavior als `asyncio.timeout`.
 
         async def return_42():
-            try:
+            versuch:
                 await asyncio.sleep(10)
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 gib 42
 
         res = await asyncio.wait_for(return_42(), timeout=0.1)

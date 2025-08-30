@@ -53,7 +53,7 @@ def validate_uop(override: Uop, uop: Uop) -> Nichts:
                 "in bytecodes.c und optimizer_bytecodes.c "
                 f"({len(orig_effects)} != {len(new_effects)})"
             )
-            raise analysis_error(msg, override.body.open)
+            wirf analysis_error(msg, override.body.open)
 
         fuer orig, new in zip(orig_effects, new_effects, strict=Wahr):
             wenn orig.name != new.name und orig.name != "unused" und new.name != "unused":
@@ -62,7 +62,7 @@ def validate_uop(override: Uop, uop: Uop) -> Nichts:
                     "equal names in bytecodes.c und optimizer_bytecodes.c "
                     f"({orig.name} != {new.name})"
                 )
-                raise analysis_error(msg, override.body.open)
+                wirf analysis_error(msg, override.body.open)
 
             wenn orig.size != new.size:
                 msg = (
@@ -70,7 +70,7 @@ def validate_uop(override: Uop, uop: Uop) -> Nichts:
                     "equal sizes in bytecodes.c und optimizer_bytecodes.c "
                     f"({orig.size!r} != {new.size!r})"
                 )
-                raise analysis_error(msg, override.body.open)
+                wirf analysis_error(msg, override.body.open)
 
 
 def type_name(var: StackItem) -> str:
@@ -174,7 +174,7 @@ klasse OptimizerEmitter(Emitter):
                 breche
 
         wenn len(input_identifiers) == 0:
-            raise analysis_error(
+            wirf analysis_error(
                 "To evaluate an operation als pure, it must have at least 1 input",
                 tkn
             )
@@ -183,7 +183,7 @@ klasse OptimizerEmitter(Emitter):
         uop_stack_effect_input_identifers = {inp.name fuer inp in uop.stack.inputs}
         fuer input_tkn in input_identifiers:
             wenn input_tkn.text nicht in uop_stack_effect_input_identifers:
-                raise analysis_error(f"{input_tkn.text} referenced in "
+                wirf analysis_error(f"{input_tkn.text} referenced in "
                                      f"REPLACE_OPCODE_IF_EVALUATES_PURE but does nicht "
                                      f"exist in the base uop's input stack effects",
                                      input_tkn)
@@ -203,13 +203,13 @@ klasse OptimizerEmitter(Emitter):
         # Shadow the symbolic variables mit stackrefs.
         fuer inp in used_stack_inputs:
             wenn inp.is_array():
-                raise analysis_error("Pure evaluation cannot take array-like inputs.", tkn)
+                wirf analysis_error("Pure evaluation cannot take array-like inputs.", tkn)
             wenn inp.used:
                 emitter.emit(f"{stackref_type_name(inp)}{inp.name} = sym_get_const_as_stackref(ctx, {inp.name}_sym);\n")
         # Rename all output variables to stackref variant.
         fuer outp in self.original_uop.stack.outputs:
             wenn outp.is_array():
-                raise analysis_error(
+                wirf analysis_error(
                     "Array output StackRefs nicht supported fuer evaluating pure ops.",
                     self.original_uop.body.open
                 )
@@ -281,7 +281,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
                 self._replacers[tkn.text](tkn, tkn_iter, uop, storage, inst)
             sonst:
                 out.emit(tkn)
-        raise analysis_error(f"Expecting {end}. Reached end of file", tkn)
+        wirf analysis_error(f"Expecting {end}. Reached end of file", tkn)
 
     def emit_stackref_override(
         self,
@@ -360,7 +360,7 @@ def write_uop(
 ) -> Nichts:
     locals: dict[str, Local] = {}
     prototype = override wenn override sonst uop
-    try:
+    versuch:
         out.start_line()
         wenn override:
             storage = Storage.for_uop(stack, prototype, out, check_liveness=Falsch)
@@ -392,8 +392,8 @@ def write_uop(
             emit_default(out, uop, stack)
             out.start_line()
             stack.flush(out)
-    except StackError als ex:
-        raise analysis_error(ex.args[0], prototype.body.open) # von Nichts
+    ausser StackError als ex:
+        wirf analysis_error(ex.args[0], prototype.body.open) # von Nichts
 
 
 SKIPS = ("_EXTENDED_ARG",)
@@ -412,7 +412,7 @@ def generate_abstract_interpreter(
     base_uop_names = set([uop.name fuer uop in base.uops.values()])
     fuer abstract_uop_name in abstract.uops:
         wenn abstract_uop_name nicht in base_uop_names:
-            raise ValueError(f"All abstract uops should override base uops, "
+            wirf ValueError(f"All abstract uops should override base uops, "
                                  "but {abstract_uop_name} is not.")
 
     fuer uop in base.uops.values():

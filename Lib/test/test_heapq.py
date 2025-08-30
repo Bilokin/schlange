@@ -69,10 +69,10 @@ klasse TestHeap:
         self.check_invariant(results)
 
         self.assertRaises(TypeError, self.module.heappush, [])
-        try:
+        versuch:
             self.assertRaises(TypeError, self.module.heappush, Nichts, Nichts)
             self.assertRaises(TypeError, self.module.heappop, Nichts)
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def test_max_push_pop(self):
@@ -143,10 +143,10 @@ klasse TestHeap:
 
     def heapiter(self, heap):
         # An iterator returning a heap's elements, smallest-first.
-        try:
+        versuch:
             waehrend 1:
                 liefere self.module.heappop(heap)
-        except IndexError:
+        ausser IndexError:
             pass
 
     def test_nbest(self):
@@ -198,10 +198,10 @@ klasse TestHeap:
 
     def heapiter_max(self, heap):
         # An iterator returning a max-heap's elements, largest-first.
-        try:
+        versuch:
             waehrend 1:
                 liefere self.module.heappop_max(heap)
-        except IndexError:
+        ausser IndexError:
             pass
 
     def test_nworst(self):
@@ -422,7 +422,7 @@ klasse LenOnly:
 klasse CmpErr:
     "Dummy element that always raises an error during comparison"
     def __eq__(self, other):
-        raise ZeroDivisionError
+        wirf ZeroDivisionError
     __ne__ = __lt__ = __le__ = __gt__ = __ge__ = __eq__
 
 def R(seqn):
@@ -445,7 +445,7 @@ klasse I:
     def __iter__(self):
         gib self
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -465,7 +465,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -495,7 +495,7 @@ klasse S:
     def __iter__(self):
         gib self
     def __next__(self):
-        raise StopIteration
+        wirf StopIteration
 
 von itertools importiere chain
 def L(seqn):

@@ -17,7 +17,7 @@ klasse BufferedFiller:
     def write(self, *data):
         fuer s in data:
             wenn len(s) > self.column:
-                raise ValueError("token is too long")
+                wirf ValueError("token is too long")
             wenn len(s) + self.clen > self.column:
                 self.flush()
             self.clen += len(s)
@@ -138,7 +138,7 @@ klasse EncodeMapWriter:
                 sowenn isinstance(c2map[v], tuple):
                     self.write_multic(c2map[v])
                 sonst:
-                    raise ValueError
+                    wirf ValueError
 
     def write_nochar(self):
         self.filler.write('N,')
@@ -169,10 +169,10 @@ klasse EncodeMapWriter:
 
 
 def open_mapping_file(path, source):
-    try:
+    versuch:
         f = open(path)
-    except IOError:
-        raise SystemExit(f'{source} is needed')
+    ausser IOError:
+        wirf SystemExit(f'{source} is needed')
     gib f
 
 

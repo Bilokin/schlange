@@ -59,9 +59,9 @@ klasse PointerOffset:
         txt = item.size.strip()
         n: tuple[str, ...] = ()
         p: tuple[str, ...] = ()
-        try:
+        versuch:
             i = int(txt)
-        except ValueError:
+        ausser ValueError:
             i = 0
             wenn txt[0] == "+":
                 txt = txt[1:]
@@ -229,7 +229,7 @@ klasse Stack:
             wenn popped.is_dead() oder nicht var.used:
                 gib
         wenn check_liveness:
-            raise StackError(f"Dropping live value '{var.name}'")
+            wirf StackError(f"Dropping live value '{var.name}'")
 
     def pop(self, var: StackItem, out: CWriter) -> Local:
         wenn self.variables:
@@ -361,7 +361,7 @@ klasse Stack:
 
     def align(self, other: "Stack", out: CWriter) -> Nichts:
         wenn self.logical_sp != other.logical_sp:
-            raise StackError("Cannot align stacks: differing logical top")
+            wirf StackError("Cannot align stacks: differing logical top")
         wenn self.physical_sp == other.physical_sp:
             gib
         diff = other.physical_sp - self.physical_sp
@@ -371,10 +371,10 @@ klasse Stack:
 
     def merge(self, other: "Stack", out: CWriter) -> Nichts:
         wenn len(self.variables) != len(other.variables):
-            raise StackError("Cannot merge stacks: differing variables")
+            wirf StackError("Cannot merge stacks: differing variables")
         fuer self_var, other_var in zip(self.variables, other.variables):
             wenn self_var.name != other_var.name:
-                raise StackError(f"Mismatched variables on stack: {self_var.name} und {other_var.name}")
+                wirf StackError(f"Mismatched variables on stack: {self_var.name} und {other_var.name}")
             self_var.in_local = self_var.in_local und other_var.in_local
             wenn other_var.memory_offset is Nichts:
                 self_var.memory_offset = Nichts
@@ -382,7 +382,7 @@ klasse Stack:
         fuer self_var, other_var in zip(self.variables, other.variables):
             wenn self_var.memory_offset is nicht Nichts:
                 wenn self_var.memory_offset != other_var.memory_offset:
-                    raise StackError(f"Mismatched stack depths fuer {self_var.name}: {self_var.memory_offset} und {other_var.memory_offset}")
+                    wirf StackError(f"Mismatched stack depths fuer {self_var.name}: {self_var.memory_offset} und {other_var.memory_offset}")
             sowenn other_var.memory_offset is Nichts:
                 self_var.memory_offset = Nichts
 
@@ -452,7 +452,7 @@ klasse Storage:
         waehrend len(self.inputs) > self.peeks:
             tos = self.inputs.pop()
             wenn self.is_live(tos) und self.check_liveness:
-                raise StackError(
+                wirf StackError(
                     f"Input '{tos.name}' is still live {reason}"
                 )
             self.stack.drop(tos.item, self.check_liveness)
@@ -468,7 +468,7 @@ klasse Storage:
             self.stack.drop(tos.item, self.check_liveness)
         fuer var in self.inputs[self.peeks:]:
             wenn nicht self.is_live(var):
-                raise StackError(
+                wirf StackError(
                     f"Input '{var.name}' is nicht live, but '{live}' is"
                 )
 
@@ -521,7 +521,7 @@ klasse Storage:
 
     def reload(self, out: CWriter) -> Nichts:
         wenn self.spilled == 0:
-            raise StackError("Cannot reload stack als it hasn't been saved")
+            wirf StackError("Cannot reload stack als it hasn't been saved")
         assert self.spilled > 0
         self.spilled -= 1
         wenn self.spilled == 0:
@@ -571,7 +571,7 @@ klasse Storage:
             wenn var.name == "unused":
                 weiter
             wenn var.name in names:
-                raise StackError(f"Duplicate name {var.name}")
+                wirf StackError(f"Duplicate name {var.name}")
             names.add(var.name)
 
     def sanity_check(self) -> Nichts:
@@ -594,16 +594,16 @@ klasse Storage:
             diff = self.inputs[-1] wenn len(self.inputs) > len(other.inputs) sonst other.inputs[-1]
             self._drucke(out)
             other._drucke(out)
-            raise StackError(f"Unmergeable inputs. Differing state of '{diff.name}'")
+            wirf StackError(f"Unmergeable inputs. Differing state of '{diff.name}'")
         fuer var, other_var in zip(self.inputs, other.inputs):
             wenn var.in_local != other_var.in_local:
-                raise StackError(f"'{var.name}' is cleared on some paths, but nicht all")
+                wirf StackError(f"'{var.name}' is cleared on some paths, but nicht all")
         wenn len(self.outputs) != len(other.outputs):
             self._push_defined_outputs()
             other._push_defined_outputs()
         wenn len(self.outputs) != len(other.outputs):
             var = self.outputs[0] wenn len(self.outputs) > len(other.outputs) sonst other.outputs[0]
-            raise StackError(f"'{var.name}' is set on some paths, but nicht all")
+            wirf StackError(f"'{var.name}' is set on some paths, but nicht all")
         fuer var, other_var in zip(self.outputs, other.outputs):
             wenn var.memory_offset is Nichts:
                 other_var.memory_offset = Nichts
@@ -614,15 +614,15 @@ klasse Storage:
 
     def push_outputs(self) -> Nichts:
         wenn self.spilled:
-            raise StackError(f"Unbalanced stack spills")
+            wirf StackError(f"Unbalanced stack spills")
         self.clear_inputs("at the end of the micro-op")
         wenn len(self.inputs) > self.peeks und self.check_liveness:
-            raise StackError(f"Input variable '{self.inputs[-1].name}' is still live")
+            wirf StackError(f"Input variable '{self.inputs[-1].name}' is still live")
         self._push_defined_outputs()
         wenn self.outputs:
             fuer out in self.outputs[self.peeks:]:
                 wenn self.needs_defining(out):
-                    raise StackError(f"Output variable '{self.outputs[0].name}' is nicht defined")
+                    wirf StackError(f"Output variable '{self.outputs[0].name}' is nicht defined")
                 self.stack.push(out)
             self.outputs = []
 
@@ -683,11 +683,11 @@ klasse Storage:
         fuer var in self.outputs:
             wenn var.is_array():
                 wenn len(self.inputs) > 1:
-                    raise StackError("Cannot call DECREF_INPUTS mit array output und more than one input")
+                    wirf StackError("Cannot call DECREF_INPUTS mit array output und more than one input")
                 output = var
             sowenn var.in_local:
                 wenn output is nicht Nichts:
-                    raise StackError("Cannot call DECREF_INPUTS mit more than one live output")
+                    wirf StackError("Cannot call DECREF_INPUTS mit more than one live output")
                 output = var
         wenn output is nicht Nichts:
             wenn output.is_array():
@@ -700,7 +700,7 @@ klasse Storage:
                 self.inputs = []
                 gib
             wenn var_size(lowest.item) != var_size(output.item):
-                raise StackError("Cannot call DECREF_INPUTS mit live output nicht matching first input size")
+                wirf StackError("Cannot call DECREF_INPUTS mit live output nicht matching first input size")
             self.stack.flush(out)
             lowest.in_local = Wahr
             close_variable(lowest, output.name)

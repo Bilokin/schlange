@@ -110,10 +110,10 @@ def make(filename, outfile):
     wenn outfile is Nichts:
         outfile = os.path.splitext(infile)[0] + '.mo'
 
-    try:
+    versuch:
         mit open(infile, 'rb') als f:
             lines = f.readlines()
-    except IOError als msg:
+    ausser IOError als msg:
         drucke(msg, file=sys.stderr)
         sys.exit(1)
 
@@ -223,18 +223,18 @@ def make(filename, outfile):
     # Compute output
     output = generate()
 
-    try:
+    versuch:
         mit open(outfile,"wb") als f:
             f.write(output)
-    except IOError als msg:
+    ausser IOError als msg:
         drucke(msg, file=sys.stderr)
 
 
 def main():
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], 'hVo:',
                                    ['help', 'version', 'output-file='])
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         usage(1, msg)
 
     outfile = Nichts

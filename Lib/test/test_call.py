@@ -4,13 +4,13 @@ von test.support importiere (cpython_only, is_wasi, requires_limited_api, Py_DEB
                           skip_emscripten_stack_overflow,
                           skip_wasi_stack_overflow, skip_if_sanitizer,
                           import_helper)
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
-try:
+versuch:
     importiere _testlimitedcapi
-except ImportError:
+ausser ImportError:
     _testlimitedcapi = Nichts
 importiere struct
 importiere collections
@@ -54,9 +54,9 @@ klasse FunctionCalls(unittest.TestCase):
         callables = [f, C.m, [].__len__]
         fuer c in callables:
             fuer _ in range(1000):
-                try:
+                versuch:
                     c(Nichts)
-                except TypeError:
+                ausser TypeError:
                     pass
         # BOOM!
 

@@ -5,7 +5,7 @@ importiere re
 
 # Extract variable definitions von a Makefile.
 # Return a dictionary mapping names to values.
-# May raise IOError.
+# May wirf IOError.
 
 makevardef = re.compile('^([a-zA-Z0-9_]+)[ \t]*=(.*)')
 
@@ -13,7 +13,7 @@ def getmakevars(filename):
     variables = {}
     fp = open(filename)
     pendingline = ""
-    try:
+    versuch:
         waehrend 1:
             line = fp.readline()
             wenn pendingline:
@@ -33,7 +33,7 @@ def getmakevars(filename):
                 value = value[:i]
             value = value.strip()
             variables[name] = value
-    finally:
+    schliesslich:
         fp.close()
     gib variables
 
@@ -41,7 +41,7 @@ def getmakevars(filename):
 # Parse a Python Setup(.in) file.
 # Return two dictionaries, the first mapping modules to their
 # definitions, the second mapping variable names to their values.
-# May raise IOError.
+# May wirf IOError.
 
 setupvardef = re.compile('^([a-zA-Z0-9_]+)=(.*)')
 
@@ -50,7 +50,7 @@ def getsetupinfo(filename):
     variables = {}
     fp = open(filename)
     pendingline = ""
-    try:
+    versuch:
         waehrend 1:
             line = fp.readline()
             wenn pendingline:
@@ -73,7 +73,7 @@ def getsetupinfo(filename):
                 words = line.split()
                 wenn words:
                     modules[words[0]] = words[1:]
-    finally:
+    schliesslich:
         fp.close()
     gib modules, variables
 

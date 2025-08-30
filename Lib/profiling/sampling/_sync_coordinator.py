@@ -47,24 +47,24 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
         ArgumentError: If arguments are invalid
     """
     wenn len(args) < 4:
-        raise ArgumentError(
+        wirf ArgumentError(
             "Insufficient arguments. Expected: <sync_port> <cwd> <target> [args...]"
         )
 
-    try:
+    versuch:
         sync_port = int(args[1])
         wenn nicht (1 <= sync_port <= 65535):
-            raise ValueError("Port out of range")
-    except ValueError als e:
-        raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") von e
+            wirf ValueError("Port out of range")
+    ausser ValueError als e:
+        wirf ArgumentError(f"Invalid sync port '{args[1]}': {e}") von e
 
     cwd = args[2]
     wenn nicht os.path.isdir(cwd):
-        raise ArgumentError(f"Working directory does nicht exist: {cwd}")
+        wirf ArgumentError(f"Working directory does nicht exist: {cwd}")
 
     target_args = args[3:]
     wenn nicht target_args:
-        raise ArgumentError("No target specified")
+        wirf ArgumentError("No target specified")
 
     gib sync_port, cwd, target_args
 
@@ -89,19 +89,19 @@ def _signal_readiness(sync_port: int) -> Nichts:
     last_error = Nichts
 
     fuer attempt in range(_MAX_RETRIES):
-        try:
+        versuch:
             # Use context manager fuer automatic cleanup
             mit socket.create_connection(("127.0.0.1", sync_port), timeout=_SOCKET_TIMEOUT) als sock:
                 sock.send(_READY_MESSAGE)
                 gib
-        except (socket.error, OSError) als e:
+        ausser (socket.error, OSError) als e:
             last_error = e
             wenn attempt < _MAX_RETRIES - 1:
                 # Exponential backoff before retry
                 time.sleep(_INITIAL_RETRY_DELAY * (2 ** attempt))
 
     # If we get here, all retries failed
-    raise SyncError(f"Failed to signal readiness after {_MAX_RETRIES} attempts: {last_error}") von last_error
+    wirf SyncError(f"Failed to signal readiness after {_MAX_RETRIES} attempts: {last_error}") von last_error
 
 
 def _setup_environment(cwd: str) -> Nichts:
@@ -114,10 +114,10 @@ def _setup_environment(cwd: str) -> Nichts:
     Raises:
         TargetError: If unable to set up environment
     """
-    try:
+    versuch:
         os.chdir(cwd)
-    except OSError als e:
-        raise TargetError(f"Failed to change to directory {cwd}: {e}") von e
+    ausser OSError als e:
+        wirf TargetError(f"Failed to change to directory {cwd}: {e}") von e
 
     # Add current directory to sys.path wenn nicht present (for module imports)
     wenn cwd nicht in sys.path:
@@ -139,15 +139,15 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
     # When running 'python -m module args', sys.argv is ["__main__.py", "args"]
     sys.argv = [f"__main__.py"] + module_args
 
-    try:
+    versuch:
         runpy.run_module(module_name, run_name="__main__", alter_sys=Wahr)
-    except ImportError als e:
-        raise TargetError(f"Module '{module_name}' nicht found: {e}") von e
-    except SystemExit:
+    ausser ImportError als e:
+        wirf TargetError(f"Module '{module_name}' nicht found: {e}") von e
+    ausser SystemExit:
         # SystemExit is normal fuer modules
         pass
-    except Exception als e:
-        raise TargetError(f"Error executing module '{module_name}': {e}") von e
+    ausser Exception als e:
+        wirf TargetError(f"Error executing module '{module_name}': {e}") von e
 
 
 def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nichts:
@@ -167,29 +167,29 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
         script_path = os.path.join(cwd, script_path)
 
     wenn nicht os.path.isfile(script_path):
-        raise TargetError(f"Script nicht found: {script_path}")
+        wirf TargetError(f"Script nicht found: {script_path}")
 
     # Replace sys.argv to match original script call
     sys.argv = [script_path] + script_args
 
-    try:
+    versuch:
         mit open(script_path, 'rb') als f:
             source_code = f.read()
 
         # Compile und execute the script
         code = compile(source_code, script_path, 'exec')
         exec(code, {'__name__': '__main__', '__file__': script_path})
-    except FileNotFoundError als e:
-        raise TargetError(f"Script file nicht found: {script_path}") von e
-    except PermissionError als e:
-        raise TargetError(f"Permission denied reading script: {script_path}") von e
-    except SyntaxError als e:
-        raise TargetError(f"Syntax error in script {script_path}: {e}") von e
-    except SystemExit:
+    ausser FileNotFoundError als e:
+        wirf TargetError(f"Script file nicht found: {script_path}") von e
+    ausser PermissionError als e:
+        wirf TargetError(f"Permission denied reading script: {script_path}") von e
+    ausser SyntaxError als e:
+        wirf TargetError(f"Syntax error in script {script_path}: {e}") von e
+    ausser SystemExit:
         # SystemExit is normal fuer scripts
         pass
-    except Exception als e:
-        raise TargetError(f"Error executing script '{script_path}': {e}") von e
+    ausser Exception als e:
+        wirf TargetError(f"Error executing script '{script_path}': {e}") von e
 
 
 def main() -> NoReturn:
@@ -200,7 +200,7 @@ def main() -> NoReturn:
     mit the sample profiler by signaling when the process is ready
     to be profiled.
     """
-    try:
+    versuch:
         # Parse und validate arguments
         sync_port, cwd, target_args = _validate_arguments(sys.argv)
 
@@ -214,7 +214,7 @@ def main() -> NoReturn:
         wenn target_args[0] == "-m":
             # Module execution
             wenn len(target_args) < 2:
-                raise ArgumentError("Module name required after -m")
+                wirf ArgumentError("Module name required after -m")
 
             module_name = target_args[1]
             module_args = target_args[2:]
@@ -225,13 +225,13 @@ def main() -> NoReturn:
             script_args = target_args[1:]
             _execute_script(script_path, script_args, cwd)
 
-    except CoordinatorError als e:
+    ausser CoordinatorError als e:
         drucke(f"Profiler coordinator error: {e}", file=sys.stderr)
         sys.exit(1)
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke("Interrupted", file=sys.stderr)
         sys.exit(1)
-    except Exception als e:
+    ausser Exception als e:
         drucke(f"Unexpected error in profiler coordinator: {e}", file=sys.stderr)
         sys.exit(1)
 

@@ -11,7 +11,7 @@ von test.support.import_helper importiere import_module
 
 # Skip this module on other interpreters, it is cpython specific:
 wenn check_impl_detail(cpython=Falsch):
-    raise unittest.SkipTest('implementation detail specific to cpython')
+    wirf unittest.SkipTest('implementation detail specific to cpython')
 
 _testinternalcapi = import_module("_testinternalcapi")
 
@@ -633,16 +633,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item[Nichts]
-                except TypeError:
+                ausser TypeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.__getitem__
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).__getitem__ = lambda self, item: Nichts
 
@@ -660,9 +660,9 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item[0]
-                except IndexError:
+                ausser IndexError:
                     pass
 
         def write(items):
@@ -688,18 +688,18 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     fuer _ in item:
                         breche
-                except ValueError:
+                ausser ValueError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     fuer _ in item:
                         breche
-                except ValueError:
+                ausser ValueError:
                     pass
 
         opname = "FOR_ITER_GEN"
@@ -741,16 +741,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 item.a = make_deferred_ref_count_obj()
 
@@ -774,16 +774,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 item.a = make_deferred_ref_count_obj()
 
@@ -804,16 +804,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.__getattribute__
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).__getattribute__ = lambda self, name: Nichts
 
@@ -858,16 +858,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.m()
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.m
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
 
@@ -889,16 +889,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.m()
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.m
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
 
@@ -919,16 +919,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.m()
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del item.m
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).m = lambda self: Nichts
 
@@ -946,9 +946,9 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.__name__
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
@@ -974,16 +974,16 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item.a
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         def write(items):
             fuer item in items:
-                try:
+                versuch:
                     del type(item).a
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 type(item).a = property(lambda self: Nichts)
 
@@ -1047,7 +1047,7 @@ klasse TestRacesDoNotCrash(TestBase):
     @requires_specialization_ft
     def test_load_global_module(self):
         wenn nicht have_dict_key_versions():
-            raise unittest.SkipTest("Low on dict key versions")
+            wirf unittest.SkipTest("Low on dict key versions")
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
@@ -1128,9 +1128,9 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     item[0] = Nichts
-                except IndexError:
+                ausser IndexError:
                     pass
 
         def write(items):
@@ -1152,9 +1152,9 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                try:
+                versuch:
                     [_] = item
-                except ValueError:
+                ausser ValueError:
                     pass
 
         def write(items):
@@ -1468,11 +1468,11 @@ klasse TestSpecializer(TestBase):
 
         # Force unspecialize
         globals()['super'] = fake_super
-        try:
+        versuch:
             # Should be unspecialized after enough calls.
             fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
                 A()
-        finally:
+        schliesslich:
             globals()['super'] = real_super
 
         # Ensure the specialized instructions are nicht present
@@ -1507,9 +1507,9 @@ klasse TestSpecializer(TestBase):
     def test_send_with(self):
         def run_async(coro):
             waehrend Wahr:
-                try:
+                versuch:
                     coro.send(Nichts)
-                except StopIteration:
+                ausser StopIteration:
                     breche
 
         klasse CM:

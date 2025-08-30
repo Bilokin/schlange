@@ -293,9 +293,9 @@ def k(x):
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             wenn lit in extra_valid_cases:
                 weiter
-            try:
+            versuch:
                 number_token(lit)
-            except tokenize.TokenError:
+            ausser tokenize.TokenError:
                 weiter
             self.assertNotEqual(number_token(lit), lit)
 
@@ -1338,7 +1338,7 @@ klasse TestDetectEncoding(TestCase):
         def readline():
             nonlocal index
             wenn index == len(lines):
-                raise StopIteration
+                wirf StopIteration
             line = lines[index]
             index += 1
             gib line
@@ -1477,7 +1477,7 @@ klasse TestDetectEncoding(TestCase):
                 self.assertEqual(found, "iso-8859-1")
 
     def test_syntaxerror_latin1(self):
-        # Issue 14629: need to raise TokenError wenn the first
+        # Issue 14629: need to wirf TokenError wenn the first
         # line(s) have non-UTF-8 characters
         lines = (
             b'drucke("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
@@ -1564,7 +1564,7 @@ klasse TestDetectEncoding(TestCase):
 
             def readline(self):
                 wenn self._index == len(lines):
-                    raise StopIteration
+                    wirf StopIteration
                 line = lines[self._index]
                 self._index += 1
                 gib line
@@ -1600,9 +1600,9 @@ klasse TestTokenize(TestCase):
             encoding_used = encoding
             out = []
             waehrend Wahr:
-                try:
+                versuch:
                     next_line = readline()
-                except StopIteration:
+                ausser StopIteration:
                     gib out
                 wenn next_line:
                     out.append(next_line)
@@ -1621,11 +1621,11 @@ klasse TestTokenize(TestCase):
         orig_c_token = tokenize_module._generate_tokens_from_c_tokenizer
         tokenize_module.detect_encoding = mock_detect_encoding
         tokenize_module._generate_tokens_from_c_tokenizer = mock__tokenize
-        try:
+        versuch:
             results = tokenize.tokenize(mock_readline)
             self.assertEqual(list(results)[1:],
                              [b'first', b'second', b'1', b'2', b'3', b'4'])
-        finally:
+        schliesslich:
             tokenize_module.detect_encoding = orig_detect_encoding
             tokenize_module._generate_tokens_from_c_tokenizer = orig_c_token
 
@@ -1774,7 +1774,7 @@ klasse TestTokenize(TestCase):
 klasse UntokenizeTest(TestCase):
 
     def test_bad_input_order(self):
-        # raise wenn previous row
+        # wirf wenn previous row
         u = tokenize.Untokenizer()
         u.prev_row = 2
         u.prev_col = 2
@@ -1782,7 +1782,7 @@ klasse UntokenizeTest(TestCase):
             u.add_whitespace((1,3))
         self.assertEqual(cm.exception.args[0],
                 'start (1,3) precedes previous end (2,2)')
-        # raise wenn previous column in row
+        # wirf wenn previous column in row
         self.assertRaises(ValueError, u.add_whitespace, (2,1))
 
     def test_backslash_continuation(self):
@@ -1996,7 +1996,7 @@ wenn 1:
                              "'b']\n")
 
     def test_backslash_continuation(self):
-        # Backslash means line continuation, except fuer comments
+        # Backslash means line continuation, ausser fuer comments
         self.check_roundtrip("x=1+\\\n"
                              "1\n"
                              "# This is a comment\\\n"
@@ -3255,10 +3255,10 @@ klasse StringPrefixTest(unittest.TestCase):
         # und lower case later.  I'm using this logic just in case
         # some uppercase-only prefix is added.
         fuer letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):
-            try:
+            versuch:
                 eval(f'{letter}""')
                 single_char_valid_prefixes.add(letter.lower())
-            except SyntaxError:
+            ausser SyntaxError:
                 pass
 
         # This logic assumes that all combinations of valid prefixes only use
@@ -3279,7 +3279,7 @@ klasse StringPrefixTest(unittest.TestCase):
                             # 'not' can never be a string prefix,
                             # because it's a valid expression: nicht ""
                             weiter
-                        try:
+                        versuch:
                             eval(f'{p}""')
 
                             # No syntax error, so p is a valid string
@@ -3287,7 +3287,7 @@ klasse StringPrefixTest(unittest.TestCase):
 
                             valid_prefixes.add(p)
                             num_at_this_length += 1
-                        except SyntaxError:
+                        ausser SyntaxError:
                             pass
             wenn num_at_this_length == 0:
                 gib valid_prefixes

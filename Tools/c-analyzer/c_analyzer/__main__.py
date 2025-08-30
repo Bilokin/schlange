@@ -186,8 +186,8 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
             drucke(f'  type unknown: {known}')
     sonst:
         wenn fmt in FORMATS:
-            raise NotImplementedError(fmt)
-        raise ValueError(f'unsupported fmt {fmt!r}')
+            wirf NotImplementedError(fmt)
+        wirf ValueError(f'unsupported fmt {fmt!r}')
     gib handle_failure, handle_after, div
 
 
@@ -382,10 +382,10 @@ def cmd_analyze(filenames, *,
                 ):
     verbosity = verbosity wenn verbosity is nicht Nichts sonst 3
 
-    try:
+    versuch:
         do_fmt = formats[fmt]
-    except KeyError:
-        raise ValueError(f'unsupported fmt {fmt!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported fmt {fmt!r}')
 
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
     filenames = filter_filenames(filenames, iter_filenames, relroot)
@@ -463,9 +463,9 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
             _datafiles.write_known(analyzed, known, extracolumns,
                                    relroot=relroot)
     sowenn datacmd == 'check':
-        raise NotImplementedError(datacmd)
+        wirf NotImplementedError(datacmd)
     sonst:
-        raise ValueError(f'unsupported data command {datacmd!r}')
+        wirf ValueError(f'unsupported data command {datacmd!r}')
 
 
 COMMANDS = {
@@ -524,10 +524,10 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
 
 
 def main(cmd, cmd_kwargs):
-    try:
+    versuch:
         run_cmd = COMMANDS[cmd][0]
-    except KeyError:
-        raise ValueError(f'unsupported cmd {cmd!r}')
+    ausser KeyError:
+        wirf ValueError(f'unsupported cmd {cmd!r}')
     run_cmd(**cmd_kwargs)
 
 

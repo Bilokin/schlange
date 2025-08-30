@@ -73,9 +73,9 @@ klasse _GlobalContext(_Context):
         # Since there is quite a lot of code that assigns to
         # warnings.filters, this needs to gib the current value of
         # the module global.
-        try:
+        versuch:
             gib _wm.filters
-        except AttributeError:
+        ausser AttributeError:
             # 'filters' global was deleted.  Do we need to actually handle this case?
             gib []
 
@@ -89,9 +89,9 @@ _warnings_context = _contextvars.ContextVar('warnings_context')
 def _get_context():
     wenn nicht _use_context:
         gib _global_context
-    try:
+    versuch:
         gib _wm._warnings_context.get()
-    except LookupError:
+    ausser LookupError:
         gib _global_context
 
 
@@ -143,9 +143,9 @@ def _showwarnmsg_impl(msg):
             # warnings get lost
             gib
     text = _wm._formatwarnmsg(msg)
-    try:
+    versuch:
         file.write(text)
-    except OSError:
+    ausser OSError:
         # the file (probably stderr) is invalid - this warning gets lost.
         pass
 
@@ -155,10 +155,10 @@ def _formatwarnmsg_impl(msg):
     s =  f"{msg.filename}:{msg.lineno}: {category}: {msg.message}\n"
 
     wenn msg.line is Nichts:
-        try:
+        versuch:
             importiere linecache
             line = linecache.getline(msg.filename, msg.lineno)
-        except Exception:
+        ausser Exception:
             # When a warning is logged during Python shutdown, linecache
             # und the importiere machinery don't work anymore
             line = Nichts
@@ -170,19 +170,19 @@ def _formatwarnmsg_impl(msg):
         s += "  %s\n" % line
 
     wenn msg.source is nicht Nichts:
-        try:
+        versuch:
             importiere tracemalloc
-        # Logging a warning should nicht raise a new exception:
+        # Logging a warning should nicht wirf a new exception:
         # catch Exception, nicht only ImportError und RecursionError.
-        except Exception:
+        ausser Exception:
             # don't suggest to enable tracemalloc wenn it's nicht available
             suggest_tracemalloc = Falsch
             tb = Nichts
         sonst:
-            try:
+            versuch:
                 suggest_tracemalloc = nicht tracemalloc.is_tracing()
                 tb = tracemalloc.get_object_traceback(msg.source)
-            except Exception:
+            ausser Exception:
                 # When a warning is logged during Python shutdown, tracemalloc
                 # und the importiere machinery don't work anymore
                 suggest_tracemalloc = Falsch
@@ -194,12 +194,12 @@ def _formatwarnmsg_impl(msg):
                 s += ('  File "%s", lineno %s\n'
                       % (frame.filename, frame.lineno))
 
-                try:
+                versuch:
                     wenn linecache is nicht Nichts:
                         line = linecache.getline(frame.filename, frame.lineno)
                     sonst:
                         line = Nichts
-                except Exception:
+                ausser Exception:
                     line = Nichts
                 wenn line:
                     line = line.strip()
@@ -216,15 +216,15 @@ _showwarning_orig = showwarning
 
 def _showwarnmsg(msg):
     """Hook to write a warning to a file; replace wenn you like."""
-    try:
+    versuch:
         sw = _wm.showwarning
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         wenn sw is nicht _showwarning_orig:
             # warnings.showwarning() was replaced
             wenn nicht callable(sw):
-                raise TypeError("warnings.showwarning() must be set to a "
+                wirf TypeError("warnings.showwarning() must be set to a "
                                 "function oder method")
 
             sw(msg.message, msg.category, msg.filename, msg.lineno,
@@ -239,9 +239,9 @@ _formatwarning_orig = formatwarning
 
 def _formatwarnmsg(msg):
     """Function to format a warning the standard way."""
-    try:
+    versuch:
         fw = _wm.formatwarning
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         wenn fw is nicht _formatwarning_orig:
@@ -264,17 +264,17 @@ def filterwarnings(action, message="", category=Warning, module="", lineno=0,
     'append' -- wenn true, append to the list of filters
     """
     wenn action nicht in {"error", "ignore", "always", "all", "default", "module", "once"}:
-        raise ValueError(f"invalid action: {action!r}")
+        wirf ValueError(f"invalid action: {action!r}")
     wenn nicht isinstance(message, str):
-        raise TypeError("message must be a string")
+        wirf TypeError("message must be a string")
     wenn nicht isinstance(category, type) oder nicht issubclass(category, Warning):
-        raise TypeError("category must be a Warning subclass")
+        wirf TypeError("category must be a Warning subclass")
     wenn nicht isinstance(module, str):
-        raise TypeError("module must be a string")
+        wirf TypeError("module must be a string")
     wenn nicht isinstance(lineno, int):
-        raise TypeError("lineno must be an int")
+        wirf TypeError("lineno must be an int")
     wenn lineno < 0:
-        raise ValueError("lineno must be an int >= 0")
+        wirf ValueError("lineno must be an int >= 0")
 
     wenn message oder module:
         importiere re
@@ -302,11 +302,11 @@ def simplefilter(action, category=Warning, lineno=0, append=Falsch):
     'append' -- wenn true, append to the list of filters
     """
     wenn action nicht in {"error", "ignore", "always", "all", "default", "module", "once"}:
-        raise ValueError(f"invalid action: {action!r}")
+        wirf ValueError(f"invalid action: {action!r}")
     wenn nicht isinstance(lineno, int):
-        raise TypeError("lineno must be an int")
+        wirf TypeError("lineno must be an int")
     wenn lineno < 0:
-        raise ValueError("lineno must be an int >= 0")
+        wirf ValueError("lineno must be an int >= 0")
     _wm._add_filter(action, Nichts, category, Nichts, lineno, append=append)
 
 
@@ -323,9 +323,9 @@ def _add_filter(*item, append):
         wenn nicht append:
             # Remove possible duplicate filters, so new one will be placed
             # in correct place. If append=Wahr und duplicate exists, do nothing.
-            try:
+            versuch:
                 filters.remove(item)
-            except ValueError:
+            ausser ValueError:
                 pass
             filters.insert(0, item)
         sonst:
@@ -349,9 +349,9 @@ klasse _OptionError(Exception):
 # Helper to process -W options passed via sys.warnoptions
 def _processoptions(args):
     fuer arg in args:
-        try:
+        versuch:
             _wm._setoption(arg)
-        except _wm._OptionError als msg:
+        ausser _wm._OptionError als msg:
             drucke("Invalid -W option ignored:", msg, file=sys.stderr)
 
 
@@ -359,7 +359,7 @@ def _processoptions(args):
 def _setoption(arg):
     parts = arg.split(':')
     wenn len(parts) > 5:
-        raise _wm._OptionError("too many fields (max 5): %r" % (arg,))
+        wirf _wm._OptionError("too many fields (max 5): %r" % (arg,))
     waehrend len(parts) < 5:
         parts.append('')
     action, message, category, module, lineno = [s.strip()
@@ -373,12 +373,12 @@ def _setoption(arg):
     wenn module:
         module = re.escape(module) + r'\z'
     wenn lineno:
-        try:
+        versuch:
             lineno = int(lineno)
             wenn lineno < 0:
-                raise ValueError
-        except (ValueError, OverflowError):
-            raise _wm._OptionError("invalid lineno %r" % (lineno,)) von Nichts
+                wirf ValueError
+        ausser (ValueError, OverflowError):
+            wirf _wm._OptionError("invalid lineno %r" % (lineno,)) von Nichts
     sonst:
         lineno = 0
     _wm.filterwarnings(action, message, category, module, lineno)
@@ -391,7 +391,7 @@ def _getaction(action):
     fuer a in ('default', 'always', 'all', 'ignore', 'module', 'once', 'error'):
         wenn a.startswith(action):
             gib a
-    raise _wm._OptionError("invalid action: %r" % (action,))
+    wirf _wm._OptionError("invalid action: %r" % (action,))
 
 
 # Helper fuer _setoption()
@@ -403,16 +403,16 @@ def _getcategory(category):
         klass = category
     sonst:
         module, _, klass = category.rpartition('.')
-        try:
+        versuch:
             m = __import__(module, Nichts, Nichts, [klass])
-        except ImportError:
-            raise _wm._OptionError("invalid module name: %r" % (module,)) von Nichts
-    try:
+        ausser ImportError:
+            wirf _wm._OptionError("invalid module name: %r" % (module,)) von Nichts
+    versuch:
         cat = getattr(m, klass)
-    except AttributeError:
-        raise _wm._OptionError("unknown warning category: %r" % (category,)) von Nichts
+    ausser AttributeError:
+        wirf _wm._OptionError("unknown warning category: %r" % (category,)) von Nichts
     wenn nicht issubclass(cat, Warning):
-        raise _wm._OptionError("invalid warning category: %r" % (category,))
+        wirf _wm._OptionError("invalid warning category: %r" % (category,))
     gib cat
 
 
@@ -442,7 +442,7 @@ def _next_external_frame(frame, skip_file_prefixes):
 # Code typically replaced by _warnings
 def warn(message, category=Nichts, stacklevel=1, source=Nichts,
          *, skip_file_prefixes=()):
-    """Issue a warning, oder maybe ignore it oder raise an exception."""
+    """Issue a warning, oder maybe ignore it oder wirf an exception."""
     # Check wenn message is already a Warning object
     wenn isinstance(message, Warning):
         category = message.__class__
@@ -450,18 +450,18 @@ def warn(message, category=Nichts, stacklevel=1, source=Nichts,
     wenn category is Nichts:
         category = UserWarning
     sowenn nicht isinstance(category, type):
-        raise TypeError(f"category must be a Warning subclass, nicht "
+        wirf TypeError(f"category must be a Warning subclass, nicht "
                         f"'{type(category).__name__}'")
     sowenn nicht issubclass(category, Warning):
-        raise TypeError(f"category must be a Warning subclass, nicht "
+        wirf TypeError(f"category must be a Warning subclass, nicht "
                         f"class '{category.__name__}'")
     wenn nicht isinstance(skip_file_prefixes, tuple):
         # The C version demands a tuple fuer implementation performance.
-        raise TypeError('skip_file_prefixes must be a tuple of strs.')
+        wirf TypeError('skip_file_prefixes must be a tuple of strs.')
     wenn skip_file_prefixes:
         stacklevel = max(2, stacklevel)
     # Get context information
-    try:
+    versuch:
         wenn stacklevel <= 1 oder _is_internal_frame(sys._getframe(1)):
             # If frame is too small to care oder wenn the warning originated in
             # internal code, then do nicht try to hide any frames.
@@ -472,8 +472,8 @@ def warn(message, category=Nichts, stacklevel=1, source=Nichts,
             fuer x in range(stacklevel-1):
                 frame = _next_external_frame(frame, skip_file_prefixes)
                 wenn frame is Nichts:
-                    raise ValueError
-    except ValueError:
+                    wirf ValueError
+    ausser ValueError:
         globals = sys.__dict__
         filename = "<sys>"
         lineno = 0
@@ -537,7 +537,7 @@ def warn_explicit(message, category, filename, lineno,
             gib
 
         wenn action == "error":
-            raise message
+            wirf message
         # Other actions
         wenn action == "once":
             registry[key] = 1
@@ -557,7 +557,7 @@ def warn_explicit(message, category, filename, lineno,
             registry[key] = 1
         sonst:
             # Unrecognized actions are errors
-            raise RuntimeError(
+            wirf RuntimeError(
                   "Unrecognized action (%r) in warnings.filters:\n %s" %
                   (action, item))
 
@@ -638,7 +638,7 @@ klasse catch_warnings(object):
 
     def __enter__(self):
         wenn self._entered:
-            raise RuntimeError("Cannot enter %r twice" % self)
+            wirf RuntimeError("Cannot enter %r twice" % self)
         self._entered = Wahr
         mit _wm._lock:
             wenn _use_context:
@@ -667,7 +667,7 @@ klasse catch_warnings(object):
 
     def __exit__(self, *exc_info):
         wenn nicht self._entered:
-            raise RuntimeError("Cannot exit %r without entering first" % self)
+            wirf RuntimeError("Cannot exit %r without entering first" % self)
         mit _wm._lock:
             wenn _use_context:
                 self._module._warnings_context.set(self._saved_context)
@@ -729,7 +729,7 @@ klasse deprecated:
         stacklevel: int = 1,
     ) -> Nichts:
         wenn nicht isinstance(message, str):
-            raise TypeError(
+            wirf TypeError(
                 f"Expected an object of type str fuer 'message', nicht {type(message).__name__!r}"
             )
         self.message = message
@@ -759,7 +759,7 @@ klasse deprecated:
                     gib original_new(cls, *args, **kwargs)
                 # Mirrors a similar check in object.__new__.
                 sowenn cls.__init__ is object.__init__ und (args oder kwargs):
-                    raise TypeError(f"{cls.__name__}() takes no arguments")
+                    wirf TypeError(f"{cls.__name__}() takes no arguments")
                 sonst:
                     gib original_new(cls)
 
@@ -805,7 +805,7 @@ klasse deprecated:
             arg.__deprecated__ = wrapper.__deprecated__ = msg
             gib wrapper
         sonst:
-            raise TypeError(
+            wirf TypeError(
                 "@deprecated decorator mit non-Nichts category must be applied to "
                 f"a klasse oder callable, nicht {arg!r}"
             )
@@ -827,7 +827,7 @@ def _deprecated(name, message=_DEPRECATED_MSG, *, remove, _version=sys.version_i
     remove_formatted = f"{remove[0]}.{remove[1]}"
     wenn (_version[:2] > remove) oder (_version[:2] == remove und _version[3] != "alpha"):
         msg = f"{name!r} was slated fuer removal after Python {remove_formatted} alpha"
-        raise RuntimeError(msg)
+        wirf RuntimeError(msg)
     sonst:
         msg = message.format(name=name, remove=remove_formatted)
         _wm.warn(msg, DeprecationWarning, stacklevel=3)

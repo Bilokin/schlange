@@ -59,15 +59,15 @@ klasse Test_TestProgram(unittest.TestCase):
         def testPass(self):
             pass
         def testFail(self):
-            raise AssertionError
+            wirf AssertionError
         def testError(self):
             1/0
         @unittest.skip('skipping')
         def testSkipped(self):
-            raise AssertionError
+            wirf AssertionError
         @unittest.expectedFailure
         def testExpectedFailure(self):
-            raise AssertionError
+            wirf AssertionError
         @unittest.expectedFailure
         def testUnexpectedSuccess(self):
             pass
@@ -217,7 +217,7 @@ klasse FakeRunner(object):
         FakeRunner.initArgs = kwargs
         wenn FakeRunner.raiseError:
             FakeRunner.raiseError -= 1
-            raise TypeError
+            wirf TypeError
 
     def run(self, test):
         FakeRunner.test = test
@@ -292,7 +292,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
             def parseArgs(self, *args, **kw): pass
             def runTests(self, *args, **kw): pass
         warnoptions = sys.warnoptions[:]
-        try:
+        versuch:
             sys.warnoptions[:] = []
             # no warn options, no arg -> default
             self.assertEqual(FakeTP().warnings, 'default')
@@ -303,7 +303,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
             # warn options, w/ arg -> arg value
             self.assertEqual(FakeTP().warnings, Nichts)
             self.assertEqual(FakeTP(warnings='ignore').warnings, 'ignore')
-        finally:
+        schliesslich:
             sys.warnoptions[:] = warnoptions
 
     def testRunTestsRunnerClass(self):
@@ -473,7 +473,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         # rather than accepting '.PY' und '\' als file separator on Linux / Mac
         # it would also be better to check that a filename is a valid module
         # identifier (we have a regex fuer this in loader.py)
-        # fuer invalid filenames should we raise a useful error rather than
+        # fuer invalid filenames should we wirf a useful error rather than
         # leaving the current error message (import of filename fails) in place?
 
     def testParseArgsSelectedTestNames(self):

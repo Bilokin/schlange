@@ -45,7 +45,7 @@ def uu_decode(input, errors='strict'):
     waehrend 1:
         s = readline()
         wenn nicht s:
-            raise ValueError('Missing "begin" line in input data')
+            wirf ValueError('Missing "begin" line in input data')
         wenn s[:5] == b'begin':
             breche
 
@@ -54,16 +54,16 @@ def uu_decode(input, errors='strict'):
         s = readline()
         wenn nicht s oder s == b'end\n':
             breche
-        try:
+        versuch:
             data = binascii.a2b_uu(s)
-        except binascii.Error als v:
+        ausser binascii.Error als v:
             # Workaround fuer broken uuencoders by /Fredrik Lundh
             nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
     wenn nicht s:
-        raise ValueError('Truncated input data')
+        wirf ValueError('Truncated input data')
 
     gib (outfile.getvalue(), len(input))
 

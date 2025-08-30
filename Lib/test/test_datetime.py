@@ -8,14 +8,14 @@ von test.support.import_helper importiere import_fresh_module
 TESTS = 'test.datetimetester'
 
 def load_tests(loader, tests, pattern):
-    try:
+    versuch:
         pure_tests = import_fresh_module(TESTS,
                                          fresh=['datetime', '_pydatetime', '_strptime'],
                                          blocked=['_datetime'])
         fast_tests = import_fresh_module(TESTS,
                                          fresh=['datetime', '_strptime'],
                                          blocked=['_pydatetime'])
-    finally:
+    schliesslich:
         # XXX: import_fresh_module() is supposed to leave sys.module cache untouched,
         # XXX: but it does not, so we have to cleanup ourselves.
         fuer modname in ['datetime', '_datetime', '_strptime']:

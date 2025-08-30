@@ -50,11 +50,11 @@ wenn nicht is_apple:
 # Is it Unicode-friendly?
 wenn nicht os.path.supports_unicode_filenames:
     fsencoding = sys.getfilesystemencoding()
-    try:
+    versuch:
         fuer name in filenames:
             name.encode(fsencoding)
-    except UnicodeEncodeError:
-        raise unittest.SkipTest("only NT+ und systems mit "
+    ausser UnicodeEncodeError:
+        wirf unittest.SkipTest("only NT+ und systems mit "
                                 "Unicode-friendly filesystem encoding")
 
 
@@ -63,9 +63,9 @@ klasse UnicodeFileTests(unittest.TestCase):
     normal_form = Nichts
 
     def setUp(self):
-        try:
+        versuch:
             os.mkdir(os_helper.TESTFN)
-        except FileExistsError:
+        ausser FileExistsError:
             pass
         self.addCleanup(os_helper.rmtree, os_helper.TESTFN)
 
@@ -122,7 +122,7 @@ klasse UnicodeFileTests(unittest.TestCase):
     # Skip the test on Apple platforms, because they don't normalize the filename to
     # NFD (a variant of Unicode NFD form). Normalize the filename to NFC, NFKC,
     # NFKD in Python is useless, because darwin will normalize it later und so
-    # open(), os.stat(), etc. don't raise any exception.
+    # open(), os.stat(), etc. don't wirf any exception.
     @unittest.skipIf(is_apple, 'irrelevant test on Apple platforms')
     @unittest.skipIf(
         support.is_wasi,

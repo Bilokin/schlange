@@ -115,7 +115,7 @@ def read_known():
 
 
 def write_known():
-    raise NotImplementedError
+    wirf NotImplementedError
     datafiles.write_known(decls, IGNORED_FILE, ['unsupported'], relroot=REPO_ROOT)
 
 
@@ -127,7 +127,7 @@ def read_ignored():
 
 
 def write_ignored():
-    raise NotImplementedError
+    wirf NotImplementedError
     _datafiles.write_ignored(variables, IGNORED_FILE, relroot=REPO_ROOT)
 
 
@@ -137,7 +137,7 @@ def analyze(filenames, *,
             ):
     wenn skip_objects:
         # XXX Set up a filter.
-        raise NotImplementedError
+        wirf NotImplementedError
 
     known = read_known()
 
@@ -183,7 +183,7 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
     wenn extra is Nichts:
         extra = {}
     sowenn 'unsupported' in extra:
-        raise NotImplementedError((decl, extra))
+        wirf NotImplementedError((decl, extra))
 
     unsupported = _check_unsupported(decl, typedeps, types, knowntypes)
     extra['unsupported'] = unsupported
@@ -193,13 +193,13 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
 
 def _check_unsupported(decl, typedeps, types, knowntypes):
     wenn typedeps is Nichts:
-        raise NotImplementedError(decl)
+        wirf NotImplementedError(decl)
 
     wenn decl.kind in (KIND.STRUCT, KIND.UNION):
         gib _check_members(decl, typedeps, types, knowntypes)
     sowenn decl.kind is KIND.ENUM:
         wenn typedeps:
-            raise NotImplementedError((decl, typedeps))
+            wirf NotImplementedError((decl, typedeps))
         gib Nichts
     sonst:
         gib _check_typedep(decl, typedeps, types, knowntypes)
@@ -207,15 +207,15 @@ def _check_unsupported(decl, typedeps, types, knowntypes):
 
 def _check_members(decl, typedeps, types, knowntypes):
     wenn isinstance(typedeps, TypeDeclaration):
-        raise NotImplementedError((decl, typedeps))
+        wirf NotImplementedError((decl, typedeps))
 
     #members = decl.members oder ()  # A forward decl has no members.
     members = decl.members
     wenn nicht members:
         # A forward decl has no members, but that shouldn't surface here..
-        raise NotImplementedError(decl)
+        wirf NotImplementedError(decl)
     wenn len(members) != len(typedeps):
-        raise NotImplementedError((decl, typedeps))
+        wirf NotImplementedError((decl, typedeps))
 
     unsupported = []
     fuer member, typedecl in zip(members, typedeps):
@@ -243,12 +243,12 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         # XXX Is this right?
         gib 'typespec (unknown)'
     sowenn nicht isinstance(typedecl, TypeDeclaration):
-        raise NotImplementedError((decl, typedecl))
+        wirf NotImplementedError((decl, typedecl))
 
     wenn isinstance(decl, Member):
         gib _check_vartype(decl, typedecl, types, knowntypes)
     sowenn nicht isinstance(decl, Declaration):
-        raise NotImplementedError(decl)
+        wirf NotImplementedError(decl)
     sowenn decl.kind is KIND.TYPEDEF:
         gib _check_vartype(decl, typedecl, types, knowntypes)
     sowenn decl.kind is KIND.VARIABLE:
@@ -261,7 +261,7 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         checked = _check_vartype(decl, typedecl, types, knowntypes)
         gib 'mutable' wenn checked is FIXED_TYPE sonst checked
     sonst:
-        raise NotImplementedError(decl)
+        wirf NotImplementedError(decl)
 
 
 def _is_kwlist(decl):
@@ -361,11 +361,11 @@ klasse Analyzed(_info.Analyzed):
     #    typedecl, extra = super()._parse_raw_result(result, extra)
     #    wenn typedecl is Nichts:
     #        gib Nichts, extra
-    #    raise NotImplementedError
+    #    wirf NotImplementedError
 
     def __init__(self, item, typedecl=Nichts, *, unsupported=Nichts, **extra):
         wenn 'unsupported' in extra:
-            raise NotImplementedError((item, typedecl, unsupported, extra))
+            wirf NotImplementedError((item, typedecl, unsupported, extra))
         wenn nicht unsupported:
             unsupported = Nichts
         sowenn isinstance(unsupported, (str, TypeDeclaration)):
@@ -379,7 +379,7 @@ klasse Analyzed(_info.Analyzed):
             self.supported = Wahr
         sowenn self.unsupported is FIXED_TYPE:
             wenn item.kind is KIND.VARIABLE:
-                raise NotImplementedError(item, typedecl, unsupported)
+                wirf NotImplementedError(item, typedecl, unsupported)
             self.supported = Wahr
         sonst:
             self.supported = nicht self.unsupported
@@ -402,13 +402,13 @@ klasse Analyzed(_info.Analyzed):
             ]
             liefere '\t'.join(parts)
         sowenn fmt == 'summary':
-            raise NotImplementedError(fmt)
+            wirf NotImplementedError(fmt)
         sowenn fmt == 'full':
             liefere von rendered
             wenn supported:
                 liefere f'\tsupported:\t{supported}'
         sonst:
-            raise NotImplementedError(fmt)
+            wirf NotImplementedError(fmt)
 
 
 klasse Analysis(_info.Analysis):
@@ -417,7 +417,7 @@ klasse Analysis(_info.Analysis):
     @classonly
     def build_item(cls, info, result=Nichts):
         wenn nicht isinstance(info, Declaration) oder info.kind nicht in KINDS:
-            raise NotImplementedError((info, result))
+            wirf NotImplementedError((info, result))
         gib super().build_item(info, result)
 
 

@@ -69,7 +69,7 @@ klasse FakeSocket:
 
     def makefile(self, mode, bufsize=Nichts):
         wenn mode != 'r' und mode != 'rb':
-            raise client.UnimplementedFileMode()
+            wirf client.UnimplementedFileMode()
         # keep the file around so we can check how much was read von it
         self.file = self.fileclass(self.text)
         self.file.close = self.file_close #nerf close ()
@@ -87,13 +87,13 @@ klasse FakeSocket:
 klasse EPipeSocket(FakeSocket):
 
     def __init__(self, text, pipe_trigger):
-        # When sendall() is called mit pipe_trigger, raise EPIPE.
+        # When sendall() is called mit pipe_trigger, wirf EPIPE.
         FakeSocket.__init__(self, text)
         self.pipe_trigger = pipe_trigger
 
     def sendall(self, data):
         wenn self.pipe_trigger in data:
-            raise OSError(errno.EPIPE, "gotcha")
+            wirf OSError(errno.EPIPE, "gotcha")
         self.data += data
 
     def close(self):
@@ -108,13 +108,13 @@ klasse NoEOFBytesIO(io.BytesIO):
     def read(self, n=-1):
         data = io.BytesIO.read(self, n)
         wenn data == b'':
-            raise AssertionError('caller tried to read past EOF')
+            wirf AssertionError('caller tried to read past EOF')
         gib data
 
     def readline(self, length=Nichts):
         data = io.BytesIO.readline(self, length)
         wenn data == b'':
-            raise AssertionError('caller tried to read past EOF')
+            wirf AssertionError('caller tried to read past EOF')
         gib data
 
 klasse FakeSocketHTTPConnection(client.HTTPConnection):
@@ -833,7 +833,7 @@ klasse BasicTest(TestCase):
 
     def test_mixed_reads(self):
         # readline() should update the remaining length, so that read() knows
-        # how much data is left und does nicht raise IncompleteRead
+        # how much data is left und does nicht wirf IncompleteRead
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 13\r\n\r\nText\r\nAnother"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -1168,16 +1168,16 @@ klasse BasicTest(TestCase):
             sock = FakeSocket(chunked_start + x)
             resp = client.HTTPResponse(sock, method="GET")
             resp.begin()
-            try:
+            versuch:
                 resp.read()
-            except client.IncompleteRead als i:
+            ausser client.IncompleteRead als i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
                 self.assertEqual(str(i), expected_message)
             sonst:
                 self.fail('IncompleteRead expected')
-            finally:
+            schliesslich:
                 resp.close()
 
     def test_readinto_chunked(self):
@@ -1211,16 +1211,16 @@ klasse BasicTest(TestCase):
             sock = FakeSocket(chunked_start + x)
             resp = client.HTTPResponse(sock, method="GET")
             resp.begin()
-            try:
+            versuch:
                 n = resp.readinto(b)
-            except client.IncompleteRead als i:
+            ausser client.IncompleteRead als i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
                 self.assertEqual(str(i), expected_message)
             sonst:
                 self.fail('IncompleteRead expected')
-            finally:
+            schliesslich:
                 resp.close()
 
     def test_chunked_head(self):
@@ -1278,9 +1278,9 @@ klasse BasicTest(TestCase):
         sock = FakeSocket('HTTP/1.1 200 OK\r\nContent-Length: 10\r\n\r\nHello\r\n')
         resp = client.HTTPResponse(sock, method="GET")
         resp.begin()
-        try:
+        versuch:
             resp.read()
-        except client.IncompleteRead als i:
+        ausser client.IncompleteRead als i:
             self.assertEqual(i.partial, b'Hello\r\n')
             self.assertEqual(repr(i),
                              "IncompleteRead(7 bytes read, 3 more expected)")
@@ -1498,14 +1498,14 @@ klasse BasicTest(TestCase):
         conn = client.HTTPConnection(*serv.getsockname())
         conn.request("CONNECT", "dummy:1234")
         response = conn.getresponse()
-        try:
+        versuch:
             self.assertEqual(response.status, client.OK)
             s = socket.socket(fileno=response.fileno())
-            try:
+            versuch:
                 s.sendall(b"proxied data\n")
-            finally:
+            schliesslich:
                 s.detach()
-        finally:
+        schliesslich:
             response.close()
             conn.close()
         thread.join()
@@ -1721,7 +1721,7 @@ klasse Readliner:
         data = []
         datalen = 0
         read = self.remainder
-        try:
+        versuch:
             waehrend Wahr:
                 idx = read.find(b'\n')
                 wenn idx != -1:
@@ -1738,9 +1738,9 @@ klasse Readliner:
             data.append(read[:idx])
             self.remainder = read[idx:]
             gib b"".join(data)
-        except:
+        ausser:
             self.remainder = b"".join(data)
-            raise
+            wirf
 
 
 klasse OfflineTest(TestCase):
@@ -1882,10 +1882,10 @@ klasse TimeoutTest(TestCase):
         # default -- use global socket timeout
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             httpConn = client.HTTPConnection(HOST, TimeoutTest.PORT)
             httpConn.connect()
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertEqual(httpConn.sock.gettimeout(), 30)
         httpConn.close()
@@ -1893,11 +1893,11 @@ klasse TimeoutTest(TestCase):
         # no timeout -- do nicht use global socket default
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             httpConn = client.HTTPConnection(HOST, TimeoutTest.PORT,
                                               timeout=Nichts)
             httpConn.connect()
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertEqual(httpConn.sock.gettimeout(), Nichts)
         httpConn.close()
@@ -1949,7 +1949,7 @@ klasse PersistenceTest(TestCase):
             def readinto(buffer):
                 size = io.BytesIO.readinto(stream, buffer)
                 wenn size == 0:
-                    raise ConnectionResetError()
+                    wirf ConnectionResetError()
                 gib size
             stream.readinto = readinto
             gib io.BufferedReader(stream)
@@ -2043,12 +2043,12 @@ klasse HTTPSTest(TestCase):
             self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
             self.assertEqual(context.check_hostname, Wahr)
             context.load_verify_locations(CERT_selfsigned_pythontestdotnet)
-            try:
+            versuch:
                 h = client.HTTPSConnection(selfsigned_pythontestdotnet, 443,
                                            context=context)
                 h.request('GET', '/')
                 resp = h.getresponse()
-            except ssl.SSLError als ssl_err:
+            ausser ssl.SSLError als ssl_err:
                 ssl_err_str = str(ssl_err)
                 # In the error message of [SSL: CERTIFICATE_VERIFY_FAILED] on
                 # modern Linux distros (Debian Buster, etc) default OpenSSL
@@ -2056,11 +2056,11 @@ klasse HTTPSTest(TestCase):
                 # address https://bugs.python.org/issue36816 to use a proper
                 # key size on self-signed.pythontest.net.
                 wenn re.search(r'(?i)key.too.weak', ssl_err_str):
-                    raise unittest.SkipTest(
+                    wirf unittest.SkipTest(
                         f'Got {ssl_err_str} trying to connect '
                         f'to {selfsigned_pythontestdotnet}. '
                         'See https://bugs.python.org/issue36816.')
-                raise
+                wirf
             server_string = resp.getheader('server')
             resp.close()
             h.close()
@@ -2560,9 +2560,9 @@ klasse TunnelTests(TestCase):
         self.conn._create_connection = _create_connection
         self.conn.set_tunnel('destination.com')
         exc = Nichts
-        try:
+        versuch:
             self.conn.request('HEAD', '/', '')
-        except OSError als e:
+        ausser OSError als e:
             # keeping a reference to exc keeps response alive in the traceback
             exc = e
         self.assertIsNotNichts(exc)

@@ -117,7 +117,7 @@ klasse FindLoaderTests:
             self.assertEqual(spec.loader, loader)
 
     def test_sys_modules_loader_is_Nichts(self):
-        # If sys.modules[name].__spec__.loader is Nichts, raise ValueError.
+        # If sys.modules[name].__spec__.loader is Nichts, wirf ValueError.
         name = 'some_mod'
         mit test_util.uncache(name):
             module = types.ModuleType(name)
@@ -127,14 +127,14 @@ klasse FindLoaderTests:
                 self.util.find_spec(name)
 
     def test_sys_modules_loader_is_not_set(self):
-        # Should raise ValueError
+        # Should wirf ValueError
         # Issue #17099
         name = 'some_mod'
         mit test_util.uncache(name):
             module = types.ModuleType(name)
-            try:
+            versuch:
                 del module.__spec__.loader
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sys.modules[name] = module
             mit self.assertRaises(ValueError):
@@ -358,9 +358,9 @@ klasse ReloadTests:
     def test_reload_traceback_with_non_str(self):
         # gh-125519
         mit support.captured_stdout() als stdout:
-            try:
+            versuch:
                 self.init.reload("typing")
-            except TypeError als exc:
+            ausser TypeError als exc:
                 traceback.print_exception(exc, file=stdout)
             sonst:
                 self.fail("Expected TypeError to be raised")

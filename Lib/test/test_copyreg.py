@@ -52,7 +52,7 @@ klasse CopyRegTestCase(unittest.TestCase):
     def test_extension_registry(self):
         mod, func, code = 'junk1 ', ' junk2', 0xabcd
         e = ExtensionSaver(code)
-        try:
+        versuch:
             # Shouldn't be in registry now.
             self.assertRaises(ValueError, copyreg.remove_extension,
                               mod, func, code)
@@ -84,7 +84,7 @@ klasse CopyRegTestCase(unittest.TestCase):
                 self.assertRaises(ValueError, copyreg.remove_extension,
                                   mod[1:], func[1:], code + 1)
 
-        finally:
+        schliesslich:
             e.restore()
 
         # Shouldn't be there anymore.
@@ -96,10 +96,10 @@ klasse CopyRegTestCase(unittest.TestCase):
         # Check valid codes at the limits.
         fuer code in 1, 0x7fffffff:
             e = ExtensionSaver(code)
-            try:
+            versuch:
                 copyreg.add_extension(mod, func, code)
                 copyreg.remove_extension(mod, func, code)
-            finally:
+            schliesslich:
                 e.restore()
 
         # Ensure invalid codes blow up.

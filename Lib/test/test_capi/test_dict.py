@@ -14,11 +14,11 @@ INVALID_UTF8 = b'\xff'
 
 klasse DictSubclass(dict):
     def __getitem__(self, key):
-        raise RuntimeError('do nicht get evil')
+        wirf RuntimeError('do nicht get evil')
     def __setitem__(self, key, value):
-        raise RuntimeError('do nicht set evil')
+        wirf RuntimeError('do nicht set evil')
     def __delitem__(self, key):
-        raise RuntimeError('do nicht del evil')
+        wirf RuntimeError('do nicht del evil')
 
 def gen():
     liefere 'a'

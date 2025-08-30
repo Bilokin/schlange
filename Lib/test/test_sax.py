@@ -4,11 +4,11 @@ von xml.sax importiere make_parser, ContentHandler, \
                     SAXException, SAXReaderNotAvailable, SAXParseException
 importiere unittest
 von unittest importiere mock
-try:
+versuch:
     make_parser()
-except SAXReaderNotAvailable:
+ausser SAXReaderNotAvailable:
     # don't try to test this module wenn we cannot create a parser
-    raise unittest.SkipTest("no XML parsers available")
+    wirf unittest.SkipTest("no XML parsers available")
 von xml.sax.saxutils importiere XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
 von xml.sax.expatreader importiere create_parser
@@ -31,17 +31,17 @@ von test.support.os_helper importiere FakePath, TESTFN
 
 TEST_XMLFILE = findfile("test.xml", subdir="xmltestdata")
 TEST_XMLFILE_OUT = findfile("test.xml.out", subdir="xmltestdata")
-try:
+versuch:
     TEST_XMLFILE.encode("utf-8")
     TEST_XMLFILE_OUT.encode("utf-8")
-except UnicodeEncodeError:
-    raise unittest.SkipTest("filename is nicht encodable to utf8")
+ausser UnicodeEncodeError:
+    wirf unittest.SkipTest("filename is nicht encodable to utf8")
 
 supports_nonascii_filenames = Wahr
 wenn nicht os.path.supports_unicode_filenames:
-    try:
+    versuch:
         os_helper.TESTFN_UNICODE.encode(sys.getfilesystemencoding())
-    except (UnicodeError, TypeError):
+    ausser (UnicodeError, TypeError):
         # Either the file system encoding is Nichts, oder the file name
         # cannot be encoded in the file system encoding.
         supports_nonascii_filenames = Falsch
@@ -1322,10 +1322,10 @@ klasse ErrorReportingTest(unittest.TestCase):
         source.setByteStream(BytesIO(b"<foo bar foobar>"))   #ill-formed
         name = "a file name"
         source.setSystemId(name)
-        try:
+        versuch:
             parser.parse(source)
             self.fail()
-        except SAXException als e:
+        ausser SAXException als e:
             self.assertEqual(e.getSystemId(), name)
 
     def test_expat_incomplete(self):

@@ -357,7 +357,7 @@ def check_unused(stack: list[StackItem], input_names: dict[str, lexer.Token]) ->
         sowenn item.peek:
             breche
         sowenn seen_unused:
-            raise analysis_error(f"Cannot have used input '{item.name}' below an unused value on the stack", input_names[item.name])
+            wirf analysis_error(f"Cannot have used input '{item.name}' below an unused value on the stack", input_names[item.name])
 
 
 def analyze_stack(
@@ -379,7 +379,7 @@ def analyze_stack(
             pass
         sowenn input is Nichts:
             wenn output.name in input_names:
-                raise analysis_error(
+                wirf analysis_error(
                     f"Reuse of variable '{output.name}' at different stack location",
                     input_names[output.name])
         sowenn input.name == output.name:
@@ -388,7 +388,7 @@ def analyze_stack(
         sonst:
             modified = Wahr
             wenn output.name in input_names:
-                raise analysis_error(
+                wirf analysis_error(
                     f"Reuse of variable '{output.name}' at different stack location",
                     input_names[output.name])
     wenn isinstance(op, parser.InstDef):
@@ -418,7 +418,7 @@ def analyze_caches(inputs: list[parser.InputEffect]) -> list[CacheEntry]:
             wenn cache.name == "unused":
                 position = "First" wenn index == 0 sonst "Last"
                 msg = f"{position} cache entry in op is unused. Move to enclosing macro."
-                raise analysis_error(msg, cache.tokens[0])
+                wirf analysis_error(msg, cache.tokens[0])
     gib [CacheEntry(i.name, int(i.size)) fuer i in caches]
 
 
@@ -447,7 +447,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
     def visit(stmt: Stmt) -> Nichts:
         wenn isinstance(stmt, IfStmt):
             def error(tkn: lexer.Token) -> Nichts:
-                raise analysis_error("Cannot define variable in 'if' condition", tkn)
+                wirf analysis_error("Cannot define variable in 'if' condition", tkn)
             find_stores_in_tokens(stmt.condition, error)
         sowenn isinstance(stmt, SimpleStmt):
             find_stores_in_tokens(stmt.contents, res.append)
@@ -724,14 +724,14 @@ def check_escaping_calls(instr: parser.CodeDef, escapes: dict[SimpleStmt, Escapi
 
     instr.block.accept(visit)
     wenn error is nicht Nichts:
-        raise analysis_error(f"Escaping call '{error.text} in condition", error)
+        wirf analysis_error(f"Escaping call '{error.text} in condition", error)
 
 def escaping_call_in_simple_stmt(stmt: SimpleStmt, result: dict[SimpleStmt, EscapingCall]) -> Nichts:
     tokens = stmt.contents
     fuer idx, tkn in enumerate(tokens):
-        try:
+        versuch:
             next_tkn = tokens[idx+1]
-        except IndexError:
+        ausser IndexError:
             breche
         wenn next_tkn.kind != lexer.LPAREN:
             weiter
@@ -761,10 +761,10 @@ def escaping_call_in_simple_stmt(stmt: SimpleStmt, result: dict[SimpleStmt, Esca
             weiter
         wenn tkn.text in ("PyStackRef_CLOSE", "PyStackRef_XCLOSE"):
             wenn len(tokens) <= idx+2:
-                raise analysis_error("Unexpected end of file", next_tkn)
+                wirf analysis_error("Unexpected end of file", next_tkn)
             kills = tokens[idx+2]
             wenn kills.kind != "IDENTIFIER":
-                raise analysis_error(f"Expected identifier, got '{kills.text}'", kills)
+                wirf analysis_error(f"Expected identifier, got '{kills.text}'", kills)
         sonst:
             kills = Nichts
         result[stmt] = EscapingCall(stmt, tkn, kills)
@@ -897,7 +897,7 @@ def compute_properties(op: parser.CodeDef) -> Properties:
     exits_and_deopts = sum((deopts_if, exits_if, deopts_periodic))
     wenn exits_and_deopts > 1:
         tkn = op.tokens[0]
-        raise lexer.make_syntax_error(
+        wirf lexer.make_syntax_error(
             "Op cannot contain more than one of EXIT_IF, DEOPT_IF und HANDLE_PENDING_AND_DEOPT_IF",
             tkn.filename,
             tkn.line,
@@ -944,9 +944,9 @@ def expand(items: list[StackItem], oparg: int) -> list[StackItem]:
             index = i
     wenn index < 0:
         gib items
-    try:
+    versuch:
         count = int(eval(items[index].size.replace("oparg", str(oparg))))
-    except ValueError:
+    ausser ValueError:
         gib items
     gib items[:index] + [
         StackItem(items[index].name + f"_{i}", "", items[index].peek, items[index].used) fuer i in range(count)
@@ -1010,7 +1010,7 @@ def add_op(op: parser.InstDef, uops: dict[str, Uop]) -> Nichts:
     assert op.kind == "op"
     wenn op.name in uops:
         wenn "override" nicht in op.annotations:
-            raise override_error(
+            wirf override_error(
                 op.name, op.context, uops[op.name].context, op.tokens[0]
             )
     uops[op.name] = make_uop(op.name, op, op.inputs, uops)
@@ -1064,7 +1064,7 @@ def add_macro(
                     parts.append(Flush())
                 sonst:
                     wenn part.name nicht in uops:
-                        raise analysis_error(
+                        wirf analysis_error(
                             f"No Uop named {part.name}", macro.tokens[0]
                         )
                     parts.append(uops[part.name])
@@ -1218,13 +1218,13 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
             wenn size is Nichts:
                 size = inst.size
             wenn size != inst.size:
-                raise analysis_error(
+                wirf analysis_error(
                     "All instructions containing a uop mit the `INSTRUCTION_SIZE` macro "
                     f"must have the same size: {size} != {inst.size}",
                     tkn
                 )
     wenn size is Nichts:
-        raise analysis_error(f"No instruction containing the uop '{uop.name}' was found", tkn)
+        wirf analysis_error(f"No instruction containing the uop '{uop.name}' was found", tkn)
     gib size
 
 

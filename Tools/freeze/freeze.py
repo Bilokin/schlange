@@ -45,7 +45,7 @@ Options:
 -x module     Exclude the specified module. It will still be imported
               by the frozen binary wenn it exists on the host system.
 
--X module     Like -x, except the module can never be imported by
+-X module     Like -x, ausser the module can never be imported by
               the frozen binary.
 
 -E:           Freeze will fail wenn any modules can't be found (that
@@ -147,10 +147,10 @@ def main():
     waehrend pos < len(sys.argv)-1:
         # last option can nicht be "-i", so this ensures "pos+1" is in range!
         wenn sys.argv[pos] == '-i':
-            try:
+            versuch:
                 mit open(sys.argv[pos+1]) als infp:
                     options = infp.read().split()
-            except IOError als why:
+            ausser IOError als why:
                 usage("File name '%s' specified mit the -i option "
                       "can nicht be read - %s" % (sys.argv[pos+1], why) )
             # Replace the '-i' und the filename mit the read params.
@@ -159,9 +159,9 @@ def main():
         pos = pos + 1
 
     # Now parse the command line mit the extras inserted.
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], 'r:a:dEe:hmo:p:P:qs:wX:x:l:')
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         usage('getopt error: ' + str(msg))
 
     # process option arguments
@@ -317,10 +317,10 @@ def main():
     base_config_c = config_c
     base_target = target
     wenn odir und nicht os.path.isdir(odir):
-        try:
+        versuch:
             os.mkdir(odir)
             drucke("Created output directory", odir)
-        except OSError als msg:
+        ausser OSError als msg:
             usage('%s: mkdir failed (%s)' % (odir, str(msg)))
     base = ''
     wenn odir:
@@ -339,10 +339,10 @@ def main():
     # handle -s option on Windows
     wenn win:
         importiere winmakemakefile
-        try:
+        versuch:
             custom_entry_point, python_entry_is_main = \
                 winmakemakefile.get_custom_entry_point(subsystem)
-        except ValueError als why:
+        ausser ValueError als why:
             usage(why)
 
 

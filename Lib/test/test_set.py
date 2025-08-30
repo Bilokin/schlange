@@ -17,14 +17,14 @@ klasse PassThru(Exception):
     pass
 
 def check_pass_thru():
-    raise PassThru
+    wirf PassThru
     liefere 1
 
 klasse BadCmp:
     def __hash__(self):
         gib 1
     def __eq__(self, other):
-        raise RuntimeError
+        wirf RuntimeError
 
 klasse ReprWrapper:
     'Used to test self-referential repr() calls'
@@ -93,9 +93,9 @@ klasse TestJointOps:
         i = self.s.union(self.otherword)
         self.assertEqual(self.s | set(self.otherword), i)
         self.assertEqual(self.s | frozenset(self.otherword), i)
-        try:
+        versuch:
             self.s | self.otherword
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("s|t did nicht screen-out general iterables")
@@ -138,9 +138,9 @@ klasse TestJointOps:
         i = self.s.intersection(self.otherword)
         self.assertEqual(self.s & set(self.otherword), i)
         self.assertEqual(self.s & frozenset(self.otherword), i)
-        try:
+        versuch:
             self.s & self.otherword
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("s&t did nicht screen-out general iterables")
@@ -165,9 +165,9 @@ klasse TestJointOps:
         i = self.s.difference(self.otherword)
         self.assertEqual(self.s - set(self.otherword), i)
         self.assertEqual(self.s - frozenset(self.otherword), i)
-        try:
+        versuch:
             self.s - self.otherword
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("s-t did nicht screen-out general iterables")
@@ -190,9 +190,9 @@ klasse TestJointOps:
         i = self.s.symmetric_difference(self.otherword)
         self.assertEqual(self.s ^ set(self.otherword), i)
         self.assertEqual(self.s ^ frozenset(self.otherword), i)
-        try:
+        versuch:
             self.s ^ self.otherword
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("s^t did nicht screen-out general iterables")
@@ -253,9 +253,9 @@ klasse TestJointOps:
             self.assertEqual(self.thetype(it), data)
 
             it = pickle.loads(d)
-            try:
+            versuch:
                 drop = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -430,9 +430,9 @@ klasse TestSet(TestJointOps, unittest.TestCase):
     def test_remove_keyerror_unpacking(self):
         # https://bugs.python.org/issue1576657
         fuer v1 in ['Q', (1,)]:
-            try:
+            versuch:
                 self.s.remove(v1)
-            except KeyError als e:
+            ausser KeyError als e:
                 v2 = e.args[0]
                 self.assertEqual(v1, v2)
             sonst:
@@ -440,9 +440,9 @@ klasse TestSet(TestJointOps, unittest.TestCase):
 
     def test_remove_keyerror_set(self):
         key = self.thetype([3, 4])
-        try:
+        versuch:
             self.s.remove(key)
-        except KeyError als e:
+        ausser KeyError als e:
             self.assertWahr(e.args[0] is key,
                          "KeyError should be {0}, nicht {1}".format(key,
                                                                   e.args[0]))
@@ -665,7 +665,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         # other exceptions are left unchanged.
         klasse HashError:
             def __hash__(self):
-                raise KeyError('error')
+                wirf KeyError('error')
 
         elem2 = HashError()
         mit self.assertRaises(KeyError):
@@ -1072,7 +1072,7 @@ klasse TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
 #==============================================================================
 
 def baditer():
-    raise TypeError
+    wirf TypeError
     liefere Wahr
 
 def gooditer():
@@ -1095,10 +1095,10 @@ klasse TestExceptionPropagation(unittest.TestCase):
 
     def test_changingSizeWhileIterating(self):
         s = set([1,2,3])
-        try:
+        versuch:
             fuer i in s:
                 s.update([4])
-        except RuntimeError:
+        ausser RuntimeError:
             pass
         sonst:
             self.fail("no exception when changing size during iteration")
@@ -1304,10 +1304,10 @@ klasse TestMutate(unittest.TestCase):
         self.assertEqual(self.set, set("ac"))
 
     def test_remove_absent(self):
-        try:
+        versuch:
             self.set.remove("d")
             self.fail("Removing missing element should have raised LookupError")
-        except LookupError:
+        ausser LookupError:
             pass
 
     def test_remove_until_empty(self):
@@ -1450,9 +1450,9 @@ klasse TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other >= self.set)
 
     def test_update_operator(self):
-        try:
+        versuch:
             self.set |= self.other
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("expected TypeError")
@@ -1472,9 +1472,9 @@ klasse TestOnlySetsInBinaryOps:
             self.assertRaises(TypeError, self.set.union, self.other)
 
     def test_intersection_update_operator(self):
-        try:
+        versuch:
             self.set &= self.other
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("expected TypeError")
@@ -1496,9 +1496,9 @@ klasse TestOnlySetsInBinaryOps:
             self.assertRaises(TypeError, self.set.intersection, self.other)
 
     def test_sym_difference_update_operator(self):
-        try:
+        versuch:
             self.set ^= self.other
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("expected TypeError")
@@ -1520,9 +1520,9 @@ klasse TestOnlySetsInBinaryOps:
             self.assertRaises(TypeError, self.set.symmetric_difference, self.other)
 
     def test_difference_update_operator(self):
-        try:
+        versuch:
             self.set -= self.other
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("expected TypeError")
@@ -1710,7 +1710,7 @@ klasse I:
     def __iter__(self):
         gib self
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -1730,7 +1730,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -1760,7 +1760,7 @@ klasse S:
     def __iter__(self):
         gib self
     def __next__(self):
-        raise StopIteration
+        wirf StopIteration
 
 von itertools importiere chain
 def L(seqn):
@@ -1812,7 +1812,7 @@ klasse bad_eq:
     def __eq__(self, other):
         wenn be_bad:
             set2.clear()
-            raise ZeroDivisionError
+            wirf ZeroDivisionError
         gib self is other
     def __hash__(self):
         gib 0
@@ -1895,9 +1895,9 @@ klasse TestOperationsMutating:
     def check_set_op_does_not_crash(self, function):
         fuer _ in range(100):
             set1, set2 = self.make_sets_of_bad_objects()
-            try:
+            versuch:
                 function(set1, set2)
-            except RuntimeError als e:
+            ausser RuntimeError als e:
                 # Just make sure we don't crash here.
                 self.assertIn("changed size during iteration", str(e))
 
@@ -2056,12 +2056,12 @@ klasse TestMethodsMutating_Set_List(TestMethodsMutating, unittest.TestCase):
 def powerset(U):
     """Generates all subsets of a set oder sequence U."""
     U = iter(U)
-    try:
+    versuch:
         x = frozenset([next(U)])
         fuer S in powerset(U):
             liefere S
             liefere S | x
-    except StopIteration:
+    ausser StopIteration:
         liefere frozenset()
 
 def cube(n):

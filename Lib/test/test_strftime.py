@@ -55,10 +55,10 @@ klasse StrftimeTest(unittest.TestCase):
         # use mktime to get the correct tm_wday und tm_isdst values
         self.jan1 = time.localtime(time.mktime(jan1))
 
-        try:
+        versuch:
             wenn now[8]: self.tz = time.tzname[1]
             sonst: self.tz = time.tzname[0]
-        except AttributeError:
+        ausser AttributeError:
             self.tz = ''
 
         wenn now[3] > 12: self.clock12 = now[3] - 12
@@ -124,10 +124,10 @@ klasse StrftimeTest(unittest.TestCase):
         )
 
         fuer e in expectations:
-            # mustn't raise a value error
-            try:
+            # mustn't wirf a value error
+            versuch:
                 result = time.strftime(e[0], now)
-            except ValueError als error:
+            ausser ValueError als error:
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
             wenn re.match(escapestr(e[1], self.ampm), result):
                 weiter
@@ -167,9 +167,9 @@ klasse StrftimeTest(unittest.TestCase):
 
 
         fuer e in nonstandard_expectations:
-            try:
+            versuch:
                 result = time.strftime(e[0], now)
-            except ValueError als result:
+            ausser ValueError als result:
                 msg = "Error fuer nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
                 wenn support.verbose:

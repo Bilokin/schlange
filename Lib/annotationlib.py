@@ -75,7 +75,7 @@ klasse ForwardRef:
         is_class=Falsch,
     ):
         wenn nicht isinstance(arg, str):
-            raise TypeError(f"Forward reference must be a string -- got {arg!r}")
+            wirf TypeError(f"Forward reference must be a string -- got {arg!r}")
 
         self.__arg__ = arg
         self.__forward_is_argument__ = is_argument
@@ -93,7 +93,7 @@ klasse ForwardRef:
         self.__ast_node__ = Nichts
 
     def __init_subclass__(cls, /, *args, **kwds):
-        raise TypeError("Cannot subclass ForwardRef")
+        wirf TypeError("Cannot subclass ForwardRef")
 
     def evaluate(
         self,
@@ -106,7 +106,7 @@ klasse ForwardRef:
     ):
         """Evaluate the forward reference und gib the value.
 
-        If the forward reference cannot be evaluated, raise an exception.
+        If the forward reference cannot be evaluated, wirf an exception.
         """
         match format:
             case Format.STRING:
@@ -116,11 +116,11 @@ klasse ForwardRef:
             case Format.FORWARDREF:
                 is_forwardref_format = Wahr
             case _:
-                raise NotImplementedError(format)
+                wirf NotImplementedError(format)
         wenn self.__cell__ is nicht Nichts:
-            try:
+            versuch:
                 gib self.__cell__.cell_contents
-            except ValueError:
+            ausser ValueError:
                 pass
         wenn owner is Nichts:
             owner = self.__owner__
@@ -179,14 +179,14 @@ klasse ForwardRef:
             sowenn is_forwardref_format:
                 gib self
             sonst:
-                raise NameError(_NAME_ERROR_MSG.format(name=arg), name=arg)
+                wirf NameError(_NAME_ERROR_MSG.format(name=arg), name=arg)
         sonst:
             code = self.__forward_code__
-            try:
+            versuch:
                 gib eval(code, globals=globals, locals=locals)
-            except Exception:
+            ausser Exception:
                 wenn nicht is_forwardref_format:
-                    raise
+                    wirf
             new_locals = _StringifierDict(
                 {**builtins.__dict__, **locals},
                 globals=globals,
@@ -194,9 +194,9 @@ klasse ForwardRef:
                 is_class=self.__forward_is_class__,
                 format=format,
             )
-            try:
+            versuch:
                 result = eval(code, globals=globals, locals=new_locals)
-            except Exception:
+            ausser Exception:
                 gib self
             sonst:
                 new_locals.transmogrify()
@@ -232,7 +232,7 @@ klasse ForwardRef:
         wenn self.__ast_node__ is nicht Nichts:
             self.__arg__ = ast.unparse(self.__ast_node__)
             gib self.__arg__
-        raise AssertionError(
+        wirf AssertionError(
             "Attempted to access '__forward_arg__' on an uninitialized ForwardRef"
         )
 
@@ -248,10 +248,10 @@ klasse ForwardRef:
             arg_to_compile = f"({arg},)[0]"  # E.g. (*Ts,)[0] oder (*tuple[int, int],)[0]
         sonst:
             arg_to_compile = arg
-        try:
+        versuch:
             self.__code__ = compile(arg_to_compile, "<string>", "eval")
-        except SyntaxError:
-            raise SyntaxError(f"Forward reference must be an expression -- got {arg!r}")
+        ausser SyntaxError:
+            wirf SyntaxError(f"Forward reference must be an expression -- got {arg!r}")
         gib self.__code__
 
     def __eq__(self, other):
@@ -429,7 +429,7 @@ klasse _Stringifier:
         # Special case, to avoid stringifying references to class-scoped variables
         # als '__classdict__["x"]'.
         wenn self.__ast_node__ == "__classdict__":
-            raise KeyError
+            wirf KeyError
         wenn isinstance(other, tuple):
             extra_names = {}
             elts = []
@@ -472,7 +472,7 @@ klasse _Stringifier:
         gib ast.unparse(self.__ast_node__)
 
     def __format__(self, format_spec):
-        raise TypeError("Cannot stringify annotation containing string formatting")
+        wirf TypeError("Cannot stringify annotation containing string formatting")
 
     def _make_binop(op: ast.AST):
         def binop(self, other):
@@ -651,10 +651,10 @@ def call_annotate_function(annotate, format, *, owner=Nichts, _is_evaluate=Falsc
 
     """
     wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
-        raise ValueError("The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only")
-    try:
+        wirf ValueError("The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only")
+    versuch:
         gib annotate(format)
-    except NotImplementedError:
+    ausser NotImplementedError:
         pass
     wenn format == Format.STRING:
         # STRING is implemented by calling the annotate function in a special
@@ -720,9 +720,9 @@ def call_annotate_function(annotate, format, *, owner=Nichts, _is_evaluate=Falsc
             argdefs=annotate.__defaults__,
             kwdefaults=annotate.__kwdefaults__,
         )
-        try:
+        versuch:
             result = func(Format.VALUE_WITH_FAKE_GLOBALS)
-        except Exception:
+        ausser Exception:
             pass
         sonst:
             globals.transmogrify()
@@ -764,11 +764,11 @@ def call_annotate_function(annotate, format, *, owner=Nichts, _is_evaluate=Falsc
                 fuer key, val in result.items()
             }
     sowenn format == Format.VALUE:
-        # Should be impossible because __annotate__ functions must nicht raise
+        # Should be impossible because __annotate__ functions must nicht wirf
         # NotImplementedError fuer this format.
-        raise RuntimeError("annotate function does nicht support VALUE format")
+        wirf RuntimeError("annotate function does nicht support VALUE format")
     sonst:
-        raise ValueError(f"Invalid format: {format!r}")
+        wirf ValueError(f"Invalid format: {format!r}")
 
 
 def _build_closure(annotate, owner, is_class, stringifier_dict, *, allow_evaluation):
@@ -783,9 +783,9 @@ def _build_closure(annotate, owner, is_class, stringifier_dict, *, allow_evaluat
             name = "__cell__"
         new_cell = Nichts
         wenn allow_evaluation:
-            try:
+            versuch:
                 cell.cell_contents
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
                 new_cell = cell
@@ -822,9 +822,9 @@ def get_annotate_from_class_namespace(obj):
     Return Nichts wenn the namespace does nicht contain an annotate function.
     This is useful in metaclass ``__new__`` methods to retrieve the annotate function.
     """
-    try:
+    versuch:
         gib obj["__annotate__"]
-    except KeyError:
+    ausser KeyError:
         gib obj.get("__annotate_func__", Nichts)
 
 
@@ -882,7 +882,7 @@ def get_annotations(
         functools.update_wrapper()) it is first unwrapped.
     """
     wenn eval_str und format != Format.VALUE:
-        raise ValueError("eval_str=Wahr is only supported mit format=Format.VALUE")
+        wirf ValueError("eval_str=Wahr is only supported mit format=Format.VALUE")
 
     match format:
         case Format.VALUE:
@@ -894,9 +894,9 @@ def get_annotations(
                 ann = _get_and_call_annotate(obj, format)
         case Format.FORWARDREF:
             # For FORWARDREF, we use __annotations__ wenn it exists
-            try:
+            versuch:
                 ann = _get_dunder_annotations(obj)
-            except Exception:
+            ausser Exception:
                 pass
             sonst:
                 wenn ann is nicht Nichts:
@@ -919,14 +919,14 @@ def get_annotations(
             wenn ann is nicht Nichts:
                 gib annotations_to_string(ann)
         case Format.VALUE_WITH_FAKE_GLOBALS:
-            raise ValueError("The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only")
+            wirf ValueError("The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only")
         case _:
-            raise ValueError(f"Unsupported format {format!r}")
+            wirf ValueError(f"Unsupported format {format!r}")
 
     wenn ann is Nichts:
         wenn isinstance(obj, type) oder callable(obj):
             gib {}
-        raise TypeError(f"{obj!r} does nicht have annotations")
+        wirf TypeError(f"{obj!r} does nicht have annotations")
 
     wenn nicht ann:
         gib {}
@@ -1033,7 +1033,7 @@ def _get_and_call_annotate(obj, format):
     wenn annotate is nicht Nichts:
         ann = call_annotate_function(annotate, format, owner=obj)
         wenn nicht isinstance(ann, dict):
-            raise ValueError(f"{obj!r}.__annotate__ returned a non-dict")
+            wirf ValueError(f"{obj!r}.__annotate__ returned a non-dict")
         gib ann
     gib Nichts
 
@@ -1050,9 +1050,9 @@ def _get_dunder_annotations(obj):
     # von __future__ importiere annotations, where accessing the __annotations__
     # attribute directly might gib annotations fuer the wrong class.
     wenn isinstance(obj, type):
-        try:
+        versuch:
             ann = _BASE_GET_ANNOTATIONS(obj)
-        except AttributeError:
+        ausser AttributeError:
             # For static types, the descriptor raises AttributeError.
             gib Nichts
     sonst:
@@ -1061,5 +1061,5 @@ def _get_dunder_annotations(obj):
             gib Nichts
 
     wenn nicht isinstance(ann, dict):
-        raise ValueError(f"{obj!r}.__annotations__ is neither a dict nor Nichts")
+        wirf ValueError(f"{obj!r}.__annotations__ is neither a dict nor Nichts")
     gib ann

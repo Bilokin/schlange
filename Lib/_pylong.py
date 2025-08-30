@@ -14,9 +14,9 @@ maximum performance, they should use something like gmpy2."""
 
 importiere re
 importiere decimal
-try:
+versuch:
     importiere _decimal
-except ImportError:
+ausser ImportError:
     _decimal = Nichts
 
 # A number of functions have this form, where `w` is a desired number of
@@ -360,7 +360,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     # trillions of bytes (unless they're just trying to "break things").
     wenn w.bit_length() >= 46:
         # "Only" had < 53 - 46 = 7 bits to spare in IEEE-754 double.
-        raise ValueError(f"cannot convert string of len {lenS} to int")
+        wirf ValueError(f"cannot convert string of len {lenS} to int")
     mit decimal.localcontext(_unbounded_dec_context) als ctx:
         D256 = D(256)
         pow256 = compute_powers(w, D256, BYTELIM, need_hi=Wahr)
@@ -404,7 +404,7 @@ def str_to_int(s):
     # FIXME: this doesn't support the full syntax that int() supports.
     m = re.match(r'\s*([+-]?)([0-9_]+)\s*', s)
     wenn nicht m:
-        raise ValueError('invalid literal fuer int() mit base 10')
+        wirf ValueError('invalid literal fuer int() mit base 10')
     v = int_from_string(m.group(2))
     wenn m.group(1) == '-':
         v = -v
@@ -530,7 +530,7 @@ def int_divmod(a, b):
     Its time complexity is O(n**1.58), where n = #bits(a) + #bits(b).
     """
     wenn b == 0:
-        raise ZeroDivisionError('division by zero')
+        wirf ZeroDivisionError('division by zero')
     sowenn b < 0:
         q, r = int_divmod(-a, -b)
         gib q, -r

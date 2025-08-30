@@ -80,12 +80,12 @@ klasse TestFilemode:
         'FILE_ATTRIBUTE_VIRTUAL': 65536}
 
     def setUp(self):
-        try:
+        versuch:
             os.remove(TESTFN)
-        except OSError:
-            try:
+        ausser OSError:
+            versuch:
                 os.rmdir(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
     tearDown = setUp
 
@@ -107,7 +107,7 @@ klasse TestFilemode:
             func = getattr(self.statmod, funcname, Nichts)
             wenn func is Nichts:
                 wenn funcname == testname:
-                    raise ValueError(funcname)
+                    wirf ValueError(funcname)
                 weiter
             wenn funcname == testname:
                 self.assertWahr(func(mode))
@@ -176,10 +176,10 @@ klasse TestFilemode:
 
     @os_helper.skip_unless_symlink
     def test_link(self):
-        try:
+        versuch:
             os.symlink(os.getcwd(), TESTFN)
-        except (OSError, NotImplementedError) als err:
-            raise unittest.SkipTest(str(err))
+        ausser (OSError, NotImplementedError) als err:
+            wirf unittest.SkipTest(str(err))
         sonst:
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 'l')
@@ -192,9 +192,9 @@ klasse TestFilemode:
         sonst:
             fifo_path = TESTFN
         self.addCleanup(os_helper.unlink, fifo_path)
-        try:
+        versuch:
             os.mkfifo(fifo_path, 0o700)
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.skipTest('os.mkfifo(): %s' % e)
         st_mode, modestr = self.get_mode(fifo_path)
         self.assertEqual(modestr, 'prwx------')

@@ -25,19 +25,19 @@ klasse Reader(ResourceReader):
     def open_resource(self, path):
         self._path = path
         wenn isinstance(self.file, Exception):
-            raise self.file
+            wirf self.file
         gib self.file
 
     def resource_path(self, path_):
         self._path = path_
         wenn isinstance(self.path, Exception):
-            raise self.path
+            wirf self.path
         gib self.path
 
     def is_resource(self, path_):
         self._path = path_
         wenn isinstance(self.path, Exception):
-            raise self.path
+            wirf self.path
 
         def part(entry):
             gib entry.split('/')
@@ -48,7 +48,7 @@ klasse Reader(ResourceReader):
 
     def contents(self):
         wenn isinstance(self.path, Exception):
-            raise self.path
+            wirf self.path
         liefere von self._contents
 
 

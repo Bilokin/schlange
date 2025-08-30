@@ -29,9 +29,9 @@ def nonblocking(fd):
     blocking = os.get_blocking(fd)
     wenn blocking:
         os.set_blocking(fd, Falsch)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         wenn blocking:
             os.set_blocking(fd, blocking)
 
@@ -39,17 +39,17 @@ def nonblocking(fd):
 def read_file_with_timeout(fd, nbytes, timeout):
     mit nonblocking(fd):
         end = time.time() + timeout
-        try:
+        versuch:
             gib os.read(fd, nbytes)
-        except BlockingIOError:
+        ausser BlockingIOError:
             pass
         waehrend time.time() < end:
-            try:
+            versuch:
                 gib os.read(fd, nbytes)
-            except BlockingIOError:
+            ausser BlockingIOError:
                 weiter
         sonst:
-            raise TimeoutError('nothing to read')
+            wirf TimeoutError('nothing to read')
 
 
 wenn nicht WINDOWS:
@@ -57,7 +57,7 @@ wenn nicht WINDOWS:
     def read_file_with_timeout(fd, nbytes, timeout):
         r, _, _ = select.select([fd], [], [], timeout)
         wenn fd nicht in r:
-            raise TimeoutError('nothing to read')
+            wirf TimeoutError('nothing to read')
         gib os.read(fd, nbytes)
 
 
@@ -84,7 +84,7 @@ def get_current_name():
 
 
 def fail(exctype, msg=Nichts):
-    raise exctype(msg)
+    wirf exctype(msg)
 
 
 def get_current_interpid(*extra):
@@ -105,7 +105,7 @@ klasse PickleShenanigans:
     """Succeeds mit pickle.dumps(), but fails mit pickle.loads()"""
     def __init__(self, value):
         wenn value == 1:
-            raise RuntimeError("gotcha")
+            wirf RuntimeError("gotcha")
 
     def __reduce__(self):
         gib (self.__class__, (1,))
@@ -216,7 +216,7 @@ klasse InterpreterPoolExecutorTest(
     def test_init_instance_method(self):
         klasse Spam:
             def initializer(self):
-                raise NotImplementedError
+                wirf NotImplementedError
         spam = Spam()
 
         mit contextlib.redirect_stderr(io.StringIO()) als stderr:
@@ -388,9 +388,9 @@ klasse InterpreterPoolExecutorTest(
                 # Wait fuer any to be ready.
                 done = 0
                 fuer _ in range(pending):
-                    try:
+                    versuch:
                         ready.get(timeout=1)  # blocking
-                    except interpreters.QueueEmpty:
+                    ausser interpreters.QueueEmpty:
                         pass
                     sonst:
                         done += 1
@@ -423,9 +423,9 @@ klasse InterpreterPoolExecutorTest(
                 # Wait fuer any to be ready.
                 done = 0
                 fuer _ in range(pending):
-                    try:
+                    versuch:
                         ready.get(timeout=1)  # blocking
-                    except interpreters.QueueEmpty:
+                    ausser interpreters.QueueEmpty:
                         pass
                     sonst:
                         done += 1
@@ -454,11 +454,11 @@ klasse InterpreterPoolExecutorTest(
 
     def test_no_stale_references(self):
         # Weak references don't cross between interpreters.
-        raise unittest.SkipTest('not applicable')
+        wirf unittest.SkipTest('not applicable')
 
     def test_free_reference(self):
         # Weak references don't cross between interpreters.
-        raise unittest.SkipTest('not applicable')
+        wirf unittest.SkipTest('not applicable')
 
     @support.requires_subprocess()
     def test_import_interpreter_pool_executor(self):
@@ -469,17 +469,17 @@ klasse InterpreterPoolExecutorTest(
         sys.modules['_interpreters'] = Nichts
         von concurrent importiere futures
 
-        try:
+        versuch:
             futures.InterpreterPoolExecutor
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             drucke('AttributeError nicht raised!', file=sys.stderr)
             sys.exit(1)
 
-        try:
+        versuch:
             von concurrent.futures importiere InterpreterPoolExecutor
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             drucke('ImportError nicht raised!', file=sys.stderr)

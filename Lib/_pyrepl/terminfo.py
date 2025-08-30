@@ -86,10 +86,10 @@ def _get_terminfo_dirs() -> list[Path]:
     wenn terminfo:
         dirs.append(terminfo)
 
-    try:
+    versuch:
         home = Path.home()
         dirs.append(str(home / ".terminfo"))
-    except RuntimeError:
+    ausser RuntimeError:
         pass
 
     # Check TERMINFO_DIRS
@@ -117,17 +117,17 @@ def _get_terminfo_dirs() -> list[Path]:
 
 def _validate_terminal_name_or_raise(terminal_name: str) -> Nichts:
     wenn nicht isinstance(terminal_name, str):
-        raise TypeError("`terminal_name` must be a string")
+        wirf TypeError("`terminal_name` must be a string")
 
     wenn nicht terminal_name:
-        raise ValueError("`terminal_name` cannot be empty")
+        wirf ValueError("`terminal_name` cannot be empty")
 
     wenn "\x00" in terminal_name:
-        raise ValueError("NUL character found in `terminal_name`")
+        wirf ValueError("NUL character found in `terminal_name`")
 
     t = Path(terminal_name)
     wenn len(t.parts) > 1:
-        raise ValueError("`terminal_name` cannot contain path separators")
+        wirf ValueError("`terminal_name` cannot contain path separators")
 
 
 def _read_terminfo_file(terminal_name: str) -> bytes:
@@ -151,7 +151,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
         wenn path.is_file():
             gib path.read_bytes()
 
-    raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename)
+    wirf FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename)
 
 
 # Hard-coded terminal capabilities fuer common terminals
@@ -341,11 +341,11 @@ klasse TermInfo:
         wenn isinstance(self.terminal_name, bytes):
             self.terminal_name = self.terminal_name.decode("ascii")
 
-        try:
+        versuch:
             self._parse_terminfo_file(self.terminal_name)
-        except (OSError, ValueError):
+        ausser (OSError, ValueError):
             wenn nicht self.fallback:
-                raise
+                wirf
 
             term_type = _TERM_ALIASES.get(
                 self.terminal_name, self.terminal_name
@@ -368,7 +368,7 @@ klasse TermInfo:
         too_short = f"TermInfo file fuer {terminal_name!r} too short"
         offset = 12
         wenn len(data) < offset:
-            raise ValueError(too_short)
+            wirf ValueError(too_short)
 
         magic, name_size, bool_count, num_count, str_count, str_size = (
             struct.unpack("<Hhhhhh", data[:offset])
@@ -379,7 +379,7 @@ klasse TermInfo:
         sowenn magic == MAGIC32:
             number_size = 4
         sonst:
-            raise ValueError(
+            wirf ValueError(
                 f"TermInfo file fuer {terminal_name!r} uses unknown magic"
             )
 
@@ -394,12 +394,12 @@ klasse TermInfo:
             offset += 1
         offset += num_count * number_size
         wenn offset > len(data):
-            raise ValueError(too_short)
+            wirf ValueError(too_short)
 
         # Read string offsets
         end_offset = offset + 2 * str_count
         wenn offset > len(data):
-            raise ValueError(too_short)
+            wirf ValueError(too_short)
         string_offset_data = data[offset:end_offset]
         string_offsets = [
             off fuer [off] in struct.iter_unpack("<h", string_offset_data)
@@ -408,7 +408,7 @@ klasse TermInfo:
 
         # Read string table
         wenn offset + str_size > len(data):
-            raise ValueError(too_short)
+            wirf ValueError(too_short)
         string_table = data[offset : offset + str_size]
 
         # Extract strings von string table
@@ -433,7 +433,7 @@ klasse TermInfo:
         """Get terminal capability string by name.
         """
         wenn nicht isinstance(cap, str):
-            raise TypeError(f"`cap` must be a string, nicht {type(cap)}")
+            wirf TypeError(f"`cap` must be a string, nicht {type(cap)}")
 
         gib self._capabilities.get(cap)
 
@@ -453,7 +453,7 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     - %p[1-9]%{n}%+%d (parameter plus constant)
     """
     wenn nicht isinstance(cap_bytes, bytes):
-        raise TypeError(f"`cap` must be bytes, nicht {type(cap_bytes)}")
+        wirf TypeError(f"`cap` must be bytes, nicht {type(cap_bytes)}")
 
     result = cap_bytes
 

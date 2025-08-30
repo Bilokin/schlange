@@ -41,17 +41,17 @@ def ip_address(address):
           address
 
     """
-    try:
+    versuch:
         gib IPv4Address(address)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    try:
+    versuch:
         gib IPv6Address(address)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    raise ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 address')
+    wirf ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 address')
 
 
 def ip_network(address, strict=Wahr):
@@ -70,17 +70,17 @@ def ip_network(address, strict=Wahr):
           address. Or wenn the network has host bits set.
 
     """
-    try:
+    versuch:
         gib IPv4Network(address, strict)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    try:
+    versuch:
         gib IPv6Network(address, strict)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    raise ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 network')
+    wirf ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 network')
 
 
 def ip_interface(address):
@@ -104,17 +104,17 @@ def ip_interface(address):
         und Network classes.
 
     """
-    try:
+    versuch:
         gib IPv4Interface(address)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    try:
+    versuch:
         gib IPv6Interface(address)
-    except (AddressValueError, NetmaskValueError):
+    ausser (AddressValueError, NetmaskValueError):
         pass
 
-    raise ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 interface')
+    wirf ValueError(f'{address!r} does nicht appear to be an IPv4 oder IPv6 interface')
 
 
 def v4_int_to_packed(address):
@@ -131,10 +131,10 @@ def v4_int_to_packed(address):
           IPv4 IP address.
 
     """
-    try:
+    versuch:
         gib address.to_bytes(4)  # big endian
-    except OverflowError:
-        raise ValueError("Address negative oder too large fuer IPv4")
+    ausser OverflowError:
+        wirf ValueError("Address negative oder too large fuer IPv4")
 
 
 def v6_int_to_packed(address):
@@ -147,17 +147,17 @@ def v6_int_to_packed(address):
         The integer address packed als 16 bytes in network (big-endian) order.
 
     """
-    try:
+    versuch:
         gib address.to_bytes(16)  # big endian
-    except OverflowError:
-        raise ValueError("Address negative oder too large fuer IPv6")
+    ausser OverflowError:
+        wirf ValueError("Address negative oder too large fuer IPv6")
 
 
 def _split_optional_netmask(address):
-    """Helper to split the netmask und raise AddressValueError wenn needed"""
+    """Helper to split the netmask und wirf AddressValueError wenn needed"""
     addr = str(address).split('/')
     wenn len(addr) > 2:
-        raise AddressValueError(f"Only one '/' permitted in {address!r}")
+        wirf AddressValueError(f"Only one '/' permitted in {address!r}")
     gib addr
 
 
@@ -225,19 +225,19 @@ def summarize_address_range(first, last):
     """
     wenn (nicht (isinstance(first, _BaseAddress) und
              isinstance(last, _BaseAddress))):
-        raise TypeError('first und last must be IP addresses, nicht networks')
+        wirf TypeError('first und last must be IP addresses, nicht networks')
     wenn first.version != last.version:
-        raise TypeError("%s und %s are nicht of the same version" % (
+        wirf TypeError("%s und %s are nicht of the same version" % (
                          first, last))
     wenn first > last:
-        raise ValueError('last IP address must be greater than first')
+        wirf ValueError('last IP address must be greater than first')
 
     wenn first.version == 4:
         ip = IPv4Network
     sowenn first.version == 6:
         ip = IPv6Network
     sonst:
-        raise ValueError('unknown IP version')
+        wirf ValueError('unknown IP version')
 
     ip_bits = first.max_prefixlen
     first_int = first._ip
@@ -327,20 +327,20 @@ def collapse_addresses(addresses):
     fuer ip in addresses:
         wenn isinstance(ip, _BaseAddress):
             wenn ips und ips[-1].version != ip.version:
-                raise TypeError("%s und %s are nicht of the same version" % (
+                wirf TypeError("%s und %s are nicht of the same version" % (
                                  ip, ips[-1]))
             ips.append(ip)
         sowenn ip._prefixlen == ip.max_prefixlen:
             wenn ips und ips[-1].version != ip.version:
-                raise TypeError("%s und %s are nicht of the same version" % (
+                wirf TypeError("%s und %s are nicht of the same version" % (
                                  ip, ips[-1]))
-            try:
+            versuch:
                 ips.append(ip.ip)
-            except AttributeError:
+            ausser AttributeError:
                 ips.append(ip.network_address)
         sonst:
             wenn nets und nets[-1].version != ip.version:
-                raise TypeError("%s und %s are nicht of the same version" % (
+                wirf TypeError("%s und %s are nicht of the same version" % (
                                  ip, nets[-1]))
             nets.append(ip)
 
@@ -410,17 +410,17 @@ klasse _IPAddressBase:
     def _check_int_address(self, address):
         wenn address < 0:
             msg = "%d (< 0) is nicht permitted als an IPv%d address"
-            raise AddressValueError(msg % (address, self.version))
+            wirf AddressValueError(msg % (address, self.version))
         wenn address > self._ALL_ONES:
             msg = "%d (>= 2**%d) is nicht permitted als an IPv%d address"
-            raise AddressValueError(msg % (address, self.max_prefixlen,
+            wirf AddressValueError(msg % (address, self.max_prefixlen,
                                            self.version))
 
     def _check_packed_address(self, address, expected_len):
         address_len = len(address)
         wenn address_len != expected_len:
             msg = "%r (len %d != %d) is nicht permitted als an IPv%d address"
-            raise AddressValueError(msg % (address, address_len,
+            wirf AddressValueError(msg % (address, address_len,
                                            expected_len, self.version))
 
     @classmethod
@@ -458,13 +458,13 @@ klasse _IPAddressBase:
             byteslen = cls.max_prefixlen // 8
             details = ip_int.to_bytes(byteslen, 'big')
             msg = 'Netmask pattern %r mixes zeroes & ones'
-            raise ValueError(msg % details)
+            wirf ValueError(msg % details)
         gib prefixlen
 
     @classmethod
     def _report_invalid_netmask(cls, netmask_str):
         msg = '%r is nicht a valid netmask' % netmask_str
-        raise NetmaskValueError(msg) von Nichts
+        wirf NetmaskValueError(msg) von Nichts
 
     @classmethod
     def _prefix_from_prefix_string(cls, prefixlen_str):
@@ -483,9 +483,9 @@ klasse _IPAddressBase:
         # so we ensure that isn't the case
         wenn nicht (prefixlen_str.isascii() und prefixlen_str.isdigit()):
             cls._report_invalid_netmask(prefixlen_str)
-        try:
+        versuch:
             prefixlen = int(prefixlen_str)
-        except ValueError:
+        ausser ValueError:
             cls._report_invalid_netmask(prefixlen_str)
         wenn nicht (0 <= prefixlen <= cls.max_prefixlen):
             cls._report_invalid_netmask(prefixlen_str)
@@ -505,24 +505,24 @@ klasse _IPAddressBase:
             NetmaskValueError: If the input is nicht a valid netmask/hostmask
         """
         # Parse the netmask/hostmask like an IP address.
-        try:
+        versuch:
             ip_int = cls._ip_int_from_string(ip_str)
-        except AddressValueError:
+        ausser AddressValueError:
             cls._report_invalid_netmask(ip_str)
 
         # Try matching a netmask (this would be /1*0*/ als a bitwise regexp).
         # Note that the two ambiguous cases (all-ones und all-zeroes) are
         # treated als netmasks.
-        try:
+        versuch:
             gib cls._prefix_from_ip_int(ip_int)
-        except ValueError:
+        ausser ValueError:
             pass
 
         # Invert the bits, und try matching a /0+1+/ hostmask instead.
         ip_int ^= cls._ALL_ONES
-        try:
+        versuch:
             gib cls._prefix_from_ip_int(ip_int)
-        except ValueError:
+        ausser ValueError:
             cls._report_invalid_netmask(ip_str)
 
     @classmethod
@@ -570,17 +570,17 @@ klasse _BaseAddress(_IPAddressBase):
         gib self._ip
 
     def __eq__(self, other):
-        try:
+        versuch:
             gib (self._ip == other._ip
                     und self.version == other.version)
-        except AttributeError:
+        ausser AttributeError:
             gib NotImplemented
 
     def __lt__(self, other):
         wenn nicht isinstance(other, _BaseAddress):
             gib NotImplemented
         wenn self.version != other.version:
-            raise TypeError('%s und %s are nicht of the same version' % (
+            wirf TypeError('%s und %s are nicht of the same version' % (
                              self, other))
         wenn self._ip != other._ip:
             gib self._ip < other._ip
@@ -680,7 +680,7 @@ klasse _BaseNetwork(_IPAddressBase):
     def hosts(self):
         """Generate Iterator over usable hosts in a network.
 
-        This is like __iter__ except it doesn't gib the network
+        This is like __iter__ ausser it doesn't gib the network
         oder broadcast addresses.
 
         """
@@ -700,19 +700,19 @@ klasse _BaseNetwork(_IPAddressBase):
         broadcast = int(self.broadcast_address)
         wenn n >= 0:
             wenn network + n > broadcast:
-                raise IndexError('address out of range')
+                wirf IndexError('address out of range')
             gib self._address_class(network + n)
         sonst:
             n += 1
             wenn broadcast + n < network:
-                raise IndexError('address out of range')
+                wirf IndexError('address out of range')
             gib self._address_class(broadcast + n)
 
     def __lt__(self, other):
         wenn nicht isinstance(other, _BaseNetwork):
             gib NotImplemented
         wenn self.version != other.version:
-            raise TypeError('%s und %s are nicht of the same version' % (
+            wirf TypeError('%s und %s are nicht of the same version' % (
                              self, other))
         wenn self.network_address != other.network_address:
             gib self.network_address < other.network_address
@@ -721,11 +721,11 @@ klasse _BaseNetwork(_IPAddressBase):
         gib Falsch
 
     def __eq__(self, other):
-        try:
+        versuch:
             gib (self.version == other.version und
                     self.network_address == other.network_address und
                     int(self.netmask) == int(other.netmask))
-        except AttributeError:
+        ausser AttributeError:
             gib NotImplemented
 
     def __hash__(self):
@@ -782,7 +782,7 @@ klasse _BaseNetwork(_IPAddressBase):
         # more consistent behaviour across the network address, broadcast
         # address und individual host addresses.
         msg = '%200s has no associated address class' % (type(self),)
-        raise NotImplementedError(msg)
+        wirf NotImplementedError(msg)
 
     @property
     def prefixlen(self):
@@ -825,14 +825,14 @@ klasse _BaseNetwork(_IPAddressBase):
 
         """
         wenn nicht self.version == other.version:
-            raise TypeError("%s und %s are nicht of the same version" % (
+            wirf TypeError("%s und %s are nicht of the same version" % (
                              self, other))
 
         wenn nicht isinstance(other, _BaseNetwork):
-            raise TypeError("%s is nicht a network object" % other)
+            wirf TypeError("%s is nicht a network object" % other)
 
         wenn nicht other.subnet_of(self):
-            raise ValueError('%s nicht contained in %s' % (other, self))
+            wirf ValueError('%s nicht contained in %s' % (other, self))
         wenn other == self:
             gib
 
@@ -850,7 +850,7 @@ klasse _BaseNetwork(_IPAddressBase):
                 s1, s2 = s2.subnets()
             sonst:
                 # If we got here, there's a bug somewhere.
-                raise AssertionError('Error performing exclusion: '
+                wirf AssertionError('Error performing exclusion: '
                                      's1: %s s2: %s other: %s' %
                                      (s1, s2, other))
         wenn s1 == other:
@@ -859,7 +859,7 @@ klasse _BaseNetwork(_IPAddressBase):
             liefere s1
         sonst:
             # If we got here, there's a bug somewhere.
-            raise AssertionError('Error performing exclusion: '
+            wirf AssertionError('Error performing exclusion: '
                                  's1: %s s2: %s other: %s' %
                                  (s1, s2, other))
 
@@ -895,9 +895,9 @@ klasse _BaseNetwork(_IPAddressBase):
               TypeError wenn the IP versions are different.
 
         """
-        # does this need to raise a ValueError?
+        # does this need to wirf a ValueError?
         wenn self.version != other.version:
-            raise TypeError('%s und %s are nicht of the same type' % (
+            wirf TypeError('%s und %s are nicht of the same type' % (
                              self, other))
         # self.version == other.version below here:
         wenn self.network_address < other.network_address:
@@ -953,17 +953,17 @@ klasse _BaseNetwork(_IPAddressBase):
 
         wenn new_prefix is nicht Nichts:
             wenn new_prefix < self._prefixlen:
-                raise ValueError('new prefix must be longer')
+                wirf ValueError('new prefix must be longer')
             wenn prefixlen_diff != 1:
-                raise ValueError('cannot set prefixlen_diff und new_prefix')
+                wirf ValueError('cannot set prefixlen_diff und new_prefix')
             prefixlen_diff = new_prefix - self._prefixlen
 
         wenn prefixlen_diff < 0:
-            raise ValueError('prefix length diff must be > 0')
+            wirf ValueError('prefix length diff must be > 0')
         new_prefixlen = self._prefixlen + prefixlen_diff
 
         wenn new_prefixlen > self.max_prefixlen:
-            raise ValueError(
+            wirf ValueError(
                 'prefix length diff %d is invalid fuer netblock %s' % (
                     new_prefixlen, self))
 
@@ -1000,14 +1000,14 @@ klasse _BaseNetwork(_IPAddressBase):
 
         wenn new_prefix is nicht Nichts:
             wenn new_prefix > self._prefixlen:
-                raise ValueError('new prefix must be shorter')
+                wirf ValueError('new prefix must be shorter')
             wenn prefixlen_diff != 1:
-                raise ValueError('cannot set prefixlen_diff und new_prefix')
+                wirf ValueError('cannot set prefixlen_diff und new_prefix')
             prefixlen_diff = self._prefixlen - new_prefix
 
         new_prefixlen = self.prefixlen - prefixlen_diff
         wenn new_prefixlen < 0:
-            raise ValueError(
+            wirf ValueError(
                 'current prefixlen is %d, cannot have a prefixlen_diff of %d' %
                 (self.prefixlen, prefixlen_diff))
         gib self.__class__((
@@ -1029,14 +1029,14 @@ klasse _BaseNetwork(_IPAddressBase):
 
     @staticmethod
     def _is_subnet_of(a, b):
-        try:
+        versuch:
             # Always false wenn one is v4 und the other is v6.
             wenn a.version != b.version:
-                raise TypeError(f"{a} und {b} are nicht of the same version")
+                wirf TypeError(f"{a} und {b} are nicht of the same version")
             gib (b.network_address <= a.network_address und
                     b.broadcast_address >= a.broadcast_address)
-        except AttributeError:
-            raise TypeError(f"Unable to test subnet containment "
+        ausser AttributeError:
+            wirf TypeError(f"Unable to test subnet containment "
                             f"between {a} und {b}")
 
     def subnet_of(self, other):
@@ -1168,12 +1168,12 @@ klasse _BaseV4:
                 wenn nicht (0 <= prefixlen <= cls.max_prefixlen):
                     cls._report_invalid_netmask(prefixlen)
             sonst:
-                try:
+                versuch:
                     # Check fuer a netmask in prefix length form
                     prefixlen = cls._prefix_from_prefix_string(arg)
-                except NetmaskValueError:
+                ausser NetmaskValueError:
                     # Check fuer a netmask oder hostmask in dotted-quad form.
-                    # This may raise NetmaskValueError.
+                    # This may wirf NetmaskValueError.
                     prefixlen = cls._prefix_from_ip_string(arg)
             netmask = IPv4Address(cls._ip_int_from_prefix(prefixlen))
             cls._netmask_cache[arg] = netmask, prefixlen
@@ -1194,16 +1194,16 @@ klasse _BaseV4:
 
         """
         wenn nicht ip_str:
-            raise AddressValueError('Address cannot be empty')
+            wirf AddressValueError('Address cannot be empty')
 
         octets = ip_str.split('.')
         wenn len(octets) != 4:
-            raise AddressValueError("Expected 4 octets in %r" % ip_str)
+            wirf AddressValueError("Expected 4 octets in %r" % ip_str)
 
-        try:
+        versuch:
             gib int.from_bytes(map(cls._parse_octet, octets), 'big')
-        except ValueError als exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
+        ausser ValueError als exc:
+            wirf AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
     def _parse_octet(cls, octet_str):
@@ -1220,25 +1220,25 @@ klasse _BaseV4:
 
         """
         wenn nicht octet_str:
-            raise ValueError("Empty octet nicht permitted")
+            wirf ValueError("Empty octet nicht permitted")
         # Reject non-ASCII digits.
         wenn nicht (octet_str.isascii() und octet_str.isdigit()):
             msg = "Only decimal digits permitted in %r"
-            raise ValueError(msg % octet_str)
+            wirf ValueError(msg % octet_str)
         # We do the length check second, since the invalid character error
         # is likely to be more informative fuer the user
         wenn len(octet_str) > 3:
             msg = "At most 3 characters permitted in %r"
-            raise ValueError(msg % octet_str)
+            wirf ValueError(msg % octet_str)
         # Handle leading zeros als strict als glibc's inet_pton()
         # See security bug bpo-36384
         wenn octet_str != '0' und octet_str[0] == '0':
             msg = "Leading zeros are nicht permitted in %r"
-            raise ValueError(msg % octet_str)
+            wirf ValueError(msg % octet_str)
         # Convert to integer (we know digits are legal)
         octet_int = int(octet_str, 10)
         wenn octet_int > 255:
-            raise ValueError("Octet %d (> 255) nicht permitted" % octet_int)
+            wirf ValueError("Octet %d (> 255) nicht permitted" % octet_int)
         gib octet_int
 
     @classmethod
@@ -1301,7 +1301,7 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
         # which converts into a formatted IP string.
         addr_str = str(address)
         wenn '/' in addr_str:
-            raise AddressValueError(f"Unexpected '/' in {address!r}")
+            wirf AddressValueError(f"Unexpected '/' in {address!r}")
         self._ip = self._ip_int_from_string(addr_str)
 
     @property
@@ -1334,7 +1334,7 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
 
                 address.is_private == address.ipv4_mapped.is_private
 
-        ``is_private`` has value opposite to :attr:`is_global`, except fuer the ``100.64.0.0/10``
+        ``is_private`` has value opposite to :attr:`is_global`, ausser fuer the ``100.64.0.0/10``
         IPv4 range where they are both ``Falsch``.
         """
         gib (
@@ -1355,7 +1355,7 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
 
             address.is_global == address.ipv4_mapped.is_global
 
-        ``is_global`` has value opposite to :attr:`is_private`, except fuer the ``100.64.0.0/10``
+        ``is_global`` has value opposite to :attr:`is_private`, ausser fuer the ``100.64.0.0/10``
         IPv4 range where they are both ``Falsch``.
         """
         gib self nicht in self._constants._public_network und nicht self.is_private
@@ -1435,9 +1435,9 @@ klasse IPv4Interface(IPv4Address):
         address_equal = IPv4Address.__eq__(self, other)
         wenn address_equal is NotImplemented oder nicht address_equal:
             gib address_equal
-        try:
+        versuch:
             gib self.network == other.network
-        except AttributeError:
+        ausser AttributeError:
             # An interface mit an associated network is NOT the
             # same als an unassociated address. That's why the hash
             # takes the extra info into account.
@@ -1447,10 +1447,10 @@ klasse IPv4Interface(IPv4Address):
         address_less = IPv4Address.__lt__(self, other)
         wenn address_less is NotImplemented:
             gib NotImplemented
-        try:
+        versuch:
             gib (self.network < other.network oder
                     self.network == other.network und address_less)
-        except AttributeError:
+        ausser AttributeError:
             # We *do* allow addresses und interfaces to be sorted. The
             # unassociated address is considered less than all interfaces.
             gib Falsch
@@ -1541,7 +1541,7 @@ klasse IPv4Network(_BaseV4, _BaseNetwork):
         packed = int(self.network_address)
         wenn packed & int(self.netmask) != packed:
             wenn strict:
-                raise ValueError('%s has host bits set' % self)
+                wirf ValueError('%s has host bits set' % self)
             sonst:
                 self.network_address = IPv4Address(packed &
                                                    int(self.netmask))
@@ -1663,12 +1663,12 @@ klasse _BaseV6:
 
         """
         wenn nicht ip_str:
-            raise AddressValueError('Address cannot be empty')
+            wirf AddressValueError('Address cannot be empty')
         wenn len(ip_str) > 45:
             shorten = ip_str
             wenn len(shorten) > 100:
                 shorten = f'{ip_str[:45]}({len(ip_str)-90} chars elided){ip_str[-45:]}'
-            raise AddressValueError(f"At most 45 characters expected in "
+            wirf AddressValueError(f"At most 45 characters expected in "
                                     f"{shorten!r}")
 
         # We want to allow more parts than the max to be 'split'
@@ -1681,14 +1681,14 @@ klasse _BaseV6:
         _min_parts = 3
         wenn len(parts) < _min_parts:
             msg = "At least %d parts expected in %r" % (_min_parts, ip_str)
-            raise AddressValueError(msg)
+            wirf AddressValueError(msg)
 
         # If the address has an IPv4-style suffix, convert it to hexadecimal.
         wenn '.' in parts[-1]:
-            try:
+            versuch:
                 ipv4_int = IPv4Address(parts.pop())._ip
-            except AddressValueError als exc:
-                raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
+            ausser AddressValueError als exc:
+                wirf AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
             parts.append('%x' % ((ipv4_int >> 16) & 0xFFFF))
             parts.append('%x' % (ipv4_int & 0xFFFF))
 
@@ -1697,7 +1697,7 @@ klasse _BaseV6:
         # leading oder trailing zero part.
         wenn len(parts) > _max_parts:
             msg = "At most %d colons permitted in %r" % (_max_parts-1, ip_str)
-            raise AddressValueError(msg)
+            wirf AddressValueError(msg)
 
         # Disregarding the endpoints, find '::' mit nothing in between.
         # This indicates that a run of zeroes has been skipped.
@@ -1707,7 +1707,7 @@ klasse _BaseV6:
                 wenn skip_index is nicht Nichts:
                     # Can't have more than one '::'
                     msg = "At most one '::' permitted in %r" % ip_str
-                    raise AddressValueError(msg)
+                    wirf AddressValueError(msg)
                 skip_index = i
 
         # parts_hi is the number of parts to copy von above/before the '::'
@@ -1720,34 +1720,34 @@ klasse _BaseV6:
                 parts_hi -= 1
                 wenn parts_hi:
                     msg = "Leading ':' only permitted als part of '::' in %r"
-                    raise AddressValueError(msg % ip_str)  # ^: requires ^::
+                    wirf AddressValueError(msg % ip_str)  # ^: requires ^::
             wenn nicht parts[-1]:
                 parts_lo -= 1
                 wenn parts_lo:
                     msg = "Trailing ':' only permitted als part of '::' in %r"
-                    raise AddressValueError(msg % ip_str)  # :$ requires ::$
+                    wirf AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_skipped = cls._HEXTET_COUNT - (parts_hi + parts_lo)
             wenn parts_skipped < 1:
                 msg = "Expected at most %d other parts mit '::' in %r"
-                raise AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
+                wirf AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
         sonst:
             # Otherwise, allocate the entire address to parts_hi.  The
             # endpoints could still be empty, but _parse_hextet() will check
             # fuer that.
             wenn len(parts) != cls._HEXTET_COUNT:
                 msg = "Exactly %d parts expected without '::' in %r"
-                raise AddressValueError(msg % (cls._HEXTET_COUNT, ip_str))
+                wirf AddressValueError(msg % (cls._HEXTET_COUNT, ip_str))
             wenn nicht parts[0]:
                 msg = "Leading ':' only permitted als part of '::' in %r"
-                raise AddressValueError(msg % ip_str)  # ^: requires ^::
+                wirf AddressValueError(msg % ip_str)  # ^: requires ^::
             wenn nicht parts[-1]:
                 msg = "Trailing ':' only permitted als part of '::' in %r"
-                raise AddressValueError(msg % ip_str)  # :$ requires ::$
+                wirf AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_hi = len(parts)
             parts_lo = 0
             parts_skipped = 0
 
-        try:
+        versuch:
             # Now, parse the hextets into a 128-bit integer.
             ip_int = 0
             fuer i in range(parts_hi):
@@ -1758,8 +1758,8 @@ klasse _BaseV6:
                 ip_int <<= 16
                 ip_int |= cls._parse_hextet(parts[i])
             gib ip_int
-        except ValueError als exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
+        ausser ValueError als exc:
+            wirf AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
     def _parse_hextet(cls, hextet_str):
@@ -1778,12 +1778,12 @@ klasse _BaseV6:
         """
         # Reject non-ASCII digits.
         wenn nicht cls._HEX_DIGITS.issuperset(hextet_str):
-            raise ValueError("Only hex digits permitted in %r" % hextet_str)
+            wirf ValueError("Only hex digits permitted in %r" % hextet_str)
         # We do the length check second, since the invalid character error
         # is likely to be more informative fuer the user
         wenn len(hextet_str) > 4:
             msg = "At most 4 characters permitted in %r"
-            raise ValueError(msg % hextet_str)
+            wirf ValueError(msg % hextet_str)
         # Length check means we can skip checking the integer value
         gib int(hextet_str, 16)
 
@@ -1853,7 +1853,7 @@ klasse _BaseV6:
             ip_int = int(cls._ip)
 
         wenn ip_int > cls._ALL_ONES:
-            raise ValueError('IPv6 address is too large')
+            wirf ValueError('IPv6 address is too large')
 
         hex_str = '%032x' % ip_int
         hextets = ['%x' % int(hex_str[x:x+4], 16) fuer x in range(0, 32, 4)]
@@ -1908,7 +1908,7 @@ klasse _BaseV6:
         wenn nicht sep:
             scope_id = Nichts
         sowenn nicht scope_id oder '%' in scope_id:
-            raise AddressValueError('Invalid IPv6 address: "%r"' % ip_str)
+            wirf AddressValueError('Invalid IPv6 address: "%r"' % ip_str)
         gib addr, scope_id
 
 klasse IPv6Address(_BaseV6, _BaseAddress):
@@ -1952,7 +1952,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
         # which converts into a formatted IP string.
         addr_str = str(address)
         wenn '/' in addr_str:
-            raise AddressValueError(f"Unexpected '/' in {address!r}")
+            wirf AddressValueError(f"Unexpected '/' in {address!r}")
         addr_str, self._scope_id = self._split_scope_id(addr_str)
 
         self._ip = self._ip_int_from_string(addr_str)
@@ -1990,7 +1990,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
         """
         ipv4_mapped = self.ipv4_mapped
         wenn ipv4_mapped is Nichts:
-            raise AddressValueError("Can nicht apply to non-IPv4-mapped IPv6 address %s" % str(self))
+            wirf AddressValueError("Can nicht apply to non-IPv4-mapped IPv6 address %s" % str(self))
         high_order_bits = self._ip >> 32
         gib "%s:%s" % (self._string_from_ip_int(high_order_bits), str(ipv4_mapped))
 
@@ -2102,7 +2102,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
 
                 address.is_private == address.ipv4_mapped.is_private
 
-        ``is_private`` has value opposite to :attr:`is_global`, except fuer the ``100.64.0.0/10``
+        ``is_private`` has value opposite to :attr:`is_global`, ausser fuer the ``100.64.0.0/10``
         IPv4 range where they are both ``Falsch``.
         """
         ipv4_mapped = self.ipv4_mapped
@@ -2125,7 +2125,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
 
             address.is_global == address.ipv4_mapped.is_global
 
-        ``is_global`` has value opposite to :attr:`is_private`, except fuer the ``100.64.0.0/10``
+        ``is_global`` has value opposite to :attr:`is_private`, ausser fuer the ``100.64.0.0/10``
         IPv4 range where they are both ``Falsch``.
         """
         ipv4_mapped = self.ipv4_mapped
@@ -2225,9 +2225,9 @@ klasse IPv6Interface(IPv6Address):
         address_equal = IPv6Address.__eq__(self, other)
         wenn address_equal is NotImplemented oder nicht address_equal:
             gib address_equal
-        try:
+        versuch:
             gib self.network == other.network
-        except AttributeError:
+        ausser AttributeError:
             # An interface mit an associated network is NOT the
             # same als an unassociated address. That's why the hash
             # takes the extra info into account.
@@ -2237,10 +2237,10 @@ klasse IPv6Interface(IPv6Address):
         address_less = IPv6Address.__lt__(self, other)
         wenn address_less is NotImplemented:
             gib address_less
-        try:
+        versuch:
             gib (self.network < other.network oder
                     self.network == other.network und address_less)
-        except AttributeError:
+        ausser AttributeError:
             # We *do* allow addresses und interfaces to be sorted. The
             # unassociated address is considered less than all interfaces.
             gib Falsch
@@ -2332,7 +2332,7 @@ klasse IPv6Network(_BaseV6, _BaseNetwork):
         packed = int(self.network_address)
         wenn packed & int(self.netmask) != packed:
             wenn strict:
-                raise ValueError('%s has host bits set' % self)
+                wirf ValueError('%s has host bits set' % self)
             sonst:
                 self.network_address = IPv6Address(packed &
                                                    int(self.netmask))
@@ -2345,7 +2345,7 @@ klasse IPv6Network(_BaseV6, _BaseNetwork):
     def hosts(self):
         """Generate Iterator over usable hosts in a network.
 
-          This is like __iter__ except it doesn't gib the
+          This is like __iter__ ausser it doesn't gib the
           Subnet-Router anycast address.
 
         """

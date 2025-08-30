@@ -33,21 +33,21 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 
         cls.gl = cls.glu = cls.gle = Nichts
         wenn lib_gl:
-            try:
+            versuch:
                 cls.gl = CDLL(lib_gl, mode=RTLD_GLOBAL)
-            except OSError:
+            ausser OSError:
                 pass
 
         wenn lib_glu:
-            try:
+            versuch:
                 cls.glu = CDLL(lib_glu, RTLD_GLOBAL)
-            except OSError:
+            ausser OSError:
                 pass
 
         wenn lib_gle:
-            try:
+            versuch:
                 cls.gle = CDLL(lib_gle)
-            except OSError:
+            ausser OSError:
                 pass
 
     @classmethod
@@ -83,12 +83,12 @@ klasse FindLibraryLinux(unittest.TestCase):
         importiere subprocess
         importiere tempfile
 
-        try:
+        versuch:
             p = subprocess.Popen(['gcc', '--version'], stdout=subprocess.PIPE,
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
-        except OSError:
-            raise unittest.SkipTest('gcc, needed fuer test, nicht available')
+        ausser OSError:
+            wirf unittest.SkipTest('gcc, needed fuer test, nicht available')
         mit tempfile.TemporaryDirectory() als d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')

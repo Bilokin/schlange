@@ -420,7 +420,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # care about "random" hash codes.  To the contrary, we like them to be
 # very regular when possible, so that the low-order bits are als evenly
 # distributed als possible.  For integers this is easy: hash(i) == i for
-# all not-huge i except i==-1.
+# all not-huge i ausser i==-1.
 #
 # For tuples of mixed type there's really no hope of that, so we want
 # "randomish" here instead.  But getting close to pseudo-random in all

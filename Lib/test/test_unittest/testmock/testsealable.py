@@ -111,8 +111,8 @@ klasse TestSealable(unittest.TestCase):
 
         mock.seal(m)
         self.assertEqual(m.test1.test2.test3, 4)
-        m.test1.test2.test4  # Does nicht raise
-        m.test1.test2.test4 = 1  # Does nicht raise
+        m.test1.test2.test4  # Does nicht wirf
+        m.test1.test2.test4 = 1  # Does nicht wirf
 
     def test_integration_with_spec_att_definition(self):
         """You are nicht restricted when using mock mit spec"""

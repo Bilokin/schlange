@@ -432,7 +432,7 @@ klasse ConnectionTests(unittest.TestCase):
     def test_connection_limits(self):
         category = sqlite.SQLITE_LIMIT_SQL_LENGTH
         saved_limit = self.cx.getlimit(category)
-        try:
+        versuch:
             new_limit = 10
             prev_limit = self.cx.setlimit(category, new_limit)
             self.assertEqual(saved_limit, prev_limit)
@@ -440,7 +440,7 @@ klasse ConnectionTests(unittest.TestCase):
             msg = "query string is too large"
             self.assertRaisesRegex(sqlite.DataError, msg,
                                    self.cx.execute, "select 1 als '16'")
-        finally:  # restore saved limit
+        schliesslich:  # restore saved limit
             self.cx.setlimit(category, saved_limit)
 
     def test_connection_bad_limit_category(self):
@@ -652,9 +652,9 @@ klasse OpenTests(unittest.TestCase):
         path = TESTFN_UNDECODABLE
         wenn nicht path:
             self.skipTest("only works wenn there are undecodable paths")
-        try:
+        versuch:
             open(path, 'wb').close()
-        except OSError:
+        ausser OSError:
             self.skipTest(f"can't create file mit undecodable path {path!r}")
         unlink(path)
         gib path
@@ -852,7 +852,7 @@ klasse CursorTests(unittest.TestCase):
             def __len__(self):
                 1/0
             def __getitem__(slf, x):
-                raise AssertionError
+                wirf AssertionError
 
         self.cu.execute("insert into test(name) values ('foo')")
         mit self.assertRaises(ZeroDivisionError):
@@ -1003,7 +1003,7 @@ klasse CursorTests(unittest.TestCase):
 
             def __next__(self):
                 wenn self.value == 10:
-                    raise StopIteration
+                    wirf StopIteration
                 sonst:
                     self.value += 1
                     gib (self.value,)
@@ -1444,7 +1444,7 @@ klasse BlobTests(unittest.TestCase):
             pass
         mit self.assertRaisesRegex(DummyException, "reraised"):
             mit self.cx.blobopen("test", "b", 1) als blob:
-                raise DummyException("reraised")
+                wirf DummyException("reraised")
 
 
     def test_blob_closed(self):
@@ -1510,12 +1510,12 @@ klasse ThreadTests(unittest.TestCase):
     @threading_helper.reap_threads
     def _run_test(self, fn, *args, **kwds):
         def run(err):
-            try:
+            versuch:
                 fn(*args, **kwds)
-                err.append("did nicht raise ProgrammingError")
-            except sqlite.ProgrammingError:
+                err.append("did nicht wirf ProgrammingError")
+            ausser sqlite.ProgrammingError:
                 pass
-            except:
+            ausser:
                 err.append("raised wrong exception")
 
         err = []
@@ -1563,9 +1563,9 @@ klasse ThreadTests(unittest.TestCase):
     @threading_helper.reap_threads
     def test_dont_check_same_thread(self):
         def run(con, err):
-            try:
+            versuch:
                 con.execute("select 1")
-            except sqlite.Error:
+            ausser sqlite.Error:
                 err.append("multi-threading nicht allowed")
 
         mit memory_database(check_same_thread=Falsch) als con:
@@ -1873,7 +1873,7 @@ klasse MultiprocessTests(unittest.TestCase):
             cx.create_function("wait", 0, wait)
             mit cx:
                 cx.execute("create table t(t)")
-            try:
+            versuch:
                 # execute two transactions; both will try to lock the db
                 cx.executescript('''
                     -- start a transaction und wait fuer parent
@@ -1887,7 +1887,7 @@ klasse MultiprocessTests(unittest.TestCase):
                     select * von t;
                     rollback;
                 ''')
-            finally:
+            schliesslich:
                 cx.close()
         """
 
@@ -1905,24 +1905,24 @@ klasse MultiprocessTests(unittest.TestCase):
         self.assertEqual("started", proc.stdout.readline().strip())
 
         cx = sqlite.connect(TESTFN, timeout=self.CONNECTION_TIMEOUT)
-        try:  # context manager should correctly release the db lock
+        versuch:  # context manager should correctly release the db lock
             mit cx:
                 cx.execute("insert into t values('test')")
-        except sqlite.OperationalError als exc:
+        ausser sqlite.OperationalError als exc:
             proc.stdin.write(str(exc))
         sonst:
             proc.stdin.write("no error")
-        finally:
+        schliesslich:
             cx.close()
 
         # terminate child process
         self.assertIsNichts(proc.returncode)
-        try:
+        versuch:
             proc.communicate(input="end", timeout=SHORT_TIMEOUT)
-        except subprocess.TimeoutExpired:
+        ausser subprocess.TimeoutExpired:
             proc.kill()
             proc.communicate()
-            raise
+            wirf
         self.assertEqual(proc.returncode, 0)
 
 

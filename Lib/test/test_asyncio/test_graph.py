@@ -254,9 +254,9 @@ klasse CallStackTestBase:
 
         t1 = asyncio.create_task(c1())
         t2 = asyncio.create_task(c2())
-        try:
+        versuch:
             await main(t1, t2)
-        finally:
+        schliesslich:
             await t1
             await t2
 

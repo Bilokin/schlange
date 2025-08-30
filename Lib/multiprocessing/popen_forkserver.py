@@ -3,7 +3,7 @@ importiere os
 
 von .context importiere reduction, set_spawning_popen
 wenn nicht reduction.HAVE_SEND_HANDLE:
-    raise ImportError('No support fuer sending fds between processes')
+    wirf ImportError('No support fuer sending fds between processes')
 von . importiere forkserver
 von . importiere popen_fork
 von . importiere spawn
@@ -42,10 +42,10 @@ klasse Popen(popen_fork.Popen):
         prep_data = spawn.get_preparation_data(process_obj._name)
         buf = io.BytesIO()
         set_spawning_popen(self)
-        try:
+        versuch:
             reduction.dump(prep_data, buf)
             reduction.dump(process_obj, buf)
-        finally:
+        schliesslich:
             set_spawning_popen(Nichts)
 
         self.sentinel, w = forkserver.connect_to_new_process(self._fds)
@@ -64,9 +64,9 @@ klasse Popen(popen_fork.Popen):
             timeout = 0 wenn flag == os.WNOHANG sonst Nichts
             wenn nicht wait([self.sentinel], timeout):
                 gib Nichts
-            try:
+            versuch:
                 self.returncode = forkserver.read_signed(self.sentinel)
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 # This should nicht happen usually, but perhaps the forkserver
                 # process itself got killed
                 self.returncode = 255

@@ -123,9 +123,9 @@ klasse ListComprehensionTest(unittest.TestCase):
                     def get_output(moddict, name):
                         gib moddict[name]
                 newns = ns.copy() wenn ns sonst {}
-                try:
+                versuch:
                     exec_func(newcode, newns)
-                except raises als e:
+                ausser raises als e:
                     # We care about e.g. NameError vs UnboundLocalError
                     self.assertIs(type(e), raises)
                 sonst:
@@ -607,11 +607,11 @@ klasse ListComprehensionTest(unittest.TestCase):
         template = """
             value = ["ab"]
             result = snapshot = Nichts
-            try:
+            versuch:
                 result = [{func}(value) fuer value in value]
-            except ValueError:
+            ausser ValueError:
                 snapshot = value
-                raise
+                wirf
         """
         # No exception.
         code = template.format(func='len')
@@ -625,9 +625,9 @@ klasse ListComprehensionTest(unittest.TestCase):
         template = """
             value = ["ab"]
             result = snapshot = Nichts
-            try:
+            versuch:
                 result = [{func}(value) fuer value in value]
-            finally:
+            schliesslich:
                 snapshot = value
         """
         # No exception.
@@ -641,9 +641,9 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_exception_in_post_comp_call(self):
         code = """
             value = [1, Nichts]
-            try:
+            versuch:
                 [v fuer v in value].sort()
-            except TypeError:
+            ausser TypeError:
                 pass
         """
         self._check_in_scopes(code, {"value": [1, Nichts]})
@@ -719,21 +719,21 @@ klasse ListComprehensionTest(unittest.TestCase):
         # __next__ should be the iterator expression
 
         def init_raises():
-            try:
+            versuch:
                 [x fuer x in BrokenIter(init_raises=Wahr)]
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def next_raises():
-            try:
+            versuch:
                 [x fuer x in BrokenIter(next_raises=Wahr)]
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def iter_raises():
-            try:
+            versuch:
                 [x fuer x in BrokenIter(iter_raises=Wahr)]
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),

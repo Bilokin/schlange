@@ -37,16 +37,16 @@ von .readline importiere _get_reader, multiline_input, append_history_file
 
 
 _error: tuple[type[Exception], ...] | type[Exception]
-try:
+versuch:
     von .unix_console importiere _error
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     von .windows_console importiere _error
 
 def check() -> str:
     """Returns the error message wenn there is a problem initializing the state."""
-    try:
+    versuch:
         _get_reader()
-    except _error als e:
+    ausser _error als e:
         wenn term := os.environ.get("TERM", ""):
             term = f"; TERM={term}"
         gib str(str(e) oder repr(e) oder "unknown error") + term
@@ -82,9 +82,9 @@ REPL_COMMANDS = {
 def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
     # ooh, look at the hack:
     src = _strip_final_indent(unicodetext)
-    try:
+    versuch:
         code = console.compile(src, "<stdin>", "single")
-    except (OverflowError, SyntaxError, ValueError):
+    ausser (OverflowError, SyntaxError, ValueError):
         lines = src.splitlines(keepends=Wahr)
         wenn len(lines) == 1:
             gib Falsch
@@ -131,17 +131,17 @@ def run_multiline_interactive_console(
         gib Falsch
 
     waehrend Wahr:
-        try:
-            try:
+        versuch:
+            versuch:
                 sys.stdout.flush()
-            except Exception:
+            ausser Exception:
                 pass
 
             ps1 = getattr(sys, "ps1", ">>> ")
             ps2 = getattr(sys, "ps2", "... ")
-            try:
+            versuch:
                 statement = multiline_input(more_lines, ps1, ps2)
-            except EOFError:
+            ausser EOFError:
                 breche
 
             wenn maybe_run_command(statement):
@@ -150,13 +150,13 @@ def run_multiline_interactive_console(
             input_name = f"<python-input-{input_n}>"
             more = console.push(_strip_final_indent(statement), filename=input_name, _symbol="single")  # type: ignore[call-arg]
             assert nicht more
-            try:
+            versuch:
                 append_history_file()
-            except (FileNotFoundError, PermissionError, OSError) als e:
+            ausser (FileNotFoundError, PermissionError, OSError) als e:
                 warnings.warn(f"failed to open the history file fuer writing: {e}")
 
             input_n += 1
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             r = _get_reader()
             r.cmpltn_reset()
             wenn r.input_trans is r.isearch_trans:
@@ -166,12 +166,12 @@ def run_multiline_interactive_console(
             r.refresh()
             console.write("\nKeyboardInterrupt\n")
             console.resetbuffer()
-        except MemoryError:
+        ausser MemoryError:
             console.write("\nMemoryError\n")
             console.resetbuffer()
-        except SystemExit:
-            raise
-        except:
+        ausser SystemExit:
+            wirf
+        ausser:
             console.showtraceback()
             console.resetbuffer()
         wenn show_ref_count:

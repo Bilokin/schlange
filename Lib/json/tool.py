@@ -82,17 +82,17 @@ def main():
         dump_args['indent'] = Nichts
         dump_args['separators'] = ',', ':'
 
-    try:
+    versuch:
         wenn options.infile == '-':
             infile = sys.stdin
         sonst:
             infile = open(options.infile, encoding='utf-8')
-        try:
+        versuch:
             wenn options.json_lines:
                 objs = (json.loads(line) fuer line in infile)
             sonst:
                 objs = (json.load(infile),)
-        finally:
+        schliesslich:
             wenn infile is nicht sys.stdin:
                 infile.close()
 
@@ -111,12 +111,12 @@ def main():
                 fuer obj in objs:
                     json.dump(obj, outfile, **dump_args)
                     outfile.write('\n')
-    except ValueError als e:
-        raise SystemExit(e)
+    ausser ValueError als e:
+        wirf SystemExit(e)
 
 
 wenn __name__ == '__main__':
-    try:
+    versuch:
         main()
-    except BrokenPipeError als exc:
-        raise SystemExit(exc.errno)
+    ausser BrokenPipeError als exc:
+        wirf SystemExit(exc.errno)

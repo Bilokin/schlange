@@ -13,9 +13,9 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         AbstractTkTest.setUpClass.__func__(cls)
-        try:
+        versuch:
             cls.font = font.Font(root=cls.root, name=fontname, exists=Wahr)
-        except tkinter.TclError:
+        ausser tkinter.TclError:
             cls.font = font.Font(root=cls.root, name=fontname, exists=Falsch)
 
     def test_configure(self):
@@ -37,9 +37,9 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
 
     def test_unicode_family(self):
         family = 'MS \u30b4\u30b7\u30c3\u30af'
-        try:
+        versuch:
             f = font.Font(root=self.root, family=family, exists=Wahr)
-        except tkinter.TclError:
+        ausser tkinter.TclError:
             f = font.Font(root=self.root, family=family, exists=Falsch)
         self.assertEqual(f.cget('family'), family)
         del f

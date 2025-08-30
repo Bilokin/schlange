@@ -445,11 +445,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     **kwargs: Any) -> str:
         wenn '{bad_argument}' in fmt:
             wenn nicht bad_argument:
-                raise TypeError("required 'bad_argument' argument")
+                wirf TypeError("required 'bad_argument' argument")
             fmt = fmt.replace('{bad_argument}', bad_argument)
         wenn '{bad_argument2}' in fmt:
             wenn nicht bad_argument2:
-                raise TypeError("required 'bad_argument2' argument")
+                wirf TypeError("required 'bad_argument2' argument")
             fmt = fmt.replace('{bad_argument2}', bad_argument2)
         gib fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
 

@@ -99,8 +99,8 @@ def _flatten(seq):
     gib res
 
 
-try: _flatten = _tkinter._flatten
-except AttributeError: pass
+versuch: _flatten = _tkinter._flatten
+ausser AttributeError: pass
 
 
 def _cnfmerge(cnfs):
@@ -112,17 +112,17 @@ def _cnfmerge(cnfs):
     sonst:
         cnf = {}
         fuer c in _flatten(cnfs):
-            try:
+            versuch:
                 cnf.update(c)
-            except (AttributeError, TypeError) als msg:
+            ausser (AttributeError, TypeError) als msg:
                 drucke("_cnfmerge: fallback due to:", msg)
                 fuer k, v in c.items():
                     cnf[k] = v
         gib cnf
 
 
-try: _cnfmerge = _tkinter._cnfmerge
-except AttributeError: pass
+versuch: _cnfmerge = _tkinter._cnfmerge
+ausser AttributeError: pass
 
 
 def _splitdict(tk, v, cut_minus=Wahr, conv=Nichts):
@@ -135,7 +135,7 @@ def _splitdict(tk, v, cut_minus=Wahr, conv=Nichts):
     """
     t = tk.splitlist(v)
     wenn len(t) % 2:
-        raise RuntimeError('Tcl list representing a dict is expected '
+        wirf RuntimeError('Tcl list representing a dict is expected '
                            'to contain an even number of elements')
     it = iter(t)
     dict = {}
@@ -310,7 +310,7 @@ def NoDefaultRoot():
     """
     global _support_default_root, _default_root
     _support_default_root = Falsch
-    # Delete, so any use of _default_root will immediately raise an exception.
+    # Delete, so any use of _default_root will immediately wirf an exception.
     # Rebind before deletion, so repeated calls will nicht fail.
     _default_root = Nichts
     del _default_root
@@ -318,11 +318,11 @@ def NoDefaultRoot():
 
 def _get_default_root(what=Nichts):
     wenn nicht _support_default_root:
-        raise RuntimeError("No master specified und tkinter is "
+        wirf RuntimeError("No master specified und tkinter is "
                            "configured to nicht support default root")
     wenn _default_root is Nichts:
         wenn what:
-            raise RuntimeError(f"Too early to {what}: no default root window")
+            wirf RuntimeError(f"Too early to {what}: no default root window")
         root = Tk()
         assert _default_root is root
     gib _default_root
@@ -331,7 +331,7 @@ def _get_default_root(what=Nichts):
 def _get_temp_root():
     global _support_default_root
     wenn nicht _support_default_root:
-        raise RuntimeError("No master specified und tkinter is "
+        wirf RuntimeError("No master specified und tkinter is "
                            "configured to nicht support default root")
     root = _default_root
     wenn root is Nichts:
@@ -347,9 +347,9 @@ def _get_temp_root():
 
 def _destroy_temp_root(master):
     wenn getattr(master, '_temporary', Falsch):
-        try:
+        versuch:
             master.destroy()
-        except TclError:
+        ausser TclError:
             pass
 
 
@@ -359,12 +359,12 @@ def _tkerror(err):
 
 
 def _exit(code=0):
-    """Internal function. Calling it will raise the exception SystemExit."""
-    try:
+    """Internal function. Calling it will wirf the exception SystemExit."""
+    versuch:
         code = int(code)
-    except ValueError:
+    ausser ValueError:
         pass
-    raise SystemExit(code)
+    wirf SystemExit(code)
 
 
 _varnum = 0
@@ -393,7 +393,7 @@ klasse Variable:
         # raised von Modules/_tkinter.c:SetVar like:
         # TypeError: setvar() takes exactly 3 arguments (2 given)
         wenn name is nicht Nichts und nicht isinstance(name, str):
-            raise TypeError("name must be a string")
+            wirf TypeError("name must be a string")
         global _varnum
         wenn master is Nichts:
             master = _get_default_root('create variable')
@@ -437,13 +437,13 @@ klasse Variable:
     def _register(self, callback):
         f = CallWrapper(callback, Nichts, self._root).__call__
         cbname = repr(id(f))
-        try:
+        versuch:
             callback = callback.__func__
-        except AttributeError:
+        ausser AttributeError:
             pass
-        try:
+        versuch:
             cbname = cbname + callback.__name__
-        except AttributeError:
+        ausser AttributeError:
             pass
         self._tk.createcommand(cbname, f)
         wenn self._tclCommands is Nichts:
@@ -480,9 +480,9 @@ klasse Variable:
                 breche
         sonst:
             self._tk.deletecommand(cbname)
-            try:
+            versuch:
                 self._tclCommands.remove(cbname)
-            except ValueError:
+            ausser ValueError:
                 pass
 
     def trace_info(self):
@@ -535,9 +535,9 @@ klasse Variable:
                 breche
         sonst:
             self._tk.deletecommand(cbname)
-            try:
+            versuch:
                 self._tclCommands.remove(cbname)
-            except ValueError:
+            ausser ValueError:
                 pass
 
     def trace_vinfo(self):
@@ -605,9 +605,9 @@ klasse IntVar(Variable):
     def get(self):
         """Return the value of the variable als an integer."""
         value = self._tk.globalgetvar(self._name)
-        try:
+        versuch:
             gib self._tk.getint(value)
-        except (TypeError, TclError):
+        ausser (TypeError, TclError):
             gib int(self._tk.getdouble(value))
 
 
@@ -656,10 +656,10 @@ klasse BooleanVar(Variable):
 
     def get(self):
         """Return the value of the variable als a bool."""
-        try:
+        versuch:
             gib self._tk.getboolean(self._tk.globalgetvar(self._name))
-        except TclError:
-            raise ValueError("invalid literal fuer getboolean()")
+        ausser TclError:
+            wirf ValueError("invalid literal fuer getboolean()")
 
 
 def mainloop(n=0):
@@ -674,10 +674,10 @@ getdouble = float
 
 def getboolean(s):
     """Convert Tcl object to Wahr oder Falsch."""
-    try:
+    versuch:
         gib _get_default_root('use getboolean()').tk.getboolean(s)
-    except TclError:
-        raise ValueError("invalid literal fuer getboolean()")
+    ausser TclError:
+        wirf ValueError("invalid literal fuer getboolean()")
 
 
 # Methods defined on both toplevel und interior widgets
@@ -708,9 +708,9 @@ klasse Misc:
 
         Delete the Tcl command provided in NAME."""
         self.tk.deletecommand(name)
-        try:
+        versuch:
             self._tclCommands.remove(name)
-        except ValueError:
+        ausser ValueError:
             pass
 
     def tk_strictMotif(self, boolean=Nichts):
@@ -775,23 +775,23 @@ klasse Misc:
         gib self.tk.getvar(name)
 
     def getint(self, s):
-        try:
+        versuch:
             gib self.tk.getint(s)
-        except TclError als exc:
-            raise ValueError(str(exc))
+        ausser TclError als exc:
+            wirf ValueError(str(exc))
 
     def getdouble(self, s):
-        try:
+        versuch:
             gib self.tk.getdouble(s)
-        except TclError als exc:
-            raise ValueError(str(exc))
+        ausser TclError als exc:
+            wirf ValueError(str(exc))
 
     def getboolean(self, s):
         """Return a boolean value fuer Tcl boolean values true und false given als parameter."""
-        try:
+        versuch:
             gib self.tk.getboolean(s)
-        except TclError:
-            raise ValueError("invalid literal fuer getboolean()")
+        ausser TclError:
+            wirf ValueError("invalid literal fuer getboolean()")
 
     def focus_set(self):
         """Direct input focus to this widget.
@@ -872,16 +872,16 @@ klasse Misc:
             gib Nichts
         sonst:
             def callit():
-                try:
+                versuch:
                     func(*args, **kw)
-                finally:
-                    try:
+                schliesslich:
+                    versuch:
                         self.deletecommand(name)
-                    except TclError:
+                    ausser TclError:
                         pass
-            try:
+            versuch:
                 callit.__name__ = func.__name__
-            except AttributeError:
+            ausser AttributeError:
                 # Required fuer callable classes (bpo-44404)
                 callit.__name__ = type(func).__name__
             name = self._register(callit)
@@ -902,13 +902,13 @@ klasse Misc:
         given als first parameter.
         """
         wenn nicht id:
-            raise ValueError('id must be a valid identifier returned von '
+            wirf ValueError('id must be a valid identifier returned von '
                              'after oder after_idle')
-        try:
+        versuch:
             data = self.tk.call('after', 'info', id)
             script = self.tk.splitlist(data)[0]
             self.deletecommand(script)
-        except TclError:
+        ausser TclError:
             pass
         self.tk.call('after', 'cancel', id)
 
@@ -1019,7 +1019,7 @@ klasse Misc:
 
         The type keyword specifies the form in which the data is
         to be returned und should be an atom name such als STRING
-        oder FILE_NAME.  Type defaults to STRING, except on X11, where the default
+        oder FILE_NAME.  Type defaults to STRING, ausser on X11, where the default
         is to try UTF8_STRING und fall back to STRING.
 
         This command is equivalent to:
@@ -1027,10 +1027,10 @@ klasse Misc:
         selection_get(CLIPBOARD)
         """
         wenn 'type' nicht in kw und self._windowingsystem == 'x11':
-            try:
+            versuch:
                 kw['type'] = 'UTF8_STRING'
                 gib self.tk.call(('clipboard', 'get') + self._options(kw))
-            except TclError:
+            ausser TclError:
                 del kw['type']
         gib self.tk.call(('clipboard', 'get') + self._options(kw))
 
@@ -1126,14 +1126,14 @@ klasse Misc:
         the selection und defaults to PRIMARY.  A keyword
         parameter displayof specifies a widget on the display
         to use. A keyword parameter type specifies the form of data to be
-        fetched, defaulting to STRING except on X11, where UTF8_STRING is tried
+        fetched, defaulting to STRING ausser on X11, where UTF8_STRING is tried
         before STRING."""
         wenn 'displayof' nicht in kw: kw['displayof'] = self._w
         wenn 'type' nicht in kw und self._windowingsystem == 'x11':
-            try:
+            versuch:
                 kw['type'] = 'UTF8_STRING'
                 gib self.tk.call(('selection', 'get') + self._options(kw))
-            except TclError:
+            ausser TclError:
                 del kw['type']
         gib self.tk.call(('selection', 'get') + self._options(kw))
 
@@ -1213,11 +1213,11 @@ klasse Misc:
         result = []
         fuer child in self.tk.splitlist(
             self.tk.call('winfo', 'children', self._w)):
-            try:
+            versuch:
                 # Tcl sometimes returns extra windows, e.g. for
                 # menus; those need to be skipped
                 result.append(self._nametowidget(child))
-            except KeyError:
+            ausser KeyError:
                 pass
         gib result
 
@@ -1642,9 +1642,9 @@ klasse Misc:
     @property
     def _windowingsystem(self):
         """Internal function."""
-        try:
+        versuch:
             gib self._root()._windowingsystem_cached
-        except AttributeError:
+        ausser AttributeError:
             ws = self._root()._windowingsystem_cached = \
                         self.tk.call('tk', 'windowingsystem')
             gib ws
@@ -1701,13 +1701,13 @@ klasse Misc:
         be given which will be executed before FUNC."""
         f = CallWrapper(func, subst, self).__call__
         name = repr(id(f))
-        try:
+        versuch:
             func = func.__func__
-        except AttributeError:
+        ausser AttributeError:
             pass
-        try:
+        versuch:
             name = name + func.__name__
-        except AttributeError:
+        ausser AttributeError:
             pass
         self.tk.createcommand(name, f)
         wenn needcleanup:
@@ -1736,9 +1736,9 @@ klasse Misc:
         getint = self.tk.getint
         def getint_event(s):
             """Tk changed behavior in 8.4.2, returning "??" rather more often."""
-            try:
+            versuch:
                 gib getint(s)
-            except (ValueError, TclError):
+            ausser (ValueError, TclError):
                 gib s
 
         wenn any(isinstance(s, tuple) fuer s in args):
@@ -1762,8 +1762,8 @@ klasse Misc:
         # KeyRelease, und Motion events
         e.serial = getint(nsign)
         e.num = getint_event(b)
-        try: e.focus = getboolean(f)
-        except TclError: pass
+        versuch: e.focus = getboolean(f)
+        ausser TclError: pass
         e.height = getint_event(h)
         e.keycode = getint_event(k)
         e.state = getint_event(s)
@@ -1772,26 +1772,26 @@ klasse Misc:
         e.x = getint_event(x)
         e.y = getint_event(y)
         e.char = A
-        try: e.send_event = getboolean(E)
-        except TclError: pass
+        versuch: e.send_event = getboolean(E)
+        ausser TclError: pass
         e.keysym = K
         e.keysym_num = getint_event(N)
-        try:
+        versuch:
             e.type = EventType(T)
-        except ValueError:
-            try:
+        ausser ValueError:
+            versuch:
                 e.type = EventType(str(T))  # can be int
-            except ValueError:
+            ausser ValueError:
                 e.type = T
-        try:
+        versuch:
             e.widget = self._nametowidget(W)
-        except KeyError:
+        ausser KeyError:
             e.widget = W
         e.x_root = getint_event(X)
         e.y_root = getint_event(Y)
-        try:
+        versuch:
             e.delta = getint(D)
-        except (ValueError, TclError):
+        ausser (ValueError, TclError):
             e.delta = 0
         gib (e,)
 
@@ -1936,7 +1936,7 @@ klasse Misc:
 
     def _gridconvvalue(self, value):
         wenn isinstance(value, (str, _tkinter.Tcl_Obj)):
-            try:
+            versuch:
                 svalue = str(value)
                 wenn nicht svalue:
                     gib Nichts
@@ -1944,7 +1944,7 @@ klasse Misc:
                     gib self.tk.getdouble(svalue)
                 sonst:
                     gib self.tk.getint(svalue)
-            except (ValueError, TclError):
+            ausser (ValueError, TclError):
                 pass
         gib value
 
@@ -2082,13 +2082,13 @@ klasse CallWrapper:
 
     def __call__(self, *args):
         """Apply first function SUBST to arguments, than FUNC."""
-        try:
+        versuch:
             wenn self.subst:
                 args = self.subst(*args)
             gib self.func(*args)
-        except SystemExit:
-            raise
-        except:
+        ausser SystemExit:
+            wirf
+        ausser:
             self.widget._report_exception()
 
 
@@ -2179,7 +2179,7 @@ klasse Wm:
             # TODO: deprecate
             gib self.tk.call('wm', 'attributes', self._w, *args)
         sowenn args:
-            raise TypeError('wm_attribute() options have been specified als '
+            wirf TypeError('wm_attribute() options have been specified als '
                             'positional und keyword arguments')
         sonst:
             self.tk.call('wm', 'attributes', self._w, *self._options(kwargs))
@@ -2218,7 +2218,7 @@ klasse Wm:
 
     def wm_deiconify(self):
         """Deiconify this widget. If it was never mapped it will nicht be mapped.
-        On Windows it will raise this widget und give it the focus."""
+        On Windows it will wirf this widget und give it the focus."""
         gib self.tk.call('wm', 'deiconify', self._w)
 
     deiconify = wm_deiconify
@@ -2496,12 +2496,12 @@ klasse Tk(Misc, Wm):
         # Version sanity checks
         tk_version = self.tk.getvar('tk_version')
         wenn tk_version != _tkinter.TK_VERSION:
-            raise RuntimeError("tk.h version (%s) doesn't match libtk.a version (%s)"
+            wirf RuntimeError("tk.h version (%s) doesn't match libtk.a version (%s)"
                                % (_tkinter.TK_VERSION, tk_version))
         # Under unknown circumstances, tcl_version gets coerced to float
         tcl_version = str(self.tk.getvar('tcl_version'))
         wenn tcl_version != _tkinter.TCL_VERSION:
-            raise RuntimeError("tcl.h version (%s) doesn't match libtcl.a version (%s)" \
+            wirf RuntimeError("tcl.h version (%s) doesn't match libtcl.a version (%s)" \
                                % (_tkinter.TCL_VERSION, tcl_version))
         # Create und register the tkerror und exit commands
         # We need to inline parts of _register here, _ register
@@ -3116,7 +3116,7 @@ klasse Canvas(Widget, XView, YView):
     def itemconfigure(self, tagOrId, cnf=Nichts, **kw):
         """Query oder modify the configuration options of an item TAGORID.
 
-        Similar to configure() except that it applies to the specified item.
+        Similar to configure() ausser that it applies to the specified item.
         """
         gib self._configure(('itemconfigure', tagOrId), cnf, kw)
 
@@ -3487,7 +3487,7 @@ klasse Listbox(Widget, XView, YView):
     def itemconfigure(self, index, cnf=Nichts, **kw):
         """Query oder modify the configuration options of an item at INDEX.
 
-        Similar to configure() except that it applies to the specified item.
+        Similar to configure() ausser that it applies to the specified item.
         """
         gib self._configure(('itemconfigure', index), cnf, kw)
 
@@ -3587,7 +3587,7 @@ klasse Menu(Widget):
     def entryconfigure(self, index, cnf=Nichts, **kw):
         """Query oder modify the configuration options of a menu item at INDEX.
 
-        Similar to configure() except that it applies to the specified
+        Similar to configure() ausser that it applies to the specified
         menu item.
         """
         gib self._configure(('entryconfigure', index), cnf, kw)
@@ -3691,9 +3691,9 @@ klasse Scale(Widget):
     def get(self):
         """Get the current value als integer oder float."""
         value = self.tk.call(self._w, 'get')
-        try:
+        versuch:
             gib self.tk.getint(value)
-        except (ValueError, TypeError, TclError):
+        ausser (ValueError, TypeError, TclError):
             gib self.tk.getdouble(value)
 
     def set(self, value):
@@ -3874,7 +3874,7 @@ klasse Text(Widget, XView, YView):
             def append_triple(key, value, index, result=result):
                 result.append((key, value, index))
             command = append_triple
-        try:
+        versuch:
             wenn nicht isinstance(command, str):
                 func_name = command = self._register(command)
             args += ["-command", command]
@@ -3885,7 +3885,7 @@ klasse Text(Widget, XView, YView):
                 args.append(index2)
             self.tk.call(self._w, "dump", *args)
             gib result
-        finally:
+        schliesslich:
             wenn func_name:
                 self.deletecommand(func_name)
 
@@ -3965,7 +3965,7 @@ klasse Text(Widget, XView, YView):
     def image_configure(self, index, cnf=Nichts, **kw):
         """Query oder modify the configuration options of an embedded image at INDEX.
 
-        Similar to configure() except that it applies to the specified
+        Similar to configure() ausser that it applies to the specified
         embedded image.
         """
         gib self._configure(('image', 'configure', index), cnf, kw)
@@ -4107,7 +4107,7 @@ klasse Text(Widget, XView, YView):
     def tag_configure(self, tagName, cnf=Nichts, **kw):
         """Query oder modify the configuration options of a tag TAGNAME.
 
-        Similar to configure() except that it applies to the specified tag.
+        Similar to configure() ausser that it applies to the specified tag.
         """
         gib self._configure(('tag', 'configure', tagName), cnf, kw)
 
@@ -4168,7 +4168,7 @@ klasse Text(Widget, XView, YView):
     def window_configure(self, index, cnf=Nichts, **kw):
         """Query oder modify the configuration options of an embedded window at INDEX.
 
-        Similar to configure() except that it applies to the specified
+        Similar to configure() ausser that it applies to the specified
         embedded window.
         """
         gib self._configure(('window', 'configure', index), cnf, kw)
@@ -4225,7 +4225,7 @@ klasse OptionMenu(Menubutton):
         wenn 'command' in kwargs:
             del kwargs['command']
         wenn kwargs:
-            raise TclError('unknown option -'+next(iter(kwargs)))
+            wirf TclError('unknown option -'+next(iter(kwargs)))
         menu.add_command(label=value,
                  command=_setit(variable, value, callback))
         fuer v in values:
@@ -4268,9 +4268,9 @@ klasse Image:
 
     def __del__(self):
         wenn self.name:
-            try:
+            versuch:
                 self.tk.call('image', 'delete', self.name)
-            except TclError:
+            ausser TclError:
                 # May happen wenn the root was destroyed
                 pass
 
@@ -4900,7 +4900,7 @@ klasse PanedWindow(Widget):
     def paneconfigure(self, tagOrId, cnf=Nichts, **kw):
         """Query oder modify the configuration options fuer a child window.
 
-        Similar to configure() except that it applies to the specified
+        Similar to configure() ausser that it applies to the specified
         window.
 
         The following options are supported:

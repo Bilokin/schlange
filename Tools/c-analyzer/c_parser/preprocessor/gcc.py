@@ -115,7 +115,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
     fuer expected in firstlines:
         line = next(lines)
         wenn line != expected:
-            raise NotImplementedError((line, expected))
+            wirf NotImplementedError((line, expected))
 
     # Do all the CLI-provided includes.
     filter_reqfile = (lambda f: _filter_reqfile(f, reqfile, samefiles))
@@ -125,7 +125,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
         assert last != reqfile, (last,)
         lno, included, flags = _parse_marker_line(line, reqfile)
         wenn nicht included:
-            raise NotImplementedError((line,))
+            wirf NotImplementedError((line,))
         wenn included == reqfile:
             # This will be the last one.
             assert nicht flags, (line, flags)
@@ -185,13 +185,13 @@ def _iter_top_include_lines(lines, topfile, cwd,
                     # which we promptly ignore.
                     pass
         sowenn nicht files:
-            raise NotImplementedError((line,))
+            wirf NotImplementedError((line,))
         sowenn filter_reqfile(files[-1]):
             assert lno is nicht Nichts, (line, files[-1])
             wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
                 wenn name != 'pragma':
-                    raise Exception(line)
+                    wirf Exception(line)
             sonst:
                 line = re.sub(r'__inline__', 'inline', line)
                 wenn nicht raw:

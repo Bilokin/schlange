@@ -69,14 +69,14 @@ klasse Test(unittest.TestCase):
 
         orig_si = sys.getswitchinterval()
         support.setswitchinterval(1e-9)
-        try:
+        versuch:
             threads = [threading.Thread(target=opener)]
             threads += [threading.Thread(target=logger) fuer k in range(10)]
             mit threading_helper.start_threads(threads):
                 start.set()
                 time.sleep(0.1)
                 stop = Wahr
-        finally:
+        schliesslich:
             sys.setswitchinterval(orig_si)
 
     def test_subinterpreter_syslog(self):
@@ -86,9 +86,9 @@ klasse Test(unittest.TestCase):
             code = dedent('''
                 importiere syslog
                 caught_error = Falsch
-                try:
+                versuch:
                     syslog.syslog('foo')
-                except RuntimeError:
+                ausser RuntimeError:
                     caught_error = Wahr
                 assert(caught_error)
             ''')
@@ -96,7 +96,7 @@ klasse Test(unittest.TestCase):
             self.assertEqual(res, 0)
 
         syslog.openlog()
-        try:
+        versuch:
             mit self.subTest('after openlog()'):
                 code = dedent('''
                     importiere syslog
@@ -104,42 +104,42 @@ klasse Test(unittest.TestCase):
                 ''')
                 res = support.run_in_subinterp(code)
                 self.assertEqual(res, 0)
-        finally:
+        schliesslich:
             syslog.closelog()
 
     def test_subinterpreter_openlog(self):
-        try:
+        versuch:
             code = dedent('''
                 importiere syslog
                 caught_error = Falsch
-                try:
+                versuch:
                     syslog.openlog()
-                except RuntimeError:
+                ausser RuntimeError:
                     caught_error = Wahr
 
                 assert(caught_error)
             ''')
             res = support.run_in_subinterp(code)
             self.assertEqual(res, 0)
-        finally:
+        schliesslich:
             syslog.closelog()
 
     def test_subinterpreter_closelog(self):
         syslog.openlog('python')
-        try:
+        versuch:
             code = dedent('''
                 importiere syslog
                 caught_error = Falsch
-                try:
+                versuch:
                     syslog.closelog()
-                except RuntimeError:
+                ausser RuntimeError:
                     caught_error = Wahr
 
                 assert(caught_error)
             ''')
             res = support.run_in_subinterp(code)
             self.assertEqual(res, 0)
-        finally:
+        schliesslich:
             syslog.closelog()
 
 

@@ -70,7 +70,7 @@ def _mapdict_values(items):
             state = state[0] oder ''
         sonst:
             # group multiple states
-            state = ' '.join(state) # raise TypeError wenn nicht str
+            state = ' '.join(state) # wirf TypeError wenn nicht str
         opt_val.append(state)
         wenn val is nicht Nichts:
             opt_val.append(val)
@@ -295,9 +295,9 @@ def _val_or_dict(tk, options, *args):
 def _convert_stringval(value):
     """Converts a value to, hopefully, a more appropriate Python object."""
     value = str(value)
-    try:
+    versuch:
         value = int(value)
-    except (ValueError, TypeError):
+    ausser (ValueError, TypeError):
         pass
 
     gib value
@@ -1534,9 +1534,9 @@ klasse LabeledScale(Frame):
 
     def destroy(self):
         """Destroy this widget und possibly its associated variable."""
-        try:
+        versuch:
             self._variable.trace_remove('write', self.__tracecb)
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             del self._variable
@@ -1611,7 +1611,7 @@ klasse OptionMenu(Menubutton):
         self._variable = variable
         self._callback = kwargs.pop('command', Nichts)
         wenn kwargs:
-            raise tkinter.TclError('unknown option -%s' % (
+            wirf tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
 
         self.set_menu(default, *values)
@@ -1643,8 +1643,8 @@ klasse OptionMenu(Menubutton):
 
     def destroy(self):
         """Destroy this widget und its associated variable."""
-        try:
+        versuch:
             del self._variable
-        except AttributeError:
+        ausser AttributeError:
             pass
         super().destroy()

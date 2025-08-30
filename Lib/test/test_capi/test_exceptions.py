@@ -27,9 +27,9 @@ klasse Test_Exceptions(unittest.TestCase):
     def test_exception(self):
         raised_exception = ValueError("5")
         new_exc = TypeError("TEST")
-        try:
-            raise raised_exception
-        except ValueError als e:
+        versuch:
+            wirf raised_exception
+        ausser ValueError als e:
             orig_sys_exception = sys.exception()
             orig_exception = _testcapi.set_exception(new_exc)
             new_sys_exception = sys.exception()
@@ -49,9 +49,9 @@ klasse Test_Exceptions(unittest.TestCase):
     def test_exc_info(self):
         raised_exception = ValueError("5")
         new_exc = TypeError("TEST")
-        try:
-            raise raised_exception
-        except ValueError als e:
+        versuch:
+            wirf raised_exception
+        ausser ValueError als e:
             tb = e.__traceback__
             orig_sys_exc_info = sys.exc_info()
             orig_exc_info = _testcapi.set_exc_info(new_exc.__class__, new_exc, Nichts)
@@ -158,9 +158,9 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         mit self.assertRaises(ValueError):
             _testcapi.err_set_raised(ValueError())
         v = ValueError()
-        try:
+        versuch:
             _testcapi.err_set_raised(v)
-        except ValueError als ex:
+        ausser ValueError als ex:
             self.assertIs(v, ex)
 
     def test_err_restore(self):
@@ -172,21 +172,21 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             _testcapi.err_restore(ValueError, 1, Nichts)
         mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, ValueError())
-        try:
+        versuch:
             _testcapi.err_restore(KeyError, "hi")
-        except KeyError als k:
+        ausser KeyError als k:
             self.assertEqual("hi", k.args[0])
-        try:
+        versuch:
             1/0
-        except Exception als e:
+        ausser Exception als e:
             tb = e.__traceback__
         mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, 1, tb)
         mit self.assertRaises(TypeError):
             _testcapi.err_restore(ValueError, 1, 0)
-        try:
+        versuch:
             _testcapi.err_restore(ValueError, 1, tb)
-        except ValueError als v:
+        ausser ValueError als v:
             self.assertEqual(1, v.args[0])
             self.assertIs(tb, v.__traceback__.tb_next)
 
@@ -222,7 +222,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
     def test_set_object_and_fetch(self):
         klasse Broken(Exception):
             def __init__(self, *arg):
-                raise ValueError("Broken __init__")
+                wirf ValueError("Broken __init__")
 
         exc = _testcapi.exc_set_object_fetch(Broken, 'abcd')
         self.assertIsInstance(exc, ValueError)
@@ -231,7 +231,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
 
         klasse BadArg:
             def __repr__(self):
-                raise TypeError('Broken arg type')
+                wirf TypeError('Broken arg type')
 
         exc = _testcapi.exc_set_object_fetch(Broken, BadArg())
         self.assertIsInstance(exc, ValueError)
@@ -575,9 +575,9 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
 
     def setUp(self):
         super().setUp()
-        try:
-            raise ExceptionGroup("eg", [TypeError('bad type'), ValueError(42)])
-        except ExceptionGroup als e:
+        versuch:
+            wirf ExceptionGroup("eg", [TypeError('bad type'), ValueError(42)])
+        ausser ExceptionGroup als e:
             self.orig = e
 
     def test_invalid_args(self):
@@ -602,9 +602,9 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
         self.assertEqual(
             _testcapi.unstable_exc_prep_reraise_star(self.orig, [Nichts]), Nichts)
 
-        try:
-            raise ValueError(42)
-        except ValueError als e:
+        versuch:
+            wirf ValueError(42)
+        ausser ValueError als e:
             orig = e
         self.assertEqual(
             _testcapi.unstable_exc_prep_reraise_star(orig, [Nichts]), Nichts)

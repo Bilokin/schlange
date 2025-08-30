@@ -72,16 +72,16 @@ klasse _Database(collections.abc.MutableMapping):
     def _create(self, flag):
         wenn flag == 'n':
             fuer filename in (self._datfile, self._bakfile, self._dirfile):
-                try:
+                versuch:
                     _os.remove(filename)
-                except OSError:
+                ausser OSError:
                     pass
         # Mod by Jack: create data file wenn needed
-        try:
+        versuch:
             f = _io.open(self._datfile, 'r', encoding="Latin-1")
-        except OSError:
+        ausser OSError:
             wenn flag nicht in ('c', 'n'):
-                raise
+                wirf
             mit _io.open(self._datfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._datfile)
         sonst:
@@ -91,11 +91,11 @@ klasse _Database(collections.abc.MutableMapping):
     def _update(self, flag):
         self._modified = Falsch
         self._index = {}
-        try:
+        versuch:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
-        except OSError:
+        ausser OSError:
             wenn flag nicht in ('c', 'n'):
-                raise
+                wirf
             mit self._io.open(self._dirfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._dirfile)
         sonst:
@@ -116,14 +116,14 @@ klasse _Database(collections.abc.MutableMapping):
         wenn self._index is Nichts oder nicht self._modified:
             gib  # nothing to do
 
-        try:
+        versuch:
             self._os.unlink(self._bakfile)
-        except OSError:
+        ausser OSError:
             pass
 
-        try:
+        versuch:
             self._os.rename(self._dirfile, self._bakfile)
-        except OSError:
+        ausser OSError:
             pass
 
         mit self._io.open(self._dirfile, 'w', encoding="Latin-1") als f:
@@ -139,13 +139,13 @@ klasse _Database(collections.abc.MutableMapping):
 
     def _verify_open(self):
         wenn self._index is Nichts:
-            raise error('DBM object has already been closed')
+            wirf error('DBM object has already been closed')
 
     def __getitem__(self, key):
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
-        pos, siz = self._index[key]     # may raise KeyError
+        pos, siz = self._index[key]     # may wirf KeyError
         mit _io.open(self._datfile, 'rb') als f:
             f.seek(pos)
             dat = f.read(siz)
@@ -186,15 +186,15 @@ klasse _Database(collections.abc.MutableMapping):
 
     def __setitem__(self, key, val):
         wenn self._readonly:
-            raise error('The database is opened fuer reading only')
+            wirf error('The database is opened fuer reading only')
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         sowenn nicht isinstance(key, (bytes, bytearray)):
-            raise TypeError("keys must be bytes oder strings")
+            wirf TypeError("keys must be bytes oder strings")
         wenn isinstance(val, str):
             val = val.encode('utf-8')
         sowenn nicht isinstance(val, (bytes, bytearray)):
-            raise TypeError("values must be bytes oder strings")
+            wirf TypeError("values must be bytes oder strings")
         self._verify_open()
         self._modified = Wahr
         wenn key nicht in self._index:
@@ -223,7 +223,7 @@ klasse _Database(collections.abc.MutableMapping):
 
     def __delitem__(self, key):
         wenn self._readonly:
-            raise error('The database is opened fuer reading only')
+            wirf error('The database is opened fuer reading only')
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
@@ -237,10 +237,10 @@ klasse _Database(collections.abc.MutableMapping):
         self._commit()
 
     def keys(self):
-        try:
+        versuch:
             gib list(self._index)
-        except TypeError:
-            raise error('DBM object has already been closed') von Nichts
+        ausser TypeError:
+            wirf error('DBM object has already been closed') von Nichts
 
     def items(self):
         self._verify_open()
@@ -249,31 +249,31 @@ klasse _Database(collections.abc.MutableMapping):
     def __contains__(self, key):
         wenn isinstance(key, str):
             key = key.encode('utf-8')
-        try:
+        versuch:
             gib key in self._index
-        except TypeError:
+        ausser TypeError:
             wenn self._index is Nichts:
-                raise error('DBM object has already been closed') von Nichts
+                wirf error('DBM object has already been closed') von Nichts
             sonst:
-                raise
+                wirf
 
     def iterkeys(self):
-        try:
+        versuch:
             gib iter(self._index)
-        except TypeError:
-            raise error('DBM object has already been closed') von Nichts
+        ausser TypeError:
+            wirf error('DBM object has already been closed') von Nichts
     __iter__ = iterkeys
 
     def __len__(self):
-        try:
+        versuch:
             gib len(self._index)
-        except TypeError:
-            raise error('DBM object has already been closed') von Nichts
+        ausser TypeError:
+            wirf error('DBM object has already been closed') von Nichts
 
     def close(self):
-        try:
+        versuch:
             self._commit()
-        finally:
+        schliesslich:
             self._index = self._datfile = self._dirfile = self._bakfile = Nichts
 
     __del__ = close
@@ -289,7 +289,7 @@ klasse _Database(collections.abc.MutableMapping):
 
     def reorganize(self):
         wenn self._readonly:
-            raise error('The database is opened fuer reading only')
+            wirf error('The database is opened fuer reading only')
         self._verify_open()
         # Ensure all changes are committed before reorganizing.
         self._commit()
@@ -332,14 +332,14 @@ def open(file, flag='c', mode=0o666):
     """
 
     # Modify mode depending on the umask
-    try:
+    versuch:
         um = _os.umask(0)
         _os.umask(um)
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         # Turn off any bits that are set in the umask
         mode = mode & (~um)
     wenn flag nicht in ('r', 'w', 'c', 'n'):
-        raise ValueError("Flag must be one of 'r', 'w', 'c', oder 'n'")
+        wirf ValueError("Flag must be one of 'r', 'w', 'c', oder 'n'")
     gib _Database(file, mode, flag=flag)

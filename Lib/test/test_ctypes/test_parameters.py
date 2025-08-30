@@ -20,17 +20,17 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 
 klasse SimpleTypesTestCase(unittest.TestCase):
     def setUp(self):
-        try:
+        versuch:
             von _ctypes importiere set_conversion_mode
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             self.prev_conv_mode = set_conversion_mode("ascii", "strict")
 
     def tearDown(self):
-        try:
+        versuch:
             von _ctypes importiere set_conversion_mode
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             set_conversion_mode(*self.prev_conv_mode)
@@ -192,7 +192,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
         klasse Adapter:
             def from_param(cls, obj):
-                raise ValueError(obj)
+                wirf ValueError(obj)
 
         func.argtypes = (Adapter(),)
         # ArgumentError: argument 1: ValueError: 99
@@ -208,7 +208,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
     @test.support.cpython_only
     def test_issue31311(self):
-        # __setstate__ should neither raise a SystemError nor crash in case
+        # __setstate__ should neither wirf a SystemError nor crash in case
         # of a bad __dict__.
 
         klasse BadStruct(Structure):

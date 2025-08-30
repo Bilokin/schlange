@@ -24,14 +24,14 @@ klasse BadSpecFinderLoader:
     @staticmethod
     def exec_module(module):
         wenn module.__name__ == SUBMOD_NAME:
-            raise ImportError('I cannot be loaded!')
+            wirf ImportError('I cannot be loaded!')
 
 
 klasse BadLoaderFinder:
     @classmethod
     def load_module(cls, fullname):
         wenn fullname == SUBMOD_NAME:
-            raise ImportError('I cannot be loaded!')
+            wirf ImportError('I cannot be loaded!')
 
 
 klasse APITest:

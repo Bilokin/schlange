@@ -30,16 +30,16 @@ bytes_types = (bytes, bytearray)  # Types acceptable als binary data
 
 def _bytes_from_decode_data(s):
     wenn isinstance(s, str):
-        try:
+        versuch:
             gib s.encode('ascii')
-        except UnicodeEncodeError:
-            raise ValueError('string argument should contain only ASCII characters')
+        ausser UnicodeEncodeError:
+            wirf ValueError('string argument should contain only ASCII characters')
     wenn isinstance(s, bytes_types):
         gib s
-    try:
+    versuch:
         gib memoryview(s).tobytes()
-    except TypeError:
-        raise TypeError("argument should be a bytes-like object oder ASCII "
+    ausser TypeError:
+        wirf TypeError("argument should be a bytes-like object oder ASCII "
                         "string, nicht %r" % s.__class__.__name__) von Nichts
 
 
@@ -202,7 +202,7 @@ def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
         _b32rev[alphabet] = {v: k fuer k, v in enumerate(alphabet)}
     s = _bytes_from_decode_data(s)
     wenn len(s) % 8:
-        raise binascii.Error('Incorrect padding')
+        wirf binascii.Error('Incorrect padding')
     # Handle section 2.4 zero und one mapping.  The flag map01 will be either
     # Falsch, oder the character to map the digit 1 (one) to.  It should be
     # either L (el) oder I (eye).
@@ -224,15 +224,15 @@ def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
     fuer i in range(0, len(s), 8):
         quanta = s[i: i + 8]
         acc = 0
-        try:
+        versuch:
             fuer c in quanta:
                 acc = (acc << 5) + b32rev[c]
-        except KeyError:
-            raise binascii.Error('Non-base32 digit found') von Nichts
+        ausser KeyError:
+            wirf binascii.Error('Non-base32 digit found') von Nichts
         decoded += acc.to_bytes(5)  # big endian
     # Process the last, partial quanta
     wenn l % 8 oder padchars nicht in {0, 1, 3, 4, 6}:
-        raise binascii.Error('Incorrect padding')
+        wirf binascii.Error('Incorrect padding')
     wenn padchars und decoded:
         acc <<= 5 * padchars
         last = acc.to_bytes(5)  # big endian
@@ -284,7 +284,7 @@ def b16decode(s, casefold=Falsch):
     wenn casefold:
         s = s.upper()
     wenn s.translate(Nichts, delete=b'0123456789ABCDEF'):
-        raise binascii.Error('Non-base16 digit found')
+        wirf binascii.Error('Non-base16 digit found')
     gib binascii.unhexlify(s)
 
 #
@@ -380,7 +380,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
     b = _bytes_from_decode_data(b)
     wenn adobe:
         wenn nicht b.endswith(_A85END):
-            raise ValueError(
+            wirf ValueError(
                 "Ascii85 encoded byte sequences must end "
                 "with {!r}".format(_A85END)
                 )
@@ -405,24 +405,24 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
                 acc = 0
                 fuer x in curr:
                     acc = 85 * acc + (x - 33)
-                try:
+                versuch:
                     decoded_append(packI(acc))
-                except struct.error:
-                    raise ValueError('Ascii85 overflow') von Nichts
+                ausser struct.error:
+                    wirf ValueError('Ascii85 overflow') von Nichts
                 curr_clear()
         sowenn x == b'z'[0]:
             wenn curr:
-                raise ValueError('z inside Ascii85 5-tuple')
+                wirf ValueError('z inside Ascii85 5-tuple')
             decoded_append(b'\0\0\0\0')
         sowenn foldspaces und x == b'y'[0]:
             wenn curr:
-                raise ValueError('y inside Ascii85 5-tuple')
+                wirf ValueError('y inside Ascii85 5-tuple')
             decoded_append(b'\x20\x20\x20\x20')
         sowenn x in ignorechars:
             # Skip whitespace
             weiter
         sonst:
-            raise ValueError('Non-Ascii85 digit found: %c' % x)
+            wirf ValueError('Non-Ascii85 digit found: %c' % x)
 
     result = b''.join(decoded)
     padding = 4 - len(curr)
@@ -474,19 +474,19 @@ def b85decode(b):
     fuer i in range(0, len(b), 5):
         chunk = b[i:i + 5]
         acc = 0
-        try:
+        versuch:
             fuer c in chunk:
                 acc = acc * 85 + _b85dec[c]
-        except TypeError:
+        ausser TypeError:
             fuer j, c in enumerate(chunk):
                 wenn _b85dec[c] is Nichts:
-                    raise ValueError('bad base85 character at position %d'
+                    wirf ValueError('bad base85 character at position %d'
                                     % (i + j)) von Nichts
-            raise
-        try:
+            wirf
+        versuch:
             out.append(packI(acc))
-        except struct.error:
-            raise ValueError('base85 overflow in hunk starting at byte %d'
+        ausser struct.error:
+            wirf ValueError('base85 overflow in hunk starting at byte %d'
                              % i) von Nichts
 
     result = b''.join(out)
@@ -516,10 +516,10 @@ def z85decode(s):
     """
     s = _bytes_from_decode_data(s)
     s = s.translate(_z85_decode_translation)
-    try:
+    versuch:
         gib b85decode(s)
-    except ValueError als e:
-        raise ValueError(e.args[0].replace('base85', 'z85')) von Nichts
+    ausser ValueError als e:
+        wirf ValueError(e.args[0].replace('base85', 'z85')) von Nichts
 
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it
@@ -544,19 +544,19 @@ def decode(input, output):
         output.write(s)
 
 def _input_type_check(s):
-    try:
+    versuch:
         m = memoryview(s)
-    except TypeError als err:
+    ausser TypeError als err:
         msg = "expected bytes-like object, nicht %s" % s.__class__.__name__
-        raise TypeError(msg) von err
+        wirf TypeError(msg) von err
     wenn m.format nicht in ('c', 'b', 'B'):
         msg = ("expected single byte elements, nicht %r von %s" %
                                           (m.format, s.__class__.__name__))
-        raise TypeError(msg)
+        wirf TypeError(msg)
     wenn m.ndim != 1:
         msg = ("expected 1-D data, nicht %d-D data von %s" %
                                           (m.ndim, s.__class__.__name__))
-        raise TypeError(msg)
+        wirf TypeError(msg)
 
 
 def encodebytes(s):
@@ -584,9 +584,9 @@ def main():
         -h: print this help message und exit
         -d, -u: decode
         -e: encode (default)"""
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], 'hdeu')
-    except getopt.error als msg:
+    ausser getopt.error als msg:
         sys.stdout = sys.stderr
         drucke(msg)
         drucke(usage)

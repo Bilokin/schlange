@@ -11,9 +11,9 @@ von types importiere MappingProxyType
 
 def try_import_module(module_name):
     """Try to importiere a module und gib Nichts on failure."""
-    try:
+    versuch:
         gib importlib.import_module(module_name)
-    except ImportError:
+    ausser ImportError:
         gib Nichts
 
 
@@ -102,7 +102,7 @@ klasse HashInfo:
                 gib self.openssl_module_name
             case "hashlib":
                 gib self.hashlib_module_name
-        raise AssertionError(f"invalid implementation {implementation}")
+        wirf AssertionError(f"invalid implementation {implementation}")
 
     def method_name(self, implementation):
         match implementation:
@@ -112,7 +112,7 @@ klasse HashInfo:
                 gib self.openssl_method_name
             case "hashlib":
                 gib self.hashlib_method_name
-        raise AssertionError(f"invalid implementation {implementation}")
+        wirf AssertionError(f"invalid implementation {implementation}")
 
     def fullname(self, implementation):
         """Get the fully qualified name of a given implementation.
@@ -215,15 +215,15 @@ def _ensure_wrapper_signature(wrapper, wrapped):
     This is used to guarantee that a TypeError raised due to a bad API call
     is raised consistently (using variadic signatures would hide such errors).
     """
-    try:
+    versuch:
         wrapped_sig = inspect.signature(wrapped)
-    except ValueError:  # built-in signature cannot be found
+    ausser ValueError:  # built-in signature cannot be found
         gib
 
     wrapper_sig = inspect.signature(wrapper)
     wenn wrapped_sig != wrapper_sig:
         fullname = f"{wrapped.__module__}.{wrapped.__qualname__}"
-        raise AssertionError(
+        wirf AssertionError(
             f"signature fuer {fullname}() is incorrect:\n"
             f"  expect: {wrapped_sig}\n"
             f"  actual: {wrapper_sig}"
@@ -266,11 +266,11 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
     # re-import '_hashlib' in case it was mocked
     _hashlib = try_import_module("_hashlib")
     module = _hashlib wenn openssl und _hashlib is nicht Nichts sonst hashlib
-    try:
+    versuch:
         module.new(digestname, **kwargs)
-    except ValueError als exc:
+    ausser ValueError als exc:
         interface = f"{module.__name__}.new"
-        raise SkipNoHash(digestname, interface=interface) von exc
+        wirf SkipNoHash(digestname, interface=interface) von exc
     gib functools.partial(module.new, digestname)
 
 
@@ -285,18 +285,18 @@ def _builtin_hash(module_name, digestname, /, **kwargs):
     assert isinstance(module_name, str), module_name
     assert isinstance(digestname, str), digestname
     fullname = f'{module_name}.{digestname}'
-    try:
+    versuch:
         builtin_module = importlib.import_module(module_name)
-    except ImportError als exc:
-        raise SkipNoHash(fullname, "builtin") von exc
-    try:
+    ausser ImportError als exc:
+        wirf SkipNoHash(fullname, "builtin") von exc
+    versuch:
         constructor = getattr(builtin_module, digestname)
-    except AttributeError als exc:
-        raise SkipNoHash(fullname, "builtin") von exc
-    try:
+    ausser AttributeError als exc:
+        wirf SkipNoHash(fullname, "builtin") von exc
+    versuch:
         constructor(**kwargs)
-    except ValueError als exc:
-        raise SkipNoHash(fullname, "builtin") von exc
+    ausser ValueError als exc:
+        wirf SkipNoHash(fullname, "builtin") von exc
     gib constructor
 
 
@@ -307,15 +307,15 @@ def _openssl_new(digestname, /, **kwargs):
     oder SkipTest is raised wenn none exists.
     """
     assert isinstance(digestname, str), digestname
-    try:
+    versuch:
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
-    except ImportError als exc:
-        raise SkipNoHash(digestname, "openssl") von exc
-    try:
+    ausser ImportError als exc:
+        wirf SkipNoHash(digestname, "openssl") von exc
+    versuch:
         _hashlib.new(digestname, **kwargs)
-    except ValueError als exc:
-        raise SkipNoHash(digestname, interface="_hashlib.new") von exc
+    ausser ValueError als exc:
+        wirf SkipNoHash(digestname, interface="_hashlib.new") von exc
     gib functools.partial(_hashlib.new, digestname)
 
 
@@ -327,19 +327,19 @@ def _openssl_hash(digestname, /, **kwargs):
     """
     assert isinstance(digestname, str), digestname
     fullname = f"_hashlib.openssl_{digestname}"
-    try:
+    versuch:
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
-    except ImportError als exc:
-        raise SkipNoHash(fullname, "openssl") von exc
-    try:
+    ausser ImportError als exc:
+        wirf SkipNoHash(fullname, "openssl") von exc
+    versuch:
         constructor = getattr(_hashlib, f"openssl_{digestname}", Nichts)
-    except AttributeError als exc:
-        raise SkipNoHash(fullname, "openssl") von exc
-    try:
+    ausser AttributeError als exc:
+        wirf SkipNoHash(fullname, "openssl") von exc
+    versuch:
         constructor(**kwargs)
-    except ValueError als exc:
-        raise SkipNoHash(fullname, "openssl") von exc
+    ausser ValueError als exc:
+        wirf SkipNoHash(fullname, "openssl") von exc
     gib constructor
 
 
@@ -559,7 +559,7 @@ def _block_openssl_hash_new(blocked_name):
     @functools.wraps(wrapped := _hashlib.new)
     def _hashlib_new(name, data=b'', *, usedforsecurity=Wahr, string=Nichts):
         wenn name == blocked_name:
-            raise _hashlib.UnsupportedDigestmodError(blocked_name)
+            wirf _hashlib.UnsupportedDigestmodError(blocked_name)
         gib wrapped(name, data,
                        usedforsecurity=usedforsecurity, string=string)
 
@@ -578,7 +578,7 @@ def _block_openssl_hmac_new(blocked_name):
     @functools.wraps(wrapped := _hashlib.hmac_new)
     def wrapper(key, msg=b'', digestmod=Nichts):
         wenn digestmod == blocked_name:
-            raise _hashlib.UnsupportedDigestmodError(blocked_name)
+            wirf _hashlib.UnsupportedDigestmodError(blocked_name)
         gib wrapped(key, msg, digestmod)
 
     _ensure_wrapper_signature(wrapper, wrapped)
@@ -596,7 +596,7 @@ def _block_openssl_hmac_digest(blocked_name):
     @functools.wraps(wrapped := _hashlib.hmac_digest)
     def _hashlib_hmac_digest(key, msg, digest):
         wenn digest == blocked_name:
-            raise _hashlib.UnsupportedDigestmodError(blocked_name)
+            wirf _hashlib.UnsupportedDigestmodError(blocked_name)
         gib wrapped(key, msg, digest)
 
     _ensure_wrapper_signature(_hashlib_hmac_digest, wrapped)
@@ -646,7 +646,7 @@ def _block_builtin_hmac_new(blocked_name):
     @functools.wraps(wrapped := _hmac.new)
     def _hmac_new(key, msg=Nichts, digestmod=Nichts):
         wenn digestmod == blocked_name:
-            raise _hmac.UnknownHashError(blocked_name)
+            wirf _hmac.UnknownHashError(blocked_name)
         gib wrapped(key, msg, digestmod)
 
     _ensure_wrapper_signature(_hmac_new, wrapped)
@@ -663,7 +663,7 @@ def _block_builtin_hmac_digest(blocked_name):
     @functools.wraps(wrapped := _hmac.compute_digest)
     def _hmac_compute_digest(key, msg, digest):
         wenn digest == blocked_name:
-            raise _hmac.UnknownHashError(blocked_name)
+            wirf _hmac.UnknownHashError(blocked_name)
         gib wrapped(key, msg, digest)
 
     _ensure_wrapper_signature(_hmac_compute_digest, wrapped)
@@ -678,9 +678,9 @@ def _make_hash_constructor_blocker(name, dummy, implementation):
         # function shouldn't exist fuer this implementation
         gib contextlib.nullcontext()
 
-    try:
+    versuch:
         module = importlib.import_module(module_name)
-    except ImportError:
+    ausser ImportError:
         # module is already disabled
         gib contextlib.nullcontext()
 
@@ -693,7 +693,7 @@ def _make_hash_constructor_blocker(name, dummy, implementation):
 def _block_hashlib_hash_constructor(name):
     """Block explicit public constructors."""
     def dummy(data=b'', *, usedforsecurity=Wahr, string=Nichts):
-        raise ValueError(f"blocked explicit public hash name: {name}")
+        wirf ValueError(f"blocked explicit public hash name: {name}")
 
     gib _make_hash_constructor_blocker(name, dummy, 'hashlib')
 
@@ -701,14 +701,14 @@ def _block_hashlib_hash_constructor(name):
 def _block_openssl_hash_constructor(name):
     """Block explicit OpenSSL constructors."""
     def dummy(data=b'', *, usedforsecurity=Wahr, string=Nichts):
-        raise ValueError(f"blocked explicit OpenSSL hash name: {name}")
+        wirf ValueError(f"blocked explicit OpenSSL hash name: {name}")
     gib _make_hash_constructor_blocker(name, dummy, 'openssl')
 
 
 def _block_builtin_hash_constructor(name):
     """Block explicit HACL* constructors."""
     def dummy(data=b'', *, usedforsecurity=Wahr, string=b''):
-        raise ValueError(f"blocked explicit builtin hash name: {name}")
+        wirf ValueError(f"blocked explicit builtin hash name: {name}")
     gib _make_hash_constructor_blocker(name, dummy, 'builtin')
 
 
@@ -721,14 +721,14 @@ def _block_builtin_hmac_constructor(name):
     assert fullname.count('.') == 1, fullname
     module_name, method = fullname.split('.', maxsplit=1)
     assert module_name == '_hmac', module_name
-    try:
+    versuch:
         module = importlib.import_module(module_name)
-    except ImportError:
+    ausser ImportError:
         # module is already disabled
         gib contextlib.nullcontext()
     @functools.wraps(wrapped := getattr(module, method))
     def wrapper(key, obj):
-        raise ValueError(f"blocked hash name: {name}")
+        wirf ValueError(f"blocked hash name: {name}")
     _ensure_wrapper_signature(wrapper, wrapped)
     gib unittest.mock.patch(fullname, wrapper)
 
@@ -738,7 +738,7 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
     """Block a hash algorithm fuer both hashing und HMAC.
 
     Be careful mit this helper als a function may be allowed, but can
-    still raise a ValueError at runtime wenn the OpenSSL security policy
+    still wirf a ValueError at runtime wenn the OpenSSL security policy
     disables it, e.g., wenn allow_openssl=Wahr und FIPS mode is on.
     """
     mit contextlib.ExitStack() als stack:
@@ -753,11 +753,11 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
             # als they will call a mocked one.
             #
             # If OpenSSL is available, hashes fall back to "openssl_*" ones,
-            # except fuer BLAKE2b und BLAKE2s.
+            # ausser fuer BLAKE2b und BLAKE2s.
             stack.enter_context(_block_hashlib_hash_constructor(name))
         sowenn (
-            # In FIPS mode, hashlib.<name>() functions may raise wenn they use
-            # the OpenSSL implementation, except mit usedforsecurity=Falsch.
+            # In FIPS mode, hashlib.<name>() functions may wirf wenn they use
+            # the OpenSSL implementation, ausser mit usedforsecurity=Falsch.
             # However, blocking such functions also means blocking them
             # so we again need to block them wenn we want to.
             (_hashlib := try_import_module("_hashlib"))

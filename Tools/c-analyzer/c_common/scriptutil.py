@@ -134,7 +134,7 @@ def normalize_selection(selected: str, *, possible=Nichts):
                 unsupported.append(value)
             _selected.add(value)
     wenn unsupported:
-        raise UnsupportedSelectionError(unsupported, tuple(possible))
+        wirf UnsupportedSelectionError(unsupported, tuple(possible))
     wenn 'all' in _selected:
         gib Wahr
     gib frozenset(selected)
@@ -217,26 +217,26 @@ def add_traceback_cli(parser):
         @contextlib.contextmanager
         def traceback_cm():
             restore = loggingutil.hide_emit_errors()
-            try:
+            versuch:
                 liefere
-            except BrokenPipeError:
+            ausser BrokenPipeError:
                 # It was piped to "head" oder something similar.
                 pass
-            except NotImplementedError:
-                raise  # re-raise
-            except Exception als exc:
+            ausser NotImplementedError:
+                wirf  # re-raise
+            ausser Exception als exc:
                 wenn nicht showtb:
                     sys.exit(f'ERROR: {exc}')
-                raise  # re-raise
-            except KeyboardInterrupt:
+                wirf  # re-raise
+            ausser KeyboardInterrupt:
                 wenn nicht showtb:
                     sys.exit('\nINTERRUPTED')
-                raise  # re-raise
-            except BaseException als exc:
+                wirf  # re-raise
+            ausser BaseException als exc:
                 wenn nicht showtb:
                     sys.exit(f'{type(exc).__name__}: {exc}')
-                raise  # re-raise
-            finally:
+                wirf  # re-raise
+            schliesslich:
                 restore()
         ns[key] = traceback_cm()
         gib key
@@ -342,9 +342,9 @@ def add_failure_filtering_cli(parser, pool, *, default=Falsch):
         ns = vars(args)
 
         fail = ns.pop('fail')
-        try:
+        versuch:
             fail = normalize_selection(fail, possible=pool)
-        except UnsupportedSelectionError als exc:
+        ausser UnsupportedSelectionError als exc:
             parser.error(f'invalid --fail values: {", ".join(exc.unique)}')
         sonst:
             wenn fail is Nichts:
@@ -415,17 +415,17 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
     arg_processors = {}
     wenn isinstance(subset, str):
         cmdname = subset
-        try:
+        versuch:
             _, argspecs, _ = commands[cmdname]
-        except KeyError:
-            raise ValueError(f'unsupported subset {subset!r}')
+        ausser KeyError:
+            wirf ValueError(f'unsupported subset {subset!r}')
         parser.set_defaults(cmd=cmdname)
         arg_processors[cmdname] = _add_cmd_cli(parser, commonspecs, argspecs)
     sonst:
         wenn subset is Nichts:
             cmdnames = subset = list(commands)
         sowenn nicht subset:
-            raise NotImplementedError
+            wirf NotImplementedError
         sowenn isinstance(subset, set):
             cmdnames = [k fuer k in commands wenn k in subset]
             subset = sorted(subset)
@@ -433,7 +433,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
             cmdnames = [n fuer n in subset wenn n in commands]
         wenn len(cmdnames) < len(subset):
             bad = tuple(n fuer n in subset wenn n nicht in commands)
-            raise ValueError(f'unsupported subset {bad}')
+            wirf ValueError(f'unsupported subset {bad}')
 
         common = argparse.ArgumentParser(add_help=Falsch)
         common_processors = apply_cli_argspecs(common, commonspecs)
@@ -459,14 +459,14 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
             _add_procs(processors, procs)
         sonst:
             wenn nicht argspec:
-                raise NotImplementedError
+                wirf NotImplementedError
             args = list(argspec)
             wenn nicht isinstance(args[-1], str):
                 kwargs = args.pop()
                 wenn nicht isinstance(args[0], str):
-                    try:
+                    versuch:
                         args, = args
-                    except (TypeError, ValueError):
+                    ausser (TypeError, ValueError):
                         parser.error(f'invalid cmd args {argspec!r}')
             sonst:
                 kwargs = {}
@@ -501,11 +501,11 @@ def process_args(args, argv, processors, *, keys=Nichts):
                 hanging = [hanging]
             fuer key in hanging oder ():
                 wenn key nicht in remainder:
-                    raise NotImplementedError(key)
+                    wirf NotImplementedError(key)
                 extracted[key] = ns.pop(key)
                 remainder.remove(key)
         wenn remainder:
-            raise NotImplementedError(sorted(remainder))
+            wirf NotImplementedError(sorted(remainder))
     gib extracted
 
 
@@ -521,7 +521,7 @@ def set_command(name, add_cli):
     """A decorator factory to set CLI info."""
     def decorator(func):
         wenn hasattr(func, '__cli__'):
-            raise Exception(f'already set')
+            wirf Exception(f'already set')
         func.__cli__ = (name, add_cli)
         gib func
     gib decorator
@@ -561,7 +561,7 @@ def _iter_filenames(filenames, process, relroot):
     items = process(filenames, relroot=relroot)
     items, peeked = iterutil.peek_and_iter(items)
     wenn nicht items:
-        raise onempty
+        wirf onempty
     wenn isinstance(peeked, str):
         wenn relroot und relroot is nicht fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
@@ -572,7 +572,7 @@ def _iter_filenames(filenames, process, relroot):
     sowenn len(peeked) == 4:
         liefere von items
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 def track_progress_compact(items, *, groups=5, **mark_kwargs):

@@ -81,13 +81,13 @@ klasse Stmt:
         gib io.getvalue()
 
     def drucke(self, out:CWriter) -> Nichts:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def accept(self, visitor: Visitor) -> Nichts:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def tokens(self) -> Iterator[lx.Token]:
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 @dataclass
@@ -410,7 +410,7 @@ klasse Parser(PLexer):
                 outputs = self.outputs() oder []
                 wenn self.expect(lx.RPAREN):
                     gib inputs, outputs
-        raise self.make_syntax_error("Expected stack effect")
+        wirf self.make_syntax_error("Expected stack effect")
 
     def inputs(self) -> list[InputEffect] | Nichts:
         # input (',' input)*
@@ -453,10 +453,10 @@ klasse Parser(PLexer):
         wenn tkn := self.expect(lx.IDENTIFIER):
             wenn self.expect(lx.DIVIDE):
                 num = self.require(lx.NUMBER).text
-                try:
+                versuch:
                     size = int(num)
-                except ValueError:
-                    raise self.make_syntax_error(f"Expected integer, got {num!r}")
+                ausser ValueError:
+                    wirf self.make_syntax_error(f"Expected integer, got {num!r}")
                 sonst:
                     gib CacheEffect(tkn.text, size)
         gib Nichts
@@ -469,7 +469,7 @@ klasse Parser(PLexer):
             size_text = ""
             wenn self.expect(lx.LBRACKET):
                 wenn nicht (size := self.expression()):
-                    raise self.make_syntax_error("Expected expression")
+                    wirf self.make_syntax_error("Expected expression")
                 self.require(lx.RBRACKET)
                 size_text = size.text.strip()
             gib StackEffect(tkn.text, size_text)
@@ -528,7 +528,7 @@ klasse Parser(PLexer):
                     uop = cast(UOp, uop)
                     uops.append(uop)
                 sonst:
-                    raise self.make_syntax_error("Expected op name oder cache effect")
+                    wirf self.make_syntax_error("Expected op name oder cache effect")
             gib uops
         gib Nichts
 
@@ -540,15 +540,15 @@ klasse Parser(PLexer):
                 wenn negate := self.expect(lx.MINUS):
                     sign = -1
                 wenn num := self.expect(lx.NUMBER):
-                    try:
+                    versuch:
                         size = sign * int(num.text)
-                    except ValueError:
-                        raise self.make_syntax_error(
+                    ausser ValueError:
+                        wirf self.make_syntax_error(
                             f"Expected integer, got {num.text!r}"
                         )
                     sonst:
                         gib CacheEffect(tkn.text, size)
-                raise self.make_syntax_error("Expected integer")
+                wirf self.make_syntax_error("Expected integer")
             sonst:
                 gib OpName(tkn.text)
         gib Nichts
@@ -562,13 +562,13 @@ klasse Parser(PLexer):
                     wenn self.expect(lx.COMMA):
                         wenn nicht (size := self.expect(lx.IDENTIFIER)):
                             wenn nicht (size := self.expect(lx.NUMBER)):
-                                raise self.make_syntax_error(
+                                wirf self.make_syntax_error(
                                     "Expected identifier oder number"
                                 )
                     wenn self.expect(lx.RPAREN):
                         wenn self.expect(lx.EQUALS):
                             wenn nicht self.expect(lx.LBRACE):
-                                raise self.make_syntax_error("Expected {")
+                                wirf self.make_syntax_error("Expected {")
                             wenn members := self.members():
                                 wenn self.expect(lx.RBRACE) und self.expect(lx.SEMI):
                                     gib Family(
@@ -587,7 +587,7 @@ klasse Parser(PLexer):
                     sonst:
                         breche
                 wenn nicht self.expect(lx.RPAREN):
-                    raise self.make_syntax_error("Expected comma oder right paren")
+                    wirf self.make_syntax_error("Expected comma oder right paren")
                 gib flags
         self.setpos(here)
         gib []
@@ -613,7 +613,7 @@ klasse Parser(PLexer):
                                     as_sequence = Wahr
                                     closing = lx.RBRACKET
                                 sonst:
-                                    raise self.make_syntax_error("Expected { oder [")
+                                    wirf self.make_syntax_error("Expected { oder [")
                                 wenn members := self.members(allow_sequence=Wahr):
                                     wenn self.expect(closing) und self.expect(lx.SEMI):
                                         gib Pseudo(
@@ -633,7 +633,7 @@ klasse Parser(PLexer):
             peek = self.peek()
             kinds = [lx.RBRACE, lx.RBRACKET] wenn allow_sequence sonst [lx.RBRACE]
             wenn nicht peek oder peek.kind nicht in kinds:
-                raise self.make_syntax_error(
+                wirf self.make_syntax_error(
                     f"Expected comma oder right paren{'/bracket' wenn allow_sequence sonst ''}")
             gib members
         self.setpos(here)
@@ -660,15 +660,15 @@ klasse Parser(PLexer):
             gib self.macro_if(tkn)
         sowenn tkn := self.expect(lx.CMACRO_ELSE):
             msg = "Unexpected #else"
-            raise self.make_syntax_error(msg)
+            wirf self.make_syntax_error(msg)
         sowenn tkn := self.expect(lx.CMACRO_ENDIF):
             msg = "Unexpected #endif"
-            raise self.make_syntax_error(msg)
+            wirf self.make_syntax_error(msg)
         sowenn tkn := self.expect(lx.CMACRO_OTHER):
             gib SimpleStmt([tkn])
         sowenn tkn := self.expect(lx.SWITCH):
             msg = "switch statements are nicht supported due to their complex flow control. Sorry."
-            raise self.make_syntax_error(msg)
+            wirf self.make_syntax_error(msg)
         tokens = self.consume_to(lx.SEMI)
         gib SimpleStmt(tokens)
 
@@ -695,7 +695,7 @@ klasse Parser(PLexer):
                 gib MacroIfStmt(cond, body, else_, else_body, tkn)
             sowenn tkn := self.expect(lx.CMACRO_ELSE):
                 wenn part is else_body:
-                    raise self.make_syntax_error("Multiple #else")
+                    wirf self.make_syntax_error("Multiple #else")
                 else_ = tkn
                 else_body = []
                 part = else_body

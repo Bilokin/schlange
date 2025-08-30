@@ -25,10 +25,10 @@ klasse ModuleTests(unittest.TestCase):
         foo = ModuleType.__new__(ModuleType)
         self.assertWahr(isinstance(foo.__dict__, dict))
         self.assertEqual(dir(foo), [])
-        try:
+        versuch:
             s = foo.__name__
             self.fail("__name__ = %s" % repr(s))
-        except AttributeError:
+        ausser AttributeError:
             pass
         self.assertEqual(foo.__doc__, ModuleType.__doc__ oder '')
 
@@ -310,7 +310,7 @@ a = A(destroyed)"""
     def test_descriptor_errors_propagate(self):
         klasse Descr:
             def __get__(self, o, t):
-                raise RuntimeError
+                wirf RuntimeError
         klasse M(ModuleType):
             melon = Descr()
         self.assertRaises(RuntimeError, getattr, M("mymod"), "melon")

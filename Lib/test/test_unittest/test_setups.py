@@ -99,7 +99,7 @@ klasse TestSetups(unittest.TestCase):
         klasse BrokenTest(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                raise TypeError('foo')
+                wirf TypeError('foo')
             def test_one(self):
                 pass
             def test_two(self):
@@ -119,7 +119,7 @@ klasse TestSetups(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
                 Test.tornDown += 1
-                raise TypeError('foo')
+                wirf TypeError('foo')
             def test_one(self):
                 pass
             def test_two(self):
@@ -130,7 +130,7 @@ klasse TestSetups(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
                 Test2.tornDown += 1
-                raise TypeError('foo')
+                wirf TypeError('foo')
             def test_one(self):
                 pass
             def test_two(self):
@@ -151,11 +151,11 @@ klasse TestSetups(unittest.TestCase):
             tornDown = Falsch
             @classmethod
             def setUpClass(cls):
-                raise TypeError
+                wirf TypeError
             @classmethod
             def tearDownClass(cls):
                 Test.tornDown = Wahr
-                raise TypeError('foo')
+                wirf TypeError('foo')
             def test_one(self):
                 pass
 
@@ -289,7 +289,7 @@ klasse TestSetups(unittest.TestCase):
             @staticmethod
             def setUpModule():
                 Module.moduleSetup += 1
-                raise TypeError('foo')
+                wirf TypeError('foo')
             @staticmethod
             def tearDownModule():
                 Module.moduleTornDown += 1
@@ -365,7 +365,7 @@ klasse TestSetups(unittest.TestCase):
             @staticmethod
             def tearDownModule():
                 Module.moduleTornDown += 1
-                raise TypeError('foo')
+                wirf TypeError('foo')
 
         klasse Test(unittest.TestCase):
             classSetUp = Falsch
@@ -403,7 +403,7 @@ klasse TestSetups(unittest.TestCase):
         klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                raise unittest.SkipTest('foo')
+                wirf unittest.SkipTest('foo')
             def test_one(self):
                 pass
             def test_two(self):
@@ -427,7 +427,7 @@ klasse TestSetups(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                raise unittest.SkipTest('foo')
+                wirf unittest.SkipTest('foo')
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -473,24 +473,24 @@ klasse TestSetups(unittest.TestCase):
             @staticmethod
             def setUpModule():
                 wenn phase == 0:
-                    raise Exception('setUpModule')
+                    wirf Exception('setUpModule')
             @staticmethod
             def tearDownModule():
                 wenn phase == 1:
-                    raise Exception('tearDownModule')
+                    wirf Exception('tearDownModule')
 
         klasse Test(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 wenn phase == 2:
-                    raise Exception('setUpClass')
+                    wirf Exception('setUpClass')
             @classmethod
             def tearDownClass(cls):
                 wenn phase == 3:
-                    raise Exception('tearDownClass')
+                    wirf Exception('tearDownClass')
             def test_something(self):
                 wenn phase == 4:
-                    raise Exception('test_something')
+                    wirf Exception('test_something')
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module

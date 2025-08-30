@@ -30,10 +30,10 @@ von test.pickletester importiere AbstractDispatchTableTests
 von test.pickletester importiere AbstractCustomPicklerClass
 von test.pickletester importiere BigmemPickleTests
 
-try:
+versuch:
     importiere _pickle
     has_c_implementation = Wahr
-except ImportError:
+ausser ImportError:
     has_c_implementation = Falsch
 
 
@@ -297,7 +297,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     def test_pickler_super_instance_attribute(self):
         klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
-                raise AssertionError('should never be called')
+                wirf AssertionError('should never be called')
             def _persistent_id(subself, obj):
                 called.append(obj)
                 self.assertIsNichts(super().persistent_id(obj))
@@ -319,7 +319,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     def test_unpickler_super_instance_attribute(self):
         klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
-                raise AssertionError('should never be called')
+                wirf AssertionError('should never be called')
             def _persistent_load(subself, pid):
                 called.append(pid)
                 mit self.assertRaises(self.persistent_load_error):
@@ -553,22 +553,22 @@ def reverse_mapping(module, name):
     gib module, name
 
 def getmodule(module):
-    try:
+    versuch:
         gib sys.modules[module]
-    except KeyError:
-        try:
+    ausser KeyError:
+        versuch:
             mit warnings.catch_warnings():
                 action = 'always' wenn support.verbose sonst 'ignore'
                 warnings.simplefilter(action, DeprecationWarning)
                 __import__(module)
-        except AttributeError als exc:
+        ausser AttributeError als exc:
             wenn support.verbose:
                 drucke("Can't importiere module %r: %s" % (module, exc))
-            raise ImportError
-        except ImportError als exc:
+            wirf ImportError
+        ausser ImportError als exc:
             wenn support.verbose:
                 drucke(exc)
-            raise
+            wirf
         gib sys.modules[module]
 
 def getattribute(module, name):
@@ -590,17 +590,17 @@ klasse CompatPickleTests(unittest.TestCase):
         modules |= {module fuer module, name in REVERSE_NAME_MAPPING}
         modules |= {module fuer module, name in NAME_MAPPING.values()}
         fuer module in modules:
-            try:
+            versuch:
                 getmodule(module)
-            except ImportError:
+            ausser ImportError:
                 pass
 
     def test_import_mapping(self):
         fuer module3, module2 in REVERSE_IMPORT_MAPPING.items():
             mit self.subTest((module3, module2)):
-                try:
+                versuch:
                     getmodule(module3)
-                except ImportError:
+                ausser ImportError:
                     pass
                 wenn module3[:1] != '_':
                     self.assertIn(module2, IMPORT_MAPPING)
@@ -619,9 +619,9 @@ klasse CompatPickleTests(unittest.TestCase):
                     module, name = mapping(module2, name2)
                     wenn module3[:1] != '_':
                         self.assertEqual((module, name), (module3, name3))
-                    try:
+                    versuch:
                         attr = getattribute(module3, name3)
-                    except ImportError:
+                    ausser ImportError:
                         pass
                     sonst:
                         self.assertEqual(getattribute(module, name), attr)
@@ -629,9 +629,9 @@ klasse CompatPickleTests(unittest.TestCase):
     def test_reverse_import_mapping(self):
         fuer module2, module3 in IMPORT_MAPPING.items():
             mit self.subTest((module2, module3)):
-                try:
+                versuch:
                     getmodule(module3)
-                except ImportError als exc:
+                ausser ImportError als exc:
                     wenn support.verbose:
                         drucke(exc)
                 wenn ((module2, module3) nicht in ALT_IMPORT_MAPPING und
@@ -649,9 +649,9 @@ klasse CompatPickleTests(unittest.TestCase):
     def test_reverse_name_mapping(self):
         fuer (module2, name2), (module3, name3) in NAME_MAPPING.items():
             mit self.subTest(((module2, name2), (module3, name3))):
-                try:
+                versuch:
                     attr = getattribute(module3, name3)
-                except ImportError:
+                ausser ImportError:
                     pass
                 module, name = reverse_mapping(module3, name3)
                 wenn (module2, name2, module3, name3) nicht in ALT_NAME_MAPPING:

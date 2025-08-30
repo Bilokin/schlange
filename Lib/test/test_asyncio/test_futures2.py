@@ -15,14 +15,14 @@ klasse FutureTests:
     async def test_future_traceback(self):
 
         async def raise_exc():
-            raise TypeError(42)
+            wirf TypeError(42)
 
         future = self.cls(raise_exc())
 
         fuer _ in range(5):
-            try:
+            versuch:
                 await future
-            except TypeError als e:
+            ausser TypeError als e:
                 tb = ''.join(traceback.format_tb(e.__traceback__))
                 self.assertEqual(tb.count("await future"), 1)
             sonst:
@@ -86,7 +86,7 @@ klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
         async def func():
             gib asyncio.all_tasks()
 
-        # The repr() call should nicht raise RecursionError at first.
+        # The repr() call should nicht wirf RecursionError at first.
         waiter = await asyncio.wait_for(asyncio.Task(func()),timeout=10)
         self.assertIn('...', repr(waiter))
 

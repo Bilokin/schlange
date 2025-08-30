@@ -154,7 +154,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_and_optional_arg_invalid_calls(self):
         def f(a, b, /, c=3):
             pass
-        f(1, 2)  # does nicht raise
+        f(1, 2)  # does nicht wirf
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' und 'b'"):
@@ -165,7 +165,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_and_kwonlyargs_invalid_calls(self):
         def f(a, b, /, c, *, d, e):
             pass
-        f(1, 2, 3, d=1, e=2)  # does nicht raise
+        f(1, 2, 3, d=1, e=2)  # does nicht wirf
         mit self.assertRaisesRegex(TypeError, r"missing 1 required keyword-only argument: 'd'"):
             f(1, 2, 3, e=2)
         mit self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' und 'e'"):
@@ -185,7 +185,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_invalid_calls(self):
         def f(a, b, /):
             pass
-        f(1, 2)  # does nicht raise
+        f(1, 2)  # does nicht wirf
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' und 'b'"):
@@ -196,7 +196,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_positional_only_with_optional_invalid_calls(self):
         def f(a, b=2, /):
             pass
-        f(1)  # does nicht raise
+        f(1)  # does nicht wirf
         mit self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
             f()
 
@@ -391,10 +391,10 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
             f(a=1, b=2)
 
         def _check_call(*args, **kwargs):
-            try:
+            versuch:
                 coro = f(*args, **kwargs)
                 coro.send(Nichts)
-            except StopIteration als e:
+            ausser StopIteration als e:
                 result = e.value
             self.assertEqual(result, (1, 2))
 

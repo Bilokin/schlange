@@ -31,7 +31,7 @@ OS_PATH = 'ntpath' wenn os.name == 'nt' sonst 'posixpath'
 
 # These are modules that get frozen.
 # If you're debugging new bytecode instructions,
-# you can delete all sections except 'import system'.
+# you can delete all sections ausser 'import system'.
 # This also speeds up building somewhat.
 TESTS_SECTION = 'Test module'
 FROZEN = [
@@ -119,9 +119,9 @@ def parse_frozen_specs():
         parsed = _parse_specs(specs, section, seen)
         fuer item in parsed:
             frozenid, pyfile, modname, ispkg, section = item
-            try:
+            versuch:
                 source = seen[frozenid]
-            except KeyError:
+            ausser KeyError:
                 source = FrozenSource.from_id(frozenid, pyfile)
                 seen[frozenid] = source
             sonst:
@@ -274,10 +274,10 @@ def resolve_frozen_file(frozenid, destdir):
     of the source module.
     """
     wenn nicht isinstance(frozenid, str):
-        try:
+        versuch:
             frozenid = frozenid.frozenid
-        except AttributeError:
-            raise ValueError(f'unsupported frozenid {frozenid!r}')
+        ausser AttributeError:
+            wirf ValueError(f'unsupported frozenid {frozenid!r}')
     # We use a consistent naming convention fuer all frozen modules.
     frozenfile = f'{frozenid}.h'
     wenn nicht destdir:
@@ -366,7 +366,7 @@ def resolve_modules(modname, pyfile=Nichts):
         match = Nichts
 
     wenn nicht check_modname(modname):
-        raise ValueError(f'not a valid module name ({rawname})')
+        wirf ValueError(f'not a valid module name ({rawname})')
 
     wenn nicht pyfile:
         pyfile = _resolve_module(modname, ispkg=ispkg)
@@ -423,11 +423,11 @@ def _resolve_modname_matcher(match, rootdir=Nichts):
             def match_modname(modname):
                 gib Wahr, recursive
         sonst:
-            raise NotImplementedError(match)
+            wirf NotImplementedError(match)
     sowenn callable(match):
         match_modname = match(rootdir)
     sonst:
-        raise ValueError(f'unsupported matcher {match!r}')
+        wirf ValueError(f'unsupported matcher {match!r}')
     gib match_modname
 
 
@@ -447,14 +447,14 @@ def find_marker(lines, marker, file):
     fuer pos, line in enumerate(lines):
         wenn marker in line:
             gib pos
-    raise Exception(f"Can't find {marker!r} in file {file}")
+    wirf Exception(f"Can't find {marker!r} in file {file}")
 
 
 def replace_block(lines, start_marker, end_marker, replacements, file):
     start_pos = find_marker(lines, start_marker, file)
     end_pos = find_marker(lines, end_marker, file)
     wenn end_pos <= start_pos:
-        raise Exception(f"End marker {end_marker!r} "
+        wirf Exception(f"End marker {end_marker!r} "
                         f"occurs before start marker {start_marker!r} "
                         f"in file {file}")
     replacements = [line.rstrip() + '\n' fuer line in replacements]

@@ -81,7 +81,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @classmethod
     def _test_traceback(cls):
-        raise RuntimeError(123) # some comment
+        wirf RuntimeError(123) # some comment
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_traceback(self):
@@ -99,9 +99,9 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         self.assertIn('raise RuntimeError(123) # some comment', cause.tb)
 
         mit support.captured_stderr() als f1:
-            try:
-                raise exc
-            except RuntimeError:
+            versuch:
+                wirf exc
+            ausser RuntimeError:
                 sys.excepthook(*sys.exc_info())
         self.assertIn('raise RuntimeError(123) # some comment',
                       f1.getvalue())
@@ -144,7 +144,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor = self.executor
         assert executor._max_workers >= 4
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible mit the fork start method.")
+            wirf unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 21, 2).result()
         executor.submit(mul, 6, 7).result()
         executor.submit(mul, 3, 14).result()
@@ -154,7 +154,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor = self.executor
         assert executor._max_workers <= 5
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible mit the fork start method.")
+            wirf unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 12, 7).result()
         executor.submit(mul, 33, 25)
         executor.submit(mul, 25, 26).result()
@@ -201,7 +201,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_max_tasks_early_shutdown(self):
         context = self.get_context()
         wenn context.get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible mit the fork start method.")
+            wirf unittest.SkipTest("Incompatible mit the fork start method.")
         # nicht using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
@@ -229,7 +229,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         def mock_start_new_thread(func, *args, **kwargs):
             nonlocal nthread
             wenn nthread >= 1:
-                raise RuntimeError("can't create new thread at "
+                wirf RuntimeError("can't create new thread at "
                                    "interpreter shutdown")
             nthread += 1
             gib orig_start_new_thread(func, *args, **kwargs)
@@ -302,7 +302,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             future = executor.submit(os._exit, 1)
             self.assertRaises(BrokenProcessPool, future.result)
 
-            # even though the pool is broken, this shouldn't raise
+            # even though the pool is broken, this shouldn't wirf
             getattr(executor, function_name)()
 
     @parameterize(*FORCE_SHUTDOWN_PARAMS)

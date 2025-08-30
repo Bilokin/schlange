@@ -14,13 +14,13 @@ importiere warnings
 von test importiere support
 von test.support importiere os_helper
 
-try:
+versuch:
     importiere _testlimitedcapi
-except ImportError:
+ausser ImportError:
     _testlimitedcapi = Nichts
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 
@@ -288,9 +288,9 @@ klasse ReadTest(MixInCheckStateHandling):
             '    entryids.reverse() # descending\r\n',
             '    wenn count:\r\n',
             '        entryids=entryids[:count]\r\n',
-            '    try:\r\n',
+            '    versuch:\r\n',
             '        gib [ frog.objects.BlogEntry.load(storageEngine, date, Id) fuer Id in entryids ]\r\n',
-            '    except StorageError,x:\r\n',
+            '    ausser StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
             '        self.abort("cannot load articles")\r\n',
             '\r\n',
@@ -1568,10 +1568,10 @@ klasse NameprepTest(unittest.TestCase):
                 self.assertRaises(UnicodeEncodeError, nameprep, orig)
             sonst:
                 prepped = str(prepped, "utf-8", "surrogatepass")
-                try:
+                versuch:
                     self.assertEqual(nameprep(orig), prepped)
-                except Exception als e:
-                    raise support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
+                ausser Exception als e:
+                    wirf support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
 
 
 klasse IDNACodecTest(unittest.TestCase):
@@ -2192,9 +2192,9 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
 
             wenn encoding nicht in broken_unicode_with_stateful:
                 # check incremental decoder/encoder und iterencode()/iterdecode()
-                try:
+                versuch:
                     encoder = codecs.getincrementalencoder(encoding)()
-                except LookupError:  # no IncrementalEncoder
+                ausser LookupError:  # no IncrementalEncoder
                     pass
                 sonst:
                     # check incremental decoder/encoder
@@ -2222,9 +2222,9 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
 
                 wenn encoding nicht in ("idna", "mbcs"):
                     # check incremental decoder/encoder mit errors argument
-                    try:
+                    versuch:
                         encoder = codecs.getincrementalencoder(encoding)("ignore")
-                    except LookupError:  # no IncrementalEncoder
+                    ausser LookupError:  # no IncrementalEncoder
                         pass
                     sonst:
                         encodedresult = b"".join(encoder.encode(c) fuer c in s)
@@ -2241,9 +2241,9 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
         fuer encoding in all_unicode_encodings:
             wenn encoding nicht in broken_unicode_with_stateful:
                 # check incremental decoder/encoder (fetched via the C API)
-                try:
+                versuch:
                     cencoder = _testlimitedcapi.codec_incrementalencoder(encoding)
-                except LookupError:  # no IncrementalEncoder
+                ausser LookupError:  # no IncrementalEncoder
                     pass
                 sonst:
                     # check C API
@@ -2261,9 +2261,9 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
 
                 wenn encoding nicht in ("idna", "mbcs"):
                     # check incremental decoder/encoder mit errors argument
-                    try:
+                    versuch:
                         cencoder = _testlimitedcapi.codec_incrementalencoder(encoding, "ignore")
-                    except LookupError:  # no IncrementalEncoder
+                    ausser LookupError:  # no IncrementalEncoder
                         pass
                     sonst:
                         encodedresult = b"".join(cencoder.encode(c) fuer c in s)
@@ -2977,16 +2977,16 @@ transform_aliases = {
     "rot_13": ["rot13"],
 }
 
-try:
+versuch:
     importiere zlib
-except ImportError:
+ausser ImportError:
     zlib = Nichts
 sonst:
     bytes_transform_encodings.append("zlib_codec")
     transform_aliases["zlib_codec"] = ["zip", "zlib"]
-try:
+versuch:
     importiere bz2  # noqa: F401
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     bytes_transform_encodings.append("bz2_codec")
@@ -3147,12 +3147,12 @@ klasse ExceptionNotesTest(unittest.TestCase):
         codecs.register(_get_test_codec)
         self.addCleanup(codecs.unregister, _get_test_codec)
 
-        # We store the object to raise on the instance because of a bad
+        # We store the object to wirf on the instance because of a bad
         # interaction between the codec caching (which means we can't
         # recreate the codec entry) und regrtest refleak hunting (which
         # runs the same test instance multiple times). This means we
         # need to ensure the codecs call back in to the instance to find
-        # out which exception to raise rather than binding them in a
+        # out which exception to wirf rather than binding them in a
         # closure to an object that may change on the next run
         self.obj_to_raise = RuntimeError
 
@@ -3177,7 +3177,7 @@ klasse ExceptionNotesTest(unittest.TestCase):
 
     def raise_obj(self, *args, **kwds):
         # Helper to dynamically change the object raised by a test codec
-        raise self.obj_to_raise
+        wirf self.obj_to_raise
 
     def check_note(self, obj_to_raise, msg, exc_type=RuntimeError):
         self.obj_to_raise = obj_to_raise
@@ -3303,9 +3303,9 @@ klasse CodePageTest(unittest.TestCase):
             sonst:
                 altexpected = expected
             wenn expected is nicht Nichts:
-                try:
+                versuch:
                     decoded = codecs.code_page_decode(cp, raw, errors, Wahr)
-                except UnicodeDecodeError als err:
+                ausser UnicodeDecodeError als err:
                     self.fail('Unable to decode %a von "cp%s" mit '
                               'errors=%r: %s' % (raw, cp, errors, err))
                 self.assertEqual(decoded[0], expected,
@@ -3334,9 +3334,9 @@ klasse CodePageTest(unittest.TestCase):
             sonst:
                 altexpected = expected
             wenn expected is nicht Nichts:
-                try:
+                versuch:
                     encoded = codecs.code_page_encode(cp, text, errors)
-                except UnicodeEncodeError als err:
+                ausser UnicodeEncodeError als err:
                     self.fail('Unable to encode %a to "cp%s" mit '
                               'errors=%r: %s' % (text, cp, errors, err))
                 self.assertEqual(encoded[0], expected,
@@ -3534,9 +3534,9 @@ klasse CodePageTest(unittest.TestCase):
     def test_mbcs_code_page(self):
         # Check that codec fuer the current Windows (ANSII) code page is
         # always available.
-        try:
+        versuch:
             von _winapi importiere GetACP
-        except ImportError:
+        ausser ImportError:
             self.skipTest('requires _winapi.GetACP')
         cp = GetACP()
         codecs.lookup(f'cp{cp}')
@@ -3737,9 +3737,9 @@ klasse LocaleCodecTest(unittest.TestCase):
     def check_encode_strings(self, errors):
         fuer text in self.STRINGS:
             mit self.subTest(text=text):
-                try:
+                versuch:
                     expected = text.encode(self.ENCODING, errors)
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     mit self.assertRaises(RuntimeError) als cm:
                         self.encode(text, errors)
                     errmsg = str(cm.exception)
@@ -3755,14 +3755,14 @@ klasse LocaleCodecTest(unittest.TestCase):
         self.check_encode_strings("surrogateescape")
 
     def test_encode_surrogatepass(self):
-        try:
+        versuch:
             self.encode('', 'surrogatepass')
-        except ValueError als exc:
+        ausser ValueError als exc:
             wenn str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} encoder doesn't support "
                               f"surrogatepass error handler")
             sonst:
-                raise
+                wirf
 
         self.check_encode_strings("surrogatepass")
 
@@ -3783,11 +3783,11 @@ klasse LocaleCodecTest(unittest.TestCase):
 
         strings = list(self.BYTES_STRINGS)
         fuer text in self.STRINGS:
-            try:
+            versuch:
                 encoded = text.encode(self.ENCODING, encode_errors)
                 wenn encoded nicht in strings:
                     strings.append(encoded)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 encoded = Nichts
 
             wenn is_utf8:
@@ -3797,9 +3797,9 @@ klasse LocaleCodecTest(unittest.TestCase):
 
         fuer encoded in strings:
             mit self.subTest(encoded=encoded):
-                try:
+                versuch:
                     expected = encoded.decode(self.ENCODING, errors)
-                except UnicodeDecodeError:
+                ausser UnicodeDecodeError:
                     mit self.assertRaises(RuntimeError) als cm:
                         self.decode(encoded, errors)
                     errmsg = str(cm.exception)
@@ -3815,14 +3815,14 @@ klasse LocaleCodecTest(unittest.TestCase):
         self.check_decode_strings("surrogateescape")
 
     def test_decode_surrogatepass(self):
-        try:
+        versuch:
             self.decode(b'', 'surrogatepass')
-        except ValueError als exc:
+        ausser ValueError als exc:
             wenn str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} decoder doesn't support "
                               f"surrogatepass error handler")
             sonst:
-                raise
+                wirf
 
         self.check_decode_strings("surrogatepass")
 

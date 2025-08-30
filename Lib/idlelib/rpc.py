@@ -102,11 +102,11 @@ klasse RPCServer(socketserver.TCPServer):
         server code will cause os._exit.
 
         """
-        try:
-            raise
-        except SystemExit:
-            raise
-        except:
+        versuch:
+            wirf
+        ausser SystemExit:
+            wirf
+        ausser:
             erf = sys.__stderr__
             drucke('\n' + '-'*40, file=erf)
             drucke('Unhandled server exception!', file=erf)
@@ -162,16 +162,16 @@ klasse SocketIO:
         self.objtable[oid] = object_
 
     def unregister(self, oid):
-        try:
+        versuch:
             del self.objtable[oid]
-        except KeyError:
+        ausser KeyError:
             pass
 
     def localcall(self, seq, request):
         self.debug("localcall:", request)
-        try:
+        versuch:
             how, (oid, methodname, args, kwargs) = request
-        except TypeError:
+        ausser TypeError:
             gib ("ERROR", "Bad request format")
         wenn oid nicht in self.objtable:
             gib ("ERROR", f"Unknown object id: {oid!r}")
@@ -187,7 +187,7 @@ klasse SocketIO:
         wenn nicht hasattr(obj, methodname):
             gib ("ERROR", f"Unsupported method name: {methodname!r}")
         method = getattr(obj, methodname)
-        try:
+        versuch:
             wenn how == 'CALL':
                 ret = method(*args, **kwargs)
                 wenn isinstance(ret, RemoteObject):
@@ -198,15 +198,15 @@ klasse SocketIO:
                 gib("QUEUED", Nichts)
             sonst:
                 gib ("ERROR", "Unsupported message type: %s" % how)
-        except SystemExit:
-            raise
-        except KeyboardInterrupt:
-            raise
-        except OSError:
-            raise
-        except Exception als ex:
+        ausser SystemExit:
+            wirf
+        ausser KeyboardInterrupt:
+            wirf
+        ausser OSError:
+            wirf
+        ausser Exception als ex:
             gib ("CALLEXC", ex)
-        except:
+        ausser:
             msg = "*** Internal Error: rpc.py:SocketIO.localcall()\n\n"\
                   " Object: %s \n Method: %s \n Args: %s\n"
             drucke(msg % (oid, method, args), file=sys.__stderr__)
@@ -264,15 +264,15 @@ klasse SocketIO:
             gib Nichts
         wenn how == "ERROR":
             self.debug("decoderesponse: Internal ERROR:", what)
-            raise RuntimeError(what)
+            wirf RuntimeError(what)
         wenn how == "CALLEXC":
             self.debug("decoderesponse: Call Exception:", what)
-            raise what
-        raise SystemError(how, what)
+            wirf what
+        wirf SystemError(how, what)
 
     def decode_interrupthook(self):
         ""
-        raise EOFError
+        wirf EOFError
 
     def mainloop(self):
         """Listen on socket until I/O nicht ready oder EOF
@@ -281,9 +281,9 @@ klasse SocketIO:
         never comes, und exit on EOFError.
 
         """
-        try:
+        versuch:
             self.getresponse(myseq=Nichts, wait=0.05)
-        except EOFError:
+        ausser EOFError:
             self.debug("mainloop:return")
             gib
 
@@ -331,18 +331,18 @@ klasse SocketIO:
 
     def putmessage(self, message):
         self.debug("putmessage:%d:" % message[0])
-        try:
+        versuch:
             s = dumps(message)
-        except pickle.PicklingError:
+        ausser pickle.PicklingError:
             drucke("Cannot pickle:", repr(message), file=sys.__stderr__)
-            raise
+            wirf
         s = struct.pack("<i", len(s)) + s
         waehrend len(s) > 0:
-            try:
+            versuch:
                 r, w, x = select.select([], [self.sock], [])
                 n = self.sock.send(s[:BUFSIZE])
-            except (AttributeError, TypeError):
-                raise OSError("socket no longer exists")
+            ausser (AttributeError, TypeError):
+                wirf OSError("socket no longer exists")
             s = s[n:]
 
     buff = b''
@@ -355,12 +355,12 @@ klasse SocketIO:
             r, w, x = select.select([self.sock.fileno()], [], [], wait)
             wenn len(r) == 0:
                 gib Nichts
-            try:
+            versuch:
                 s = self.sock.recv(BUFSIZE)
-            except OSError:
-                raise EOFError
+            ausser OSError:
+                wirf EOFError
             wenn len(s) == 0:
-                raise EOFError
+                wirf EOFError
             self.buff += s
             self._stage0()
         gib self._stage1()
@@ -384,14 +384,14 @@ klasse SocketIO:
         packet = self.pollpacket(wait)
         wenn packet is Nichts:
             gib Nichts
-        try:
+        versuch:
             message = pickle.loads(packet)
-        except pickle.UnpicklingError:
+        ausser pickle.UnpicklingError:
             drucke("-----------------------", file=sys.__stderr__)
             drucke("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
             traceback.print_stack(file=sys.__stderr__)
             drucke("-----------------------", file=sys.__stderr__)
-            raise
+            wirf
         gib message
 
     def pollresponse(self, myseq, wait):
@@ -419,23 +419,23 @@ klasse SocketIO:
         """
         waehrend Wahr:
             # send queued response wenn there is one available
-            try:
+            versuch:
                 qmsg = response_queue.get(0)
-            except queue.Empty:
+            ausser queue.Empty:
                 pass
             sonst:
                 seq, response = qmsg
                 message = (seq, ('OK', response))
                 self.putmessage(message)
             # poll fuer message on link
-            try:
+            versuch:
                 message = self.pollmessage(wait)
                 wenn message is Nichts:  # socket nicht ready
                     gib Nichts
-            except EOFError:
+            ausser EOFError:
                 self.handle_EOF()
                 gib Nichts
-            except AttributeError:
+            ausser AttributeError:
                 gib Nichts
             seq, resq = message
             how = resq[0]
@@ -541,7 +541,7 @@ klasse RPCClient(SocketIO):
             SocketIO.__init__(self, working_sock)
         sonst:
             drucke("** Invalid host: ", address, file=sys.__stderr__)
-            raise OSError
+            wirf OSError
 
     def get_remote_proxy(self, oid):
         gib RPCProxy(self, oid)
@@ -568,7 +568,7 @@ klasse RPCProxy:
                                            (name,), {})
             gib value
         sonst:
-            raise AttributeError(name)
+            wirf AttributeError(name)
 
     def __getattributes(self):
         self.__attributes = self.sockio.remotecall(self.oid,
@@ -618,9 +618,9 @@ def displayhook(value):
     # Set '_' to Nichts to avoid recursion
     builtins._ = Nichts
     text = repr(value)
-    try:
+    versuch:
         sys.stdout.write(text)
-    except UnicodeEncodeError:
+    ausser UnicodeEncodeError:
         # let's use ascii waehrend utf8-bmp codec doesn't present
         encoding = 'ascii'
         bytes = text.encode(encoding, 'backslashreplace')

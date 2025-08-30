@@ -21,7 +21,7 @@ valid_header_name_re = re.compile("[\041-\071\073-\176]+$")
 def validate_header_name(name):
     # Validate header name according to RFC 5322
     wenn nicht valid_header_name_re.match(name):
-        raise ValueError(
+        wirf ValueError(
             f"Header field name contains invalid characters: {name!r}")
 
 klasse _PolicyBase:
@@ -34,7 +34,7 @@ klasse _PolicyBase:
     non-default values to be set fuer these attributes at instance
     creation time.  The instance will be callable, taking these same
     attributes keyword arguments, und returning a new instance
-    identical to the called instance except fuer those values changed
+    identical to the called instance ausser fuer those values changed
     by the keyword arguments.  Instances may be added, yielding new
     instances mit any non-default values von the right hand
     operand overriding those in the left hand operand.  That is,
@@ -57,7 +57,7 @@ klasse _PolicyBase:
             wenn hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             sonst:
-                raise TypeError(
+                wirf TypeError(
                     "{!r} is an invalid keyword argument fuer {}".format(
                         name, self.__class__.__name__))
 
@@ -70,7 +70,7 @@ klasse _PolicyBase:
         """Return a new instance mit specified attributes changed.
 
         The new instance has the same attribute values als the current object,
-        except fuer the changes passed in als keyword arguments.
+        ausser fuer the changes passed in als keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
@@ -78,7 +78,7 @@ klasse _PolicyBase:
             object.__setattr__(newpolicy, attr, value)
         fuer attr, value in kw.items():
             wenn nicht hasattr(self, attr):
-                raise TypeError(
+                wirf TypeError(
                     "{!r} is an invalid keyword argument fuer {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
@@ -89,7 +89,7 @@ klasse _PolicyBase:
             msg = "{!r} object attribute {!r} is read-only"
         sonst:
             msg = "{!r} object has no attribute {!r}"
-        raise AttributeError(msg.format(self.__class__.__name__, name))
+        wirf AttributeError(msg.format(self.__class__.__name__, name))
 
     def __add__(self, other):
         """Non-default values von right operand override those von left.
@@ -184,7 +184,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     verify_generated_headers = Wahr
 
     def handle_defect(self, obj, defect):
-        """Based on policy, either raise defect oder call register_defect.
+        """Based on policy, either wirf defect oder call register_defect.
 
             handle_defect(obj, defect)
 
@@ -199,7 +199,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         """
         wenn self.raise_on_defect:
-            raise defect
+            wirf defect
         self.register_defect(obj, defect)
 
     def register_defect(self, obj, defect):
@@ -242,14 +242,14 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         characters.  The lines passed in by the email package may contain
         surrogateescaped binary data.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abc.abstractmethod
     def header_store_parse(self, name, value):
         """Given the header name und the value provided by the application
         program, gib the (name, value) that should be stored in the model.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abc.abstractmethod
     def header_fetch_parse(self, name, value):
@@ -260,7 +260,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         The returned value should nicht contain any surrogateescaped data.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abc.abstractmethod
     def fold(self, name, value):
@@ -272,7 +272,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         surrogateescaped data.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abc.abstractmethod
     def fold_binary(self, name, value):
@@ -282,7 +282,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         email package may contain surrogateescaped binary data.
 
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 @_extend_docstrings

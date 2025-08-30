@@ -281,9 +281,9 @@ klasse CodeGen:
 
     def add_include(self, name: str, reason: str,
                     *, condition: str | Nichts = Nichts) -> Nichts:
-        try:
+        versuch:
             existing = self._includes[name]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             wenn existing.condition und nicht condition:

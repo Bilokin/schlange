@@ -47,24 +47,24 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere von g2()
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
-                raise ValueError("spanish inquisition occurred")
-            finally:
+                wirf ValueError("spanish inquisition occurred")
+            schliesslich:
                 trace.append("Finishing g2")
-        try:
+        versuch:
             fuer x in g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0], "spanish inquisition occurred")
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Starting g2",
@@ -107,28 +107,28 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere "g1 ham"
                 liefere von g2()
                 liefere "g1 eggs"
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
-                raise ValueError("hovercraft is full of eels")
+                wirf ValueError("hovercraft is full of eels")
                 liefere "g2 more spam"
-            finally:
+            schliesslich:
                 trace.append("Finishing g2")
-        try:
+        versuch:
             fuer x in g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0], "hovercraft is full of eels")
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -161,12 +161,12 @@ klasse TestPEP380Operation(unittest.TestCase):
         g = g1()
         y = next(g)
         x = 1
-        try:
+        versuch:
             waehrend 1:
                 y = g.send(x)
                 trace.append("Yielded %s" % (y,))
                 x += 1
-        except StopIteration:
+        ausser StopIteration:
             pass
         self.assertEqual(trace,[
             "Starting g1",
@@ -199,7 +199,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             trace.append("Starting g2")
             x = liefere "g2 spam"
             trace.append("g2 received %s" % (x,))
-            raise ValueError("hovercraft is full of eels")
+            wirf ValueError("hovercraft is full of eels")
             x = liefere "g2 more spam"
             trace.append("g2 received %s" % (x,))
             trace.append("Finishing g2")
@@ -207,12 +207,12 @@ klasse TestPEP380Operation(unittest.TestCase):
             g = g1()
             y = next(g)
             x = 1
-            try:
+            versuch:
                 waehrend 1:
                     y = g.send(x)
                     trace.append("Yielded %s" % (y,))
                     x += 1
-            except StopIteration:
+            ausser StopIteration:
                 trace.append("StopIteration")
         self.assertRaises(ValueError,run)
         self.assertEqual(trace,[
@@ -229,19 +229,19 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere "g1 ham"
                 liefere von g2()
                 liefere "g1 eggs"
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
                 liefere "g2 more spam"
-            finally:
+            schliesslich:
                 trace.append("Finishing g2")
         g = g1()
         fuer i in range(2):
@@ -263,32 +263,32 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere "g1 ham"
                 liefere von g2()
                 liefere "g1 eggs"
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
                 liefere "g2 more spam"
-            finally:
+            schliesslich:
                 trace.append("Finishing g2")
-                raise ValueError("nybbles have exploded mit delight")
-        try:
+                wirf ValueError("nybbles have exploded mit delight")
+        versuch:
             g = g1()
             fuer i in range(2):
                 x = next(g)
                 trace.append("Yielded %s" % (x,))
             g.close()
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0], "nybbles have exploded mit delight")
             self.assertIsInstance(e.__context__, GeneratorExit)
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -304,31 +304,31 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere "g1 ham"
                 liefere von g2()
                 liefere "g1 eggs"
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
                 liefere "g2 more spam"
-            finally:
+            schliesslich:
                 trace.append("Finishing g2")
-        try:
+        versuch:
             g = g1()
             fuer i in range(2):
                 x = next(g)
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             g.throw(e)
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0], "tomato ejected")
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -463,11 +463,11 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g():
-            try:
+            versuch:
                 trace.append("starting g")
                 liefere von range(3)
                 trace.append("g should nicht be here")
-            finally:
+            schliesslich:
                 trace.append("finishing g")
         gi = g()
         next(gi)
@@ -485,22 +485,22 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g():
-            try:
+            versuch:
                 trace.append("Starting g")
                 liefere von range(10)
-            finally:
+            schliesslich:
                 trace.append("Finishing g")
-        try:
+        versuch:
             gi = g()
             fuer i in range(5):
                 x = next(gi)
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             gi.throw(e)
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0],"tomato ejected")
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Starting g",
             "Yielded 0",
@@ -517,19 +517,19 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g():
-            try:
+            versuch:
                 trace.append("starting g")
                 liefere von range(3)
                 trace.append("g should nicht be here")
-            finally:
+            schliesslich:
                 trace.append("finishing g")
-        try:
+        versuch:
             gi = g()
             next(gi)
             fuer x in range(3):
                 y = gi.send(42)
                 trace.append("Should nicht have yielded: %s" % (y,))
-        except AttributeError als e:
+        ausser AttributeError als e:
             self.assertIn("send", e.args[0])
         sonst:
             self.fail("was able to send into non-generator")
@@ -607,14 +607,14 @@ klasse TestPEP380Operation(unittest.TestCase):
             trace.append("g2: about to liefere von g1")
             liefere von gi
             trace.append("g2 should nicht be here")
-        try:
+        versuch:
             gi = g1()
             fuer y in gi:
                 trace.append("Yielded: %s" % (y,))
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0],"generator already executing")
         sonst:
-            self.fail("subgenerator didn't raise ValueError")
+            self.fail("subgenerator didn't wirf ValueError")
         self.assertEqual(trace,[
             "g1: starting",
             "Yielded: y1",
@@ -630,19 +630,19 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def g1():
-            try:
+            versuch:
                 trace.append("Starting g1")
                 liefere "g1 ham"
                 liefere von g2()
                 liefere "g1 eggs"
-            finally:
+            schliesslich:
                 trace.append("Finishing g1")
         def g2():
-            try:
+            versuch:
                 trace.append("Starting g2")
                 liefere "g2 spam"
                 liefere "g2 more spam"
-            except LunchError:
+            ausser LunchError:
                 trace.append("Caught LunchError in g2")
                 liefere "g2 lunch saved"
                 liefere "g2 yet more spam"
@@ -675,11 +675,11 @@ klasse TestPEP380Operation(unittest.TestCase):
         def f(r):
             gi = g(r)
             next(gi)
-            try:
+            versuch:
                 trace.append("f resuming g")
                 next(gi)
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration als e:
+            ausser StopIteration als e:
                 trace.append("f caught %r" % (e,))
         def g(r):
             trace.append("g starting")
@@ -717,11 +717,11 @@ klasse TestPEP380Operation(unittest.TestCase):
         def f(r):
             gi = g(r)
             next(gi)
-            try:
+            versuch:
                 trace.append("f sending spam to g")
                 gi.send("spam")
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration als e:
+            ausser StopIteration als e:
                 trace.append("f caught %r" % (e,))
         def g(r):
             trace.append("g starting")
@@ -762,9 +762,9 @@ klasse TestPEP380Operation(unittest.TestCase):
         subgenerator und returning a value
         """
         def inner():
-            try:
+            versuch:
                 liefere 1
-            except ValueError:
+            ausser ValueError:
                 trace.append("inner caught ValueError")
             gib value
 
@@ -792,24 +792,24 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def f():
-            try:
+            versuch:
                 trace.append("Enter f")
                 liefere
                 trace.append("Exit f")
-            except GeneratorExit:
+            ausser GeneratorExit:
                 gib
         def g():
             trace.append("Enter g")
             liefere von f()
             trace.append("Exit g")
-        try:
+        versuch:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except GeneratorExit:
+        ausser GeneratorExit:
             pass
         sonst:
-            self.fail("subgenerator failed to raise GeneratorExit")
+            self.fail("subgenerator failed to wirf GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
@@ -822,24 +822,24 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def f():
-            try:
+            versuch:
                 trace.append("Enter f")
                 liefere
                 trace.append("Exit f")
-            except GeneratorExit:
+            ausser GeneratorExit:
                 liefere
         def g():
             trace.append("Enter g")
             liefere von f()
             trace.append("Exit g")
-        try:
+        versuch:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except RuntimeError als e:
+        ausser RuntimeError als e:
             self.assertEqual(e.args[0], "generator ignored GeneratorExit")
         sonst:
-            self.fail("subgenerator failed to raise GeneratorExit")
+            self.fail("subgenerator failed to wirf GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
@@ -852,25 +852,25 @@ klasse TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         def f():
-            try:
+            versuch:
                 trace.append("Enter f")
                 liefere
                 trace.append("Exit f")
-            except GeneratorExit:
-                raise ValueError("Vorpal bunny encountered")
+            ausser GeneratorExit:
+                wirf ValueError("Vorpal bunny encountered")
         def g():
             trace.append("Enter g")
             liefere von f()
             trace.append("Exit g")
-        try:
+        versuch:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(e.args[0], "Vorpal bunny encountered")
             self.assertIsInstance(e.__context__, GeneratorExit)
         sonst:
-            self.fail("subgenerator failed to raise ValueError")
+            self.fail("subgenerator failed to wirf ValueError")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
@@ -889,9 +889,9 @@ klasse TestPEP380Operation(unittest.TestCase):
             liefere 3
         def two():
             liefere 1
-            try:
+            versuch:
                 liefere von g1
-            except ValueError:
+            ausser ValueError:
                 pass
             liefere 2
         g1 = one()
@@ -900,10 +900,10 @@ klasse TestPEP380Operation(unittest.TestCase):
         # Check mit send
         g1 = one()
         res = [next(g1)]
-        try:
+        versuch:
             waehrend Wahr:
                 res.append(g1.send(42))
-        except StopIteration:
+        ausser StopIteration:
             pass
         self.assertEqual(res, [0, 1, 2, 3])
 
@@ -912,38 +912,38 @@ klasse TestPEP380Operation(unittest.TestCase):
         klasse MyErr(Exception):
             pass
         def one():
-            try:
+            versuch:
                 liefere 0
-            except MyErr:
+            ausser MyErr:
                 pass
             liefere von two()
-            try:
+            versuch:
                 liefere 3
-            except MyErr:
+            ausser MyErr:
                 pass
         def two():
-            try:
+            versuch:
                 liefere 1
-            except MyErr:
+            ausser MyErr:
                 pass
-            try:
+            versuch:
                 liefere von g1
-            except ValueError:
+            ausser ValueError:
                 pass
-            try:
+            versuch:
                 liefere 2
-            except MyErr:
+            ausser MyErr:
                 pass
         g1 = one()
         res = [next(g1)]
-        try:
+        versuch:
             waehrend Wahr:
                 res.append(g1.throw(MyErr))
-        except StopIteration:
+        ausser StopIteration:
             pass
-        except:
+        ausser:
             self.assertEqual(res, [0, 1, 2, 3])
-            raise
+            wirf
 
     def test_delegating_generators_claim_to_be_running_with_close(self):
         # Check mit close
@@ -988,7 +988,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             def __iter__(self):
                 gib self
             def __next__(self):
-                raise StopIteration(42)
+                wirf StopIteration(42)
         def gen():
             nonlocal ret
             ret = liefere von MyIter()
@@ -1136,12 +1136,12 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
                 liefere yielded_second
                 gib returned
-            finally:
-                raise raised
+            schliesslich:
+                wirf raised
 
         def outer():
             gib (yield von inner())
@@ -1212,12 +1212,12 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
                 liefere yielded_second
                 gib returned
-            finally:
-                raise raised
+            schliesslich:
+                wirf raised
 
         def outer():
             gib (yield von inner())
@@ -1295,12 +1295,12 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
                 liefere yielded_second
                 gib returned
-            finally:
-                raise raised
+            schliesslich:
+                wirf raised
 
         def outer():
             gib (yield von inner())
@@ -1373,12 +1373,12 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
                 liefere yielded_second
                 gib returned
-            finally:
-                raise raised
+            schliesslich:
+                wirf raised
 
         def outer():
             gib (yield von inner())
@@ -1451,9 +1451,9 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
-            finally:
+            schliesslich:
                 liefere yielded_second
             gib returned
 
@@ -1522,10 +1522,10 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         returned = object()
 
         def inner():
-            try:
+            versuch:
                 liefere yielded_first
                 liefere yielded_second
-            except:
+            ausser:
                 pass
             gib returned
 
@@ -1587,7 +1587,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         # threw an exception.
         klasse Silly:
             def __iter__(self):
-                raise RuntimeError("nobody expects the spanish inquisition")
+                wirf RuntimeError("nobody expects the spanish inquisition")
 
         def my_generator():
             liefere von Silly()

@@ -9,7 +9,7 @@ von ctypes importiere CFUNCTYPE, c_void_p, c_char_p, c_int, c_double
 
 def callback_func(arg):
     42 / arg
-    raise ValueError(arg)
+    wirf ValueError(arg)
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')

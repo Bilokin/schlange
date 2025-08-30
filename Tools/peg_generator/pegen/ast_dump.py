@@ -30,9 +30,9 @@ def ast_dump(
             allsimple = Wahr
             keywords = annotate_fields
             fuer name in node._fields:
-                try:
+                versuch:
                     value = getattr(node, name)
-                except AttributeError:
+                ausser AttributeError:
                     keywords = Wahr
                     weiter
                 wenn value is Nichts und getattr(cls, name, ...) is Nichts:
@@ -46,9 +46,9 @@ def ast_dump(
                     args.append(value)
             wenn include_attributes und node._attributes:
                 fuer name in node._attributes:
-                    try:
+                    versuch:
                         value = getattr(node, name)
-                    except AttributeError:
+                    ausser AttributeError:
                         weiter
                     wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                         weiter
@@ -65,5 +65,5 @@ def ast_dump(
         gib repr(node), Wahr
 
     wenn all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
-        raise TypeError("expected AST, got %r" % node.__class__.__name__)
+        wirf TypeError("expected AST, got %r" % node.__class__.__name__)
     gib _format(node)[0]

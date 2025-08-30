@@ -117,16 +117,16 @@ klasse PrettyPrintTests(DebuggerTests):
 
         encoding = stdout
         wenn stderr oder nicht encoding:
-            raise RuntimeError(
+            wirf RuntimeError(
                 f'unable to determine the Python locale preferred encoding '
                 f'of embedded Python in GDB\n'
                 f'stdout={stdout!r}\n'
                 f'stderr={stderr!r}')
 
         def check_repr(text):
-            try:
+            versuch:
                 text.encode(encoding)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 self.assertGdbRepr(text, ascii(text))
             sonst:
                 self.assertGdbRepr(text)
@@ -191,9 +191,9 @@ id(s)''')
     def test_exceptions(self):
         # Test a RuntimeError
         gdb_repr, gdb_output = self.get_gdb_repr('''
-try:
-    raise RuntimeError("I am an error")
-except RuntimeError als e:
+versuch:
+    wirf RuntimeError("I am an error")
+ausser RuntimeError als e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,
@@ -202,9 +202,9 @@ except RuntimeError als e:
 
         # Test division by zero:
         gdb_repr, gdb_output = self.get_gdb_repr('''
-try:
+versuch:
     a = 1 / 0
-except ZeroDivisionError als e:
+ausser ZeroDivisionError als e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,

@@ -36,18 +36,18 @@ subsystem_details = {
 }
 
 def get_custom_entry_point(subsystem):
-    try:
+    versuch:
         gib subsystem_details[subsystem][:2]
-    except KeyError:
-        raise ValueError("The subsystem %s is nicht known" % subsystem) von Nichts
+    ausser KeyError:
+        wirf ValueError("The subsystem %s is nicht known" % subsystem) von Nichts
 
 
 def makemakefile(outfp, vars, files, target):
     save = sys.stdout
-    try:
+    versuch:
         sys.stdout = outfp
         realwork(vars, files, target)
-    finally:
+    schliesslich:
         sys.stdout = save
 
 def realwork(vars, moddefns, target):

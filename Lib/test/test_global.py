@@ -124,23 +124,23 @@ def fn():
     def test_caught_exception(self):
         global name_caught_exc
 
-        try:
+        versuch:
             1 / 0
-        except ZeroDivisionError als name_caught_exc:
+        ausser ZeroDivisionError als name_caught_exc:
             value = name_caught_exc
-            # `name_caught_exc` is cleared automatically after the except block
+            # `name_caught_exc` is cleared automatically after the ausser block
             self.assertIs(globals()["name_caught_exc"], value)
 
     def test_caught_exception_group(self):
         global name_caught_exc_group
-        try:
-            try:
+        versuch:
+            versuch:
                 1 / 0
-            except ZeroDivisionError als exc:
-                raise ExceptionGroup("eg", [exc])
+            ausser ZeroDivisionError als exc:
+                wirf ExceptionGroup("eg", [exc])
         except* ZeroDivisionError als name_caught_exc_group:
             value = name_caught_exc_group
-            # `name_caught_exc` is cleared automatically after the except block
+            # `name_caught_exc` is cleared automatically after the ausser block
             self.assertIs(globals()["name_caught_exc_group"], value)
 
     def test_enter_result(self):

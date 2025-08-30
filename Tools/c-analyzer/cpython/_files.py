@@ -31,7 +31,7 @@ def resolve_filename(filename):
     filename = os.path.normcase(os.path.normpath(filename))
     wenn os.path.isabs(filename):
         wenn os.path.relpath(filename, REPO_ROOT).startswith('.'):
-            raise Exception(f'{orig!r} is outside the repo ({REPO_ROOT})')
+            wirf Exception(f'{orig!r} is outside the repo ({REPO_ROOT})')
         gib filename
     sonst:
         gib os.path.join(REPO_ROOT, filename)
@@ -69,4 +69,4 @@ def iter_header_files(filenames=Nichts, *, levels=Nichts):
             liefere filename
         sonst:
             # XXX Log it und weiter instead?
-            raise ValueError(f'expected .h file, got {orig!r}')
+            wirf ValueError(f'expected .h file, got {orig!r}')

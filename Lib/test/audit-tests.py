@@ -42,40 +42,40 @@ klasse TestHook:
             gib
         self.seen.append((event, args))
         wenn event in self.raise_on_events:
-            raise self.exc_type("saw event " + event)
+            wirf self.exc_type("saw event " + event)
 
 
 # Simple helpers, since we are nicht in unittest here
 def assertEqual(x, y):
     wenn x != y:
-        raise AssertionError(f"{x!r} should equal {y!r}")
+        wirf AssertionError(f"{x!r} should equal {y!r}")
 
 
 def assertIn(el, series):
     wenn el nicht in series:
-        raise AssertionError(f"{el!r} should be in {series!r}")
+        wirf AssertionError(f"{el!r} should be in {series!r}")
 
 
 def assertNotIn(el, series):
     wenn el in series:
-        raise AssertionError(f"{el!r} should nicht be in {series!r}")
+        wirf AssertionError(f"{el!r} should nicht be in {series!r}")
 
 
 def assertSequenceEqual(x, y):
     wenn len(x) != len(y):
-        raise AssertionError(f"{x!r} should equal {y!r}")
+        wirf AssertionError(f"{x!r} should equal {y!r}")
     wenn any(ix != iy fuer ix, iy in zip(x, y)):
-        raise AssertionError(f"{x!r} should equal {y!r}")
+        wirf AssertionError(f"{x!r} should equal {y!r}")
 
 
 @contextlib.contextmanager
 def assertRaises(ex_type):
-    try:
+    versuch:
         liefere
         assert Falsch, f"expected {ex_type}"
-    except BaseException als ex:
+    ausser BaseException als ex:
         wenn isinstance(ex, AssertionError):
-            raise
+            wirf
         assert type(ex) is ex_type, f"{ex} should be {ex_type}"
 
 
@@ -102,7 +102,7 @@ def test_block_add_hook_baseexception():
         mit TestHook(
             raise_on_events="sys.addaudithook", exc_type=BaseException
         ) als hook1:
-            # Adding this next hook should raise BaseException
+            # Adding this next hook should wirf BaseException
             mit TestHook() als hook2:
                 pass
 
@@ -115,12 +115,12 @@ def test_marshal():
     mit TestHook() als hook:
         assertEqual(o, marshal.loads(marshal.dumps(o)))
 
-        try:
+        versuch:
             mit open("test-marshal.bin", "wb") als f:
                 marshal.dump(o, f)
             mit open("test-marshal.bin", "rb") als f:
                 assertEqual(o, marshal.load(f))
-        finally:
+        schliesslich:
             os.unlink("test-marshal.bin")
 
     actual = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "marshal.dumps"]
@@ -188,16 +188,16 @@ def test_monkeypatch():
 
 def test_open(testfn):
     # SSLContext.load_dh_params uses Py_fopen() rather than normal open()
-    try:
+    versuch:
         importiere ssl
 
         load_dh_params = ssl.create_default_context().load_dh_params
-    except ImportError:
+    ausser ImportError:
         load_dh_params = Nichts
 
-    try:
+    versuch:
         importiere readline
-    except ImportError:
+    ausser ImportError:
         readline = Nichts
 
     def rl(name):
@@ -227,15 +227,15 @@ def test_open(testfn):
             wenn nicht fn:
                 weiter
             mit assertRaises(RuntimeError):
-                try:
+                versuch:
                     fn(*args)
-                except NotImplementedError:
+                ausser NotImplementedError:
                     wenn fn == load_dh_params:
                         # Not callable in some builds
                         load_dh_params = Nichts
-                        raise RuntimeError
+                        wirf RuntimeError
                     sonst:
-                        raise
+                        wirf
 
     actual_mode = [(a[0], a[1]) fuer e, a in hook.seen wenn e == "open" und a[1]]
     actual_flag = [(a[0], a[2]) fuer e, a in hook.seen wenn e == "open" und nicht a[1]]
@@ -272,7 +272,7 @@ def test_cantrace():
             traced.append(event)
 
     old = sys.settrace(trace)
-    try:
+    versuch:
         mit TestHook() als hook:
             # No traced call
             eval("1")
@@ -291,7 +291,7 @@ def test_cantrace():
 
             # One traced call (writing to private member)
             hook.__cantrace__ = 0
-    finally:
+    schliesslich:
         sys.settrace(old)
 
     assertSequenceEqual(["call"] * 4, traced)
@@ -344,14 +344,14 @@ def test_excepthook():
     def hook(event, args):
         wenn event == "sys.excepthook":
             wenn nicht isinstance(args[2], args[1]):
-                raise TypeError(f"Expected isinstance({args[2]!r}, " f"{args[1]!r})")
+                wirf TypeError(f"Expected isinstance({args[2]!r}, " f"{args[1]!r})")
             wenn args[0] != excepthook:
-                raise ValueError(f"Expected {args[0]} == {excepthook}")
+                wirf ValueError(f"Expected {args[0]} == {excepthook}")
             drucke(event, repr(args[2]))
 
     sys.addaudithook(hook)
     sys.excepthook = excepthook
-    raise RuntimeError("fatal-error")
+    wirf RuntimeError("fatal-error")
 
 
 def test_unraisablehook():
@@ -363,7 +363,7 @@ def test_unraisablehook():
     def hook(event, args):
         wenn event == "sys.unraisablehook":
             wenn args[0] != unraisablehook:
-                raise ValueError(f"Expected {args[0]} == {unraisablehook}")
+                wirf ValueError(f"Expected {args[0]} == {unraisablehook}")
             drucke(event, repr(args[1].exc_value), args[1].err_msg)
 
     sys.addaudithook(hook)
@@ -384,12 +384,12 @@ def test_winreg():
 
     k = OpenKey(HKEY_LOCAL_MACHINE, "Software")
     EnumKey(k, 0)
-    try:
+    versuch:
         EnumKey(k, 10000)
-    except OSError:
+    ausser OSError:
         pass
     sonst:
-        raise RuntimeError("Expected EnumKey(HKLM, 10000) to fail")
+        wirf RuntimeError("Expected EnumKey(HKLM, 10000) to fail")
 
     kv = k.Detach()
     CloseKey(kv)
@@ -408,12 +408,12 @@ def test_socket():
 
     # Don't care wenn this fails, we just want the audit message
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
+    versuch:
         # Don't care wenn this fails, we just want the audit message
         sock.bind(('127.0.0.1', 8080))
-    except Exception:
+    ausser Exception:
         pass
-    finally:
+    schliesslich:
         sock.close()
 
 
@@ -445,11 +445,11 @@ def test_http_client():
     sys.addaudithook(hook)
 
     conn = http.client.HTTPConnection('www.python.org')
-    try:
+    versuch:
         conn.request('GET', '/')
-    except OSError:
+    ausser OSError:
         drucke('http.client.send', '[cannot send]')
-    finally:
+    schliesslich:
         conn.close()
 
 
@@ -465,16 +465,16 @@ def test_sqlite3():
     cx2 = sqlite3.Connection(":memory:")
 
     # Configured without --enable-loadable-sqlite-extensions
-    try:
+    versuch:
         wenn hasattr(sqlite3.Connection, "enable_load_extension"):
             cx1.enable_load_extension(Falsch)
-            try:
+            versuch:
                 cx1.load_extension("test")
-            except sqlite3.OperationalError:
+            ausser sqlite3.OperationalError:
                 pass
             sonst:
-                raise RuntimeError("Expected sqlite3.load_extension to fail")
-    finally:
+                wirf RuntimeError("Expected sqlite3.load_extension to fail")
+    schliesslich:
         cx1.close()
         cx2.close()
 
@@ -534,13 +534,13 @@ def test_threading_abort():
 
     def hook(event, args):
         wenn event == "cpython.PyThreadState_New":
-            raise ThreadNewAbortError()
+            wirf ThreadNewAbortError()
 
     sys.addaudithook(hook)
 
-    try:
+    versuch:
         _thread.start_new_thread(lambda: Nichts, ())
-    except ThreadNewAbortError:
+    ausser ThreadNewAbortError:
         # Other exceptions are raised und the test will fail
         pass
 
@@ -553,13 +553,13 @@ def test_wmi_exec_query():
             drucke(event, args[0])
 
     sys.addaudithook(hook)
-    try:
+    versuch:
         _wmi.exec_query("SELECT * FROM Win32_OperatingSystem")
-    except WindowsError als e:
+    ausser WindowsError als e:
         # gh-112278: WMI may be slow response when first called, but we still
         # get the audit event, so just ignore the timeout
         wenn e.winerror != 258:
-            raise
+            wirf
 
 def test_syslog():
     importiere syslog
@@ -601,14 +601,14 @@ def test_time(mode):
             wenn mode == 'print':
                 drucke(event, *args)
             sowenn mode == 'fail':
-                raise AssertionError('hook failed')
+                wirf AssertionError('hook failed')
     sys.addaudithook(hook)
 
     time.sleep(0)
     time.sleep(0.0625)  # 1/16, a small exact float
-    try:
+    versuch:
         time.sleep(-1)
-    except ValueError:
+    ausser ValueError:
         pass
 
 def test_sys_monitoring_register_callback():
@@ -636,12 +636,12 @@ def test_winapi_createnamedpipe(pipe_name):
 def test_assert_unicode():
     importiere sys
     sys.addaudithook(lambda *args: Nichts)
-    try:
+    versuch:
         sys.audit(9)
-    except TypeError:
+    ausser TypeError:
         pass
     sonst:
-        raise RuntimeError("Expected sys.audit(9) to fail.")
+        wirf RuntimeError("Expected sys.audit(9) to fail.")
 
 def test_sys_remote_exec():
     importiere tempfile

@@ -1,7 +1,7 @@
 von _locale importiere (setlocale, LC_ALL, LC_CTYPE, LC_NUMERIC, LC_TIME, localeconv, Error)
-try:
+versuch:
     von _locale importiere (RADIXCHAR, THOUSEP, nl_langinfo)
-except ImportError:
+ausser ImportError:
     nl_langinfo = Nichts
 
 importiere locale
@@ -14,7 +14,7 @@ von test importiere support
 wenn uname().system == "Darwin":
     maj, min, mic = [int(part) fuer part in uname().release.split(".")]
     wenn (maj, min, mic) < (8, 0, 0):
-        raise unittest.SkipTest("locale support broken fuer OS X < 10.4")
+        wirf unittest.SkipTest("locale support broken fuer OS X < 10.4")
 
 candidate_locales = ['es_UY', 'fr_FR', 'fi_FI', 'es_CO', 'pt_PT', 'it_IT',
     'et_EE', 'es_PY', 'no_NO', 'nl_NL', 'lv_LV', 'el_GR', 'be_BY', 'fr_BE',
@@ -39,23 +39,23 @@ def setUpModule():
     # decoded als U+30000020 (an invalid character) by mbstowcs().
     wenn sys.platform == 'sunos5':
         old_locale = locale.setlocale(locale.LC_ALL)
-        try:
+        versuch:
             locales = []
             fuer loc in candidate_locales:
-                try:
+                versuch:
                     locale.setlocale(locale.LC_ALL, loc)
-                except Error:
+                ausser Error:
                     weiter
                 encoding = locale.getencoding()
-                try:
+                versuch:
                     localeconv()
-                except Exception als err:
+                ausser Exception als err:
                     drucke("WARNING: Skip locale %s (encoding %s): [%s] %s"
                         % (loc, encoding, type(err), err))
                 sonst:
                     locales.append(loc)
             candidate_locales = locales
-        finally:
+        schliesslich:
             locale.setlocale(locale.LC_ALL, old_locale)
 
     # Workaround fuer MSVC6(debug) crash bug
@@ -122,9 +122,9 @@ klasse _LocaleTests(unittest.TestCase):
 
     def numeric_tester(self, calc_type, calc_value, data_type, used_locale):
         """Compare calculation against known value, wenn available"""
-        try:
+        versuch:
             set_locale = setlocale(LC_NUMERIC)
-        except Error:
+        ausser Error:
             set_locale = "<not able to determine>"
         known_value = known_numerics.get(used_locale,
                                     ('', ''))[data_type == 'thousands_sep']
@@ -143,9 +143,9 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
-            try:
+            versuch:
                 setlocale(LC_NUMERIC, loc)
-            except Error:
+            ausser Error:
                 weiter
             fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
@@ -161,9 +161,9 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
-            try:
+            versuch:
                 setlocale(LC_NUMERIC, loc)
-            except Error:
+            ausser Error:
                 weiter
             formatting = localeconv()
             fuer lc in ("decimal_point",
@@ -180,17 +180,17 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
-            try:
+            versuch:
                 setlocale(LC_NUMERIC, loc)
-            except Error:
+            ausser Error:
                 weiter
             fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 nl_radixchar = nl_langinfo(li)
                 li_radixchar = localeconv()[lc]
-                try:
+                versuch:
                     set_locale = setlocale(LC_NUMERIC)
-                except Error:
+                ausser Error:
                     set_locale = "<not able to determine>"
                 self.assertEqual(nl_radixchar, li_radixchar,
                                 "%s (nl_langinfo) != %s (localeconv) "
@@ -210,9 +210,9 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         fuer loc in candidate_locales:
             mit self.subTest(locale=loc):
-                try:
+                versuch:
                     setlocale(LC_TIME, loc)
-                except Error:
+                ausser Error:
                     self.skipTest(f'no locale {loc!r}')
                     weiter
 
@@ -242,9 +242,9 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         fuer loc in candidate_locales:
             mit self.subTest(locale=loc):
-                try:
+                versuch:
                     setlocale(LC_TIME, loc)
-                except Error:
+                ausser Error:
                     self.skipTest(f'no locale {loc!r}')
                     weiter
 
@@ -274,9 +274,9 @@ klasse _LocaleTests(unittest.TestCase):
         tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
-            try:
+            versuch:
                 setlocale(LC_NUMERIC, loc)
-            except Error:
+            ausser Error:
                 weiter
 
             # Ignore buggy locale databases. (Mac OS 10.4 und some other BSDs)

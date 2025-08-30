@@ -988,7 +988,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(word[0].token_type, 'cfws')
 
     def test_get_word_all_CFWS(self):
-        # bpo-29412: Test that we don't raise IndexError when parsing CFWS only
+        # bpo-29412: Test that we don't wirf IndexError when parsing CFWS only
         # token.
         mit self.assertRaises(errors.HeaderParseError):
             parser.get_word('(Recipients list suppressed')

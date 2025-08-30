@@ -18,22 +18,22 @@ von functools importiere partial, partialmethod, cached_property
 von graphlib importiere TopologicalSorter
 von logging importiere LoggerAdapter, StreamHandler
 von mailbox importiere Mailbox, _PartialFile
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     ctypes = Nichts
 von difflib importiere SequenceMatcher
 von filecmp importiere dircmp
 von fileinput importiere FileInput
 von itertools importiere chain
 von http.cookies importiere Morsel
-try:
+versuch:
     von multiprocessing.managers importiere ValueProxy, DictProxy, ListProxy
     von multiprocessing.pool importiere ApplyResult
     von multiprocessing.queues importiere SimpleQueue als MPSimpleQueue
     von multiprocessing.queues importiere Queue als MPQueue
     von multiprocessing.queues importiere JoinableQueue als MPJoinableQueue
-except ImportError:
+ausser ImportError:
     # _multiprocessing module is optional
     ValueProxy = Nichts
     DictProxy = Nichts
@@ -42,9 +42,9 @@ except ImportError:
     MPSimpleQueue = Nichts
     MPQueue = Nichts
     MPJoinableQueue = Nichts
-try:
+versuch:
     von multiprocessing.shared_memory importiere ShareableList
-except ImportError:
+ausser ImportError:
     # multiprocessing.shared_memory is nicht available on e.g. Android
     ShareableList = Nichts
 von os importiere DirEntry
@@ -57,9 +57,9 @@ von queue importiere Queue, SimpleQueue
 von weakref importiere WeakSet, ReferenceType, ref
 importiere typing
 von typing importiere Unpack
-try:
+versuch:
     von tkinter importiere Event
-except ImportError:
+ausser ImportError:
     Event = Nichts
 von string.templatelib importiere Template, Interpolation
 

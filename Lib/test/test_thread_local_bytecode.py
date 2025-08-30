@@ -171,9 +171,9 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc_id
 
         def g():
-            try:
+            versuch:
                 liefere
-            except:
+            ausser:
                 liefere get_tlbc_id(g)
 
         def f(q):

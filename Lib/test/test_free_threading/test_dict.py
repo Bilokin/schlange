@@ -8,9 +8,9 @@ von functools importiere partial
 von threading importiere Barrier, Thread
 von unittest importiere TestCase
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 von test.support importiere threading_helper

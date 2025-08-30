@@ -4,7 +4,7 @@ von test.support importiere check_sanitizer
 
 wenn check_sanitizer(address=Wahr, memory=Wahr):
     # See gh-90791 fuer details
-    raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
+    wirf unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 
 # Skip test_idle wenn _tkinter, tkinter, oder idlelib are missing.
 tk = import_module('tkinter')  # Also imports _tkinter.

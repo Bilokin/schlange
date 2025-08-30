@@ -53,21 +53,21 @@ von test.support importiere script_helper
 von test.support importiere threading_helper
 von test.test_importlib.util importiere uncache
 von types importiere ModuleType
-try:
+versuch:
     importiere _testsinglephase
-except ImportError:
+ausser ImportError:
     _testsinglephase = Nichts
-try:
+versuch:
     importiere _testmultiphase
-except ImportError:
+ausser ImportError:
     _testmultiphase = Nichts
-try:
+versuch:
     importiere _interpreters
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     _interpreters = Nichts
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 
@@ -100,8 +100,8 @@ def _require_loader(module, loader, skip):
     wenn actual != expected:
         err = f'expected module to be {expected}, got {module.__spec__}'
         wenn skip:
-            raise unittest.SkipTest(err)
-        raise Exception(err)
+            wirf unittest.SkipTest(err)
+        wirf Exception(err)
     gib module
 
 def require_builtin(module, *, skip=Falsch):
@@ -165,9 +165,9 @@ def requires_singlephase_init(meth):
     """Decorator to skip wenn single-phase init modules are nicht supported."""
     wenn nicht isinstance(meth, type):
         def meth(self, _meth=meth):
-            try:
+            versuch:
                 gib _meth(self)
-            finally:
+            schliesslich:
                 restore__testsinglephase()
     meth = cpython_only(meth)
     msg = "gh-117694: free-threaded build does nicht currently support single-phase init modules in sub-interpreters"
@@ -306,9 +306,9 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         wenn pipe is nicht Nichts:
             gib cls._from_subinterp(name, interpid, pipe, script_kwds)
         pipe = os.pipe()
-        try:
+        versuch:
             gib cls._from_subinterp(name, interpid, pipe, script_kwds)
-        finally:
+        schliesslich:
             r, w = pipe
             os.close(r)
             os.close(w)
@@ -336,7 +336,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         wenn interpid is Nichts:
             ret = run_in_subinterp(script)
             wenn ret != 0:
-                raise AssertionError(f'{ret} != 0')
+                wirf AssertionError(f'{ret} != 0')
         sonst:
             _interpreters.run_string(interpid, script)
 
@@ -463,28 +463,28 @@ klasse ImportTests(unittest.TestCase):
             wenn TESTFN in sys.modules:
                 del sys.modules[TESTFN]
             importlib.invalidate_caches()
-            try:
-                try:
+            versuch:
+                versuch:
                     mod = __import__(TESTFN)
-                except ImportError als err:
+                ausser ImportError als err:
                     self.fail("import von %s failed: %s" % (ext, err))
 
                 self.assertEqual(mod.a, a,
                     "module loaded (%s) but contents invalid" % mod)
                 self.assertEqual(mod.b, b,
                     "module loaded (%s) but contents invalid" % mod)
-            finally:
+            schliesslich:
                 forget(TESTFN)
                 unlink(source)
                 unlink(pyc)
 
         sys.path.insert(0, os.curdir)
-        try:
+        versuch:
             test_with_extension(".py")
             wenn sys.platform.startswith("win"):
                 fuer ext in [".PY", ".Py", ".pY", ".pyw", ".PYW", ".pYw"]:
                     test_with_extension(ext)
-        finally:
+        schliesslich:
             del sys.path[0]
 
     def test_module_with_large_stack(self, module='longlist'):
@@ -498,11 +498,11 @@ klasse ImportTests(unittest.TestCase):
                 f.write('"",\n')
             f.write(']')
 
-        try:
+        versuch:
             # Compile & remove .py file; we only need .pyc.
             # Bytecode must be relocated von the PEP 3147 bytecode-only location.
             py_compile.compile(filename)
-        finally:
+        schliesslich:
             unlink(filename)
 
         # Need to be able to load von current dir.
@@ -510,11 +510,11 @@ klasse ImportTests(unittest.TestCase):
         importlib.invalidate_caches()
 
         namespace = {}
-        try:
+        versuch:
             make_legacy_pyc(filename)
             # This used to crash.
             exec('import ' + module, Nichts, namespace)
-        finally:
+        schliesslich:
             # Cleanup.
             del sys.path[-1]
             unlink(filename + 'c')
@@ -522,9 +522,9 @@ klasse ImportTests(unittest.TestCase):
 
             # Remove references to the module (unload the module)
             namespace.clear()
-            try:
+            versuch:
                 del sys.modules[module]
-            except KeyError:
+            ausser KeyError:
                 pass
 
     def test_failing_import_sticks(self):
@@ -538,12 +538,12 @@ klasse ImportTests(unittest.TestCase):
         importlib.invalidate_caches()
         wenn TESTFN in sys.modules:
             del sys.modules[TESTFN]
-        try:
+        versuch:
             fuer i in [1, 2, 3]:
                 self.assertRaises(ZeroDivisionError, __import__, TESTFN)
                 self.assertNotIn(TESTFN, sys.modules,
                                  "damaged module in sys.modules on %i try" % i)
-        finally:
+        schliesslich:
             del sys.path[0]
             remove_files(TESTFN)
 
@@ -560,9 +560,9 @@ klasse ImportTests(unittest.TestCase):
 
     def test_issue31286(self):
         # importiere in a 'finally' block resulted in SystemError
-        try:
+        versuch:
             x = ...
-        finally:
+        schliesslich:
             importiere test.support.script_helper als x
 
         # importiere in a 'while' loop resulted in stack overflow
@@ -582,7 +582,7 @@ klasse ImportTests(unittest.TestCase):
             f.write("a = 1\nb=2\n")
 
         sys.path.insert(0, os.curdir)
-        try:
+        versuch:
             mod = __import__(TESTFN)
             self.assertIn(TESTFN, sys.modules)
             self.assertEqual(mod.a, 1, "module has wrong attribute values")
@@ -608,7 +608,7 @@ klasse ImportTests(unittest.TestCase):
             self.assertEqual(mod.a, 10, "module has wrong attribute values")
             self.assertEqual(mod.b, 2, "module has wrong attribute values")
 
-        finally:
+        schliesslich:
             del sys.path[0]
             remove_files(TESTFN)
             unload(TESTFN)
@@ -621,7 +621,7 @@ klasse ImportTests(unittest.TestCase):
             f.write("test = Nichts\n")
 
         sys.path.insert(0, os.curdir)
-        try:
+        versuch:
             mod = __import__(TESTFN)
             self.assertEndsWith(mod.__file__, '.py')
             os.remove(source)
@@ -631,7 +631,7 @@ klasse ImportTests(unittest.TestCase):
             mod = __import__(TESTFN)
             base, ext = os.path.splitext(mod.__file__)
             self.assertEqual(ext, '.pyc')
-        finally:
+        schliesslich:
             del sys.path[0]
             remove_files(TESTFN)
             wenn TESTFN in sys.modules:
@@ -640,9 +640,9 @@ klasse ImportTests(unittest.TestCase):
     def test_import_by_filename(self):
         path = os.path.abspath(TESTFN)
         encoding = sys.getfilesystemencoding()
-        try:
+        versuch:
             path.encode(encoding)
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             self.skipTest('path is nicht encodable to {}'.format(encoding))
         mit self.assertRaises(ImportError) als c:
             __import__(path)
@@ -663,31 +663,31 @@ klasse ImportTests(unittest.TestCase):
         # A modification timestamp larger than 2**32 should nicht be a problem
         # when importing a module (issue #11235).
         sys.path.insert(0, os.curdir)
-        try:
+        versuch:
             source = TESTFN + ".py"
             compiled = importlib.util.cache_from_source(source)
             mit open(source, 'w', encoding='utf-8') als f:
                 pass
-            try:
+            versuch:
                 os.utime(source, (2 ** 33 - 5, 2 ** 33 - 5))
-            except OverflowError:
+            ausser OverflowError:
                 self.skipTest("cannot set modification time to large integer")
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno nicht in (getattr(errno, 'EOVERFLOW', Nichts),
                                    getattr(errno, 'EINVAL', Nichts)):
-                    raise
+                    wirf
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
             __import__(TESTFN)
             # The pyc file was created.
             os.stat(compiled)
-        finally:
+        schliesslich:
             del sys.path[0]
             remove_files(TESTFN)
 
     def test_bogus_fromlist(self):
-        try:
+        versuch:
             __import__('http', fromlist=['blah'])
-        except ImportError:
+        ausser ImportError:
             self.fail("fromlist must allow bogus names")
 
     @cpython_only
@@ -710,7 +710,7 @@ klasse ImportTests(unittest.TestCase):
         # AttributeError should lead to an ImportError.
         klasse AlwaysAttributeError:
             def __getattr__(self, _):
-                raise AttributeError
+                wirf AttributeError
 
         module_name = 'test_from_import_AttributeError'
         self.addCleanup(unload, module_name)
@@ -742,14 +742,14 @@ klasse ImportTests(unittest.TestCase):
                 time.sleep(0.1)
 
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'data'))
-        try:
+        versuch:
             exc = Nichts
             def run():
                 sys.settrace(delay_has_deadlock)
                 event.wait()
-                try:
+                versuch:
                     importiere package
-                except BaseException als e:
+                ausser BaseException als e:
                     nonlocal exc
                     exc = e
                 sys.settrace(Nichts)
@@ -757,15 +757,15 @@ klasse ImportTests(unittest.TestCase):
             fuer i in range(10):
                 event = threading.Event()
                 threads = [threading.Thread(target=run) fuer x in range(2)]
-                try:
+                versuch:
                     mit threading_helper.start_threads(threads, event.set):
                         time.sleep(0)
-                finally:
+                schliesslich:
                     sys.modules.pop('package', Nichts)
                     sys.modules.pop('package.submodule', Nichts)
                 wenn exc is nicht Nichts:
-                    raise exc
-        finally:
+                    wirf exc
+        schliesslich:
             del sys.path[0]
 
     @unittest.skipUnless(sys.platform == "win32", "Windows-specific")
@@ -1048,9 +1048,9 @@ fractions.shadowing_module
 klasse substr(str):
     __hash__ = Nichts
 fractions.__name__ = substr('fractions')
-try:
+versuch:
     fractions.Fraction
-except TypeError als e:
+ausser TypeError als e:
     drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1064,9 +1064,9 @@ fractions.shadowing_module
 klasse substr(str):
     __hash__ = Nichts
 fractions.__name__ = substr('fractions')
-try:
+versuch:
     von fractions importiere Fraction
-except TypeError als e:
+ausser TypeError als e:
     drucke(str(e))
 """)
 
@@ -1082,21 +1082,21 @@ fractions.shadowing_module
 
 importiere sys
 sys.stdlib_module_names = Nichts
-try:
+versuch:
     fractions.Fraction
-except AttributeError als e:
+ausser AttributeError als e:
     drucke(str(e))
 
 del sys.stdlib_module_names
-try:
+versuch:
     fractions.Fraction
-except AttributeError als e:
+ausser AttributeError als e:
     drucke(str(e))
 
 sys.path = [0]
-try:
+versuch:
     fractions.Fraction
-except AttributeError als e:
+ausser AttributeError als e:
     drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1113,21 +1113,21 @@ fractions.shadowing_module
 
 importiere sys
 sys.stdlib_module_names = Nichts
-try:
+versuch:
     von fractions importiere Fraction
-except ImportError als e:
+ausser ImportError als e:
     drucke(str(e))
 
 del sys.stdlib_module_names
-try:
+versuch:
     von fractions importiere Fraction
-except ImportError als e:
+ausser ImportError als e:
     drucke(str(e))
 
 sys.path = [0]
-try:
+versuch:
     von fractions importiere Fraction
-except ImportError als e:
+ausser ImportError als e:
     drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1143,15 +1143,15 @@ except ImportError als e:
 importiere fractions
 fractions.shadowing_module
 del fractions.__spec__.origin
-try:
+versuch:
     fractions.Fraction
-except AttributeError als e:
+ausser AttributeError als e:
     drucke(str(e))
 
 fractions.__spec__.origin = []
-try:
+versuch:
     fractions.Fraction
-except AttributeError als e:
+ausser AttributeError als e:
     drucke(str(e))
 """)
 
@@ -1167,15 +1167,15 @@ except AttributeError als e:
 importiere fractions
 fractions.shadowing_module
 del fractions.__spec__.origin
-try:
+versuch:
     von fractions importiere Fraction
-except ImportError als e:
+ausser ImportError als e:
     drucke(str(e))
 
 fractions.__spec__.origin = []
-try:
+versuch:
     von fractions importiere Fraction
-except ImportError als e:
+ausser ImportError als e:
     drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1465,17 +1465,17 @@ klasse PathsTests(unittest.TestCase):
         drive = path[0]
         unc = "\\\\%s\\%s$"%(hn, drive)
         unc += path[2:]
-        try:
+        versuch:
             os.listdir(unc)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno in (errno.EPERM, errno.EACCES, errno.ENOENT):
                 # See issue #15338
                 self.skipTest("cannot access administrative share %r" % (unc,))
-            raise
+            wirf
         sys.path.insert(0, unc)
-        try:
+        versuch:
             mod = __import__("test_unc_path")
-        except ImportError als e:
+        ausser ImportError als e:
             self.fail("could nicht importiere 'test_unc_path' von %r: %r"
                       % (unc, e))
         self.assertEqual(mod.testdata, 'test_unc_path')
@@ -1662,7 +1662,7 @@ klasse PycacheTests(unittest.TestCase):
 
     @skip_if_dont_write_bytecode
     def test_missing_source_legacy(self):
-        # Like test_missing_source() except that fuer backward compatibility,
+        # Like test_missing_source() ausser that fuer backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it is importable.  The __file__ of the imported
         # module is the pyc location.
@@ -1673,10 +1673,10 @@ klasse PycacheTests(unittest.TestCase):
         unload(TESTFN)
         importlib.invalidate_caches()
         m = __import__(TESTFN)
-        try:
+        versuch:
             self.assertEqual(m.__file__,
                              os.path.join(os.getcwd(), os.path.relpath(pyc_file)))
-        finally:
+        schliesslich:
             os.remove(pyc_file)
 
     def test___cached__(self):
@@ -1687,7 +1687,7 @@ klasse PycacheTests(unittest.TestCase):
 
     @skip_if_dont_write_bytecode
     def test___cached___legacy_pyc(self):
-        # Like test___cached__() except that fuer backward compatibility,
+        # Like test___cached__() ausser that fuer backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it is importable.  The __cached__ of the imported
         # module is the pyc location.
@@ -1907,10 +1907,10 @@ klasse ImportTracebackTests(unittest.TestCase):
             self.assertIn(pat, fn)
 
     def test_nonexistent_module(self):
-        try:
+        versuch:
             # assertRaises() clears __traceback__
             importiere nonexistent_xyzzy
-        except ImportError als e:
+        ausser ImportError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ImportError should have been raised")
@@ -1918,9 +1918,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_nonexistent_module_nested(self):
         self.create_module("foo", "import nonexistent_xyzzy")
-        try:
+        versuch:
             importiere foo
-        except ImportError als e:
+        ausser ImportError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ImportError should have been raised")
@@ -1928,9 +1928,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_exec_failure(self):
         self.create_module("foo", "1/0")
-        try:
+        versuch:
             importiere foo
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -1939,9 +1939,9 @@ klasse ImportTracebackTests(unittest.TestCase):
     def test_exec_failure_nested(self):
         self.create_module("foo", "import bar")
         self.create_module("bar", "1/0")
-        try:
+        versuch:
             importiere foo
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -1950,9 +1950,9 @@ klasse ImportTracebackTests(unittest.TestCase):
     # A few more examples von issue #15425
     def test_syntax_error(self):
         self.create_module("foo", "invalid syntax is invalid")
-        try:
+        versuch:
             importiere foo
-        except SyntaxError als e:
+        ausser SyntaxError als e:
             tb = e.__traceback__
         sonst:
             self.fail("SyntaxError should have been raised")
@@ -1975,9 +1975,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_broken_submodule(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
-        try:
+        versuch:
             importiere _parent_foo.bar
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -1985,9 +1985,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_broken_from(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
-        try:
+        versuch:
             von _parent_foo importiere bar
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ImportError should have been raised")
@@ -1995,9 +1995,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_broken_parent(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
-        try:
+        versuch:
             importiere _parent_foo.bar
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -2005,9 +2005,9 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def test_broken_parent_from(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
-        try:
+        versuch:
             von _parent_foo importiere bar
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -2023,18 +2023,18 @@ klasse ImportTracebackTests(unittest.TestCase):
             old_exec_module = importlib.SourceLoader.exec_module
         sonst:
             old_exec_module = Nichts
-        try:
+        versuch:
             def exec_module(*args):
                 1/0
             importlib.SourceLoader.exec_module = exec_module
-            try:
+            versuch:
                 importiere foo
-            except ZeroDivisionError als e:
+            ausser ZeroDivisionError als e:
                 tb = e.__traceback__
             sonst:
                 self.fail("ZeroDivisionError should have been raised")
             self.assert_traceback(tb, [__file__, '<frozen importlib', __file__])
-        finally:
+        schliesslich:
             wenn old_exec_module is Nichts:
                 del importlib.SourceLoader.exec_module
             sonst:
@@ -2064,36 +2064,36 @@ klasse CircularImportTests(unittest.TestCase):
                 del sys.modules[key]
 
     def test_direct(self):
-        try:
+        versuch:
             importiere test.test_import.data.circular_imports.basic
-        except ImportError:
+        ausser ImportError:
             self.fail('circular importiere through relative imports failed')
 
     def test_indirect(self):
-        try:
+        versuch:
             importiere test.test_import.data.circular_imports.indirect
-        except ImportError:
+        ausser ImportError:
             self.fail('relative importiere in module contributing to circular '
                       'import failed')
 
     def test_subpackage(self):
-        try:
+        versuch:
             importiere test.test_import.data.circular_imports.subpackage
-        except ImportError:
+        ausser ImportError:
             self.fail('circular importiere involving a subpackage failed')
 
     def test_rebinding(self):
-        try:
+        versuch:
             importiere test.test_import.data.circular_imports.rebinding als rebinding
-        except ImportError:
+        ausser ImportError:
             self.fail('circular importiere mit rebinding of module attribute failed')
         von test.test_import.data.circular_imports.subpkg importiere util
         self.assertIs(util.util, rebinding.util)
 
     def test_binding(self):
-        try:
+        versuch:
             importiere test.test_import.data.circular_imports.binding
-        except ImportError:
+        ausser ImportError:
             self.fail('circular importiere mit binding a submodule to a name failed')
 
     def test_crossreference1(self):
@@ -2229,10 +2229,10 @@ klasse SubinterpImportTests(unittest.TestCase):
                 {override_text}
                 loader = {loader}({name!r}, {filename!r})
                 spec = spec_from_loader({name!r}, loader)
-                try:
+                versuch:
                     module = module_from_spec(spec)
                     loader.exec_module(module)
-                except ImportError als exc:
+                ausser ImportError als exc:
                     text = 'ImportError: ' + str(exc)
                 sonst:
                     text = 'okay'
@@ -2242,9 +2242,9 @@ klasse SubinterpImportTests(unittest.TestCase):
             gib textwrap.dedent(f'''
                 importiere os, sys
                 {override_text}
-                try:
+                versuch:
                     importiere {name}
-                except ImportError als exc:
+                ausser ImportError als exc:
                     text = 'ImportError: ' + str(exc)
                 sonst:
                     text = 'okay'
@@ -2387,7 +2387,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         module = '_frozen_importlib'
         require_frozen(module, skip=Wahr)
         wenn __import__(module).__spec__.origin != 'frozen':
-            raise unittest.SkipTest(f'{module} is unexpectedly nicht frozen')
+            wirf unittest.SkipTest(f'{module} is unexpectedly nicht frozen')
         wenn nicht Py_GIL_DISABLED:
             mit self.subTest(f'{module}: nicht strict'):
                 self.check_compatible_here(module, strict=Falsch)
@@ -2625,7 +2625,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
        * state_initialized: no change
        * init_count: no change
     * already loaded
-       * (same als initial load except fuer ns und state_initialized)
+       * (same als initial load ausser fuer ns und state_initialized)
        * ns: matches the initial load, incl. IDs of contained objects
        * state_initialized: no change von initial load
 
@@ -2638,7 +2638,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
 
     * reloaded
        * (same als initial load (old module & ns is discarded),
-         except init_count)
+         ausser init_count)
        * init_count: increase by 1
     * already loaded: same als reloaded
     """
@@ -2751,9 +2751,9 @@ klasse SinglephaseInitTests(unittest.TestCase):
         gib _load(spec)
 
     def load(self, name):
-        try:
+        versuch:
             already_loaded = self.already_loaded
-        except AttributeError:
+        ausser AttributeError:
             already_loaded = self.already_loaded = {}
         assert name nicht in already_loaded
         mod = self._load_dynamic(name, self.ORIGIN)
@@ -2780,9 +2780,9 @@ klasse SinglephaseInitTests(unittest.TestCase):
     def add_subinterpreter(self):
         interpid = _interpreters.create('legacy')
         def ensure_destroyed():
-            try:
+            versuch:
                 _interpreters.destroy(interpid)
-            except _interpreters.InterpreterNotFoundError:
+            ausser _interpreters.InterpreterNotFoundError:
                 pass
         self.addCleanup(ensure_destroyed)
         _interpreters.exec(interpid, textwrap.dedent('''
@@ -2814,9 +2814,9 @@ klasse SinglephaseInitTests(unittest.TestCase):
                 _testinternalcapi.clear_extension(name, {self.ORIGIN!r})
                 '''
 
-        try:
+        versuch:
             pipe = self._pipe
-        except AttributeError:
+        ausser AttributeError:
             r, w = pipe = self._pipe = os.pipe()
             self.addCleanup(os.close, r)
             self.addCleanup(os.close, w)
@@ -3236,7 +3236,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
             # It's a Py_TRACE_REFS build.
             # This test breaks interpreter isolation a little,
             # which causes problems on Py_TRACE_REF builds.
-            raise unittest.SkipTest('crashes on Py_TRACE_REFS builds')
+            wirf unittest.SkipTest('crashes on Py_TRACE_REFS builds')
 
         # At this point:
         #  * alive in 0 interpreters

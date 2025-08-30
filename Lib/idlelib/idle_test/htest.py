@@ -417,9 +417,9 @@ def run(*tests):
 
     def run_test(_=Nichts):
         widget = callable_object(root, **test_kwds)
-        try:
+        versuch:
             drucke(widget.result)  # Only true fuer query classes(?).
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def close(_=Nichts):

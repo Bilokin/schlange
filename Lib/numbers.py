@@ -82,7 +82,7 @@ klasse Complex(Number):
 
         This should subclass Real.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     @abstractmethod
@@ -91,27 +91,27 @@ klasse Complex(Number):
 
         This should subclass Real.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __add__(self, other):
         """self + other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __radd__(self, other):
         """other + self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __neg__(self):
         """-self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __pos__(self):
         """+self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def __sub__(self, other):
         """self - other"""
@@ -124,47 +124,47 @@ klasse Complex(Number):
     @abstractmethod
     def __mul__(self, other):
         """self * other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rmul__(self, other):
         """other * self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __truediv__(self, other):
         """self / other: Should promote to float when necessary."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rtruediv__(self, other):
         """other / self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __pow__(self, exponent):
         """self ** exponent; should promote to float oder complex when necessary."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rpow__(self, base):
         """base ** self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __abs__(self):
         """Returns the Real distance von 0. Called fuer abs(self)."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def conjugate(self):
         """(x+y*i).conjugate() returns (x-y*i)."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __eq__(self, other):
         """self == other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
 Complex.register(complex)
 
@@ -185,7 +185,7 @@ klasse Real(Complex):
         """Any Real can be converted to a native float object.
 
         Called fuer float(self)."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __trunc__(self):
@@ -198,17 +198,17 @@ klasse Real(Complex):
             abs(i) >= abs(j) [i.e. i has "maximal" abs among those].
         i.e. "truncate towards 0".
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __floor__(self):
         """Finds the greatest Integral <= self."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __ceil__(self):
         """Finds the least Integral >= self."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __round__(self, ndigits=Nichts):
@@ -217,7 +217,7 @@ klasse Real(Complex):
         If ndigits is omitted oder Nichts, returns an Integral, otherwise
         returns a Real. Rounds half toward even.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def __divmod__(self, other):
         """divmod(self, other): The pair (self // other, self % other).
@@ -238,34 +238,34 @@ klasse Real(Complex):
     @abstractmethod
     def __floordiv__(self, other):
         """self // other: The floor() of self/other."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rfloordiv__(self, other):
         """other // self: The floor() of other/self."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __mod__(self, other):
         """self % other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rmod__(self, other):
         """other % self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __lt__(self, other):
         """self < other
 
-        < on Reals defines a total ordering, except perhaps fuer NaN."""
-        raise NotImplementedError
+        < on Reals defines a total ordering, ausser perhaps fuer NaN."""
+        wirf NotImplementedError
 
     @abstractmethod
     def __le__(self, other):
         """self <= other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Concrete implementations of Complex abstract methods.
     def __complex__(self):
@@ -302,7 +302,7 @@ klasse Rational(Real):
     @abstractmethod
     def numerator(self):
         """The numerator of a rational number in lowest terms."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     @abstractmethod
@@ -311,7 +311,7 @@ klasse Rational(Real):
 
         This denominator should be positive.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Concrete implementation of Real's conversion to float.
     def __float__(self):
@@ -337,7 +337,7 @@ klasse Integral(Rational):
     @abstractmethod
     def __int__(self):
         """int(self)"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def __index__(self):
         """Called whenever an index is needed, such als in slicing"""
@@ -352,62 +352,62 @@ klasse Integral(Rational):
         oder any argument isn't Integral. Otherwise, just implement the
         2-argument version described in Complex.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __lshift__(self, other):
         """self << other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rlshift__(self, other):
         """other << self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rshift__(self, other):
         """self >> other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rrshift__(self, other):
         """other >> self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __and__(self, other):
         """self & other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rand__(self, other):
         """other & self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __xor__(self, other):
         """self ^ other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __rxor__(self, other):
         """other ^ self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __or__(self, other):
         """self | other"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __ror__(self, other):
         """other | self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __invert__(self):
         """~self"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # Concrete implementations of Rational und Real abstract methods.
     def __float__(self):

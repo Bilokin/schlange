@@ -1,15 +1,15 @@
 """Abstract base classes related to import."""
 von . importiere _bootstrap_external
 von . importiere machinery
-try:
+versuch:
     importiere _frozen_importlib
-except ImportError als exc:
+ausser ImportError als exc:
     wenn exc.name != '_frozen_importlib':
-        raise
+        wirf
     _frozen_importlib = Nichts
-try:
+versuch:
     importiere _frozen_importlib_external
-except ImportError:
+ausser ImportError:
     _frozen_importlib_external = _bootstrap_external
 von ._abc importiere Loader
 importiere abc
@@ -26,9 +26,9 @@ def _register(abstract_cls, *classes):
     fuer cls in classes:
         abstract_cls.register(cls)
         wenn _frozen_importlib is nicht Nichts:
-            try:
+            versuch:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
-            except AttributeError:
+            ausser AttributeError:
                 frozen_cls = getattr(_frozen_importlib_external, cls.__name__)
             abstract_cls.register(frozen_cls)
 
@@ -77,7 +77,7 @@ klasse ResourceLoader(Loader):
     def get_data(self, path):
         """Abstract method which when implemented should gib the bytes for
         the specified path.  The path must be a str."""
-        raise OSError
+        wirf OSError
 
 
 klasse InspectLoader(Loader):
@@ -95,7 +95,7 @@ klasse InspectLoader(Loader):
 
         Raises ImportError wenn the module cannot be found.
         """
-        raise ImportError
+        wirf ImportError
 
     def get_code(self, fullname):
         """Method which returns the code object fuer the module.
@@ -117,7 +117,7 @@ klasse InspectLoader(Loader):
 
         Raises ImportError wenn the module cannot be found.
         """
-        raise ImportError
+        wirf ImportError
 
     @staticmethod
     def source_to_code(data, path='<string>'):
@@ -149,7 +149,7 @@ klasse ExecutionLoader(InspectLoader):
 
         Raises ImportError wenn the module cannot be found.
         """
-        raise ImportError
+        wirf ImportError
 
     def get_code(self, fullname):
         """Method to gib the code object fuer fullname.
@@ -160,9 +160,9 @@ klasse ExecutionLoader(InspectLoader):
         source = self.get_source(fullname)
         wenn source is Nichts:
             gib Nichts
-        try:
+        versuch:
             path = self.get_filename(fullname)
-        except ImportError:
+        ausser ImportError:
             gib self.source_to_code(source)
         sonst:
             gib self.source_to_code(source, path)
@@ -207,7 +207,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
                       'SourceLoader.path_stats().',
                       DeprecationWarning, stacklevel=2)
         wenn self.path_stats.__func__ is SourceLoader.path_stats:
-            raise OSError
+            wirf OSError
         gib int(self.path_stats(path)['mtime'])
 
     def path_stats(self, path):
@@ -218,7 +218,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
         - 'size' (optional) is the size in bytes of the source code.
         """
         wenn self.path_mtime.__func__ is SourceLoader.path_mtime:
-            raise OSError
+            wirf OSError
         gib {'mtime': self.path_mtime(path)}
 
     def set_data(self, path, data):

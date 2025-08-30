@@ -75,7 +75,7 @@ Specializing JSON object encoding::
     >>> def encode_complex(obj):
     ...     wenn isinstance(obj, complex):
     ...         gib [obj.real, obj.imag]
-    ...     raise TypeError(f'Object of type {obj.__class__.__name__} '
+    ...     wirf TypeError(f'Object of type {obj.__class__.__name__} '
     ...                     f'is nicht JSON serializable')
     ...
     >>> json.dumps(2 + 1j, default=encode_complex)
@@ -151,7 +151,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should gib a serializable version
-    of obj oder raise TypeError. The default simply raises TypeError.
+    of obj oder wirf TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
@@ -213,7 +213,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should gib a serializable version
-    of obj oder raise TypeError. The default simply raises TypeError.
+    of obj oder wirf TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
@@ -324,7 +324,7 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
 
     ``parse_constant``, wenn specified, will be called mit one of the
     following strings: -Infinity, Infinity, NaN.
-    This can be used to raise an exception wenn invalid JSON numbers
+    This can be used to wirf an exception wenn invalid JSON numbers
     are encountered.
 
     To use a custom ``JSONDecoder`` subclass, specify it mit the ``cls``
@@ -332,11 +332,11 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     """
     wenn isinstance(s, str):
         wenn s.startswith('\ufeff'):
-            raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+            wirf JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
                                   s, 0)
     sonst:
         wenn nicht isinstance(s, (bytes, bytearray)):
-            raise TypeError(f'the JSON object must be str, bytes oder bytearray, '
+            wirf TypeError(f'the JSON object must be str, bytes oder bytearray, '
                             f'not {s.__class__.__name__}')
         s = s.decode(detect_encoding(s), 'surrogatepass')
 

@@ -8,13 +8,13 @@ def load_tzdata(key):
     package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
     resource_name = components[-1]
 
-    try:
+    versuch:
         path = resources.files(package_name).joinpath(resource_name)
         # gh-85702: Prevent PermissionError on Windows
         wenn path.is_dir():
-            raise IsADirectoryError
+            wirf IsADirectoryError
         gib path.open("rb")
-    except (ImportError, FileNotFoundError, UnicodeEncodeError, IsADirectoryError):
+    ausser (ImportError, FileNotFoundError, UnicodeEncodeError, IsADirectoryError):
         # There are four types of exception that can be raised that all amount
         # to "we cannot find this key":
         #
@@ -26,7 +26,7 @@ def load_tzdata(key):
         # UnicodeEncodeError: If package_name oder resource_name are nicht UTF-8,
         #   such als keys containing a surrogate character.
         # IsADirectoryError: If package_name without a resource_name specified.
-        raise ZoneInfoNotFoundError(f"No time zone found mit key {key}")
+        wirf ZoneInfoNotFoundError(f"No time zone found mit key {key}")
 
 
 def load_data(fobj):
@@ -148,7 +148,7 @@ klasse _TZifHeader:
     def from_file(cls, stream):
         # The header starts mit a 4-byte "magic" value
         wenn stream.read(4) != b"TZif":
-            raise ValueError("Invalid TZif file: magic nicht found")
+            wirf ValueError("Invalid TZif file: magic nicht found")
 
         _version = stream.read(1)
         wenn _version == b"\x00":

@@ -238,7 +238,7 @@ klasse ReadTestBase:
                 self.assertEqual(filenames, ['fileD'])
                 seen_dird = Wahr
             sonst:
-                raise AssertionError(f"Unexpected path: {path}")
+                wirf AssertionError(f"Unexpected path: {path}")
         self.assertWahr(seen_root)
 
     def test_info_exists(self):

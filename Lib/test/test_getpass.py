@@ -5,13 +5,13 @@ von io importiere BytesIO, StringIO, TextIOWrapper
 von unittest importiere mock
 von test importiere support
 
-try:
+versuch:
     importiere termios
-except ImportError:
+ausser ImportError:
     termios = Nichts
-try:
+versuch:
     importiere pwd
-except ImportError:
+ausser ImportError:
     pwd = Nichts
 
 @mock.patch('os.environ')
@@ -24,11 +24,11 @@ klasse GetpassGetuserTest(unittest.TestCase):
 
     def test_username_priorities_of_env_values(self, environ):
         environ.get.return_value = Nichts
-        try:
+        versuch:
             getpass.getuser()
-        except OSError:  # in case there's no pwd module
+        ausser OSError:  # in case there's no pwd module
             pass
-        except KeyError:
+        ausser KeyError:
             # current user has no pwd entry
             pass
         self.assertEqual(

@@ -16,9 +16,9 @@ importiere unittest.mock
 importiere weakref
 importiere unittest
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 von test importiere support
@@ -115,17 +115,17 @@ klasse TestSSL(test_utils.TestCase):
         sock = socket.socket(family, socket.SOCK_STREAM)
 
         wenn timeout is Nichts:
-            raise RuntimeError('timeout is required')
+            wirf RuntimeError('timeout is required')
         wenn timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        try:
+        versuch:
             sock.bind(addr)
             sock.listen(backlog)
-        except OSError als ex:
+        ausser OSError als ex:
             sock.close()
-            raise ex
+            wirf ex
 
         gib TestThreadedServer(
             self, sock, server_prog, timeout, max_clients)
@@ -137,9 +137,9 @@ klasse TestSSL(test_utils.TestCase):
         sock = socket.socket(family, socket.SOCK_STREAM)
 
         wenn timeout is Nichts:
-            raise RuntimeError('timeout is required')
+            wirf RuntimeError('timeout is required')
         wenn timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         gib TestThreadedClient(
@@ -170,15 +170,15 @@ klasse TestSSL(test_utils.TestCase):
         logger = logging.getLogger('asyncio')
         filter = MessageOutFilter('has no effect when using ssl')
         logger.addFilter(filter)
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             logger.removeFilter(filter)
 
     def _abort_socket_test(self, ex):
-        try:
+        versuch:
             self.loop.stop()
-        finally:
+        schliesslich:
             self.fail(ex)
 
     def new_loop(self):
@@ -190,9 +190,9 @@ klasse TestSSL(test_utils.TestCase):
     async def wait_closed(self, obj):
         wenn nicht isinstance(obj, asyncio.StreamWriter):
             gib
-        try:
+        versuch:
             await obj.wait_closed()
-        except (BrokenPipeError, ConnectionError):
+        ausser (BrokenPipeError, ConnectionError):
             pass
 
     @support.bigmemtest(size=25, memuse=90*2**20, dry_run=Falsch)
@@ -231,7 +231,7 @@ klasse TestSSL(test_utils.TestCase):
             fut = asyncio.Future()
 
             def prog(sock):
-                try:
+                versuch:
                     sock.starttls(client_sslctx)
                     sock.connect(addr)
                     sock.send(A_DATA)
@@ -245,7 +245,7 @@ klasse TestSSL(test_utils.TestCase):
 
                     sock.close()
 
-                except Exception als ex:
+                ausser Exception als ex:
                     self.loop.call_soon_threadsafe(fut.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(fut.set_result, Nichts)
@@ -267,7 +267,7 @@ klasse TestSSL(test_utils.TestCase):
                 ssl=sslctx,
                 **extras)
 
-            try:
+            versuch:
                 srv_socks = srv.sockets
                 self.assertWahr(srv_socks)
 
@@ -279,7 +279,7 @@ klasse TestSSL(test_utils.TestCase):
 
                 await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
 
-            finally:
+            schliesslich:
                 self.loop.call_soon(srv.close)
                 await srv.wait_closed()
 
@@ -396,11 +396,11 @@ klasse TestSSL(test_utils.TestCase):
         self.loop.set_exception_handler(lambda *args: Nichts)
 
         def server(sock):
-            try:
+            versuch:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -433,14 +433,14 @@ klasse TestSSL(test_utils.TestCase):
         client_sslctx = self._create_client_ssl_context(disable_verify=Falsch)
 
         def server(sock):
-            try:
+            versuch:
                 sock.starttls(
                     sslctx,
                     server_side=Wahr)
                 sock.connect()
-            except (ssl.SSLError, OSError):
+            ausser (ssl.SSLError, OSError):
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -472,11 +472,11 @@ klasse TestSSL(test_utils.TestCase):
 
         def server(sock):
             nonlocal server_side_aborted
-            try:
+            versuch:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 server_side_aborted = Wahr
-            finally:
+            schliesslich:
                 sock.close()
 
         async def client(addr):
@@ -498,7 +498,7 @@ klasse TestSSL(test_utils.TestCase):
 
         self.assertWahr(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must nicht raise an
+        # Python issue #23197: cancelling a handshake must nicht wirf an
         # exception oder log an error, even wenn the handshake failed
         self.assertEqual(messages, [])
 
@@ -588,7 +588,7 @@ klasse TestSSL(test_utils.TestCase):
 
         def client():
             nonlocal response
-            try:
+            versuch:
                 csock = socket.socket(socket.AF_INET)
                 wenn client_ssl is nicht Nichts:
                     csock = client_ssl.wrap_socket(csock)
@@ -596,7 +596,7 @@ klasse TestSSL(test_utils.TestCase):
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            except Exception als exc:
+            ausser Exception als exc:
                 drucke(
                     "Failure in client thread in test_connect_accepted_socket",
                     exc)
@@ -642,16 +642,16 @@ klasse TestSSL(test_utils.TestCase):
 
         def server(sock):
             orig_sock = sock.dup()
-            try:
+            versuch:
                 sock.starttls(
                     sslctx,
                     server_side=Wahr)
                 sock.sendall(b'A\n')
                 sock.recv_all(1)
                 orig_sock.send(b'please corrupt the SSL connection')
-            except ssl.SSLError:
+            ausser ssl.SSLError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
                 orig_sock.close()
 
@@ -666,9 +666,9 @@ klasse TestSSL(test_utils.TestCase):
             mit self.assertRaises(ssl.SSLError):
                 await reader.readline()
             writer.close()
-            try:
+            versuch:
                 await self.wait_closed(writer)
-            except ssl.SSLError:
+            ausser ssl.SSLError:
                 pass
             gib 'OK'
 
@@ -912,13 +912,13 @@ klasse TestSSL(test_utils.TestCase):
             data = sock.recv_all(len(HELLO_MSG))
             self.assertEqual(len(data), len(HELLO_MSG))
 
-            try:
+            versuch:
                 self.loop.call_soon_threadsafe(
                     server_waits_on_handshake.set_result, Nichts)
                 data = sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            ausser ConnectionAbortedError:
                 pass
-            finally:
+            schliesslich:
                 sock.close()
 
         klasse ClientProto(asyncio.Protocol):
@@ -1081,9 +1081,9 @@ klasse TestSSL(test_utils.TestCase):
                     transport, self, sslctx_2, server_side=Wahr))
 
                 def cb(_):
-                    try:
+                    versuch:
                         tr = fut.result()
-                    except Exception als ex:
+                    ausser Exception als ex:
                         super_.connection_lost(ex)
                     sonst:
                         super_.connection_made(tr)
@@ -1098,7 +1098,7 @@ klasse TestSSL(test_utils.TestCase):
             fut = asyncio.Future()
 
             def prog(sock):
-                try:
+                versuch:
                     sock.connect(addr)
                     sock.starttls(client_sslctx_1)
 
@@ -1110,10 +1110,10 @@ klasse TestSSL(test_utils.TestCase):
 
                     def do(func, *args):
                         waehrend Wahr:
-                            try:
+                            versuch:
                                 rv = func(*args)
                                 breche
-                            except ssl.SSLWantReadError:
+                            ausser ssl.SSLWantReadError:
                                 wenn outgoing.pending:
                                     sock.send(outgoing.read())
                                 incoming.write(sock.recv(65536))
@@ -1139,7 +1139,7 @@ klasse TestSSL(test_utils.TestCase):
                     do(sslobj.unwrap)
                     sock.close()
 
-                except Exception als ex:
+                ausser Exception als ex:
                     self.loop.call_soon_threadsafe(fut.set_exception, ex)
                     sock.close()
                 sonst:
@@ -1161,7 +1161,7 @@ klasse TestSSL(test_utils.TestCase):
                 ssl=sslctx_1,
                 **extras)
 
-            try:
+            versuch:
                 srv_socks = srv.sockets
                 self.assertWahr(srv_socks)
 
@@ -1173,7 +1173,7 @@ klasse TestSSL(test_utils.TestCase):
 
                 await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
 
-            finally:
+            schliesslich:
                 self.loop.call_soon(srv.close)
                 await srv.wait_closed()
 
@@ -1272,9 +1272,9 @@ klasse TestSSL(test_utils.TestCase):
 
         def run(meth):
             def wrapper(sock):
-                try:
+                versuch:
                     meth(sock)
-                except Exception als ex:
+                ausser Exception als ex:
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
@@ -1300,10 +1300,10 @@ klasse TestSSL(test_utils.TestCase):
             sslprotocol.resume_writing()
 
             await self.wait_closed(writer)
-            try:
+            versuch:
                 data = await reader.read()
                 self.assertEqual(data, b'')
-            except ConnectionResetError:
+            ausser ConnectionResetError:
                 pass
             await future
 
@@ -1327,9 +1327,9 @@ klasse TestSSL(test_utils.TestCase):
             sslobj = sslctx.wrap_bio(incoming, outgoing, server_side=Wahr)
 
             waehrend Wahr:
-                try:
+                versuch:
                     sslobj.do_handshake()
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     wenn outgoing.pending:
                         sock.send(outgoing.read())
                     incoming.write(sock.recv(16384))
@@ -1339,9 +1339,9 @@ klasse TestSSL(test_utils.TestCase):
                     breche
 
             waehrend Wahr:
-                try:
+                versuch:
                     data = sslobj.read(4)
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 sonst:
                     breche
@@ -1360,12 +1360,12 @@ klasse TestSSL(test_utils.TestCase):
             # should receive all data
             data_len = 0
             waehrend Wahr:
-                try:
+                versuch:
                     chunk = len(sslobj.read(16384))
                     data_len += chunk
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
-                except ssl.SSLZeroReturnError:
+                ausser ssl.SSLZeroReturnError:
                     breche
 
             self.assertEqual(data_len, CHUNK * SIZE)
@@ -1407,10 +1407,10 @@ klasse TestSSL(test_utils.TestCase):
             fuer _ in range(SIZE):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
-            try:
+            versuch:
                 data = await reader.read()
                 self.assertEqual(data, b'')
-            except (BrokenPipeError, ConnectionResetError):
+            ausser (BrokenPipeError, ConnectionResetError):
                 pass
 
             await future
@@ -1420,9 +1420,9 @@ klasse TestSSL(test_utils.TestCase):
 
         def run(meth):
             def wrapper(sock):
-                try:
+                versuch:
                     meth(sock)
-                except Exception als ex:
+                ausser Exception als ex:
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
@@ -1436,7 +1436,7 @@ klasse TestSSL(test_utils.TestCase):
 
     def test_remote_shutdown_receives_trailing_data_on_slow_socket(self):
         # This test is the same als test_remote_shutdown_receives_trailing_data,
-        # except it simulates a socket that is nicht able to write data in time,
+        # ausser it simulates a socket that is nicht able to write data in time,
         # thus triggering different code path in _SelectorSocketTransport.
         # This triggers bug gh-115514, also tested using mocks in
         # test.test_asyncio.test_selector_events.SelectorSocketTransportTests.test_write_buffer_after_close
@@ -1458,9 +1458,9 @@ klasse TestSSL(test_utils.TestCase):
             sslobj = sslctx.wrap_bio(incoming, outgoing, server_side=Wahr)
 
             waehrend Wahr:
-                try:
+                versuch:
                     sslobj.do_handshake()
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     wenn outgoing.pending:
                         sock.send(outgoing.read())
                     incoming.write(sock.recv(16384))
@@ -1470,9 +1470,9 @@ klasse TestSSL(test_utils.TestCase):
                     breche
 
             waehrend Wahr:
-                try:
+                versuch:
                     data = sslobj.read(4)
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 sonst:
                     breche
@@ -1491,12 +1491,12 @@ klasse TestSSL(test_utils.TestCase):
             # should receive all data
             data_len = 0
             waehrend Wahr:
-                try:
+                versuch:
                     chunk = len(sslobj.read(16384))
                     data_len += chunk
-                except ssl.SSLWantReadError:
+                ausser ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
-                except ssl.SSLZeroReturnError:
+                ausser ssl.SSLZeroReturnError:
                     breche
 
             self.assertEqual(data_len, CHUNK * SIZE*2)
@@ -1538,10 +1538,10 @@ klasse TestSSL(test_utils.TestCase):
             fuer _ in range(SIZE*2):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
-            try:
+            versuch:
                 data = await reader.read()
                 self.assertEqual(data, b'')
-            except (BrokenPipeError, ConnectionResetError):
+            ausser (BrokenPipeError, ConnectionResetError):
                 pass
 
             # Make sure _SelectorSocketTransport enters the delayed write
@@ -1580,9 +1580,9 @@ klasse TestSSL(test_utils.TestCase):
 
         def run(meth):
             def wrapper(sock):
-                try:
+                versuch:
                     meth(sock)
-                except Exception als ex:
+                ausser Exception als ex:
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
@@ -1600,24 +1600,24 @@ klasse TestSSL(test_utils.TestCase):
         addr = s.getsockname()
 
         async def test():
-            try:
+            versuch:
                 await asyncio.wait_for(
                     self.loop.create_connection(asyncio.Protocol,
                                                 *addr, ssl=Wahr),
                     0.1)
-            except (ConnectionRefusedError, asyncio.TimeoutError):
+            ausser (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
                 self.fail('TimeoutError is nicht raised')
 
         mit s:
-            try:
+            versuch:
                 mit self.assertWarns(ResourceWarning) als cm:
                     self.loop.run_until_complete(test())
                     gc.collect()
                     gc.collect()
                     gc.collect()
-            except AssertionError als e:
+            ausser AssertionError als e:
                 self.assertEqual(str(e), 'ResourceWarning nicht triggered')
             sonst:
                 self.fail('Unexpected ResourceWarning: {}'.format(cm.warning))
@@ -1629,12 +1629,12 @@ klasse TestSSL(test_utils.TestCase):
         addr = s.getsockname()
 
         async def test(ctx):
-            try:
+            versuch:
                 await asyncio.wait_for(
                     self.loop.create_connection(asyncio.Protocol, *addr,
                                                 ssl=ctx),
                     0.1)
-            except (ConnectionRefusedError, asyncio.TimeoutError):
+            ausser (ConnectionRefusedError, asyncio.TimeoutError):
                 pass
             sonst:
                 self.fail('TimeoutError is nicht raised')
@@ -1758,7 +1758,7 @@ klasse TestSocketWrapper:
         waehrend len(buf) < n:
             data = self.recv(n - len(buf))
             wenn data == b'':
-                raise ConnectionAbortedError
+                wirf ConnectionAbortedError
             buf += data
         gib buf
 
@@ -1814,11 +1814,11 @@ klasse TestThreadedClient(SocketThread):
         self._test = test
 
     def run(self):
-        try:
+        versuch:
             self._prog(TestSocketWrapper(self._sock))
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except BaseException als ex:
+        ausser (KeyboardInterrupt, SystemExit):
+            wirf
+        ausser BaseException als ex:
             self._test._abort_socket_test(ex)
 
 
@@ -1843,13 +1843,13 @@ klasse TestThreadedServer(SocketThread):
         self._test = test
 
     def stop(self):
-        try:
+        versuch:
             wenn self._s2 und self._s2.fileno() != -1:
-                try:
+                versuch:
                     self._s2.send(b'stop')
-                except OSError:
+                ausser OSError:
                     pass
-        finally:
+        schliesslich:
             super().stop()
             self._sock.close()
             self._s1.close()
@@ -1871,28 +1871,28 @@ klasse TestThreadedServer(SocketThread):
                 gib
 
             wenn self._sock in r:
-                try:
+                versuch:
                     conn, addr = self._sock.accept()
-                except BlockingIOError:
+                ausser BlockingIOError:
                     weiter
-                except socket.timeout:
+                ausser socket.timeout:
                     wenn nicht self._active:
                         gib
                     sonst:
-                        raise
+                        wirf
                 sonst:
                     self._clients += 1
                     conn.settimeout(self._timeout)
-                    try:
+                    versuch:
                         mit conn:
                             self._handle_client(conn)
-                    except (KeyboardInterrupt, SystemExit):
-                        raise
-                    except BaseException als ex:
+                    ausser (KeyboardInterrupt, SystemExit):
+                        wirf
+                    ausser BaseException als ex:
                         self._active = Falsch
-                        try:
-                            raise
-                        finally:
+                        versuch:
+                            wirf
+                        schliesslich:
                             self._test._abort_socket_test(ex)
 
     def _handle_client(self, sock):

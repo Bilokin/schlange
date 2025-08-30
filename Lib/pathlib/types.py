@@ -95,7 +95,7 @@ klasse _JoinablePath(ABC):
         """Implementation of pathlib._types.Parser used fuer low-level path
         parsing und manipulation.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def with_segments(self, *pathsegments):
@@ -103,12 +103,12 @@ klasse _JoinablePath(ABC):
         Subclasses may override this method to customize how new path objects
         are created von methods like `iterdir()`.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __vfspath__(self):
         """Return the string representation of the path."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @property
     def anchor(self):
@@ -153,7 +153,7 @@ klasse _JoinablePath(ABC):
         """Return a new path mit the file name changed."""
         split = self.parser.split
         wenn split(name)[0]:
-            raise ValueError(f"Invalid name {name!r}")
+            wirf ValueError(f"Invalid name {name!r}")
         path = vfspath(self)
         path = path.removesuffix(split(path)[1]) + name
         gib self.with_segments(path)
@@ -165,7 +165,7 @@ klasse _JoinablePath(ABC):
             gib self.with_name(stem)
         sowenn nicht stem:
             # If the suffix is non-empty, we can't make the stem empty.
-            raise ValueError(f"{self!r} has a non-empty suffix")
+            wirf ValueError(f"{self!r} has a non-empty suffix")
         sonst:
             gib self.with_name(stem + suffix)
 
@@ -177,9 +177,9 @@ klasse _JoinablePath(ABC):
         stem = self.stem
         wenn nicht stem:
             # If the stem is empty, we can't make the suffix non-empty.
-            raise ValueError(f"{self!r} has an empty name")
+            wirf ValueError(f"{self!r} has an empty name")
         sowenn suffix und nicht suffix.startswith('.'):
-            raise ValueError(f"Invalid suffix {suffix!r}")
+            wirf ValueError(f"Invalid suffix {suffix!r}")
         sonst:
             gib self.with_name(stem + suffix)
 
@@ -201,15 +201,15 @@ klasse _JoinablePath(ABC):
         gib self.with_segments(vfspath(self), *pathsegments)
 
     def __truediv__(self, key):
-        try:
+        versuch:
             gib self.with_segments(vfspath(self), key)
-        except TypeError:
+        ausser TypeError:
             gib NotImplemented
 
     def __rtruediv__(self, key):
-        try:
+        versuch:
             gib self.with_segments(key, vfspath(self))
-        except TypeError:
+        ausser TypeError:
             gib NotImplemented
 
     @property
@@ -261,7 +261,7 @@ klasse _ReadablePath(_JoinablePath):
         A PathInfo object that exposes the file type und other file attributes
         of this path.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __open_rb__(self, buffering=-1):
@@ -269,7 +269,7 @@ klasse _ReadablePath(_JoinablePath):
         Open the file pointed to by this path fuer reading in binary mode und
         gib a file object, like open(mode='rb').
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def read_bytes(self):
         """
@@ -295,7 +295,7 @@ klasse _ReadablePath(_JoinablePath):
         The children are yielded in arbitrary order, und the
         special entries '.' und '..' are nicht included.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def glob(self, pattern, *, recurse_symlinks=Wahr):
         """Iterate over this subtree und liefere all existing files (of any
@@ -303,11 +303,11 @@ klasse _ReadablePath(_JoinablePath):
         """
         anchor, parts = _explode_path(pattern, self.parser.split)
         wenn anchor:
-            raise NotImplementedError("Non-relative patterns are unsupported")
+            wirf NotImplementedError("Non-relative patterns are unsupported")
         sowenn nicht parts:
-            raise ValueError(f"Unacceptable pattern: {pattern!r}")
+            wirf ValueError(f"Unacceptable pattern: {pattern!r}")
         sowenn nicht recurse_symlinks:
-            raise NotImplementedError("recurse_symlinks=Falsch is unsupported")
+            wirf NotImplementedError("recurse_symlinks=Falsch is unsupported")
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
         globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         select = globber.selector(parts)
@@ -325,7 +325,7 @@ klasse _ReadablePath(_JoinablePath):
             filenames = []
             wenn nicht top_down:
                 paths.append((path, dirnames, filenames))
-            try:
+            versuch:
                 fuer child in path.iterdir():
                     wenn child.info.is_dir(follow_symlinks=follow_symlinks):
                         wenn nicht top_down:
@@ -333,7 +333,7 @@ klasse _ReadablePath(_JoinablePath):
                         dirnames.append(child.name)
                     sonst:
                         filenames.append(child.name)
-            except OSError als error:
+            ausser OSError als error:
                 wenn on_error is nicht Nichts:
                     on_error(error)
                 wenn nicht top_down:
@@ -349,7 +349,7 @@ klasse _ReadablePath(_JoinablePath):
         """
         Return the path to which the symbolic link points.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def copy(self, target, **kwargs):
         """
@@ -365,7 +365,7 @@ klasse _ReadablePath(_JoinablePath):
         """
         name = self.name
         wenn nicht name:
-            raise ValueError(f"{self!r} has an empty name")
+            wirf ValueError(f"{self!r} has an empty name")
         gib self.copy(target_dir / name, **kwargs)
 
 
@@ -384,14 +384,14 @@ klasse _WritablePath(_JoinablePath):
         Make this path a symlink pointing to the target path.
         Note the order of arguments (link, target) is the reverse of os.symlink.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def mkdir(self):
         """
         Create a new directory at this given path.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def __open_wb__(self, buffering=-1):
@@ -399,7 +399,7 @@ klasse _WritablePath(_JoinablePath):
         Open the file pointed to by this path fuer writing in binary mode und
         gib a file object, like open(mode='wb').
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def write_bytes(self, data):
         """
@@ -418,7 +418,7 @@ klasse _WritablePath(_JoinablePath):
         # appropriate stack level.
         encoding = text_encoding(encoding)
         wenn nicht isinstance(data, str):
-            raise TypeError('data must be str, nicht %s' %
+            wirf TypeError('data must be str, nicht %s' %
                             data.__class__.__name__)
         mit magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) als f:
             gib f.write(data)

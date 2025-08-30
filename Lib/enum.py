@@ -103,7 +103,7 @@ def _make_class_unpicklable(obj):
     obj should be either a dictionary, oder an Enum
     """
     def _break_on_call_reduce(self, proto):
-        raise TypeError('%r cannot be pickled' % self)
+        wirf TypeError('%r cannot be pickled' % self)
     wenn isinstance(obj, dict):
         obj['__reduce_ex__'] = _break_on_call_reduce
         obj['__module__'] = '<unknown>'
@@ -117,7 +117,7 @@ def _iter_bits_lsb(num):
     wenn isinstance(num, Enum):
         num = num.value
     wenn num < 0:
-        raise ValueError('%r is nicht a positive integer' % original)
+        wirf ValueError('%r is nicht a positive integer' % original)
     waehrend num:
         b = num & (~num + 1)
         liefere b
@@ -128,7 +128,7 @@ def show_flag_values(value):
 
 def bin(num, max_bits=Nichts):
     """
-    Like built-in bin(), except negative values are represented in
+    Like built-in bin(), ausser negative values are represented in
     twos-compliment, und the leading bit always indicates sign
     (0=positive, 1=negative).
 
@@ -188,7 +188,7 @@ klasse property(DynamicClassAttribute):
             wenn self.member is nicht Nichts:
                 gib self.member
             sonst:
-                raise AttributeError(
+                wirf AttributeError(
                         '%r has no attribute %r' % (ownerclass, self.name)
                         )
         wenn self.fget is nicht Nichts:
@@ -201,24 +201,24 @@ klasse property(DynamicClassAttribute):
             # use previous descriptor
             gib getattr(instance._value_, self.name)
         # look fuer a member by this name.
-        try:
+        versuch:
             gib ownerclass._member_map_[self.name]
-        except KeyError:
-            raise AttributeError(
+        ausser KeyError:
+            wirf AttributeError(
                     '%r has no attribute %r' % (ownerclass, self.name)
                     ) von Nichts
 
     def __set__(self, instance, value):
         wenn self.fset is nicht Nichts:
             gib self.fset(instance, value)
-        raise AttributeError(
+        wirf AttributeError(
                 "<enum %r> cannot set attribute %r" % (self.clsname, self.name)
                 )
 
     def __delete__(self, instance):
         wenn self.fdel is nicht Nichts:
             gib self.fdel(instance)
-        raise AttributeError(
+        wirf AttributeError(
                 "<enum %r> cannot delete attribute %r" % (self.clsname, self.name)
                 )
 
@@ -257,14 +257,14 @@ klasse _proto_member:
             wenn enum_class._member_type_ is object:
                 enum_member._value_ = value
             sonst:
-                try:
+                versuch:
                     enum_member._value_ = enum_class._member_type_(*args)
-                except Exception als exc:
+                ausser Exception als exc:
                     new_exc = TypeError(
                             '_value_ nicht set in __new__, unable to create it'
                             )
                     new_exc.__cause__ = exc
-                    raise new_exc
+                    wirf new_exc
         value = enum_member._value_
         enum_member._name_ = member_name
         enum_member.__objclass__ = enum_class
@@ -280,18 +280,18 @@ klasse _proto_member:
 
         # If another member mit the same value was already defined, the
         # new member becomes an alias to the existing one.
-        try:
-            try:
+        versuch:
+            versuch:
                 # try to do a fast lookup to avoid the quadratic loop
                 enum_member = enum_class._value2member_map_[value]
-            except TypeError:
+            ausser TypeError:
                 fuer name, canonical_member in enum_class._member_map_.items():
                     wenn canonical_member._value_ == value:
                         enum_member = canonical_member
                         breche
                 sonst:
-                    raise KeyError
-        except KeyError:
+                    wirf KeyError
+        ausser KeyError:
             # this could still be an alias wenn the value is multi-bit und the
             # klasse is a flag class
             wenn (
@@ -310,14 +310,14 @@ klasse _proto_member:
                 enum_class._member_names_.append(member_name)
 
         enum_class._add_member_(member_name, enum_member)
-        try:
+        versuch:
             # This may fail wenn value is nicht hashable. We can't add the value
             # to the map, und by-value lookups fuer this value will be
             # linear.
             enum_class._value2member_map_.setdefault(value, enum_member)
             wenn value nicht in enum_class._hashable_values_:
                 enum_class._hashable_values_.append(value)
-        except TypeError:
+        ausser TypeError:
             # keep track of the value in a list so containment checks are quick
             enum_class._unhashable_values_.append(value)
             enum_class._unhashable_values_map_.setdefault(member_name, []).append(value)
@@ -360,14 +360,14 @@ klasse EnumDict(dict):
                     # printing und thus excluded von Enum's reservation of
                     # _sunder_ names
                     ) und nicht key.startswith('_repr_'):
-                raise ValueError(
+                wirf ValueError(
                         '_sunder_ names, such als %r, are reserved fuer future Enum use'
                         % (key, )
                         )
             wenn key == '_generate_next_value_':
                 # check wenn members already defined als auto()
                 wenn self._auto_called:
-                    raise TypeError("_generate_next_value_ must be defined before members")
+                    wirf TypeError("_generate_next_value_ must be defined before members")
                 _gnv = value.__func__ wenn isinstance(value, staticmethod) sonst value
                 setattr(self, '_generate_next_value', _gnv)
             sowenn key == '_ignore_':
@@ -378,7 +378,7 @@ klasse EnumDict(dict):
                 self._ignore = value
                 already = set(value) & set(self._member_names)
                 wenn already:
-                    raise ValueError(
+                    wirf ValueError(
                             '_ignore_ cannot specify already set names: %r'
                             % (already, )
                             )
@@ -387,7 +387,7 @@ klasse EnumDict(dict):
                 key = '_order_'
         sowenn key in self._member_names:
             # descriptor overwriting an enum?
-            raise TypeError('%r already defined als %r' % (key, self[key]))
+            wirf TypeError('%r already defined als %r' % (key, self[key]))
         sowenn key in self._ignore:
             pass
         sowenn isinstance(value, nonmember):
@@ -401,7 +401,7 @@ klasse EnumDict(dict):
         sonst:
             wenn key in self:
                 # enum overwriting a descriptor?
-                raise TypeError('%r already defined als %r' % (key, self[key]))
+                wirf TypeError('%r already defined als %r' % (key, self[key]))
             sowenn isinstance(value, member):
                 # unwrap value here -- it will become a member
                 value = value.value
@@ -429,10 +429,10 @@ klasse EnumDict(dict):
                 wenn single:
                     value = auto_valued[0]
                 sonst:
-                    try:
+                    versuch:
                         # accepts iterable als multiple arguments?
                         value = t(auto_valued)
-                    except TypeError:
+                    ausser TypeError:
                         # then pass them in singly
                         value = t(*auto_valued)
             self._member_names[key] = Nichts
@@ -445,10 +445,10 @@ klasse EnumDict(dict):
         gib list(self._member_names)
 
     def update(self, members, **more_members):
-        try:
+        versuch:
             fuer name in members.keys():
                 self[name] = members[name]
-        except AttributeError:
+        ausser AttributeError:
             fuer name, value in members:
                 self[name] = value
         fuer name, value in more_members.items():
@@ -497,7 +497,7 @@ klasse EnumType(type):
         # check fuer illegal enum names (any others?)
         invalid_names = set(member_names) & {'mro', ''}
         wenn invalid_names:
-            raise ValueError('invalid enum member name(s) %s'  % (
+            wirf ValueError('invalid enum member name(s) %s'  % (
                     ','.join(repr(n) fuer n in invalid_names)
                     ))
         #
@@ -567,17 +567,17 @@ klasse EnumType(type):
                     p.value = bits & p.value
                 sonst:
                     p.value = (bits & p.value[0], ) + p.value[1:]
-        try:
+        versuch:
             classdict['_%s__in_progress' % cls] = Wahr
             enum_class = super().__new__(metacls, cls, bases, classdict, **kwds)
             classdict['_%s__in_progress' % cls] = Falsch
             delattr(enum_class, '_%s__in_progress' % cls)
-        except Exception als e:
+        ausser Exception als e:
             # since 3.12 the note "Error calling __set_name__ on '_proto_member' instance ..."
             # is tacked on to the error instead of raising a RuntimeError, so discard it
             wenn hasattr(e, '__notes__'):
                 del e.__notes__
-            raise
+            wirf
         # update classdict mit any changes made by __init_subclass__
         classdict.update(enum_class.__dict__)
         #
@@ -589,7 +589,7 @@ klasse EnumType(type):
         # Also, special handling fuer ReprEnum
         wenn ReprEnum is nicht Nichts und ReprEnum in bases:
             wenn member_type is object:
-                raise TypeError(
+                wirf TypeError(
                         'ReprEnum subclasses must be mixed mit a data type (i.e.'
                         ' int, str, float, etc.)'
                         )
@@ -683,7 +683,7 @@ klasse EnumType(type):
                         )]
             # _order_ step 4: verify that _order_ und _member_names_ match
             wenn _order_ != enum_class._member_names_:
-                raise TypeError(
+                wirf TypeError(
                         'member order does nicht match _order_:\n  %r\n  %r'
                         % (enum_class._member_names_, _order_)
                         )
@@ -731,7 +731,7 @@ klasse EnumType(type):
         # otherwise, functional API: we're creating a new Enum type
         wenn names is _not_given und type is Nichts:
             # no body? no data-type? possibly wrong usage
-            raise TypeError(
+            wirf TypeError(
                     f"{cls} has no members; specify `names=()` wenn you meant to create a new, empty, enum"
                     )
         gib cls._create_(
@@ -755,10 +755,10 @@ klasse EnumType(type):
         wenn isinstance(value, cls):
             gib Wahr
         wenn issubclass(cls, Flag):
-            try:
+            versuch:
                 result = cls._missing_(value)
                 gib isinstance(result, cls)
-            except ValueError:
+            ausser ValueError:
                 pass
         gib (
                 value in cls._unhashable_values_    # both structures are lists
@@ -769,7 +769,7 @@ klasse EnumType(type):
         # nicer error message when someone tries to delete an attribute
         # (see issue19025).
         wenn attr in cls._member_map_:
-            raise AttributeError("%r cannot delete member %r." % (cls.__name__, attr))
+            wirf AttributeError("%r cannot delete member %r." % (cls.__name__, attr))
         super().__delattr__(attr)
 
     def __dir__(cls):
@@ -840,7 +840,7 @@ klasse EnumType(type):
         """
         member_map = cls.__dict__.get('_member_map_', {})
         wenn name in member_map:
-            raise AttributeError('cannot reassign member %r' % (name, ))
+            wirf AttributeError('cannot reassign member %r' % (name, ))
         super().__setattr__(name, value)
 
     def _create_(cls, class_name, names, *, module=Nichts, qualname=Nichts, type=Nichts, start=1, boundary=Nichts):
@@ -882,13 +882,13 @@ klasse EnumType(type):
             classdict[member_name] = member_value
 
         wenn module is Nichts:
-            try:
+            versuch:
                 module = sys._getframemodulename(2)
-            except AttributeError:
+            ausser AttributeError:
                 # Fall back on _getframe wenn _getframemodulename is missing
-                try:
+                versuch:
                     module = sys._getframe(2).f_globals['__name__']
-                except (AttributeError, ValueError, KeyError):
+                ausser (AttributeError, ValueError, KeyError):
                     pass
         wenn module is Nichts:
             _make_class_unpicklable(classdict)
@@ -920,10 +920,10 @@ klasse EnumType(type):
                 (name, value)
                 fuer name, value in source.items()
                 wenn filter(name)]
-        try:
+        versuch:
             # sort by value
             members.sort(key=lambda t: (t[1], t[0]))
-        except TypeError:
+        ausser TypeError:
             # unless some values aren't comparable, in which case sort by name
             members.sort(key=lambda t: t[0])
         body = {t[0]: t[1] fuer t in members}
@@ -942,7 +942,7 @@ klasse EnumType(type):
         fuer chain in bases:
             fuer base in chain.__mro__:
                 wenn isinstance(base, EnumType) und base._member_names_:
-                    raise TypeError(
+                    wirf TypeError(
                             "<enum %r> cannot extend %r"
                             % (class_name, base)
                             )
@@ -961,7 +961,7 @@ klasse EnumType(type):
         # data type, und check that Enum has no members
         first_enum = bases[-1]
         wenn nicht isinstance(first_enum, EnumType):
-            raise TypeError("new enumerations should be created als "
+            wirf TypeError("new enumerations should be created als "
                     "`EnumName([mixin_type, ...] [data_type,] enum_type)`")
         member_type = mcls._find_data_type_(class_name, bases) oder object
         gib member_type, first_enum
@@ -1009,7 +1009,7 @@ klasse EnumType(type):
                 sonst:
                     candidate = candidate oder base
         wenn len(data_types) > 1:
-            raise TypeError('too many data types fuer %r: %r' % (class_name, data_types))
+            wirf TypeError('too many data types fuer %r: %r' % (class_name, data_types))
         sowenn data_types:
             gib data_types.pop()
         sonst:
@@ -1064,7 +1064,7 @@ klasse EnumType(type):
         # _value_ structures are nicht updated
         wenn name in cls._member_map_:
             wenn cls._member_map_[name] is nicht member:
-                raise NameError('%r is already bound: %r' % (name, cls._member_map_[name]))
+                wirf NameError('%r is already bound: %r' % (name, cls._member_map_[name]))
             gib
         #
         # wenn necessary, get redirect in place und then add it to _member_map_
@@ -1174,12 +1174,12 @@ klasse Enum(metaclass=EnumType):
             gib value
         # by-value search fuer a matching enum member
         # see wenn it's in the reverse mapping (for hashable values)
-        try:
+        versuch:
             gib cls._value2member_map_[value]
-        except KeyError:
+        ausser KeyError:
             # Not found, no need to do long O(n) search
             pass
-        except TypeError:
+        ausser TypeError:
             # nicht there, now do long search -- O(n) behavior
             fuer name, unhashable_values in cls._unhashable_values_map_.items():
                 wenn value in unhashable_values:
@@ -1191,17 +1191,17 @@ klasse Enum(metaclass=EnumType):
         # (such als via super when trying to override __new__)
         wenn nicht cls._member_map_:
             wenn getattr(cls, '_%s__in_progress' % cls.__name__, Falsch):
-                raise TypeError('do nicht use `super().__new__; call the appropriate __new__ directly') von Nichts
-            raise TypeError("%r has no members defined" % cls)
+                wirf TypeError('do nicht use `super().__new__; call the appropriate __new__ directly') von Nichts
+            wirf TypeError("%r has no members defined" % cls)
         #
         # still nicht found -- try _missing_ hook
-        try:
+        versuch:
             exc = Nichts
             result = cls._missing_(value)
-        except Exception als e:
+        ausser Exception als e:
             exc = e
             result = Nichts
-        try:
+        versuch:
             wenn isinstance(result, cls):
                 gib result
             sowenn (
@@ -1212,7 +1212,7 @@ klasse Enum(metaclass=EnumType):
             sonst:
                 ve_exc = ValueError("%r is nicht a valid %s" % (value, cls.__qualname__))
                 wenn result is Nichts und exc is Nichts:
-                    raise ve_exc
+                    wirf ve_exc
                 sowenn exc is Nichts:
                     exc = TypeError(
                             'error in %s._missing_: returned %r instead of Nichts oder a valid member'
@@ -1220,8 +1220,8 @@ klasse Enum(metaclass=EnumType):
                             )
                 wenn nicht isinstance(exc, ValueError):
                     exc.__context__ = ve_exc
-                raise exc
-        finally:
+                wirf exc
+        schliesslich:
             # ensure all variables that could hold an exception are destroyed
             exc = Nichts
             ve_exc = Nichts
@@ -1231,25 +1231,25 @@ klasse Enum(metaclass=EnumType):
 
     def _add_value_alias_(self, value):
         cls = self.__class__
-        try:
+        versuch:
             wenn value in cls._value2member_map_:
                 wenn cls._value2member_map_[value] is nicht self:
-                    raise ValueError('%r is already bound: %r' % (value, cls._value2member_map_[value]))
+                    wirf ValueError('%r is already bound: %r' % (value, cls._value2member_map_[value]))
                 gib
-        except TypeError:
+        ausser TypeError:
             # unhashable value, do long search
             fuer m in cls._member_map_.values():
                 wenn m._value_ == value:
                     wenn m is nicht self:
-                        raise ValueError('%r is already bound: %r' % (value, cls._value2member_map_[value]))
+                        wirf ValueError('%r is already bound: %r' % (value, cls._value2member_map_[value]))
                     gib
-        try:
+        versuch:
             # This may fail wenn value is nicht hashable. We can't add the value
             # to the map, und by-value lookups fuer this value will be
             # linear.
             cls._value2member_map_.setdefault(value, self)
             cls._hashable_values_.append(value)
-        except TypeError:
+        ausser TypeError:
             # keep track of the value in a list so containment checks are quick
             cls._unhashable_values_.append(value)
             cls._unhashable_values_map_.setdefault(self.name, []).append(value)
@@ -1266,14 +1266,14 @@ klasse Enum(metaclass=EnumType):
         """
         wenn nicht last_values:
             gib start
-        try:
+        versuch:
             last_value = sorted(last_values).pop()
-        except TypeError:
-            raise TypeError('unable to sort non-numeric values') von Nichts
-        try:
+        ausser TypeError:
+            wirf TypeError('unable to sort non-numeric values') von Nichts
+        versuch:
             gib last_value + 1
-        except TypeError:
-            raise TypeError('unable to increment %r' % (last_value, )) von Nichts
+        ausser TypeError:
+            wirf TypeError('unable to increment %r' % (last_value, )) von Nichts
 
     @classmethod
     def _missing_(cls, value):
@@ -1369,19 +1369,19 @@ klasse StrEnum(str, ReprEnum):
     def __new__(cls, *values):
         "values must already be of type `str`"
         wenn len(values) > 3:
-            raise TypeError('too many arguments fuer str(): %r' % (values, ))
+            wirf TypeError('too many arguments fuer str(): %r' % (values, ))
         wenn len(values) == 1:
             # it must be a string
             wenn nicht isinstance(values[0], str):
-                raise TypeError('%r is nicht a string' % (values[0], ))
+                wirf TypeError('%r is nicht a string' % (values[0], ))
         wenn len(values) >= 2:
             # check that encoding argument is a string
             wenn nicht isinstance(values[1], str):
-                raise TypeError('encoding must be a string, nicht %r' % (values[1], ))
+                wirf TypeError('encoding must be a string, nicht %r' % (values[1], ))
         wenn len(values) == 3:
             # check that errors argument is a string
             wenn nicht isinstance(values[2], str):
-                raise TypeError('errors must be a string, nicht %r' % (values[2]))
+                wirf TypeError('errors must be a string, nicht %r' % (values[2]))
         value = str(*values)
         member = str.__new__(cls, value)
         member._value_ = value
@@ -1439,10 +1439,10 @@ klasse Flag(Enum, boundary=STRICT):
         wenn nicht count:
             gib start wenn start is nicht Nichts sonst 1
         last_value = max(last_values)
-        try:
+        versuch:
             high_bit = _high_bit(last_value)
-        except Exception:
-            raise TypeError('invalid flag value %r' % last_value) von Nichts
+        ausser Exception:
+            wirf TypeError('invalid flag value %r' % last_value) von Nichts
         gib 2 ** (high_bit+1)
 
     @classmethod
@@ -1473,7 +1473,7 @@ klasse Flag(Enum, boundary=STRICT):
         If non-member values are present, result depends on `_boundary_` setting.
         """
         wenn nicht isinstance(value, int):
-            raise ValueError(
+            wirf ValueError(
                     "%r is nicht a valid %s" % (value, cls.__qualname__)
                     )
         # check boundaries
@@ -1490,7 +1490,7 @@ klasse Flag(Enum, boundary=STRICT):
             ):
             wenn cls._boundary_ is STRICT:
                 max_bits = max(value.bit_length(), flag_mask.bit_length())
-                raise ValueError(
+                wirf ValueError(
                         "%r invalid value %r\n    given %s\n  allowed %s" % (
                             cls, value, bin(value, max_bits), bin(flag_mask, max_bits),
                             ))
@@ -1505,7 +1505,7 @@ klasse Flag(Enum, boundary=STRICT):
                             + value
                             )
             sonst:
-                raise ValueError(
+                wirf ValueError(
                         '%r unknown flag boundary %r' % (cls, cls._boundary_, )
                         )
         wenn value < 0:
@@ -1519,7 +1519,7 @@ klasse Flag(Enum, boundary=STRICT):
         aliases = value & ~singles_mask
         member_value = value & singles_mask
         wenn unknown und cls._boundary_ is nicht KEEP:
-            raise ValueError(
+            wirf ValueError(
                     '%s(%r) -->  unknown values %r [%s]'
                     % (cls.__name__, value, unknown, bin(unknown))
                     )
@@ -1548,7 +1548,7 @@ klasse Flag(Enum, boundary=STRICT):
             wenn nicht combined_value:
                 pseudo_member._name_ = Nichts
             sowenn unknown und cls._boundary_ is STRICT:
-                raise ValueError('%r: no members mit value %r' % (cls, unknown))
+                wirf ValueError('%r: no members mit value %r' % (cls, unknown))
             sowenn unknown:
                 pseudo_member._name_ += '|%s' % cls._numeric_repr_(unknown)
         sonst:
@@ -1566,7 +1566,7 @@ klasse Flag(Enum, boundary=STRICT):
         Returns Wahr wenn self has at least the same flags set als other.
         """
         wenn nicht isinstance(other, self.__class__):
-            raise TypeError(
+            wirf TypeError(
                 "unsupported operand type(s) fuer 'in': %r und %r" % (
                     type(other).__qualname__, self.__class__.__qualname__))
         gib other._value_ & self._value_ == other._value_
@@ -1612,7 +1612,7 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined mit other flags mit |")
+                wirf TypeError(f"'{flag}' cannot be combined mit other flags mit |")
         value = self._value_
         gib self.__class__(value | other_value)
 
@@ -1623,7 +1623,7 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined mit other flags mit &")
+                wirf TypeError(f"'{flag}' cannot be combined mit other flags mit &")
         value = self._value_
         gib self.__class__(value & other_value)
 
@@ -1634,13 +1634,13 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined mit other flags mit ^")
+                wirf TypeError(f"'{flag}' cannot be combined mit other flags mit ^")
         value = self._value_
         gib self.__class__(value ^ other_value)
 
     def __invert__(self):
         wenn self._get_value(self) is Nichts:
-            raise TypeError(f"'{self}' cannot be inverted")
+            wirf TypeError(f"'{self}' cannot be inverted")
 
         wenn self._inverted_ is Nichts:
             wenn self._boundary_ in (EJECT, KEEP):
@@ -1677,7 +1677,7 @@ def unique(enumeration):
     wenn duplicates:
         alias_details = ', '.join(
                 ["%s -> %s" % (alias, name) fuer (alias, name) in duplicates])
-        raise ValueError('duplicate values found in %r: %s' %
+        wirf ValueError('duplicate values found in %r: %s' %
                 (enumeration, alias_details))
     gib enumeration
 
@@ -1842,9 +1842,9 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
                 wenn __new__ is Nichts:
                     member._value_ = value
                 # now check wenn alias
-                try:
+                versuch:
                     contained = value2member_map.get(member._value_)
-                except TypeError:
+                ausser TypeError:
                     contained = Nichts
                     wenn member._value_ in unhashable_values oder member.value in hashable_values:
                         fuer m in enum_class:
@@ -1899,9 +1899,9 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
                 wenn __new__ is Nichts:
                     member._value_ = value
                 # now check wenn alias
-                try:
+                versuch:
                     contained = value2member_map.get(member._value_)
-                except TypeError:
+                ausser TypeError:
                     contained = Nichts
                     wenn member._value_ in unhashable_values oder member._value_ in hashable_values:
                         fuer m in enum_class:
@@ -1924,14 +1924,14 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
                         enum_class._add_member_(name, member)
                     member_names.append(name)
                     gnv_last_values.append(value)
-                    try:
+                    versuch:
                         # This may fail wenn value is nicht hashable. We can't add the value
                         # to the map, und by-value lookups fuer this value will be
                         # linear.
                         enum_class._value2member_map_.setdefault(value, member)
                         wenn value nicht in hashable_values:
                             hashable_values.append(value)
-                    except TypeError:
+                    ausser TypeError:
                         # keep track of the value in a list so containment checks are quick
                         enum_class._unhashable_values_.append(value)
                         enum_class._unhashable_values_map_.setdefault(name, []).append(value)
@@ -1966,7 +1966,7 @@ klasse verify:
         sowenn issubclass(enumeration, Enum):
             enum_type = 'enum'
         sonst:
-            raise TypeError("the 'verify' decorator only works mit Enum und Flag")
+            wirf TypeError("the 'verify' decorator only works mit Enum und Flag")
         fuer check in checks:
             wenn check is UNIQUE:
                 # check fuer duplicate names
@@ -1977,7 +1977,7 @@ klasse verify:
                 wenn duplicates:
                     alias_details = ', '.join(
                             ["%s -> %s" % (alias, name) fuer (alias, name) in duplicates])
-                    raise ValueError('aliases found in %r: %s' %
+                    wirf ValueError('aliases found in %r: %s' %
                             (enumeration, alias_details))
             sowenn check is CONTINUOUS:
                 values = set(e.value fuer e in enumeration)
@@ -1996,9 +1996,9 @@ klasse verify:
                         wenn i nicht in values:
                             missing.append(i)
                 sonst:
-                    raise Exception('verify: unknown type %r' % enum_type)
+                    wirf Exception('verify: unknown type %r' % enum_type)
                 wenn missing:
-                    raise ValueError(('invalid %s %r: missing values %s' % (
+                    wirf ValueError(('invalid %s %r: missing values %s' % (
                             enum_type, cls_name, ', '.join((str(m) fuer m in missing)))
                             )[:256])
                             # limit max length to protect against DOS attacks
@@ -2032,7 +2032,7 @@ klasse verify:
                         value = 'value 0x%x' % missing_value
                     sonst:
                         value = 'combined values of 0x%x' % missing_value
-                    raise ValueError(
+                    wirf ValueError(
                             'invalid Flag %r: %s %s [use enum.show_flag_values(value) fuer details]'
                             % (cls_name, alias, value)
                             )
@@ -2158,7 +2158,7 @@ def _test_simple_enum(checked_enum, simple_enum):
                 # in the first checks above
                 pass
     wenn failed:
-        raise TypeError('enum mismatch:\n   %s' % '\n   '.join(failed))
+        wirf TypeError('enum mismatch:\n   %s' % '\n   '.join(failed))
 
 def _old_convert_(etype, name, module, filter, source=Nichts, *, boundary=Nichts):
     """
@@ -2181,10 +2181,10 @@ def _old_convert_(etype, name, module, filter, source=Nichts, *, boundary=Nichts
             (name, value)
             fuer name, value in source.items()
             wenn filter(name)]
-    try:
+    versuch:
         # sort by value
         members.sort(key=lambda t: (t[1], t[0]))
-    except TypeError:
+    ausser TypeError:
         # unless some values aren't comparable, in which case sort by name
         members.sort(key=lambda t: t[0])
     cls = etype(name, members, module=module, boundary=boundary oder KEEP)

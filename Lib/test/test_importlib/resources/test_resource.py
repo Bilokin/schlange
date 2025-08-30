@@ -181,9 +181,9 @@ klasse ResourceFromNamespaceTests:
 
     def test_submodule_contents(self):
         contents = names(resources.files(import_module('namespacedata01')))
-        try:
+        versuch:
             contents.remove('__pycache__')
-        except KeyError:
+        ausser KeyError:
             pass
         self.assertEqual(
             contents, {'subdirectory', 'binary.file', 'utf-8.file', 'utf-16.file'}
@@ -191,9 +191,9 @@ klasse ResourceFromNamespaceTests:
 
     def test_submodule_contents_by_name(self):
         contents = names(resources.files('namespacedata01'))
-        try:
+        versuch:
             contents.remove('__pycache__')
-        except KeyError:
+        ausser KeyError:
             pass
         self.assertEqual(
             contents, {'subdirectory', 'binary.file', 'utf-8.file', 'utf-16.file'}
@@ -201,17 +201,17 @@ klasse ResourceFromNamespaceTests:
 
     def test_submodule_sub_contents(self):
         contents = names(resources.files(import_module('namespacedata01.subdirectory')))
-        try:
+        versuch:
             contents.remove('__pycache__')
-        except KeyError:
+        ausser KeyError:
             pass
         self.assertEqual(contents, {'binary.file'})
 
     def test_submodule_sub_contents_by_name(self):
         contents = names(resources.files('namespacedata01.subdirectory'))
-        try:
+        versuch:
             contents.remove('__pycache__')
-        except KeyError:
+        ausser KeyError:
             pass
         self.assertEqual(contents, {'binary.file'})
 

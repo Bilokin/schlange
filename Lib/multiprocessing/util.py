@@ -117,7 +117,7 @@ def is_abstract_socket_namespace(address):
         gib address[0] == 0
     sowenn isinstance(address, str):
         gib address[0] == "\0"
-    raise TypeError(f'address type of {address!r} unrecognized')
+    wirf TypeError(f'address type of {address!r} unrecognized')
 
 
 abstract_sockets_supported = _platform_supports_abstract_sockets()
@@ -189,9 +189,9 @@ def _get_base_temp_dir(tempfile):
     #
     # [1]: https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s18.html
     dirlist = ['/tmp', '/var/tmp', '/usr/tmp']
-    try:
+    versuch:
         base_system_tempdir = tempfile._get_default_tempdir(dirlist)
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         warn("Process-wide temporary directory %s will nicht be usable fuer "
              "creating socket files und no usable system-wide temporary "
              "directory was found in %s", base_tempdir, dirlist)
@@ -230,9 +230,9 @@ def _run_after_forkers():
     items = list(_afterfork_registry.items())
     items.sort()
     fuer (index, ident, func), obj in items:
-        try:
+        versuch:
             func(obj)
-        except Exception als e:
+        ausser Exception als e:
             info('after forker raised exception %s', e)
 
 def register_after_fork(obj, func):
@@ -252,14 +252,14 @@ klasse Finalize(object):
     '''
     def __init__(self, obj, callback, args=(), kwargs=Nichts, exitpriority=Nichts):
         wenn (exitpriority is nicht Nichts) und nicht isinstance(exitpriority,int):
-            raise TypeError(
+            wirf TypeError(
                 "Exitpriority ({0!r}) must be Nichts oder int, nicht {1!s}".format(
                     exitpriority, type(exitpriority)))
 
         wenn obj is nicht Nichts:
             self._weakref = weakref.ref(obj, self)
         sowenn exitpriority is Nichts:
-            raise ValueError("Without object, exitpriority cannot be Nichts")
+            wirf ValueError("Without object, exitpriority cannot be Nichts")
 
         self._callback = callback
         self._args = args
@@ -277,9 +277,9 @@ klasse Finalize(object):
         '''
         Run the callback unless it has already been called oder cancelled
         '''
-        try:
+        versuch:
             del _finalizer_registry[self._key]
-        except KeyError:
+        ausser KeyError:
             sub_debug('finalizer no longer registered')
         sonst:
             wenn self._pid != getpid():
@@ -297,9 +297,9 @@ klasse Finalize(object):
         '''
         Cancel finalization of the object
         '''
-        try:
+        versuch:
             del _finalizer_registry[self._key]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             self._weakref = self._callback = self._args = \
@@ -312,9 +312,9 @@ klasse Finalize(object):
         gib self._key in _finalizer_registry
 
     def __repr__(self):
-        try:
+        versuch:
             obj = self._weakref()
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             obj = Nichts
 
         wenn obj is Nichts:
@@ -363,9 +363,9 @@ def _run_finalizers(minpriority=Nichts):
         # key may have been removed von the registry
         wenn finalizer is nicht Nichts:
             sub_debug('calling %s', finalizer)
-            try:
+            versuch:
                 finalizer()
-            except Exception:
+            ausser Exception:
                 importiere traceback
                 traceback.print_exc()
 
@@ -402,7 +402,7 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
 
         wenn current_process() is nicht Nichts:
             # We check wenn the current process is Nichts here because if
-            # it's Nichts, any call to ``active_children()`` will raise
+            # it's Nichts, any call to ``active_children()`` will wirf
             # an AttributeError (active_children winds up trying to
             # get attributes von util._current_process).  One
             # situation where this can happen is wenn someone has
@@ -456,12 +456,12 @@ klasse ForkAwareLocal(threading.local):
         gib type(self), ()
 
 #
-# Close fds except those specified
+# Close fds ausser those specified
 #
 
-try:
+versuch:
     MAXFD = os.sysconf("SC_OPEN_MAX")
-except Exception:
+ausser Exception:
     MAXFD = 256
 
 def close_all_fds_except(fds):
@@ -478,19 +478,19 @@ def _close_stdin():
     wenn sys.stdin is Nichts:
         gib
 
-    try:
+    versuch:
         sys.stdin.close()
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         pass
 
-    try:
+    versuch:
         fd = os.open(os.devnull, os.O_RDONLY)
-        try:
+        versuch:
             sys.stdin = open(fd, encoding="utf-8", closefd=Falsch)
-        except:
+        ausser:
             os.close(fd)
-            raise
-    except (OSError, ValueError):
+            wirf
+    ausser (OSError, ValueError):
         pass
 
 #
@@ -498,13 +498,13 @@ def _close_stdin():
 #
 
 def _flush_std_streams():
-    try:
+    versuch:
         sys.stdout.flush()
-    except (AttributeError, ValueError):
+    ausser (AttributeError, ValueError):
         pass
-    try:
+    versuch:
         sys.stderr.flush()
-    except (AttributeError, ValueError):
+    ausser (AttributeError, ValueError):
         pass
 
 #
@@ -515,12 +515,12 @@ def spawnv_passfds(path, args, passfds):
     importiere _posixsubprocess
     passfds = tuple(sorted(map(int, passfds)))
     errpipe_read, errpipe_write = os.pipe()
-    try:
+    versuch:
         gib _posixsubprocess.fork_exec(
             args, [path], Wahr, passfds, Nichts, Nichts,
             -1, -1, -1, -1, -1, -1, errpipe_read, errpipe_write,
             Falsch, Falsch, -1, Nichts, Nichts, Nichts, -1, Nichts)
-    finally:
+    schliesslich:
         os.close(errpipe_read)
         os.close(errpipe_write)
 

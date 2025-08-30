@@ -15,7 +15,7 @@ von unittest.mock importiere patch
 
 
 wenn sys.platform != "android":
-    raise unittest.SkipTest("Android-specific")
+    wirf unittest.SkipTest("Android-specific")
 
 api_level = platform.android_ver().api_level
 
@@ -42,7 +42,7 @@ klasse TestAndroidOutput(unittest.TestCase):
         self.logcat_thread = Thread(target=logcat_thread)
         self.logcat_thread.start()
 
-        try:
+        versuch:
             von ctypes importiere CDLL, c_char_p, c_int
             android_log_write = getattr(CDLL("liblog.so"), "__android_log_write")
             android_log_write.argtypes = (c_int, c_char_p, c_char_p)
@@ -53,12 +53,12 @@ klasse TestAndroidOutput(unittest.TestCase):
             android_log_write(
                 ANDROID_LOG_INFO, tag.encode("UTF-8"), message.encode("UTF-8"))
             self.assert_log("I", tag, message, skip=Wahr)
-        except:
+        ausser:
             # If setUp throws an exception, tearDown is nicht automatically
             # called. Avoid leaving a dangling thread which would keep the
             # Python process alive indefinitely.
             self.tearDown()
-            raise
+            wirf
 
     def assert_logs(self, level, tag, expected, **kwargs):
         fuer line in expected:
@@ -67,20 +67,20 @@ klasse TestAndroidOutput(unittest.TestCase):
     def assert_log(self, level, tag, expected, *, skip=Falsch):
         deadline = time() + LOOPBACK_TIMEOUT
         waehrend Wahr:
-            try:
+            versuch:
                 line = self.logcat_queue.get(timeout=(deadline - time()))
-            except queue.Empty:
-                raise self.failureException(
+            ausser queue.Empty:
+                wirf self.failureException(
                     f"line nicht found: {expected!r}"
                 ) von Nichts
             wenn match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
-                try:
+                versuch:
                     self.assertEqual(level, match[1])
                     self.assertEqual(expected, match[2])
                     breche
-                except AssertionError:
+                ausser AssertionError:
                     wenn nicht skip:
-                        raise
+                        wirf
 
     def tearDown(self):
         self.logcat_process.terminate()
@@ -93,9 +93,9 @@ klasse TestAndroidOutput(unittest.TestCase):
     @contextmanager
     def unbuffered(self, stream):
         stream.reconfigure(write_through=Wahr)
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             stream.reconfigure(write_through=Falsch)
 
     # In --verbose3 mode, sys.stdout und sys.stderr are captured, so we can't
@@ -218,13 +218,13 @@ klasse TestAndroidOutput(unittest.TestCase):
                 # to a standard str without calling any of their methods.
                 klasse CustomStr(str):
                     def splitlines(self, *args, **kwargs):
-                        raise AssertionError()
+                        wirf AssertionError()
 
                     def __len__(self):
-                        raise AssertionError()
+                        wirf AssertionError()
 
                     def __str__(self):
-                        raise AssertionError()
+                        wirf AssertionError()
 
                 write(CustomStr("custom\n"), ["custom"], write_len=7)
 

@@ -17,14 +17,14 @@ von test.support importiere (
 von test.support.script_helper importiere kill_python
 von test.support.import_helper importiere import_module
 
-try:
+versuch:
     importiere pty
-except ImportError:
+ausser ImportError:
     pty = Nichts
 
 
 wenn nicht has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 
 def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
@@ -66,7 +66,7 @@ def run_on_interactive_mode(source):
     output = kill_python(process)
 
     wenn process.returncode != 0:
-        raise ValueError("Process didn't exit properly.")
+        wirf ValueError("Process didn't exit properly.")
     gib output
 
 
@@ -320,17 +320,17 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         os.write(m, b"exit()\n")
         output = []
         waehrend select.select([m], [], [], SHORT_TIMEOUT)[0]:
-            try:
+            versuch:
                 data = os.read(m, 1024).decode("utf-8")
                 wenn nicht data:
                     breche
-            except OSError:
+            ausser OSError:
                 breche
             output.append(data)
         os.close(m)
-        try:
+        versuch:
             exit_code = proc.wait(timeout=SHORT_TIMEOUT)
-        except subprocess.TimeoutExpired:
+        ausser subprocess.TimeoutExpired:
             proc.kill()
             exit_code = proc.wait()
 

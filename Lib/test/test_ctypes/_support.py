@@ -44,7 +44,7 @@ klasse StructCheckMixin:
         sowenn issubclass(cls, Union):
             self._check_struct_or_union(cls, is_struct=Falsch)
         sonst:
-            raise TypeError(cls)
+            wirf TypeError(cls)
 
     def _check_struct_or_union(self, cls, is_struct):
 

@@ -6,11 +6,11 @@ importiere os
 von ctypes.macholib.framework importiere framework_info
 von ctypes.macholib.dylib importiere dylib_info
 von itertools importiere *
-try:
+versuch:
     von _ctypes importiere _dyld_shared_cache_contains_path
-except ImportError:
+ausser ImportError:
     def _dyld_shared_cache_contains_path(*args):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 __all__ = [
     'dyld_find', 'framework_find',
@@ -130,13 +130,13 @@ def dyld_find(name, executable_path=Nichts, env=Nichts):
 
         wenn os.path.isfile(path):
             gib path
-        try:
+        versuch:
             wenn _dyld_shared_cache_contains_path(path):
                 gib path
-        except NotImplementedError:
+        ausser NotImplementedError:
             pass
 
-    raise ValueError("dylib %s could nicht be found" % (name,))
+    wirf ValueError("dylib %s could nicht be found" % (name,))
 
 def framework_find(fn, executable_path=Nichts, env=Nichts):
     """
@@ -148,18 +148,18 @@ def framework_find(fn, executable_path=Nichts, env=Nichts):
         Python.framework/Versions/Current
     """
     error = Nichts
-    try:
+    versuch:
         gib dyld_find(fn, executable_path=executable_path, env=env)
-    except ValueError als e:
+    ausser ValueError als e:
         error = e
     fmwk_index = fn.rfind('.framework')
     wenn fmwk_index == -1:
         fmwk_index = len(fn)
         fn += '.framework'
     fn = os.path.join(fn, os.path.basename(fn[:fmwk_index]))
-    try:
+    versuch:
         gib dyld_find(fn, executable_path=executable_path, env=env)
-    except ValueError:
-        raise error
-    finally:
+    ausser ValueError:
+        wirf error
+    schliesslich:
         error = Nichts

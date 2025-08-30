@@ -42,9 +42,9 @@ von .utils importiere wlen
 
 # declare posix optional to allow Nichts assignment on other platforms
 posix: types.ModuleType | Nichts
-try:
+versuch:
     importiere posix
-except ImportError:
+ausser ImportError:
     posix = Nichts
 
 TYPE_CHECKING = Falsch
@@ -114,9 +114,9 @@ del rate, add_baudrate_if_supported
 
 delayprog = re.compile(b"\\$<([0-9]+)((?:/|\\*){0,2})>")
 
-try:
+versuch:
     poll: type[select.poll] = select.poll
-except AttributeError:
+ausser AttributeError:
     # this is exactly the minimum necessary to support what we
     # do mit poll objects
     klasse MinimalPoll:
@@ -169,7 +169,7 @@ klasse UnixConsole(Console):
         def _my_getstr(cap: str, optional: bool = Falsch) -> bytes | Nichts:
             r = self.terminfo.get(cap)
             wenn nicht optional und r is Nichts:
-                raise InvalidTerminal(
+                wirf InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
             gib r
@@ -354,9 +354,9 @@ klasse UnixConsole(Console):
 
         self.__maybe_write_code(self._smkx)
 
-        try:
+        versuch:
             self.old_sigwinch = signal.signal(signal.SIGWINCH, self.__sigwinch)
-        except ValueError:
+        ausser ValueError:
             pass
 
         self.__enable_bracketed_paste()
@@ -399,16 +399,16 @@ klasse UnixConsole(Console):
 
         waehrend self.event_queue.empty():
             waehrend Wahr:
-                try:
+                versuch:
                     self.push_char(self.__read(1))
-                except OSError als err:
+                ausser OSError als err:
                     wenn err.errno == errno.EINTR:
                         wenn nicht self.event_queue.empty():
                             gib self.event_queue.get()
                         sonst:
                             weiter
                     sonst:
-                        raise
+                        wirf
                 sonst:
                     breche
         gib self.event_queue.get()
@@ -443,12 +443,12 @@ klasse UnixConsole(Console):
             Returns:
             - tuple: Height und width of the console.
             """
-            try:
+            versuch:
                 gib int(os.environ["LINES"]), int(os.environ["COLUMNS"])
-            except (KeyError, TypeError, ValueError):
-                try:
+            ausser (KeyError, TypeError, ValueError):
+                versuch:
                     size = ioctl(self.input_fd, TIOCGWINSZ, b"\000" * 8)
-                except OSError:
+                ausser OSError:
                     gib 25, 80
                 height, width = struct.unpack("hhhh", size)[0:2]
                 wenn nicht height:
@@ -464,9 +464,9 @@ klasse UnixConsole(Console):
             Returns:
             - tuple: Height und width of the console.
             """
-            try:
+            versuch:
                 gib int(os.environ["LINES"]), int(os.environ["COLUMNS"])
-            except (KeyError, TypeError, ValueError):
+            ausser (KeyError, TypeError, ValueError):
                 gib 25, 80
 
     def forgetinput(self):
@@ -585,14 +585,14 @@ klasse UnixConsole(Console):
         sowenn self._cub1 und self._cuf1:
             self.__move_x = self.__move_x_cub1_cuf1
         sonst:
-            raise RuntimeError("insufficient terminal (horizontal)")
+            wirf RuntimeError("insufficient terminal (horizontal)")
 
         wenn self._cuu und self._cud:
             self.__move_y = self.__move_y_cuu_cud
         sowenn self._cuu1 und self._cud1:
             self.__move_y = self.__move_y_cuu1_cud1
         sonst:
-            raise RuntimeError("insufficient terminal (vertical)")
+            wirf RuntimeError("insufficient terminal (vertical)")
 
         wenn self._dch1:
             self.dch1 = self._dch1

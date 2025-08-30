@@ -53,9 +53,9 @@ klasse Test(unittest.TestCase):
             (c_char * 16).from_buffer("a" * 16)
 
     def test_fortran_contiguous(self):
-        try:
+        versuch:
             importiere _testbuffer
-        except ImportError als err:
+        ausser ImportError als err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
         array = _testbuffer.ndarray(

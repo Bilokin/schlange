@@ -4,9 +4,9 @@ importiere sys
 von test importiere support
 von test.support importiere import_helper
 
-try:
+versuch:
     importiere _testlimitedcapi
-except ImportError:
+ausser ImportError:
     _testlimitedcapi = Nichts
 
 NULL = Nichts
@@ -107,7 +107,7 @@ klasse CAPITest(unittest.TestCase):
 
         value = ['value']
         value2 = ['value2']
-        try:
+        versuch:
             self.assertEqual(setobject(b'newattr', value), 0)
             self.assertIs(sys.newattr, value)
             self.assertEqual(setobject(b'newattr', value2), 0)
@@ -115,15 +115,15 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(setobject(b'newattr', NULL), 0)
             self.assertNotHasAttr(sys, 'newattr')
             self.assertEqual(setobject(b'newattr', NULL), 0)
-        finally:
+        schliesslich:
             mit contextlib.suppress(AttributeError):
                 del sys.newattr
-        try:
+        versuch:
             self.assertEqual(setobject('\U0001f40d'.encode(), value), 0)
             self.assertIs(getattr(sys, '\U0001f40d'), value)
             self.assertEqual(setobject('\U0001f40d'.encode(), NULL), 0)
             self.assertNotHasAttr(sys, '\U0001f40d')
-        finally:
+        schliesslich:
             mit contextlib.suppress(AttributeError):
                 delattr(sys, '\U0001f40d')
 
@@ -140,7 +140,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertIs(getxoptions(), sys._xoptions)
 
         xoptions = sys._xoptions
-        try:
+        versuch:
             sys._xoptions = 'non-dict'
             self.assertEqual(getxoptions(), {})
             self.assertIs(getxoptions(), sys._xoptions)
@@ -148,7 +148,7 @@ klasse CAPITest(unittest.TestCase):
             del sys._xoptions
             self.assertEqual(getxoptions(), {})
             self.assertIs(getxoptions(), sys._xoptions)
-        finally:
+        schliesslich:
             sys._xoptions = xoptions
         self.assertIs(getxoptions(), sys._xoptions)
 

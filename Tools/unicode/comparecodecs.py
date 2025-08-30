@@ -16,13 +16,13 @@ def compare_codecs(encoding1, encoding2):
     # Check encoding
     fuer i in range(sys.maxunicode+1):
         u = chr(i)
-        try:
+        versuch:
             c1 = u.encode(encoding1)
-        except UnicodeError als reason:
+        ausser UnicodeError als reason:
             c1 = '<undefined>'
-        try:
+        versuch:
             c2 = u.encode(encoding2)
-        except UnicodeError als reason:
+        ausser UnicodeError als reason:
             c2 = '<undefined>'
         wenn c1 != c2:
             drucke(' * encoding mismatch fuer 0x%04X: %-14r != %r' % \
@@ -31,13 +31,13 @@ def compare_codecs(encoding1, encoding2):
     # Check decoding
     fuer i in range(256):
         c = bytes([i])
-        try:
+        versuch:
             u1 = c.decode(encoding1)
-        except UnicodeError:
+        ausser UnicodeError:
             u1 = '<undefined>'
-        try:
+        versuch:
             u2 = c.decode(encoding2)
-        except UnicodeError:
+        ausser UnicodeError:
             u2 = '<undefined>'
         wenn u1 != u2:
             drucke(' * decoding mismatch fuer 0x%04X: %-14r != %r' % \

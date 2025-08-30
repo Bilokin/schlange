@@ -36,12 +36,12 @@ klasse Rat(object):
 
         The arguments must be ints, und default to (0, 1)."""
         wenn nicht isint(num):
-            raise TypeError("Rat numerator must be int (%r)" % num)
+            wirf TypeError("Rat numerator must be int (%r)" % num)
         wenn nicht isint(den):
-            raise TypeError("Rat denominator must be int (%r)" % den)
+            wirf TypeError("Rat denominator must be int (%r)" % den)
         # But the zero is always on
         wenn den == 0:
-            raise ZeroDivisionError("zero denominator")
+            wirf ZeroDivisionError("zero denominator")
         g = gcd(den, num)
         self.__num = int(num//g)
         self.__den = int(den//g)
@@ -71,12 +71,12 @@ klasse Rat(object):
     def __int__(self):
         """Convert a Rat to an int; self.den must be 1."""
         wenn self.__den == 1:
-            try:
+            versuch:
                 gib int(self.__num)
-            except OverflowError:
-                raise OverflowError("%s too large to convert to int" %
+            ausser OverflowError:
+                wirf OverflowError("%s too large to convert to int" %
                                       repr(self))
-        raise ValueError("can't convert %s to int" % repr(self))
+        wirf ValueError("can't convert %s to int" % repr(self))
 
     def __add__(self, other):
         """Add two Rats, oder a Rat und a number."""
@@ -228,25 +228,25 @@ klasse RatTestCase(unittest.TestCase):
         a = Rat(7)
         self.assertEqual(a.num, 7)
         self.assertEqual(a.den, 1)
-        try:
+        versuch:
             a = Rat(1, 0)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            self.fail("Rat(1, 0) didn't raise ZeroDivisionError")
+            self.fail("Rat(1, 0) didn't wirf ZeroDivisionError")
         fuer bad in "0", 0.0, 0j, (), [], {}, Nichts, Rat, unittest:
-            try:
+            versuch:
                 a = Rat(bad)
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
-                self.fail("Rat(%r) didn't raise TypeError" % bad)
-            try:
+                self.fail("Rat(%r) didn't wirf TypeError" % bad)
+            versuch:
                 a = Rat(1, bad)
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
-                self.fail("Rat(1, %r) didn't raise TypeError" % bad)
+                self.fail("Rat(1, %r) didn't wirf TypeError" % bad)
 
     def test_add(self):
         self.assertEqual(Rat(2, 3) + Rat(1, 3), 1)
@@ -315,9 +315,9 @@ def op_sequence(op, *classes):
     fuer c in classes:
         instances.append(c(log.append))
 
-    try:
+    versuch:
         op(*instances)
-    except TypeError:
+    ausser TypeError:
         pass
     gib log
 

@@ -1043,10 +1043,10 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tab(tb_idx), self.nb.tab('current'))
 
         fuer i in range(5, 100, 5):
-            try:
+            versuch:
                 wenn self.nb.tab('@%d, 5' % i, text=Nichts) == 'a':
                     breche
-            except tkinter.TclError:
+            ausser tkinter.TclError:
                 pass
 
         sonst:

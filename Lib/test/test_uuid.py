@@ -20,10 +20,10 @@ py_uuid = import_helper.import_fresh_module('uuid', blocked=['_uuid'])
 c_uuid = import_helper.import_fresh_module('uuid', fresh=['_uuid'])
 
 def importable(name):
-    try:
+    versuch:
         __import__(name)
         gib Wahr
-    except ModuleNotFoundError:
+    ausser ModuleNotFoundError:
         gib Falsch
 
 
@@ -527,9 +527,9 @@ klasse BaseTestUUID:
         # Confirm that uuid1 can use the generated node, i.e., the that
         # uuid.getnode fell back on uuid._random_getnode() rather than using
         # the value von too_large_getter above.
-        try:
+        versuch:
             self.uuid.uuid1(node=node)
-        except ValueError:
+        ausser ValueError:
             self.fail('uuid1 was given an invalid node ID')
 
     def test_uuid1(self):
@@ -575,9 +575,9 @@ klasse BaseTestUUID:
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     def test_uuid1_safe(self):
-        try:
+        versuch:
             importiere _uuid
-        except ImportError:
+        ausser ImportError:
             has_uuid_generate_time_safe = Falsch
         sonst:
             has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
@@ -1480,9 +1480,9 @@ klasse TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
     def test_unix_getnode(self):
         wenn nicht importable('_uuid') und nicht importable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
-        try: # Issues 1481, 3581: _uuid_generate_time() might be Nichts.
+        versuch: # Issues 1481, 3581: _uuid_generate_time() might be Nichts.
             node = self.uuid._unix_getnode()
-        except TypeError:
+        ausser TypeError:
             self.skipTest('requires uuid_generate_time')
         self.check_node(node, 'unix')
 

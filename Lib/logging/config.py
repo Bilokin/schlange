@@ -63,22 +63,22 @@ def fileConfig(fname, defaults=Nichts, disable_existing_loggers=Wahr, encoding=N
 
     wenn isinstance(fname, str):
         wenn nicht os.path.exists(fname):
-            raise FileNotFoundError(f"{fname} doesn't exist")
+            wirf FileNotFoundError(f"{fname} doesn't exist")
         sowenn nicht os.path.getsize(fname):
-            raise RuntimeError(f'{fname} is an empty file')
+            wirf RuntimeError(f'{fname} is an empty file')
 
     wenn isinstance(fname, configparser.RawConfigParser):
         cp = fname
     sonst:
-        try:
+        versuch:
             cp = configparser.ConfigParser(defaults)
             wenn hasattr(fname, 'readline'):
                 cp.read_file(fname)
             sonst:
                 encoding = io.text_encoding(encoding)
                 cp.read(fname, encoding=encoding)
-        except configparser.ParsingError als e:
-            raise RuntimeError(f'{fname} is invalid: {e}')
+        ausser configparser.ParsingError als e:
+            wirf RuntimeError(f'{fname} is invalid: {e}')
 
     formatters = _create_formatters(cp)
 
@@ -98,9 +98,9 @@ def _resolve(name):
     found = __import__(used)
     fuer n in name:
         used = used + '.' + n
-        try:
+        versuch:
             found = getattr(found, n)
-        except AttributeError:
+        ausser AttributeError:
             __import__(used)
             found = getattr(found, n)
     gib found
@@ -150,9 +150,9 @@ def _install_handlers(cp, formatters):
         section = cp["handler_%s" % hand]
         klass = section["class"]
         fmt = section.get("formatter", "")
-        try:
+        versuch:
             klass = eval(klass, vars(logging))
-        except (AttributeError, NameError):
+        ausser (AttributeError, NameError):
             klass = _resolve(klass)
         args = section.get("args", '()')
         args = eval(args, vars(logging))
@@ -297,7 +297,7 @@ IDENTIFIER = re.compile('^[a-z_][a-z0-9_]*$', re.I)
 def valid_ident(s):
     m = IDENTIFIER.match(s)
     wenn nicht m:
-        raise ValueError('Not a valid Python identifier: %r' % s)
+        wirf ValueError('Not a valid Python identifier: %r' % s)
     gib Wahr
 
 
@@ -397,19 +397,19 @@ klasse BaseConfigurator(object):
         """
         name = s.split('.')
         used = name.pop(0)
-        try:
+        versuch:
             found = self.importer(used)
             fuer frag in name:
                 used += '.' + frag
-                try:
+                versuch:
                     found = getattr(found, frag)
-                except AttributeError:
+                ausser AttributeError:
                     self.importer(used)
                     found = getattr(found, frag)
             gib found
-        except ImportError als e:
+        ausser ImportError als e:
             v = ValueError('Cannot resolve %r: %s' % (s, e))
-            raise v von e
+            wirf v von e
 
     def ext_convert(self, value):
         """Default converter fuer the ext:// protocol."""
@@ -420,7 +420,7 @@ klasse BaseConfigurator(object):
         rest = value
         m = self.WORD_PATTERN.match(rest)
         wenn m is Nichts:
-            raise ValueError("Unable to convert %r" % value)
+            wirf ValueError("Unable to convert %r" % value)
         sonst:
             rest = rest[m.end():]
             d = self.config[m.groups()[0]]
@@ -436,15 +436,15 @@ klasse BaseConfigurator(object):
                         wenn nicht self.DIGIT_PATTERN.match(idx):
                             d = d[idx]
                         sonst:
-                            try:
+                            versuch:
                                 n = int(idx) # try als number first (most likely)
                                 d = d[n]
-                            except TypeError:
+                            ausser TypeError:
                                 d = d[idx]
                 wenn m:
                     rest = rest[m.end():]
                 sonst:
-                    raise ValueError('Unable to convert '
+                    wirf ValueError('Unable to convert '
                                      '%r at %r' % (value, rest))
         #rest should be empty
         gib d
@@ -535,9 +535,9 @@ klasse DictConfigurator(BaseConfigurator):
 
         config = self.config
         wenn 'version' nicht in config:
-            raise ValueError("dictionary doesn't specify a version")
+            wirf ValueError("dictionary doesn't specify a version")
         wenn config['version'] != 1:
-            raise ValueError("Unsupported version: %s" % config['version'])
+            wirf ValueError("Unsupported version: %s" % config['version'])
         incremental = config.pop('incremental', Falsch)
         EMPTY_DICT = {}
         mit logging._lock:
@@ -545,31 +545,31 @@ klasse DictConfigurator(BaseConfigurator):
                 handlers = config.get('handlers', EMPTY_DICT)
                 fuer name in handlers:
                     wenn name nicht in logging._handlers:
-                        raise ValueError('No handler found mit '
+                        wirf ValueError('No handler found mit '
                                          'name %r'  % name)
                     sonst:
-                        try:
+                        versuch:
                             handler = logging._handlers[name]
                             handler_config = handlers[name]
                             level = handler_config.get('level', Nichts)
                             wenn level:
                                 handler.setLevel(logging._checkLevel(level))
-                        except Exception als e:
-                            raise ValueError('Unable to configure handler '
+                        ausser Exception als e:
+                            wirf ValueError('Unable to configure handler '
                                              '%r' % name) von e
                 loggers = config.get('loggers', EMPTY_DICT)
                 fuer name in loggers:
-                    try:
+                    versuch:
                         self.configure_logger(name, loggers[name], Wahr)
-                    except Exception als e:
-                        raise ValueError('Unable to configure logger '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure logger '
                                          '%r' % name) von e
                 root = config.get('root', Nichts)
                 wenn root:
-                    try:
+                    versuch:
                         self.configure_root(root, Wahr)
-                    except Exception als e:
-                        raise ValueError('Unable to configure root '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure root '
                                          'logger') von e
             sonst:
                 disable_existing = config.pop('disable_existing_loggers', Wahr)
@@ -579,19 +579,19 @@ klasse DictConfigurator(BaseConfigurator):
                 # Do formatters first - they don't refer to anything sonst
                 formatters = config.get('formatters', EMPTY_DICT)
                 fuer name in formatters:
-                    try:
+                    versuch:
                         formatters[name] = self.configure_formatter(
                                                             formatters[name])
-                    except Exception als e:
-                        raise ValueError('Unable to configure '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure '
                                          'formatter %r' % name) von e
                 # Next, do filters - they don't refer to anything else, either
                 filters = config.get('filters', EMPTY_DICT)
                 fuer name in filters:
-                    try:
+                    versuch:
                         filters[name] = self.configure_filter(filters[name])
-                    except Exception als e:
-                        raise ValueError('Unable to configure '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure '
                                          'filter %r' % name) von e
 
                 # Next, do handlers - they refer to formatters und filters
@@ -600,25 +600,25 @@ klasse DictConfigurator(BaseConfigurator):
                 handlers = config.get('handlers', EMPTY_DICT)
                 deferred = []
                 fuer name in sorted(handlers):
-                    try:
+                    versuch:
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception als e:
+                    ausser Exception als e:
                         wenn ' nicht configured yet' in str(e.__cause__):
                             deferred.append(name)
                         sonst:
-                            raise ValueError('Unable to configure handler '
+                            wirf ValueError('Unable to configure handler '
                                              '%r' % name) von e
 
                 # Now do any that were deferred
                 fuer name in deferred:
-                    try:
+                    versuch:
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception als e:
-                        raise ValueError('Unable to configure handler '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure handler '
                                          '%r' % name) von e
 
                 # Next, do loggers - they refer to handlers und filters
@@ -654,10 +654,10 @@ klasse DictConfigurator(BaseConfigurator):
                                 child_loggers.append(existing[i])
                             i += 1
                         existing.remove(name)
-                    try:
+                    versuch:
                         self.configure_logger(name, loggers[name])
-                    except Exception als e:
-                        raise ValueError('Unable to configure logger '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure logger '
                                          '%r' % name) von e
 
                 #Disable any old loggers. There's no point deleting
@@ -679,21 +679,21 @@ klasse DictConfigurator(BaseConfigurator):
                 # And finally, do the root logger
                 root = config.get('root', Nichts)
                 wenn root:
-                    try:
+                    versuch:
                         self.configure_root(root)
-                    except Exception als e:
-                        raise ValueError('Unable to configure root '
+                    ausser Exception als e:
+                        wirf ValueError('Unable to configure root '
                                          'logger') von e
 
     def configure_formatter(self, config):
         """Configure a formatter von a dictionary."""
         wenn '()' in config:
             factory = config['()'] # fuer use in exception handler
-            try:
+            versuch:
                 result = self.configure_custom(config)
-            except TypeError als te:
+            ausser TypeError als te:
                 wenn "'format'" nicht in str(te):
-                    raise
+                    wirf
                 # logging.Formatter und its subclasses expect the `fmt`
                 # parameter instead of `format`. Retry passing configuration
                 # mit `fmt`.
@@ -741,14 +741,14 @@ klasse DictConfigurator(BaseConfigurator):
     def add_filters(self, filterer, filters):
         """Add filters to a filterer von a list of names."""
         fuer f in filters:
-            try:
+            versuch:
                 wenn callable(f) oder callable(getattr(f, 'filter', Nichts)):
                     filter_ = f
                 sonst:
                     filter_ = self.config['filters'][f]
                 filterer.addFilter(filter_)
-            except Exception als e:
-                raise ValueError('Unable to add filter %r' % f) von e
+            ausser Exception als e:
+                wirf ValueError('Unable to add filter %r' % f) von e
 
     def _configure_queue_handler(self, klass, **kwargs):
         wenn 'queue' in kwargs:
@@ -770,10 +770,10 @@ klasse DictConfigurator(BaseConfigurator):
         config_copy = dict(config)  # fuer restoring in case of error
         formatter = config.pop('formatter', Nichts)
         wenn formatter:
-            try:
+            versuch:
                 formatter = self.config['formatters'][formatter]
-            except Exception als e:
-                raise ValueError('Unable to set formatter '
+            ausser Exception als e:
+                wirf ValueError('Unable to set formatter '
                                  '%r' % formatter) von e
         level = config.pop('level', Nichts)
         filters = config.pop('filters', Nichts)
@@ -793,66 +793,66 @@ klasse DictConfigurator(BaseConfigurator):
                     config['flushLevel'] = logging._checkLevel(config['flushLevel'])
                 wenn 'target' in config:
                     # Special case fuer handler which refers to another handler
-                    try:
+                    versuch:
                         tn = config['target']
                         th = self.config['handlers'][tn]
                         wenn nicht isinstance(th, logging.Handler):
                             config.update(config_copy)  # restore fuer deferred cfg
-                            raise TypeError('target nicht configured yet')
+                            wirf TypeError('target nicht configured yet')
                         config['target'] = th
-                    except Exception als e:
-                        raise ValueError('Unable to set target handler %r' % tn) von e
+                    ausser Exception als e:
+                        wirf ValueError('Unable to set target handler %r' % tn) von e
             sowenn issubclass(klass, logging.handlers.QueueHandler):
                 # Another special case fuer handler which refers to other handlers
                 # wenn 'handlers' nicht in config:
-                    # raise ValueError('No handlers specified fuer a QueueHandler')
+                    # wirf ValueError('No handlers specified fuer a QueueHandler')
                 wenn 'queue' in config:
                     qspec = config['queue']
 
                     wenn isinstance(qspec, str):
                         q = self.resolve(qspec)
                         wenn nicht callable(q):
-                            raise TypeError('Invalid queue specifier %r' % qspec)
+                            wirf TypeError('Invalid queue specifier %r' % qspec)
                         config['queue'] = q()
                     sowenn isinstance(qspec, dict):
                         wenn '()' nicht in qspec:
-                            raise TypeError('Invalid queue specifier %r' % qspec)
+                            wirf TypeError('Invalid queue specifier %r' % qspec)
                         config['queue'] = self.configure_custom(dict(qspec))
                     sowenn nicht _is_queue_like_object(qspec):
-                        raise TypeError('Invalid queue specifier %r' % qspec)
+                        wirf TypeError('Invalid queue specifier %r' % qspec)
 
                 wenn 'listener' in config:
                     lspec = config['listener']
                     wenn isinstance(lspec, type):
                         wenn nicht issubclass(lspec, logging.handlers.QueueListener):
-                            raise TypeError('Invalid listener specifier %r' % lspec)
+                            wirf TypeError('Invalid listener specifier %r' % lspec)
                     sonst:
                         wenn isinstance(lspec, str):
                             listener = self.resolve(lspec)
                             wenn isinstance(listener, type) and\
                                 nicht issubclass(listener, logging.handlers.QueueListener):
-                                raise TypeError('Invalid listener specifier %r' % lspec)
+                                wirf TypeError('Invalid listener specifier %r' % lspec)
                         sowenn isinstance(lspec, dict):
                             wenn '()' nicht in lspec:
-                                raise TypeError('Invalid listener specifier %r' % lspec)
+                                wirf TypeError('Invalid listener specifier %r' % lspec)
                             listener = self.configure_custom(dict(lspec))
                         sonst:
-                            raise TypeError('Invalid listener specifier %r' % lspec)
+                            wirf TypeError('Invalid listener specifier %r' % lspec)
                         wenn nicht callable(listener):
-                            raise TypeError('Invalid listener specifier %r' % lspec)
+                            wirf TypeError('Invalid listener specifier %r' % lspec)
                         config['listener'] = listener
                 wenn 'handlers' in config:
                     hlist = []
-                    try:
+                    versuch:
                         fuer hn in config['handlers']:
                             h = self.config['handlers'][hn]
                             wenn nicht isinstance(h, logging.Handler):
                                 config.update(config_copy)  # restore fuer deferred cfg
-                                raise TypeError('Required handler %r '
+                                wirf TypeError('Required handler %r '
                                                 'is nicht configured yet' % hn)
                             hlist.append(h)
-                    except Exception als e:
-                        raise ValueError('Unable to set required handler %r' % hn) von e
+                    ausser Exception als e:
+                        wirf ValueError('Unable to set required handler %r' % hn) von e
                     config['handlers'] = hlist
             sowenn issubclass(klass, logging.handlers.SMTPHandler) and\
                 'mailhost' in config:
@@ -867,11 +867,11 @@ klasse DictConfigurator(BaseConfigurator):
         kwargs = {k: config[k] fuer k in config wenn (k != '.' und valid_ident(k))}
         # When deprecation ends fuer using the 'strm' parameter, remove the
         # "except TypeError ..."
-        try:
+        versuch:
             result = factory(**kwargs)
-        except TypeError als te:
+        ausser TypeError als te:
             wenn "'stream'" nicht in str(te):
-                raise
+                wirf
             #The argument name changed von strm to stream
             #Retry mit old name.
             #This is so that code can be used mit older Python versions
@@ -902,10 +902,10 @@ klasse DictConfigurator(BaseConfigurator):
     def add_handlers(self, logger, handlers):
         """Add handlers to a logger von a list of names."""
         fuer h in handlers:
-            try:
+            versuch:
                 logger.addHandler(self.config['handlers'][h])
-            except Exception als e:
-                raise ValueError('Unable to add handler %r' % h) von e
+            ausser Exception als e:
+                wirf ValueError('Unable to add handler %r' % h) von e
 
     def common_logger_config(self, logger, config, incremental=Falsch):
         """
@@ -981,7 +981,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
             struct.pack(">L", n), followed by the config file.
             Uses fileConfig() to do the grunt work.
             """
-            try:
+            versuch:
                 conn = self.connection
                 chunk = conn.recv(4)
                 wenn len(chunk) == 4:
@@ -993,24 +993,24 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                         chunk = self.server.verify(chunk)
                     wenn chunk is nicht Nichts:   # verified, can process
                         chunk = chunk.decode("utf-8")
-                        try:
+                        versuch:
                             importiere json
                             d =json.loads(chunk)
                             assert isinstance(d, dict)
                             dictConfig(d)
-                        except Exception:
+                        ausser Exception:
                             #Apply new configuration.
 
                             file = io.StringIO(chunk)
-                            try:
+                            versuch:
                                 fileConfig(file)
-                            except Exception:
+                            ausser Exception:
                                 traceback.print_exc()
                     wenn self.server.ready:
                         self.server.ready.set()
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno != RESET_ERROR:
-                    raise
+                    wirf
 
     klasse ConfigSocketReceiver(ThreadingTCPServer):
         """

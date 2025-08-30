@@ -85,9 +85,9 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 klasse StreamWriter(codecs.StreamWriter):
     def reset(self):
         codecs.StreamWriter.reset(self)
-        try:
+        versuch:
             del self.encode
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def encode(self, input, errors='strict'):
@@ -97,9 +97,9 @@ klasse StreamWriter(codecs.StreamWriter):
 klasse StreamReader(codecs.StreamReader):
     def reset(self):
         codecs.StreamReader.reset(self)
-        try:
+        versuch:
             del self.decode
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def decode(self, input, errors='strict'):

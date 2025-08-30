@@ -58,7 +58,7 @@ klasse NodeList(list):
         gib len(self)
 
     def _set_length(self, value):
-        raise xml.dom.NoModificationAllowedErr(
+        wirf xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
@@ -91,7 +91,7 @@ klasse EmptyNodeList(tuple):
         gib 0
 
     def _set_length(self, value):
-        raise xml.dom.NoModificationAllowedErr(
+        wirf xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
@@ -101,7 +101,7 @@ klasse EmptyNodeList(tuple):
 def defproperty(klass, name, doc):
     get = getattr(klass, ("_get_" + name))
     def set(self, value, name=name):
-        raise xml.dom.NoModificationAllowedErr(
+        wirf xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
     assert nicht hasattr(klass, "_set_" + name), \
            "expected nicht to find _set_" + name

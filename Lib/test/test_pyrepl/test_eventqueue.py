@@ -5,26 +5,26 @@ von test importiere support
 
 von _pyrepl importiere terminfo
 
-try:
+versuch:
     von _pyrepl.console importiere Event
     von _pyrepl importiere base_eventqueue
-except ImportError:
+ausser ImportError:
     pass
 
-try:
+versuch:
     von _pyrepl importiere unix_eventqueue
-except ImportError:
+ausser ImportError:
     pass
 
-try:
+versuch:
     von _pyrepl importiere windows_eventqueue
-except ImportError:
+ausser ImportError:
     pass
 
 klasse EventQueueTestBase:
     """OS-independent mixin"""
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def test_get(self):
         eq = self.make_eventqueue()

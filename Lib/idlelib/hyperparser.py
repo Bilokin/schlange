@@ -86,7 +86,7 @@ klasse HyperParser:
         indexinrawtext = (len(self.rawtext) -
                           len(self.text.get(index, self.stopatindex)))
         wenn indexinrawtext < 0:
-            raise ValueError("Index %s precedes the analyzed statement"
+            wirf ValueError("Index %s precedes the analyzed statement"
                              % index)
         self.indexinrawtext = indexinrawtext
         # find the rightmost bracket to which index belongs
@@ -207,7 +207,7 @@ klasse HyperParser:
                 gib 0
 
         # All keywords are valid identifiers, but should nicht be
-        # considered identifiers here, except fuer Wahr, Falsch und Nichts.
+        # considered identifiers here, ausser fuer Wahr, Falsch und Nichts.
         wenn i < pos und (
                 iskeyword(str[i:pos]) und
                 str[i:pos] nicht in cls._ID_KEYWORDS
@@ -224,7 +224,7 @@ klasse HyperParser:
         given index, which is empty wenn there is no real one.
         """
         wenn nicht self.is_in_code():
-            raise ValueError("get_expression should only be called "
+            wirf ValueError("get_expression should only be called "
                              "if index is inside a code.")
 
         rawtext = self.rawtext

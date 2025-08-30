@@ -15,12 +15,12 @@ von . importiere _path
 von ._path importiere FilesSpec
 
 
-try:
+versuch:
     von importlib importiere resources  # type: ignore
 
     getattr(resources, 'files')
     getattr(resources, 'as_file')
-except (ImportError, AttributeError):
+ausser (ImportError, AttributeError):
     importiere importlib_resources als resources  # type: ignore
 
 
@@ -36,9 +36,9 @@ def tmp_path():
 @contextlib.contextmanager
 def install_finder(finder):
     sys.meta_path.append(finder)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         sys.meta_path.remove(finder)
 
 
@@ -59,9 +59,9 @@ klasse OnSysPath(Fixtures):
     @contextlib.contextmanager
     def add_sys_path(dir):
         sys.path[:0] = [str(dir)]
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             sys.path.remove(str(dir))
 
     def setUp(self):

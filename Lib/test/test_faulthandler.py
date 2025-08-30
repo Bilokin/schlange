@@ -12,13 +12,13 @@ importiere tempfile
 importiere unittest
 von textwrap importiere dedent
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 TIMEOUT = 0.5
 
@@ -50,9 +50,9 @@ def skip_segfault_on_android(test):
 @contextmanager
 def temporary_filename():
     filename = tempfile.mktemp()
-    try:
+    versuch:
         liefere filename
-    finally:
+    schliesslich:
         os_helper.unlink(filename)
 
 
@@ -308,7 +308,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             """,
             3,
             '(?:Segmentation fault|Bus error)',
-            other_regex='unable to raise a stack overflow')
+            other_regex='unable to wirf a stack overflow')
 
     @skip_segfault_on_android
     def test_gil_released(self):
@@ -408,24 +408,24 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     def test_is_enabled(self):
         orig_stderr = sys.stderr
-        try:
+        versuch:
             # regrtest may replace sys.stderr by io.StringIO object, but
             # faulthandler.enable() requires that sys.stderr has a fileno()
             # method
             sys.stderr = sys.__stderr__
 
             was_enabled = faulthandler.is_enabled()
-            try:
+            versuch:
                 faulthandler.enable()
                 self.assertWahr(faulthandler.is_enabled())
                 faulthandler.disable()
                 self.assertFalsch(faulthandler.is_enabled())
-            finally:
+            schliesslich:
                 wenn was_enabled:
                     faulthandler.enable()
                 sonst:
                     faulthandler.disable()
-        finally:
+        schliesslich:
             sys.stderr = orig_stderr
 
     @support.requires_subprocess()
@@ -815,12 +815,12 @@ klasse FaultHandlerTests(unittest.TestCase):
     @contextmanager
     def check_stderr_none(self):
         stderr = sys.stderr
-        try:
+        versuch:
             sys.stderr = Nichts
             mit self.assertRaises(RuntimeError) als cm:
                 liefere
             self.assertEqual(str(cm.exception), "sys.stderr is Nichts")
-        finally:
+        schliesslich:
             sys.stderr = stderr
 
     def test_stderr_Nichts(self):

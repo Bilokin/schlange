@@ -118,16 +118,16 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async def woohoo():
             state.append(1)
-            try:
+            versuch:
                 liefere 42
-            finally:
+            schliesslich:
                 state.append(999)
         mit self.assertRaises(ZeroDivisionError):
             async mit woohoo() als x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
-                raise ZeroDivisionError()
+                wirf ZeroDivisionError()
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
@@ -136,10 +136,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         async def f():
             liefere
 
-        try:
+        versuch:
             async mit f():
                 1/0
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
@@ -150,10 +150,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         klasse RuntimeErrorSubclass(RuntimeError):
             pass
 
-        try:
+        versuch:
             async mit f():
-                raise RuntimeErrorSubclass(42)
-        except RuntimeErrorSubclass als e:
+                wirf RuntimeErrorSubclass(42)
+        ausser RuntimeErrorSubclass als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
@@ -173,10 +173,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             StopAsyncIterationSubclass('spam')
         ):
             mit self.subTest(type=type(stop_exc)):
-                try:
+                versuch:
                     async mit f():
-                        raise stop_exc
-                except type(stop_exc) als e:
+                        wirf stop_exc
+                ausser type(stop_exc) als e:
                     self.assertIs(e, stop_exc)
                     frames = traceback.extract_tb(e.__traceback__)
                 sonst:
@@ -200,9 +200,9 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     async def test_contextmanager_trap_yield_after_throw(self):
         @asynccontextmanager
         async def whoo():
-            try:
+            versuch:
                 liefere
-            except:
+            ausser:
                 liefere
         ctx = whoo()
         await ctx.__aenter__()
@@ -240,10 +240,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     async def test_contextmanager_non_normalised(self):
         @asynccontextmanager
         async def whoo():
-            try:
+            versuch:
                 liefere
-            except RuntimeError:
-                raise SyntaxError
+            ausser RuntimeError:
+                wirf SyntaxError
 
         ctx = whoo()
         await ctx.__aenter__()
@@ -256,16 +256,16 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async def woohoo():
             state.append(1)
-            try:
+            versuch:
                 liefere 42
-            except ZeroDivisionError als e:
+            ausser ZeroDivisionError als e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
         async mit woohoo() als x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
-            raise ZeroDivisionError(999)
+            wirf ZeroDivisionError(999)
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
@@ -287,10 +287,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             StopAsyncIterationSubclass('spam')
         ):
             mit self.subTest(type=type(stop_exc)):
-                try:
+                versuch:
                     async mit woohoo():
-                        raise stop_exc
-                except Exception als ex:
+                        wirf stop_exc
+                ausser Exception als ex:
                     self.assertIs(ex, stop_exc)
                 sonst:
                     self.fail(f'{stop_exc} was suppressed')
@@ -299,10 +299,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     async def test_contextmanager_wrap_runtimeerror(self):
         @asynccontextmanager
         async def woohoo():
-            try:
+            versuch:
                 liefere
-            except Exception als exc:
-                raise RuntimeError(f'caught {exc}') von exc
+            ausser Exception als exc:
+                wirf RuntimeError(f'caught {exc}') von exc
 
         mit self.assertRaises(RuntimeError):
             async mit woohoo():
@@ -313,7 +313,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         # done by the generator machinery oder by the generator itself.
         mit self.assertRaises(StopAsyncIteration):
             async mit woohoo():
-                raise StopAsyncIteration
+                wirf StopAsyncIteration
 
     def _create_contextmanager_attribs(self):
         def attribs(**kw):
@@ -409,16 +409,16 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async def context():
             nonlocal entered
-            try:
+            versuch:
                 entered = Wahr
                 liefere
-            finally:
+            schliesslich:
                 entered = Falsch
 
         @context()
         async def test():
             self.assertWahr(entered)
-            raise NameError('foo')
+            wirf NameError('foo')
 
         self.assertFalsch(entered)
         mit self.assertRaisesRegex(NameError, 'foo'):
@@ -500,9 +500,9 @@ klasse AclosingTestCase(unittest.TestCase):
 
         @contextmanager
         def sync_resource():
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 state.append(1)
 
         async def agenfunc():
@@ -665,7 +665,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
     async def test_async_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
         async def raise_exc(exc):
-            raise exc
+            wirf exc
 
         saved_details = Nichts
         async def suppress_exc(*exc_details):
@@ -673,7 +673,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             saved_details = exc_details
             gib Wahr
 
-        try:
+        versuch:
             async mit self.exit_stack() als stack:
                 stack.push_async_callback(raise_exc, IndexError)
                 stack.push_async_callback(raise_exc, KeyError)
@@ -681,7 +681,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                 stack.push_async_exit(suppress_exc)
                 stack.push_async_callback(raise_exc, ValueError)
                 1 / 0
-        except IndexError als exc:
+        ausser IndexError als exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -703,13 +703,13 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         @asynccontextmanager
         async def my_cm():
-            try:
+            versuch:
                 liefere
-            except BaseException:
+            ausser BaseException:
                 exc = MyException()
-                try:
-                    raise exc
-                finally:
+                versuch:
+                    wirf exc
+                schliesslich:
                     exc.__context__ = Nichts
 
         @asynccontextmanager
@@ -720,10 +720,10 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         fuer cm in (my_cm, my_cm_with_exit_stack):
             mit self.subTest():
-                try:
+                versuch:
                     async mit cm():
-                        raise IndexError()
-                except MyException als exc:
+                        wirf IndexError()
+                ausser MyException als exc:
                     self.assertIsNichts(exc.__context__)
                 sonst:
                     self.fail("Expected IndexError, but no exception was raised")

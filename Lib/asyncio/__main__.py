@@ -42,17 +42,17 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             keyboard_interrupted = Falsch
 
             func = types.FunctionType(code, self.locals)
-            try:
+            versuch:
                 coro = func()
-            except SystemExit als se:
+            ausser SystemExit als se:
                 return_code = se.code
                 self.loop.stop()
                 gib
-            except KeyboardInterrupt als ex:
+            ausser KeyboardInterrupt als ex:
                 keyboard_interrupted = Wahr
                 future.set_exception(ex)
                 gib
-            except BaseException als ex:
+            ausser BaseException als ex:
                 future.set_exception(ex)
                 gib
 
@@ -60,21 +60,21 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
                 future.set_result(coro)
                 gib
 
-            try:
+            versuch:
                 repl_future = self.loop.create_task(coro, context=self.context)
                 futures._chain_future(repl_future, future)
-            except BaseException als exc:
+            ausser BaseException als exc:
                 future.set_exception(exc)
 
         self.loop.call_soon_threadsafe(callback, context=self.context)
 
-        try:
+        versuch:
             gib future.result()
-        except SystemExit als se:
+        ausser SystemExit als se:
             return_code = se.code
             self.loop.stop()
             gib
-        except BaseException:
+        ausser BaseException:
             wenn keyboard_interrupted:
                 self.write("\nKeyboardInterrupt\n")
             sonst:
@@ -86,7 +86,7 @@ klasse REPLThread(threading.Thread):
     def run(self):
         global return_code
 
-        try:
+        versuch:
             banner = (
                 f'asyncio REPL {sys.version} on {sys.platform}\n'
                 f'Use "await" directly instead of "asyncio.run()".\n'
@@ -114,19 +114,19 @@ klasse REPLThread(threading.Thread):
                 von _pyrepl.simple_interact importiere (
                     run_multiline_interactive_console,
                 )
-                try:
+                versuch:
                     run_multiline_interactive_console(console)
-                except SystemExit:
+                ausser SystemExit:
                     # expected via the `exit` und `quit` commands
                     pass
-                except BaseException:
+                ausser BaseException:
                     # unexpected issue
                     console.showtraceback()
                     console.write("Internal error, ")
                     return_code = 1
             sonst:
                 console.interact(banner="", exitmsg="")
-        finally:
+        schliesslich:
             warnings.filterwarnings(
                 'ignore',
                 message=r'^coroutine .* was never awaited$',
@@ -203,9 +203,9 @@ wenn __name__ == '__main__':
     repl_future = Nichts
     keyboard_interrupted = Falsch
 
-    try:
+    versuch:
         importiere readline  # NoQA
-    except ImportError:
+    ausser ImportError:
         readline = Nichts
 
     interactive_hook = getattr(sys, "__interactivehook__", Nichts)
@@ -216,9 +216,9 @@ wenn __name__ == '__main__':
 
     wenn interactive_hook is site.register_readline:
         # Fix the completer function to use the interactive console locals
-        try:
+        versuch:
             importiere rlcompleter
-        except:
+        ausser:
             pass
         sonst:
             wenn readline is nicht Nichts:
@@ -230,9 +230,9 @@ wenn __name__ == '__main__':
     repl_thread.start()
 
     waehrend Wahr:
-        try:
+        versuch:
             loop.run_forever()
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             keyboard_interrupted = Wahr
             wenn repl_future und nicht repl_future.done():
                 repl_future.cancel()

@@ -63,21 +63,21 @@ klasse Reg:
             d = cls.read_values(base, path)
             wenn d und key in d:
                 gib d[key]
-        raise KeyError(key)
+        wirf KeyError(key)
     get_value = classmethod(get_value)
 
     def read_keys(cls, base, key):
         """Return list of registry keys."""
-        try:
+        versuch:
             handle = RegOpenKeyEx(base, key)
-        except RegError:
+        ausser RegError:
             gib Nichts
         L = []
         i = 0
         waehrend Wahr:
-            try:
+            versuch:
                 k = RegEnumKey(handle, i)
-            except RegError:
+            ausser RegError:
                 breche
             L.append(k)
             i += 1
@@ -89,16 +89,16 @@ klasse Reg:
 
         All names are converted to lowercase.
         """
-        try:
+        versuch:
             handle = RegOpenKeyEx(base, key)
-        except RegError:
+        ausser RegError:
             gib Nichts
         d = {}
         i = 0
         waehrend Wahr:
-            try:
+            versuch:
                 name, value, type = RegEnumValue(handle, i)
-            except RegError:
+            ausser RegError:
                 breche
             name = name.lower()
             d[cls.convert_mbcs(name)] = cls.convert_mbcs(value)
@@ -109,9 +109,9 @@ klasse Reg:
     def convert_mbcs(s):
         dec = getattr(s, "decode", Nichts)
         wenn dec is nicht Nichts:
-            try:
+            versuch:
                 s = dec("mbcs")
-            except UnicodeError:
+            ausser UnicodeError:
                 pass
         gib s
     convert_mbcs = staticmethod(convert_mbcs)
@@ -130,14 +130,14 @@ klasse MacroExpander:
         self.set_macro("VCInstallDir", self.vsbase + r"\Setup\VC", "productdir")
         self.set_macro("VSInstallDir", self.vsbase + r"\Setup\VS", "productdir")
         self.set_macro("FrameworkDir", NET_BASE, "installroot")
-        try:
+        versuch:
             wenn version >= 8.0:
                 self.set_macro("FrameworkSDKDir", NET_BASE,
                                "sdkinstallrootv2.0")
             sonst:
-                raise KeyError("sdkinstallrootv2.0")
-        except KeyError:
-            raise DistutilsPlatformError(
+                wirf KeyError("sdkinstallrootv2.0")
+        ausser KeyError:
+            wirf DistutilsPlatformError(
             """Python was built mit Visual Studio 2008;
 extensions must be built mit a compiler than can generate compatible binaries.
 Visual Studio 2008 was nicht found on this system. If you have Cygwin installed,
@@ -149,9 +149,9 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
         sonst:
             p = r"Software\Microsoft\NET Framework Setup\Product"
             fuer base in HKEYS:
-                try:
+                versuch:
                     h = RegOpenKeyEx(base, p)
-                except RegError:
+                ausser RegError:
                     weiter
                 key = RegEnumKey(h, 0)
                 d = Reg.get_value(base, r"%s\%s" % (p, key))
@@ -219,10 +219,10 @@ def find_vcvarsall(version):
     that fails it falls back to the VS90COMNTOOLS env var.
     """
     vsbase = VS_BASE % version
-    try:
+    versuch:
         productdir = Reg.get_value(r"%s\Setup\VC" % vsbase,
                                    "productdir")
-    except KeyError:
+    ausser KeyError:
         log.debug("Unable to find productdir in registry")
         productdir = Nichts
 
@@ -255,15 +255,15 @@ def query_vcvarsall(version, arch="x86"):
     result = {}
 
     wenn vcvarsall is Nichts:
-        raise DistutilsPlatformError("Unable to find vcvarsall.bat")
+        wirf DistutilsPlatformError("Unable to find vcvarsall.bat")
     log.debug("Calling 'vcvarsall.bat %s' (version=%s)", arch, version)
     popen = subprocess.Popen('"%s" %s & set' % (vcvarsall, arch),
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    try:
+    versuch:
         stdout, stderr = popen.communicate()
         wenn popen.wait() != 0:
-            raise DistutilsPlatformError(stderr.decode("mbcs"))
+            wirf DistutilsPlatformError(stderr.decode("mbcs"))
 
         stdout = stdout.decode("mbcs")
         fuer line in stdout.split("\n"):
@@ -278,19 +278,19 @@ def query_vcvarsall(version, arch="x86"):
                     value = value[:-1]
                 result[key] = removeDuplicates(value)
 
-    finally:
+    schliesslich:
         popen.stdout.close()
         popen.stderr.close()
 
     wenn len(result) != len(interesting):
-        raise ValueError(str(list(result.keys())))
+        wirf ValueError(str(list(result.keys())))
 
     gib result
 
 # More globals
 VERSION = get_build_version()
 wenn VERSION < 8.0:
-    raise DistutilsPlatformError("VC %0.1f is nicht supported by this module" % VERSION)
+    wirf DistutilsPlatformError("VC %0.1f is nicht supported by this module" % VERSION)
 # MACROS = MacroExpander(VERSION)
 
 klasse MSVCCompiler(CCompiler) :
@@ -373,7 +373,7 @@ klasse MSVCCompiler(CCompiler) :
         gib temp_manifest, mfid
 
     def _remove_visual_c_ref(self, manifest_file):
-        try:
+        versuch:
             # Remove references to the Visual C runtime, so they will
             # fall through to the Visual C dependency of Python.exe.
             # This way, when installed fuer a restricted user (e.g.
@@ -383,9 +383,9 @@ klasse MSVCCompiler(CCompiler) :
             # Returns either the filename of the modified manifest or
             # Nichts wenn no manifest should be embedded.
             manifest_f = open(manifest_file)
-            try:
+            versuch:
                 manifest_buf = manifest_f.read()
-            finally:
+            schliesslich:
                 manifest_f.close()
             pattern = re.compile(
                 r"""<assemblyIdentity.*?name=("|')Microsoft\."""\
@@ -403,12 +403,12 @@ klasse MSVCCompiler(CCompiler) :
                 gib Nichts
 
             manifest_f = open(manifest_file, 'w')
-            try:
+            versuch:
                 manifest_f.write(manifest_buf)
                 gib manifest_file
-            finally:
+            schliesslich:
                 manifest_f.close()
-        except OSError:
+        ausser OSError:
             pass
 
     # -- Miscellaneous methods -----------------------------------------

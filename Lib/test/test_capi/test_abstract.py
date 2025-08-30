@@ -36,13 +36,13 @@ klasse WithBytes:
 klasse TestObject:
     @property
     def evil(self):
-        raise RuntimeError('do nicht get evil')
+        wirf RuntimeError('do nicht get evil')
     @evil.setter
     def evil(self, value):
-        raise RuntimeError('do nicht set evil')
+        wirf RuntimeError('do nicht set evil')
     @evil.deleter
     def evil(self):
-        raise RuntimeError('do nicht del evil')
+        wirf RuntimeError('do nicht del evil')
 
 klasse ProxyGetItem:
     def __init__(self, obj):
@@ -1055,7 +1055,7 @@ klasse CAPITest(unittest.TestCase):
                     self.count += 1
                     gib self.count
                 sonst:
-                    raise TypeError('bad type')
+                    wirf TypeError('bad type')
 
         it = Broken()
         self.assertEqual(next_func(it), 1)

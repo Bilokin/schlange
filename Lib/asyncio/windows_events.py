@@ -3,7 +3,7 @@
 importiere sys
 
 wenn sys.platform != 'win32':  # pragma: no cover
-    raise ImportError('win32 only')
+    wirf ImportError('win32 only')
 
 importiere _overlapped
 importiere _winapi
@@ -68,9 +68,9 @@ klasse _OverlappedFuture(futures.Future):
     def _cancel_overlapped(self):
         wenn self._ov is Nichts:
             gib
-        try:
+        versuch:
             self._ov.cancel()
-        except OSError als exc:
+        ausser OSError als exc:
             context = {
                 'message': 'Cancelling an overlapped future failed',
                 'exception': exc,
@@ -138,9 +138,9 @@ klasse _BaseWaitHandleFuture(futures.Future):
 
         wait_handle = self._wait_handle
         self._wait_handle = Nichts
-        try:
+        versuch:
             _overlapped.UnregisterWait(wait_handle)
-        except OSError als exc:
+        ausser OSError als exc:
             wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -179,7 +179,7 @@ klasse _WaitCancelFuture(_BaseWaitHandleFuture):
         self._done_callback = Nichts
 
     def cancel(self):
-        raise RuntimeError("_WaitCancelFuture must nicht be cancelled")
+        wirf RuntimeError("_WaitCancelFuture must nicht be cancelled")
 
     def set_result(self, result):
         super().set_result(result)
@@ -225,9 +225,9 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
 
         wait_handle = self._wait_handle
         self._wait_handle = Nichts
-        try:
+        versuch:
             _overlapped.UnregisterWaitEx(wait_handle, self._event)
-        except OSError als exc:
+        ausser OSError als exc:
             wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -253,7 +253,7 @@ klasse PipeServer(object):
         self._address = address
         self._free_instances = weakref.WeakSet()
         # initialize the pipe attribute before calling _server_pipe_handle()
-        # because this function can raise an exception und the destructor calls
+        # because this function can wirf an exception und the destructor calls
         # the close() method
         self._pipe = Nichts
         self._accept_pipe_future = Nichts
@@ -348,7 +348,7 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
 
         def loop_accept_pipe(f=Nichts):
             pipe = Nichts
-            try:
+            versuch:
                 wenn f:
                     pipe = f.result()
                     server._free_instances.discard(pipe)
@@ -368,11 +368,11 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                     gib
 
                 f = self._proactor.accept_pipe(pipe)
-            except BrokenPipeError:
+            ausser BrokenPipeError:
                 wenn pipe und pipe.fileno() != -1:
                     pipe.close()
                 self.call_soon(loop_accept_pipe)
-            except OSError als exc:
+            ausser OSError als exc:
                 wenn pipe und pipe.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Pipe accept failed',
@@ -384,7 +384,7 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                     logger.warning("Accept pipe failed on pipe %r",
                                    pipe, exc_info=Wahr)
                 self.call_soon(loop_accept_pipe)
-            except exceptions.CancelledError:
+            ausser exceptions.CancelledError:
                 wenn pipe:
                     pipe.close()
             sonst:
@@ -402,14 +402,14 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                                              stdin, stdout, stderr, bufsize,
                                              waiter=waiter, extra=extra,
                                              **kwargs)
-        try:
+        versuch:
             await waiter
-        except (SystemExit, KeyboardInterrupt):
-            raise
-        except BaseException:
+        ausser (SystemExit, KeyboardInterrupt):
+            wirf
+        ausser BaseException:
             transp.close()
             await transp._wait()
-            raise
+            wirf
 
         gib transp
 
@@ -429,7 +429,7 @@ klasse IocpProactor:
 
     def _check_closed(self):
         wenn self._iocp is Nichts:
-            raise RuntimeError('IocpProactor is closed')
+            wirf RuntimeError('IocpProactor is closed')
 
     def __repr__(self):
         info = ['overlapped#=%s' % len(self._cache),
@@ -446,9 +446,9 @@ klasse IocpProactor:
             self._poll(timeout)
         tmp = self._results
         self._results = []
-        try:
+        versuch:
             gib tmp
-        finally:
+        schliesslich:
             # Needed to breche cycles when an exception occurs.
             tmp = Nichts
 
@@ -459,36 +459,36 @@ klasse IocpProactor:
 
     @staticmethod
     def finish_socket_func(trans, key, ov):
-        try:
+        versuch:
             gib ov.getresult()
-        except OSError als exc:
+        ausser OSError als exc:
             wenn exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                 _overlapped.ERROR_OPERATION_ABORTED):
-                raise ConnectionResetError(*exc.args)
+                wirf ConnectionResetError(*exc.args)
             sonst:
-                raise
+                wirf
 
     @classmethod
     def _finish_recvfrom(cls, trans, key, ov, *, empty_result):
-        try:
+        versuch:
             gib cls.finish_socket_func(trans, key, ov)
-        except OSError als exc:
+        ausser OSError als exc:
             # WSARecvFrom will report ERROR_PORT_UNREACHABLE when the same
             # socket is used to send to an address that is nicht listening.
             wenn exc.winerror == _overlapped.ERROR_PORT_UNREACHABLE:
                 gib empty_result, Nichts
             sonst:
-                raise
+                wirf
 
     def recv(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        try:
+        versuch:
             wenn isinstance(conn, socket.socket):
                 ov.WSARecv(conn.fileno(), nbytes, flags)
             sonst:
                 ov.ReadFile(conn.fileno(), nbytes)
-        except BrokenPipeError:
+        ausser BrokenPipeError:
             gib self._result(b'')
 
         gib self._register(ov, conn, self.finish_socket_func)
@@ -496,12 +496,12 @@ klasse IocpProactor:
     def recv_into(self, conn, buf, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        try:
+        versuch:
             wenn isinstance(conn, socket.socket):
                 ov.WSARecvInto(conn.fileno(), buf, flags)
             sonst:
                 ov.ReadFileInto(conn.fileno(), buf)
-        except BrokenPipeError:
+        ausser BrokenPipeError:
             gib self._result(0)
 
         gib self._register(ov, conn, self.finish_socket_func)
@@ -509,9 +509,9 @@ klasse IocpProactor:
     def recvfrom(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        try:
+        versuch:
             ov.WSARecvFrom(conn.fileno(), nbytes, flags)
-        except BrokenPipeError:
+        ausser BrokenPipeError:
             gib self._result((b'', Nichts))
 
         gib self._register(ov, conn, partial(self._finish_recvfrom,
@@ -520,9 +520,9 @@ klasse IocpProactor:
     def recvfrom_into(self, conn, buf, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        try:
+        versuch:
             ov.WSARecvFromInto(conn.fileno(), buf, flags)
-        except BrokenPipeError:
+        ausser BrokenPipeError:
             gib self._result((0, Nichts))
 
         gib self._register(ov, conn, partial(self._finish_recvfrom,
@@ -563,11 +563,11 @@ klasse IocpProactor:
 
         async def accept_coro(future, conn):
             # Coroutine closing the accept socket wenn the future is cancelled
-            try:
+            versuch:
                 await future
-            except exceptions.CancelledError:
+            ausser exceptions.CancelledError:
                 conn.close()
-                raise
+                wirf
 
         future = self._register(ov, listener, finish_accept)
         coro = accept_coro(future, conn)
@@ -585,14 +585,14 @@ klasse IocpProactor:
 
         self._register_with_iocp(conn)
         # The socket needs to be locally bound before we call ConnectEx().
-        try:
+        versuch:
             _overlapped.BindLocal(conn.fileno(), conn.family)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.winerror != errno.WSAEINVAL:
-                raise
+                wirf
             # Probably already locally bound; check using getsockname().
             wenn conn.getsockname()[1] == 0:
-                raise
+                wirf
         ov = _overlapped.Overlapped(NULL)
         ov.ConnectEx(conn.fileno(), address)
 
@@ -640,12 +640,12 @@ klasse IocpProactor:
             # Unfortunately there is no way to do an overlapped connect to
             # a pipe.  Call CreateFile() in a loop until it doesn't fail with
             # ERROR_PIPE_BUSY.
-            try:
+            versuch:
                 handle = _overlapped.ConnectPipe(address)
                 breche
-            except OSError als exc:
+            ausser OSError als exc:
                 wenn exc.winerror != _overlapped.ERROR_PIPE_BUSY:
-                    raise
+                    wirf
 
             # ConnectPipe() failed mit ERROR_PIPE_BUSY: retry later
             delay = min(delay * 2, CONNECT_PIPE_MAX_DELAY)
@@ -726,9 +726,9 @@ klasse IocpProactor:
             # work.  We cannot take this short cut wenn we need the
             # NumberOfBytes, CompletionKey values returned by
             # PostQueuedCompletionStatus().
-            try:
+            versuch:
                 value = callback(Nichts, Nichts, ov)
-            except OSError als e:
+            ausser OSError als e:
                 f.set_exception(e)
             sonst:
                 f.set_result(value)
@@ -763,13 +763,13 @@ klasse IocpProactor:
         wenn timeout is Nichts:
             ms = INFINITE
         sowenn timeout < 0:
-            raise ValueError("negative timeout")
+            wirf ValueError("negative timeout")
         sonst:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
             # round away von zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
             wenn ms >= INFINITE:
-                raise ValueError("timeout too big")
+                wirf ValueError("timeout too big")
 
         waehrend Wahr:
             status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
@@ -778,9 +778,9 @@ klasse IocpProactor:
             ms = 0
 
             err, transferred, key, address = status
-            try:
+            versuch:
                 f, ov, obj, callback = self._cache.pop(address)
-            except KeyError:
+            ausser KeyError:
                 wenn self._loop.get_debug():
                     self._loop.call_exception_handler({
                         'message': ('GetQueuedCompletionStatus() returned an '
@@ -800,15 +800,15 @@ klasse IocpProactor:
             # Don't call the callback wenn _register() already read the result oder
             # wenn the overlapped has been cancelled
             sowenn nicht f.done():
-                try:
+                versuch:
                     value = callback(transferred, key, ov)
-                except OSError als e:
+                ausser OSError als e:
                     f.set_exception(e)
                     self._results.append(f)
                 sonst:
                     f.set_result(value)
                     self._results.append(f)
-                finally:
+                schliesslich:
                     f = Nichts
 
         # Remove unregistered futures
@@ -836,9 +836,9 @@ klasse IocpProactor:
                 # _WaitCancelFuture must nicht be cancelled
                 pass
             sonst:
-                try:
+                versuch:
                     fut.cancel()
-                except OSError als exc:
+                ausser OSError als exc:
                     wenn self._loop is nicht Nichts:
                         context = {
                             'message': 'Cancelling a future failed',

@@ -44,9 +44,9 @@ _modules = {}
 
 error = (error, OSError)
 
-try:
+versuch:
     von dbm importiere ndbm
-except ImportError:
+ausser ImportError:
     ndbm = Nichts
 
 
@@ -64,15 +64,15 @@ def open(file, flag='r', mode=0o666):
     global _defaultmod
     wenn _defaultmod is Nichts:
         fuer name in _names:
-            try:
+            versuch:
                 mod = __import__(name, fromlist=['open'])
-            except ImportError:
+            ausser ImportError:
                 weiter
             wenn nicht _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod
         wenn nicht _defaultmod:
-            raise ImportError("no dbm clone found; tried %s" % _names)
+            wirf ImportError("no dbm clone found; tried %s" % _names)
 
     # guess the type of an existing database, wenn nicht creating a new one
     result = whichdb(file) wenn 'n' nicht in flag sonst Nichts
@@ -82,13 +82,13 @@ def open(file, flag='r', mode=0o666):
             # file doesn't exist und the new flag was used so use default type
             mod = _defaultmod
         sonst:
-            raise error[0]("db file doesn't exist; "
+            wirf error[0]("db file doesn't exist; "
                            "use 'c' oder 'n' flag to create a new db")
     sowenn result == "":
         # db type cannot be determined
-        raise error[0]("db type could nicht be determined")
+        wirf error[0]("db type could nicht be determined")
     sowenn result nicht in _modules:
-        raise error[0]("db type is {0}, but the module is nicht "
+        wirf error[0]("db type is {0}, but the module is nicht "
                        "available".format(result))
     sonst:
         mod = _modules[result]
@@ -110,16 +110,16 @@ def whichdb(filename):
 
     # Check fuer ndbm first -- this has a .pag und a .dir file
     filename = os.fsencode(filename)
-    try:
+    versuch:
         f = io.open(filename + b".pag", "rb")
         f.close()
         f = io.open(filename + b".dir", "rb")
         f.close()
         gib "dbm.ndbm"
-    except OSError:
+    ausser OSError:
         # some dbm emulations based on Berkeley DB generate a .db file
         # some do not, but they should be caught by the bsd checks
-        try:
+        versuch:
             f = io.open(filename + b".db", "rb")
             f.close()
             # guarantee we can actually open the file using dbm
@@ -129,11 +129,11 @@ def whichdb(filename):
                 d = ndbm.open(filename)
                 d.close()
                 gib "dbm.ndbm"
-        except OSError:
+        ausser OSError:
             pass
 
     # Check fuer dumbdbm next -- this has a .dir und a .dat file
-    try:
+    versuch:
         # First check fuer presence of files
         os.stat(filename + b".dat")
         size = os.stat(filename + b".dir").st_size
@@ -141,18 +141,18 @@ def whichdb(filename):
         wenn size == 0:
             gib "dbm.dumb"
         f = io.open(filename + b".dir", "rb")
-        try:
+        versuch:
             wenn f.read(1) in (b"'", b'"'):
                 gib "dbm.dumb"
-        finally:
+        schliesslich:
             f.close()
-    except OSError:
+    ausser OSError:
         pass
 
     # See wenn the file exists, gib Nichts wenn not
-    try:
+    versuch:
         f = io.open(filename, "rb")
-    except OSError:
+    ausser OSError:
         gib Nichts
 
     mit f:
@@ -169,9 +169,9 @@ def whichdb(filename):
         gib "dbm.sqlite3"
 
     # Convert to 4-byte int in native byte order -- gib "" wenn impossible
-    try:
+    versuch:
         (magic,) = struct.unpack("=l", s)
-    except struct.error:
+    ausser struct.error:
         gib ""
 
     # Check fuer GNU dbm
@@ -180,9 +180,9 @@ def whichdb(filename):
 
     # Later versions of Berkeley db hash file have a 12-byte pad in
     # front of the file type
-    try:
+    versuch:
         (magic,) = struct.unpack("=l", s16[-4:])
-    except struct.error:
+    ausser struct.error:
         gib ""
 
     # Unknown

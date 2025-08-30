@@ -28,12 +28,12 @@ def genwinmap(codepage):
             buf, 2)
         assert ret == 1, "invalid code page"
         assert buf[1] == '\x00'
-        try:
+        versuch:
             name = unicodedata.name(buf[0])
-        except ValueError:
-            try:
+        ausser ValueError:
+            versuch:
                 name = enc2uni[i][1]
-            except KeyError:
+            ausser KeyError:
                 name = ''
 
         enc2uni[i] = (ord(buf[0]), name)

@@ -4,9 +4,9 @@ importiere unittest
 importiere warnings
 von test importiere support
 von test.support importiere import_helper, requires_specialization, requires_specialization_ft
-try:
+versuch:
     von sys importiere _clear_type_cache
-except ImportError:
+ausser ImportError:
     _clear_type_cache = Nichts
 
 # Skip this test wenn the _testcapi module isn't available.

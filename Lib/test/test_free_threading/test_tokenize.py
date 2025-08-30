@@ -17,11 +17,11 @@ klasse TestTokenize(unittest.TestCase):
         tokens = []
         def next_token(it):
             waehrend Wahr:
-                try:
+                versuch:
                     r = next(it)
                     tokens.append(tokenize.TokenInfo._make(r))
                     time.sleep(0.03)
-                except StopIteration:
+                ausser StopIteration:
                     gib
 
         threads = []

@@ -99,7 +99,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 #
 # The translation offset is changed to 0xFFFFFFFF,
 # making it larger than the file size, which should
-# raise an error when parsing.
+# wirf an error when parsing.
 GNU_MO_DATA_CORRUPT = base64.b64encode(bytes([
     0xDE, 0x12, 0x04, 0x95,  # Magic
     0x00, 0x00, 0x00, 0x00,  # Version
@@ -731,11 +731,11 @@ klasse WeirdMetadataTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
         mit open(MMOFILE, 'rb') als fp:
-            try:
+            versuch:
                 self.t = gettext.GNUTranslations(fp)
-            except:
+            ausser:
                 self.tearDown()
-                raise
+                wirf
 
     def test_weird_metadata(self):
         info = self.t.info()

@@ -210,11 +210,11 @@ impl_definition block
                     weiter
 
                 wenn destination.type == 'file':
-                    try:
+                    versuch:
                         dirname = os.path.dirname(destination.filename)
-                        try:
+                        versuch:
                             os.makedirs(dirname)
-                        except FileExistsError:
+                        ausser FileExistsError:
                             wenn nicht os.path.isdir(dirname):
                                 fail(f"Can't write to destination "
                                      f"{destination.filename!r}; "
@@ -226,7 +226,7 @@ impl_definition block
                                 wenn (len(blocks) != 1) oder (blocks[0].input != 'preserve\n'):
                                     fail(f"Modified destination file "
                                          f"{destination.filename!r}; nicht overwriting!")
-                    except FileNotFoundError:
+                    ausser FileNotFoundError:
                         pass
 
                     block.input = 'preserve\n'

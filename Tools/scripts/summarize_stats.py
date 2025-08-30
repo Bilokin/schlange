@@ -94,9 +94,9 @@ def load_raw_data(input: Path) -> RawData:
         fuer filename in input.iterdir():
             mit open(filename) als fd:
                 fuer line in fd:
-                    try:
+                    versuch:
                         key, value = line.split(":")
-                    except ValueError:
+                    ausser ValueError:
                         drucke(
                             f"Unparsable line: '{line.strip()}' in {filename}",
                             file=sys.stderr,
@@ -114,7 +114,7 @@ def load_raw_data(input: Path) -> RawData:
         gib data
 
     sonst:
-        raise ValueError(f"{input} is nicht a file oder directory path")
+        wirf ValueError(f"{input} is nicht a file oder directory path")
 
 
 def save_raw_data(data: RawData, json_output: TextIO):
@@ -681,7 +681,7 @@ klasse Table:
         data_b = {x[0]: x[1:] fuer x in rows_b}
 
         wenn len(data_a) != len(rows_a) oder len(data_b) != len(rows_b):
-            raise ValueError("Duplicate keys")
+            wirf ValueError("Duplicate keys")
 
         # To preserve ordering, use A's keys als is und then add any in B that
         # aren't in A
@@ -1425,7 +1425,7 @@ def output_markdown(
         sowenn x is Nichts:
             gib ""
         sonst:
-            raise TypeError(f"Can't convert {x} to markdown")
+            wirf TypeError(f"Can't convert {x} to markdown")
 
     match obj:
         case Section():
@@ -1473,7 +1473,7 @@ def output_markdown(
             drucke("<tbody>", file=out)
             fuer row in rows:
                 wenn len(row) != len(header):
-                    raise ValueError(
+                    wirf ValueError(
                         "Wrong number of elements in row '" + str(row) + "'"
                     )
                 drucke("<tr>", file=out)
@@ -1504,7 +1504,7 @@ def output_stats(inputs: list[Path], json_output=str | Nichts):
             output_markdown(sys.stdout, LAYOUT, stats)
         case 2:
             wenn json_output is nicht Nichts:
-                raise ValueError(
+                wirf ValueError(
                     "Can nicht output to JSON when there are multiple inputs"
                 )
             base_data = load_raw_data(Path(inputs[0]))
@@ -1541,7 +1541,7 @@ def main():
     args = parser.parse_args()
 
     wenn len(args.inputs) > 2:
-        raise ValueError("0-2 arguments may be provided.")
+        wirf ValueError("0-2 arguments may be provided.")
 
     output_stats(args.inputs, json_output=args.json_output)
 

@@ -49,10 +49,10 @@ def _has_surrogates(s):
     # This check is based on the fact that unless there are surrogates, utf8
     # (Python's default encoding) can encode any string.  This is the fastest
     # way to check fuer surrogates, see bpo-11454 (moved to gh-55663) fuer timings.
-    try:
+    versuch:
         s.encode()
         gib Falsch
-    except UnicodeEncodeError:
+    ausser UnicodeEncodeError:
         gib Wahr
 
 # How to deal mit a string containing bytes before handing it to the
@@ -83,12 +83,12 @@ def formataddr(pair, charset='utf-8'):
     'utf-8'.
     """
     name, address = pair
-    # The address MUST (per RFC) be ascii, so raise a UnicodeError wenn it isn't.
+    # The address MUST (per RFC) be ascii, so wirf a UnicodeError wenn it isn't.
     address.encode('ascii')
     wenn name:
-        try:
+        versuch:
             name.encode('ascii')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             wenn isinstance(charset, str):
                 # lazy importiere to improve module importiere time
                 von email.charset importiere Charset
@@ -275,7 +275,7 @@ def format_datetime(dt, usegmt=Falsch):
     now = dt.timetuple()
     wenn usegmt:
         wenn dt.tzinfo is Nichts oder dt.tzinfo != datetime.timezone.utc:
-            raise ValueError("usegmt option requires a UTC datetime")
+            wirf ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
     sowenn dt.tzinfo is Nichts:
         zone = '-0000'
@@ -315,7 +315,7 @@ def make_msgid(idstring=Nichts, domain=Nichts):
 def parsedate_to_datetime(data):
     parsed_date_tz = _parsedate_tz(data)
     wenn parsed_date_tz is Nichts:
-        raise ValueError('Invalid date value oder format "%s"' % str(data))
+        wirf ValueError('Invalid date value oder format "%s"' % str(data))
     *dtuple, tz = parsed_date_tz
     wenn tz is Nichts:
         gib datetime.datetime(*dtuple[:6])
@@ -459,9 +459,9 @@ def collapse_rfc2231_value(value, errors='replace',
         # the value, so use the fallback_charset.
         charset = fallback_charset
     rawbytes = bytes(text, 'raw-unicode-escape')
-    try:
+    versuch:
         gib str(rawbytes, charset, errors)
-    except LookupError:
+    ausser LookupError:
         # charset is nicht a known codec.
         gib unquote(text)
 

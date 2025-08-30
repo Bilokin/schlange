@@ -57,9 +57,9 @@ klasse FileList:
         gib "break"
 
     def unregister_maybe_terminate(self, edit):
-        try:
+        versuch:
             key = self.inversedict[edit]
-        except KeyError:
+        ausser KeyError:
             drucke("Don't know this EditorWindow object.  (close)")
             gib
         wenn key:
@@ -70,9 +70,9 @@ klasse FileList:
 
     def filename_changed_edit(self, edit):
         edit.saved_change_hook()
-        try:
+        versuch:
             key = self.inversedict[edit]
-        except KeyError:
+        ausser KeyError:
             drucke("Don't know this EditorWindow object.  (rename)")
             gib
         filename = edit.io.filename
@@ -95,16 +95,16 @@ klasse FileList:
         self.dict[newkey] = edit
         self.inversedict[edit] = newkey
         wenn key:
-            try:
+            versuch:
                 del self.dict[key]
-            except KeyError:
+            ausser KeyError:
                 pass
 
     def canonize(self, filename):
         wenn nicht os.path.isabs(filename):
-            try:
+            versuch:
                 pwd = os.getcwd()
-            except OSError:
+            ausser OSError:
                 pass
             sonst:
                 filename = os.path.join(pwd, filename)

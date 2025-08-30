@@ -37,9 +37,9 @@ def always_iterable(obj, base_type=(str, bytes)):
     wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
         gib iter((obj,))
 
-    try:
+    versuch:
         gib iter(obj)
-    except TypeError:
+    ausser TypeError:
         gib iter((obj,))
 
 

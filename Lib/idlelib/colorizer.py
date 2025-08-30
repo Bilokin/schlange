@@ -257,7 +257,7 @@ klasse ColorDelegator(Delegator):
         wenn self.colorizing:
             wenn DEBUG: drucke("already colorizing")
             gib
-        try:
+        versuch:
             self.stop_colorizing = Falsch
             self.colorizing = Wahr
             wenn DEBUG: drucke("colorizing...")
@@ -265,7 +265,7 @@ klasse ColorDelegator(Delegator):
             self.recolorize_main()
             t1 = time.perf_counter()
             wenn DEBUG: drucke("%.3f seconds" % (t1-t0))
-        finally:
+        schliesslich:
             self.colorizing = Falsch
         wenn self.allow_colorizing und self.tag_nextrange("TODO", "1.0"):
             wenn DEBUG: drucke("reschedule colorizing")

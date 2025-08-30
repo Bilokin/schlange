@@ -41,10 +41,10 @@ pyET = Nichts
 ET = Nichts
 
 SIMPLE_XMLFILE = findfile("simple.xml", subdir="xmltestdata")
-try:
+versuch:
     SIMPLE_XMLFILE.encode("utf-8")
-except UnicodeEncodeError:
-    raise unittest.SkipTest("filename is nicht encodable to utf8")
+ausser UnicodeEncodeError:
+    wirf unittest.SkipTest("filename is nicht encodable to utf8")
 SIMPLE_NS_XMLFILE = findfile("simple-ns.xml", subdir="xmltestdata")
 UTF8_BUG_XMLFILE = findfile("expat224_utf8_bug.xml", subdir="xmltestdata")
 
@@ -187,15 +187,15 @@ klasse ElementTestCase:
         cls.modules = {pyET, ET}
 
     def pickleRoundTrip(self, obj, name, dumper, loader, proto):
-        try:
+        versuch:
             mit swap_item(sys.modules, name, dumper):
                 temp = pickle.dumps(obj, proto)
             mit swap_item(sys.modules, name, loader):
                 result = pickle.loads(temp)
-        except pickle.PicklingError als pe:
+        ausser pickle.PicklingError als pe:
             # pyET must be second, because pyET may be (equal to) ET.
             human = dict([(ET, "cET"), (pyET, "pyET")])
-            raise support.TestFailed("Failed to round-trip %r von %r to %r"
+            wirf support.TestFailed("Failed to round-trip %r von %r to %r"
                                      % (obj,
                                         human.get(dumper, dumper),
                                         human.get(loader, loader))) von pe
@@ -1936,10 +1936,10 @@ XINCLUDE["Recursive3.xml"] = """\
 klasse XIncludeTest(unittest.TestCase):
 
     def xinclude_loader(self, href, parse="xml", encoding=Nichts):
-        try:
+        versuch:
             data = XINCLUDE[href]
-        except KeyError:
-            raise OSError("resource nicht found")
+        ausser KeyError:
+            wirf OSError("resource nicht found")
         wenn parse == "xml":
             data = ET.XML(data)
         gib data
@@ -2216,7 +2216,7 @@ klasse BugsTest(unittest.TestCase):
 
         klasse ExceptionFile:
             def read(self, x):
-                raise OSError
+                wirf OSError
 
         self.assertRaises(OSError, ET.parse, ExceptionFile())
 
@@ -2424,9 +2424,9 @@ klasse BugsTest(unittest.TestCase):
         e.append(ET.Element(Tag()))
         e.append(ET.Element('tag'))
         i = e.iter('tag')
-        try:
+        versuch:
             t = next(i)
-        except ValueError:
+        ausser ValueError:
             self.skipTest('generators are nicht reentrant')
         self.assertIsInstance(t.tag, Tag)
         self.assertIsInstance(e[0].tag, str)
@@ -2476,7 +2476,7 @@ klasse BugsTest(unittest.TestCase):
 
         # Preserves the TypeError message when extending mit a generator
         def f():
-            raise TypeError("mymessage")
+            wirf TypeError("mymessage")
 
         self.assertRaisesRegex(
             TypeError, 'mymessage',
@@ -2694,9 +2694,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 gib ET.Element
         L = [X()]
         e = ET.Element('foo')
-        try:
+        versuch:
             e.extend(L)
-        except TypeError:
+        ausser TypeError:
             pass
 
         klasse Y(X, ET.Element):
@@ -2713,9 +2713,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 gib ET.Element
         L = [X(), ET.Element('baz')]
         e = ET.Element('foo')
-        try:
+        versuch:
             e.extend(L)
-        except TypeError:
+        ausser TypeError:
             pass
 
         klasse Y(X, ET.Element):
@@ -2899,9 +2899,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         # Issue #27863
         klasse X(str):
             def __del__(self):
-                try:
+                versuch:
                     elem.text
-                except NameError:
+                ausser NameError:
                     pass
 
         b = ET.TreeBuilder()
@@ -2918,9 +2918,9 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         # Issue #27863
         klasse X(str):
             def __del__(self):
-                try:
+                versuch:
                     elem[0].tail
-                except NameError:
+                ausser NameError:
                     pass
 
         b = ET.TreeBuilder()
@@ -3059,7 +3059,7 @@ klasse MutationClearElementPath(str):
 
 klasse BadElementPath(str):
     def __eq__(self, o):
-        raise 1/0
+        wirf 1/0
 
     __hash__ = str.__hash__
 
@@ -3086,9 +3086,9 @@ klasse BadElementPathTest(ElementTestCase, unittest.TestCase):
     def test_find_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        versuch:
             e.find(BadElementPath('x'))
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
 
     def test_findtext_with_mutating(self):
@@ -3101,9 +3101,9 @@ klasse BadElementPathTest(ElementTestCase, unittest.TestCase):
     def test_findtext_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        versuch:
             e.findtext(BadElementPath('x'))
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
 
     def test_findtext_with_falsey_text_attribute(self):
@@ -3130,9 +3130,9 @@ klasse BadElementPathTest(ElementTestCase, unittest.TestCase):
     def test_findall_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        versuch:
             e.findall(BadElementPath('x'))
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
 
 
@@ -3765,7 +3765,7 @@ klasse TreeBuilderTest(unittest.TestCase):
 
             def __getattr__(self, name):
                 wenn name == self.raise_in:
-                    raise self.what(self.raise_in)
+                    wirf self.what(self.raise_in)
                 def handle(*args):
                     pass
                 gib handle
@@ -4038,7 +4038,7 @@ klasse ElementSlicingTest(unittest.TestCase):
 
         # Preserve the original TypeError message when assigning.
         def f():
-            raise TypeError("mymessage")
+            wirf TypeError("mymessage")
 
         mit self.assertRaisesRegex(TypeError, 'mymessage'):
             e[:1] = (f() fuer i in range(2))
@@ -4310,9 +4310,9 @@ klasse ParseErrorTest(unittest.TestCase):
         self.assertIsInstance(ET.ParseError(), SyntaxError)
 
     def _get_error(self, s):
-        try:
+        versuch:
             ET.fromstring(s)
-        except ET.ParseError als e:
+        ausser ET.ParseError als e:
             gib e
 
     def test_error_position(self):
@@ -4366,7 +4366,7 @@ klasse NoAcceleratorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         wenn ET is nicht pyET:
-            raise unittest.SkipTest('only fuer the Python version')
+            wirf unittest.SkipTest('only fuer the Python version')
 
     # Test that the C accelerator was nicht imported fuer pyET
     def test_correct_import_pyET(self):

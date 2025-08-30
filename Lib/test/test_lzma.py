@@ -341,10 +341,10 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzc = LZMACompressor()
         cdata = lzc.compress(b"x" * size) + lzc.flush()
         ddata = lzma.decompress(cdata)
-        try:
+        versuch:
             self.assertEqual(len(ddata), size)
             self.assertEqual(len(ddata.strip(b"x")), 0)
-        finally:
+        schliesslich:
             ddata = Nichts
 
     @support.skip_if_pgo_task
@@ -353,12 +353,12 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         blocksize = min(10 * 1024 * 1024, size)
         block = random.randbytes(blocksize)
-        try:
+        versuch:
             input = block * ((size-1) // blocksize + 1)
             cdata = lzma.compress(input)
             ddata = lzd.decompress(cdata)
             self.assertEqual(ddata, input)
-        finally:
+        schliesslich:
             input = cdata = ddata = Nichts
 
     # Pickling raises an exception; there's no way to serialize an lzma_stream.
@@ -713,94 +713,94 @@ klasse FileTestCase(unittest.TestCase):
 
     def test_closed(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
-        try:
+        versuch:
             self.assertFalsch(f.closed)
             f.read()
             self.assertFalsch(f.closed)
-        finally:
+        schliesslich:
             f.close()
         self.assertWahr(f.closed)
 
         f = LZMAFile(BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.closed)
-        finally:
+        schliesslich:
             f.close()
         self.assertWahr(f.closed)
 
     def test_fileno(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
-        try:
+        versuch:
             self.assertRaises(UnsupportedOperation, f.fileno)
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.fileno)
         mit TempFile(TESTFN, COMPRESSED_XZ):
             f = LZMAFile(TESTFN)
-            try:
+            versuch:
                 self.assertEqual(f.fileno(), f._fp.fileno())
                 self.assertIsInstance(f.fileno(), int)
-            finally:
+            schliesslich:
                 f.close()
         self.assertRaises(ValueError, f.fileno)
 
     def test_seekable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
-        try:
+        versuch:
             self.assertWahr(f.seekable())
             f.read()
             self.assertWahr(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         f = LZMAFile(BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         src = BytesIO(COMPRESSED_XZ)
         src.seekable = lambda: Falsch
         f = LZMAFile(src)
-        try:
+        versuch:
             self.assertFalsch(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
     def test_readable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
-        try:
+        versuch:
             self.assertWahr(f.readable())
             f.read()
             self.assertWahr(f.readable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.readable)
 
         f = LZMAFile(BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.readable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.readable)
 
     def test_writable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
-        try:
+        versuch:
             self.assertFalsch(f.writable())
             f.read()
             self.assertFalsch(f.writable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.writable)
 
         f = LZMAFile(BytesIO(), "w")
-        try:
+        versuch:
             self.assertWahr(f.writable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.writable)
 
@@ -865,10 +865,10 @@ klasse FileTestCase(unittest.TestCase):
         # of the raw read buffer.
         saved_buffer_size = _streams.BUFFER_SIZE
         _streams.BUFFER_SIZE = len(COMPRESSED_XZ)
-        try:
+        versuch:
             mit LZMAFile(BytesIO(COMPRESSED_XZ *  5)) als f:
                 self.assertEqual(f.read(), INPUT * 5)
-        finally:
+        schliesslich:
             _streams.BUFFER_SIZE = saved_buffer_size
 
     def test_read_trailing_junk(self):
@@ -1128,7 +1128,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertEqual(dst.getvalue(), expected)
 
     def test_write_to_file(self):
-        try:
+        versuch:
             mit LZMAFile(TESTFN, "w") als f:
                 f.write(INPUT)
                 self.assertEqual(f.name, TESTFN)
@@ -1150,23 +1150,23 @@ klasse FileTestCase(unittest.TestCase):
             expected = lzma.compress(INPUT)
             mit open(TESTFN, "rb") als f:
                 self.assertEqual(f.read(), expected)
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_write_to_file_with_bytes_filename(self):
         bytes_filename = os.fsencode(TESTFN)
-        try:
+        versuch:
             mit LZMAFile(bytes_filename, "w") als f:
                 f.write(INPUT)
                 self.assertEqual(f.name, bytes_filename)
             expected = lzma.compress(INPUT)
             mit open(TESTFN, "rb") als f:
                 self.assertEqual(f.read(), expected)
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_write_to_fileobj(self):
-        try:
+        versuch:
             mit open(TESTFN, "wb") als raw:
                 mit LZMAFile(raw, "w") als f:
                     f.write(INPUT)
@@ -1189,11 +1189,11 @@ klasse FileTestCase(unittest.TestCase):
             expected = lzma.compress(INPUT)
             mit open(TESTFN, "rb") als f:
                 self.assertEqual(f.read(), expected)
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_write_to_fileobj_with_int_name(self):
-        try:
+        versuch:
             fd = os.open(TESTFN, os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
             mit open(fd, 'wb') als raw:
                 mit LZMAFile(raw, "w") als f:
@@ -1217,7 +1217,7 @@ klasse FileTestCase(unittest.TestCase):
             expected = lzma.compress(INPUT)
             mit open(TESTFN, "rb") als f:
                 self.assertEqual(f.read(), expected)
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_write_append_to_file(self):
@@ -1225,7 +1225,7 @@ klasse FileTestCase(unittest.TestCase):
         part2 = INPUT[1024:1536]
         part3 = INPUT[1536:]
         expected = b"".join(lzma.compress(x) fuer x in (part1, part2, part3))
-        try:
+        versuch:
             mit LZMAFile(TESTFN, "w") als f:
                 f.write(part1)
             self.assertEqual(f.mode, 'wb')
@@ -1237,7 +1237,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertEqual(f.mode, 'wb')
             mit open(TESTFN, "rb") als f:
                 self.assertEqual(f.read(), expected)
-        finally:
+        schliesslich:
             unlink(TESTFN)
 
     def test_write_bad_args(self):

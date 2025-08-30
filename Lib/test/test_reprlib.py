@@ -790,7 +790,7 @@ klasse ClassWithRepr:
 
 klasse ClassWithFailingRepr:
     def __repr__(self):
-        raise Exception("This should be caught by Repr.repr_instance")
+        wirf Exception("This should be caught by Repr.repr_instance")
 
 klasse MyContainer:
     'Helper klasse fuer TestRecursiveRepr'

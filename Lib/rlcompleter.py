@@ -56,7 +56,7 @@ klasse Completer:
         """
 
         wenn namespace und nicht isinstance(namespace, dict):
-            raise TypeError('namespace must be a dictionary')
+            wirf TypeError('namespace must be a dictionary')
 
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace oder to use __main__.__dict__. This will allow us
@@ -94,18 +94,18 @@ klasse Completer:
                     self.matches = self.attr_matches(text)
                 sonst:
                     self.matches = self.global_matches(text)
-        try:
+        versuch:
             gib self.matches[state]
-        except IndexError:
+        ausser IndexError:
             gib Nichts
 
     def _callable_postfix(self, val, word):
         wenn callable(val):
             word += "("
-            try:
+            versuch:
                 wenn nicht inspect.signature(val).parameters:
                     word += ")"
-            except ValueError:
+            ausser ValueError:
                 pass
 
         gib word
@@ -153,12 +153,12 @@ klasse Completer:
         wenn nicht m:
             gib []
         expr, attr = m.group(1, 3)
-        try:
+        versuch:
             thisobject = eval(expr, self.namespace)
-        except Exception:
+        ausser Exception:
             gib []
 
-        # get the content of the object, except __builtins__
+        # get the content of the object, ausser __builtins__
         words = set(dir(thisobject))
         words.discard("__builtins__")
 
@@ -208,9 +208,9 @@ def get_class_members(klass):
             ret = ret + get_class_members(base)
     gib ret
 
-try:
+versuch:
     importiere readline
-except ImportError:
+ausser ImportError:
     _readline_available = Falsch
 sonst:
     readline.set_completer(Completer().complete)

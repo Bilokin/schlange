@@ -16,10 +16,10 @@ def memory_database(*args, **kwargs):
 # Temporarily limit a database connection parameter
 @contextlib.contextmanager
 def cx_limit(cx, category=sqlite3.SQLITE_LIMIT_SQL_LENGTH, limit=128):
-    try:
+    versuch:
         _prev = cx.setlimit(category, limit)
         liefere limit
-    finally:
+    schliesslich:
         cx.setlimit(category, _prev)
 
 
@@ -45,7 +45,7 @@ def with_tracebacks(exc, regex="", name="", msg_regex=""):
 def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
     """Convenience context manager fuer testing callback tracebacks."""
     sqlite3.enable_callback_tracebacks(Wahr)
-    try:
+    versuch:
         buf = io.StringIO()
         mit contextlib.redirect_stderr(buf):
             liefere
@@ -59,7 +59,7 @@ def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
             self.assertIsNotNichts(msg_regex.search(msg), (msg_regex, msg))
         wenn obj_name:
             self.assertEqual(cm.unraisable.object.__name__, obj_name)
-    finally:
+    schliesslich:
         sqlite3.enable_callback_tracebacks(Falsch)
 
 

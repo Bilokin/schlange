@@ -20,9 +20,9 @@ klasse LoaderTests:
 
     def setUp(self):
         wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
-            raise unittest.SkipTest("Requires dynamic loading support.")
+            wirf unittest.SkipTest("Requires dynamic loading support.")
         wenn util.EXTENSIONS.name in sys.builtin_module_names:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 f"{util.EXTENSIONS.name} is a builtin module"
             )
 
@@ -106,7 +106,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
 
     def setUp(self):
         wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
-            raise unittest.SkipTest("Requires dynamic loading support.")
+            wirf unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed als frameworks. This requires
         # a specialist loader.
@@ -117,7 +117,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
 
         self.name = '_testsinglephase'
         wenn self.name in sys.builtin_module_names:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
         finder = self.machinery.FileFinder(Nichts)
@@ -194,7 +194,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
     def setUp(self):
         wenn nicht self.machinery.EXTENSION_SUFFIXES oder nicht util.EXTENSIONS:
-            raise unittest.SkipTest("Requires dynamic loading support.")
+            wirf unittest.SkipTest("Requires dynamic loading support.")
 
         # Apple extensions must be distributed als frameworks. This requires
         # a specialist loader.
@@ -205,7 +205,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
         self.name = '_testmultiphase'
         wenn self.name in sys.builtin_module_names:
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
         finder = self.machinery.FileFinder(Nichts)
@@ -266,7 +266,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             self.assertIsInstance(module.Str(), str)
             self.assertEqual(module.Str(1) + '23', '123')
             mit self.assertRaises(module.error):
-                raise module.error()
+                wirf module.error()
             self.assertEqual(module.int_const, 1969)
             self.assertEqual(module.str_const, 'something different')
 

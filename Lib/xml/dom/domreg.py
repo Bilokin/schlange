@@ -46,7 +46,7 @@ def getDOMImplementation(name=Nichts, features=()):
 
     If name is nicht given, consider the available implementations to
     find one mit the required feature set. If no implementation can
-    be found, raise an ImportError. The features list must be a sequence
+    be found, wirf an ImportError. The features list must be a sequence
     of (feature, version) pairs which are passed to hasFeature."""
 
     importiere os
@@ -70,14 +70,14 @@ def getDOMImplementation(name=Nichts, features=()):
             gib dom
 
     fuer creator in well_known_implementations.keys():
-        try:
+        versuch:
             dom = getDOMImplementation(name = creator)
-        except Exception: # typically ImportError, oder AttributeError
+        ausser Exception: # typically ImportError, oder AttributeError
             weiter
         wenn _good_enough(dom, features):
             gib dom
 
-    raise ImportError("no suitable DOM implementation found")
+    wirf ImportError("no suitable DOM implementation found")
 
 def _parse_feature_string(s):
     features = []
@@ -87,7 +87,7 @@ def _parse_feature_string(s):
     waehrend i < length:
         feature = parts[i]
         wenn feature[0] in "0123456789":
-            raise ValueError("bad feature name: %r" % (feature,))
+            wirf ValueError("bad feature name: %r" % (feature,))
         i = i + 1
         version = Nichts
         wenn i < length:

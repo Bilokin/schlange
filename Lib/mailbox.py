@@ -19,9 +19,9 @@ importiere email.generator
 importiere io
 importiere contextlib
 von types importiere GenericAlias
-try:
+versuch:
     importiere fcntl
-except ImportError:
+ausser ImportError:
     fcntl = Nichts
 
 __all__ = ['Mailbox', 'Maildir', 'mbox', 'MH', 'Babyl', 'MMDF',
@@ -41,35 +41,35 @@ klasse Mailbox:
 
     def add(self, message):
         """Add message und gib assigned key."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def remove(self, key):
-        """Remove the keyed message; raise KeyError wenn it doesn't exist."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def __delitem__(self, key):
         self.remove(key)
 
     def discard(self, key):
         """If the keyed message exists, remove it."""
-        try:
+        versuch:
             self.remove(key)
-        except KeyError:
+        ausser KeyError:
             pass
 
     def __setitem__(self, key, message):
-        """Replace the keyed message; raise KeyError wenn it doesn't exist."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def get(self, key, default=Nichts):
         """Return the keyed message, oder default wenn it doesn't exist."""
-        try:
+        versuch:
             gib self.__getitem__(key)
-        except KeyError:
+        ausser KeyError:
             gib default
 
     def __getitem__(self, key):
-        """Return the keyed message; raise KeyError wenn it doesn't exist."""
+        """Return the keyed message; wirf KeyError wenn it doesn't exist."""
         wenn nicht self._factory:
             gib self.get_message(key)
         sonst:
@@ -77,27 +77,27 @@ klasse Mailbox:
                 gib self._factory(file)
 
     def get_message(self, key):
-        """Return a Message representation oder raise a KeyError."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        """Return a Message representation oder wirf a KeyError."""
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def get_string(self, key):
-        """Return a string representation oder raise a KeyError.
+        """Return a string representation oder wirf a KeyError.
 
         Uses email.message.Message to create a 7bit clean string
         representation of the message."""
         gib email.message_from_bytes(self.get_bytes(key)).as_string()
 
     def get_bytes(self, key):
-        """Return a byte string representation oder raise a KeyError."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        """Return a byte string representation oder wirf a KeyError."""
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def get_file(self, key):
-        """Return a file-like representation oder raise a KeyError."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        """Return a file-like representation oder wirf a KeyError."""
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def iterkeys(self):
         """Return an iterator over keys."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def keys(self):
         """Return a list of keys."""
@@ -106,9 +106,9 @@ klasse Mailbox:
     def itervalues(self):
         """Return an iterator over all messages."""
         fuer key in self.iterkeys():
-            try:
+            versuch:
                 value = self[key]
-            except KeyError:
+            ausser KeyError:
                 weiter
             liefere value
 
@@ -122,9 +122,9 @@ klasse Mailbox:
     def iteritems(self):
         """Return an iterator over (key, message) tuples."""
         fuer key in self.iterkeys():
-            try:
+            versuch:
                 value = self[key]
-            except KeyError:
+            ausser KeyError:
                 weiter
             liefere (key, value)
 
@@ -134,11 +134,11 @@ klasse Mailbox:
 
     def __contains__(self, key):
         """Return Wahr wenn the keyed message exists, Falsch otherwise."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def __len__(self):
         """Return a count of messages in the mailbox."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def clear(self):
         """Delete all messages."""
@@ -147,9 +147,9 @@ klasse Mailbox:
 
     def pop(self, key, default=Nichts):
         """Delete the keyed message und gib it, oder default."""
-        try:
+        versuch:
             result = self[key]
-        except KeyError:
+        ausser KeyError:
             gib default
         self.discard(key)
         gib result
@@ -159,7 +159,7 @@ klasse Mailbox:
         fuer key in self.iterkeys():
             gib (key, self.pop(key))     # This is only run once.
         sonst:
-            raise KeyError('No messages in mailbox')
+            wirf KeyError('No messages in mailbox')
 
     def update(self, arg=Nichts):
         """Change the messages that correspond to certain keys."""
@@ -171,37 +171,37 @@ klasse Mailbox:
             source = arg
         bad_key = Falsch
         fuer key, message in source:
-            try:
+            versuch:
                 self[key] = message
-            except KeyError:
+            ausser KeyError:
                 bad_key = Wahr
         wenn bad_key:
-            raise KeyError('No message mit key(s)')
+            wirf KeyError('No message mit key(s)')
 
     def flush(self):
         """Write any pending changes to the disk."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def lock(self):
         """Lock the mailbox."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def unlock(self):
         """Unlock the mailbox wenn it is locked."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def close(self):
         """Flush und close the mailbox."""
-        raise NotImplementedError('Method must be implemented by subclass')
+        wirf NotImplementedError('Method must be implemented by subclass')
 
     def _string_to_bytes(self, message):
         # If a message is nicht 7bit clean, we refuse to handle it since it
         # likely came von reading invalid messages in text mode, und that way
         # lies mojibake.
-        try:
+        versuch:
             gib message.encode('ascii')
-        except UnicodeError:
-            raise ValueError("String input must be ASCII-only; "
+        ausser UnicodeError:
+            wirf ValueError("String input must be ASCII-only; "
                 "use bytes oder a Message instead")
 
     # Whether each message must end in a newline
@@ -259,7 +259,7 @@ klasse Mailbox:
                 # Make sure the message ends mit a newline
                 target.write(linesep)
         sonst:
-            raise TypeError('Invalid message type: %s' % type(message))
+            wirf TypeError('Invalid message type: %s' % type(message))
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -283,7 +283,7 @@ klasse Maildir(Mailbox):
                 fuer path in self._paths.values():
                     os.mkdir(path, 0o700)
             sonst:
-                raise NoSuchMailboxError(self._path)
+                wirf NoSuchMailboxError(self._path)
         self._toc = {}
         self._toc_mtimes = {'cur': 0, 'new': 0}
         self._last_read = 0         # Records last time we read cur/new
@@ -292,12 +292,12 @@ klasse Maildir(Mailbox):
     def add(self, message):
         """Add message und gib assigned key."""
         tmp_file = self._create_tmp()
-        try:
+        versuch:
             self._dump_message(message, tmp_file)
-        except BaseException:
+        ausser BaseException:
             tmp_file.close()
             os.remove(tmp_file.name)
-            raise
+            wirf
         _sync_close(tmp_file)
         wenn isinstance(message, MaildirMessage):
             subdir = message.get_subdir()
@@ -315,36 +315,36 @@ klasse Maildir(Mailbox):
         # No file modification should be done after the file is moved to its
         # final position in order to prevent race conditions mit changes
         # von other programs
-        try:
-            try:
+        versuch:
+            versuch:
                 os.link(tmp_file.name, dest)
-            except (AttributeError, PermissionError):
+            ausser (AttributeError, PermissionError):
                 os.rename(tmp_file.name, dest)
             sonst:
                 os.remove(tmp_file.name)
-        except OSError als e:
+        ausser OSError als e:
             os.remove(tmp_file.name)
             wenn e.errno == errno.EEXIST:
-                raise ExternalClashError('Name clash mit existing message: %s'
+                wirf ExternalClashError('Name clash mit existing message: %s'
                                          % dest)
             sonst:
-                raise
+                wirf
         gib uniq
 
     def remove(self, key):
-        """Remove the keyed message; raise KeyError wenn it doesn't exist."""
+        """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         os.remove(os.path.join(self._path, self._lookup(key)))
 
     def discard(self, key):
         """If the keyed message exists, remove it."""
         # This overrides an inapplicable implementation in the superclass.
-        try:
+        versuch:
             self.remove(key)
-        except (KeyError, FileNotFoundError):
+        ausser (KeyError, FileNotFoundError):
             pass
 
     def __setitem__(self, key, message):
-        """Replace the keyed message; raise KeyError wenn it doesn't exist."""
+        """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
         old_subpath = self._lookup(key)
         temp_key = self.add(message)
         temp_subpath = self._lookup(temp_key)
@@ -371,7 +371,7 @@ klasse Maildir(Mailbox):
         os.rename(tmp_path, new_path)
 
     def get_message(self, key):
-        """Return a Message representation oder raise a KeyError."""
+        """Return a Message representation oder wirf a KeyError."""
         subpath = self._lookup(key)
         mit open(os.path.join(self._path, subpath), 'rb') als f:
             wenn self._factory:
@@ -386,12 +386,12 @@ klasse Maildir(Mailbox):
         gib msg
 
     def get_bytes(self, key):
-        """Return a bytes representation oder raise a KeyError."""
+        """Return a bytes representation oder wirf a KeyError."""
         mit open(os.path.join(self._path, self._lookup(key)), 'rb') als f:
             gib f.read().replace(linesep, b'\n')
 
     def get_file(self, key):
-        """Return a file-like representation oder raise a KeyError."""
+        """Return a file-like representation oder wirf a KeyError."""
         f = open(os.path.join(self._path, self._lookup(key)), 'rb')
         gib _ProxyFile(f)
 
@@ -405,7 +405,7 @@ klasse Maildir(Mailbox):
     def set_info(self, key, info: str):
         """Set the keyed message's "info" string."""
         wenn nicht isinstance(info, str):
-            raise TypeError(f'info must be a string: {type(info)}')
+            wirf TypeError(f'info must be a string: {type(info)}')
         old_subpath = self._lookup(key)
         new_subpath = old_subpath.split(self.colon)[0]
         wenn info:
@@ -427,21 +427,21 @@ klasse Maildir(Mailbox):
     def set_flags(self, key, flags: str):
         """Set the given flags und unset all others on the keyed message."""
         wenn nicht isinstance(flags, str):
-            raise TypeError(f'flags must be a string: {type(flags)}')
+            wirf TypeError(f'flags must be a string: {type(flags)}')
         # TODO: check wenn flags are valid standard flag characters?
         self.set_info(key, '2,' + ''.join(sorted(set(flags))))
 
     def add_flag(self, key, flag: str):
         """Set the given flag(s) without changing others on the keyed message."""
         wenn nicht isinstance(flag, str):
-            raise TypeError(f'flag must be a string: {type(flag)}')
+            wirf TypeError(f'flag must be a string: {type(flag)}')
         # TODO: check that flag is a valid standard flag character?
         self.set_flags(key, ''.join(set(self.get_flags(key)) | set(flag)))
 
     def remove_flag(self, key, flag: str):
         """Unset the given string flag(s) without changing others on the keyed message."""
         wenn nicht isinstance(flag, str):
-            raise TypeError(f'flag must be a string: {type(flag)}')
+            wirf TypeError(f'flag must be a string: {type(flag)}')
         wenn self.get_flags(key):
             self.set_flags(key, ''.join(set(self.get_flags(key)) - set(flag)))
 
@@ -449,9 +449,9 @@ klasse Maildir(Mailbox):
         """Return an iterator over keys."""
         self._refresh()
         fuer key in self._toc:
-            try:
+            versuch:
                 self._lookup(key)
-            except KeyError:
+            ausser KeyError:
                 weiter
             liefere key
 
@@ -514,11 +514,11 @@ klasse Maildir(Mailbox):
         fuer entry in os.listdir(os.path.join(path, 'new')) + \
                      os.listdir(os.path.join(path, 'cur')):
             wenn len(entry) < 1 oder entry[0] != '.':
-                raise NotEmptyError('Folder contains message(s): %s' % folder)
+                wirf NotEmptyError('Folder contains message(s): %s' % folder)
         fuer entry in os.listdir(path):
             wenn entry != 'new' und entry != 'cur' und entry != 'tmp' und \
                os.path.isdir(os.path.join(path, entry)):
-                raise NotEmptyError("Folder contains subdirectory '%s': %s" %
+                wirf NotEmptyError("Folder contains subdirectory '%s': %s" %
                                     (folder, entry))
         fuer root, dirs, files in os.walk(path, topdown=Falsch):
             fuer entry in files:
@@ -548,17 +548,17 @@ klasse Maildir(Mailbox):
         uniq = "%s.M%sP%sQ%s.%s" % (int(now), int(now % 1 * 1e6), os.getpid(),
                                     Maildir._count, hostname)
         path = os.path.join(self._path, 'tmp', uniq)
-        try:
+        versuch:
             os.stat(path)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             Maildir._count += 1
-            try:
+            versuch:
                 gib _create_carefully(path)
-            except FileExistsError:
+            ausser FileExistsError:
                 pass
 
         # Fall through to here wenn stat succeeded oder open raised EEXIST.
-        raise ExternalClashError('Name clash prevented file creation: %s' %
+        wirf ExternalClashError('Name clash prevented file creation: %s' %
                                  path)
 
     def _refresh(self):
@@ -600,17 +600,17 @@ klasse Maildir(Mailbox):
         self._last_read = time.time()
 
     def _lookup(self, key):
-        """Use TOC to gib subpath fuer given key, oder raise a KeyError."""
-        try:
+        """Use TOC to gib subpath fuer given key, oder wirf a KeyError."""
+        versuch:
             wenn os.path.exists(os.path.join(self._path, self._toc[key])):
                 gib self._toc[key]
-        except KeyError:
+        ausser KeyError:
             pass
         self._refresh()
-        try:
+        versuch:
             gib self._toc[key]
-        except KeyError:
-            raise KeyError('No message mit key: %s' % key) von Nichts
+        ausser KeyError:
+            wirf KeyError('No message mit key: %s' % key) von Nichts
 
     # This method is fuer backward compatibility only.
     def next(self):
@@ -618,11 +618,11 @@ klasse Maildir(Mailbox):
         wenn nicht hasattr(self, '_onetime_keys'):
             self._onetime_keys = self.iterkeys()
         waehrend Wahr:
-            try:
+            versuch:
                 gib self[next(self._onetime_keys)]
-            except StopIteration:
+            ausser StopIteration:
                 gib Nichts
-            except KeyError:
+            ausser KeyError:
                 weiter
 
 
@@ -632,18 +632,18 @@ klasse _singlefileMailbox(Mailbox):
     def __init__(self, path, factory=Nichts, create=Wahr):
         """Initialize a single-file mailbox."""
         Mailbox.__init__(self, path, factory, create)
-        try:
+        versuch:
             f = open(self._path, 'rb+')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
                 wenn create:
                     f = open(self._path, 'wb+')
                 sonst:
-                    raise NoSuchMailboxError(self._path)
+                    wirf NoSuchMailboxError(self._path)
             sowenn e.errno in (errno.EACCES, errno.EROFS):
                 f = open(self._path, 'rb')
             sonst:
-                raise
+                wirf
         self._file = f
         self._toc = Nichts
         self._next_key = 0
@@ -663,13 +663,13 @@ klasse _singlefileMailbox(Mailbox):
         gib self._next_key - 1
 
     def remove(self, key):
-        """Remove the keyed message; raise KeyError wenn it doesn't exist."""
+        """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         self._lookup(key)
         del self._toc[key]
         self._pending = Wahr
 
     def __setitem__(self, key, message):
-        """Replace the keyed message; raise KeyError wenn it doesn't exist."""
+        """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
         self._lookup(key)
         self._toc[key] = self._append_message(message)
         self._pending = Wahr
@@ -721,12 +721,12 @@ klasse _singlefileMailbox(Mailbox):
         self._file.seek(0, 2)
         cur_len = self._file.tell()
         wenn cur_len != self._file_length:
-            raise ExternalClashError('Size of mailbox file changed '
+            wirf ExternalClashError('Size of mailbox file changed '
                                      '(expected %i, found %i)' %
                                      (self._file_length, cur_len))
 
         new_file = _create_temporary(self._path)
-        try:
+        versuch:
             new_toc = {}
             self._pre_mailbox_hook(new_file)
             fuer key in sorted(self._toc.keys()):
@@ -743,23 +743,23 @@ klasse _singlefileMailbox(Mailbox):
                 new_toc[key] = (new_start, new_file.tell())
                 self._post_message_hook(new_file)
             self._file_length = new_file.tell()
-        except:
+        ausser:
             new_file.close()
             os.remove(new_file.name)
-            raise
+            wirf
         _sync_close(new_file)
         # self._file is about to get replaced, so no need to sync.
         self._file.close()
         # Make sure the new file's mode und owner are the same als the old file's
         info = os.stat(self._path)
         os.chmod(new_file.name, info.st_mode)
-        try:
+        versuch:
             os.chown(new_file.name, info.st_uid, info.st_gid)
-        except (AttributeError, OSError):
+        ausser (AttributeError, OSError):
             pass
-        try:
+        versuch:
             os.rename(new_file.name, self._path)
-        except FileExistsError:
+        ausser FileExistsError:
             os.remove(self._path)
             os.rename(new_file.name, self._path)
         self._file = open(self._path, 'rb+')
@@ -783,24 +783,24 @@ klasse _singlefileMailbox(Mailbox):
 
     def close(self):
         """Flush und close the mailbox."""
-        try:
+        versuch:
             self.flush()
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 wenn self._locked:
                     self.unlock()
-            finally:
+            schliesslich:
                 self._file.close()  # Sync has been done by self.flush() above.
 
     def _lookup(self, key=Nichts):
-        """Return (start, stop) oder raise KeyError."""
+        """Return (start, stop) oder wirf KeyError."""
         wenn self._toc is Nichts:
             self._generate_toc()
         wenn key is nicht Nichts:
-            try:
+            versuch:
                 gib self._toc[key]
-            except KeyError:
-                raise KeyError('No message mit key: %s' % key) von Nichts
+            ausser KeyError:
+                wirf KeyError('No message mit key: %s' % key) von Nichts
 
     def _append_message(self, message):
         """Append message to mailbox und gib (start, stop) offsets."""
@@ -812,13 +812,13 @@ klasse _singlefileMailbox(Mailbox):
             # messages have been removed, so _pre_mailbox_hook must
             # have been called already.
             self._pre_mailbox_hook(self._file)
-        try:
+        versuch:
             self._pre_message_hook(self._file)
             offsets = self._install_message(message)
             self._post_message_hook(self._file)
-        except BaseException:
+        ausser BaseException:
             self._file.truncate(before)
-            raise
+            wirf
         self._file.flush()
         self._file_length = self._file.tell()  # Record current length of mailbox
         gib offsets
@@ -831,7 +831,7 @@ klasse _mboxMMDF(_singlefileMailbox):
     _mangle_from_ = Wahr
 
     def get_message(self, key):
-        """Return a Message representation oder raise a KeyError."""
+        """Return a Message representation oder wirf a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         from_line = self._file.readline().replace(linesep, b'').decode('ascii')
@@ -842,12 +842,12 @@ klasse _mboxMMDF(_singlefileMailbox):
         gib msg
 
     def get_string(self, key, from_=Falsch):
-        """Return a string representation oder raise a KeyError."""
+        """Return a string representation oder wirf a KeyError."""
         gib email.message_from_bytes(
             self.get_bytes(key, from_)).as_string(unixfrom=from_)
 
     def get_bytes(self, key, from_=Falsch):
-        """Return a string representation oder raise a KeyError."""
+        """Return a string representation oder wirf a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         wenn nicht from_:
@@ -856,7 +856,7 @@ klasse _mboxMMDF(_singlefileMailbox):
         gib string.replace(linesep, b'\n')
 
     def get_file(self, key, from_=Falsch):
-        """Return a file-like representation oder raise a KeyError."""
+        """Return a file-like representation oder wirf a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         wenn nicht from_:
@@ -1001,7 +1001,7 @@ klasse MH(Mailbox):
                 os.close(os.open(os.path.join(self._path, '.mh_sequences'),
                                  os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600))
             sonst:
-                raise NoSuchMailboxError(self._path)
+                wirf NoSuchMailboxError(self._path)
         self._locked = Falsch
 
     def add(self, message):
@@ -1014,86 +1014,86 @@ klasse MH(Mailbox):
         new_path = os.path.join(self._path, str(new_key))
         f = _create_carefully(new_path)
         closed = Falsch
-        try:
+        versuch:
             wenn self._locked:
                 _lock_file(f)
-            try:
-                try:
+            versuch:
+                versuch:
                     self._dump_message(message, f)
-                except BaseException:
+                ausser BaseException:
                     # Unlock und close so it can be deleted on Windows
                     wenn self._locked:
                         _unlock_file(f)
                     _sync_close(f)
                     closed = Wahr
                     os.remove(new_path)
-                    raise
+                    wirf
                 wenn isinstance(message, MHMessage):
                     self._dump_sequences(message, new_key)
-            finally:
+            schliesslich:
                 wenn self._locked:
                     _unlock_file(f)
-        finally:
+        schliesslich:
             wenn nicht closed:
                 _sync_close(f)
         gib new_key
 
     def remove(self, key):
-        """Remove the keyed message; raise KeyError wenn it doesn't exist."""
+        """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         path = os.path.join(self._path, str(key))
-        try:
+        versuch:
             f = open(path, 'rb+')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message mit key: %s' % key)
+                wirf KeyError('No message mit key: %s' % key)
             sonst:
-                raise
+                wirf
         sonst:
             f.close()
             os.remove(path)
 
     def __setitem__(self, key, message):
-        """Replace the keyed message; raise KeyError wenn it doesn't exist."""
+        """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
         path = os.path.join(self._path, str(key))
-        try:
+        versuch:
             f = open(path, 'rb+')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message mit key: %s' % key)
+                wirf KeyError('No message mit key: %s' % key)
             sonst:
-                raise
-        try:
+                wirf
+        versuch:
             wenn self._locked:
                 _lock_file(f)
-            try:
+            versuch:
                 os.close(os.open(path, os.O_WRONLY | os.O_TRUNC))
                 self._dump_message(message, f)
                 wenn isinstance(message, MHMessage):
                     self._dump_sequences(message, key)
-            finally:
+            schliesslich:
                 wenn self._locked:
                     _unlock_file(f)
-        finally:
+        schliesslich:
             _sync_close(f)
 
     def get_message(self, key):
-        """Return a Message representation oder raise a KeyError."""
-        try:
+        """Return a Message representation oder wirf a KeyError."""
+        versuch:
             wenn self._locked:
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             sonst:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message mit key: %s' % key)
+                wirf KeyError('No message mit key: %s' % key)
             sonst:
-                raise
+                wirf
         mit f:
             wenn self._locked:
                 _lock_file(f)
-            try:
+            versuch:
                 msg = MHMessage(f)
-            finally:
+            schliesslich:
                 wenn self._locked:
                     _unlock_file(f)
         fuer name, key_list in self.get_sequences().items():
@@ -1102,35 +1102,35 @@ klasse MH(Mailbox):
         gib msg
 
     def get_bytes(self, key):
-        """Return a bytes representation oder raise a KeyError."""
-        try:
+        """Return a bytes representation oder wirf a KeyError."""
+        versuch:
             wenn self._locked:
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             sonst:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message mit key: %s' % key)
+                wirf KeyError('No message mit key: %s' % key)
             sonst:
-                raise
+                wirf
         mit f:
             wenn self._locked:
                 _lock_file(f)
-            try:
+            versuch:
                 gib f.read().replace(linesep, b'\n')
-            finally:
+            schliesslich:
                 wenn self._locked:
                     _unlock_file(f)
 
     def get_file(self, key):
-        """Return a file-like representation oder raise a KeyError."""
-        try:
+        """Return a file-like representation oder wirf a KeyError."""
+        versuch:
             f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message mit key: %s' % key)
+                wirf KeyError('No message mit key: %s' % key)
             sonst:
-                raise
+                wirf
         gib _ProxyFile(f)
 
     def iterkeys(self):
@@ -1151,13 +1151,13 @@ klasse MH(Mailbox):
         kwargs = {'encoding': 'ASCII'} wenn text sonst {}
         path = os.path.join(self._path, '.mh_sequences')
         waehrend Wahr:
-            try:
+            versuch:
                 gib open(path, 'r+' + mode, **kwargs)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 pass
-            try:
+            versuch:
                 gib open(path, 'x+' + mode, **kwargs)
-            except FileExistsError:
+            ausser FileExistsError:
                 pass
 
     def lock(self):
@@ -1211,20 +1211,20 @@ klasse MH(Mailbox):
         sowenn entries == []:
             pass
         sonst:
-            raise NotEmptyError('Folder nicht empty: %s' % self._path)
+            wirf NotEmptyError('Folder nicht empty: %s' % self._path)
         os.rmdir(path)
 
     def get_sequences(self):
         """Return a name-to-key-list dictionary to define each sequence."""
         results = {}
-        try:
+        versuch:
             f = open(os.path.join(self._path, '.mh_sequences'), 'r', encoding='ASCII')
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             gib results
         mit f:
             all_keys = set(self.keys())
             fuer line in f:
-                try:
+                versuch:
                     name, contents = line.split(':')
                     keys = set()
                     fuer spec in contents.split():
@@ -1237,15 +1237,15 @@ klasse MH(Mailbox):
                                          wenn key in all_keys]
                     wenn len(results[name]) == 0:
                         del results[name]
-                except ValueError:
-                    raise FormatError('Invalid sequence specification: %s' %
+                ausser ValueError:
+                    wirf FormatError('Invalid sequence specification: %s' %
                                       line.rstrip())
         gib results
 
     def set_sequences(self, sequences):
         """Set sequences using the given name-to-key-list dictionary."""
         f = self._open_mh_sequences_file(text=Wahr)
-        try:
+        versuch:
             os.close(os.open(f.name, os.O_WRONLY | os.O_TRUNC))
             fuer name, keys in sequences.items():
                 wenn len(keys) == 0:
@@ -1268,7 +1268,7 @@ klasse MH(Mailbox):
                     f.write(str(prev) + '\n')
                 sonst:
                     f.write('\n')
-        finally:
+        schliesslich:
             _sync_close(f)
 
     def pack(self):
@@ -1279,10 +1279,10 @@ klasse MH(Mailbox):
         fuer key in self.iterkeys():
             wenn key - 1 != prev:
                 changes.append((key, prev + 1))
-                try:
+                versuch:
                     os.link(os.path.join(self._path, str(key)),
                             os.path.join(self._path, str(prev + 1)))
-                except (AttributeError, PermissionError):
+                ausser (AttributeError, PermissionError):
                     os.rename(os.path.join(self._path, str(key)),
                               os.path.join(self._path, str(prev + 1)))
                 sonst:
@@ -1331,19 +1331,19 @@ klasse Babyl(_singlefileMailbox):
         gib key
 
     def remove(self, key):
-        """Remove the keyed message; raise KeyError wenn it doesn't exist."""
+        """Remove the keyed message; wirf KeyError wenn it doesn't exist."""
         _singlefileMailbox.remove(self, key)
         wenn key in self._labels:
             del self._labels[key]
 
     def __setitem__(self, key, message):
-        """Replace the keyed message; raise KeyError wenn it doesn't exist."""
+        """Replace the keyed message; wirf KeyError wenn it doesn't exist."""
         _singlefileMailbox.__setitem__(self, key, message)
         wenn isinstance(message, BabylMessage):
             self._labels[key] = message.get_labels()
 
     def get_message(self, key):
-        """Return a Message representation oder raise a KeyError."""
+        """Return a Message representation oder wirf a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
@@ -1371,7 +1371,7 @@ klasse Babyl(_singlefileMailbox):
         gib msg
 
     def get_bytes(self, key):
-        """Return a string representation oder raise a KeyError."""
+        """Return a string representation oder wirf a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
@@ -1393,7 +1393,7 @@ klasse Babyl(_singlefileMailbox):
         gib headers + data
 
     def get_file(self, key):
-        """Return a file-like representation oder raise a KeyError."""
+        """Return a file-like representation oder wirf a KeyError."""
         gib io.BytesIO(self.get_bytes(key).replace(b'\n', linesep))
 
     def get_labels(self):
@@ -1556,7 +1556,7 @@ klasse Babyl(_singlefileMailbox):
                     line = line[:-1] + linesep
                 self._file.write(line)
         sonst:
-            raise TypeError('Invalid message type: %s' % type(message))
+            wirf TypeError('Invalid message type: %s' % type(message))
         stop = self._file.tell()
         gib (start, stop)
 
@@ -1581,7 +1581,7 @@ klasse Message(email.message.Message):
         sowenn message is Nichts:
             email.message.Message.__init__(self)
         sonst:
-            raise TypeError('Invalid message type: %s' % type(message))
+            wirf TypeError('Invalid message type: %s' % type(message))
 
     def _become_message(self, message):
         """Assume the non-format-specific state of message."""
@@ -1595,7 +1595,7 @@ klasse Message(email.message.Message):
         wenn isinstance(message, Message):
             gib  # There's nothing format-specific to explain.
         sonst:
-            raise TypeError('Cannot convert to specified type')
+            wirf TypeError('Cannot convert to specified type')
 
 
 klasse MaildirMessage(Message):
@@ -1619,7 +1619,7 @@ klasse MaildirMessage(Message):
         wenn subdir == 'new' oder subdir == 'cur':
             self._subdir = subdir
         sonst:
-            raise ValueError("subdir must be 'new' oder 'cur': %s" % subdir)
+            wirf ValueError("subdir must be 'new' oder 'cur': %s" % subdir)
 
     def get_flags(self):
         """Return als a string the flags that are set."""
@@ -1647,10 +1647,10 @@ klasse MaildirMessage(Message):
 
     def set_date(self, date):
         """Set delivery date of message, in seconds since the epoch."""
-        try:
+        versuch:
             self._date = float(date)
-        except ValueError:
-            raise TypeError("can't convert to float: %s" % date) von Nichts
+        ausser ValueError:
+            wirf TypeError("can't convert to float: %s" % date) von Nichts
 
     def get_info(self):
         """Get the message's "info" als a string."""
@@ -1661,7 +1661,7 @@ klasse MaildirMessage(Message):
         wenn isinstance(info, str):
             self._info = info
         sonst:
-            raise TypeError('info must be a string: %s' % type(info))
+            wirf TypeError('info must be a string: %s' % type(info))
 
     def _explain_to(self, message):
         """Copy Maildir-specific state to message insofar als possible."""
@@ -1703,7 +1703,7 @@ klasse MaildirMessage(Message):
         sowenn isinstance(message, Message):
             pass
         sonst:
-            raise TypeError('Cannot convert to specified type: %s' %
+            wirf TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1750,13 +1750,13 @@ klasse _mboxMMDFMessage(Message):
                 xstatus_flags += flag
                 flags.remove(flag)
         xstatus_flags += ''.join(sorted(flags))
-        try:
+        versuch:
             self.replace_header('Status', status_flags)
-        except KeyError:
+        ausser KeyError:
             self.add_header('Status', status_flags)
-        try:
+        versuch:
             self.replace_header('X-Status', xstatus_flags)
-        except KeyError:
+        ausser KeyError:
             self.add_header('X-Status', xstatus_flags)
 
     def add_flag(self, flag):
@@ -1785,10 +1785,10 @@ klasse _mboxMMDFMessage(Message):
             del message['status']
             del message['x-status']
             maybe_date = ' '.join(self.get_from().split()[-5:])
-            try:
+            versuch:
                 message.set_date(calendar.timegm(time.strptime(maybe_date,
                                                       '%a %b %d %H:%M:%S %Y')))
-            except (ValueError, OverflowError):
+            ausser (ValueError, OverflowError):
                 pass
         sowenn isinstance(message, _mboxMMDFMessage):
             message.set_flags(self.get_flags())
@@ -1816,7 +1816,7 @@ klasse _mboxMMDFMessage(Message):
         sowenn isinstance(message, Message):
             pass
         sonst:
-            raise TypeError('Cannot convert to specified type: %s' %
+            wirf TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1848,13 +1848,13 @@ klasse MHMessage(Message):
             wenn nicht sequence in self._sequences:
                 self._sequences.append(sequence)
         sonst:
-            raise TypeError('sequence type must be str: %s' % type(sequence))
+            wirf TypeError('sequence type must be str: %s' % type(sequence))
 
     def remove_sequence(self, sequence):
         """Remove sequence von the list of sequences including the message."""
-        try:
+        versuch:
             self._sequences.remove(sequence)
-        except ValueError:
+        ausser ValueError:
             pass
 
     def _explain_to(self, message):
@@ -1892,7 +1892,7 @@ klasse MHMessage(Message):
         sowenn isinstance(message, Message):
             pass
         sonst:
-            raise TypeError('Cannot convert to specified type: %s' %
+            wirf TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1921,13 +1921,13 @@ klasse BabylMessage(Message):
             wenn label nicht in self._labels:
                 self._labels.append(label)
         sonst:
-            raise TypeError('label must be a string: %s' % type(label))
+            wirf TypeError('label must be a string: %s' % type(label))
 
     def remove_label(self, label):
         """Remove label von the list of labels on the message."""
-        try:
+        versuch:
             self._labels.remove(label)
-        except ValueError:
+        ausser ValueError:
             pass
 
     def get_visible(self):
@@ -1987,7 +1987,7 @@ klasse BabylMessage(Message):
         sowenn isinstance(message, Message):
             pass
         sonst:
-            raise TypeError('Cannot convert to specified type: %s' %
+            wirf TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -2048,10 +2048,10 @@ klasse _ProxyFile:
     def close(self):
         """Close the file."""
         wenn hasattr(self, '_file'):
-            try:
+            versuch:
                 wenn hasattr(self._file, 'close'):
                     self._file.close()
-            finally:
+            schliesslich:
                 del self._file
 
     def _read(self, size, read_method):
@@ -2135,44 +2135,44 @@ klasse _PartialFile(_ProxyFile):
 def _lock_file(f, dotlock=Wahr):
     """Lock file f using lockf und dot locking."""
     dotlock_done = Falsch
-    try:
+    versuch:
         wenn fcntl:
-            try:
+            versuch:
                 fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno in (errno.EAGAIN, errno.EACCES, errno.EROFS):
-                    raise ExternalClashError('lockf: lock unavailable: %s' %
+                    wirf ExternalClashError('lockf: lock unavailable: %s' %
                                              f.name)
                 sonst:
-                    raise
+                    wirf
         wenn dotlock:
-            try:
+            versuch:
                 pre_lock = _create_temporary(f.name + '.lock')
                 pre_lock.close()
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno in (errno.EACCES, errno.EROFS):
                     gib  # Without write access, just skip dotlocking.
                 sonst:
-                    raise
-            try:
-                try:
+                    wirf
+            versuch:
+                versuch:
                     os.link(pre_lock.name, f.name + '.lock')
                     dotlock_done = Wahr
-                except (AttributeError, PermissionError):
+                ausser (AttributeError, PermissionError):
                     os.rename(pre_lock.name, f.name + '.lock')
                     dotlock_done = Wahr
                 sonst:
                     os.unlink(pre_lock.name)
-            except FileExistsError:
+            ausser FileExistsError:
                 os.remove(pre_lock.name)
-                raise ExternalClashError('dot lock unavailable: %s' %
+                wirf ExternalClashError('dot lock unavailable: %s' %
                                          f.name)
-    except:
+    ausser:
         wenn fcntl:
             fcntl.lockf(f, fcntl.LOCK_UN)
         wenn dotlock_done:
             os.remove(f.name + '.lock')
-        raise
+        wirf
 
 def _unlock_file(f):
     """Unlock file f using lockf und dot locking."""
@@ -2184,9 +2184,9 @@ def _unlock_file(f):
 def _create_carefully(path):
     """Create a file wenn it doesn't exist und open fuer reading und writing."""
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o666)
-    try:
+    versuch:
         gib open(path, 'rb+')
-    finally:
+    schliesslich:
         os.close(fd)
 
 def _create_temporary(path):

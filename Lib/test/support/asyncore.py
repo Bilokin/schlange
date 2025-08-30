@@ -66,15 +66,15 @@ von errno importiere EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, EINVAL, \
 _DISCONNECTED = frozenset({ECONNRESET, ENOTCONN, ESHUTDOWN, ECONNABORTED, EPIPE,
                            EBADF})
 
-try:
+versuch:
     socket_map
-except NameError:
+ausser NameError:
     socket_map = {}
 
 def _strerror(err):
-    try:
+    versuch:
         gib os.strerror(err)
-    except (ValueError, OverflowError, NameError):
+    ausser (ValueError, OverflowError, NameError):
         wenn err in errorcode:
             gib errorcode[err]
         gib "Unknown error %s" %err
@@ -85,31 +85,31 @@ klasse ExitNow(Exception):
 _reraised_exceptions = (ExitNow, KeyboardInterrupt, SystemExit)
 
 def read(obj):
-    try:
+    versuch:
         obj.handle_read_event()
-    except _reraised_exceptions:
-        raise
-    except:
+    ausser _reraised_exceptions:
+        wirf
+    ausser:
         obj.handle_error()
 
 def write(obj):
-    try:
+    versuch:
         obj.handle_write_event()
-    except _reraised_exceptions:
-        raise
-    except:
+    ausser _reraised_exceptions:
+        wirf
+    ausser:
         obj.handle_error()
 
 def _exception(obj):
-    try:
+    versuch:
         obj.handle_expt_event()
-    except _reraised_exceptions:
-        raise
-    except:
+    ausser _reraised_exceptions:
+        wirf
+    ausser:
         obj.handle_error()
 
 def readwrite(obj, flags):
-    try:
+    versuch:
         wenn flags & select.POLLIN:
             obj.handle_read_event()
         wenn flags & select.POLLOUT:
@@ -118,14 +118,14 @@ def readwrite(obj, flags):
             obj.handle_expt_event()
         wenn flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
-    except OSError als e:
+    ausser OSError als e:
         wenn e.errno nicht in _DISCONNECTED:
             obj.handle_error()
         sonst:
             obj.handle_close()
-    except _reraised_exceptions:
-        raise
-    except:
+    ausser _reraised_exceptions:
+        wirf
+    ausser:
         obj.handle_error()
 
 def poll(timeout=0.0, map=Nichts):
@@ -239,9 +239,9 @@ klasse dispatcher:
             self.connected = Wahr
             # The constructor no longer requires that the socket
             # passed be connected.
-            try:
+            versuch:
                 self.addr = sock.getpeername()
-            except OSError als err:
+            ausser OSError als err:
                 wenn err.errno in (ENOTCONN, EINVAL):
                     # To handle the case where we got an unconnected
                     # socket.
@@ -251,7 +251,7 @@ klasse dispatcher:
                     # the user und remove it von the map (to prevent
                     # polling of broken sockets).
                     self.del_channel(map)
-                    raise
+                    wirf
         sonst:
             self.socket = Nichts
 
@@ -262,9 +262,9 @@ klasse dispatcher:
         sowenn self.connected:
             status.append('connected')
         wenn self.addr is nicht Nichts:
-            try:
+            versuch:
                 status.append('%s:%d' % self.addr)
-            except TypeError:
+            ausser TypeError:
                 status.append(repr(self.addr))
         gib '<%s at %#x>' % (' '.join(status), id(self))
 
@@ -296,13 +296,13 @@ klasse dispatcher:
 
     def set_reuse_addr(self):
         # try to re-use a server port wenn possible
-        try:
+        versuch:
             self.socket.setsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEADDR,
                 self.socket.getsockopt(socket.SOL_SOCKET,
                                        socket.SO_REUSEADDR) | 1
                 )
-        except OSError:
+        ausser OSError:
             pass
 
     # ==================================================
@@ -343,37 +343,37 @@ klasse dispatcher:
             self.addr = address
             self.handle_connect_event()
         sonst:
-            raise OSError(err, errorcode[err])
+            wirf OSError(err, errorcode[err])
 
     def accept(self):
         # XXX can gib either an address pair oder Nichts
-        try:
+        versuch:
             conn, addr = self.socket.accept()
-        except TypeError:
+        ausser TypeError:
             gib Nichts
-        except OSError als why:
+        ausser OSError als why:
             wenn why.errno in (EWOULDBLOCK, ECONNABORTED, EAGAIN):
                 gib Nichts
             sonst:
-                raise
+                wirf
         sonst:
             gib conn, addr
 
     def send(self, data):
-        try:
+        versuch:
             result = self.socket.send(data)
             gib result
-        except OSError als why:
+        ausser OSError als why:
             wenn why.errno == EWOULDBLOCK:
                 gib 0
             sowenn why.errno in _DISCONNECTED:
                 self.handle_close()
                 gib 0
             sonst:
-                raise
+                wirf
 
     def recv(self, buffer_size):
-        try:
+        versuch:
             data = self.socket.recv(buffer_size)
             wenn nicht data:
                 # a closed connection is indicated by signaling
@@ -382,13 +382,13 @@ klasse dispatcher:
                 gib b''
             sonst:
                 gib data
-        except OSError als why:
+        ausser OSError als why:
             # winsock sometimes raises ENOTCONN
             wenn why.errno in _DISCONNECTED:
                 self.handle_close()
                 gib b''
             sonst:
-                raise
+                wirf
 
     def close(self):
         self.connected = Falsch
@@ -396,11 +396,11 @@ klasse dispatcher:
         self.connecting = Falsch
         self.del_channel()
         wenn self.socket is nicht Nichts:
-            try:
+            versuch:
                 self.socket.close()
-            except OSError als why:
+            ausser OSError als why:
                 wenn why.errno nicht in (ENOTCONN, EBADF):
-                    raise
+                    wirf
 
     # log und log_info may be overridden to provide more sophisticated
     # logging und warning methods. In general, log is fuer 'hit' logging
@@ -428,7 +428,7 @@ klasse dispatcher:
     def handle_connect_event(self):
         err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
         wenn err != 0:
-            raise OSError(err, _strerror(err))
+            wirf OSError(err, _strerror(err))
         self.handle_connect()
         self.connected = Wahr
         self.connecting = Falsch
@@ -463,9 +463,9 @@ klasse dispatcher:
         nil, t, v, tbinfo = compact_traceback()
 
         # sometimes a user repr method will crash.
-        try:
+        versuch:
             self_repr = repr(self)
-        except:
+        ausser:
             self_repr = '<__repr__(self) failed fuer object at %0x>' % id(self)
 
         self.log_info(
@@ -540,7 +540,7 @@ def compact_traceback():
     exc = sys.exception()
     tb = exc.__traceback__
     wenn nicht tb: # Must have a traceback
-        raise AssertionError("traceback does nicht exist")
+        wirf AssertionError("traceback does nicht exist")
     tbinfo = []
     waehrend tb:
         tbinfo.append((
@@ -561,18 +561,18 @@ def close_all(map=Nichts, ignore_all=Falsch):
     wenn map is Nichts:
         map = socket_map
     fuer x in list(map.values()):
-        try:
+        versuch:
             x.close()
-        except OSError als x:
+        ausser OSError als x:
             wenn x.errno == EBADF:
                 pass
             sowenn nicht ignore_all:
-                raise
-        except _reraised_exceptions:
-            raise
-        except:
+                wirf
+        ausser _reraised_exceptions:
+            wirf
+        ausser:
             wenn nicht ignore_all:
-                raise
+                wirf
     map.clear()
 
 # Asynchronous File I/O:
@@ -614,7 +614,7 @@ wenn os.name == 'posix':
                 optname == socket.SO_ERROR und
                 nicht buflen):
                 gib 0
-            raise NotImplementedError("Only asyncore specific behaviour "
+            wirf NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")
 
         read = recv
@@ -635,9 +635,9 @@ wenn os.name == 'posix':
         def __init__(self, fd, map=Nichts):
             dispatcher.__init__(self, Nichts, map)
             self.connected = Wahr
-            try:
+            versuch:
                 fd = fd.fileno()
-            except AttributeError:
+            ausser AttributeError:
                 pass
             self.set_file(fd)
             # set it to non-blocking mode

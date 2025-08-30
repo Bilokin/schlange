@@ -17,7 +17,7 @@ klasse TZInfo:
     @classmethod
     def fromfile(cls, fileobj):
         wenn fileobj.read(4).decode() != "TZif":
-            raise ValueError("not a zoneinfo file")
+            wirf ValueError("not a zoneinfo file")
         fileobj.seek(20)
         header = fileobj.read(24)
         tzh = (tzh_ttisgmtcnt, tzh_ttisstdcnt, tzh_leapcnt,

@@ -7,13 +7,13 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_else = Falsch
         hit_finally = Falsch
 
-        try:
-            raise Exception('nyaa!')
-        except:
+        versuch:
+            wirf Exception('nyaa!')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_except)
@@ -25,13 +25,13 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_else = Falsch
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
-        except:
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_except)
@@ -42,11 +42,11 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_finally = Falsch
 
-        try:
-            raise Exception('yarr!')
-        except:
+        versuch:
+            wirf Exception('yarr!')
+        ausser:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_except)
@@ -56,11 +56,11 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
-        except:
+        ausser:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_except)
@@ -69,9 +69,9 @@ klasse ExceptTestCases(unittest.TestCase):
     def test_try_except(self):
         hit_except = Falsch
 
-        try:
-            raise Exception('ahoy!')
-        except:
+        versuch:
+            wirf Exception('ahoy!')
+        ausser:
             hit_except = Wahr
 
         self.assertWahr(hit_except)
@@ -79,9 +79,9 @@ klasse ExceptTestCases(unittest.TestCase):
     def test_try_except_no_exception(self):
         hit_except = Falsch
 
-        try:
+        versuch:
             pass
-        except:
+        ausser:
             hit_except = Wahr
 
         self.assertFalsch(hit_except)
@@ -90,9 +90,9 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_else = Falsch
 
-        try:
-            raise Exception('foo!')
-        except:
+        versuch:
+            wirf Exception('foo!')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
@@ -104,9 +104,9 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_else = Falsch
 
-        try:
+        versuch:
             pass
-        except:
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
@@ -117,9 +117,9 @@ klasse ExceptTestCases(unittest.TestCase):
     def test_try_finally_no_exception(self):
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_finally)
@@ -129,14 +129,14 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
-            except:
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
+            ausser:
                 hit_inner_except = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_inner_except)
@@ -150,20 +150,20 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            except:
+            ausser:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
 
-            raise Exception('outer exception')
-        except:
+            wirf Exception('outer exception')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)
@@ -179,19 +179,19 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
-            except:
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
+            ausser:
                 hit_inner_except = Wahr
-                raise Exception('outer exception')
+                wirf Exception('outer exception')
             sonst:
                 hit_inner_else = Wahr
-        except:
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_inner_except)
@@ -207,19 +207,19 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            except:
+            ausser:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
-                raise Exception('outer exception')
-        except:
+                wirf Exception('outer exception')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)
@@ -236,21 +236,21 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_else = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            except:
+            ausser:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
-                raise Exception('outer exception')
-        except:
+                wirf Exception('outer exception')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)
@@ -268,21 +268,21 @@ klasse ExceptTestCases(unittest.TestCase):
         hit_inner_else = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
-            except:
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
+            ausser:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
-                raise Exception('outer exception')
-        except:
+                wirf Exception('outer exception')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
 
@@ -300,13 +300,13 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_else = Falsch
         hit_finally = Falsch
 
-        try:
-            raise Exception('nyaa!')
+        versuch:
+            wirf Exception('nyaa!')
         except* BaseException:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_except)
@@ -318,13 +318,13 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_else = Falsch
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
         except* BaseException:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_except)
@@ -335,11 +335,11 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_finally = Falsch
 
-        try:
-            raise Exception('yarr!')
+        versuch:
+            wirf Exception('yarr!')
         except* BaseException:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_except)
@@ -349,11 +349,11 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
         except* BaseException:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_except)
@@ -362,8 +362,8 @@ klasse ExceptStarTestCases(unittest.TestCase):
     def test_try_except(self):
         hit_except = Falsch
 
-        try:
-            raise Exception('ahoy!')
+        versuch:
+            wirf Exception('ahoy!')
         except* BaseException:
             hit_except = Wahr
 
@@ -372,7 +372,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
     def test_try_except_no_exception(self):
         hit_except = Falsch
 
-        try:
+        versuch:
             pass
         except* BaseException:
             hit_except = Wahr
@@ -383,8 +383,8 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_else = Falsch
 
-        try:
-            raise Exception('foo!')
+        versuch:
+            wirf Exception('foo!')
         except* BaseException:
             hit_except = Wahr
         sonst:
@@ -397,7 +397,7 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_except = Falsch
         hit_else = Falsch
 
-        try:
+        versuch:
             pass
         except* BaseException:
             hit_except = Wahr
@@ -410,9 +410,9 @@ klasse ExceptStarTestCases(unittest.TestCase):
     def test_try_finally_no_exception(self):
         hit_finally = Falsch
 
-        try:
+        versuch:
             pass
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_finally)
@@ -422,14 +422,14 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
             except* BaseException:
                 hit_inner_except = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_inner_except)
@@ -443,20 +443,20 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
             except* BaseException:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
 
-            raise Exception('outer exception')
+            wirf Exception('outer exception')
         except* BaseException:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)
@@ -471,16 +471,16 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
             except* BaseException:
                 hit_inner_except = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
-        except:
+        ausser:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_inner_except)
@@ -494,16 +494,16 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_finally = Falsch
 
-        try:
-            try:
-                raise Exception('inner exception')
-            except:
+        versuch:
+            versuch:
+                wirf Exception('inner exception')
+            ausser:
                 hit_inner_except = Wahr
-            finally:
+            schliesslich:
                 hit_inner_finally = Wahr
         except* BaseException:
             hit_except = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertWahr(hit_inner_except)
@@ -519,20 +519,20 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
             except* BaseException:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
 
-            raise Exception('outer exception')
-        except:
+            wirf Exception('outer exception')
+        ausser:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)
@@ -548,20 +548,20 @@ klasse ExceptStarTestCases(unittest.TestCase):
         hit_inner_except = Falsch
         hit_inner_else = Falsch
 
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            except:
+            ausser:
                 hit_inner_except = Wahr
             sonst:
                 hit_inner_else = Wahr
 
-            raise Exception('outer exception')
+            wirf Exception('outer exception')
         except* BaseException:
             hit_except = Wahr
         sonst:
             hit_else = Wahr
-        finally:
+        schliesslich:
             hit_finally = Wahr
 
         self.assertFalsch(hit_inner_except)

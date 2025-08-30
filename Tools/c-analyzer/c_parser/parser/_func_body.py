@@ -40,11 +40,11 @@ LOCAL_RE = re.compile(rf'^ \s* {LOCAL}', re.VERBOSE)
 
 def parse_function_body(source, name, anon_name):
     # XXX
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 def parse_function_body(name, text, resolve, source, anon_name, parent):
-    raise NotImplementedError
+    wirf NotImplementedError
     # For now we do nicht worry about locals declared in fuer loop "headers".
     depth = 1;
     waehrend depth > 0:
@@ -108,9 +108,9 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             liefere resolve('statement', compound_labeled, Nichts, text, parent), text
         sowenn compound_paren:
             log_match('', m, depth)
-            try:
+            versuch:
                 pos = match_paren(text)
-            except ValueError:
+            ausser ValueError:
                 text = f'{compound_paren} {text}'
                 #resolve(Nichts, Nichts, Nichts, text)
                 text, resolve = continue_text(source, text, resolve)
@@ -165,7 +165,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 liefere resolve('statement', _data, Nichts, text, parent), text
         sonst:
             # This should be unreachable.
-            raise NotImplementedError
+            wirf NotImplementedError
 
 
 #############################
@@ -276,6 +276,6 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
             pass
         sonst:
             # This should be unreachable.
-            raise NotImplementedError
+            wirf NotImplementedError
         srcinfo.advance(remainder)
         liefere Nichts, depth

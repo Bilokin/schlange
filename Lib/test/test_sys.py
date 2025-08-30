@@ -23,9 +23,9 @@ von test.support importiere threading_helper
 von test.support importiere import_helper
 von test.support importiere force_not_colorized
 von test.support importiere SHORT_TIMEOUT
-try:
+versuch:
     von concurrent importiere interpreters
-except ImportError:
+ausser ImportError:
     interpreters = Nichts
 importiere textwrap
 importiere unittest
@@ -63,24 +63,24 @@ klasse DisplayHookTest(unittest.TestCase):
         self.assertRaises(TypeError, dh)
 
         stdout = sys.stdout
-        try:
+        versuch:
             del sys.stdout
             self.assertRaises(RuntimeError, dh, 42)
-        finally:
+        schliesslich:
             sys.stdout = stdout
 
     def test_lost_displayhook(self):
         displayhook = sys.displayhook
-        try:
+        versuch:
             del sys.displayhook
             code = compile("42", "<string>", "single")
             self.assertRaises(RuntimeError, eval, code)
-        finally:
+        schliesslich:
             sys.displayhook = displayhook
 
     def test_custom_displayhook(self):
         def baddisplayhook(obj):
-            raise ValueError
+            wirf ValueError
 
         mit support.swap_attr(sys, 'displayhook', baddisplayhook):
             code = compile("42", "<string>", "single")
@@ -107,11 +107,11 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
     def test_exc_info_with_exception_instance(self):
         def f():
-            raise ValueError(42)
+            wirf ValueError(42)
 
-        try:
+        versuch:
             f()
-        except Exception als e_:
+        ausser Exception als e_:
             e = e_
             exc_info = sys.exc_info()
 
@@ -122,11 +122,11 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
     def test_exc_info_with_exception_type(self):
         def f():
-            raise ValueError
+            wirf ValueError
 
-        try:
+        versuch:
             f()
-        except Exception als e_:
+        ausser Exception als e_:
             e = e_
             exc_info = sys.exc_info()
 
@@ -137,11 +137,11 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
     def test_sys_exception_with_exception_instance(self):
         def f():
-            raise ValueError(42)
+            wirf ValueError(42)
 
-        try:
+        versuch:
             f()
-        except Exception als e_:
+        ausser Exception als e_:
             e = e_
             exc = sys.exception()
 
@@ -150,11 +150,11 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
     def test_sys_exception_with_exception_type(self):
         def f():
-            raise ValueError
+            wirf ValueError
 
-        try:
+        versuch:
             f()
-        except Exception als e_:
+        ausser Exception als e_:
             e = e_
             exc = sys.exception()
 
@@ -166,9 +166,9 @@ klasse ExceptHookTest(unittest.TestCase):
 
     @force_not_colorized
     def test_original_excepthook(self):
-        try:
-            raise ValueError(42)
-        except ValueError als exc:
+        versuch:
+            wirf ValueError(42)
+        ausser ValueError als exc:
             mit support.captured_stderr() als err:
                 sys.__excepthook__(*sys.exc_info())
 
@@ -183,9 +183,9 @@ klasse ExceptHookTest(unittest.TestCase):
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
 
-            try:
-                raise SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
-            except SyntaxError als exc:
+            versuch:
+                wirf SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
+            ausser SyntaxError als exc:
                 mit support.captured_stderr() als err:
                     sys.__excepthook__(*sys.exc_info())
 
@@ -326,11 +326,11 @@ klasse SysModuleTest(unittest.TestCase):
         orig = sys.getswitchinterval()
         # sanity check
         self.assertWahr(orig < 0.5, orig)
-        try:
+        versuch:
             fuer n in 0.00001, 0.05, 3.0, orig:
                 sys.setswitchinterval(n)
                 self.assertAlmostEqual(sys.getswitchinterval(), n)
-        finally:
+        schliesslich:
             sys.setswitchinterval(orig)
 
     def test_getrecursionlimit(self):
@@ -342,13 +342,13 @@ klasse SysModuleTest(unittest.TestCase):
 
     def test_setrecursionlimit(self):
         old_limit = sys.getrecursionlimit()
-        try:
+        versuch:
             sys.setrecursionlimit(10_005)
             self.assertEqual(sys.getrecursionlimit(), 10_005)
 
             self.assertRaises(TypeError, sys.setrecursionlimit)
             self.assertRaises(ValueError, sys.setrecursionlimit, -42)
-        finally:
+        schliesslich:
             sys.setrecursionlimit(old_limit)
 
     def test_recursionlimit_recovery(self):
@@ -358,11 +358,11 @@ klasse SysModuleTest(unittest.TestCase):
         old_limit = sys.getrecursionlimit()
         def f():
             f()
-        try:
+        versuch:
             fuer depth in (50, 75, 100, 250, 1000):
-                try:
+                versuch:
                     sys.setrecursionlimit(depth)
-                except RecursionError:
+                ausser RecursionError:
                     # Issue #25274: The recursion limit is too low at the
                     # current recursion depth
                     weiter
@@ -373,7 +373,7 @@ klasse SysModuleTest(unittest.TestCase):
                     f()
                 mit self.assertRaises(RecursionError):
                     f()
-        finally:
+        schliesslich:
             sys.setrecursionlimit(old_limit)
 
     @test.support.cpython_only
@@ -382,7 +382,7 @@ klasse SysModuleTest(unittest.TestCase):
         # current recursion depth is already higher than limit.
 
         old_limit = sys.getrecursionlimit()
-        try:
+        versuch:
             depth = support.get_recursion_depth()
             mit self.subTest(limit=sys.getrecursionlimit(), depth=depth):
                 # depth + 1 is OK
@@ -397,7 +397,7 @@ klasse SysModuleTest(unittest.TestCase):
                              "cannot set the recursion limit to [0-9]+ "
                              "at the recursion depth [0-9]+: "
                              "the limit is too low")
-        finally:
+        schliesslich:
             sys.setrecursionlimit(old_limit)
 
     def test_getwindowsversion(self):
@@ -487,9 +487,9 @@ klasse SysModuleTest(unittest.TestCase):
             )
             i += 1
             f2 = f.f_back
-            try:
+            versuch:
                 f = sys._getframe(i)
-            except ValueError:
+            ausser ValueError:
                 breche
             self.assertIs(f, f2)
         self.assertIsNichts(sys._getframemodulename(i))
@@ -520,7 +520,7 @@ klasse SysModuleTest(unittest.TestCase):
         t.start()
         entered_g.wait()
 
-        try:
+        versuch:
             # At this point, t has finished its entered_g.set(), although it's
             # impossible to guess whether it's still on that line oder has moved on
             # to its leave_g.wait().
@@ -557,7 +557,7 @@ klasse SysModuleTest(unittest.TestCase):
             filename, lineno, funcname, sourceline = stack[i+1]
             self.assertEqual(funcname, "g456")
             self.assertIn(sourceline, ["leave_g.wait()", "entered_g.set()"])
-        finally:
+        schliesslich:
             # Reap the spawned thread.
             leave_g.set()
             t.join()
@@ -581,9 +581,9 @@ klasse SysModuleTest(unittest.TestCase):
         def g456():
             thread_info.append(threading.get_ident())
             waehrend Wahr:
-                try:
-                    raise ValueError("oops")
-                except ValueError:
+                versuch:
+                    wirf ValueError("oops")
+                ausser ValueError:
                     g_raised.set()
                     wenn leave_g.wait(timeout=support.LONG_TIMEOUT):
                         breche
@@ -592,7 +592,7 @@ klasse SysModuleTest(unittest.TestCase):
         t.start()
         g_raised.wait(timeout=support.LONG_TIMEOUT)
 
-        try:
+        versuch:
             self.assertEqual(len(thread_info), 1)
             thread_id = thread_info[0]
 
@@ -623,7 +623,7 @@ klasse SysModuleTest(unittest.TestCase):
             filename, lineno, funcname, sourceline = stack[i+1]
             self.assertEqual(funcname, "g456")
             self.assertStartsWith(sourceline, ("if leave_g.wait(", "g_raised.set()"))
-        finally:
+        schliesslich:
             # Reap the spawned thread.
             leave_g.set()
             t.join()
@@ -1113,14 +1113,14 @@ klasse SysModuleTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(sys, "getallocatedblocks"),
                          "sys.getallocatedblocks unavailable on this build")
     def test_getallocatedblocks(self):
-        try:
+        versuch:
             importiere _testinternalcapi
-        except ImportError:
+        ausser ImportError:
             with_pymalloc = support.with_pymalloc()
         sonst:
-            try:
+            versuch:
                 alloc_name = _testinternalcapi.pymem_getallocatorsname()
-            except RuntimeError als exc:
+            ausser RuntimeError als exc:
                 # "cannot get allocators name" (ex: tracemalloc is used)
                 with_pymalloc = Wahr
             sonst:
@@ -1139,14 +1139,14 @@ klasse SysModuleTest(unittest.TestCase):
         gc.collect()
         b = sys.getallocatedblocks()
         self.assertLessEqual(b, a)
-        try:
+        versuch:
             # The reported blocks will include immortalized strings, but the
             # total ref count will not. This will sanity check that among all
             # other objects (those eligible fuer garbage collection) there
             # are more references being tracked than allocated blocks.
             interned_immortal = sys.getunicodeinternedsize(_only_immortal=Wahr)
             self.assertLess(a - interned_immortal, sys.gettotalrefcount())
-        except AttributeError:
+        ausser AttributeError:
             # gettotalrefcount() nicht available
             pass
         gc.collect()
@@ -1381,17 +1381,17 @@ klasse UnraisableHookTest(unittest.TestCase):
             def __del__(self):
                 exc = ValueError("del is broken")
                 # The following line is included in the traceback report:
-                raise exc
+                wirf exc
 
         klasse BrokenStrException(Exception):
             def __str__(self):
-                raise Exception("str() is broken")
+                wirf Exception("str() is broken")
 
         klasse BrokenExceptionDel:
             def __del__(self):
                 exc = BrokenStrException()
                 # The following line is included in the traceback report:
-                raise exc
+                wirf exc
 
         fuer test_class in (BrokenDel, BrokenExceptionDel):
             mit self.subTest(test_class):
@@ -1458,7 +1458,7 @@ klasse UnraisableHookTest(unittest.TestCase):
             hook_args = args
 
         obj = hex
-        try:
+        versuch:
             mit test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 exc = ValueError(42)
                 err_writeunraisable(exc, obj)
@@ -1474,7 +1474,7 @@ klasse UnraisableHookTest(unittest.TestCase):
                 self.assertIs(hook_args.exc_traceback, exc.__traceback__)
                 self.assertEqual(hook_args.err_msg, f'custom hook {obj!r}')
                 self.assertIsNichts(hook_args.object)
-        finally:
+        schliesslich:
             # expected und hook_args contain an exception: breche reference cycle
             expected = Nichts
             hook_args = Nichts
@@ -1483,7 +1483,7 @@ klasse UnraisableHookTest(unittest.TestCase):
         _testcapi = import_helper.import_module('_testcapi')
         von _testcapi importiere err_writeunraisable
         def hook_func(*args):
-            raise Exception("hook_func failed")
+            wirf Exception("hook_func failed")
 
         mit test.support.captured_output("stderr") als stderr:
             mit test.support.swap_attr(sys, 'unraisablehook', hook_func):
@@ -1521,7 +1521,7 @@ klasse SizeofTest(unittest.TestCase):
     def test_errors(self):
         klasse BadSizeof:
             def __sizeof__(self):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, sys.getsizeof, BadSizeof())
 
         klasse InvalidSizeof:
@@ -1878,9 +1878,9 @@ klasse SizeofTest(unittest.TestCase):
         # _ast.AST
         importiere _ast
         check(_ast.AST(), size('P'))
-        try:
-            raise TypeError
-        except TypeError als e:
+        versuch:
+            wirf TypeError
+        ausser TypeError als e:
             tb = e.__traceback__
             # traceback
             wenn tb is nicht Nichts:
@@ -2021,7 +2021,7 @@ sock.close()
                               env=env,
                               ) als proc:
             client_socket = Nichts
-            try:
+            versuch:
                 # Accept connection von target process
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
@@ -2042,9 +2042,9 @@ sock.close()
                 # Return output fuer test verification
                 stdout, stderr = proc.communicate(timeout=10.0)
                 gib proc.returncode, stdout, stderr
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest("Insufficient permissions to execute code in remote process")
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 proc.kill()

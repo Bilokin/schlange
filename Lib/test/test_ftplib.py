@@ -11,9 +11,9 @@ importiere os
 importiere threading
 importiere time
 importiere unittest
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 von unittest importiere TestCase, skipUnless
@@ -350,9 +350,9 @@ wenn ssl is nicht Nichts:
             self._ssl_accepting = Wahr
 
         def _do_ssl_handshake(self):
-            try:
+            versuch:
                 self.socket.do_handshake()
-            except ssl.SSLError als err:
+            ausser ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     gib
@@ -361,8 +361,8 @@ wenn ssl is nicht Nichts:
                 # TODO: SSLError does nicht expose alert information
                 sowenn "SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1]:
                     gib self.handle_close()
-                raise
-            except OSError als err:
+                wirf
+            ausser OSError als err:
                 wenn err.args[0] == errno.ECONNABORTED:
                     gib self.handle_close()
             sonst:
@@ -370,13 +370,13 @@ wenn ssl is nicht Nichts:
 
         def _do_ssl_shutdown(self):
             self._ssl_closing = Wahr
-            try:
+            versuch:
                 self.socket = self.socket.unwrap()
-            except ssl.SSLError als err:
+            ausser ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     gib
-            except OSError:
+            ausser OSError:
                 # Any "socket error" corresponds to a SSL_ERROR_SYSCALL gib
                 # von OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
@@ -405,26 +405,26 @@ wenn ssl is nicht Nichts:
                 super(SSLConnection, self).handle_write_event()
 
         def send(self, data):
-            try:
+            versuch:
                 gib super(SSLConnection, self).send(data)
-            except ssl.SSLError als err:
+            ausser ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
                                    ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     gib 0
-                raise
+                wirf
 
         def recv(self, buffer_size):
-            try:
+            versuch:
                 gib super(SSLConnection, self).recv(buffer_size)
-            except ssl.SSLError als err:
+            ausser ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     gib b''
                 wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
                     self.handle_close()
                     gib b''
-                raise
+                wirf
 
         def handle_error(self):
             default_error_handler()
@@ -532,9 +532,9 @@ klasse TestFTPClass(TestCase):
                       ftplib.error_proto, ftplib.Error, OSError,
                       EOFError)
         fuer x in exceptions:
-            try:
-                raise x('exception nicht included in all_errors set')
-            except ftplib.all_errors:
+            versuch:
+                wirf x('exception nicht included in all_errors set')
+            ausser ftplib.all_errors:
                 pass
 
     def test_set_pasv(self):
@@ -753,9 +753,9 @@ klasse TestFTPClass(TestCase):
         def is_client_connected():
             wenn self.client.sock is Nichts:
                 gib Falsch
-            try:
+            versuch:
                 self.client.sendcmd('noop')
-            except (OSError, EOFError):
+            ausser (OSError, EOFError):
                 gib Falsch
             gib Wahr
 
@@ -777,12 +777,12 @@ klasse TestFTPClass(TestCase):
 
         # force a wrong response code to be sent on QUIT: error_perm
         # is expected und the connection is supposed to be closed
-        try:
+        versuch:
             mit ftplib.FTP(timeout=TIMEOUT) als self.client:
                 self.client.connect(self.server.host, self.server.port)
                 self.client.sendcmd('noop')
                 self.server.handler_instance.next_response = '550 error on quit'
-        except ftplib.error_perm als err:
+        ausser ftplib.error_perm als err:
             self.assertEqual(str(err), '550 error on quit')
         sonst:
             self.fail('Exception nicht raised')
@@ -795,26 +795,26 @@ klasse TestFTPClass(TestCase):
     def test_source_address(self):
         self.client.quit()
         port = socket_helper.find_unused_port()
-        try:
+        versuch:
             self.client.connect(self.server.host, self.server.port,
                                 source_address=(HOST, port))
             self.assertEqual(self.client.sock.getsockname()[1], port)
             self.client.quit()
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
-            raise
+            wirf
 
     def test_source_address_passive_connection(self):
         port = socket_helper.find_unused_port()
         self.client.source_address = (HOST, port)
-        try:
+        versuch:
             mit self.client.transfercmd('list') als sock:
                 self.assertEqual(sock.getsockname()[1], port)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
-            raise
+            wirf
 
     def test_parse257(self):
         self.assertEqual(ftplib.parse257('257 "/foo/bar"'), '/foo/bar')
@@ -1074,9 +1074,9 @@ klasse TestTimeouts(TestCase):
         self.sock.listen()
         # (1) Signal the caller that we are ready to accept the connection.
         self.evt.set()
-        try:
+        versuch:
             conn, addr = self.sock.accept()
-        except TimeoutError:
+        ausser TimeoutError:
             pass
         sonst:
             conn.sendall(b"1 Hola mundo\n")
@@ -1084,16 +1084,16 @@ klasse TestTimeouts(TestCase):
             # (2) Signal the caller that it is safe to close the socket.
             self.evt.set()
             conn.close()
-        finally:
+        schliesslich:
             self.sock.close()
 
     def testTimeoutDefault(self):
         # default -- use global socket timeout
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             ftp = ftplib.FTP(HOST)
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertEqual(ftp.sock.gettimeout(), 30)
         self.evt.wait()
@@ -1103,9 +1103,9 @@ klasse TestTimeouts(TestCase):
         # no timeout -- do nicht use global socket timeout
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             ftp = ftplib.FTP(HOST, timeout=Nichts)
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertIsNichts(ftp.sock.gettimeout())
         self.evt.wait()

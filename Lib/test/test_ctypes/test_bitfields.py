@@ -52,12 +52,12 @@ klasse BITS_gcc(Structure):
     _fields_ = TEST_FIELDS
 
 
-try:
+versuch:
     func_msvc = CDLL(_ctypes_test.__file__).unpack_bitfields_msvc
-except AttributeError als err:
+ausser AttributeError als err:
     # The MSVC struct must be available on Windows; it's optional elsewhere
     wenn support.MS_WINDOWS:
-        raise err
+        wirf err
     func_msvc = Nichts
 sonst:
     func_msvc.argtypes = POINTER(BITS_msvc), c_char
@@ -289,9 +289,9 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         self.assertEqual(X.c.offset, sizeof(c_short)*2)
 
     def get_except(self, func, *args, **kw):
-        try:
+        versuch:
             func(*args, **kw)
-        except Exception als detail:
+        ausser Exception als detail:
             gib detail.__class__, str(detail)
 
     def test_mixed_1(self):

@@ -67,7 +67,7 @@ klasse ResourceContainer(Traversable):
         gib itertools.chain(files, dirs)
 
     def open(self, *args, **kwargs):
-        raise IsADirectoryError()
+        wirf IsADirectoryError()
 
 
 klasse ResourceHandle(Traversable):
@@ -92,7 +92,7 @@ klasse ResourceHandle(Traversable):
         gib stream
 
     def joinpath(self, name):
-        raise RuntimeError("Cannot traverse into a resource")
+        wirf RuntimeError("Cannot traverse into a resource")
 
 
 klasse TraversableReader(TraversableResources, SimpleReader):

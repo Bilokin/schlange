@@ -122,7 +122,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             'consts'   : {2 : 0},
         }
 
-        # code fuer "try: pass\n except: pass"
+        # code fuer "try: pass\n ausser: pass"
         insts = [
             ('RESUME', 0),
             ('SETUP_FINALLY', 4),

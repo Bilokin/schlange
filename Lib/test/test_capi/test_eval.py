@@ -91,11 +91,11 @@ klasse Tests(unittest.TestCase):
     def test_eval_set_recursion_limit(self):
         # Test Py_SetRecursionLimit()
         old_limit = sys.getrecursionlimit()
-        try:
+        versuch:
             limit = old_limit + 123
             _testlimitedcapi.eval_set_recursion_limit(limit)
             self.assertEqual(sys.getrecursionlimit(), limit)
-        finally:
+        schliesslich:
             sys.setrecursionlimit(old_limit)
 
 

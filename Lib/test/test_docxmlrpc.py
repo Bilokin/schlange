@@ -17,7 +17,7 @@ def make_request_and_skipIf(condition, reason):
         def make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
-            raise unittest.SkipTest(reason)
+            wirf unittest.SkipTest(reason)
         gib make_request_and_skip
     gib decorator
 
@@ -25,7 +25,7 @@ def make_request_and_skipIf(condition, reason):
 def make_server():
     serv = DocXMLRPCServer(("localhost", 0), logRequests=Falsch)
 
-    try:
+    versuch:
         # Add some documentation
         serv.set_server_title("DocXMLRPCServer Test Documentation")
         serv.set_server_name("DocXMLRPCServer Test Docs")
@@ -63,9 +63,9 @@ def make_server():
         serv.register_function(annotation)
         serv.register_instance(ClassWithAnnotation())
         gib serv
-    except:
+    ausser:
         serv.server_close()
-        raise
+        wirf
 
 klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
     def setUp(self):

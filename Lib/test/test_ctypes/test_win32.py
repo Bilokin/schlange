@@ -22,7 +22,7 @@ klasse FunctionCallTestCase(unittest.TestCase):
         kernel32 = ctypes.windll.kernel32
         mit support.disable_faulthandler():
             # Call functions mit invalid arguments, und make sure
-            # that access violations are trapped und raise an
+            # that access violations are trapped und wirf an
             # exception.
             self.assertRaises(OSError, kernel32.GetModuleHandleA, 32)
 
@@ -96,9 +96,9 @@ klasse TestWinError(unittest.TestCase):
 
         kernel32 = ctypes.windll.kernel32
         kernel32.SetLastError(ERROR_INVALID_PARAMETER)
-        try:
-            raise ctypes.WinError()
-        except OSError als exc:
+        versuch:
+            wirf ctypes.WinError()
+        ausser OSError als exc:
             e = exc
         self.assertEqual(e.args, args)
         self.assertEqual(e.errno, errno.EINVAL)

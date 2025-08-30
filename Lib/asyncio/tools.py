@@ -157,7 +157,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
     g = _task_graph(awaits)
     cycles = _find_cycles(g)
     wenn cycles:
-        raise CycleFoundException(cycles, id2name)
+        wirf CycleFoundException(cycles, id2name)
     labels, children = _build_tree(id2name, awaits, task_stacks)
 
     def pretty(node):
@@ -224,9 +224,9 @@ def _print_cycle_exception(exception: CycleFoundException):
 
 
 def _get_awaited_by_tasks(pid: int) -> list:
-    try:
+    versuch:
         gib get_all_awaited_by(pid)
-    except RuntimeError als e:
+    ausser RuntimeError als e:
         waehrend e.__context__ is nicht Nichts:
             e = e.__context__
         drucke(f"Error retrieving tasks: {e}")
@@ -279,7 +279,7 @@ def _display_awaited_by_tasks_csv(table, *, format):
     sowenn format == TaskTableOutputFormat.bsv:
         delimiter = '\N{BANANA}'
     sonst:
-        raise ValueError(f"Unknown output format: {format}")
+        wirf ValueError(f"Unknown output format: {format}")
     csv_writer = csv.writer(sys.stdout, delimiter=delimiter)
     csv_writer.writerow(_row_header)
     csv_writer.writerows(table)
@@ -289,9 +289,9 @@ def display_awaited_by_tasks_tree(pid: int) -> Nichts:
     """Build und print a tree of all pending tasks under `pid`."""
 
     tasks = _get_awaited_by_tasks(pid)
-    try:
+    versuch:
         result = build_async_tree(tasks)
-    except CycleFoundException als e:
+    ausser CycleFoundException als e:
         _print_cycle_exception(e)
         sys.exit(1)
 

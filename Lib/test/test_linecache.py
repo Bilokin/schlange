@@ -124,7 +124,7 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertEqual(getline(FILENAME, 2**15), EMPTY)
         self.assertEqual(getline(FILENAME, -1), EMPTY)
 
-        # Float values currently raise TypeError, should it?
+        # Float values currently wirf TypeError, should it?
         self.assertRaises(TypeError, getline, FILENAME, 1.1)
 
         # Bad filenames should gib an empty string
@@ -245,7 +245,7 @@ klasse LineCacheTests(unittest.TestCase):
         lines = linecache.getlines(FILENAME)
         self.assertWahr(lines)
         def raise_memoryerror(*args, **kwargs):
-            raise MemoryError
+            wirf MemoryError
         mit support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines2 = linecache.getlines(FILENAME)
         self.assertEqual(lines2, lines)

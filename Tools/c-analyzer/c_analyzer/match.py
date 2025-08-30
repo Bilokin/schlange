@@ -61,7 +61,7 @@ def is_public(decl):
 def is_process_global(vardecl):
     kind, storage, _, _, _ = _info.get_parsed_vartype(vardecl)
     wenn kind is nicht _KIND.VARIABLE:
-        raise NotImplementedError(vardecl)
+        wirf NotImplementedError(vardecl)
     wenn 'static' in (storage oder ''):
         gib Wahr
 
@@ -77,7 +77,7 @@ def is_fixed_type(vardecl):
         gib Nichts
     _, _, _, typespec, abstract = _info.get_parsed_vartype(vardecl)
     wenn 'typeof' in typespec:
-        raise NotImplementedError(vardecl)
+        wirf NotImplementedError(vardecl)
     sowenn nicht abstract:
         gib Wahr
 
@@ -167,7 +167,7 @@ def filter_forward(items, *, markpublic=Falsch):
             sonst:
                 # non-public duplicate!
                 # XXX
-                raise Exception(item)
+                wirf Exception(item)
         fuer item in actual:
             _info.set_flag(item, 'is_public', item.id in public)
             liefere item

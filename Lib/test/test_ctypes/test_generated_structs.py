@@ -154,7 +154,7 @@ klasse Packed4(Structure):
         # The expected behavior is instead tested in
         # StructureTestCase.test_packed, over in test_structures.py.
         wenn sizeof(c_int64) != alignment(c_int64):
-            raise unittest.SkipTest('cannot test on this platform')
+            wirf unittest.SkipTest('cannot test on this platform')
 
     _fields_ = [('a', c_int8), ('b', c_int64)]
     _pack_ = 8
@@ -577,7 +577,7 @@ def struct_or_union(cls):
          gib 'struct'
     wenn issubclass(cls, Union):
         gib 'union'
-    raise TypeError(cls)
+    wirf TypeError(cls)
 
 def maybe_space(string):
     wenn string:
@@ -631,17 +631,17 @@ klasse FieldInfo:
 
     def __repr__(self):
         qname = f'{self.root.parent_type.__name__}.{self.full_name}'
-        try:
+        versuch:
             desc = self.descriptor
-        except AttributeError:
+        ausser AttributeError:
             desc = '???'
         gib f'<{type(self).__name__} fuer {qname}: {desc}>'
 
 def iterfields(tp, parent=Nichts):
     """Get *leaf* fields of a structure oder union, als FieldInfo"""
-    try:
+    versuch:
         fields = tp._fields_
-    except AttributeError:
+    ausser AttributeError:
         liefere parent
     sonst:
         fuer fielddesc in fields:

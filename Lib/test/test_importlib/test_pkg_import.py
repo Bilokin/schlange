@@ -51,9 +51,9 @@ klasse TestImport(unittest.TestCase):
 
         # ...try loading the module when there's a SyntaxError
         self.rewrite_file('for')
-        try: __import__(self.module_name)
-        except SyntaxError: pass
-        sonst: raise RuntimeError('Failed to induce SyntaxError') # self.fail()?
+        versuch: __import__(self.module_name)
+        ausser SyntaxError: pass
+        sonst: wirf RuntimeError('Failed to induce SyntaxError') # self.fail()?
         self.assertNotIn(self.module_name, sys.modules)
         self.assertNotHasAttr(sys.modules[self.package_name], 'foo')
 
@@ -65,9 +65,9 @@ klasse TestImport(unittest.TestCase):
         # ...make a module that just contains that
         self.rewrite_file(var)
 
-        try: __import__(self.module_name)
-        except NameError: pass
-        sonst: raise RuntimeError('Failed to induce NameError.')
+        versuch: __import__(self.module_name)
+        ausser NameError: pass
+        sonst: wirf RuntimeError('Failed to induce NameError.')
 
         # ...now  change  the module  so  that  the NameError  doesn't
         # happen

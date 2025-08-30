@@ -18,9 +18,9 @@ _fname = os_helper.TESTFN
 
 def _delete_files():
     fuer ext in [".dir", ".dat", ".bak"]:
-        try:
+        versuch:
             os.unlink(_fname + ext)
-        except OSError:
+        ausser OSError:
             pass
 
 klasse DumbDBMTestCase(unittest.TestCase):
@@ -44,11 +44,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     @os_helper.skip_unless_working_chmod
     def test_dumbdbm_creation_mode(self):
-        try:
+        versuch:
             old_umask = os.umask(0o002)
             f = dumbdbm.open(_fname, 'c', 0o637)
             f.close()
-        finally:
+        schliesslich:
             os.umask(old_umask)
 
         expected_mode = 0o635

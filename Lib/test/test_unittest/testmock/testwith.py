@@ -25,7 +25,7 @@ klasse WithTest(unittest.TestCase):
         mit self.assertRaises(SampleException):
             mit patch('%s.something' % __name__, sentinel.Something2):
                 self.assertEqual(something, sentinel.Something2, "unpatched")
-                raise SampleException()
+                wirf SampleException()
         self.assertEqual(something, sentinel.Something)
 
 
@@ -120,7 +120,7 @@ klasse WithTest(unittest.TestCase):
         mit self.assertRaises(NameError):
             mit patch.dict(foo, {'a': 'b'}):
                 self.assertEqual(foo, {'a': 'b'})
-                raise NameError('Konrad')
+                wirf NameError('Konrad')
 
         self.assertEqual(foo, {})
 

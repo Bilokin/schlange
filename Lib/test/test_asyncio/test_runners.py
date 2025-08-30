@@ -27,7 +27,7 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
 
     def get_event_loop(self):
         # shouldn't ever be called by asyncio.run()
-        raise RuntimeError
+        wirf RuntimeError
 
     def new_event_loop(self):
         gib self.loop_factory()
@@ -85,7 +85,7 @@ klasse RunTests(BaseTest):
     def test_asyncio_run_raises(self):
         async def main():
             await asyncio.sleep(0)
-            raise ValueError('spam')
+            wirf ValueError('spam')
 
         mit self.assertRaisesRegex(ValueError, 'spam'):
             asyncio.run(main())
@@ -114,9 +114,9 @@ klasse RunTests(BaseTest):
     def test_asyncio_run_from_running_loop(self):
         async def main():
             coro = main()
-            try:
+            versuch:
                 asyncio.run(coro)
-            finally:
+            schliesslich:
                 coro.close()  # Suppress ResourceWarning
 
         mit self.assertRaisesRegex(RuntimeError,
@@ -142,9 +142,9 @@ klasse RunTests(BaseTest):
         call_exc_handler_mock = mock.Mock()
 
         async def leftover():
-            try:
+            versuch:
                 await asyncio.sleep(0.1)
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 1 / 0
 
         async def main():
@@ -179,10 +179,10 @@ klasse RunTests(BaseTest):
         async def spin():
             nonlocal spinner
             spinner = fidget()
-            try:
+            versuch:
                 async fuer the_meaning_of_life in spinner:  # NoQA
                     pass
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 1 / 0
 
         async def main():
@@ -191,7 +191,7 @@ klasse RunTests(BaseTest):
 
             nonlocal lazyboy
             lazyboy = asyncio.create_task(spin())
-            raise FancyExit
+            wirf FancyExit
 
         mit self.assertRaises(FancyExit):
             asyncio.run(main())
@@ -431,7 +431,7 @@ klasse RunnerTests(BaseTest):
             mit self.assertRaises(asyncio.CancelledError):
                 waehrend Wahr:
                     await asyncio.sleep(0)
-            raise asyncio.CancelledError()
+            wirf asyncio.CancelledError()
 
         mit asyncio.Runner() als runner:
             runner.get_loop().call_later(0.1, interrupt_self)
@@ -445,7 +445,7 @@ klasse RunnerTests(BaseTest):
         async def coro(fut):
             mit self.assertRaises(asyncio.CancelledError):
                 await fut
-            raise asyncio.CancelledError()
+            wirf asyncio.CancelledError()
 
         mit asyncio.Runner() als runner:
             fut = runner.get_loop().create_future()
@@ -457,7 +457,7 @@ klasse RunnerTests(BaseTest):
             self.assertWahr(fut.cancelled())
 
     def test_interrupt_cancelled_task(self):
-        # interrupting cancelled main task doesn't raise KeyboardInterrupt
+        # interrupting cancelled main task doesn't wirf KeyboardInterrupt
         assert threading.current_thread() is threading.main_thread()
 
         async def subtask(task):

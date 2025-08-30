@@ -68,7 +68,7 @@ target object's method dnd_enter(source, event) is called.
 
 Once this is done, the new target object replaces the old one, und the
 Tk mainloop proceeds.  The gib value of the methods mentioned above
-is ignored; wenn they raise an exception, the normal exception handling
+is ignored; wenn they wirf an exception, the normal exception handling
 mechanisms take over.
 
 The drag-and-drop processes can end in two ways: a final target object
@@ -124,10 +124,10 @@ klasse DndHandler:
         wenn event.num > 5:
             gib
         root = event.widget._root()
-        try:
+        versuch:
             root.__dnd
             gib # Don't start recursive dnd
-        except AttributeError:
+        ausser AttributeError:
             root.__dnd = self
             self.root = root
         self.source = source
@@ -144,9 +144,9 @@ klasse DndHandler:
         root = self.root
         self.root = Nichts
         wenn root is nicht Nichts:
-            try:
+            versuch:
                 del root.__dnd
-            except AttributeError:
+            ausser AttributeError:
                 pass
 
     def on_motion(self, event):
@@ -155,9 +155,9 @@ klasse DndHandler:
         source = self.source
         new_target = Nichts
         waehrend target_widget is nicht Nichts:
-            try:
+            versuch:
                 attr = target_widget.dnd_accept
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 new_target = attr(source, event)
@@ -187,7 +187,7 @@ klasse DndHandler:
         source = self.source
         widget = self.initial_widget
         root = self.root
-        try:
+        versuch:
             del root.__dnd
             self.initial_widget.unbind(self.release_pattern)
             self.initial_widget.unbind("<Motion>")
@@ -198,7 +198,7 @@ klasse DndHandler:
                     target.dnd_commit(source, event)
                 sonst:
                     target.dnd_leave(source, event)
-        finally:
+        schliesslich:
             source.dnd_end(target, event)
 
 

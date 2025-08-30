@@ -6,9 +6,9 @@ importiere textwrap
 importiere threading
 importiere unittest
 importiere weakref
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 von collections.abc importiere Mapping
@@ -27,9 +27,9 @@ klasse ClearTest(unittest.TestCase):
         1/0
 
     def outer(self, **kwargs):
-        try:
+        versuch:
             self.inner(**kwargs)
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             exc = e
         gib exc
 
@@ -68,9 +68,9 @@ klasse ClearTest(unittest.TestCase):
             wr = weakref.ref(c)
             1/0
 
-        try:
+        versuch:
             inner()
-        except ZeroDivisionError als exc:
+        ausser ZeroDivisionError als exc:
             support.gc_collect()
             self.assertIsNotNichts(wr())
             exc.__traceback__.tb_next.tb_frame.clear()
@@ -94,10 +94,10 @@ klasse ClearTest(unittest.TestCase):
         endly = Falsch
         def g():
             nonlocal endly
-            try:
+            versuch:
                 liefere
                 self.inner()
-            finally:
+            schliesslich:
                 endly = Wahr
         gen = g()
         next(gen)
@@ -110,9 +110,9 @@ klasse ClearTest(unittest.TestCase):
 
     def test_clear_executing(self):
         # Attempting to clear an executing frame is forbidden.
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             f = e.__traceback__.tb_frame
         mit self.assertRaises(RuntimeError):
             f.clear()
@@ -124,16 +124,16 @@ klasse ClearTest(unittest.TestCase):
         endly = Falsch
         def g():
             nonlocal endly
-            try:
+            versuch:
                 1/0
-            except ZeroDivisionError als e:
+            ausser ZeroDivisionError als e:
                 f = e.__traceback__.tb_frame
                 mit self.assertRaises(RuntimeError):
                     f.clear()
                 mit self.assertRaises(RuntimeError):
                     f.f_back.clear()
                 liefere f
-            finally:
+            schliesslich:
                 endly = Wahr
         gen = g()
         f = next(gen)
@@ -189,9 +189,9 @@ klasse FrameAttrsTest(unittest.TestCase):
                 1/0
                 t = 9
             gib inner()
-        try:
+        versuch:
             outer()
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
             waehrend tb:
@@ -234,9 +234,9 @@ klasse FrameAttrsTest(unittest.TestCase):
                 liefere nested()
 
             g = gen()
-            try:
+            versuch:
                 gib next(g)
-            finally:
+            schliesslich:
                 g.close()
 
         def t1():
@@ -257,20 +257,20 @@ klasse FrameAttrsTest(unittest.TestCase):
 
         # For generators f_generator is equal to self
         g = t2()
-        try:
+        versuch:
             frame_g = next(g)
             self.assertIs(g, frame_g)
-        finally:
+        schliesslich:
             g.close()
 
         # Ditto fuer coroutines
         c = t3()
-        try:
+        versuch:
             c.send(Nichts)
-        except StopIteration als ex:
+        ausser StopIteration als ex:
             self.assertIs(ex.value, c)
         sonst:
-            raise AssertionError('coroutine did nicht exit')
+            wirf AssertionError('coroutine did nicht exit')
 
 
 klasse ReprTest(unittest.TestCase):
@@ -289,9 +289,9 @@ klasse ReprTest(unittest.TestCase):
             gib inner()
 
         offset = outer.__code__.co_firstlineno
-        try:
+        versuch:
             outer()
-        except ZeroDivisionError als e:
+        ausser ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
             waehrend tb:

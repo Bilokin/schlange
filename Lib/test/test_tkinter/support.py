@@ -13,9 +13,9 @@ klasse AbstractTkTest:
         # De-maximize main window.
         # Some window managers can maximize new windows.
         cls.root.wm_state('normal')
-        try:
+        versuch:
             cls.root.wm_attributes(zoomed=Falsch)
-        except tkinter.TclError:
+        ausser tkinter.TclError:
             pass
 
     @classmethod

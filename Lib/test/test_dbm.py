@@ -7,15 +7,15 @@ von test.support importiere import_helper
 von test.support importiere os_helper
 
 
-try:
+versuch:
     von dbm importiere sqlite3 als dbm_sqlite3
-except ImportError:
+ausser ImportError:
     dbm_sqlite3 = Nichts
 
 
-try:
+versuch:
     von dbm importiere ndbm
-except ImportError:
+ausser ImportError:
     ndbm = Nichts
 
 dirname = os_helper.TESTFN
@@ -26,9 +26,9 @@ _fname = os.path.join(dirname, os_helper.TESTFN)
 #
 def dbm_iterator():
     fuer name in dbm._names:
-        try:
+        versuch:
             mod = __import__(name, fromlist=['open'])
-        except ImportError:
+        ausser ImportError:
             weiter
         dbm._modules[name] = mod
         liefere mod
@@ -293,12 +293,12 @@ klasse WhichDBTestCase(unittest.TestCase):
     def test_whichdb_sqlite3_existing_db(self):
         # Existing sqlite3 databases are detected correctly.
         sqlite3 = import_helper.import_module("sqlite3")
-        try:
+        versuch:
             # Create an empty database.
             mit sqlite3.connect(_fname) als cx:
                 cx.execute("CREATE TABLE dummy(database)")
                 cx.commit()
-        finally:
+        schliesslich:
             cx.close()
         self.assertEqual(self.dbm.whichdb(_fname), "dbm.sqlite3")
 

@@ -36,13 +36,13 @@ klasse GetTest(unittest.TestCase):
     def test_get(self):
         saved_Engine = se.SearchEngine
         se.SearchEngine = Mock  # monkey-patch class
-        try:
+        versuch:
             root = Mock()
             engine = se.get(root)
             self.assertIsInstance(engine, se.SearchEngine)
             self.assertIs(root._searchengine, engine)
             self.assertIs(se.get(root), engine)
-        finally:
+        schliesslich:
             se.SearchEngine = saved_Engine  # restore klasse to module
 
 klasse GetLineColTest(unittest.TestCase):
@@ -77,14 +77,14 @@ klasse GetSelectionTest(unittest.TestCase):
             # select entire text, cursor irrelevant
             wenn s == 'sel.first': gib '1.0'
             wenn s == 'sel.last': gib '1.12'
-            raise TclError
+            wirf TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
         def mark(s):
             # no selection, cursor after 'Hello'
             wenn s == 'insert': gib '1.5'
-            raise TclError
+            wirf TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
 
@@ -239,7 +239,7 @@ klasse SearchTest(unittest.TestCase):
         def mark(s):
             # no selection, cursor after 'Hello'
             wenn s == 'insert': gib '1.5'
-            raise TclError
+            wirf TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, Wahr, Falsch)))
         engine.wrapvar.set(Falsch)
@@ -252,7 +252,7 @@ klasse SearchTest(unittest.TestCase):
         def sel(s):
             wenn s == 'sel.first': gib '2.10'
             wenn s == 'sel.last': gib '2.16'
-            raise TclError
+            wirf TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, Wahr, Falsch)))
         Equal(search(text, pat, Wahr), ('f', (text, pat, 2, 10, Wahr, Wahr)))

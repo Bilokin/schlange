@@ -20,9 +20,9 @@ von test.support importiere socket_helper
 von test.support importiere threading_helper
 von test.support importiere ALWAYS_EQ, LARGEST, SMALLEST
 
-try:
+versuch:
     importiere gzip
-except ImportError:
+ausser ImportError:
     gzip = Nichts
 
 support.requires_working_socket(module=Wahr)
@@ -307,17 +307,17 @@ klasse XMLRPCTestCase(unittest.TestCase):
                            [('Authorization', 'Basic dXNlcg==')], {}))
 
     def test_ssl_presence(self):
-        try:
+        versuch:
             importiere ssl  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             has_ssl = Falsch
         sonst:
             has_ssl = Wahr
-        try:
+        versuch:
             xmlrpc.client.ServerProxy('https://localhost:9999').bad_function()
-        except NotImplementedError:
+        ausser NotImplementedError:
             self.assertFalsch(has_ssl, "xmlrpc client's error mit SSL support")
-        except OSError:
+        ausser OSError:
             self.assertWahr(has_ssl)
 
     def test_keepalive_disconnect(self):
@@ -373,7 +373,7 @@ klasse SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
         exp_params = 1, 2, 3
 
         def dispatched_func(*params):
-            raise self.DispatchExc(params)
+            wirf self.DispatchExc(params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_function(dispatched_func)
@@ -392,7 +392,7 @@ klasse SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
 
         klasse DispatchedClass:
             def dispatched_func(self, *params):
-                raise SimpleXMLRPCDispatcherTestCase.DispatchExc(params)
+                wirf SimpleXMLRPCDispatcherTestCase.DispatchExc(params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_instance(DispatchedClass())
@@ -412,7 +412,7 @@ klasse SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
 
         klasse TestInstance:
             def _dispatch(self, method, params):
-                raise SimpleXMLRPCDispatcherTestCase.DispatchExc(
+                wirf SimpleXMLRPCDispatcherTestCase.DispatchExc(
                     method, params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
@@ -470,7 +470,7 @@ klasse FaultTestCase(unittest.TestCase):
         self.assertRaises(xmlrpclib.Fault, xmlrpclib.loads, s)
 
     def test_dotted_attribute(self):
-        # this will raise AttributeError because code don't want us to use
+        # this will wirf AttributeError because code don't want us to use
         # private methods
         self.assertRaises(AttributeError,
                           xmlrpc.server.resolve_dotted_attribute, str, '__add')
@@ -636,7 +636,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
     serv = MyXMLRPCServer(("localhost", 0), requestHandler,
                           encoding=encoding,
                           logRequests=Falsch, bind_and_activate=Falsch)
-    try:
+    versuch:
         serv.server_bind()
         global ADDR, PORT, URL
         ADDR, PORT = serv.socket.getsockname()
@@ -666,9 +666,9 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
             serv.handle_request()
             numrequests -= 1
 
-    except TimeoutError:
+    ausser TimeoutError:
         pass
-    finally:
+    schliesslich:
         serv.socket.close()
         PORT = Nichts
         evt.set()
@@ -701,13 +701,13 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
 
     klasse BrokenDispatcher:
         def _marshaled_dispatch(self, data, dispatch_method=Nichts, path=Nichts):
-            raise RuntimeError("broken dispatcher")
+            wirf RuntimeError("broken dispatcher")
 
     serv = MyXMLRPCServer(("localhost", 0), MyRequestHandler,
                           logRequests=Falsch, bind_and_activate=Falsch)
     serv.socket.settimeout(3)
     serv.server_bind()
-    try:
+    versuch:
         global ADDR, PORT, URL
         ADDR, PORT = serv.socket.getsockname()
         #connect to IP address directly.  This avoids socket.create_connection()
@@ -736,9 +736,9 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
             serv.handle_request()
             numrequests -= 1
 
-    except TimeoutError:
+    ausser TimeoutError:
         pass
-    finally:
+    schliesslich:
         serv.socket.close()
         PORT = Nichts
         evt.set()
@@ -751,11 +751,11 @@ def is_unavailable_exception(e):
        given by operations on non-blocking sockets.'''
 
     # sometimes we get a -1 error code and/or empty headers
-    try:
+    versuch:
         wenn e.errcode == -1 oder e.headers is Nichts:
             gib Wahr
         exc_mess = e.headers.get('X-exception')
-    except AttributeError:
+    ausser AttributeError:
         # Ignore OSErrors here.
         exc_mess = str(e)
 
@@ -769,12 +769,12 @@ def make_request_and_skipIf(condition, reason):
         gib lambda func: func
     def decorator(func):
         def make_request_and_skip(self):
-            try:
+            versuch:
                 xmlrpclib.ServerProxy(URL).my_function()
-            except (xmlrpclib.ProtocolError, OSError) als e:
+            ausser (xmlrpclib.ProtocolError, OSError) als e:
                 wenn nicht is_unavailable_exception(e):
-                    raise
-            raise unittest.SkipTest(reason)
+                    wirf
+            wirf unittest.SkipTest(reason)
         gib make_request_and_skip
     gib decorator
 
@@ -807,10 +807,10 @@ klasse BaseServerTestCase(unittest.TestCase):
 
 klasse SimpleServerTestCase(BaseServerTestCase):
     def test_simple1(self):
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.pow(6,8), 6**8)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -819,11 +819,11 @@ klasse SimpleServerTestCase(BaseServerTestCase):
     def test_nonascii(self):
         start_string = 'P\N{LATIN SMALL LETTER Y WITH CIRCUMFLEX}t'
         end_string = 'h\N{LATIN SMALL LETTER O WITH HORN}n'
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -833,21 +833,21 @@ klasse SimpleServerTestCase(BaseServerTestCase):
         start_string = '\u20ac'
         end_string = '\xa4'
 
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL, encoding='iso-8859-15')
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, socket.error) als e:
+        ausser (xmlrpclib.ProtocolError, socket.error) als e:
             # ignore failures due to non-blocking socket unavailable errors.
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     def test_nonascii_methodname(self):
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL, encoding='ascii')
             self.assertEqual(p.têšt(42), 42)
-        except (xmlrpclib.ProtocolError, socket.error) als e:
+        ausser (xmlrpclib.ProtocolError, socket.error) als e:
             # ignore failures due to non-blocking socket unavailable errors.
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -868,11 +868,11 @@ klasse SimpleServerTestCase(BaseServerTestCase):
                                 'system.listMethods', 'system.methodHelp',
                                 'system.methodSignature', 'system.multicall',
                                 'Fixture'])
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             meth = p.system.listMethods()
             self.assertEqual(set(meth), expected_methods)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -880,12 +880,12 @@ klasse SimpleServerTestCase(BaseServerTestCase):
 
 
     def test_introspection2(self):
-        try:
+        versuch:
             # test _methodHelp()
             p = xmlrpclib.ServerProxy(URL)
             divhelp = p.system.methodHelp('div')
             self.assertEqual(divhelp, 'This is the div function')
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -894,12 +894,12 @@ klasse SimpleServerTestCase(BaseServerTestCase):
     @make_request_and_skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted mit -O2 und above")
     def test_introspection3(self):
-        try:
+        versuch:
             # test native doc
             p = xmlrpclib.ServerProxy(URL)
             myfunction = p.system.methodHelp('my_function')
             self.assertEqual(myfunction, 'This is my function')
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -908,18 +908,18 @@ klasse SimpleServerTestCase(BaseServerTestCase):
     def test_introspection4(self):
         # the SimpleXMLRPCServer doesn't support signatures, but
         # at least check that we can try making the call
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             divsig = p.system.methodSignature('div')
             self.assertEqual(divsig, 'signatures nicht supported')
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     def test_multicall(self):
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             multicall = xmlrpclib.MultiCall(p)
             multicall.add(2,3)
@@ -929,14 +929,14 @@ klasse SimpleServerTestCase(BaseServerTestCase):
             self.assertEqual(add_result, 2+3)
             self.assertEqual(pow_result, 6**8)
             self.assertEqual(div_result, 127//42)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     def test_non_existing_multicall(self):
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             multicall = xmlrpclib.MultiCall(p)
             multicall.this_is_not_exists()
@@ -950,7 +950,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
             self.assertEqual(result.results[0]['faultString'],
                 '<class \'Exception\'>:method "this_is_not_exists" '
                 'is nicht supported')
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -995,10 +995,10 @@ klasse SimpleServerTestCase(BaseServerTestCase):
                          (Nichts, Nichts))
 
     def test_context_manager_method_error(self):
-        try:
+        versuch:
             mit xmlrpclib.ServerProxy(URL) als server:
                 server.add(2, "a")
-        except xmlrpclib.Fault:
+        ausser xmlrpclib.Fault:
             pass
         self.assertEqual(server('transport')._connection,
                          (Nichts, Nichts))
@@ -1013,11 +1013,11 @@ klasse SimpleServerEncodingTestCase(BaseServerTestCase):
         start_string = '\u20ac'
         end_string = '\xa4'
 
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, socket.error) als e:
+        ausser (xmlrpclib.ProtocolError, socket.error) als e:
             # ignore failures due to non-blocking socket unavailable errors.
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -1370,10 +1370,10 @@ klasse FailingServerTestCase(unittest.TestCase):
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = Wahr
 
         # test a call that shouldn't fail just als a smoke test
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.pow(6,8), 6**8)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e):
                 # protocol error; provide additional information in test output
@@ -1383,10 +1383,10 @@ klasse FailingServerTestCase(unittest.TestCase):
         # use the broken message class
         xmlrpc.server.SimpleXMLRPCRequestHandler.MessageClass = FailingMessageClass
 
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             p.pow(6,8)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e) und hasattr(e, "headers"):
                 # The two server-side error headers shouldn't be sent back in this case
@@ -1403,10 +1403,10 @@ klasse FailingServerTestCase(unittest.TestCase):
         # info when flag is set
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = Wahr
 
-        try:
+        versuch:
             p = xmlrpclib.ServerProxy(URL)
             p.pow(6,8)
-        except (xmlrpclib.ProtocolError, OSError) als e:
+        ausser (xmlrpclib.ProtocolError, OSError) als e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             wenn nicht is_unavailable_exception(e) und hasattr(e, "headers"):
                 # We should get error info in the response
@@ -1424,9 +1424,9 @@ def captured_stdout(encoding='utf-8'):
     """
     orig_stdout = sys.stdout
     sys.stdout = io.TextIOWrapper(io.BytesIO(), encoding=encoding)
-    try:
+    versuch:
         liefere sys.stdout
-    finally:
+    schliesslich:
         sys.stdout = orig_stdout
 
 

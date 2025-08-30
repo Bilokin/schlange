@@ -160,9 +160,9 @@ def _finddoc(obj):
     sonst:
         gib Nichts
     fuer base in cls.__mro__:
-        try:
+        versuch:
             doc = _getowndoc(getattr(base, name))
-        except AttributeError:
+        ausser AttributeError:
             weiter
         wenn doc is nicht Nichts:
             gib doc
@@ -171,7 +171,7 @@ def _finddoc(obj):
 def _getowndoc(obj):
     """Get the documentation string fuer an object wenn it is not
     inherited von its class."""
-    try:
+    versuch:
         doc = object.__getattribute__(obj, '__doc__')
         wenn doc is Nichts:
             gib Nichts
@@ -180,7 +180,7 @@ def _getowndoc(obj):
             wenn isinstance(typedoc, str) und typedoc == doc:
                 gib Nichts
         gib doc
-    except AttributeError:
+    ausser AttributeError:
         gib Nichts
 
 def _getdoc(object):
@@ -191,9 +191,9 @@ def _getdoc(object):
     uniformly removed von the second line onwards is removed."""
     doc = _getowndoc(object)
     wenn doc is Nichts:
-        try:
+        versuch:
             doc = _finddoc(object)
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             gib Nichts
     wenn nicht isinstance(doc, str):
         gib Nichts
@@ -214,14 +214,14 @@ def splitdoc(doc):
     gib '', '\n'.join(lines)
 
 def _getargspec(object):
-    try:
+    versuch:
         signature = inspect.signature(object, annotation_format=Format.STRING)
         wenn signature:
             name = getattr(object, '__name__', '')
             # <lambda> function are always single-line und should nicht be formatted
             max_width = (80 - len(name)) wenn name != '<lambda>' sonst Nichts
             gib signature.format(max_width=max_width, quote_annotation_strings=Falsch)
-    except (ValueError, TypeError):
+    ausser (ValueError, TypeError):
         argspec = getattr(object, '__text_signature__', Nichts)
         wenn argspec:
             wenn argspec[:2] == '($':
@@ -367,9 +367,9 @@ def sort_attributes(attrs, object):
     # This allows data descriptors to be ordered according
     # to a _fields attribute wenn present.
     fields = getattr(object, '_fields', [])
-    try:
+    versuch:
         field_order = {name : i-len(fields) fuer (i, name) in enumerate(fields)}
-    except TypeError:
+    ausser TypeError:
         field_order = {}
     keyfunc = lambda attr: (field_order.get(attr[0], 0), attr[0])
     attrs.sort(key=keyfunc)
@@ -390,7 +390,7 @@ def source_synopsis(file):
     """Return the one-line summary of a file object, wenn present"""
 
     string = ''
-    try:
+    versuch:
         tokens = tokenize.generate_tokens(file.readline)
         fuer tok_type, tok_string, _, _, _ in tokens:
             wenn tok_type == tokenize.STRING:
@@ -407,7 +407,7 @@ def source_synopsis(file):
                 string += tok_string
             sowenn tok_type nicht in (tokenize.COMMENT, tokenize.NL, tokenize.ENCODING):
                 gib Nichts
-    except (tokenize.TokenError, UnicodeDecodeError, SyntaxError):
+    ausser (tokenize.TokenError, UnicodeDecodeError, SyntaxError):
         gib Nichts
     gib Nichts
 
@@ -426,9 +426,9 @@ def synopsis(filename, cache={}):
         # Now handle the choice.
         wenn loader_cls is Nichts:
             # Must be a source file.
-            try:
+            versuch:
                 file = tokenize.open(filename)
-            except OSError:
+            ausser OSError:
                 # module can't be opened, so skip it
                 gib Nichts
             # text modules can be directly examined
@@ -440,9 +440,9 @@ def synopsis(filename, cache={}):
             # XXX We probably don't need to pass in the loader here.
             spec = importlib.util.spec_from_file_location('__temp__', filename,
                                                           loader=loader)
-            try:
+            versuch:
                 module = importlib._bootstrap._load(spec)
-            except:
+            ausser:
                 gib Nichts
             del sys.modules['__temp__']
             result = module.__doc__.splitlines()[0] wenn module.__doc__ sonst Nichts
@@ -482,10 +482,10 @@ def importfile(path):
         loader = importlib._bootstrap_external.SourceFileLoader(name, path)
     # XXX We probably don't need to pass in the loader here.
     spec = importlib.util.spec_from_file_location(name, path, loader=loader)
-    try:
+    versuch:
         gib importlib._bootstrap._load(spec)
-    except BaseException als err:
-        raise ErrorDuringImport(path, err)
+    ausser BaseException als err:
+        wirf ErrorDuringImport(path, err)
 
 def safeimport(path, forceload=0, cache={}):
     """Import a module; handle errors; gib Nichts wenn the module isn't found.
@@ -495,7 +495,7 @@ def safeimport(path, forceload=0, cache={}):
     package path is specified, the module at the end of the path is returned,
     nicht the package at the beginning.  If the optional 'forceload' argument
     is 1, we reload the module von disk (unless it's a dynamic extension)."""
-    try:
+    versuch:
         # If forceload is 1 und the module has been previously loaded from
         # disk, we always have to reload the module.  Checking the file's
         # mtime isn't good enough (e.g. the module could contain a class
@@ -513,20 +513,20 @@ def safeimport(path, forceload=0, cache={}):
                     cache[key] = sys.modules[key]
                     del sys.modules[key]
         module = importlib.import_module(path)
-    except BaseException als err:
+    ausser BaseException als err:
         # Did the error occur before oder after the module was found?
         wenn path in sys.modules:
             # An error occurred waehrend executing the imported module.
-            raise ErrorDuringImport(sys.modules[path].__file__, err)
+            wirf ErrorDuringImport(sys.modules[path].__file__, err)
         sowenn type(err) is SyntaxError:
             # A SyntaxError occurred before we could execute the module.
-            raise ErrorDuringImport(err.filename, err)
+            wirf ErrorDuringImport(err.filename, err)
         sowenn isinstance(err, ImportError) und err.name == path:
             # No such module in the path.
             gib Nichts
         sonst:
             # Some other error occurred during the importing process.
-            raise ErrorDuringImport(path, err)
+            wirf ErrorDuringImport(path, err)
     gib module
 
 # ---------------------------------------------------- formatter base class
@@ -544,11 +544,11 @@ klasse Doc:
         # identifies something in a way that pydoc itself has issues handling;
         # think 'super' und how it is a descriptor (which raises the exception
         # by lacking a __name__ attribute) und an instance.
-        try:
+        versuch:
             wenn inspect.ismodule(object): gib self.docmodule(*args)
             wenn inspect.isclass(object): gib self.docclass(*args)
             wenn inspect.isroutine(object): gib self.docroutine(*args)
-        except AttributeError:
+        ausser AttributeError:
             pass
         wenn inspect.isdatadescriptor(object): gib self.docdata(*args)
         gib self.docother(*args)
@@ -557,16 +557,16 @@ klasse Doc:
         """Raise an exception fuer unimplemented types."""
         message = "don't know how to document object%s of type %s" % (
             name und ' ' + repr(name), type(object).__name__)
-        raise TypeError(message)
+        wirf TypeError(message)
 
     docmodule = docclass = docroutine = docother = docproperty = docdata = fail
 
     def getdocloc(self, object, basedir=sysconfig.get_path('stdlib')):
         """Return the location of module docs oder Nichts"""
 
-        try:
+        versuch:
             file = inspect.getabsfile(object)
-        except TypeError:
+        ausser TypeError:
             file = '(built-in)'
 
         docloc = os.environ.get("PYTHONDOCS", self.PYTHONDOCS)
@@ -624,9 +624,9 @@ klasse HTMLRepr(Repr):
     repr_str = repr_string
 
     def repr_instance(self, x, level):
-        try:
+        versuch:
             gib self.escape(cram(stripid(repr(x)), self.maxstring))
-        except:
+        ausser:
             gib self.escape('<%s instance>' % x.__class__.__name__)
 
     repr_unicode = repr_string
@@ -827,9 +827,9 @@ klasse HTMLDoc(Doc):
     def docmodule(self, object, name=Nichts, mod=Nichts, *ignored):
         """Produce HTML documentation fuer a module object."""
         name = object.__name__ # ignore the passed-in name
-        try:
+        versuch:
             all = object.__all__
-        except AttributeError:
+        ausser AttributeError:
             all = Nichts
         parts = name.split('.')
         links = []
@@ -839,11 +839,11 @@ klasse HTMLDoc(Doc):
                 ('.'.join(parts[:i+1]), parts[i]))
         linkedname = '.'.join(links + parts[-1:])
         head = '<strong class="title">%s</strong>' % linkedname
-        try:
+        versuch:
             path = inspect.getabsfile(object)
             url = urllib.parse.quote(path)
             filelink = self.filelink(url, path)
-        except TypeError:
+        ausser TypeError:
             filelink = '(built-in)'
         info = []
         wenn hasattr(object, '__version__'):
@@ -977,9 +977,9 @@ klasse HTMLDoc(Doc):
                 hr.maybe()
                 push(msg)
                 fuer name, kind, homecls, value in ok:
-                    try:
+                    versuch:
                         value = getattr(object, name)
-                    except Exception:
+                    ausser Exception:
                         # Some descriptors may meet a failure in their __get__.
                         # (bug #1785)
                         push(self.docdata(value, name, mod))
@@ -1023,17 +1023,17 @@ klasse HTMLDoc(Doc):
         mdict = {}
         fuer key, kind, homecls, value in attrs:
             mdict[key] = anchor = '#' + name + '-' + key
-            try:
+            versuch:
                 value = getattr(object, name)
-            except Exception:
+            ausser Exception:
                 # Some descriptors may meet a failure in their __get__.
                 # (bug #1785)
                 pass
-            try:
+            versuch:
                 # The value may nicht be hashable (e.g., a data attr with
                 # a dict oder list value).
                 mdict[value] = anchor
-            except TypeError:
+            ausser TypeError:
                 pass
 
         waehrend attrs:
@@ -1124,9 +1124,9 @@ klasse HTMLDoc(Doc):
                     imself.__class__, mod)
         sowenn (inspect.ismethoddescriptor(object) oder
               inspect.ismethodwrapper(object)):
-            try:
+            versuch:
                 objclass = object.__objclass__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 wenn cl is Nichts:
@@ -1251,9 +1251,9 @@ klasse TextRepr(Repr):
     repr_str = repr_string
 
     def repr_instance(self, x, level):
-        try:
+        versuch:
             gib cram(stripid(repr(x)), self.maxstring)
-        except:
+        ausser:
             gib '<%s instance>' % x.__class__.__name__
 
 klasse TextDoc(Doc):
@@ -1391,9 +1391,9 @@ location listed above.
             result = result + self.section('AUTHOR', str(object.__author__))
         wenn hasattr(object, '__credits__'):
             result = result + self.section('CREDITS', str(object.__credits__))
-        try:
+        versuch:
             file = inspect.getabsfile(object)
-        except TypeError:
+        ausser TypeError:
             file = '(built-in)'
         result = result + self.section('FILE', file)
         gib result
@@ -1469,9 +1469,9 @@ location listed above.
                 hr.maybe()
                 push(msg)
                 fuer name, kind, homecls, value in ok:
-                    try:
+                    versuch:
                         value = getattr(object, name)
-                    except Exception:
+                    ausser Exception:
                         # Some descriptors may meet a failure in their __get__.
                         # (bug #1785)
                         push(self.docdata(value, name, mod))
@@ -1496,9 +1496,9 @@ location listed above.
                 push(msg)
                 fuer name, kind, homecls, value in ok:
                     doc = getdoc(value)
-                    try:
+                    versuch:
                         obj = getattr(object, name)
-                    except AttributeError:
+                    ausser AttributeError:
                         obj = homecls.__dict__[name]
                     push(self.docother(obj, name, mod, maxlen=70, doc=doc) +
                          '\n')
@@ -1572,9 +1572,9 @@ location listed above.
                     imself.__class__, mod)
         sowenn (inspect.ismethoddescriptor(object) oder
               inspect.ismethodwrapper(object)):
-            try:
+            versuch:
                 objclass = object.__objclass__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 wenn cl is Nichts:
@@ -1698,9 +1698,9 @@ def describe(thing):
     wenn inspect.ismethodwrapper(thing):
         gib 'method wrapper ' + thing.__name__
     wenn inspect.ismethoddescriptor(thing):
-        try:
+        versuch:
             gib 'method descriptor ' + thing.__name__
-        except AttributeError:
+        ausser AttributeError:
             pass
     gib type(thing).__name__
 
@@ -1717,9 +1717,9 @@ def locate(path, forceload=0):
     sonst:
         object = builtins
     fuer part in parts[n:]:
-        try:
+        versuch:
             object = getattr(object, part)
-        except AttributeError:
+        ausser AttributeError:
             gib Nichts
     gib object
 
@@ -1734,7 +1734,7 @@ def resolve(thing, forceload=0):
     wenn isinstance(thing, str):
         object = locate(thing, forceload)
         wenn object is Nichts:
-            raise ImportError('''\
+            wirf ImportError('''\
 No Python documentation found fuer %r.
 Use help() to get the interactive help utility.
 Use help(str) fuer help on the str class.''' % thing)
@@ -1774,7 +1774,7 @@ def doc(thing, title='Python Library Documentation: %s', forceload=0,
         output=Nichts, is_cli=Falsch):
     """Display text documentation, given an object oder a path to an object."""
     wenn output is Nichts:
-        try:
+        versuch:
             wenn isinstance(thing, str):
                 what = thing
             sonst:
@@ -1784,14 +1784,14 @@ def doc(thing, title='Python Library Documentation: %s', forceload=0,
                     wenn nicht isinstance(what, str):
                         what = type(thing).__name__ + ' object'
             pager(render_doc(thing, title, forceload), f'Help on {what!s}')
-        except ImportError als exc:
+        ausser ImportError als exc:
             wenn is_cli:
-                raise
+                wirf
             drucke(exc)
     sonst:
-        try:
+        versuch:
             s = render_doc(thing, title, forceload, plaintext)
-        except ImportError als exc:
+        ausser ImportError als exc:
             s = str(exc)
         output.write(s)
 
@@ -1980,7 +1980,7 @@ klasse Helper:
         'DYNAMICFEATURES': ('dynamic-features', ''),
         'SCOPING': 'NAMESPACES',
         'FRAMES': 'NAMESPACES',
-        'EXCEPTIONS': ('exceptions', 'try except finally raise'),
+        'EXCEPTIONS': ('exceptions', 'try ausser finally raise'),
         'CONVERSIONS': ('conversions', ''),
         'IDENTIFIERS': ('identifiers', 'keywords SPECIALIDENTIFIERS'),
         'SPECIALIDENTIFIERS': ('id-classes', ''),
@@ -2040,9 +2040,9 @@ klasse Helper:
     _GoInteractive = object()
     def __call__(self, request=_GoInteractive):
         wenn request is nicht self._GoInteractive:
-            try:
+            versuch:
                 self.help(request)
-            except ImportError als err:
+            ausser ImportError als err:
                 self.output.write(f'{err}\n')
         sonst:
             self.intro()
@@ -2057,10 +2057,10 @@ has the same effect als typing a particular string at the help> prompt.
     def interact(self):
         self.output.write('\n')
         waehrend Wahr:
-            try:
+            versuch:
                 request = self.getline('help> ')
                 wenn nicht request: breche
-            except (KeyboardInterrupt, EOFError):
+            ausser (KeyboardInterrupt, EOFError):
                 breche
             request = request.strip()
 
@@ -2144,9 +2144,9 @@ Here is a list of available topics.  Enter any topic name to get more help.
         self.list(self.topics.keys(), columns=3)
 
     def showtopic(self, topic, more_xrefs=''):
-        try:
+        versuch:
             importiere pydoc_data.topics
-        except ImportError:
+        ausser ImportError:
             self.output.write('''
 Sorry, topic und keyword documentation is nicht available because the
 module "pydoc_data.topics" could nicht be found.
@@ -2160,9 +2160,9 @@ module "pydoc_data.topics" could nicht be found.
             gib self.showtopic(target, more_xrefs)
 
         label, xrefs = target
-        try:
+        versuch:
             doc = pydoc_data.topics.topics[label]
-        except KeyError:
+        ausser KeyError:
             self.output.write('no documentation found fuer %s\n' % repr(topic))
             gib
         doc = doc.strip() + '\n'
@@ -2187,16 +2187,16 @@ module "pydoc_data.topics" could nicht be found.
         This function duplicates the showtopic method but returns its
         result directly so it can be formatted fuer display in an html page.
         """
-        try:
+        versuch:
             importiere pydoc_data.topics
-        except ImportError:
+        ausser ImportError:
             gib('''
 Sorry, topic und keyword documentation is nicht available because the
 module "pydoc_data.topics" could nicht be found.
 ''' , '')
         target = self.topics.get(topic, self.keywords.get(topic))
         wenn nicht target:
-            raise ValueError('could nicht find topic')
+            wirf ValueError('could nicht find topic')
         wenn isinstance(target, str):
             gib self._gettopic(target, more_xrefs)
         label, xrefs = target
@@ -2267,16 +2267,16 @@ klasse ModuleScanner:
             wenn key is Nichts:
                 callback(Nichts, modname, '')
             sonst:
-                try:
+                versuch:
                     spec = importer.find_spec(modname)
-                except SyntaxError:
+                ausser SyntaxError:
                     # raised by tests fuer bad coding cookies oder BOM
                     weiter
                 loader = spec.loader
                 wenn hasattr(loader, 'get_source'):
-                    try:
+                    versuch:
                         source = loader.get_source(modname)
-                    except Exception:
+                    ausser Exception:
                         wenn onerror:
                             onerror(modname)
                         weiter
@@ -2286,9 +2286,9 @@ klasse ModuleScanner:
                     sonst:
                         path = Nichts
                 sonst:
-                    try:
+                    versuch:
                         module = importlib._bootstrap._load(spec)
-                    except ImportError:
+                    ausser ImportError:
                         wenn onerror:
                             onerror(modname)
                         weiter
@@ -2432,7 +2432,7 @@ def _start_server(urlhandler, hostname, port):
 
         def run(self):
             """Start the server."""
-            try:
+            versuch:
                 DocServer.base = http.server.HTTPServer
                 DocServer.handler = DocHandler
                 DocHandler.MessageClass = email.message.Message
@@ -2440,7 +2440,7 @@ def _start_server(urlhandler, hostname, port):
                 docsvr = DocServer(self.host, self.port, self.ready)
                 self.docserver = docsvr
                 docsvr.serve_until_quit()
-            except Exception als err:
+            ausser Exception als err:
                 self.error = err
 
         def ready(self, server):
@@ -2637,7 +2637,7 @@ def _url_handler(url, content_type="text/html"):
     def html_getobj(url):
         obj = locate(url, forceload=1)
         wenn obj is Nichts und url != 'Nichts':
-            raise ValueError('could nicht find object')
+            wirf ValueError('could nicht find object')
         title = describe(obj)
         content = html.document(obj, url)
         gib title, content
@@ -2656,7 +2656,7 @@ def _url_handler(url, content_type="text/html"):
         complete_url = url
         wenn url.endswith('.html'):
             url = url[:-5]
-        try:
+        versuch:
             wenn url in ("", "index"):
                 title, content = html_index()
             sowenn url == "topics":
@@ -2669,24 +2669,24 @@ def _url_handler(url, content_type="text/html"):
                     title, content = html_search(url)
                 sowenn op == "topic?key":
                     # try topics first, then objects.
-                    try:
+                    versuch:
                         title, content = html_topicpage(url)
-                    except ValueError:
+                    ausser ValueError:
                         title, content = html_getobj(url)
                 sowenn op == "get?key":
                     # try objects first, then topics.
                     wenn url in ("", "index"):
                         title, content = html_index()
                     sonst:
-                        try:
+                        versuch:
                             title, content = html_getobj(url)
-                        except ValueError:
+                        ausser ValueError:
                             title, content = html_topicpage(url)
                 sonst:
-                    raise ValueError('bad pydoc url')
+                    wirf ValueError('bad pydoc url')
             sonst:
                 title, content = html_getobj(url)
-        except Exception als exc:
+        ausser Exception als exc:
             # Catch any errors und display them in an error page.
             title, content = html_error(complete_url, exc)
         gib html.page(title, content)
@@ -2701,7 +2701,7 @@ def _url_handler(url, content_type="text/html"):
     sowenn content_type == 'text/html':
         gib get_html_page(url)
     # Errors outside the url handler are caught by the server.
-    raise TypeError('unknown content type %r fuer url %s' % (content_type, url))
+    wirf TypeError('unknown content type %r fuer url %s' % (content_type, url))
 
 
 def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
@@ -2719,7 +2719,7 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
         server_help_msg = 'Server commands: [b]rowser, [q]uit'
         wenn open_browser:
             webbrowser.open(serverthread.url)
-        try:
+        versuch:
             drucke('Server ready at', serverthread.url)
             drucke(server_help_msg)
             waehrend serverthread.serving:
@@ -2731,9 +2731,9 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
                     webbrowser.open(serverthread.url)
                 sonst:
                     drucke(server_help_msg)
-        except (KeyboardInterrupt, EOFError):
+        ausser (KeyboardInterrupt, EOFError):
             drucke()
-        finally:
+        schliesslich:
             wenn serverthread.serving:
                 serverthread.stop()
                 drucke('Server stopped')
@@ -2789,7 +2789,7 @@ def cli():
 
     _adjust_cli_sys_path()
 
-    try:
+    versuch:
         opts, args = getopt.getopt(sys.argv[1:], 'bk:n:p:w')
         writing = Falsch
         start_server = Falsch
@@ -2816,12 +2816,12 @@ def cli():
             browse(port, hostname=hostname, open_browser=open_browser)
             gib
 
-        wenn nicht args: raise BadUsage
+        wenn nicht args: wirf BadUsage
         fuer arg in args:
             wenn ispath(arg) und nicht os.path.exists(arg):
                 drucke('file %r does nicht exist' % arg)
                 sys.exit(1)
-            try:
+            versuch:
                 wenn ispath(arg) und os.path.isfile(arg):
                     arg = importfile(arg)
                 wenn writing:
@@ -2831,11 +2831,11 @@ def cli():
                         writedoc(arg)
                 sonst:
                     help.help(arg, is_cli=Wahr)
-            except (ImportError, ErrorDuringImport) als value:
+            ausser (ImportError, ErrorDuringImport) als value:
                 drucke(value)
                 sys.exit(1)
 
-    except (getopt.error, BadUsage):
+    ausser (getopt.error, BadUsage):
         cmd = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         drucke("""pydoc - the Python documentation tool
 

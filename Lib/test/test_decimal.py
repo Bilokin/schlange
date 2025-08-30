@@ -282,7 +282,7 @@ klasse IBMTestCases:
     def read_unlimited(self, v, context):
         """Work around the limitations of the 32-bit _decimal version. The
            guaranteed maximum values fuer prec, Emax etc. are 425000000,
-           but higher values usually work, except fuer rare corner cases.
+           but higher values usually work, ausser fuer rare corner cases.
            In particular, all of the IBM tests pass mit maximum values
            of 1070000000."""
         wenn self.decimal == C und self.decimal.MAX_EMAX == 425000000:
@@ -296,14 +296,14 @@ klasse IBMTestCases:
     def eval_file(self, file):
         global skip_expected
         wenn skip_expected:
-            raise unittest.SkipTest
+            wirf unittest.SkipTest
         mit open(file, encoding="utf-8") als f:
             fuer line in f:
                 line = line.replace('\r\n', '').replace('\n', '')
                 #print line
-                try:
+                versuch:
                     t = self.eval_line(line)
-                except self.decimal.DecimalException als exception:
+                ausser self.decimal.DecimalException als exception:
                     #Exception raised where there shouldn't have been one.
                     self.fail('Exception "'+exception.__class__.__name__ + '" raised on line '+line)
 
@@ -331,9 +331,9 @@ klasse IBMTestCases:
         wenn funct == 'rounding':
             value = self.RoundingDict[value]
         sonst:
-            try:
+            versuch:
                 value = int(value)
-            except ValueError:
+            ausser ValueError:
                 pass
 
         funct = self.ChangeDict.get(funct, (lambda *args: Nichts))
@@ -346,7 +346,7 @@ klasse IBMTestCases:
 
         self.context.clear_flags()
 
-        try:
+        versuch:
             Sides = s.split('->')
             L = Sides[0].strip().split()
             id = L[0]
@@ -357,8 +357,8 @@ klasse IBMTestCases:
             L = Sides[1].strip().split()
             ans = L[0]
             exceptions = L[1:]
-        except (TypeError, AttributeError, IndexError):
-            raise self.decimal.InvalidOperation
+        ausser (TypeError, AttributeError, IndexError):
+            wirf self.decimal.InvalidOperation
         def FixQuotes(val):
             val = val.replace("''", 'SingleQuote').replace('""', 'DoubleQuote')
             val = val.replace("'", '').replace('"', '')
@@ -395,15 +395,15 @@ klasse IBMTestCases:
                 wenn EXTENDEDERRORTEST:
                     fuer error in theirexceptions:
                         self.context.traps[error] = 1
-                        try:
+                        versuch:
                             funct(self.context.create_decimal(v))
-                        except error:
+                        ausser error:
                             pass
-                        except Signals[self.decimal] als e:
+                        ausser Signals[self.decimal] als e:
                             self.fail("Raised %s in %s when %s disabled" % \
                                       (e, s, error))
                         sonst:
-                            self.fail("Did nicht raise %s in %s" % (error, s))
+                            self.fail("Did nicht wirf %s in %s" % (error, s))
                         self.context.traps[error] = 0
                 v = self.context.create_decimal(v)
             sonst:
@@ -415,30 +415,30 @@ klasse IBMTestCases:
         wenn EXTENDEDERRORTEST und fname nicht in ('to_sci_string', 'to_eng_string'):
             fuer error in theirexceptions:
                 self.context.traps[error] = 1
-                try:
+                versuch:
                     funct(*vals)
-                except error:
+                ausser error:
                     pass
-                except Signals[self.decimal] als e:
+                ausser Signals[self.decimal] als e:
                     self.fail("Raised %s in %s when %s disabled" % \
                               (e, s, error))
                 sonst:
-                    self.fail("Did nicht raise %s in %s" % (error, s))
+                    self.fail("Did nicht wirf %s in %s" % (error, s))
                 self.context.traps[error] = 0
 
             # als above, but add traps cumulatively, to check precedence
             ordered_errors = [e fuer e in OrderedSignals[self.decimal] wenn e in theirexceptions]
             fuer error in ordered_errors:
                 self.context.traps[error] = 1
-                try:
+                versuch:
                     funct(*vals)
-                except error:
+                ausser error:
                     pass
-                except Signals[self.decimal] als e:
+                ausser Signals[self.decimal] als e:
                     self.fail("Raised %s in %s; expected %s" %
                               (type(e), s, error))
                 sonst:
-                    self.fail("Did nicht raise %s in %s" % (error, s))
+                    self.fail("Did nicht wirf %s in %s" % (error, s))
             # reset traps
             fuer error in ordered_errors:
                 self.context.traps[error] = 0
@@ -446,15 +446,15 @@ klasse IBMTestCases:
 
         wenn DEBUG:
             drucke("--", self.context)
-        try:
+        versuch:
             result = str(funct(*vals))
             wenn fname in self.LogicalFunctions:
                 result = str(int(eval(result))) # 'Wahr', 'Falsch' -> '1', '0'
-        except Signals[self.decimal] als error:
+        ausser Signals[self.decimal] als error:
             self.fail("Raised %s in %s" % (error, s))
-        except: #Catch any error long enough to state the test case.
+        ausser: #Catch any error long enough to state the test case.
             drucke("ERROR:", s)
-            raise
+            wirf
 
         myexceptions = self.getexceptions()
 
@@ -1187,9 +1187,9 @@ klasse FormatTest:
     def test_n_format(self):
         Decimal = self.decimal.Decimal
 
-        try:
+        versuch:
             von locale importiere CHAR_MAX
-        except ImportError:
+        ausser ImportError:
             self.skipTest('locale.CHAR_MAX nicht available')
 
         def make_grouping(lst):
@@ -3888,14 +3888,14 @@ klasse ContextFlags:
             wenn self.decimal == C:
                 context.flags[flag] = Wahr
                 wenn context.traps[flag]:
-                    raise flag
+                    wirf flag
             sonst:
                 context._raise_error(flag)
 
         context = Context(prec=9, Emin = -425000000, Emax = 425000000,
                           rounding=ROUND_HALF_EVEN, traps=[], flags=[])
 
-        # operations that raise various flags, in the form (function, arglist)
+        # operations that wirf various flags, in the form (function, arglist)
         operations = [
             (context._apply, [Decimal("100E-425000010")]),
             (context.sqrt, [Decimal(2)]),
@@ -4167,21 +4167,21 @@ klasse SpecialContexts:
         extended_context_prec = ExtendedContext.prec
 
         ex = Nichts
-        try:
+        versuch:
             BasicContext.prec = ExtendedContext.prec = 441
             fuer template in BasicContext, ExtendedContext:
                 setcontext(template)
                 c = getcontext()
                 self.assertIsNot(c, template)
                 self.assertEqual(c.prec, 441)
-        except Exception als e:
+        ausser Exception als e:
             ex = e.__class__
-        finally:
+        schliesslich:
             BasicContext.prec = basic_context_prec
             ExtendedContext.prec = extended_context_prec
             setcontext(savecontext)
             wenn ex:
-                raise ex
+                wirf ex
 
     def test_default_context(self):
         DefaultContext = self.decimal.DefaultContext
@@ -4204,7 +4204,7 @@ klasse SpecialContexts:
         default_context_prec = DefaultContext.prec
 
         ex = Nichts
-        try:
+        versuch:
             c = getcontext()
             saveprec = c.prec
 
@@ -4216,13 +4216,13 @@ klasse SpecialContexts:
             c = getcontext()
             self.assertIsNot(c, DefaultContext)
             self.assertEqual(c.prec, 961)
-        except Exception als e:
+        ausser Exception als e:
             ex = e.__class__
-        finally:
+        schliesslich:
             DefaultContext.prec = default_context_prec
             setcontext(savecontext)
             wenn ex:
-                raise ex
+                wirf ex
 
 @requires_cdecimal
 klasse CSpecialContexts(SpecialContexts, unittest.TestCase):
@@ -5580,9 +5580,9 @@ klasse CWhitebox(unittest.TestCase):
     def test_invalid_override(self):
         Decimal = C.Decimal
 
-        try:
+        versuch:
             von locale importiere CHAR_MAX
-        except ImportError:
+        ausser ImportError:
             self.skipTest('locale.CHAR_MAX nicht available')
 
         def make_grouping(lst):
@@ -5867,7 +5867,7 @@ klasse SignatureTest(unittest.TestCase):
                 sowenn param.kind == POS_KWD:
                     kwargs[name] = pdict[module][name]
                 sonst:
-                    raise TestFailed("unexpected parameter kind")
+                    wirf TestFailed("unexpected parameter kind")
             gib args, kwargs
 
         def tr(s):
@@ -5914,16 +5914,16 @@ klasse SignatureTest(unittest.TestCase):
 
                     # Run the function:
                     args, kwds = mkargs(C, c_sig)
-                    try:
+                    versuch:
                         getattr(c_type(9), attr)(*args, **kwds)
-                    except Exception:
-                        raise TestFailed("invalid signature fuer %s: %s %s" % (c_func, args, kwds))
+                    ausser Exception:
+                        wirf TestFailed("invalid signature fuer %s: %s %s" % (c_func, args, kwds))
 
                     args, kwds = mkargs(P, p_sig)
-                    try:
+                    versuch:
                         getattr(p_type(9), attr)(*args, **kwds)
-                    except Exception:
-                        raise TestFailed("invalid signature fuer %s: %s %s" % (p_func, args, kwds))
+                    ausser Exception:
+                        wirf TestFailed("invalid signature fuer %s: %s %s" % (p_func, args, kwds))
 
         doit('Decimal')
         doit('Context')
@@ -5987,7 +5987,7 @@ def tearDownModule():
             'C tests skipped: no module named _decimal.'
         )
     wenn nicht orig_sys_decimal is sys.modules['decimal']:
-        raise TestFailed("Internal error: unbalanced number of changes to "
+        wirf TestFailed("Internal error: unbalanced number of changes to "
                          "sys.modules['decimal'].")
 
 

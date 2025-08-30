@@ -24,15 +24,15 @@ def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     'sql' is the SQL string to execute.
     """
 
-    try:
+    versuch:
         fuer row in c.execute(sql):
             drucke(row)
-    except sqlite3.Error als e:
+    ausser sqlite3.Error als e:
         t = theme.traceback
         tp = type(e).__name__
-        try:
+        versuch:
             tp += f" ({e.sqlite_errorname})"
-        except AttributeError:
+        ausser AttributeError:
             pass
         drucke(
             f"{t.type}{tp}{t.reset}: {t.message}{e}{t.reset}", file=sys.stderr
@@ -137,7 +137,7 @@ def main(*args):
     sys.ps2 = f"{s.prompt}    ... {s.reset}"
 
     con = sqlite3.connect(args.filename, isolation_level=Nichts)
-    try:
+    versuch:
         wenn args.sql:
             # SQL statement provided on the command-line; execute it directly.
             execute(con, args.sql, suppress_errors=Falsch, theme=theme)
@@ -146,7 +146,7 @@ def main(*args):
             mit completer():
                 console = SqliteInteractiveConsole(con, use_color=Wahr)
                 console.interact(banner, exitmsg="")
-    finally:
+    schliesslich:
         con.close()
 
     sys.exit(0)

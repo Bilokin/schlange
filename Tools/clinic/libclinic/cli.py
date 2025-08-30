@@ -58,12 +58,12 @@ def parse_file(
 
     extension = os.path.splitext(filename)[1][1:]
     wenn nicht extension:
-        raise ClinicError(f"Can't extract file type fuer file {filename!r}")
+        wirf ClinicError(f"Can't extract file type fuer file {filename!r}")
 
-    try:
+    versuch:
         language = extensions[extension](filename)
-    except KeyError:
-        raise ClinicError(f"Can't identify file type fuer file {filename!r}")
+    ausser KeyError:
+        wirf ClinicError(f"Can't identify file type fuer file {filename!r}")
 
     mit open(filename, encoding="utf-8") als f:
         raw = f.read()
@@ -222,9 +222,9 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
 def main(argv: list[str] | Nichts = Nichts) -> NoReturn:
     parser = create_cli()
     args = parser.parse_args(argv)
-    try:
+    versuch:
         run_clinic(parser, args)
-    except ClinicError als exc:
+    ausser ClinicError als exc:
         sys.stderr.write(exc.report())
         sys.exit(1)
     sonst:

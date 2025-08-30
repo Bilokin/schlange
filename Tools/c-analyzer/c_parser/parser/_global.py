@@ -175,4 +175,4 @@ def _parse_next(m, srcinfo, anon_name):
 
     sonst:
         # This should be unreachable.
-        raise NotImplementedError
+        wirf NotImplementedError

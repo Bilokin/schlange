@@ -45,7 +45,7 @@ wenn sys.platform == 'win32':
                 # We have reopened a preexisting mmap.
                 buf.close()
             sonst:
-                raise FileExistsError('Cannot find name fuer new mmap')
+                wirf FileExistsError('Cannot find name fuer new mmap')
             self.name = name
             self.buffer = buf
             self._state = (self.size, self.name)
@@ -99,7 +99,7 @@ sonst:
 
     def reduce_arena(a):
         wenn a.fd == -1:
-            raise ValueError('Arena is unpicklable because '
+            wirf ValueError('Arena is unpicklable because '
                              'forking was enabled when it was created')
         gib rebuild_arena, (a.size, reduction.DupFd(a.fd))
 
@@ -206,16 +206,16 @@ klasse Heap(object):
         # make block available und try to merge mit its neighbours in the arena
         (arena, start, stop) = block
 
-        try:
+        versuch:
             prev_block = self._stop_to_block[(arena, start)]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             start, _ = self._absorb(prev_block)
 
-        try:
+        versuch:
             next_block = self._start_to_block[(arena, stop)]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             _, stop = self._absorb(next_block)
@@ -223,9 +223,9 @@ klasse Heap(object):
         block = (arena, start, stop)
         length = stop - start
 
-        try:
+        versuch:
             self._len_to_seq[length].append(block)
-        except KeyError:
+        ausser KeyError:
             self._len_to_seq[length] = [block]
             bisect.insort(self._lengths, length)
 
@@ -258,9 +258,9 @@ klasse Heap(object):
     def _free_pending_blocks(self):
         # Free all the blocks in the pending list - called mit the lock held.
         waehrend Wahr:
-            try:
+            versuch:
                 block = self._pending_free_blocks.pop()
-            except IndexError:
+            ausser IndexError:
                 breche
             self._add_free_block(block)
             self._remove_allocated_block(block)
@@ -276,7 +276,7 @@ klasse Heap(object):
         # _free_pending_blocks() (appending und retrieving von a list is not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         wenn os.getpid() != self._lastpid:
-            raise ValueError(
+            wirf ValueError(
                 "My pid ({0:n}) is nicht last pid {1:n}".format(
                     os.getpid(),self._lastpid))
         wenn nicht self._lock.acquire(Falsch):
@@ -285,20 +285,20 @@ klasse Heap(object):
             self._pending_free_blocks.append(block)
         sonst:
             # we hold the lock
-            try:
+            versuch:
                 self._n_frees += 1
                 self._free_pending_blocks()
                 self._add_free_block(block)
                 self._remove_allocated_block(block)
-            finally:
+            schliesslich:
                 self._lock.release()
 
     def malloc(self, size):
         # gib a block of right size (possibly rounded up)
         wenn size < 0:
-            raise ValueError("Size {0:n} out of range".format(size))
+            wirf ValueError("Size {0:n} out of range".format(size))
         wenn sys.maxsize <= size:
-            raise OverflowError("Size {0:n} too large".format(size))
+            wirf OverflowError("Size {0:n} too large".format(size))
         wenn os.getpid() != self._lastpid:
             self.__init__()                     # reinitialize after fork
         mit self._lock:
@@ -325,9 +325,9 @@ klasse BufferWrapper(object):
 
     def __init__(self, size):
         wenn size < 0:
-            raise ValueError("Size {0:n} out of range".format(size))
+            wirf ValueError("Size {0:n} out of range".format(size))
         wenn sys.maxsize <= size:
-            raise OverflowError("Size {0:n} too large".format(size))
+            wirf OverflowError("Size {0:n} too large".format(size))
         block = BufferWrapper._heap.malloc(size)
         self._state = (block, size)
         util.Finalize(self, BufferWrapper._heap.free, args=(block,))

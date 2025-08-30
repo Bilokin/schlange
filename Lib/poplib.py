@@ -18,10 +18,10 @@ importiere re
 importiere socket
 importiere sys
 
-try:
+versuch:
     importiere ssl
     HAVE_SSL = Wahr
-except ImportError:
+ausser ImportError:
     HAVE_SSL = Falsch
 
 __all__ = ["POP3","error_proto"]
@@ -108,7 +108,7 @@ klasse POP3:
 
     def _create_socket(self, timeout):
         wenn timeout is nicht Nichts und nicht timeout:
-            raise ValueError('Non-blocking socket (timeout=0) is nicht supported')
+            wirf ValueError('Non-blocking socket (timeout=0) is nicht supported')
         gib socket.create_connection((self.host, self.port), timeout)
 
     def _putline(self, line):
@@ -132,10 +132,10 @@ klasse POP3:
     def _getline(self):
         line = self.file.readline(_MAXLINE + 1)
         wenn len(line) > _MAXLINE:
-            raise error_proto('line too long')
+            wirf error_proto('line too long')
 
         wenn self._debugging > 1: drucke('*get*', repr(line))
-        wenn nicht line: raise error_proto('-ERR EOF')
+        wenn nicht line: wirf error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
         # however, 'readline()' returns lines ending in LF
@@ -154,7 +154,7 @@ klasse POP3:
         resp, o = self._getline()
         wenn self._debugging > 1: drucke('*resp*', repr(resp))
         wenn nicht resp.startswith(b'+'):
-            raise error_proto(resp)
+            wirf error_proto(resp)
         gib resp
 
 
@@ -231,13 +231,13 @@ klasse POP3:
         # RFC 1939 requires at least 3 elements (+OK, message count, mailbox size)
         # but allows additional data after the required fields
         wenn len(rets) < 3:
-            raise error_proto("Invalid STAT response format")
+            wirf error_proto("Invalid STAT response format")
 
-        try:
+        versuch:
             numMessages = int(rets[1])
             sizeMessages = int(rets[2])
-        except ValueError:
-            raise error_proto("Invalid STAT response data: non-numeric values")
+        ausser ValueError:
+            wirf error_proto("Invalid STAT response data: non-numeric values")
 
         gib (numMessages, sizeMessages)
 
@@ -293,25 +293,25 @@ klasse POP3:
 
     def close(self):
         """Close the connection without assuming anything about it."""
-        try:
+        versuch:
             file = self.file
             self.file = Nichts
             wenn file is nicht Nichts:
                 file.close()
-        finally:
+        schliesslich:
             sock = self.sock
             self.sock = Nichts
             wenn sock is nicht Nichts:
-                try:
+                versuch:
                     sock.shutdown(socket.SHUT_RDWR)
-                except OSError als exc:
+                ausser OSError als exc:
                     # The server might already have closed the connection.
                     # On Windows, this may result in WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
                     wenn (exc.errno != errno.ENOTCONN
                        und getattr(exc, 'winerror', 0) != 10022):
-                        raise
-                finally:
+                        wirf
+                schliesslich:
                     sock.close()
 
     #__del__ = quit
@@ -340,7 +340,7 @@ klasse POP3:
         secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
         wenn nicht m:
-            raise error_proto('-ERR APOP nicht supported by server')
+            wirf error_proto('-ERR APOP nicht supported by server')
         importiere hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
@@ -392,14 +392,14 @@ klasse POP3:
             gib lst[0], lst[1:]
 
         caps = {}
-        try:
+        versuch:
             resp = self._longcmd('CAPA')
             rawcaps = resp[1]
             fuer capline in rawcaps:
                 capnm, capargs = _parsecap(capline)
                 caps[capnm] = capargs
-        except error_proto:
-            raise error_proto('-ERR CAPA nicht supported by server')
+        ausser error_proto:
+            wirf error_proto('-ERR CAPA nicht supported by server')
         gib caps
 
 
@@ -409,12 +409,12 @@ klasse POP3:
                 context - a ssl.SSLContext
         """
         wenn nicht HAVE_SSL:
-            raise error_proto('-ERR TLS support missing')
+            wirf error_proto('-ERR TLS support missing')
         wenn self._tls_established:
-            raise error_proto('-ERR TLS session already established')
+            wirf error_proto('-ERR TLS session already established')
         caps = self.capa()
         wenn nicht 'STLS' in caps:
-            raise error_proto('-ERR STLS nicht supported by server')
+            wirf error_proto('-ERR STLS nicht supported by server')
         wenn context is Nichts:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
@@ -457,7 +457,7 @@ wenn HAVE_SSL:
             STLS command doesn't make any sense on an already established
             SSL/TLS session.
             """
-            raise error_proto('-ERR TLS session already established')
+            wirf error_proto('-ERR TLS session already established')
 
     __all__.append("POP3_SSL")
 

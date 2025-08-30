@@ -25,7 +25,7 @@ klasse MIMEMessage(MIMENonMultipart):
         """
         MIMENonMultipart.__init__(self, 'message', _subtype, policy=policy)
         wenn nicht isinstance(_msg, message.Message):
-            raise TypeError('Argument is nicht an instance of Message')
+            wirf TypeError('Argument is nicht an instance of Message')
         # It's convenient to use this base klasse method.  We need to do it
         # this way oder we'll get an exception
         message.Message.attach(self, _msg)

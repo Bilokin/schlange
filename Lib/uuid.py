@@ -208,7 +208,7 @@ klasse UUID:
         """
 
         wenn [hex, bytes, bytes_le, fields, int].count(Nichts) != 4:
-            raise TypeError('one of the hex, bytes, bytes_le, fields, '
+            wirf TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
         wenn int is nicht Nichts:
             pass
@@ -216,45 +216,45 @@ klasse UUID:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
             wenn len(hex) != 32:
-                raise ValueError('badly formed hexadecimal UUID string')
+                wirf ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
         sowenn bytes_le is nicht Nichts:
             wenn len(bytes_le) != 16:
-                raise ValueError('bytes_le is nicht a 16-char string')
+                wirf ValueError('bytes_le is nicht a 16-char string')
             assert isinstance(bytes_le, bytes_), repr(bytes_le)
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
             int = int_.from_bytes(bytes)  # big endian
         sowenn bytes is nicht Nichts:
             wenn len(bytes) != 16:
-                raise ValueError('bytes is nicht a 16-char string')
+                wirf ValueError('bytes is nicht a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
             int = int_.from_bytes(bytes)  # big endian
         sowenn fields is nicht Nichts:
             wenn len(fields) != 6:
-                raise ValueError('fields is nicht a 6-tuple')
+                wirf ValueError('fields is nicht a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
             wenn nicht 0 <= time_low < (1 << 32):
-                raise ValueError('field 1 out of range (need a 32-bit value)')
+                wirf ValueError('field 1 out of range (need a 32-bit value)')
             wenn nicht 0 <= time_mid < (1 << 16):
-                raise ValueError('field 2 out of range (need a 16-bit value)')
+                wirf ValueError('field 2 out of range (need a 16-bit value)')
             wenn nicht 0 <= time_hi_version < (1 << 16):
-                raise ValueError('field 3 out of range (need a 16-bit value)')
+                wirf ValueError('field 3 out of range (need a 16-bit value)')
             wenn nicht 0 <= clock_seq_hi_variant < (1 << 8):
-                raise ValueError('field 4 out of range (need an 8-bit value)')
+                wirf ValueError('field 4 out of range (need an 8-bit value)')
             wenn nicht 0 <= clock_seq_low < (1 << 8):
-                raise ValueError('field 5 out of range (need an 8-bit value)')
+                wirf ValueError('field 5 out of range (need an 8-bit value)')
             wenn nicht 0 <= node < (1 << 48):
-                raise ValueError('field 6 out of range (need a 48-bit value)')
+                wirf ValueError('field 6 out of range (need a 48-bit value)')
             clock_seq = (clock_seq_hi_variant << 8) | clock_seq_low
             int = ((time_low << 96) | (time_mid << 80) |
                    (time_hi_version << 64) | (clock_seq << 48) | node)
         wenn nicht 0 <= int <= _UINT_128_MAX:
-            raise ValueError('int is out of range (need a 128-bit value)')
+            wirf ValueError('int is out of range (need a 128-bit value)')
         wenn version is nicht Nichts:
             wenn nicht 1 <= version <= 8:
-                raise ValueError('illegal version number')
+                wirf ValueError('illegal version number')
             # clear the variant und the version number bits
             int &= _RFC_4122_CLEARFLAGS_MASK
             # Set the variant to RFC 4122/9562.
@@ -326,7 +326,7 @@ klasse UUID:
         gib '%s(%r)' % (self.__class__.__name__, str(self))
 
     def __setattr__(self, name, value):
-        raise TypeError('UUID objects are immutable')
+        wirf TypeError('UUID objects are immutable')
 
     def __str__(self):
         x = self.hex
@@ -380,7 +380,7 @@ klasse UUID:
         sonst:
             # time_lo (32) | time_mid (16) | ver (4) | time_hi (12) | ... (64)
             #
-            # For compatibility purposes, we do nicht warn oder raise when the
+            # For compatibility purposes, we do nicht warn oder wirf when the
             # version is nicht 1 (timestamp is irrelevant to other versions).
             time_hi = (self.int >> 64) & 0x0fff
             time_lo = self.int >> 96
@@ -424,7 +424,7 @@ klasse UUID:
 def _get_command_stdout(command, *args):
     importiere io, os, shutil, subprocess
 
-    try:
+    versuch:
         path_dirs = os.environ.get('PATH', os.defpath).split(os.pathsep)
         path_dirs.extend(['/sbin', '/usr/sbin'])
         executable = shutil.which(command, path=os.pathsep.join(path_dirs))
@@ -448,7 +448,7 @@ def _get_command_stdout(command, *args):
             gib Nichts
         stdout, stderr = proc.communicate()
         gib io.BytesIO(stdout)
-    except (OSError, subprocess.SubprocessError):
+    ausser (OSError, subprocess.SubprocessError):
         gib Nichts
 
 
@@ -489,10 +489,10 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
         words = line.lower().rstrip().split()
         fuer i in range(len(words)):
             wenn words[i] in keywords:
-                try:
+                versuch:
                     word = words[get_word_index(i)]
                     mac = int(word.replace(_MAC_DELIM, b''), 16)
-                except (ValueError, IndexError):
+                ausser (ValueError, IndexError):
                     # Virtual interfaces, such als those provided by
                     # VPNs, do nicht have a colon-delimited MAC address
                     # als expected, but a 16-byte HWAddr separated by
@@ -528,9 +528,9 @@ def _parse_mac(word):
         wenn nicht all(len(part) == 2 fuer part in parts):
             gib
         hexstr = b''.join(parts)
-    try:
+    versuch:
         gib int(hexstr, 16)
-    except ValueError:
+    ausser ValueError:
         gib
 
 
@@ -546,17 +546,17 @@ def _find_mac_under_heading(command, args, heading):
         gib Nichts
 
     keywords = stdout.readline().rstrip().split()
-    try:
+    versuch:
         column_index = keywords.index(heading)
-    except ValueError:
+    ausser ValueError:
         gib Nichts
 
     first_local_mac = Nichts
     fuer line in stdout:
         words = line.rstrip().split()
-        try:
+        versuch:
             word = words[column_index]
-        except IndexError:
+        ausser IndexError:
             weiter
 
         mac = _parse_mac(word)
@@ -595,9 +595,9 @@ def _arp_getnode():
     importiere os, socket
     wenn nicht hasattr(socket, "gethostbyname"):
         gib Nichts
-    try:
+    versuch:
         ip_addr = socket.gethostbyname(socket.gethostname())
-    except OSError:
+    ausser OSError:
         gib Nichts
 
     # Try getting the MAC addr von arp based on our IP address (Solaris).
@@ -630,12 +630,12 @@ def _netstat_getnode():
 
 
 # Import optional C extension at toplevel, to help disabling it when testing
-try:
+versuch:
     importiere _uuid
     _generate_time_safe = getattr(_uuid, "generate_time_safe", Nichts)
     _has_stable_extractable_node = _uuid.has_stable_extractable_node
     _UuidCreate = getattr(_uuid, "UuidCreate", Nichts)
-except ImportError:
+ausser ImportError:
     _uuid = Nichts
     _generate_time_safe = Nichts
     _has_stable_extractable_node = Falsch
@@ -712,9 +712,9 @@ def getnode():
         gib _node
 
     fuer getter in _GETTERS + [_random_getnode]:
-        try:
+        versuch:
             _node = getter()
-        except:
+        ausser:
             weiter
         wenn (_node is nicht Nichts) und (0 <= _node < (1 << 48)):
             gib _node
@@ -733,9 +733,9 @@ def uuid1(node=Nichts, clock_seq=Nichts):
     # use UuidCreate here because its UUIDs don't conform to RFC 4122).
     wenn _generate_time_safe is nicht Nichts und node is clock_seq is Nichts:
         uuid_time, safely_generated = _generate_time_safe()
-        try:
+        versuch:
             is_safe = SafeUUID(safely_generated)
-        except ValueError:
+        ausser ValueError:
             is_safe = SafeUUID.unknown
         gib UUID(bytes=uuid_time, is_safe=is_safe)
 

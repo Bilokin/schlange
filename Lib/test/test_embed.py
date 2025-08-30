@@ -17,12 +17,12 @@ importiere tempfile
 importiere textwrap
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 
@@ -123,12 +123,12 @@ klasse EmbeddingTestsMixin:
                              universal_newlines=Wahr,
                              env=env,
                              cwd=cwd)
-        try:
+        versuch:
             (out, err) = p.communicate(input=input, timeout=timeout)
-        except:
+        ausser:
             p.terminate()
             p.wait()
-            raise
+            wirf
         wenn p.returncode != returncode und support.verbose:
             drucke(f"--- {cmd} failed ---")
             drucke(f"stdout:\n{out}")
@@ -219,7 +219,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 # is going on mit the pointers in Programs/_testembed.c.
                 # interp.interp is 0x0 und interp.modules is the same
                 # between interpreters.
-                raise unittest.SkipTest('platform prints pointers als 0x0')
+                wirf unittest.SkipTest('platform prints pointers als 0x0')
 
             fuer sub in subs:
                 # A new subinterpreter may have the same
@@ -497,9 +497,9 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         # Test _PyArg_Parser initializations via _PyArg_UnpackKeywords()
         # https://github.com/python/cpython/issues/122334
         code = textwrap.dedent("""
-            try:
+            versuch:
                 importiere _ssl
-            except ModuleNotFoundError:
+            ausser ModuleNotFoundError:
                 _ssl = Nichts
             wenn _ssl is nicht Nichts:
                 _ssl.txt2obj(txt='1.3')
@@ -764,13 +764,13 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
         wenn proc.returncode:
-            raise Exception(f"failed to get the default config: "
+            wirf Exception(f"failed to get the default config: "
                             f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
         stdout = proc.stdout.decode('utf-8')
         # ignore stderr
-        try:
+        versuch:
             gib json.loads(stdout)
-        except json.JSONDecodeError:
+        ausser json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {stdout!r}")
 
     def _get_expected_config(self):
@@ -938,9 +938,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             stderr = ""
         wenn stderr is nicht Nichts und nicht ignore_stderr:
             self.assertEqual(err.rstrip(), stderr)
-        try:
+        versuch:
             configs = json.loads(out)
-        except json.JSONDecodeError:
+        ausser json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {out!r}")
 
         self.check_pre_config(configs, expected_preconfig)
@@ -1689,9 +1689,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                  "PYTHONPATH": os.path.pathsep.join(c[0] fuer c in CASES)}
         )
         self.assertEqual(err, "")
-        try:
+        versuch:
             out = json.loads(out)
-        except json.JSONDecodeError:
+        ausser json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {out!r}")
 
         results = out['config']["module_search_paths"]
@@ -1837,9 +1837,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'test_init_main_interpreter_settings',
         )
         self.assertEqual(err, '')
-        try:
+        versuch:
             out = json.loads(out)
-        except json.JSONDecodeError:
+        ausser json.JSONDecodeError:
             self.fail(f'fail to decode stdout: {out!r}')
 
         self.assertEqual(out, expected)
@@ -1880,24 +1880,24 @@ klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
         mit open(startup, "w", encoding="utf-8") als f:
             drucke("import sys", file=f)
             drucke("sys.__interactivehook__ = lambda: Nichts", file=f)
-        try:
+        versuch:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_interactivehook",
                                           timeout=support.SHORT_TIMEOUT,
                                           returncode=10, env=env)
-        finally:
+        schliesslich:
             os.unlink(startup)
 
     def test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, os_helper.TESTFN) + ".py"
         mit open(startup, "w", encoding="utf-8") als f:
             drucke("pass", file=f)
-        try:
+        versuch:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_startup",
                                           timeout=support.SHORT_TIMEOUT,
                                           returncode=10, env=env)
-        finally:
+        schliesslich:
             os.unlink(startup)
 
     def test_audit_run_stdin(self):

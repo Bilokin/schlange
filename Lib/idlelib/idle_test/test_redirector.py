@@ -113,7 +113,7 @@ klasse WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.func.args, ('hello',))
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
         # Ensure that called through redir .dispatch und nicht through
-        # self.text.insert by having mock raise TclError.
+        # self.text.insert by having mock wirf TclError.
         self.func.__init__(TclError())
         self.assertEqual(self.root.call(self.text._w, 'insert', 'boo'), '')
 

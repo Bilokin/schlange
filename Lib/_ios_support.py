@@ -1,7 +1,7 @@
 importiere sys
-try:
+versuch:
     von ctypes importiere cdll, c_void_p, c_char_p, util
-except ImportError:
+ausser ImportError:
     # ctypes is an optional module. If it's nicht present, we're limited in what
     # we can tell about the system, but we don't want to prevent the module
     # von working.
@@ -13,7 +13,7 @@ sonst:
     lib = util.find_library("objc")
     wenn lib is Nichts:
         # Failed to load the objc library
-        raise ImportError("ObjC runtime library couldn't be loaded")
+        wirf ImportError("ObjC runtime library couldn't be loaded")
 
     objc = cdll.LoadLibrary(lib)
     objc.objc_getClass.restype = c_void_p

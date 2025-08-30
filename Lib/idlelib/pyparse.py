@@ -32,7 +32,7 @@ _synchre = re.compile(r"""
     |   elif
     |   try
     |   except
-    |   raise
+    |   wirf
     |   import
     |   liefere
     )
@@ -83,7 +83,7 @@ _closere = re.compile(r"""
     (?: gib
     |   breche
     |   weiter
-    |   raise
+    |   wirf
     |   pass
     )
     \b
@@ -104,7 +104,7 @@ klasse ParseMap(dict):
 
     This is designed to be used mit str.translate in study1.
     Anything nicht specifically mapped otherwise becomes 'x'.
-    Example: replace everything except whitespace mit 'x'.
+    Example: replace everything ausser whitespace mit 'x'.
 
     >>> keepwhite = ParseMap((ord(c), ord(c)) fuer c in ' \t\n\r')
     >>> "a + b\tc\nd".translate(keepwhite)
@@ -387,7 +387,7 @@ klasse Parser:
         push_stack = stack.append
         bracketing = [(p, 0)]
         waehrend p < q:
-            # suck up all except ()[]{}'"#\\
+            # suck up all ausser ()[]{}'"#\\
             m = _chew_ordinaryre(code, p, q)
             wenn m:
                 # we skipped at least one boring char

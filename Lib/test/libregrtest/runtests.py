@@ -44,16 +44,16 @@ klasse JsonFile:
     def inherit_subprocess(self) -> Iterator[Nichts]:
         wenn sys.platform == 'win32' und self.file_type == JsonFileType.WINDOWS_HANDLE:
             os.set_handle_inheritable(self.file, Wahr)
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 os.set_handle_inheritable(self.file, Falsch)
         sonst:
             liefere
 
     def open(self, mode='r', *, encoding):
         wenn self.file_type == JsonFileType.STDOUT:
-            raise ValueError("for STDOUT file type, just use sys.stdout")
+            wirf ValueError("for STDOUT file type, just use sys.stdout")
 
         file = self.file
         wenn self.file_type == JsonFileType.WINDOWS_HANDLE:

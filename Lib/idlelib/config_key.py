@@ -266,9 +266,9 @@ klasse GetKeysFrame(Frame):
 
     def bind_ok(self, keys):
         "Return Wahr wenn Tcl accepts the new keys sonst show message."
-        try:
+        versuch:
             binding = self.bind(keys, lambda: Nichts)
-        except TclError als err:
+        ausser TclError als err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence is nicht accepted.\n\n'

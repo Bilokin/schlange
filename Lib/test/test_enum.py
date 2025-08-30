@@ -56,9 +56,9 @@ def reraise_if_not_enum(*enum_types_or_exceptions):
                 wenn isinstance(e, Exception)
             ]
             wenn len(excs) == 1:
-                raise excs[0]
+                wirf excs[0]
             sowenn excs:
-                raise ExceptionGroup('Enum Exceptions', excs)
+                wirf ExceptionGroup('Enum Exceptions', excs)
             gib func(*args, **kwargs)
         gib inner
     gib decorator
@@ -67,98 +67,98 @@ MODULE = __name__
 SHORT_MODULE = MODULE.split('.')[-1]
 
 # fuer pickle tests
-try:
+versuch:
     klasse Stooges(Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception als exc:
+ausser Exception als exc:
     Stooges = exc
 
-try:
+versuch:
     klasse IntStooges(int, Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception als exc:
+ausser Exception als exc:
     IntStooges = exc
 
-try:
+versuch:
     klasse FloatStooges(float, Enum):
         LARRY = 1.39
         CURLY = 2.72
         MOE = 3.142596
-except Exception als exc:
+ausser Exception als exc:
     FloatStooges = exc
 
-try:
+versuch:
     klasse FlagStooges(Flag):
         LARRY = 1
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception als exc:
+ausser Exception als exc:
     FlagStooges = exc
 
-try:
+versuch:
     klasse FlagStoogesWithZero(Flag):
         NOFLAG = 0
         LARRY = 1
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception als exc:
+ausser Exception als exc:
     FlagStoogesWithZero = exc
 
-try:
+versuch:
     klasse IntFlagStooges(IntFlag):
         LARRY = 1
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception als exc:
+ausser Exception als exc:
     IntFlagStooges = exc
 
-try:
+versuch:
     klasse IntFlagStoogesWithZero(IntFlag):
         NOFLAG = 0
         LARRY = 1
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception als exc:
+ausser Exception als exc:
     IntFlagStoogesWithZero = exc
 
 # fuer pickle test und subclass tests
-try:
+versuch:
     klasse Name(StrEnum):
         BDFL = 'Guido van Rossum'
         FLUFL = 'Barry Warsaw'
-except Exception als exc:
+ausser Exception als exc:
     Name = exc
 
-try:
+versuch:
     Question = Enum('Question', 'who what when where why', module=__name__)
-except Exception als exc:
+ausser Exception als exc:
     Question = exc
 
-try:
+versuch:
     Answer = Enum('Answer', 'him this then there because')
-except Exception als exc:
+ausser Exception als exc:
     Answer = exc
 
-try:
+versuch:
     Theory = Enum('Theory', 'rule law supposition', qualname='spanish_inquisition')
-except Exception als exc:
+ausser Exception als exc:
     Theory = exc
 
 # fuer doctests
-try:
+versuch:
     klasse Fruit(Enum):
         TOMATO = 1
         BANANA = 2
         CHERRY = 3
-except Exception:
+ausser Exception:
     pass
 
 def test_pickle_dump_load(assertion, source, target=Nichts):
@@ -241,34 +241,34 @@ klasse classproperty:
 
 # fuer global repr tests
 
-try:
+versuch:
     @enum.global_enum
     klasse HeadlightsK(IntFlag, boundary=enum.KEEP):
         OFF_K = 0
         LOW_BEAM_K = auto()
         HIGH_BEAM_K = auto()
         FOG_K = auto()
-except Exception als exc:
+ausser Exception als exc:
     HeadlightsK = exc
 
 
-try:
+versuch:
     @enum.global_enum
     klasse HeadlightsC(IntFlag, boundary=enum.CONFORM):
         OFF_C = 0
         LOW_BEAM_C = auto()
         HIGH_BEAM_C = auto()
         FOG_C = auto()
-except Exception als exc:
+ausser Exception als exc:
     HeadlightsC = exc
 
 
-try:
+versuch:
     @enum.global_enum
     klasse NoName(Flag):
         ONE = 1
         TWO = 2
-except Exception als exc:
+ausser Exception als exc:
     NoName = exc
 
 
@@ -417,7 +417,7 @@ klasse _EnumTests:
             wenn nicht getattr(self, 'source_values', Falsch):
                 self.source_values = self.values
         sonst:
-            raise ValueError('unknown enum style: %r' % self.__class__.__name__)
+            wirf ValueError('unknown enum style: %r' % self.__class__.__name__)
 
     def assertFormatIsValue(self, spec, member):
         self.assertEqual(spec.format(member), spec.format(member.value))
@@ -1949,7 +1949,7 @@ klasse TestSpecial(unittest.TestCase):
 
                 def __init__(self, r, g, b):
                     wenn nicht all(0 <= val <= 255 fuer val in (r, g, b)):
-                        raise InvalidRgbColorError(r, g, b)
+                        wirf InvalidRgbColorError(r, g, b)
 
     def test_intenum_transitivity(self):
         klasse number(IntEnum):
@@ -2084,7 +2084,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2144,7 +2144,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2204,7 +2204,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2264,7 +2264,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2323,7 +2323,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2381,7 +2381,7 @@ klasse TestSpecial(unittest.TestCase):
                 _args = args
                 name, *args = args
                 wenn len(args) == 0:
-                    raise TypeError("name und value must be specified")
+                    wirf TypeError("name und value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -2626,7 +2626,7 @@ klasse TestSpecial(unittest.TestCase):
                 wenn any(self.value == e.value fuer e in cls):
                     a = self.name
                     e = cls(self.value).name
-                    raise ValueError(
+                    wirf ValueError(
                             "aliases nicht allowed in UniqueEnum:  %r --> %r"
                             % (a, e)
                             )
@@ -2729,12 +2729,12 @@ klasse TestSpecial(unittest.TestCase):
             RED = 1
             GREEN = 2
             BLUE = 3
-        try:
+        versuch:
             Color(7)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
-            raise Exception('Exception nicht raised.')
+            wirf Exception('Exception nicht raised.')
 
     def test_missing_override(self):
         klasse Color(Enum):
@@ -2749,29 +2749,29 @@ klasse TestSpecial(unittest.TestCase):
                     # trigger internal error
                     gib 5
                 sowenn item == 'error out':
-                    raise ZeroDivisionError
+                    wirf ZeroDivisionError
                 sonst:
                     # trigger nicht found
                     gib Nichts
         self.assertIs(Color('three'), Color.blue)
-        try:
+        versuch:
             Color(7)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
-            raise Exception('Exception nicht raised.')
-        try:
+            wirf Exception('Exception nicht raised.')
+        versuch:
             Color('bad return')
-        except TypeError als exc:
+        ausser TypeError als exc:
             self.assertWahr(isinstance(exc.__context__, ValueError))
         sonst:
-            raise Exception('Exception nicht raised.')
-        try:
+            wirf Exception('Exception nicht raised.')
+        versuch:
             Color('error out')
-        except ZeroDivisionError als exc:
+        ausser ZeroDivisionError als exc:
             self.assertWahr(isinstance(exc.__context__, ValueError))
         sonst:
-            raise Exception('Exception nicht raised.')
+            wirf Exception('Exception nicht raised.')
 
     def test_missing_exceptions_reset(self):
         importiere gc
@@ -2784,17 +2784,17 @@ klasse TestSpecial(unittest.TestCase):
         klasse Class1:
             def __init__(self):
                 # Gracefully handle an exception of our own making
-                try:
-                    raise ValueError()
-                except ValueError:
+                versuch:
+                    wirf ValueError()
+                ausser ValueError:
                     pass
         #
         klasse Class2:
             def __init__(self):
                 # Gracefully handle an exception of Enum's making
-                try:
+                versuch:
                     TestEnum('invalid_value')
-                except ValueError:
+                ausser ValueError:
                     pass
         # No strong refs here so these are free to die.
         class_1_ref = weakref.ref(Class1())
@@ -3418,7 +3418,7 @@ klasse TestSpecial(unittest.TestCase):
             def __new__(cls, *args):
                 gib object.__new__(cls)
             def __init__(self, x):
-                raise ValueError("I don't like", x)
+                wirf ValueError("I don't like", x)
         mit self.assertRaises(TypeError):
             klasse MyEnum(Base, enum.Enum):
                 A = 'a'
@@ -4027,10 +4027,10 @@ klasse OldTestFlag(unittest.TestCase):
         failed = Falsch
         def cycle_enum():
             nonlocal failed
-            try:
+            versuch:
                 fuer i in range(256):
                     seen.add(TestFlag(i))
-            except Exception:
+            ausser Exception:
                 failed = Wahr
         threads = [
                 threading.Thread(target=cycle_enum)
@@ -4547,10 +4547,10 @@ klasse OldTestIntFlag(unittest.TestCase):
         failed = Falsch
         def cycle_enum():
             nonlocal failed
-            try:
+            versuch:
                 fuer i in range(256):
                     seen.add(TestFlag(i))
-            except Exception:
+            ausser Exception:
                 failed = Wahr
         threads = [
                 threading.Thread(target=cycle_enum)
@@ -4859,7 +4859,7 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version < (3, 13),
-            'mixed types mit auto() will raise in 3.13',
+            'mixed types mit auto() will wirf in 3.13',
             )
     def test_auto_garbage_fail(self):
         mit self.assertRaisesRegex(TypeError, "unable to increment 'red'"):
@@ -4869,7 +4869,7 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version < (3, 13),
-            'mixed types mit auto() will raise in 3.13',
+            'mixed types mit auto() will wirf in 3.13',
             )
     def test_auto_garbage_corrected_fail(self):
         mit self.assertRaisesRegex(TypeError, 'unable to sort non-numeric values'):
@@ -5159,9 +5159,9 @@ klasse TestStdLib(unittest.TestCase):
                     defining_class=Enum, object=Enum.__dict__['value']),
                 ]
         fuer v in values:
-            try:
+            versuch:
                 v.name
-            except AttributeError:
+            ausser AttributeError:
                 drucke(v)
         values.sort(key=lambda item: item.name)
         result = list(inspect.classify_class_attrs(self.Color))

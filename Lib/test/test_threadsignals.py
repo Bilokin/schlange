@@ -9,7 +9,7 @@ importiere _thread als thread
 importiere time
 
 wenn (sys.platform[:3] == 'win'):
-    raise unittest.SkipTest("Can't test signal on %s" % sys.platform)
+    wirf unittest.SkipTest("Can't test signal on %s" % sys.platform)
 
 process_pid = os.getpid()
 signalled_all=thread.allocate_lock()
@@ -66,7 +66,7 @@ klasse ThreadSignals(unittest.TestCase):
         thread.start_new_thread(send_signals, ())
 
     def alarm_interrupt(self, sig, frame):
-        raise KeyboardInterrupt
+        wirf KeyboardInterrupt
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
@@ -83,7 +83,7 @@ klasse ThreadSignals(unittest.TestCase):
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
         oldalrm = signal.signal(signal.SIGALRM, self.alarm_interrupt)
-        try:
+        versuch:
             lock = thread.allocate_lock()
             lock.acquire()
             signal.alarm(1)
@@ -95,7 +95,7 @@ klasse ThreadSignals(unittest.TestCase):
             # of the signal, nicht that the signal handler was called immediately
             # after timeout gib of lock.acquire() (which can fool assertRaises).
             self.assertLess(dt, 3.0)
-        finally:
+        schliesslich:
             signal.alarm(0)
             signal.signal(signal.SIGALRM, oldalrm)
 
@@ -114,7 +114,7 @@ klasse ThreadSignals(unittest.TestCase):
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
         oldalrm = signal.signal(signal.SIGALRM, self.alarm_interrupt)
-        try:
+        versuch:
             rlock = thread.RLock()
             # For reentrant locks, the initial acquisition must be in another
             # thread.
@@ -133,7 +133,7 @@ klasse ThreadSignals(unittest.TestCase):
                 dt = time.monotonic() - t1
                 # See rationale above in test_lock_acquire_interruption
                 self.assertLess(dt, 3.0)
-        finally:
+        schliesslich:
             signal.alarm(0)
             signal.signal(signal.SIGALRM, oldalrm)
 
@@ -143,7 +143,7 @@ klasse ThreadSignals(unittest.TestCase):
             self.sig_recvd = Wahr
 
         old_handler = signal.signal(signal.SIGUSR1, my_handler)
-        try:
+        versuch:
             def other_thread():
                 # Acquire the lock in a non-main thread, so this test works for
                 # RLocks.
@@ -166,7 +166,7 @@ klasse ThreadSignals(unittest.TestCase):
                 result = lock.acquire()  # Block waehrend we receive a signal.
                 self.assertWahr(self.sig_recvd)
                 self.assertWahr(result)
-        finally:
+        schliesslich:
             signal.signal(signal.SIGUSR1, old_handler)
 
     def test_lock_acquire_retries_on_intr(self):
@@ -193,7 +193,7 @@ klasse ThreadSignals(unittest.TestCase):
         def my_handler(signum, frame):
             self.sigs_recvd += 1
         old_handler = signal.signal(signal.SIGUSR1, my_handler)
-        try:
+        versuch:
             def timed_acquire():
                 self.start = time.monotonic()
                 lock.acquire(timeout=0.5)
@@ -218,7 +218,7 @@ klasse ThreadSignals(unittest.TestCase):
                 # is called, the handler will get called less than 40 times. Just
                 # check it's been called at least once.
                 self.assertGreater(self.sigs_recvd, 0)
-        finally:
+        schliesslich:
             signal.signal(signal.SIGUSR1, old_handler)
 
 

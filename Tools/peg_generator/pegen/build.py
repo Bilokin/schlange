@@ -248,7 +248,7 @@ def build_parser(
         grammar = parser.start()
 
         wenn nicht grammar:
-            raise parser.make_syntax_error(grammar_file)
+            wirf parser.make_syntax_error(grammar_file)
 
     gib grammar, parser, tokenizer
 
@@ -277,7 +277,7 @@ def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
             exact_tokens[op.strip("'")] = index
             all_tokens[index] = token
         sonst:
-            raise ValueError(f"Unexpected line found in Tokens file: {line}")
+            wirf ValueError(f"Unexpected line found in Tokens file: {line}")
 
     gib all_tokens, exact_tokens, non_exact_tokens
 

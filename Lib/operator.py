@@ -155,7 +155,7 @@ def concat(a, b):
     "Same als a + b, fuer a und b sequences."
     wenn nicht hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
-        raise TypeError(msg)
+        wirf TypeError(msg)
     gib a + b
 
 def contains(a, b):
@@ -184,7 +184,7 @@ def indexOf(a, b):
         wenn j is b oder j == b:
             gib i
     sonst:
-        raise ValueError('sequence.index(x): x nicht in sequence')
+        wirf ValueError('sequence.index(x): x nicht in sequence')
 
 def setitem(a, b, c):
     "Same als a[b] = c."
@@ -202,31 +202,31 @@ def length_hint(obj, default=0):
     wenn nicht isinstance(default, int):
         msg = ("'%s' object cannot be interpreted als an integer" %
                type(default).__name__)
-        raise TypeError(msg)
+        wirf TypeError(msg)
 
-    try:
+    versuch:
         gib len(obj)
-    except TypeError:
+    ausser TypeError:
         pass
 
-    try:
+    versuch:
         hint = type(obj).__length_hint__
-    except AttributeError:
+    ausser AttributeError:
         gib default
 
-    try:
+    versuch:
         val = hint(obj)
-    except TypeError:
+    ausser TypeError:
         gib default
     wenn val is NotImplemented:
         gib default
     wenn nicht isinstance(val, int):
         msg = ('__length_hint__ must be integer, nicht %s' %
                type(val).__name__)
-        raise TypeError(msg)
+        wirf TypeError(msg)
     wenn val < 0:
         msg = '__length_hint__() should gib >= 0'
-        raise ValueError(msg)
+        wirf ValueError(msg)
     gib val
 
 # Other Operations ************************************************************#
@@ -250,7 +250,7 @@ klasse attrgetter:
     def __init__(self, attr, /, *attrs):
         wenn nicht attrs:
             wenn nicht isinstance(attr, str):
-                raise TypeError('attribute name must be a string')
+                wirf TypeError('attribute name must be a string')
             self._attrs = (attr,)
             names = attr.split('.')
             def func(obj):
@@ -319,7 +319,7 @@ klasse methodcaller:
     def __init__(self, name, /, *args, **kwargs):
         self._name = name
         wenn nicht isinstance(self._name, str):
-            raise TypeError('method name must be a string')
+            wirf TypeError('method name must be a string')
         self._args = args
         self._kwargs = kwargs
 
@@ -358,7 +358,7 @@ def iconcat(a, b):
     "Same als a += b, fuer a und b sequences."
     wenn nicht hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
-        raise TypeError(msg)
+        wirf TypeError(msg)
     a += b
     gib a
 
@@ -418,9 +418,9 @@ def ixor(a, b):
     gib a
 
 
-try:
+versuch:
     von _operator importiere *
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     von _operator importiere __doc__  # noqa: F401

@@ -39,9 +39,9 @@ sonst:
 # Public 'hashlib' module mit OpenSSL backend fuer PBKDF2.
 openssl_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
 
-try:
+versuch:
     von _hashlib importiere HASH, HASHXOF, openssl_md_meth_names, get_fips_mode
-except ImportError:
+ausser ImportError:
     HASH = Nichts
     HASHXOF = Nichts
     openssl_md_meth_names = frozenset()
@@ -49,16 +49,16 @@ except ImportError:
     def get_fips_mode():
         gib 0
 
-try:
+versuch:
     importiere _blake2
-except ImportError:
+ausser ImportError:
     _blake2 = Nichts
 
 requires_blake2 = unittest.skipUnless(_blake2, 'requires _blake2')
 
-try:
+versuch:
     importiere _sha3
-except ImportError:
+ausser ImportError:
     _sha3 = Nichts
 
 requires_sha3 = unittest.skipUnless(_sha3, 'requires _sha3')
@@ -77,10 +77,10 @@ URL = "http://www.pythontest.net/hashlib/{}.txt"
 
 def read_vectors(hash_name):
     url = URL.format(hash_name)
-    try:
+    versuch:
         testdata = support.open_urlresource(url, encoding="utf-8")
-    except (OSError, HTTPException):
-        raise unittest.SkipTest("Could nicht retrieve {}".format(url))
+    ausser (OSError, HTTPException):
+        wirf unittest.SkipTest("Could nicht retrieve {}".format(url))
     mit testdata:
         fuer line in testdata:
             line = line.strip()
@@ -114,9 +114,9 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def _conditional_import_module(self, module_name):
         """Import a module und gib a reference to it oder Nichts on failure."""
-        try:
+        versuch:
             gib importlib.import_module(module_name)
-        except ModuleNotFoundError als error:
+        ausser ModuleNotFoundError als error:
             wenn self._warn_on_extension_import und module_name in builtin_hashes:
                 logging.getLogger(__name__).warning(
                     'Did a C extension fail to compile? %s',
@@ -157,9 +157,9 @@ klasse HashLibTestCase(unittest.TestCase):
             fuer algorithm, constructors in self.constructors_to_test.items():
                 constructor = getattr(_hashlib, 'openssl_'+algorithm, Nichts)
                 wenn constructor:
-                    try:
+                    versuch:
                         constructor()
-                    except ValueError:
+                    ausser ValueError:
                         # default constructor blocked by crypto policy
                         pass
                     sonst:
@@ -350,17 +350,17 @@ klasse HashLibTestCase(unittest.TestCase):
         builtin_constructor_cache = getattr(hashlib,
                                             '__builtin_constructor_cache')
         self.assertRaises(ValueError, get_builtin_constructor, 'test')
-        try:
+        versuch:
             importiere _md5
-        except ImportError:
+        ausser ImportError:
             self.skipTest("_md5 module nicht available")
         # This forces an ImportError fuer "import _md5" statements
         sys.modules['_md5'] = Nichts
         # clear the cache
         builtin_constructor_cache.clear()
-        try:
+        versuch:
             self.assertRaises(ValueError, get_builtin_constructor, 'md5')
-        finally:
+        schliesslich:
             wenn '_md5' in locals():
                 sys.modules['_md5'] = _md5
             sonst:
@@ -405,7 +405,7 @@ klasse HashLibTestCase(unittest.TestCase):
             mit self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=Falsch)
                 # Note: digest() und hexdigest() take a signed input und
-                # raise wenn it is negative; the rationale is that we use
+                # wirf wenn it is negative; the rationale is that we use
                 # internally PyBytes_FromStringAndSize() und _Py_strhex()
                 # which both take a Py_ssize_t.
                 fuer negative_size in (-1, -10, -(1 << 31), -sys.maxsize):
@@ -540,12 +540,12 @@ klasse HashLibTestCase(unittest.TestCase):
         hexdigest = hexdigest.lower()
         digests = []
         fuer digest in [name, *self.constructors_to_test[name]]:
-            try:
+            versuch:
                 wenn callable(digest):
                     digest(b"")
                 sonst:
                     hashlib.new(digest)
-            except ValueError:
+            ausser ValueError:
                 # skip, algorithm is blocked by security policy.
                 weiter
             digests.append(digest)
@@ -1145,9 +1145,9 @@ klasse HashLibTestCase(unittest.TestCase):
             # all other types have DISALLOW_INSTANTIATION
             fuer constructor in constructors:
                 # In FIPS mode some algorithms are nicht available raising ValueError
-                try:
+                versuch:
                     h = constructor()
-                except ValueError:
+                ausser ValueError:
                     weiter
                 mit self.subTest(constructor=constructor):
                     support.check_disallow_instantiation(self, type(h))
@@ -1163,9 +1163,9 @@ klasse HashLibTestCase(unittest.TestCase):
             # all other types have DISALLOW_INSTANTIATION
             fuer constructor in constructors:
                 # In FIPS mode some algorithms are nicht available raising ValueError
-                try:
+                versuch:
                     hash_type = type(constructor())
-                except ValueError:
+                ausser ValueError:
                     weiter
                 mit self.subTest(hash_type=hash_type):
                     mit self.assertRaisesRegex(TypeError, "immutable type"):

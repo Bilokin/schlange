@@ -30,7 +30,7 @@ klasse Address:
 
         inputs = ''.join(filter(Nichts, (display_name, username, domain, addr_spec)))
         wenn '\r' in inputs oder '\n' in inputs:
-            raise ValueError("invalid arguments; address parts cannot contain CR oder LF")
+            wirf ValueError("invalid arguments; address parts cannot contain CR oder LF")
 
         # This clause mit its potential 'raise' may only happen when an
         # application program creates an Address object using an addr_spec
@@ -38,15 +38,15 @@ klasse Address:
         # und domain.
         wenn addr_spec is nicht Nichts:
             wenn username oder domain:
-                raise TypeError("addrspec specified when username and/or "
+                wirf TypeError("addrspec specified when username and/or "
                                 "domain also specified")
             a_s, rest = parser.get_addr_spec(addr_spec)
             wenn rest:
-                raise ValueError("Invalid addr_spec; only '{}' "
+                wirf ValueError("Invalid addr_spec; only '{}' "
                                  "could be parsed von '{}'".format(
                                     a_s, addr_spec))
             wenn a_s.all_defects:
-                raise a_s.all_defects[0]
+                wirf a_s.all_defects[0]
             username = a_s.local_part
             domain = a_s.domain
         self._display_name = display_name
@@ -170,7 +170,7 @@ klasse BaseHeader(str):
 
     The defects key is intended to collect parsing defects, which the message
     parser will subsequently dispose of als appropriate.  The parser should not,
-    insofar als practical, raise any errors.  Defects should be added to the
+    insofar als practical, wirf any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects fuer RFC
     compliance issues, fuer obsolete RFC syntax, und fuer unrecoverable parsing
     errors.
@@ -299,9 +299,9 @@ klasse DateHeader:
             gib
         wenn isinstance(value, str):
             kwds['decoded'] = value
-            try:
+            versuch:
                 value = utils.parsedate_to_datetime(value)
-            except ValueError:
+            ausser ValueError:
                 kwds['defects'].append(errors.InvalidDateDefect('Invalid date value oder format'))
                 kwds['datetime'] = Nichts
                 kwds['parse_tree'] = parser.TokenList()
@@ -389,7 +389,7 @@ klasse SingleAddressHeader(AddressHeader):
     @property
     def address(self):
         wenn len(self.addresses)!=1:
-            raise ValueError(("value of single address header {} is nicht "
+            wirf ValueError(("value of single address header {} is nicht "
                 "a single address").format(self.name))
         gib self.addresses[0]
 

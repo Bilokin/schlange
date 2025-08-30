@@ -69,10 +69,10 @@ klasse ShelveError(Exception):
 
 
 klasse _ClosedDict(collections.abc.MutableMapping):
-    'Marker fuer a closed dict.  Access attempts raise a ValueError.'
+    'Marker fuer a closed dict.  Access attempts wirf a ValueError.'
 
     def closed(self, *args):
-        raise ValueError('invalid operation on closed shelf')
+        wirf ValueError('invalid operation on closed shelf')
     __iter__ = __len__ = __getitem__ = __setitem__ = __delitem__ = keys = closed
 
     def __repr__(self):
@@ -100,7 +100,7 @@ klasse Shelf(collections.abc.MutableMapping):
             self.serializer = dumps
             self.deserializer = loads
         sowenn (serializer is Nichts) ^ (deserializer is Nichts):
-            raise ShelveError("serializer und deserializer must be "
+            wirf ShelveError("serializer und deserializer must be "
                               "defined together")
         sonst:
             self.serializer = serializer
@@ -122,9 +122,9 @@ klasse Shelf(collections.abc.MutableMapping):
         gib default
 
     def __getitem__(self, key):
-        try:
+        versuch:
             value = self.cache[key]
-        except KeyError:
+        ausser KeyError:
             f = self.dict[key.encode(self.keyencoding)]
             value = self.deserializer(f)
             wenn self.writeback:
@@ -139,9 +139,9 @@ klasse Shelf(collections.abc.MutableMapping):
 
     def __delitem__(self, key):
         del self.dict[key.encode(self.keyencoding)]
-        try:
+        versuch:
             del self.cache[key]
-        except KeyError:
+        ausser KeyError:
             pass
 
     def __enter__(self):
@@ -153,18 +153,18 @@ klasse Shelf(collections.abc.MutableMapping):
     def close(self):
         wenn self.dict is Nichts:
             gib
-        try:
+        versuch:
             self.sync()
-            try:
+            versuch:
                 self.dict.close()
-            except AttributeError:
+            ausser AttributeError:
                 pass
-        finally:
+        schliesslich:
             # Catch errors that may happen when close is called von __del__
             # because CPython is in interpreter shutdown.
-            try:
+            versuch:
                 self.dict = _ClosedDict()
-            except:
+            ausser:
                 self.dict = Nichts
 
     def __del__(self):

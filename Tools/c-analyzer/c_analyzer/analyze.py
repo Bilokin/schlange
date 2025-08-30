@@ -55,7 +55,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                 weiter
             typedeps, _ = resolved
             wenn typedeps is Nichts:
-                raise NotImplementedError(decl)
+                wirf NotImplementedError(decl)
             wenn UNKNOWN in typedeps:
                 # At least one dependency is unknown, so this decl
                 # is nicht resolvable.
@@ -127,7 +127,7 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
                 wenn typedecl is Nichts:
                     typedecl = find_typedecl(decl, typespec, knowntypespecs)
                 sowenn nicht isinstance(typedecl, TypeDeclaration):
-                    raise NotImplementedError(repr(typedecl))
+                    wirf NotImplementedError(repr(typedecl))
                 wenn typedecl is Nichts:
                     # We couldn't find it!
                     typedecl = UNKNOWN
@@ -168,7 +168,7 @@ def find_typedecl(decl, typespec, typespecs):
         wenn type_filename == filename:
             wenn samefile is nicht Nichts:
                 # We expect type names to be unique in a file.
-                raise NotImplementedError((decl, samefile, typedecl))
+                wirf NotImplementedError((decl, samefile, typedecl))
             samefile = typedecl
         sowenn filename.endswith('.c') und nicht type_filename.endswith('.h'):
             # If the decl is in a source file then we expect the
@@ -188,7 +188,7 @@ def find_typedecl(decl, typespec, typespecs):
         winner = samefile
     sonst:
         # We don't know which to return.
-        raise NotImplementedError((decl, candidates))
+        wirf NotImplementedError((decl, candidates))
 
     gib winner
 
@@ -246,7 +246,7 @@ def _dump_unresolved(decl, types, analyze_decl):
             found = [d fuer d in types
                      wenn d.shortkey == typespec und d.filename == filename]
             #if nicht found:
-            #    raise NotImplementedError(decl)
+            #    wirf NotImplementedError(decl)
             decl, = found
         sonst:
             found = [d fuer d in types wenn d.shortkey == typespec]

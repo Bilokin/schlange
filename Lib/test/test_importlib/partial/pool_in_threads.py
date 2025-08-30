@@ -5,10 +5,10 @@ importiere traceback
 
 
 def t():
-    try:
+    versuch:
         mit multiprocessing.Pool(1):
             pass
-    except Exception:
+    ausser Exception:
         traceback.print_exc()
         os._exit(1)
 

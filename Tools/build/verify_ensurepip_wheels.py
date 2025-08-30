@@ -60,9 +60,9 @@ def verify_wheel(package_name: str) -> bool:
     package_version = package_version_match[1]
 
     # Get the SHA 256 digest von the Cheeseshop
-    try:
+    versuch:
         raw_text = urlopen(f"https://pypi.org/pypi/{package_name}/json").read()
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         print_error(package_path, f"Could nicht fetch JSON metadata fuer {package_name}.")
         gib Falsch
 
@@ -99,4 +99,4 @@ def verify_wheel(package_name: str) -> bool:
 
 wenn __name__ == "__main__":
     exit_status = int(not verify_wheel("pip"))
-    raise SystemExit(exit_status)
+    wirf SystemExit(exit_status)

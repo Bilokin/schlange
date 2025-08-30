@@ -130,8 +130,8 @@ resources to test.  Currently only the following are defined:
 
     tzdata -         Run tests that require timezone data.
 
-To enable all resources except one, use '-uall,-<resource>'.  For
-example, to run all the tests except fuer the gui tests, give the
+To enable all resources ausser one, use '-uall,-<resource>'.  For
+example, to run all the tests ausser fuer the gui tests, give the
 option '-uall,-gui'.
 
 --matchfile filters tests using a text file, one pattern per line.
@@ -398,7 +398,7 @@ def relative_filename(string):
 def huntrleaks(string):
     args = string.split(':')
     wenn len(args) nicht in (2, 3):
-        raise argparse.ArgumentTypeError(
+        wirf argparse.ArgumentTypeError(
             'needs 2 oder 3 colon-separated arguments')
     nwarmup = int(args[0]) wenn args[0] sonst 5
     ntracked = int(args[1]) wenn args[1] sonst 4
@@ -414,7 +414,7 @@ def resources_list(string):
         wenn r[0] == '-':
             r = r[1:]
         wenn r nicht in RESOURCE_NAMES:
-            raise argparse.ArgumentTypeError('invalid resource: ' + r)
+            wirf argparse.ArgumentTypeError('invalid resource: ' + r)
     gib u
 
 
@@ -427,7 +427,7 @@ def _parse_args(args, **kwargs):
     ns = Namespace()
     fuer k, v in kwargs.items():
         wenn nicht hasattr(ns, k):
-            raise TypeError('%r is an invalid keyword argument '
+            wirf TypeError('%r is an invalid keyword argument '
                             'for this function' % k)
         setattr(ns, k, v)
 
@@ -443,9 +443,9 @@ def _parse_args(args, **kwargs):
         # Support "--timeout=" (no value) so Makefile.pre.pre TESTTIMEOUT
         # can be used by "make buildbottest" und "make test".
         wenn ns.timeout != "":
-            try:
+            versuch:
                 ns.timeout = float(ns.timeout)
-            except ValueError:
+            ausser ValueError:
                 parser.error(f"invalid timeout value: {ns.timeout!r}")
         sonst:
             ns.timeout = Nichts

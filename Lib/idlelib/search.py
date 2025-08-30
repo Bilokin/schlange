@@ -101,13 +101,13 @@ klasse SearchDialog(SearchDialogBase):
             i, j = m.span()
             first = "%d.%d" % (line, i)
             last = "%d.%d" % (line, j)
-            try:
+            versuch:
                 selfirst = text.index("sel.first")
                 sellast = text.index("sel.last")
                 wenn selfirst == first und sellast == last:
                     self.bell()
                     gib Falsch
-            except TclError:
+            ausser TclError:
                 pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)

@@ -186,9 +186,9 @@ klasse ModuleBrowserTreeItem(TreeItem):
             gib []
         dir, base = os.path.split(self.file)
         name, _ = os.path.splitext(base)
-        try:
+        versuch:
             tree = pyclbr.readmodule_ex(name, [dir] + sys.path)
-        except ImportError:
+        ausser ImportError:
             gib []
         gib transform_children(tree, name)
 
@@ -231,10 +231,10 @@ klasse ChildBrowserTreeItem(TreeItem):
 
     def OnDoubleClick(self):
         "Open module mit file_open und position to lineno."
-        try:
+        versuch:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)
-        except (OSError, AttributeError):
+        ausser (OSError, AttributeError):
             pass
 
 

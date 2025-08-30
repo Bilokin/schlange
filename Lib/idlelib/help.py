@@ -145,11 +145,11 @@ klasse HelpParser(HTMLParser):
         wenn nicht self.hdrlink:
             d = data wenn self.pre sonst data.replace('\n', ' ')
             wenn self.tags == 'h1':
-                try:
+                versuch:
                     self.hprefix = d[:d.index(' ')]
                     wenn nicht self.hprefix.isdigit():
                         self.hprefix = ''
-                except ValueError:
+                ausser ValueError:
                     self.hprefix = ''
             wenn self.tags in ['h1', 'h2', 'h3']:
                 wenn (self.hprefix != '' und

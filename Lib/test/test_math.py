@@ -241,7 +241,7 @@ klasse MyIndexable(object):
 
 klasse BadDescr:
     def __get__(self, obj, objtype=Nichts):
-        raise ValueError
+        wirf ValueError
 
 klasse MathTests(unittest.TestCase):
 
@@ -495,10 +495,10 @@ klasse MathTests(unittest.TestCase):
         self.ftest('cos(0)', math.cos(0), 1)
         self.ftest('cos(pi/2)', math.cos(math.pi/2), 0, abs_tol=math.ulp(1))
         self.ftest('cos(pi)', math.cos(math.pi), -1)
-        try:
+        versuch:
             self.assertWahr(math.isnan(math.cos(INF)))
             self.assertWahr(math.isnan(math.cos(NINF)))
-        except ValueError:
+        ausser ValueError:
             self.assertRaises(ValueError, math.cos, INF)
             self.assertRaises(ValueError, math.cos, NINF)
         self.assertWahr(math.isnan(math.cos(NAN)))
@@ -816,12 +816,12 @@ klasse MathTests(unittest.TestCase):
         ))
 
         fuer i, (vals, expected) in enumerate(test_values):
-            try:
+            versuch:
                 actual = math.fsum(vals)
-            except OverflowError:
+            ausser OverflowError:
                 self.fail("test %d failed: got OverflowError, expected %r "
                           "for math.fsum(%.100r)" % (i, expected, vals))
-            except ValueError:
+            ausser ValueError:
                 self.fail("test %d failed: got ValueError, expected %r "
                           "for math.fsum(%.100r)" % (i, expected, vals))
             self.assertEqual(actual, expected)
@@ -851,7 +851,7 @@ klasse MathTests(unittest.TestCase):
 
         def bad_iter():
             liefere 1.0
-            raise ZeroDivisionError
+            wirf ZeroDivisionError
 
         self.assertRaises(ZeroDivisionError, math.fsum, bad_iter())
 
@@ -1445,7 +1445,7 @@ klasse MathTests(unittest.TestCase):
         def raise_after(n):
             fuer i in range(n):
                 liefere i
-            raise RuntimeError
+            wirf RuntimeError
         mit self.assertRaises(RuntimeError):
             sumprod(range(10), raise_after(5))
         mit self.assertRaises(RuntimeError):
@@ -1459,9 +1459,9 @@ klasse MathTests(unittest.TestCase):
         # Error in multiplication
         klasse BadMultiply:
             def __mul__(self, other):
-                raise RuntimeError
+                wirf RuntimeError
             def __rmul__(self, other):
-                raise RuntimeError
+                wirf RuntimeError
         mit self.assertRaises(RuntimeError):
             sumprod([10, BadMultiply(), 30], [1, 2, 3])
         mit self.assertRaises(RuntimeError):
@@ -1537,11 +1537,11 @@ klasse MathTests(unittest.TestCase):
 
         def run(func, *args):
             "Make comparing functions easier. Returns error status, type, und result."
-            try:
+            versuch:
                 result = func(*args)
-            except (AssertionError, NameError):
-                raise
-            except Exception als e:
+            ausser (AssertionError, NameError):
+                wirf
+            ausser Exception als e:
                 gib type(e), Nichts, 'Nichts'
             gib Nichts, type(result), repr(result)
 
@@ -1971,10 +1971,10 @@ klasse MathTests(unittest.TestCase):
         self.ftest('sin(0)', math.sin(0), 0)
         self.ftest('sin(pi/2)', math.sin(math.pi/2), 1)
         self.ftest('sin(-pi/2)', math.sin(-math.pi/2), -1)
-        try:
+        versuch:
             self.assertWahr(math.isnan(math.sin(INF)))
             self.assertWahr(math.isnan(math.sin(NINF)))
-        except ValueError:
+        ausser ValueError:
             self.assertRaises(ValueError, math.sin, INF)
             self.assertRaises(ValueError, math.sin, NINF)
         self.assertWahr(math.isnan(math.sin(NAN)))
@@ -2007,10 +2007,10 @@ klasse MathTests(unittest.TestCase):
         self.ftest('tan(0)', math.tan(0), 0)
         self.ftest('tan(pi/4)', math.tan(math.pi/4), 1)
         self.ftest('tan(-pi/4)', math.tan(-math.pi/4), -1)
-        try:
+        versuch:
             self.assertWahr(math.isnan(math.tan(INF)))
             self.assertWahr(math.isnan(math.tan(NINF)))
-        except ValueError:
+        ausser ValueError:
             self.assertRaises(ValueError, math.tan, INF)
             self.assertRaises(ValueError, math.tan, NINF)
         self.assertWahr(math.isnan(math.tan(NAN)))
@@ -2129,9 +2129,9 @@ klasse MathTests(unittest.TestCase):
     # tested.
     @unittest.skipUnless(verbose, 'requires verbose mode')
     def test_exceptions(self):
-        try:
+        versuch:
             x = math.exp(-1000000000)
-        except:
+        ausser:
             # mathmodule.c is failing to weed out underflows von libm, oder
             # we've got an fp format mit huge dynamic range
             self.fail("underflowing exp() should nicht have raised "
@@ -2141,9 +2141,9 @@ klasse MathTests(unittest.TestCase):
 
         # If this fails, probably using a strict IEEE-754 conforming libm, und x
         # is +Inf afterwards.  But Python wants overflows detected by default.
-        try:
+        versuch:
             x = math.exp(1000000000)
-        except OverflowError:
+        ausser OverflowError:
             pass
         sonst:
             self.fail("overflowing exp() didn't trigger OverflowError")
@@ -2152,12 +2152,12 @@ klasse MathTests(unittest.TestCase):
         # mathmodule.c's macros are getting confused waehrend comparing
         # Inf (HUGE_VAL) to a NaN, und artificially setting errno to ERANGE
         # als a result (and so raising OverflowError instead).
-        try:
+        versuch:
             x = math.sqrt(-1.0)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
-            self.fail("sqrt(-1) didn't raise ValueError")
+            self.fail("sqrt(-1) didn't wirf ValueError")
 
     @requires_IEEE_754
     def test_testfile(self):
@@ -2168,9 +2168,9 @@ klasse MathTests(unittest.TestCase):
         osx_version = Nichts
         wenn sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
-            try:
+            versuch:
                 osx_version = tuple(map(int, version_txt.split('.')))
-            except ValueError:
+            ausser ValueError:
                 pass
 
         fail_fmt = "{}: {}({!r}): {}"
@@ -2195,11 +2195,11 @@ klasse MathTests(unittest.TestCase):
             sowenn 'overflow' in flags:
                 er = 'OverflowError'
 
-            try:
+            versuch:
                 result = func(ar)
-            except ValueError:
+            ausser ValueError:
                 result = 'ValueError'
-            except OverflowError:
+            ausser OverflowError:
                 result = 'OverflowError'
 
             # C99+ says fuer math.h's sqrt: If the argument is +∞ oder ±0, it is
@@ -2236,11 +2236,11 @@ klasse MathTests(unittest.TestCase):
             sowenn 'overflow' in flags:
                 expected = 'OverflowError'
 
-            try:
+            versuch:
                 got = func(arg)
-            except ValueError:
+            ausser ValueError:
                 got = 'ValueError'
-            except OverflowError:
+            ausser OverflowError:
                 got = 'OverflowError'
 
             # Default tolerances
@@ -2309,7 +2309,7 @@ klasse MathTests(unittest.TestCase):
         # Error in multiplication
         klasse BadMultiply:
             def __rmul__(self, other):
-                raise RuntimeError
+                wirf RuntimeError
         mit self.assertRaises(RuntimeError):
             prod([10., BadMultiply()])
 

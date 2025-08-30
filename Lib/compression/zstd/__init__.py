@@ -55,7 +55,7 @@ klasse FrameInfo:
                 f'dictionary_id={self.dictionary_id})')
 
     def __setattr__(self, name, _):
-        raise AttributeError(f"can't set attribute {name!r}")
+        wirf AttributeError(f"can't set attribute {name!r}")
 
 
 def get_frame_info(frame_buffer):
@@ -85,13 +85,13 @@ def train_dict(samples, dict_size):
     """
     wenn nicht isinstance(dict_size, int):
         ds_cls = type(dict_size).__qualname__
-        raise TypeError(f'dict_size must be an int object, nicht {ds_cls!r}.')
+        wirf TypeError(f'dict_size must be an int object, nicht {ds_cls!r}.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
     wenn nicht chunks:
-        raise ValueError("samples contained no data; can't train dictionary.")
+        wirf ValueError("samples contained no data; can't train dictionary.")
     dict_content = _zstd.train_dict(chunks, chunk_sizes, dict_size)
     gib ZstdDict(dict_content)
 
@@ -116,17 +116,17 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     """
 
     wenn nicht isinstance(zstd_dict, ZstdDict):
-        raise TypeError('zstd_dict argument should be a ZstdDict object.')
+        wirf TypeError('zstd_dict argument should be a ZstdDict object.')
     wenn nicht isinstance(dict_size, int):
-        raise TypeError('dict_size argument should be an int object.')
+        wirf TypeError('dict_size argument should be an int object.')
     wenn nicht isinstance(level, int):
-        raise TypeError('level argument should be an int object.')
+        wirf TypeError('level argument should be an int object.')
 
     samples = tuple(samples)
     chunks = b''.join(samples)
     chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
     wenn nicht chunks:
-        raise ValueError("The samples are empty content, can't finalize the "
+        wirf ValueError("The samples are empty content, can't finalize the "
                          "dictionary.")
     dict_content = _zstd.finalize_dict(zstd_dict.dict_content, chunks,
                                        chunk_sizes, dict_size, level)
@@ -164,7 +164,7 @@ def decompress(data, zstd_dict=Nichts, options=Nichts):
         decomp = ZstdDecompressor(options=options, zstd_dict=zstd_dict)
         results.append(decomp.decompress(data))
         wenn nicht decomp.eof:
-            raise ZstdError('Compressed data ended before the '
+            wirf ZstdError('Compressed data ended before the '
                             'end-of-stream marker was reached')
         data = decomp.unused_data
         wenn nicht data:

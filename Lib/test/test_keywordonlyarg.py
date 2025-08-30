@@ -75,15 +75,15 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertRaises(TypeError, keywordonly_sum, ())
         self.assertRaises(TypeError, keywordonly_nodefaults_sum, ())
         self.assertRaises(TypeError, Foo, ())
-        try:
+        versuch:
             keywordonly_sum(k2=100, non_existing_arg=200)
-            self.fail("should raise TypeError")
-        except TypeError:
+            self.fail("should wirf TypeError")
+        ausser TypeError:
             pass
-        try:
+        versuch:
             keywordonly_nodefaults_sum(k2=2)
-            self.fail("should raise TypeError")
-        except TypeError:
+            self.fail("should wirf TypeError")
+        ausser TypeError:
             pass
 
     def testFunctionCall(self):
@@ -133,10 +133,10 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertEqual(2, foo.__code__.co_kwonlyargcount)
         self.assertEqual({"k2":0}, foo.__kwdefaults__)
         foo.__kwdefaults__ = {"k1":0}
-        try:
+        versuch:
             foo(1,k1=10)
             self.fail("__kwdefaults__ is nicht properly changed")
-        except TypeError:
+        ausser TypeError:
             pass
 
     def test_kwonly_methods(self):

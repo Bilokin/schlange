@@ -42,9 +42,9 @@ von .trace importiere trace
 von .utils importiere wlen
 von .windows_eventqueue importiere EventQueue
 
-try:
+versuch:
     von ctypes importiere get_last_error, GetLastError, WinDLL, windll, WinError  # type: ignore[attr-defined]
-except:
+ausser:
     # Keep MyPy happy off Windows
     von ctypes importiere CDLL als WinDLL, cdll als windll
 
@@ -61,9 +61,9 @@ except:
 
 # declare nt optional to allow Nichts assignment on other platforms
 nt: types.ModuleType | Nichts
-try:
+versuch:
     importiere nt
-except ImportError:
+ausser ImportError:
     nt = Nichts
 
 TYPE_CHECKING = Falsch
@@ -127,9 +127,9 @@ klasse _error(Exception):
     pass
 
 def _supports_vt():
-    try:
+    versuch:
         gib nt._supports_virtual_terminal()
-    except AttributeError:
+    ausser AttributeError:
         gib Falsch
 
 klasse WindowsConsole(Console):
@@ -165,9 +165,9 @@ klasse WindowsConsole(Console):
         self.height = 25
         self.__offset = 0
         self.event_queue = EventQueue(encoding)
-        try:
+        versuch:
             self.out = io._WindowsConsoleIO(self.output_fd, "w")  # type: ignore[attr-defined]
-        except ValueError:
+        ausser ValueError:
             # Console I/O is redirected, fallback...
             self.out = Nichts
 
@@ -312,7 +312,7 @@ klasse WindowsConsole(Console):
         wenn nicht ScrollConsoleScreenBuffer(
             OutHandle, scroll_rect, Nichts, destination_origin, fill_info
         ):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
 
     def _hide_cursor(self):
         self.__write("\x1b[?25l")
@@ -346,7 +346,7 @@ klasse WindowsConsole(Console):
     def screen_xy(self) -> tuple[int, int]:
         info = CONSOLE_SCREEN_BUFFER_INFO()
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
         gib info.dwCursorPosition.X, info.dwCursorPosition.Y
 
     def _erase_to_end(self) -> Nichts:
@@ -387,7 +387,7 @@ klasse WindowsConsole(Console):
 
     def move_cursor(self, x: int, y: int) -> Nichts:
         wenn x < 0 oder y < 0:
-            raise ValueError(f"Bad cursor position {x}, {y}")
+            wirf ValueError(f"Bad cursor position {x}, {y}")
 
         wenn y < self.__offset oder y >= self.__offset + self.height:
             self.event_queue.insert(Event("scroll", ""))
@@ -406,7 +406,7 @@ klasse WindowsConsole(Console):
         und width of the terminal window in characters."""
         info = CONSOLE_SCREEN_BUFFER_INFO()
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
         gib (
             info.srWindow.Bottom - info.srWindow.Top + 1,
             info.srWindow.Right - info.srWindow.Left + 1,
@@ -415,7 +415,7 @@ klasse WindowsConsole(Console):
     def _getscrollbacksize(self) -> int:
         info = CONSOLE_SCREEN_BUFFER_INFO()
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
 
         gib info.srWindow.Bottom  # type: ignore[no-any-return]
 
@@ -423,7 +423,7 @@ klasse WindowsConsole(Console):
         rec = INPUT_RECORD()
         read = DWORD()
         wenn nicht ReadConsoleInput(InHandle, rec, 1, read):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
 
         gib rec
 
@@ -433,7 +433,7 @@ klasse WindowsConsole(Console):
         rec = (n * INPUT_RECORD)()
         read = DWORD()
         wenn nicht ReadConsoleInput(InHandle, rec, n, read):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
 
         gib rec, read.value
 
@@ -505,7 +505,7 @@ klasse WindowsConsole(Console):
         """
         Push a character to the console event queue.
         """
-        raise NotImplementedError("push_char nicht supported on Windows")
+        wirf NotImplementedError("push_char nicht supported on Windows")
 
     def beep(self) -> Nichts:
         self.__write("\x07")
@@ -535,7 +535,7 @@ klasse WindowsConsole(Console):
     def forgetinput(self) -> Nichts:
         """Forget all pending, but nicht yet processed input."""
         wenn nicht FlushConsoleInputBuffer(InHandle):
-            raise WinError(GetLastError())
+            wirf WinError(GetLastError())
 
     def getpending(self) -> Event:
         """Return the characters that have been typed but nicht yet
@@ -574,13 +574,13 @@ klasse WindowsConsole(Console):
             timeout = int(timeout)
         ret = WaitForSingleObject(InHandle, timeout)
         wenn ret == WAIT_FAILED:
-            raise WinError(get_last_error())
+            wirf WinError(get_last_error())
         sowenn ret == WAIT_TIMEOUT:
             gib Falsch
         gib Wahr
 
     def repaint(self) -> Nichts:
-        raise NotImplementedError("No repaint support")
+        wirf NotImplementedError("No repaint support")
 
 
 # Windows interop
@@ -711,7 +711,7 @@ wenn sys.platform == "win32":
 sonst:
 
     def _win_only(*args, **kwargs):
-        raise NotImplementedError("Windows only")
+        wirf NotImplementedError("Windows only")
 
     GetStdHandle = _win_only
     GetConsoleScreenBufferInfo = _win_only

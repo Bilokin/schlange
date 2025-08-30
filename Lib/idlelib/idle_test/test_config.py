@@ -235,7 +235,7 @@ klasse IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
-        # Check user dir nicht exists und created failed should raise SystemExit
+        # Check user dir nicht exists und created failed should wirf SystemExit
         mit mock.patch('os.path.join', return_value='/path/not/exists'):
             mit self.assertRaises(SystemExit):
                 mit self.assertRaises(FileNotFoundError):
@@ -258,7 +258,7 @@ klasse IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
-        # Check user dir nicht exists und created failed should raise SystemExit
+        # Check user dir nicht exists und created failed should wirf SystemExit
         mit mock.patch('os.path.join', return_value='/path/not/exists'):
             mit self.assertRaises(SystemExit):
                 mit self.assertRaises(FileNotFoundError):

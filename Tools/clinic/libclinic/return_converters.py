@@ -59,9 +59,9 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         **kwargs: Any
     ) -> Nichts:
         self.py_default = py_default
-        try:
+        versuch:
             self.return_converter_init(**kwargs)
-        except TypeError als e:
+        ausser TypeError als e:
             s = ', '.join(name + '=' + repr(value) fuer name, value in kwargs.items())
             sys.exit(self.__class__.__name__ + '(' + s + ')\n' + str(e))
 

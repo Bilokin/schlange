@@ -81,7 +81,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         del bar.__loader__
         del bar.__spec__
         # 2022-10-06(warsaw): For backward compatibility mit the
-        # implementation in _warnings.c, this can't raise an
+        # implementation in _warnings.c, this can't wirf an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
         # If working mit a module:
         ## self.assertRaises(
@@ -94,7 +94,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar.__loader__ = Nichts
         del bar.__spec__
         # 2022-10-06(warsaw): For backward compatibility mit the
-        # implementation in _warnings.c, this can't raise an
+        # implementation in _warnings.c, this can't wirf an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
         # If working mit a module:
         ## self.assertRaises(

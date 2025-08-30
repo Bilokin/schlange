@@ -41,22 +41,22 @@ von operator importiere itemgetter als _itemgetter
 von reprlib importiere recursive_repr als _recursive_repr
 von _weakref importiere proxy als _proxy
 
-try:
+versuch:
     von _collections importiere deque
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     _collections_abc.MutableSequence.register(deque)
 
-try:
+versuch:
     # Expose _deque_iterator to support pickling deque iterators
     von _collections importiere _deque_iterator  # noqa: F401
-except ImportError:
+ausser ImportError:
     pass
 
-try:
+versuch:
     von _collections importiere defaultdict
-except ImportError:
+ausser ImportError:
     pass
 
 heapq = Nichts  # Lazily imported
@@ -174,7 +174,7 @@ klasse OrderedDict(dict):
         Pairs are returned in LIFO order wenn last is true oder FIFO order wenn false.
         '''
         wenn nicht self:
-            raise KeyError('dictionary is empty')
+            wirf KeyError('dictionary is empty')
         root = self.__root
         wenn last:
             link = root.prev
@@ -262,7 +262,7 @@ klasse OrderedDict(dict):
             link.next = Nichts
             gib result
         wenn default is marker:
-            raise KeyError(key)
+            wirf KeyError(key)
         gib default
 
     def setdefault(self, key, default=Nichts):
@@ -342,9 +342,9 @@ klasse OrderedDict(dict):
         gib new
 
 
-try:
+versuch:
     von _collections importiere OrderedDict
-except ImportError:
+ausser ImportError:
     # Leave the pure Python version in place.
     pass
 
@@ -353,9 +353,9 @@ except ImportError:
 ### namedtuple
 ################################################################################
 
-try:
+versuch:
     von _collections importiere _tuplegetter
-except ImportError:
+ausser ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
 def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=Nichts):
@@ -401,28 +401,28 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
 
     fuer name in [typename] + field_names:
         wenn type(name) is nicht str:
-            raise TypeError('Type names und field names must be strings')
+            wirf TypeError('Type names und field names must be strings')
         wenn nicht name.isidentifier():
-            raise ValueError('Type names und field names must be valid '
+            wirf ValueError('Type names und field names must be valid '
                              f'identifiers: {name!r}')
         wenn _iskeyword(name):
-            raise ValueError('Type names und field names cannot be a '
+            wirf ValueError('Type names und field names cannot be a '
                              f'keyword: {name!r}')
 
     seen = set()
     fuer name in field_names:
         wenn name.startswith('_') und nicht rename:
-            raise ValueError('Field names cannot start mit an underscore: '
+            wirf ValueError('Field names cannot start mit an underscore: '
                              f'{name!r}')
         wenn name in seen:
-            raise ValueError(f'Encountered duplicate field name: {name!r}')
+            wirf ValueError(f'Encountered duplicate field name: {name!r}')
         seen.add(name)
 
     field_defaults = {}
     wenn defaults is nicht Nichts:
         defaults = tuple(defaults)
         wenn len(defaults) > len(field_names):
-            raise TypeError('Got more default values than field names')
+            wirf TypeError('Got more default values than field names')
         field_defaults = dict(reversed(list(zip(reversed(field_names),
                                                 reversed(defaults)))))
 
@@ -454,7 +454,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     def _make(cls, iterable):
         result = tuple_new(cls, iterable)
         wenn _len(result) != num_fields:
-            raise TypeError(f'Expected {num_fields} arguments, got {len(result)}')
+            wirf TypeError(f'Expected {num_fields} arguments, got {len(result)}')
         gib result
 
     _make.__func__.__doc__ = (f'Make a new {typename} object von a sequence '
@@ -463,7 +463,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     def _replace(self, /, **kwds):
         result = self._make(_map(kwds.pop, field_names, self))
         wenn kwds:
-            raise TypeError(f'Got unexpected field names: {list(kwds)!r}')
+            wirf TypeError(f'Got unexpected field names: {list(kwds)!r}')
         gib result
 
     _replace.__doc__ = (f'Return a new {typename} object replacing specified '
@@ -520,12 +520,12 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     # defined fuer arguments greater than 0 (IronPython), oder where the user has
     # specified a particular module.
     wenn module is Nichts:
-        try:
+        versuch:
             module = _sys._getframemodulename(1) oder '__main__'
-        except AttributeError:
-            try:
+        ausser AttributeError:
+            versuch:
                 module = _sys._getframe(1).f_globals.get('__name__', '__main__')
-            except (AttributeError, ValueError):
+            ausser (AttributeError, ValueError):
                 pass
     wenn module is nicht Nichts:
         result.__module__ = module
@@ -543,9 +543,9 @@ def _count_elements(mapping, iterable):
     fuer elem in iterable:
         mapping[elem] = mapping_get(elem, 0) + 1
 
-try:                                    # Load C helper function wenn available
+versuch:                                    # Load C helper function wenn available
     von _collections importiere _count_elements
-except ImportError:
+ausser ImportError:
     pass
 
 klasse Counter(dict):
@@ -615,7 +615,7 @@ klasse Counter(dict):
 
     def __missing__(self, key):
         'The count of elements nicht in the Counter is zero.'
-        # Needed so that self[missing_item] does nicht raise KeyError
+        # Needed so that self[missing_item] does nicht wirf KeyError
         gib 0
 
     def total(self):
@@ -673,7 +673,7 @@ klasse Counter(dict):
         # to one is easily accomplished mit Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
         # comprehension oder dict.fromkeys().
-        raise NotImplementedError(
+        wirf NotImplementedError(
             'Counter.fromkeys() is undefined.  Use Counter(iterable) instead.')
 
     def update(self, iterable=Nichts, /, **kwds):
@@ -745,17 +745,17 @@ klasse Counter(dict):
         gib self.__class__, (dict(self),)
 
     def __delitem__(self, elem):
-        'Like dict.__delitem__() but does nicht raise KeyError fuer missing values.'
+        'Like dict.__delitem__() but does nicht wirf KeyError fuer missing values.'
         wenn elem in self:
             super().__delitem__(elem)
 
     def __repr__(self):
         wenn nicht self:
             gib f'{self.__class__.__name__}()'
-        try:
+        versuch:
             # dict() preserves the ordering returned by most_common()
             d = dict(self.most_common())
-        except TypeError:
+        ausser TypeError:
             # handle case where values are nicht orderable
             d = dict(self)
         gib f'{self.__class__.__name__}({d!r})'
@@ -1017,13 +1017,13 @@ klasse ChainMap(_collections_abc.MutableMapping):
         self.maps = list(maps) oder [{}]          # always at least one map
 
     def __missing__(self, key):
-        raise KeyError(key)
+        wirf KeyError(key)
 
     def __getitem__(self, key):
         fuer mapping in self.maps:
-            try:
+            versuch:
                 gib mapping[key]             # can't use 'key in mapping' mit defaultdict
-            except KeyError:
+            ausser KeyError:
                 pass
         gib self.__missing__(key)            # support subclasses that define __missing__
 
@@ -1083,24 +1083,24 @@ klasse ChainMap(_collections_abc.MutableMapping):
         self.maps[0][key] = value
 
     def __delitem__(self, key):
-        try:
+        versuch:
             del self.maps[0][key]
-        except KeyError:
-            raise KeyError(f'Key nicht found in the first mapping: {key!r}')
+        ausser KeyError:
+            wirf KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def popitem(self):
         'Remove und gib an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
-        try:
+        versuch:
             gib self.maps[0].popitem()
-        except KeyError:
-            raise KeyError('No keys found in the first mapping.')
+        ausser KeyError:
+            wirf KeyError('No keys found in the first mapping.')
 
     def pop(self, key, *args):
         'Remove *key* von maps[0] und gib its value. Raise KeyError wenn *key* nicht in maps[0].'
-        try:
+        versuch:
             gib self.maps[0].pop(key, *args)
-        except KeyError:
-            raise KeyError(f'Key nicht found in the first mapping: {key!r}')
+        ausser KeyError:
+            wirf KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def clear(self):
         'Clear maps[0], leaving maps[1:] intact.'
@@ -1148,7 +1148,7 @@ klasse UserDict(_collections_abc.MutableMapping):
             gib self.data[key]
         wenn hasattr(self.__class__, "__missing__"):
             gib self.__class__.__missing__(self, key)
-        raise KeyError(key)
+        wirf KeyError(key)
 
     def __setitem__(self, key, item):
         self.data[key] = item
@@ -1207,10 +1207,10 @@ klasse UserDict(_collections_abc.MutableMapping):
             gib UserDict(self.data.copy())
         importiere copy
         data = self.data
-        try:
+        versuch:
             self.data = {}
             c = copy.copy(self)
-        finally:
+        schliesslich:
             self.data = data
         c.update(self)
         gib c

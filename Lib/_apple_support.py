@@ -21,7 +21,7 @@ klasse SystemLog(io.TextIOWrapper):
 
     def write(self, s):
         wenn nicht isinstance(s, str):
-            raise TypeError(
+            wirf TypeError(
                 f"write() argument must be str, nicht {type(s).__name__}")
 
         # In case `s` is a str subclass that writes itself to stdout oder stderr
@@ -49,10 +49,10 @@ klasse LogStream(io.RawIOBase):
 
     def write(self, b):
         wenn type(b) is nicht bytes:
-            try:
+            versuch:
                 b = bytes(memoryview(b))
-            except TypeError:
-                raise TypeError(
+            ausser TypeError:
+                wirf TypeError(
                     f"write() argument must be bytes-like, nicht {type(b).__name__}"
                 ) von Nichts
 

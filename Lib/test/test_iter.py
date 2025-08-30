@@ -35,7 +35,7 @@ klasse BasicIterClass:
     def __next__(self):
         res = self.i
         wenn res >= self.n:
-            raise StopIteration
+            wirf StopIteration
         self.i = res + 1
         gib res
     def __iter__(self):
@@ -62,7 +62,7 @@ klasse SequenceClass:
         wenn 0 <= i < self.n:
             gib i
         sonst:
-            raise IndexError
+            wirf IndexError
 
 klasse SequenceProxyClass:
     def __init__(self, s):
@@ -84,7 +84,7 @@ klasse NoIterClass:
 
 klasse BadIterableClass:
     def __iter__(self):
-        raise ZeroDivisionError
+        wirf ZeroDivisionError
 
 klasse CallableIterClass:
     def __init__(self):
@@ -93,14 +93,14 @@ klasse CallableIterClass:
         i = self.i
         self.i = i + 1
         wenn i > 100:
-            raise IndexError # Emergency stop
+            wirf IndexError # Emergency stop
         gib i
 
 klasse EmptyIterClass:
     def __len__(self):
         gib 0
     def __getitem__(self, i):
-        raise StopIteration
+        wirf StopIteration
 
 # Main test suite
 
@@ -112,9 +112,9 @@ klasse TestCase(unittest.TestCase):
             self.check_pickle(it, seq)
         res = []
         waehrend 1:
-            try:
+            versuch:
                 val = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 breche
             res.append(val)
         self.assertEqual(res, seq)
@@ -140,9 +140,9 @@ klasse TestCase(unittest.TestCase):
             self.assertEqual(list(it), seq)
 
             it = pickle.loads(d)
-            try:
+            versuch:
                 next(it)
-            except StopIteration:
+            ausser StopIteration:
                 weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -292,7 +292,7 @@ klasse TestCase(unittest.TestCase):
             (tuple[int],)  # GenericAlias
         ]
 
-        try:
+        versuch:
             run_iter = functools.partial(run, "iter")
             # The returned value of `__reduce__` should nicht only be valid
             # but also *empty*, als `it` was exhausted during `__eq__`
@@ -309,7 +309,7 @@ klasse TestCase(unittest.TestCase):
 
             fuer case in types:
                 self.assertEqual(run_iter(*case), (orig["iter"], ((),)))
-        finally:
+        schliesslich:
             # Restore original builtins
             fuer key, func in orig.items():
                 # need to suppress KeyErrors in case
@@ -345,7 +345,7 @@ klasse TestCase(unittest.TestCase):
         def spam(state=[0]):
             i = state[0]
             wenn i == 10:
-                raise StopIteration
+                wirf StopIteration
             state[0] = i+1
             gib i
         self.check_iterator(iter(spam, 20), list(range(10)), pickle=Falsch)
@@ -353,7 +353,7 @@ klasse TestCase(unittest.TestCase):
     def test_iter_function_concealing_reentrant_exhaustion(self):
         # gh-101892: Test two-argument iter() mit a function that
         # exhausts its associated iterator but forgets to either gib
-        # a sentinel value oder raise StopIteration.
+        # a sentinel value oder wirf StopIteration.
         HAS_MORE = 1
         NO_MORE = 2
 
@@ -381,13 +381,13 @@ klasse TestCase(unittest.TestCase):
             i = state[0]
             state[0] = i+1
             wenn i == 10:
-                raise RuntimeError
+                wirf RuntimeError
             gib i
         res = []
-        try:
+        versuch:
             fuer x in iter(spam, 20):
                 res.append(x)
-        except RuntimeError:
+        ausser RuntimeError:
             self.assertEqual(res, list(range(10)))
         sonst:
             self.fail("should have raised RuntimeError")
@@ -397,13 +397,13 @@ klasse TestCase(unittest.TestCase):
         klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
                 wenn i == 10:
-                    raise RuntimeError
+                    wirf RuntimeError
                 gib SequenceClass.__getitem__(self, i)
         res = []
-        try:
+        versuch:
             fuer x in MySequenceClass(20):
                 res.append(x)
-        except RuntimeError:
+        ausser RuntimeError:
             self.assertEqual(res, list(range(10)))
         sonst:
             self.fail("should have raised RuntimeError")
@@ -413,7 +413,7 @@ klasse TestCase(unittest.TestCase):
         klasse MySequenceClass(SequenceClass):
             def __getitem__(self, i):
                 wenn i == 10:
-                    raise StopIteration
+                    wirf StopIteration
                 gib SequenceClass.__getitem__(self, i)
         self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=Falsch)
 
@@ -447,20 +447,20 @@ klasse TestCase(unittest.TestCase):
     # Test a file
     def test_iter_file(self):
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             fuer i in range(5):
                 f.write("%d\n" % i)
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.check_for_loop(f, ["0\n", "1\n", "2\n", "3\n", "4\n"], pickle=Falsch)
             self.check_for_loop(f, [], pickle=Falsch)
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test list()'s use of iterators.
@@ -476,22 +476,22 @@ klasse TestCase(unittest.TestCase):
         self.assertRaises(TypeError, list, 42)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             fuer i in range(5):
                 f.write("%d\n" % i)
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.assertEqual(list(f), ["0\n", "1\n", "2\n", "3\n", "4\n"])
             f.seek(0, 0)
             self.assertEqual(list(f),
                              ["0\n", "1\n", "2\n", "3\n", "4\n"])
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test tuples()'s use of iterators.
@@ -509,22 +509,22 @@ klasse TestCase(unittest.TestCase):
         self.assertRaises(TypeError, tuple, 42)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             fuer i in range(5):
                 f.write("%d\n" % i)
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.assertEqual(tuple(f), ("0\n", "1\n", "2\n", "3\n", "4\n"))
             f.seek(0, 0)
             self.assertEqual(tuple(f),
                              ("0\n", "1\n", "2\n", "3\n", "4\n"))
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test filter()'s use of iterators.
@@ -565,7 +565,7 @@ klasse TestCase(unittest.TestCase):
                         wenn i < len(self.vals):
                             gib self.vals[i]
                         sonst:
-                            raise StopIteration
+                            wirf StopIteration
                 gib SeqIter(self.vals)
 
         seq = Seq(*([bWahr, bFalsch] * 25))
@@ -586,22 +586,22 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(min(iter(d.values())), 1)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("medium line\n")
             f.write("xtra large line\n")
             f.write("itty-bitty line\n")
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.assertEqual(min(f), "itty-bitty line\n")
             f.seek(0, 0)
             self.assertEqual(max(f), "xtra large line\n")
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test map()'s use of iterators.
@@ -619,19 +619,19 @@ klasse TestCase(unittest.TestCase):
                     fuer i in range(3)]
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             fuer i in range(10):
                 f.write("xy" * i + "\n") # line i has len 2*i+1
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.assertEqual(list(map(len, f)), list(range(1, 21, 2)))
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test zip()'s use of iterators.
@@ -666,21 +666,21 @@ klasse TestCase(unittest.TestCase):
                 gib i
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("a\n" "bbb\n" "cc\n")
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             self.assertEqual(list(zip(IntsFrom(0), f, IntsFrom(-100))),
                              [(0, "a\n", -100),
                               (1, "bbb\n", -99),
                               (2, "cc\n", -98)])
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
         self.assertEqual(list(zip(range(5))), [(i,) fuer i in range(5)])
@@ -689,7 +689,7 @@ klasse TestCase(unittest.TestCase):
         klasse NoGuessLen5:
             def __getitem__(self, i):
                 wenn i >= 5:
-                    raise IndexError
+                    wirf IndexError
                 gib i
 
         klasse Guess3Len5(NoGuessLen5):
@@ -734,9 +734,9 @@ klasse TestCase(unittest.TestCase):
                 gib next(self.it)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("a\n" + "b\n" + "c\n")
-        finally:
+        schliesslich:
             f.close()
 
         f = open(TESTFN, "r", encoding="utf-8")
@@ -745,14 +745,14 @@ klasse TestCase(unittest.TestCase):
         # iterator cannot be restarted.  So what we're testing here is
         # whether string.join() can manage to remember everything it's seen
         # und pass that on to unicode.join().
-        try:
+        versuch:
             got = " - ".join(OhPhooey(f))
             self.assertEqual(got, "a\n - b\n - fooled you! - c\n")
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test iterators mit 'x in y' und 'x nicht in y'.
@@ -786,22 +786,22 @@ klasse TestCase(unittest.TestCase):
             self.assertNotIn((v, k), d.items())
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("a\n" "b\n" "c\n")
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             fuer chunk in "abc":
                 f.seek(0, 0)
                 self.assertNotIn(chunk, f)
                 f.seek(0, 0)
                 self.assertIn((chunk + "\n"), f)
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test iterators mit operator.countOf (PySequence_Count).
@@ -823,20 +823,20 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(countOf(d.values(), 1j), 0)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("a\n" "b\n" "c\n" "b\n")
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             fuer letter, count in ("a", 1), ("b", 2), ("c", 1), ("d", 0):
                 f.seek(0, 0)
                 self.assertEqual(countOf(f, letter + "\n"), count)
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
     # Test iterators mit operator.indexOf (PySequence_Index).
@@ -858,22 +858,22 @@ klasse TestCase(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, indexOf, BadIterableClass(), 1)
 
         f = open(TESTFN, "w", encoding="utf-8")
-        try:
+        versuch:
             f.write("a\n" "b\n" "c\n" "d\n" "e\n")
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             fiter = iter(f)
             self.assertEqual(indexOf(fiter, "b\n"), 1)
             self.assertEqual(indexOf(fiter, "d\n"), 1)
             self.assertEqual(indexOf(fiter, "e\n"), 0)
             self.assertRaises(ValueError, indexOf, fiter, "a\n")
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
         iclass = IteratingSequenceClass(3)
@@ -885,7 +885,7 @@ klasse TestCase(unittest.TestCase):
     def test_writelines(self):
         f = open(TESTFN, "w", encoding="utf-8")
 
-        try:
+        versuch:
             self.assertRaises(TypeError, f.writelines, Nichts)
             self.assertRaises(TypeError, f.writelines, 42)
 
@@ -903,7 +903,7 @@ klasse TestCase(unittest.TestCase):
 
                 def __next__(self):
                     wenn self.i >= self.finish:
-                        raise StopIteration
+                        wirf StopIteration
                     result = str(self.i) + '\n'
                     self.i += 1
                     gib result
@@ -926,11 +926,11 @@ klasse TestCase(unittest.TestCase):
             expected = [str(i) + "\n" fuer i in range(1, 2006)]
             self.assertEqual(list(f), expected)
 
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
 
@@ -942,23 +942,23 @@ klasse TestCase(unittest.TestCase):
         a, b, c = IteratingSequenceClass(3)
         self.assertEqual((a, b, c), (0, 1, 2))
 
-        try:    # too many values
+        versuch:    # too many values
             a, b = IteratingSequenceClass(3)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("should have raised ValueError")
 
-        try:    # nicht enough values
+        versuch:    # nicht enough values
             a, b, c = IteratingSequenceClass(2)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("should have raised ValueError")
 
-        try:    # nicht iterable
+        versuch:    # nicht iterable
             a, b, c = len
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail("should have raised TypeError")
@@ -968,20 +968,20 @@ klasse TestCase(unittest.TestCase):
 
         f = open(TESTFN, "w", encoding="utf-8")
         lines = ("a\n", "bb\n", "ccc\n")
-        try:
+        versuch:
             fuer line in lines:
                 f.write(line)
-        finally:
+        schliesslich:
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
-        try:
+        versuch:
             a, b, c = f
             self.assertEqual((a, b, c), lines)
-        finally:
+        schliesslich:
             f.close()
-            try:
+            versuch:
                 unlink(TESTFN)
-            except OSError:
+            ausser OSError:
                 pass
 
         (a, b), (c,) = IteratingSequenceClass(2), {42: 24}
@@ -1005,9 +1005,9 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(C.count, 0)
         l = [C(), C(), C()]
         self.assertEqual(C.count, 3)
-        try:
+        versuch:
             a, b = iter(l)
-        except ValueError:
+        ausser ValueError:
             pass
         del l
         self.assertEqual(C.count, 0)
@@ -1051,7 +1051,7 @@ klasse TestCase(unittest.TestCase):
             i = state[0]
             state[0] = i+1
             wenn i == 10:
-                raise AssertionError("shouldn't have gotten this far")
+                wirf AssertionError("shouldn't have gotten this far")
             gib i
         b = iter(spam, 5)
         self.assertEqual(list(b), list(range(5)))
@@ -1096,10 +1096,10 @@ klasse TestCase(unittest.TestCase):
                 del BadIterator.__next__
                 gib 1
 
-        try:
+        versuch:
             fuer i in BadIterator() :
                 pass
-        except TypeError:
+        ausser TypeError:
             pass
 
     def test_extending_list_with_iterator_does_not_segfault(self):
@@ -1150,24 +1150,24 @@ klasse TestCase(unittest.TestCase):
         # __next__ should be the iterator expression
 
         def init_raises():
-            try:
+            versuch:
                 fuer x in BrokenIter(init_raises=Wahr):
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def next_raises():
-            try:
+            versuch:
                 fuer x in BrokenIter(next_raises=Wahr):
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def iter_raises():
-            try:
+            versuch:
                 fuer x in BrokenIter(iter_raises=Wahr):
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),

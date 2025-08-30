@@ -5,7 +5,7 @@ wenn __name__ == '__main__':
         buf = os.read(0, 1024)
         wenn nicht buf:
             breche
-        try:
+        versuch:
             os.write(1, b'OUT:'+buf)
-        except OSError als ex:
+        ausser OSError als ex:
             os.write(2, b'ERR:' + ex.__class__.__name__.encode('ascii'))

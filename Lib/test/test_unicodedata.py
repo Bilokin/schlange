@@ -289,7 +289,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         # Decoding \N escapes requires the unicodedata module. If it can't be
         # imported, we shouldn't segfault.
 
-        # This program should raise a SyntaxError in the eval.
+        # This program should wirf a SyntaxError in the eval.
         code = "import sys;" \
             "sys.modules['unicodedata'] = Nichts;" \
             """eval("'\\\\N{SOFT HYPHEN}'")"""
@@ -387,13 +387,13 @@ klasse NormalizationTest(unittest.TestCase):
         TESTDATAURL = f"http://www.pythontest.net/unicode/{unicodedata.unidata_version}/{TESTDATAFILE}"
 
         # Hit the exception early
-        try:
+        versuch:
             testdata = open_urlresource(TESTDATAURL, encoding="utf-8",
                                         check=self.check_version)
-        except PermissionError:
+        ausser PermissionError:
             self.skipTest(f"Permission error when downloading {TESTDATAURL} "
                           f"into the test data directory")
-        except (OSError, HTTPException) als exc:
+        ausser (OSError, HTTPException) als exc:
             self.skipTest(f"Failed to download {TESTDATAURL}: {exc}")
 
         mit testdata:

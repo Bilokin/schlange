@@ -88,10 +88,10 @@ klasse ZoneInfoTestBase(unittest.TestCase):
                 sys.modules["tzdata"] = Nichts
 
             old_path = self.module.TZPATH
-            try:
+            versuch:
                 self.module.reset_tzpath(tzpath)
                 liefere
-            finally:
+            schliesslich:
                 wenn block_tzdata:
                     sys.modules.pop("tzdata")
                     fuer modname, module in tzdata_modules.items():

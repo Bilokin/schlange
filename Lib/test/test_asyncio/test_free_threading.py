@@ -141,7 +141,7 @@ klasse TestFreeThreading:
     def test_run_coroutine_threadsafe_exception(self) -> Nichts:
         async def coro():
             await asyncio.sleep(0)
-            raise MyException("test")
+            wirf MyException("test")
 
         def in_thread(loop: asyncio.AbstractEventLoop):
             fut = asyncio.run_coroutine_threadsafe(coro(), loop)

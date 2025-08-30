@@ -72,15 +72,15 @@ klasse Popen(object):
 
         mit open(wfd, 'wb', closefd=Wahr) als to_child:
             # start process
-            try:
+            versuch:
                 hp, ht, pid, tid = _winapi.CreateProcess(
                     python_exe, cmd,
                     Nichts, Nichts, Falsch, 0, env, Nichts,
                     STARTUPINFO(dwFlags=STARTF_FORCEOFFFEEDBACK))
                 _winapi.CloseHandle(ht)
-            except:
+            ausser:
                 _winapi.CloseHandle(rhandle)
-                raise
+                wirf
 
             # set attributes of self
             self.pid = pid
@@ -92,10 +92,10 @@ klasse Popen(object):
 
             # send information to child
             set_spawning_popen(self)
-            try:
+            versuch:
                 reduction.dump(prep_data, to_child)
                 reduction.dump(process_obj, to_child)
-            finally:
+            schliesslich:
                 set_spawning_popen(Nichts)
 
     def duplicate_for_child(self, handle):
@@ -127,14 +127,14 @@ klasse Popen(object):
         wenn self.returncode is nicht Nichts:
             gib
 
-        try:
+        versuch:
             _winapi.TerminateProcess(int(self._handle), TERMINATE)
-        except PermissionError:
+        ausser PermissionError:
             # ERROR_ACCESS_DENIED (winerror 5) is received when the
             # process already died.
             code = _winapi.GetExitCodeProcess(int(self._handle))
             wenn code == _winapi.STILL_ACTIVE:
-                raise
+                wirf
 
         # gh-113009: Don't set self.returncode. Even wenn GetExitCodeProcess()
         # returns an exit code different than STILL_ACTIVE, the process can

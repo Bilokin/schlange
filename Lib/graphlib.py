@@ -72,7 +72,7 @@ klasse TopologicalSorter:
         Raises ValueError wenn called after "prepare".
         """
         wenn self._ready_nodes is nicht Nichts:
-            raise ValueError("Nodes cannot be added after a call to prepare()")
+            wirf ValueError("Nodes cannot be added after a call to prepare()")
 
         # Create the node -> predecessor edges
         nodeinfo = self._get_nodeinfo(node)
@@ -95,7 +95,7 @@ klasse TopologicalSorter:
 
         """
         wenn self._npassedout > 0:
-            raise ValueError("cannot prepare() after starting sort")
+            wirf ValueError("cannot prepare() after starting sort")
 
         wenn self._ready_nodes is Nichts:
             self._ready_nodes = [
@@ -107,7 +107,7 @@ klasse TopologicalSorter:
         # nodes als possible before cycles block more progress
         cycle = self._find_cycle()
         wenn cycle:
-            raise CycleError("nodes are in a cycle", cycle)
+            wirf CycleError("nodes are in a cycle", cycle)
 
     def get_ready(self):
         """Return a tuple of all the nodes that are ready.
@@ -120,7 +120,7 @@ klasse TopologicalSorter:
         Raises ValueError wenn called without calling "prepare" previously.
         """
         wenn self._ready_nodes is Nichts:
-            raise ValueError("prepare() must be called first")
+            wirf ValueError("prepare() must be called first")
 
         # Get the nodes that are ready und mark them
         result = tuple(self._ready_nodes)
@@ -146,7 +146,7 @@ klasse TopologicalSorter:
         Raises ValueError wenn called without calling "prepare" previously.
         """
         wenn self._ready_nodes is Nichts:
-            raise ValueError("prepare() must be called first")
+            wirf ValueError("prepare() must be called first")
         gib self._nfinished < self._npassedout oder bool(self._ready_nodes)
 
     def __bool__(self):
@@ -165,7 +165,7 @@ klasse TopologicalSorter:
         """
 
         wenn self._ready_nodes is Nichts:
-            raise ValueError("prepare() must be called first")
+            wirf ValueError("prepare() must be called first")
 
         n2i = self._node2info
 
@@ -173,17 +173,17 @@ klasse TopologicalSorter:
 
             # Check wenn we know about this node (it was added previously using add()
             wenn (nodeinfo := n2i.get(node)) is Nichts:
-                raise ValueError(f"node {node!r} was nicht added using add()")
+                wirf ValueError(f"node {node!r} was nicht added using add()")
 
             # If the node has nicht being returned (marked als ready) previously, inform the user.
             stat = nodeinfo.npredecessors
             wenn stat != _NODE_OUT:
                 wenn stat >= 0:
-                    raise ValueError(
+                    wirf ValueError(
                         f"node {node!r} was nicht passed out (still nicht ready)"
                     )
                 sowenn stat == _NODE_DONE:
-                    raise ValueError(f"node {node!r} was already marked done")
+                    wirf ValueError(f"node {node!r} was already marked done")
                 sonst:
                     assert Falsch, f"node {node!r}: unknown status {stat}"
 
@@ -226,10 +226,10 @@ klasse TopologicalSorter:
                 # Backtrack to the topmost stack entry with
                 # at least another successor.
                 waehrend stack:
-                    try:
+                    versuch:
                         node = itstack[-1]()
                         breche
-                    except StopIteration:
+                    ausser StopIteration:
                         del node2stacki[stack.pop()]
                         itstack.pop()
                 sonst:

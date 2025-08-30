@@ -14,7 +14,7 @@ von test importiere support
 von test.support importiere os_helper
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 wenn support.MS_WINDOWS:
     importiere msvcrt
@@ -23,7 +23,7 @@ sonst:
 
 
 wenn support.check_sanitizer(address=Wahr):
-    raise unittest.SkipTest("Exposes ASAN flakiness in GitHub CI")
+    wirf unittest.SkipTest("Exposes ASAN flakiness in GitHub CI")
 
 # Program blocking
 PROGRAM_BLOCKED = [sys.executable, '-c', 'import time; time.sleep(3600)']
@@ -80,7 +80,7 @@ klasse SubprocessTransportTests(test_utils.TestCase):
         self.assertIsNichts(transport._proc)
         self.assertIsNichts(transport._protocol)
 
-        # methods must raise ProcessLookupError wenn the process exited
+        # methods must wirf ProcessLookupError wenn the process exited
         self.assertRaises(ProcessLookupError,
                           transport.send_signal, signal.SIGTERM)
         self.assertRaises(ProcessLookupError, transport.terminate)
@@ -253,7 +253,7 @@ klasse SubprocessMixin:
         # the process). The parent process may have decided to ignore SIGHUP,
         # und signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
-        try:
+        versuch:
             code = 'import time; drucke("sleeping", flush=Wahr); time.sleep(3600)'
             args = [sys.executable, '-c', code]
             proc = self.loop.run_until_complete(
@@ -274,7 +274,7 @@ klasse SubprocessMixin:
 
             returncode = self.loop.run_until_complete(send_signal(proc))
             self.assertEqual(-signal.SIGHUP, returncode)
-        finally:
+        schliesslich:
             signal.signal(signal.SIGHUP, old_handler)
 
     def test_stdin_broken_pipe(self):
@@ -317,7 +317,7 @@ klasse SubprocessMixin:
             await proc.stdin.drain()
 
         coro = write_stdin(proc, large_data)
-        # drain() must raise BrokenPipeError oder ConnectionResetError
+        # drain() must wirf BrokenPipeError oder ConnectionResetError
         mit test_utils.disable_logger():
             self.assertRaises((BrokenPipeError, ConnectionResetError),
                               self.loop.run_until_complete, coro)
@@ -510,9 +510,9 @@ klasse SubprocessMixin:
             # Create an internal future waiting on the process exit
             task = self.loop.create_task(proc.wait())
             self.loop.call_soon(task.cancel)
-            try:
+            versuch:
                 await task
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 pass
 
             # Cancel the future
@@ -531,9 +531,9 @@ klasse SubprocessMixin:
             task = self.loop.create_task(coro)
 
             self.loop.call_soon(task.cancel)
-            try:
+            versuch:
                 await task
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 pass
 
         # ignore the log:
@@ -549,9 +549,9 @@ klasse SubprocessMixin:
             task = self.loop.create_task(coro)
 
             self.loop.call_soon(task.cancel)
-            try:
+            versuch:
                 await task
-            except asyncio.CancelledError:
+            ausser asyncio.CancelledError:
                 pass
 
         # ignore the log:
@@ -583,11 +583,11 @@ klasse SubprocessMixin:
 
         # Ignore "Close running child process: kill ..." log
         mit test_utils.disable_logger():
-            try:
+            versuch:
                 returncode, killed = self.loop.run_until_complete(
                     kill_running()
                 )
-            except asyncio.TimeoutError:
+            ausser asyncio.TimeoutError:
                 self.skipTest(
                     "Timeout failure on waiting fuer subprocess stopping"
                 )
@@ -871,9 +871,9 @@ klasse SubprocessMixin:
             fuer _ in range(10):
                 proc = await asyncio.create_subprocess_exec('sleep', '0.1')
                 await asyncio.sleep(0.1)
-                try:
+                versuch:
                     proc.send_signal(signal.SIGUSR1)
-                except ProcessLookupError:
+                ausser ProcessLookupError:
                     pass
                 self.assertNotEqual(await proc.wait(), 255)
 

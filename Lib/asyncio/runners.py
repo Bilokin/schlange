@@ -66,13 +66,13 @@ klasse Runner:
         """Shutdown und close event loop."""
         wenn self._state is nicht _State.INITIALIZED:
             gib
-        try:
+        versuch:
             loop = self._loop
             _cancel_all_tasks(loop)
             loop.run_until_complete(loop.shutdown_asyncgens())
             loop.run_until_complete(
                 loop.shutdown_default_executor(constants.THREAD_JOIN_TIMEOUT))
-        finally:
+        schliesslich:
             wenn self._set_event_loop:
                 events.set_event_loop(Nichts)
             loop.close()
@@ -88,7 +88,7 @@ klasse Runner:
         """Run code in the embedded event loop."""
         wenn events._get_running_loop() is nicht Nichts:
             # fail fast mit short traceback
-            raise RuntimeError(
+            wirf RuntimeError(
                 "Runner.run() cannot be called von a running event loop")
 
         self._lazy_init()
@@ -100,7 +100,7 @@ klasse Runner:
 
                 coro = _wrap_awaitable(coro)
             sonst:
-                raise TypeError('An asyncio.Future, a coroutine oder an '
+                wirf TypeError('An asyncio.Future, a coroutine oder an '
                                 'awaitable is required')
 
         wenn context is Nichts:
@@ -112,9 +112,9 @@ klasse Runner:
             und signal.getsignal(signal.SIGINT) is signal.default_int_handler
         ):
             sigint_handler = functools.partial(self._on_sigint, main_task=task)
-            try:
+            versuch:
                 signal.signal(signal.SIGINT, sigint_handler)
-            except ValueError:
+            ausser ValueError:
                 # `signal.signal` may throw wenn `threading.main_thread` does
                 # nicht support signals (e.g. embedded interpreter mit signals
                 # nicht registered - see gh-91880)
@@ -123,15 +123,15 @@ klasse Runner:
             sigint_handler = Nichts
 
         self._interrupt_count = 0
-        try:
+        versuch:
             gib self._loop.run_until_complete(task)
-        except exceptions.CancelledError:
+        ausser exceptions.CancelledError:
             wenn self._interrupt_count > 0:
                 uncancel = getattr(task, "uncancel", Nichts)
                 wenn uncancel is nicht Nichts und uncancel() == 0:
-                    raise KeyboardInterrupt()
-            raise  # CancelledError
-        finally:
+                    wirf KeyboardInterrupt()
+            wirf  # CancelledError
+        schliesslich:
             wenn (sigint_handler is nicht Nichts
                 und signal.getsignal(signal.SIGINT) is sigint_handler
             ):
@@ -139,7 +139,7 @@ klasse Runner:
 
     def _lazy_init(self):
         wenn self._state is _State.CLOSED:
-            raise RuntimeError("Runner is closed")
+            wirf RuntimeError("Runner is closed")
         wenn self._state is _State.INITIALIZED:
             gib
         wenn self._loop_factory is Nichts:
@@ -163,7 +163,7 @@ klasse Runner:
             # wakeup loop wenn it is blocked by select() mit long timeout
             self._loop.call_soon_threadsafe(lambda: Nichts)
             gib
-        raise KeyboardInterrupt()
+        wirf KeyboardInterrupt()
 
 
 def run(main, *, debug=Nichts, loop_factory=Nichts):
@@ -197,7 +197,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
     """
     wenn events._get_running_loop() is nicht Nichts:
         # fail fast mit short traceback
-        raise RuntimeError(
+        wirf RuntimeError(
             "asyncio.run() cannot be called von a running event loop")
 
     mit Runner(debug=debug, loop_factory=loop_factory) als runner:

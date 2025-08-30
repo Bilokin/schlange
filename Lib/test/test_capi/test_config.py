@@ -279,7 +279,7 @@ klasse CAPITests(unittest.TestCase):
 
                 old_opt_value = config_get(name)
                 old_sys_value = getattr(sys, sys_attr)
-                try:
+                versuch:
                     fuer value in test_values:
                         config_set(name, value)
                         self.assertEqual(config_get(name), value)
@@ -288,7 +288,7 @@ klasse CAPITests(unittest.TestCase):
                     fuer value in invalid_types:
                         mit self.assertRaises(TypeError):
                             config_set(name, value)
-                finally:
+                schliesslich:
                     setattr(sys, sys_attr, old_sys_value)
                     config_set(name, old_opt_value)
 
@@ -350,7 +350,7 @@ klasse CAPITests(unittest.TestCase):
 
             mit self.subTest(name=name):
                 old_value = config_get(name)
-                try:
+                versuch:
                     fuer value in new_values:
                         expected, expect_flag = expect_func(value)
 
@@ -371,7 +371,7 @@ klasse CAPITests(unittest.TestCase):
                     fuer value in invalid_types:
                         mit self.assertRaises(TypeError):
                             config_set(name, value)
-                finally:
+                schliesslich:
                     config_set(name, old_value)
 
     def test_config_set_cpu_count(self):
@@ -379,10 +379,10 @@ klasse CAPITests(unittest.TestCase):
         config_set = _testcapi.config_set
 
         old_value = config_get('cpu_count')
-        try:
+        versuch:
             config_set('cpu_count', 123)
             self.assertEqual(os.cpu_count(), 123)
-        finally:
+        schliesslich:
             config_set('cpu_count', old_value)
 
     def test_config_set_read_only(self):

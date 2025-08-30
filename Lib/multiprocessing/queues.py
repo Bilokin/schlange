@@ -34,7 +34,7 @@ klasse Queue(object):
 
     def __init__(self, maxsize=0, *, ctx):
         wenn maxsize <= 0:
-            # Can raise ImportError (see issues #3770 und #23400)
+            # Can wirf ImportError (see issues #3770 und #23400)
             von .synchronize importiere SEM_VALUE_MAX als maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=Falsch)
@@ -83,9 +83,9 @@ klasse Queue(object):
 
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
+            wirf ValueError(f"Queue {self!r} is closed")
         wenn nicht self._sem.acquire(block, timeout):
-            raise Full
+            wirf Full
 
         mit self._notempty:
             wenn self._thread is Nichts:
@@ -95,7 +95,7 @@ klasse Queue(object):
 
     def get(self, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
+            wirf ValueError(f"Queue {self!r} is closed")
         wenn block und timeout is Nichts:
             mit self._rlock:
                 res = self._recv_bytes()
@@ -104,17 +104,17 @@ klasse Queue(object):
             wenn block:
                 deadline = time.monotonic() + timeout
             wenn nicht self._rlock.acquire(block, timeout):
-                raise Empty
-            try:
+                wirf Empty
+            versuch:
                 wenn block:
                     timeout = deadline - time.monotonic()
                     wenn nicht self._poll(timeout):
-                        raise Empty
+                        wirf Empty
                 sowenn nicht self._poll():
-                    raise Empty
+                    wirf Empty
                 res = self._recv_bytes()
                 self._sem.release()
-            finally:
+            schliesslich:
                 self._rlock.release()
         # unserialize the data after having released the lock
         gib _ForkingPickler.loads(res)
@@ -151,9 +151,9 @@ klasse Queue(object):
     def cancel_join_thread(self):
         debug('Queue.cancel_join_thread()')
         self._joincancelled = Wahr
-        try:
+        versuch:
             self._jointhread.cancel()
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def _terminate_broken(self):
@@ -185,15 +185,15 @@ klasse Queue(object):
             daemon=Wahr,
         )
 
-        try:
+        versuch:
             debug('doing self._thread.start()')
             self._thread.start()
             debug('... done self._thread.start()')
-        except:
+        ausser:
             # gh-109047: During Python finalization, creating a thread
             # can fail mit RuntimeError.
             self._thread = Nichts
-            raise
+            wirf
 
         wenn nicht self._joincancelled:
             self._jointhread = Finalize(
@@ -242,14 +242,14 @@ klasse Queue(object):
             wacquire = Nichts
 
         waehrend 1:
-            try:
+            versuch:
                 nacquire()
-                try:
+                versuch:
                     wenn nicht buffer:
                         nwait()
-                finally:
+                schliesslich:
                     nrelease()
-                try:
+                versuch:
                     waehrend 1:
                         obj = bpopleft()
                         wenn obj is sentinel:
@@ -264,13 +264,13 @@ klasse Queue(object):
                             send_bytes(obj)
                         sonst:
                             wacquire()
-                            try:
+                            versuch:
                                 send_bytes(obj)
-                            finally:
+                            schliesslich:
                                 wrelease()
-                except IndexError:
+                ausser IndexError:
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 wenn ignore_epipe und getattr(e, 'errno', 0) == errno.EPIPE:
                     gib
                 # Since this runs in a daemon thread the resources it uses
@@ -327,9 +327,9 @@ klasse JoinableQueue(Queue):
 
     def put(self, obj, block=Wahr, timeout=Nichts):
         wenn self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
+            wirf ValueError(f"Queue {self!r} is closed")
         wenn nicht self._sem.acquire(block, timeout):
-            raise Full
+            wirf Full
 
         mit self._notempty, self._cond:
             wenn self._thread is Nichts:
@@ -341,7 +341,7 @@ klasse JoinableQueue(Queue):
     def task_done(self):
         mit self._cond:
             wenn nicht self._unfinished_tasks.acquire(Falsch):
-                raise ValueError('task_done() called too many times')
+                wirf ValueError('task_done() called too many times')
             wenn self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 

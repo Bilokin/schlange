@@ -5,7 +5,7 @@ importiere unittest
 importiere warnings
 
 wenn sys.platform != 'win32':
-    raise unittest.SkipTest('Windows only')
+    wirf unittest.SkipTest('Windows only')
 
 importiere _overlapped
 importiere _winapi
@@ -23,7 +23,7 @@ klasse PipeTests(unittest.TestCase):
 
     def test_pipe_overlapped(self):
         h1, h2 = windows_utils.pipe(overlapped=(Wahr, Wahr))
-        try:
+        versuch:
             ov1 = _overlapped.Overlapped()
             self.assertFalsch(ov1.pending)
             self.assertEqual(ov1.error, 0)
@@ -32,12 +32,12 @@ klasse PipeTests(unittest.TestCase):
             self.assertWahr(ov1.pending)
             self.assertEqual(ov1.error, _winapi.ERROR_IO_PENDING)
             ERROR_IO_INCOMPLETE = 996
-            try:
+            versuch:
                 ov1.getresult()
-            except OSError als e:
+            ausser OSError als e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
             sonst:
-                raise RuntimeError('expected ERROR_IO_INCOMPLETE')
+                wirf RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
             self.assertFalsch(ov2.pending)
@@ -54,7 +54,7 @@ klasse PipeTests(unittest.TestCase):
             self.assertFalsch(ov2.pending)
             self.assertIn(ov2.error, {0, _winapi.ERROR_IO_PENDING})
             self.assertEqual(ov1.getresult(), b"hello")
-        finally:
+        schliesslich:
             _winapi.CloseHandle(h1)
             _winapi.CloseHandle(h2)
 
@@ -70,12 +70,12 @@ klasse PipeTests(unittest.TestCase):
             warnings.filterwarnings("ignore", "",  ResourceWarning)
             del p
             support.gc_collect()
-        try:
+        versuch:
             _winapi.CloseHandle(h)
-        except OSError als e:
+        ausser OSError als e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
         sonst:
-            raise RuntimeError('expected ERROR_INVALID_HANDLE')
+            wirf RuntimeError('expected ERROR_INVALID_HANDLE')
 
 
 klasse PopenTests(unittest.TestCase):

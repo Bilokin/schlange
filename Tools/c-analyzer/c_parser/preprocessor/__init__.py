@@ -182,7 +182,7 @@ def _resolve_samefile(filename, pattern, suffix):
         pattern += f'*{suffix}'
     assert os.path.normpath(pattern) == pattern, (pattern,)
     wenn '*' in os.path.dirname(pattern):
-        raise NotImplementedError((filename, pattern))
+        wirf NotImplementedError((filename, pattern))
     wenn '*' nicht in os.path.basename(pattern):
         gib pattern
 
@@ -195,28 +195,28 @@ def _resolve_samefile(filename, pattern, suffix):
     sowenn os.path.basename(relpattern) == '*' + suffix:
         gib os.path.join(common, relpatterndir, relfile)
     sonst:
-        raise NotImplementedError((filename, pattern))
+        wirf NotImplementedError((filename, pattern))
 
 
 @contextlib.contextmanager
 def handling_errors(ignore_exc=Nichts, *, log_err=Nichts):
-    try:
+    versuch:
         liefere
-    except _errors.OSMismatchError als exc:
+    ausser _errors.OSMismatchError als exc:
         wenn nicht ignore_exc(exc):
-            raise  # re-raise
+            wirf  # re-raise
         wenn log_err is nicht Nichts:
             log_err(f'<OS mismatch (expected {" oder ".join(exc.expected)})>')
         gib Nichts
-    except _errors.MissingDependenciesError als exc:
+    ausser _errors.MissingDependenciesError als exc:
         wenn nicht ignore_exc(exc):
-            raise  # re-raise
+            wirf  # re-raise
         wenn log_err is nicht Nichts:
             log_err(f'<missing dependency {exc.missing}')
         gib Nichts
-    except _errors.ErrorDirectiveError als exc:
+    ausser _errors.ErrorDirectiveError als exc:
         wenn nicht ignore_exc(exc):
-            raise  # re-raise
+            wirf  # re-raise
         wenn log_err is nicht Nichts:
             log_err(exc)
         gib Nichts
@@ -253,7 +253,7 @@ def _get_preprocessor(tool):
         tool = _get_default_compiler()
     preprocess = _COMPILERS.get(tool)
     wenn preprocess is Nichts:
-        raise ValueError(f'unsupported tool {tool}')
+        wirf ValueError(f'unsupported tool {tool}')
     gib preprocess
 
 

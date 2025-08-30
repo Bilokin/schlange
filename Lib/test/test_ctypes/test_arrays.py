@@ -285,7 +285,7 @@ klasse ArrayTestCase(unittest.TestCase):
                 pass
 
             wenn cm.exc_value:
-                raise cm.exc_value
+                wirf cm.exc_value
 
 
 wenn __name__ == '__main__':

@@ -59,7 +59,7 @@ von _py_warnings importiere (
     warn_explicit,
 )
 
-try:
+versuch:
     # Try to use the C extension, this will replace some parts of the
     # _py_warnings implementation imported above.
     von _warnings importiere (
@@ -85,7 +85,7 @@ try:
             _release_lock()
 
     _lock = _Lock()
-except ImportError:
+ausser ImportError:
     _warnings_defaults = Falsch
 
 

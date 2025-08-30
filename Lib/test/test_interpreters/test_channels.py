@@ -213,10 +213,10 @@ klasse TestSendRecv(TestBase):
 
         def f():
             waehrend Wahr:
-                try:
+                versuch:
                     obj = r.recv()
                     breche
-                except channels.ChannelEmptyError:
+                ausser channels.ChannelEmptyError:
                     time.sleep(0.1)
             s.send(obj)
         t = threading.Thread(target=f)
@@ -341,10 +341,10 @@ klasse TestSendRecv(TestBase):
         def f():
             nonlocal obj
             waehrend Wahr:
-                try:
+                versuch:
                     obj = rch.recv()
                     breche
-                except channels.ChannelEmptyError:
+                ausser channels.ChannelEmptyError:
                     time.sleep(0.1)
         t = threading.Thread(target=f)
         t.start()
@@ -387,7 +387,7 @@ klasse TestSendRecv(TestBase):
             sowenn unbound is channels.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=channels.UNBOUND_REMOVE'
             sonst:
-                raise NotImplementedError(repr(unbound))
+                wirf NotImplementedError(repr(unbound))
             interp = interpreters.create()
 
             _run_output(interp, dedent(f"""

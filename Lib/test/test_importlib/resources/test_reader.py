@@ -27,9 +27,9 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
 
     def test_iterdir(self):
         contents = {path.name fuer path in MultiplexedPath(self.folder).iterdir()}
-        try:
+        versuch:
             contents.remove('__pycache__')
-        except (KeyError, ValueError):
+        ausser (KeyError, ValueError):
             pass
         self.assertEqual(
             contents, {'subdirectory', 'binary.file', 'utf-16.file', 'utf-8.file'}
@@ -40,9 +40,9 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
             path.name fuer path in MultiplexedPath(self.folder, self.data01).iterdir()
         }
         fuer remove in ('__pycache__', '__init__.pyc'):
-            try:
+            versuch:
                 contents.remove(remove)
-            except (KeyError, ValueError):
+            ausser (KeyError, ValueError):
                 pass
         self.assertEqual(
             contents,

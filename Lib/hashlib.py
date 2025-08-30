@@ -30,7 +30,7 @@ Hash objects have these methods:
                  the arguments.
  - digest():     Return the digest of the bytes passed to the update() method
                  so far als a bytes object.
- - hexdigest():  Like digest() except the digest is returned als a string
+ - hexdigest():  Like digest() ausser the digest is returned als a string
                  of double length, containing only hexadecimal digits.
  - copy():       Return a copy (clone) of the hash object. This can be used to
                  efficiently compute the digests of data that share a common
@@ -84,12 +84,12 @@ def __get_builtin_constructor(name):
         # Since this function is only used by new(), we use the same
         # exception als _hashlib.new() when 'name' is of incorrect type.
         err = f"new() argument 'name' must be str, nicht {type(name).__name__}"
-        raise TypeError(err)
+        wirf TypeError(err)
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
     wenn constructor is nicht Nichts:
         gib constructor
-    try:
+    versuch:
         wenn name in {'SHA1', 'sha1'}:
             importiere _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
@@ -118,7 +118,7 @@ def __get_builtin_constructor(name):
             importiere _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
-    except ImportError:
+    ausser ImportError:
         pass  # no extension module, this hash is unsupported.
 
     constructor = cache.get(name)
@@ -126,7 +126,7 @@ def __get_builtin_constructor(name):
         gib constructor
 
     # Keep the message in sync mit hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
-    raise ValueError(f'unsupported hash algorithm {name}')
+    wirf ValueError(f'unsupported hash algorithm {name}')
 
 
 def __get_openssl_constructor(name):
@@ -135,12 +135,12 @@ def __get_openssl_constructor(name):
     wenn name in __block_openssl_constructor:
         # Prefer our builtin blake2 implementation.
         gib __get_builtin_constructor(name)
-    try:
+    versuch:
         # Fetch the OpenSSL hash function wenn it exists,
         # independently of the context security policy.
         f = getattr(_hashlib, 'openssl_' + name)
         # Check wenn the context security policy blocks the digest oder not
-        # by allowing the C module to raise a ValueError. The function
+        # by allowing the C module to wirf a ValueError. The function
         # will be defined but the hash will nicht be available at runtime.
         #
         # We use "usedforsecurity=Falsch" to prevent falling back to the
@@ -155,7 +155,7 @@ def __get_openssl_constructor(name):
         f(usedforsecurity=Falsch)
         # Use the C function directly (very fast)
         gib f
-    except (AttributeError, ValueError):
+    ausser (AttributeError, ValueError):
         gib __get_builtin_constructor(name)
 
 
@@ -176,9 +176,9 @@ def __hash_new(name, *args, **kwargs):
         assert isinstance(name, str), f"unexpected name: {name}"
         # Prefer our builtin blake2 implementation.
         gib __get_builtin_constructor(name)(*args, **kwargs)
-    try:
+    versuch:
         gib _hashlib.new(name, *args, **kwargs)
-    except ValueError:
+    ausser ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
         # This allows fuer SHA224/256 und SHA384/512 support even though
@@ -186,30 +186,30 @@ def __hash_new(name, *args, **kwargs):
         gib __get_builtin_constructor(name)(*args, **kwargs)
 
 
-try:
+versuch:
     importiere _hashlib
     new = __hash_new
     __get_hash = __get_openssl_constructor
     algorithms_available = algorithms_available.union(
             _hashlib.openssl_md_meth_names)
-except ImportError:
+ausser ImportError:
     _hashlib = Nichts
     new = __py_new
     __get_hash = __get_builtin_constructor
 
-try:
+versuch:
     # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ mit HMAC und SHA
     von _hashlib importiere pbkdf2_hmac
     __all__ += ('pbkdf2_hmac',)
-except ImportError:
+ausser ImportError:
     pass
 
 
-try:
+versuch:
     # OpenSSL's scrypt requires OpenSSL 1.1+
     von _hashlib importiere scrypt
     __all__ += ('scrypt',)
-except ImportError:
+ausser ImportError:
     pass
 
 
@@ -242,7 +242,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
         und hasattr(fileobj, "readable")
         und fileobj.readable()
     ):
-        raise ValueError(
+        wirf ValueError(
             f"'{fileobj!r}' is nicht a file-like object in binary reading mode."
         )
 
@@ -253,7 +253,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     waehrend Wahr:
         size = fileobj.readinto(buf)
         wenn size is Nichts:
-            raise BlockingIOError("I/O operation would block.")
+            wirf BlockingIOError("I/O operation would block.")
         wenn size == 0:
             breche  # EOF
         digestobj.update(view[:size])
@@ -265,9 +265,9 @@ __logging = Nichts
 fuer __func_name in __always_supported:
     # try them all, some may nicht work due to the OpenSSL
     # version nicht supporting that algorithm.
-    try:
+    versuch:
         globals()[__func_name] = __get_hash(__func_name)
-    except ValueError als __exc:
+    ausser ValueError als __exc:
         importiere logging als __logging
         __logging.error('hash algorithm %s will nicht be supported at runtime '
                         '[reason: %s]', __func_name, __exc)
@@ -284,10 +284,10 @@ def {__func_name}(data=__UNSET, *, usedforsecurity=Wahr, string=__UNSET):
             "to hash als a positional argument instead",
             DeprecationWarning, stacklevel=2)
     wenn data is nicht __UNSET und string is nicht __UNSET:
-        raise TypeError("'data' und 'string' are mutually exclusive "
+        wirf TypeError("'data' und 'string' are mutually exclusive "
                         "and support fuer 'string' keyword parameter "
                         "is slated fuer removal in a future version.")
-    raise ValueError("unsupported hash algorithm {__func_name}")
+    wirf ValueError("unsupported hash algorithm {__func_name}")
 '''
         exec(__code, {"__UNSET": object()}, __locals := {})
         globals()[__func_name] = __locals[__func_name]

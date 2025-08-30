@@ -32,9 +32,9 @@ klasse _TempModule(object):
 
     def __enter__(self):
         mod_name = self.mod_name
-        try:
+        versuch:
             self._saved_module.append(sys.modules[mod_name])
-        except KeyError:
+        ausser KeyError:
             pass
         sys.modules[mod_name] = self.module
         gib self
@@ -53,7 +53,7 @@ klasse _ModifiedArgv0(object):
 
     def __enter__(self):
         wenn self._saved_value is nicht self._sentinel:
-            raise RuntimeError("Already preserving saved value")
+            wirf RuntimeError("Already preserving saved value")
         self._saved_value = sys.argv[0]
         sys.argv[0] = self.value
 
@@ -104,19 +104,19 @@ def _run_module_code(code, init_globals=Nichts,
 # Helper to get the full name, spec und code fuer a module
 def _get_module_details(mod_name, error=ImportError):
     wenn mod_name.startswith("."):
-        raise error("Relative module names nicht supported")
+        wirf error("Relative module names nicht supported")
     pkg_name, _, _ = mod_name.rpartition(".")
     wenn pkg_name:
         # Try importing the parent to avoid catching initialization errors
-        try:
+        versuch:
             __import__(pkg_name)
-        except ImportError als e:
+        ausser ImportError als e:
             # If the parent oder higher ancestor package is missing, let the
             # error be raised by find_spec() below und then be caught. But do
             # nicht allow other errors to be caught.
             wenn e.name is Nichts oder (e.name != pkg_name und
                     nicht pkg_name.startswith(e.name + ".")):
-                raise
+                wirf
         # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
         wenn existing is nicht Nichts und nicht hasattr(existing, "__path__"):
@@ -127,9 +127,9 @@ def _get_module_details(mod_name, error=ImportError):
                 "behaviour".format(mod_name=mod_name, pkg_name=pkg_name)
             warn(RuntimeWarning(msg))
 
-    try:
+    versuch:
         spec = importlib.util.find_spec(mod_name)
-    except (ImportError, AttributeError, TypeError, ValueError) als ex:
+    ausser (ImportError, AttributeError, TypeError, ValueError) als ex:
         # This hack fixes an impedance mismatch between pkgutil und
         # importlib, where the latter raises other errors fuer cases where
         # pkgutil previously raised ImportError
@@ -137,30 +137,30 @@ def _get_module_details(mod_name, error=ImportError):
         wenn mod_name.endswith(".py"):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' als the module name.")
-        raise error(msg.format(mod_name, type(ex).__name__, ex)) von ex
+        wirf error(msg.format(mod_name, type(ex).__name__, ex)) von ex
     wenn spec is Nichts:
-        raise error("No module named %s" % mod_name)
+        wirf error("No module named %s" % mod_name)
     wenn spec.submodule_search_locations is nicht Nichts:
         wenn mod_name == "__main__" oder mod_name.endswith(".__main__"):
-            raise error("Cannot use package als __main__ module")
-        try:
+            wirf error("Cannot use package als __main__ module")
+        versuch:
             pkg_main_name = mod_name + ".__main__"
             gib _get_module_details(pkg_main_name, error)
-        except error als e:
+        ausser error als e:
             wenn mod_name nicht in sys.modules:
-                raise  # No module loaded; being a package is irrelevant
-            raise error(("%s; %r is a package und cannot " +
+                wirf  # No module loaded; being a package is irrelevant
+            wirf error(("%s; %r is a package und cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
     wenn loader is Nichts:
-        raise error("%r is a namespace package und cannot be executed"
+        wirf error("%r is a namespace package und cannot be executed"
                                                                  % mod_name)
-    try:
+    versuch:
         code = loader.get_code(mod_name)
-    except ImportError als e:
-        raise error(format(e)) von e
+    ausser ImportError als e:
+        wirf error(format(e)) von e
     wenn code is Nichts:
-        raise error("No code object available fuer %s" % mod_name)
+        wirf error("No code object available fuer %s" % mod_name)
     gib mod_name, spec, code
 
 klasse _Error(Exception):
@@ -184,12 +184,12 @@ def _run_module_as_main(mod_name, alter_argv=Wahr):
            __loader__
            __package__
     """
-    try:
+    versuch:
         wenn alter_argv oder mod_name != "__main__": # i.e. -m switch
             mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
         sonst:          # i.e. directory oder zipfile execution
             mod_name, mod_spec, code = _get_main_module_details(_Error)
-    except _Error als exc:
+    ausser _Error als exc:
         msg = "%s: %s" % (sys.executable, exc)
         sys.exit(msg)
     main_globals = sys.modules["__main__"].__dict__
@@ -236,14 +236,14 @@ def _get_main_module_details(error=ImportError):
     main_name = "__main__"
     saved_main = sys.modules[main_name]
     del sys.modules[main_name]
-    try:
+    versuch:
         gib _get_module_details(main_name)
-    except ImportError als exc:
+    ausser ImportError als exc:
         wenn main_name in str(exc):
-            raise error("can't find %r module in %r" %
+            wirf error("can't find %r module in %r" %
                               (main_name, sys.path[0])) von exc
-        raise
-    finally:
+        wirf
+    schliesslich:
         sys.modules[main_name] = saved_main
 
 
@@ -290,7 +290,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         # Finder is defined fuer path, so add it to
         # the start of sys.path
         sys.path.insert(0, path_name)
-        try:
+        versuch:
             # Here's where things are a little different von the run_module
             # case. There, we only had to replace the module in sys waehrend the
             # code was running und doing so was somewhat optional. Here, we
@@ -303,10 +303,10 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
                 mod_globals = temp_module.module.__dict__
                 gib _run_code(code, mod_globals, init_globals,
                                     run_name, mod_spec, pkg_name).copy()
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 sys.path.remove(path_name)
-            except ValueError:
+            ausser ValueError:
                 pass
 
 

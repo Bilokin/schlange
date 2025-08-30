@@ -21,9 +21,9 @@ klasse PullDOM(xml.sax.ContentHandler):
         self.lastEvent = self.firstEvent
         self.elementStack = []
         self.push = self.elementStack.append
-        try:
+        versuch:
             self.pop = self.elementStack.pop
-        except AttributeError:
+        ausser AttributeError:
             # use class' pop instead
             pass
         self._ns_contexts = [{XML_NAMESPACE:'xml'}] # contains uri -> prefix dicts
@@ -179,7 +179,7 @@ klasse PullDOM(xml.sax.ContentHandler):
                 n = self.document.createComment(e[0][1])
                 e[0] = (COMMENT, n)
             sonst:
-                raise AssertionError("Unknown pending event ",e[0][0])
+                wirf AssertionError("Unknown pending event ",e[0][0])
             self.lastEvent[1] = e
             self.lastEvent = e
         self.pending_events = Nichts
@@ -197,9 +197,9 @@ klasse ErrorHandler:
     def warning(self, exception):
         drucke(exception)
     def error(self, exception):
-        raise exception
+        wirf exception
     def fatalError(self, exception):
-        raise exception
+        wirf exception
 
 klasse DOMEventStream:
     def __init__(self, stream, parser, bufsize):
@@ -220,7 +220,7 @@ klasse DOMEventStream:
         rc = self.getEvent()
         wenn rc:
             gib rc
-        raise StopIteration
+        wirf StopIteration
 
     def __iter__(self):
         gib self

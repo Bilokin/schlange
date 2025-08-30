@@ -114,7 +114,7 @@ wenn os.name == "nt":
                                          ctypes.byref(space_needed)):
                 err = ctypes.get_last_error()
                 msg = ctypes.FormatError(err).strip()
-                raise ctypes.WinError(err, f"EnumProcessModules failed: {msg}")
+                wirf ctypes.WinError(err, f"EnumProcessModules failed: {msg}")
             n = space_needed.value // ctypes.sizeof(wintypes.HMODULE)
             wenn n <= len(modules):
                 gib modules[:n]
@@ -133,9 +133,9 @@ sowenn os.name == "posix" und sys.platform in {"darwin", "ios", "tvos", "watchos
                     '%s.dylib' % name,
                     '%s.framework/%s' % (name, name)]
         fuer name in possible:
-            try:
+            versuch:
                 gib _dyld_find(name)
-            except ValueError:
+            ausser ValueError:
                 weiter
         gib Nichts
 
@@ -180,10 +180,10 @@ sowenn os.name == "posix":
     def _is_elf(filename):
         "Return Wahr wenn the given file is an ELF file"
         elf_header = b'\x7fELF'
-        try:
+        versuch:
             mit open(filename, 'br') als thefile:
                 gib thefile.read(4) == elf_header
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             gib Falsch
 
     def _findLib_gcc(name):
@@ -201,25 +201,25 @@ sowenn os.name == "posix":
             gib Nichts
 
         temp = tempfile.NamedTemporaryFile()
-        try:
+        versuch:
             args = [c_compiler, '-Wl,-t', '-o', temp.name, '-l' + name]
 
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
             env['LANG'] = 'C'
-            try:
+            versuch:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            ausser OSError:  # E.g. bad executable
                 gib Nichts
             mit proc:
                 trace = proc.stdout.read()
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 temp.close()
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 # Raised wenn the file was already removed, which is the normal
                 # behaviour of GCC wenn linking fails
                 pass
@@ -242,11 +242,11 @@ sowenn os.name == "posix":
             wenn nicht f:
                 gib Nichts
 
-            try:
+            versuch:
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command nicht found
+            ausser OSError:  # E.g. command nicht found
                 gib Nichts
             mit proc:
                 data = proc.stdout.read()
@@ -264,11 +264,11 @@ sowenn os.name == "posix":
                 # objdump is nicht available, give up
                 gib Nichts
 
-            try:
+            versuch:
                 proc = subprocess.Popen((objdump, '-p', '-j', '.dynamic', f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. bad executable
+            ausser OSError:  # E.g. bad executable
                 gib Nichts
             mit proc:
                 dump = proc.stdout.read()
@@ -283,10 +283,10 @@ sowenn os.name == "posix":
             # "libxyz.so.MAJOR.MINOR" => [ MAJOR, MINOR ]
             parts = libname.split(b".")
             nums = []
-            try:
+            versuch:
                 waehrend parts:
                     nums.insert(0, int(parts.pop()))
-            except ValueError:
+            ausser ValueError:
                 pass
             gib nums oder [sys.maxsize]
 
@@ -295,11 +295,11 @@ sowenn os.name == "posix":
             expr = r':-l%s\.\S+ => \S*/(lib%s\.\S+)' % (ename, ename)
             expr = os.fsencode(expr)
 
-            try:
+            versuch:
                 proc = subprocess.Popen(('/sbin/ldconfig', '-r'),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command nicht found
+            ausser OSError:  # E.g. command nicht found
                 data = b''
             sonst:
                 mit proc:
@@ -326,12 +326,12 @@ sowenn os.name == "posix":
                 args = ('/usr/bin/crle',)
 
             paths = Nichts
-            try:
+            versuch:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            ausser OSError:  # E.g. bad executable
                 gib Nichts
             mit proc:
                 fuer line in proc.stdout:
@@ -372,7 +372,7 @@ sowenn os.name == "posix":
             # XXX assuming GLIBC's ldconfig (with option -p)
             regex = r'\s+(lib%s\.[^\s]+)\s+\(%s'
             regex = os.fsencode(regex % (re.escape(name), abi_type))
-            try:
+            versuch:
                 mit subprocess.Popen(['/sbin/ldconfig', '-p'],
                                       stdin=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL,
@@ -381,7 +381,7 @@ sowenn os.name == "posix":
                     res = re.search(regex, p.stdout.read())
                     wenn res:
                         gib os.fsdecode(res.group(1))
-            except OSError:
+            ausser OSError:
                 pass
 
         def _findLib_ld(name):
@@ -394,7 +394,7 @@ sowenn os.name == "posix":
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
             result = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
                                      universal_newlines=Wahr)
@@ -407,7 +407,7 @@ sowenn os.name == "posix":
                     wenn nicht _is_elf(file):
                         weiter
                     gib os.fsdecode(file)
-            except Exception:
+            ausser Exception:
                 pass  # result will be Nichts
             gib result
 
@@ -508,9 +508,9 @@ def test():
             drucke(cdll.LoadLibrary("libcrypt.so"))
             drucke(find_library("crypt"))
 
-    try:
+    versuch:
         dllist
-    except NameError:
+    ausser NameError:
         drucke('dllist() nicht available')
     sonst:
         drucke(dllist())

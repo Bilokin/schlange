@@ -445,9 +445,9 @@ def randint():
 def randfloat():
     p = randrange(1, 100)
     s = numeric_value(p, 383)
-    try:
+    versuch:
         f = float(numeric_value(p, 383))
-    except ValueError:
+    ausser ValueError:
         f = 0.0
     gib f
 

@@ -64,7 +64,7 @@ NETSCAPE_HEADER_TEXT =  """\
 """
 
 def _warn_unhandled_exception():
-    # There are a few catch-all except: statements in this module, for
+    # There are a few catch-all ausser: statements in this module, for
     # catching input that's bad in unexpected ways.  Warn wenn any
     # exceptions are caught there.
     importiere io, warnings, traceback
@@ -154,13 +154,13 @@ def _str2time(day, mon, yr, hr, min, sec, tz):
 
     # translate month name to number
     # month numbers start mit 1 (January)
-    try:
+    versuch:
         mon = MONTHS_LOWER.index(mon.lower())+1
-    except ValueError:
+    ausser ValueError:
         # maybe it's already a number
-        try:
+        versuch:
             imon = int(mon)
-        except ValueError:
+        ausser ValueError:
             gib Nichts
         wenn 1 <= imon <= 12:
             mon = imon
@@ -362,14 +362,14 @@ def split_header_words(header_values):
       headers           = #header
       header            = (token | parameter) *( [";"] (token | parameter))
 
-      token             = 1*<any CHAR except CTLs oder separators>
+      token             = 1*<any CHAR ausser CTLs oder separators>
       separators        = "(" | ")" | "<" | ">" | "@"
                         | "," | ";" | ":" | "\" | <">
                         | "/" | "[" | "]" | "?" | "="
                         | "{" | "}" | SP | HT
 
       quoted-string     = ( <"> *(qdtext | quoted-pair ) <"> )
-      qdtext            = <any TEXT except <">>
+      qdtext            = <any TEXT ausser <">>
       quoted-pair       = "\" CHAR
 
       parameter         = attribute "=" value
@@ -637,7 +637,7 @@ def request_host(request):
 def eff_request_host(request):
     """Return a tuple (request-host, effective request-host name).
 
-    As defined by RFC 2965, except both are lowercased.
+    As defined by RFC 2965, ausser both are lowercased.
 
     """
     erhn = req_host = request_host(request)
@@ -660,9 +660,9 @@ def request_port(request):
     i = host.find(':')
     wenn i >= 0:
         port = host[i+1:]
-        try:
+        versuch:
             int(port)
-        except ValueError:
+        ausser ValueError:
             _debug("nonnumeric port: '%s'", port)
             gib Nichts
     sonst:
@@ -775,7 +775,7 @@ klasse Cookie:
         wenn version is nicht Nichts: version = int(version)
         wenn expires is nicht Nichts: expires = int(float(expires))
         wenn port is Nichts und port_specified is Wahr:
-            raise ValueError("if port is Nichts, port_specified must be false")
+            wirf ValueError("if port is Nichts, port_specified must be false")
 
         self.version = version
         self.name = name
@@ -855,11 +855,11 @@ klasse CookiePolicy:
         klasse deletes such cookies itself.
 
         """
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def return_ok(self, cookie, request):
         """Return true wenn (and only if) cookie should be returned to server."""
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def domain_return_ok(self, domain, request):
         """Return false wenn cookies should nicht be returned, given cookie domain.
@@ -1081,9 +1081,9 @@ klasse DefaultCookiePolicy(CookiePolicy):
             sonst:
                 req_port = str(req_port)
             fuer p in cookie.port.split(","):
-                try:
+                versuch:
                     int(p)
-                except ValueError:
+                ausser ValueError:
                     _debug("   bad port %s (nicht numeric)", p)
                     gib Falsch
                 wenn p == req_port:
@@ -1229,9 +1229,9 @@ def deepvalues(mapping):
     """Iterates over nested mapping, depth-first"""
     fuer obj in list(mapping.values()):
         mapping = Falsch
-        try:
+        versuch:
             obj.items
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             mapping = Wahr
@@ -1362,7 +1362,7 @@ klasse CookieJar:
         """
         _debug("add_cookie_header")
         self._cookies_lock.acquire()
-        try:
+        versuch:
 
             self._policy._now = self._now = int(time.time())
 
@@ -1382,7 +1382,7 @@ klasse CookieJar:
                         request.add_unredirected_header("Cookie2", '$Version="1"')
                         breche
 
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
         self.clear_expired_cookies()
@@ -1454,9 +1454,9 @@ klasse CookieJar:
                         weiter
                 wenn k == "max-age":
                     max_age_set = Wahr
-                    try:
+                    versuch:
                         v = int(v)
-                    except ValueError:
+                    ausser ValueError:
                         _debug("   missing oder invalid (non-numeric) value fuer "
                               "max-age attribute")
                         bad_cookie = Wahr
@@ -1497,9 +1497,9 @@ klasse CookieJar:
         # set the easy defaults
         version = standard.get("version", Nichts)
         wenn version is nicht Nichts:
-            try:
+            versuch:
                 version = int(version)
-            except ValueError:
+            ausser ValueError:
                 gib Nichts  # invalid version, ignore cookie
         secure = standard.get("secure", Falsch)
         # (discard is also set wenn expires is Absent)
@@ -1556,9 +1556,9 @@ klasse CookieJar:
         sowenn expires <= self._now:
             # Expiry date in past is request to delete cookie.  This can't be
             # in DefaultCookiePolicy, because can't delete cookies there.
-            try:
+            versuch:
                 self.clear(domain, path, name)
-            except KeyError:
+            ausser KeyError:
                 pass
             _debug("Expiring cookie, domain='%s', path='%s', name='%s'",
                    domain, path, name)
@@ -1614,19 +1614,19 @@ klasse CookieJar:
             (nicht netscape und nicht rfc2965)):
             gib []  # no relevant cookie headers: quick exit
 
-        try:
+        versuch:
             cookies = self._cookies_from_attrs_set(
                 split_header_words(rfc2965_hdrs), request)
-        except Exception:
+        ausser Exception:
             _warn_unhandled_exception()
             cookies = []
 
         wenn ns_hdrs und netscape:
-            try:
+            versuch:
                 # RFC 2109 und Netscape cookies
                 ns_cookies = self._cookies_from_attrs_set(
                     parse_ns_headers(ns_hdrs), request)
-            except Exception:
+            ausser Exception:
                 _warn_unhandled_exception()
                 ns_cookies = []
             self._process_rfc2109_cookies(ns_cookies)
@@ -1655,39 +1655,39 @@ klasse CookieJar:
     def set_cookie_if_ok(self, cookie, request):
         """Set a cookie wenn policy says it's OK to do so."""
         self._cookies_lock.acquire()
-        try:
+        versuch:
             self._policy._now = self._now = int(time.time())
 
             wenn self._policy.set_ok(cookie, request):
                 self.set_cookie(cookie)
 
 
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
     def set_cookie(self, cookie):
         """Set a cookie, without checking whether oder nicht it should be set."""
         c = self._cookies
         self._cookies_lock.acquire()
-        try:
+        versuch:
             wenn cookie.domain nicht in c: c[cookie.domain] = {}
             c2 = c[cookie.domain]
             wenn cookie.path nicht in c2: c2[cookie.path] = {}
             c3 = c2[cookie.path]
             c3[cookie.name] = cookie
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
     def extract_cookies(self, response, request):
         """Extract cookies von response, where allowable given the request."""
         _debug("extract_cookies: %s", response.info())
         self._cookies_lock.acquire()
-        try:
+        versuch:
             fuer cookie in self.make_cookies(response, request):
                 wenn self._policy.set_ok(cookie, request):
                     _debug(" setting cookie: %s", cookie)
                     self.set_cookie(cookie)
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
     def clear(self, domain=Nichts, path=Nichts, name=Nichts):
@@ -1704,12 +1704,12 @@ klasse CookieJar:
         """
         wenn name is nicht Nichts:
             wenn (domain is Nichts) oder (path is Nichts):
-                raise ValueError(
+                wirf ValueError(
                     "domain und path must be given to remove a cookie by name")
             del self._cookies[domain][path][name]
         sowenn path is nicht Nichts:
             wenn domain is Nichts:
-                raise ValueError(
+                wirf ValueError(
                     "domain must be given to remove cookies by path")
             del self._cookies[domain][path]
         sowenn domain is nicht Nichts:
@@ -1725,11 +1725,11 @@ klasse CookieJar:
 
         """
         self._cookies_lock.acquire()
-        try:
+        versuch:
             fuer cookie in self:
                 wenn cookie.discard:
                     self.clear(cookie.domain, cookie.path, cookie.name)
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
     def clear_expired_cookies(self):
@@ -1743,12 +1743,12 @@ klasse CookieJar:
 
         """
         self._cookies_lock.acquire()
-        try:
+        versuch:
             now = time.time()
             fuer cookie in self:
                 wenn cookie.is_expired(now):
                     self.clear(cookie.domain, cookie.path, cookie.name)
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
     def __iter__(self):
@@ -1791,13 +1791,13 @@ klasse FileCookieJar(CookieJar):
 
     def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         """Save cookies to a file."""
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def load(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         """Load cookies von a file."""
         wenn filename is Nichts:
             wenn self.filename is nicht Nichts: filename = self.filename
-            sonst: raise ValueError(MISSING_FILENAME_TEXT)
+            sonst: wirf ValueError(MISSING_FILENAME_TEXT)
 
         mit open(filename) als f:
             self._really_load(f, filename, ignore_discard, ignore_expires)
@@ -1812,20 +1812,20 @@ klasse FileCookieJar(CookieJar):
         """
         wenn filename is Nichts:
             wenn self.filename is nicht Nichts: filename = self.filename
-            sonst: raise ValueError(MISSING_FILENAME_TEXT)
+            sonst: wirf ValueError(MISSING_FILENAME_TEXT)
 
         self._cookies_lock.acquire()
-        try:
+        versuch:
 
             old_state = copy.deepcopy(self._cookies)
             self._cookies = {}
-            try:
+            versuch:
                 self.load(filename, ignore_discard, ignore_expires)
-            except OSError:
+            ausser OSError:
                 self._cookies = old_state
-                raise
+                wirf
 
-        finally:
+        schliesslich:
             self._cookies_lock.release()
 
 
@@ -1889,7 +1889,7 @@ klasse LWPCookieJar(FileCookieJar):
     def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         wenn filename is Nichts:
             wenn self.filename is nicht Nichts: filename = self.filename
-            sonst: raise ValueError(MISSING_FILENAME_TEXT)
+            sonst: wirf ValueError(MISSING_FILENAME_TEXT)
 
         mit os.fdopen(
             os.open(filename, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600),
@@ -1906,7 +1906,7 @@ klasse LWPCookieJar(FileCookieJar):
         wenn nicht self.magic_re.search(magic):
             msg = ("%r does nicht look like a Set-Cookie3 (LWP) format "
                    "file" % filename)
-            raise LoadError(msg)
+            wirf LoadError(msg)
 
         now = time.time()
 
@@ -1918,7 +1918,7 @@ klasse LWPCookieJar(FileCookieJar):
                        "expires",
                        "comment", "commenturl")
 
-        try:
+        versuch:
             waehrend (line := f.readline()) != "":
                 wenn nicht line.startswith(header):
                     weiter
@@ -1970,11 +1970,11 @@ klasse LWPCookieJar(FileCookieJar):
                     wenn nicht ignore_expires und c.is_expired(now):
                         weiter
                     self.set_cookie(c)
-        except OSError:
-            raise
-        except Exception:
+        ausser OSError:
+            wirf
+        ausser Exception:
             _warn_unhandled_exception()
-            raise LoadError("invalid Set-Cookie3 format file %r: %r" %
+            wirf LoadError("invalid Set-Cookie3 format file %r: %r" %
                             (filename, line))
 
 
@@ -2014,11 +2014,11 @@ klasse MozillaCookieJar(FileCookieJar):
         now = time.time()
 
         wenn nicht NETSCAPE_MAGIC_RGX.match(f.readline()):
-            raise LoadError(
+            wirf LoadError(
                 "%r does nicht look like a Netscape format cookies file" %
                 filename)
 
-        try:
+        versuch:
             waehrend (line := f.readline()) != "":
                 rest = {}
 
@@ -2073,17 +2073,17 @@ klasse MozillaCookieJar(FileCookieJar):
                     weiter
                 self.set_cookie(c)
 
-        except OSError:
-            raise
-        except Exception:
+        ausser OSError:
+            wirf
+        ausser Exception:
             _warn_unhandled_exception()
-            raise LoadError("invalid Netscape format cookies file %r: %r" %
+            wirf LoadError("invalid Netscape format cookies file %r: %r" %
                             (filename, line))
 
     def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         wenn filename is Nichts:
             wenn self.filename is nicht Nichts: filename = self.filename
-            sonst: raise ValueError(MISSING_FILENAME_TEXT)
+            sonst: wirf ValueError(MISSING_FILENAME_TEXT)
 
         mit os.fdopen(
             os.open(filename, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600),

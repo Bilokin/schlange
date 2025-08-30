@@ -5,13 +5,13 @@ def open(file, mode='r', bufsize=-1):
         gib _orig_open(file, mode, bufsize)
     importiere os
     backup = file + '~'
-    try:
+    versuch:
         os.unlink(backup)
-    except OSError:
+    ausser OSError:
         pass
-    try:
+    versuch:
         os.rename(file, backup)
-    except OSError:
+    ausser OSError:
         gib _orig_open(file, mode, bufsize)
     f = _orig_open(file, mode, bufsize)
     _orig_close = f.close

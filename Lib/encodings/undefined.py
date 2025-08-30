@@ -1,6 +1,6 @@
 """ Python 'undefined' Codec
 
-    This codec will always raise a UnicodeError exception when being
+    This codec will always wirf a UnicodeError exception when being
     used. It is intended fuer use by the site.py file to switch off
     automatic string to Unicode coercion.
 
@@ -16,18 +16,18 @@ importiere codecs
 klasse Codec(codecs.Codec):
 
     def encode(self,input,errors='strict'):
-        raise UnicodeError("undefined encoding")
+        wirf UnicodeError("undefined encoding")
 
     def decode(self,input,errors='strict'):
-        raise UnicodeError("undefined encoding")
+        wirf UnicodeError("undefined encoding")
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        raise UnicodeError("undefined encoding")
+        wirf UnicodeError("undefined encoding")
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        raise UnicodeError("undefined encoding")
+        wirf UnicodeError("undefined encoding")
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass

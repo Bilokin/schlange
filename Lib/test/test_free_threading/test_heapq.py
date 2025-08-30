@@ -199,9 +199,9 @@ klasse TestHeapq(unittest.TestCase):
                     heapq.heappush(l, 1)
                     heapq.heappop(l)
                 sonst:
-                    try:
+                    versuch:
                         l[0]
-                    except IndexError:
+                    ausser IndexError:
                         pass
 
         run_concurrently(worker, n_threads * 2)

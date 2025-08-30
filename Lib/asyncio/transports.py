@@ -22,7 +22,7 @@ klasse BaseTransport:
 
     def is_closing(self):
         """Return Wahr wenn the transport is closing oder closed."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def close(self):
         """Close the transport.
@@ -32,15 +32,15 @@ klasse BaseTransport:
         protocol's connection_lost() method will (eventually) be
         called mit Nichts als its argument.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_protocol(self, protocol):
         """Set a new protocol."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_protocol(self):
         """Return the current protocol."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse ReadTransport(BaseTransport):
@@ -50,7 +50,7 @@ klasse ReadTransport(BaseTransport):
 
     def is_reading(self):
         """Return Wahr wenn the transport is receiving."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def pause_reading(self):
         """Pause the receiving end.
@@ -58,7 +58,7 @@ klasse ReadTransport(BaseTransport):
         No data will be passed to the protocol's data_received()
         method until resume_reading() is called.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def resume_reading(self):
         """Resume the receiving end.
@@ -66,7 +66,7 @@ klasse ReadTransport(BaseTransport):
         Data received will once again be passed to the protocol's
         data_received() method.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse WriteTransport(BaseTransport):
@@ -93,17 +93,17 @@ klasse WriteTransport(BaseTransport):
         reduces opportunities fuer doing I/O und computation
         concurrently.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_write_buffer_size(self):
         """Return the current size of the write buffer."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_write_buffer_limits(self):
         """Get the high und low watermarks fuer write flow control.
         Return a tuple (low, high) where low und high are
         positive number of bytes."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def write(self, data):
         """Write some data bytes to the transport.
@@ -111,7 +111,7 @@ klasse WriteTransport(BaseTransport):
         This does nicht block; it buffers the data und arranges fuer it
         to be sent out asynchronously.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def writelines(self, list_of_data):
         """Write a list (or any iterable) of data bytes to the transport.
@@ -129,11 +129,11 @@ klasse WriteTransport(BaseTransport):
 
         Data may still be received.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def can_write_eof(self):
         """Return Wahr wenn this transport supports write_eof(), Falsch wenn not."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def abort(self):
         """Close the transport immediately.
@@ -142,7 +142,7 @@ klasse WriteTransport(BaseTransport):
         The protocol's connection_lost() method will (eventually) be
         called mit Nichts als its argument.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse Transport(ReadTransport, WriteTransport):
@@ -163,7 +163,7 @@ klasse Transport(ReadTransport, WriteTransport):
     connection_made() method, passing it the transport.
 
     The implementation here raises NotImplemented fuer every method
-    except writelines(), which calls write() in a loop.
+    ausser writelines(), which calls write() in a loop.
     """
 
     __slots__ = ()
@@ -184,7 +184,7 @@ klasse DatagramTransport(BaseTransport):
         If data is an empty bytes object a zero-length datagram will be
         sent.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def abort(self):
         """Close the transport immediately.
@@ -193,7 +193,7 @@ klasse DatagramTransport(BaseTransport):
         The protocol's connection_lost() method will (eventually) be
         called mit Nichts als its argument.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse SubprocessTransport(BaseTransport):
@@ -202,7 +202,7 @@ klasse SubprocessTransport(BaseTransport):
 
     def get_pid(self):
         """Get subprocess id."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_returncode(self):
         """Get subprocess returncode.
@@ -210,11 +210,11 @@ klasse SubprocessTransport(BaseTransport):
         See also
         http://docs.python.org/3/library/subprocess#subprocess.Popen.returncode
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_pipe_transport(self, fd):
         """Get transport fuer pipe mit number fd."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def send_signal(self, signal):
         """Send signal to subprocess.
@@ -222,7 +222,7 @@ klasse SubprocessTransport(BaseTransport):
         See also:
         docs.python.org/3/library/subprocess#subprocess.Popen.send_signal
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def terminate(self):
         """Stop the subprocess.
@@ -236,7 +236,7 @@ klasse SubprocessTransport(BaseTransport):
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.terminate
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def kill(self):
         """Kill the subprocess.
@@ -247,7 +247,7 @@ klasse SubprocessTransport(BaseTransport):
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.kill
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse _FlowControlMixin(Transport):
@@ -282,11 +282,11 @@ klasse _FlowControlMixin(Transport):
             gib
         wenn nicht self._protocol_paused:
             self._protocol_paused = Wahr
-            try:
+            versuch:
                 self._protocol.pause_writing()
-            except (SystemExit, KeyboardInterrupt):
-                raise
-            except BaseException als exc:
+            ausser (SystemExit, KeyboardInterrupt):
+                wirf
+            ausser BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.pause_writing() failed',
                     'exception': exc,
@@ -298,11 +298,11 @@ klasse _FlowControlMixin(Transport):
         wenn (self._protocol_paused und
                 self.get_write_buffer_size() <= self._low_water):
             self._protocol_paused = Falsch
-            try:
+            versuch:
                 self._protocol.resume_writing()
-            except (SystemExit, KeyboardInterrupt):
-                raise
-            except BaseException als exc:
+            ausser (SystemExit, KeyboardInterrupt):
+                wirf
+            ausser BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.resume_writing() failed',
                     'exception': exc,
@@ -323,7 +323,7 @@ klasse _FlowControlMixin(Transport):
             low = high // 4
 
         wenn nicht high >= low >= 0:
-            raise ValueError(
+            wirf ValueError(
                 f'high ({high!r}) must be >= low ({low!r}) must be >= 0')
 
         self._high_water = high
@@ -334,4 +334,4 @@ klasse _FlowControlMixin(Transport):
         self._maybe_pause_protocol()
 
     def get_write_buffer_size(self):
-        raise NotImplementedError
+        wirf NotImplementedError

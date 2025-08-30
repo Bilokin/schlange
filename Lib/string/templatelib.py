@@ -15,13 +15,13 @@ def convert(obj, /, conversion):
         gib str(obj)
     wenn conversion == 'a':
         gib ascii(obj)
-    raise ValueError(f'invalid conversion specifier: {conversion}')
+    wirf ValueError(f'invalid conversion specifier: {conversion}')
 
 def _template_unpickle(*args):
     importiere itertools
 
     wenn len(args) != 2:
-        raise ValueError('Template expects tuple of length 2 to unpickle')
+        wirf ValueError('Template expects tuple of length 2 to unpickle')
 
     strings, interpolations = args
     parts = []

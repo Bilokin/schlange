@@ -192,9 +192,9 @@ klasse Dialog(Toplevel):
         self.withdraw()
         self.update_idletasks()
 
-        try:
+        versuch:
             self.apply()
-        finally:
+        schliesslich:
             self.cancel()
 
     def cancel(self, event=Nichts):
@@ -301,9 +301,9 @@ klasse _QueryDialog(Dialog):
         gib self.entry
 
     def validate(self):
-        try:
+        versuch:
             result = self.getresult()
-        except ValueError:
+        ausser ValueError:
             messagebox.showwarning(
                 "Illegal value",
                 self.errormessage + "\nPlease try again",

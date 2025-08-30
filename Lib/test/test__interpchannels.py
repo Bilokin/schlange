@@ -30,9 +30,9 @@ REPLACE = _crossinterp._UNBOUND_CONSTANT_TO_FLAG[_crossinterp.UNBOUND]
 
 def recv_wait(cid):
     waehrend Wahr:
-        try:
+        versuch:
             obj, unboundop = _channels.recv(cid)
-        except _channels.ChannelEmptyError:
+        ausser _channels.ChannelEmptyError:
             time.sleep(0.1)
         sonst:
             assert unboundop is Nichts, repr(unboundop)
@@ -65,7 +65,7 @@ def _run_interp(id, source, shared, _mainns={}):
     wenn main == id:
         cur, *_ = _interpreters.get_current()
         wenn cur != main:
-            raise RuntimeError
+            wirf RuntimeError
         # XXX Run a func?
         exec(source, _mainns)
     sonst:
@@ -81,7 +81,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
         sowenn isinstance(raw, str):
             gib cls(raw)
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError
 
     def __new__(cls, name=Nichts, id=Nichts):
         main, *_ = _interpreters.get_main()
@@ -89,14 +89,14 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
             wenn nicht name:
                 name = 'main'
             sowenn name != 'main':
-                raise ValueError(
+                wirf ValueError(
                     'name mismatch (expected "main", got "{}")'.format(name))
             id = main
         sowenn id is nicht Nichts:
             wenn nicht name:
                 name = 'interp'
             sowenn name == 'main':
-                raise ValueError('name mismatch (unexpected "main")')
+                wirf ValueError('name mismatch (unexpected "main")')
             assert isinstance(id, int), repr(id)
         sowenn nicht name oder name == 'main':
             name = 'main'
@@ -111,9 +111,9 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
 
 @contextlib.contextmanager
 def expect_channel_closed():
-    try:
+    versuch:
         liefere
-    except _channels.ChannelClosedError:
+    ausser _channels.ChannelClosedError:
         pass
     sonst:
         assert Falsch, 'channel nicht closed'
@@ -132,14 +132,14 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
     def __init__(self, *args, **kwargs):
         wenn self.action == 'use':
             wenn self.end nicht in ('same', 'opposite', 'send', 'recv'):
-                raise ValueError(self.end)
+                wirf ValueError(self.end)
         sowenn self.action in ('close', 'force-close'):
             wenn self.end nicht in ('both', 'same', 'opposite', 'send', 'recv'):
-                raise ValueError(self.end)
+                wirf ValueError(self.end)
         sonst:
-            raise ValueError(self.action)
+            wirf ValueError(self.action)
         wenn self.interp nicht in ('main', 'same', 'other', 'extra'):
-            raise ValueError(self.interp)
+            wirf ValueError(self.interp)
 
     def resolve_end(self, end):
         wenn self.end == 'same':
@@ -154,11 +154,11 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
             gib interp
         sowenn self.interp == 'other':
             wenn other is Nichts:
-                raise RuntimeError
+                wirf RuntimeError
             gib other
         sowenn self.interp == 'extra':
             wenn extra is Nichts:
-                raise RuntimeError
+                wirf RuntimeError
             gib extra
         sowenn self.interp == 'main':
             wenn interp.name == 'main':
@@ -166,7 +166,7 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
             sowenn other und other.name == 'main':
                 gib other
             sonst:
-                raise RuntimeError
+                wirf RuntimeError
         # Per __init__(), there aren't any others.
 
 
@@ -198,15 +198,15 @@ def run_action(cid, action, end, state, *, hideclosed=Wahr):
     sonst:
         expectfail = Falsch
 
-    try:
+    versuch:
         result = _run_action(cid, action, end, state)
-    except _channels.ChannelClosedError:
+    ausser _channels.ChannelClosedError:
         wenn nicht hideclosed und nicht expectfail:
-            raise
+            wirf
         result = state.close()
     sonst:
         wenn expectfail:
-            raise ...  # XXX
+            wirf ...  # XXX
     gib result
 
 
@@ -217,17 +217,17 @@ def _run_action(cid, action, end, state):
             gib state.incr()
         sowenn end == 'recv':
             wenn nicht state.pending:
-                try:
+                versuch:
                     _channels.recv(cid)
-                except _channels.ChannelEmptyError:
+                ausser _channels.ChannelEmptyError:
                     gib state
                 sonst:
-                    raise Exception('expected ChannelEmptyError')
+                    wirf Exception('expected ChannelEmptyError')
             sonst:
                 recv_nowait(cid)
                 gib state.decr()
         sonst:
-            raise ValueError(end)
+            wirf ValueError(end)
     sowenn action == 'close':
         kwargs = {}
         wenn end in ('recv', 'send'):
@@ -243,14 +243,14 @@ def _run_action(cid, action, end, state):
         _channels.close(cid, **kwargs)
         gib state.close(force=Wahr)
     sonst:
-        raise ValueError(action)
+        wirf ValueError(action)
 
 
 def clean_up_channels():
     fuer cid, _, _ in _channels.list_all():
-        try:
+        versuch:
             _channels.destroy(cid)
-        except _channels.ChannelNotFoundError:
+        ausser _channels.ChannelNotFoundError:
             pass  # already destroyed
 
 
@@ -541,7 +541,7 @@ klasse ChannelTests(TestBase):
 
         # Force close the channel.
         _channels.close(cid, force=Wahr)
-        # Both ends should raise an error.
+        # Both ends should wirf an error.
         mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
         mit self.assertRaises(_channels.ChannelClosedError):
@@ -563,7 +563,7 @@ klasse ChannelTests(TestBase):
 
         # Close the send end of the channel.
         _channels.close(cid, send=Wahr)
-        # Send end should raise an error.
+        # Send end should wirf an error.
         mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
         # Receive end should nicht be closed (since channel is nicht empty).
@@ -576,7 +576,7 @@ klasse ChannelTests(TestBase):
             _channels.close({cid}, force=Wahr)
             """))
         gib
-        # Both ends should raise an error.
+        # Both ends should wirf an error.
         mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
         mit self.assertRaises(_channels.ChannelClosedError):
@@ -697,10 +697,10 @@ klasse ChannelTests(TestBase):
                 importiere time
                 importiere _interpchannels als _channels
                 waehrend Wahr:
-                    try:
+                    versuch:
                         obj, _ = _channels.recv({cid})
                         breche
-                    except _channels.ChannelEmptyError:
+                    ausser _channels.ChannelEmptyError:
                         time.sleep(0.1)
                 assert(obj == b'spam')
                 _channels.send({cid}, b'eggs')
@@ -809,12 +809,12 @@ klasse ChannelTests(TestBase):
             send = _channels.send
 
         cid = _channels.create(REPLACE)
-        try:
+        versuch:
             started = time.monotonic()
             send(cid, obj, blocking=Falsch)
             stopped = time.monotonic()
             recv_nowait(cid)
-        finally:
+        schliesslich:
             _channels.destroy(cid)
         delay = stopped - started  # seconds
         delay *= 3
@@ -909,15 +909,15 @@ klasse ChannelTests(TestBase):
             t.join()
 
     def test_send_buffer_timeout(self):
-        try:
+        versuch:
             self._has_run_once_timeout
-        except AttributeError:
+        ausser AttributeError:
             # At the moment, this test leaks a few references.
             # It looks like the leak originates mit the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
             # wenn the refleak isn't fixed yet, so we skip here.
-            raise unittest.SkipTest('temporarily skipped due to refleaks')
+            wirf unittest.SkipTest('temporarily skipped due to refleaks')
         sonst:
             self._has_run_once_timeout = Wahr
 
@@ -972,15 +972,15 @@ klasse ChannelTests(TestBase):
             t.join()
 
     def test_send_buffer_closed_while_waiting(self):
-        try:
+        versuch:
             self._has_run_once_closed
-        except AttributeError:
+        ausser AttributeError:
             # At the moment, this test leaks a few references.
             # It looks like the leak originates mit the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
             # wenn the refleak isn't fixed yet, so we skip here.
-            raise unittest.SkipTest('temporarily skipped due to refleaks')
+            wirf unittest.SkipTest('temporarily skipped due to refleaks')
         sonst:
             self._has_run_once_closed = Wahr
 
@@ -1409,9 +1409,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
     @property
     def cid(self):
-        try:
+        versuch:
             gib self._cid
-        except AttributeError:
+        ausser AttributeError:
             creator = self._get_interpreter(self.creator)
             self._cid = self._new_channel(creator)
             gib self._cid
@@ -1465,9 +1465,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
             gib self.extra
         sonst:
             name = interp
-            try:
+            versuch:
                 interp = self._known[name]
-            except KeyError:
+            ausser KeyError:
                 interp = self._known[name] = Interpreter(name)
             gib interp
 
@@ -1481,9 +1481,9 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
             importiere _interpchannels als channels
             importiere test.test__interpchannels als helpers
             ChannelState = helpers.ChannelState
-            try:
+            versuch:
                 cid
-            except NameError:
+            ausser NameError:
                 cid = _channels._channel_id({self.cid})
             """)
 

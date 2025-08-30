@@ -63,7 +63,7 @@ klasse Manifest:
         wenn item.name in self.contents:
             # We assume that stable ABI items do nicht share names,
             # even wenn they're different kinds (e.g. function vs. macro).
-            raise ValueError(f'duplicate ABI item {item.name}')
+            wirf ValueError(f'duplicate ABI item {item.name}')
         self.contents[item.name] = item
 
     def select(self, kinds, *, include_abi_only=Wahr, ifdef=Nichts):
@@ -154,12 +154,12 @@ def parse_manifest(file):
 
     fuer kind, itemclass in itemclasses.items():
         fuer name, item_data in data[kind].items():
-            try:
+            versuch:
                 item = itemclass(name=name, kind=kind, **item_data)
                 manifest.add(item)
-            except BaseException als exc:
+            ausser BaseException als exc:
                 exc.add_note(f'in {kind} {name}')
-                raise
+                wirf
 
     gib manifest
 
@@ -284,10 +284,10 @@ def gen_ctypes_test(manifest, args, outfile):
         importiere sys
         importiere unittest
         von test.support.import_helper importiere import_module
-        try:
+        versuch:
             von _testcapi importiere get_feature_macros
-        except ImportError:
-            raise unittest.SkipTest("requires _testcapi")
+        ausser ImportError:
+            wirf unittest.SkipTest("requires _testcapi")
 
         feature_macros = get_feature_macros()
 
@@ -295,7 +295,7 @@ def gen_ctypes_test(manifest, args, outfile):
         # layout differences.
         # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
         wenn feature_macros['Py_TRACE_REFS']:
-            raise unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
+            wirf unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
 
         ctypes_test = import_module('ctypes')
 
@@ -422,7 +422,7 @@ def do_unixy_check(manifest, args):
     # Check the static library (*.a)
     LIBRARY = sysconfig.get_config_var("LIBRARY")
     wenn nicht LIBRARY:
-        raise Exception("failed to get LIBRARY variable von sysconfig")
+        wirf Exception("failed to get LIBRARY variable von sysconfig")
     wenn os.path.exists(LIBRARY):
         okay &= binutils_check_library(
             manifest, LIBRARY, expected_symbols, dynamic=Falsch)
@@ -430,7 +430,7 @@ def do_unixy_check(manifest, args):
     # Check the dynamic library (*.so)
     LDLIBRARY = sysconfig.get_config_var("LDLIBRARY")
     wenn nicht LDLIBRARY:
-        raise Exception("failed to get LDLIBRARY variable von sysconfig")
+        wirf Exception("failed to get LDLIBRARY variable von sysconfig")
     okay &= binutils_check_library(
             manifest, LDLIBRARY, expected_symbols, dynamic=Falsch)
 
@@ -482,7 +482,7 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
 
     stdout = proc.stdout.rstrip()
     wenn nicht stdout:
-        raise Exception("command output is empty")
+        wirf Exception("command output is empty")
 
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
@@ -604,7 +604,7 @@ def check_private_names(manifest):
     """
     fuer name, item in manifest.contents.items():
         wenn name.startswith('_') und nicht item.abi_only:
-            raise ValueError(
+            wirf ValueError(
                 f'`{name}` is private (underscore-prefixed) und should be '
                 'removed von the stable ABI list oder marked `abi_only`')
 
@@ -693,15 +693,15 @@ def main():
         wenn UNIXY:
             args.unixy_check = Wahr
 
-    try:
+    versuch:
         file = args.file.open('rb')
-    except FileNotFoundError als err:
+    ausser FileNotFoundError als err:
         wenn args.file.suffix == '.txt':
             # Provide a better error message
             suggestion = args.file.with_suffix('.toml')
-            raise FileNotFoundError(
+            wirf FileNotFoundError(
                 f'{args.file} nicht found. Did you mean {suggestion} ?') von err
-        raise
+        wirf
     mit file:
         manifest = parse_manifest(file)
 
@@ -739,7 +739,7 @@ def main():
     failed_results = [name fuer name, result in results.items() wenn nicht result]
 
     wenn failed_results:
-        raise Exception(f"""
+        wirf Exception(f"""
         These checks related to the stable ABI did nicht succeed:
             {', '.join(failed_results)}
 

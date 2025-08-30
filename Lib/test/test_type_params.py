@@ -1296,8 +1296,8 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
         klasse WeirdMapping(dict):
             def __missing__(self, key):
                 wenn key == "T":
-                    raise RuntimeError
-                raise KeyError(key)
+                    wirf RuntimeError
+                wirf KeyError(key)
 
         klasse Meta(type):
             def __prepare__(name, bases):

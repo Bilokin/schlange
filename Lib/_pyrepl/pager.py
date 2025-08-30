@@ -44,12 +44,12 @@ def get_pager() -> Pager:
     importiere tempfile
     (fd, filename) = tempfile.mkstemp()
     os.close(fd)
-    try:
+    versuch:
         wenn hasattr(os, 'system') und os.system('more "%s"' % filename) == 0:
             gib lambda text, title='': pipe_pager(text, 'more', title)
         sonst:
             gib tty_pager
-    finally:
+    schliesslich:
         os.unlink(filename)
 
 
@@ -72,7 +72,7 @@ def tty_pager(text: str, title: str = '') -> Nichts:
     """Page through text on a text terminal."""
     lines = plain(escape_stdout(text)).split('\n')
     has_tty = Falsch
-    try:
+    versuch:
         importiere tty
         importiere termios
         fd = sys.stdin.fileno()
@@ -83,14 +83,14 @@ def tty_pager(text: str, title: str = '') -> Nichts:
         def getchar() -> str:
             gib sys.stdin.read(1)
 
-    except (ImportError, AttributeError, io.UnsupportedOperation):
+    ausser (ImportError, AttributeError, io.UnsupportedOperation):
         def getchar() -> str:
             gib sys.stdin.readline()[:-1][:1]
 
-    try:
-        try:
+    versuch:
+        versuch:
             h = int(os.environ.get('LINES', 0))
-        except ValueError:
+        ausser ValueError:
             h = 0
         wenn h <= 1:
             h = 25
@@ -114,7 +114,7 @@ def tty_pager(text: str, title: str = '') -> Nichts:
             sys.stdout.write('\n' + '\n'.join(lines[r:r+inc]) + '\n')
             r = r + inc
 
-    finally:
+    schliesslich:
         wenn has_tty:
             termios.tcsetattr(fd, termios.TCSAFLUSH, old)
 
@@ -142,21 +142,21 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
     proc = subprocess.Popen(cmd, shell=Wahr, stdin=subprocess.PIPE,
                             errors='backslashreplace', env=env)
     assert proc.stdin is nicht Nichts
-    try:
+    versuch:
         mit proc.stdin als pipe:
-            try:
+            versuch:
                 pipe.write(text)
-            except KeyboardInterrupt:
+            ausser KeyboardInterrupt:
                 # We've hereby abandoned whatever text hasn't been written,
                 # but the pager is still in control of the terminal.
                 pass
-    except OSError:
+    ausser OSError:
         pass # Ignore broken pipes caused by quitting the pager program.
     waehrend Wahr:
-        try:
+        versuch:
             proc.wait()
             breche
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             # Ignore ctl-c like the pager itself does.  Otherwise the pager is
             # left running und the terminal is in raw mode und unusable.
             pass

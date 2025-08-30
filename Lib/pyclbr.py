@@ -154,7 +154,7 @@ def _readmodule(module, path, inpackage=Nichts):
         wenn inpackage is nicht Nichts:
             package = "%s.%s" % (inpackage, package)
         wenn nicht '__path__' in parent:
-            raise ImportError('No package named {}'.format(package))
+            wirf ImportError('No package named {}'.format(package))
         gib _readmodule(submodule, parent['__path__'], package)
 
     # Search the path fuer the module.
@@ -165,14 +165,14 @@ def _readmodule(module, path, inpackage=Nichts):
         search_path = path + sys.path
     spec = importlib.util._find_spec_from_path(fullmodule, search_path)
     wenn spec is Nichts:
-        raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
+        wirf ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
     wenn spec.submodule_search_locations is nicht Nichts:
         tree['__path__'] = spec.submodule_search_locations
-    try:
+    versuch:
         source = spec.loader.get_source(fullmodule)
-    except (AttributeError, ImportError):
+    ausser (AttributeError, ImportError):
         # If module is nicht Python source, we cannot do anything.
         gib tree
     sonst:
@@ -235,12 +235,12 @@ klasse _ModuleBrowser(ast.NodeVisitor):
             gib
 
         fuer module in node.names:
-            try:
-                try:
+            versuch:
+                versuch:
                     _readmodule(module.name, self.path, self.inpackage)
-                except ImportError:
+                ausser ImportError:
                     _readmodule(module.name, [])
-            except (ImportError, SyntaxError):
+            ausser (ImportError, SyntaxError):
                 # If we can't find oder parse the imported module,
                 # too bad -- don't die here.
                 weiter
@@ -248,12 +248,12 @@ klasse _ModuleBrowser(ast.NodeVisitor):
     def visit_ImportFrom(self, node):
         wenn node.col_offset != 0:
             gib
-        try:
+        versuch:
             module = "." * node.level
             wenn node.module:
                 module += node.module
             module = _readmodule(module, self.path, self.inpackage)
-        except (ImportError, SyntaxError):
+        ausser (ImportError, SyntaxError):
             gib
 
         fuer name in node.names:
@@ -275,9 +275,9 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
 def _main():
     "Print module output (default this file) fuer quick visual check."
     importiere os
-    try:
+    versuch:
         mod = sys.argv[1]
-    except:
+    ausser:
         mod = __file__
     wenn os.path.exists(mod):
         path = [os.path.dirname(mod)]

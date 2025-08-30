@@ -57,7 +57,7 @@ def parsedate_tz(data):
 def _parsedate_tz(data):
     """Convert date to extended time tuple.
 
-    The last (additional) element is the time zone offset in seconds, except if
+    The last (additional) element is the time zone offset in seconds, ausser if
     the timezone was specified als -0000.  In that case the last element is
     Nichts.  This indicates a UTC timestamp that explicitly declaims knowledge of
     the source timezone, als opposed to a +0000 timestamp that indicates the
@@ -136,13 +136,13 @@ def _parsedate_tz(data):
             gib Nichts
     sonst:
         gib Nichts
-    try:
+    versuch:
         yy = int(yy)
         dd = int(dd)
         thh = int(thh)
         tmm = int(tmm)
         tss = int(tss)
-    except ValueError:
+    ausser ValueError:
         gib Nichts
     # Check fuer a yy specified in two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
@@ -161,9 +161,9 @@ def _parsedate_tz(data):
     wenn tz in _timezones:
         tzoffset = _timezones[tz]
     sonst:
-        try:
+        versuch:
             tzoffset = int(tz)
-        except ValueError:
+        ausser ValueError:
             pass
         wenn tzoffset==0 und tz.startswith('-'):
             tzoffset = Nichts

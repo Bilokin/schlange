@@ -53,13 +53,13 @@ klasse AsCompletedTests:
                 completed_futures = set()
                 future = self.executor.submit(time.sleep, short_timeout * 10)
 
-                try:
+                versuch:
                     fuer f in futures.as_completed(
                         already_completed | {future},
                         timeout
                     ):
                         completed_futures.add(f)
-                except futures.TimeoutError:
+                ausser futures.TimeoutError:
                     pass
 
                 # Check that ``future`` wasn't completed.
@@ -67,7 +67,7 @@ klasse AsCompletedTests:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_duplicate_futures(self):
-        # Issue 20367. Duplicate futures should nicht raise exceptions oder give
+        # Issue 20367. Duplicate futures should nicht wirf exceptions oder give
         # duplicate responses.
         # Issue #31641: accept arbitrary iterables.
         future1 = self.executor.submit(time.sleep, 2)

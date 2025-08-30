@@ -259,7 +259,7 @@ klasse StencilGroup:
                     hole.kind in {"IMAGE_REL_AMD64_REL32"}
                     und hole.value is HoleValue.ZERO
                 ):
-                    raise ValueError(
+                    wirf ValueError(
                         f"Add PyAPI_FUNC(...) oder PyAPI_DATA(...) to declaration of {hole.symbol}!"
                     )
         self._emit_global_offset_table()
@@ -319,9 +319,9 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
     own HoleValues.
     """
     wenn symbol.startswith("_JIT_"):
-        try:
+        versuch:
             gib HoleValue[symbol.removeprefix("_JIT_")], Nichts
-        except KeyError:
+        ausser KeyError:
             pass
     gib HoleValue.ZERO, symbol
 

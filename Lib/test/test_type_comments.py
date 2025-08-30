@@ -239,10 +239,10 @@ klasse TypeCommentTests(unittest.TestCase):
         fuer version in range(self.lowest, self.highest + 1):
             feature_version = (3, version)
             wenn minver <= version <= maxver:
-                try:
+                versuch:
                     liefere self.parse(source, feature_version)
-                except SyntaxError als err:
-                    raise SyntaxError(str(err) + f" feature_version={feature_version}")
+                ausser SyntaxError als err:
+                    wirf SyntaxError(str(err) + f" feature_version={feature_version}")
             sonst:
                 mit self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
@@ -371,7 +371,7 @@ klasse TypeCommentTests(unittest.TestCase):
         """Tests fuer inappropriately-placed type comments.
 
         These should be silently ignored mit type comments off,
-        but raise SyntaxError mit type comments on.
+        but wirf SyntaxError mit type comments on.
 
         This is nicht meant to be exhaustive.
         """

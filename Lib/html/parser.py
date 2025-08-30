@@ -281,7 +281,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     sowenn startswith("<?", i):
                         self.handle_pi(rawdata[i+2:])
                     sonst:
-                        raise AssertionError("we should nicht get here!")
+                        wirf AssertionError("we should nicht get here!")
                     k = n
                 i = self.updatepos(i, k)
             sowenn startswith("&#", i):

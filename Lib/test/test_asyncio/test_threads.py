@@ -18,7 +18,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_to_thread_exception(self):
         def raise_runtime():
-            raise RuntimeError("test")
+            wirf RuntimeError("test")
 
         mit self.assertRaisesRegex(RuntimeError, "test"):
             await asyncio.to_thread(raise_runtime)

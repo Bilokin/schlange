@@ -53,10 +53,10 @@ klasse DbmTestCase(unittest.TestCase):
 
     def test_modes(self):
         fuer mode in ['r', 'rw', 'w', 'n']:
-            try:
+            versuch:
                 self.d = dbm.ndbm.open(self.filename, mode)
                 self.d.close()
-            except error:
+            ausser error:
                 self.fail()
 
     def test_context_manager(self):

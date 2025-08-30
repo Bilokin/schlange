@@ -24,11 +24,11 @@ py_extensions = ('.py', '.pyw', '.pyi')
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn280512(v=vs.85).aspx
 wenn sys.platform == 'win32':  # pragma: no cover
     def fix_win_hidpi():  # Called in pyshell und turtledemo.
-        try:
+        versuch:
             importiere ctypes
             PROCESS_SYSTEM_DPI_AWARE = 1  # Int required.
             ctypes.OleDLL('shcore').SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE)
-        except (ImportError, AttributeError, OSError):
+        ausser (ImportError, AttributeError, OSError):
             pass
 
 

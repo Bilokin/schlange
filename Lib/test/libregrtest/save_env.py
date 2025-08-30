@@ -73,10 +73,10 @@ klasse saved_test_environment:
 
     def try_get_module(self, name):
         # function fuer get() methods
-        try:
+        versuch:
             gib self.get_module(name)
-        except KeyError:
-            raise SkipTestEnvironment
+        ausser KeyError:
+            wirf SkipTestEnvironment
 
     def get_urllib_requests__url_tempfiles(self):
         urllib_request = self.try_get_module('urllib.request')
@@ -276,9 +276,9 @@ klasse saved_test_environment:
     def get_locale(self):
         pairings = []
         fuer lc in self._lc:
-            try:
+            versuch:
                 pairings.append((lc, locale.setlocale(lc, Nichts)))
-            except (TypeError, ValueError):
+            ausser (TypeError, ValueError):
                 weiter
         gib pairings
     def restore_locale(self, saved):
@@ -302,9 +302,9 @@ klasse saved_test_environment:
     def __enter__(self):
         self.saved_values = []
         fuer name, get, restore in self.resource_info():
-            try:
+            versuch:
                 original = get()
-            except SkipTestEnvironment:
+            ausser SkipTestEnvironment:
                 weiter
 
             self.saved_values.append((name, get, restore, original))

@@ -21,12 +21,12 @@ importiere subprocess
 
 PROCESS_VM_READV_SUPPORTED = Falsch
 
-try:
+versuch:
     von _remote_debugging importiere PROCESS_VM_READV_SUPPORTED
     von _remote_debugging importiere RemoteUnwinder
     von _remote_debugging importiere FrameInfo, CoroInfo, TaskInfo
-except ImportError:
-    raise unittest.SkipTest(
+ausser ImportError:
+    wirf unittest.SkipTest(
         "Test only runs when _remote_debugging is available"
     )
 
@@ -110,7 +110,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
@@ -121,11 +121,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                 ):
                     response += client_socket.recv(1024)
                 stack_trace = get_stack_trace(p.pid)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
@@ -223,18 +223,18 @@ klasse TestGetStackTrace(unittest.TestCase):
                     script.format(TASK_FACTORY=task_factory_variant),
                 )
                 client_socket = Nichts
-                try:
+                versuch:
                     p = subprocess.Popen([sys.executable, script_name])
                     client_socket, _ = server_socket.accept()
                     server_socket.close()
                     response = client_socket.recv(1024)
                     self.assertEqual(response, b"ready")
                     stack_trace = get_async_stack_trace(p.pid)
-                except PermissionError:
+                ausser PermissionError:
                     self.skipTest(
                         "Insufficient permissions to read the stack trace"
                     )
-                finally:
+                schliesslich:
                     wenn client_socket is nicht Nichts:
                         client_socket.close()
                     p.kill()
@@ -444,18 +444,18 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
                 response = client_socket.recv(1024)
                 self.assertEqual(response, b"ready")
                 stack_trace = get_async_stack_trace(p.pid)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
@@ -533,18 +533,18 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
                 response = client_socket.recv(1024)
                 self.assertEqual(response, b"ready")
                 stack_trace = get_async_stack_trace(p.pid)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
@@ -669,18 +669,18 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
                 response = client_socket.recv(1024)
                 self.assertEqual(response, b"ready")
                 stack_trace = get_async_stack_trace(p.pid)
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
@@ -862,7 +862,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
@@ -871,9 +871,9 @@ klasse TestGetStackTrace(unittest.TestCase):
                     response = client_socket.recv(len(expected_response))
                     self.assertEqual(response, expected_response)
                 fuer _ in busy_retry(SHORT_TIMEOUT):
-                    try:
+                    versuch:
                         all_awaited_by = get_all_awaited_by(p.pid)
-                    except RuntimeError als re:
+                    ausser RuntimeError als re:
                         # This call reads a linked list in another process with
                         # no synchronization. That occasionally leads to invalid
                         # reads. Here we avoid making the test flaky.
@@ -888,7 +888,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                             weiter
                         sowenn msg.startswith("Unhandled frame owner"):
                             weiter
-                        raise  # Unrecognized exception, safest nicht to ignore it
+                        wirf  # Unrecognized exception, safest nicht to ignore it
                     sonst:
                         breche
                 # expected: a list of two elements: 1 thread, 1 interp
@@ -1065,11 +1065,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                         tasks_with_awaited[-1].awaited_by,
                         entries[-1].awaited_by,
                     )
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()
@@ -1183,7 +1183,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             script_name = _make_test_script(script_dir, "script", script)
             client_socket = Nichts
-            try:
+            versuch:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
@@ -1226,11 +1226,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                 unwinder_gil = RemoteUnwinder(p.pid, only_active_thread=Wahr)
                 gil_traces = unwinder_gil.get_stack_trace()
 
-            except PermissionError:
+            ausser PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            finally:
+            schliesslich:
                 wenn client_socket is nicht Nichts:
                     client_socket.close()
                 p.kill()

@@ -289,17 +289,17 @@ b_utf8.py
 
 def open_file(path):
     dirname = os.path.dirname(path)
-    try:
+    versuch:
         os.makedirs(dirname)
-    except OSError als e:
+    ausser OSError als e:
         wenn e.errno != errno.EEXIST:
-            raise
+            wirf
     gib open(path, 'wb')
 
 
 def create_package(test_dir, source):
     ofi = Nichts
-    try:
+    versuch:
         fuer line in source.splitlines():
             wenn type(line) != bytes:
                 line = line.encode('utf-8')
@@ -311,7 +311,7 @@ def create_package(test_dir, source):
                 wenn type(line) == bytes:
                     line = line.decode('utf-8')
                 ofi = open_file(os.path.join(test_dir, line.strip()))
-    finally:
+    schliesslich:
         wenn ofi:
             ofi.close()
 
@@ -334,9 +334,9 @@ klasse ModuleFinderTest(unittest.TestCase):
 ##            # This wouldn't work in general when executed several times:
 ##            opath = sys.path[:]
 ##            sys.path = self.test_path
-##            try:
+##            versuch:
 ##                __import__(import_this)
-##            except:
+##            ausser:
 ##                importiere traceback; traceback.print_exc()
 ##            sys.path = opath
 ##            gib

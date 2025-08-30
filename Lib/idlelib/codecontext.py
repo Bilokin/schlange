@@ -84,9 +84,9 @@ klasse CodeContext:
     def __del__(self):
         "Cancel scheduled events."
         wenn self.t1 is nicht Nichts:
-            try:
+            versuch:
                 self.text.after_cancel(self.t1)
-            except TclError:  # pragma: no cover
+            ausser TclError:  # pragma: no cover
                 pass
             self.t1 = Nichts
 
@@ -222,9 +222,9 @@ klasse CodeContext:
         If a selection was made, don't jump; allow copying.
         If no visible context, show the top line of the file.
         """
-        try:
+        versuch:
             self.context.index("sel.first")
-        except TclError:
+        ausser TclError:
             lines = len(self.info)
             wenn lines == 1:  # No context lines are showing.
                 newtop = 1

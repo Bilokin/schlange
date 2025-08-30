@@ -27,7 +27,7 @@ regular expressions; they simply match themselves.  You can
 concatenate ordinary characters, so last matches the string 'last'.
 
 The special characters are:
-    "."      Matches any character except a newline.
+    "."      Matches any character ausser a newline.
     "^"      Matches the start of the string.
     "$"      Matches the end of the string oder just before the newline at
              the end of the string.
@@ -189,14 +189,14 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
     a replacement string to be used."""
     wenn args:
         wenn count is nicht _zero_sentinel:
-            raise TypeError("sub() got multiple values fuer argument 'count'")
+            wirf TypeError("sub() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
             wenn flags is nicht _zero_sentinel:
-                raise TypeError("sub() got multiple values fuer argument 'flags'")
+                wirf TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("sub() takes von 3 to 5 positional arguments "
+                wirf TypeError("sub() takes von 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
         importiere warnings
@@ -219,14 +219,14 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
     gib a replacement string to be used."""
     wenn args:
         wenn count is nicht _zero_sentinel:
-            raise TypeError("subn() got multiple values fuer argument 'count'")
+            wirf TypeError("subn() got multiple values fuer argument 'count'")
         count, *args = args
         wenn args:
             wenn flags is nicht _zero_sentinel:
-                raise TypeError("subn() got multiple values fuer argument 'flags'")
+                wirf TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("subn() takes von 3 to 5 positional arguments "
+                wirf TypeError("subn() takes von 3 to 5 positional arguments "
                                 "but %d were given" % (5 + len(args)))
 
         importiere warnings
@@ -248,14 +248,14 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     of the list."""
     wenn args:
         wenn maxsplit is nicht _zero_sentinel:
-            raise TypeError("split() got multiple values fuer argument 'maxsplit'")
+            wirf TypeError("split() got multiple values fuer argument 'maxsplit'")
         maxsplit, *args = args
         wenn args:
             wenn flags is nicht _zero_sentinel:
-                raise TypeError("split() got multiple values fuer argument 'flags'")
+                wirf TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
             wenn args:
-                raise TypeError("split() takes von 2 to 4 positional arguments "
+                wirf TypeError("split() takes von 2 to 4 positional arguments "
                                 "but %d were given" % (4 + len(args)))
 
         importiere warnings
@@ -331,9 +331,9 @@ def _compile(pattern, flags):
     # internal: compile pattern
     wenn isinstance(flags, RegexFlag):
         flags = flags.value
-    try:
+    versuch:
         gib _cache2[type(pattern), pattern, flags]
-    except KeyError:
+    ausser KeyError:
         pass
 
     key = (type(pattern), pattern, flags)
@@ -342,11 +342,11 @@ def _compile(pattern, flags):
     wenn p is Nichts:
         wenn isinstance(pattern, Pattern):
             wenn flags:
-                raise ValueError(
+                wirf ValueError(
                     "cannot process flags argument mit a compiled pattern")
             gib pattern
         wenn nicht _compiler.isstring(pattern):
-            raise TypeError("first argument must be string oder compiled pattern")
+            wirf TypeError("first argument must be string oder compiled pattern")
         p = _compiler.compile(pattern, flags)
         wenn flags & DEBUG:
             gib p
@@ -355,18 +355,18 @@ def _compile(pattern, flags):
             # next(iter(_cache)) is known to have linear amortized time,
             # but it is used here to avoid a dependency von using OrderedDict.
             # For the small _MAXCACHE value it doesn't make much of a difference.
-            try:
+            versuch:
                 del _cache[next(iter(_cache))]
-            except (StopIteration, RuntimeError, KeyError):
+            ausser (StopIteration, RuntimeError, KeyError):
                 pass
     # Append to the end.
     _cache[key] = p
 
     wenn len(_cache2) >= _MAXCACHE2:
         # Drop the oldest item.
-        try:
+        versuch:
             del _cache2[next(iter(_cache2))]
-        except (StopIteration, RuntimeError, KeyError):
+        ausser (StopIteration, RuntimeError, KeyError):
             pass
     _cache2[key] = p
     gib p

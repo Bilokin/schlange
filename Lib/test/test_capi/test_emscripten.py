@@ -2,7 +2,7 @@ importiere unittest
 von test.support importiere is_emscripten
 
 wenn nicht is_emscripten:
-    raise unittest.SkipTest("Emscripten-only test")
+    wirf unittest.SkipTest("Emscripten-only test")
 
 von _testinternalcapi importiere emscripten_set_up_async_input_device
 von pathlib importiere Path

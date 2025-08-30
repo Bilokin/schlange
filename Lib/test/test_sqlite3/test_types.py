@@ -24,9 +24,9 @@ importiere datetime
 importiere unittest
 importiere sqlite3 als sqlite
 importiere sys
-try:
+versuch:
     importiere zlib
-except ImportError:
+ausser ImportError:
     zlib = Nichts
 
 von test importiere support
@@ -153,7 +153,7 @@ klasse DeclTypesTests(unittest.TestCase):
         def __init__(self, exc):
             self.exc = exc
         def __conform__(self, protocol):
-            raise self.exc
+            wirf self.exc
 
     def setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_DECLTYPES)
@@ -411,9 +411,9 @@ klasse ObjectAdaptationTests(unittest.TestCase):
 
     def setUp(self):
         self.con = sqlite.connect(":memory:")
-        try:
+        versuch:
             del sqlite.adapters[int]
-        except:
+        ausser:
             pass
         sqlite.register_adapter(int, ObjectAdaptationTests.cast)
         self.cur = self.con.cursor()

@@ -8,7 +8,7 @@ klasse SAXException(Exception):
     the application: you can subclass it to provide additional
     functionality, oder to add localization. Note that although you will
     receive a SAXException als the argument to the handlers in the
-    ErrorHandler interface, you are nicht actually required to raise
+    ErrorHandler interface, you are nicht actually required to wirf
     the exception; instead, you can simply read the information in
     it."""
 
@@ -34,7 +34,7 @@ klasse SAXException(Exception):
     def __getitem__(self, ix):
         """Avoids weird error messages wenn someone does exception[ix] by
         mistake, since Exception has __getitem__ defined."""
-        raise AttributeError("__getitem__")
+        wirf AttributeError("__getitem__")
 
 
 # ===== SAXPARSEEXCEPTION =====
@@ -46,7 +46,7 @@ klasse SAXParseException(SAXException):
     the original XML document. Note that although the application will
     receive a SAXParseException als the argument to the handlers in the
     ErrorHandler interface, the application is nicht actually required
-    to raise the exception; instead, it can simply read the
+    to wirf the exception; instead, it can simply read the
     information in it und take a different action.
 
     Since this exception is a subclass of SAXException, it inherits
@@ -101,7 +101,7 @@ klasse SAXParseException(SAXException):
 klasse SAXNotRecognizedException(SAXException):
     """Exception klasse fuer an unrecognized identifier.
 
-    An XMLReader will raise this exception when it is confronted mit an
+    An XMLReader will wirf this exception when it is confronted mit an
     unrecognized feature oder property. SAX applications und extensions may
     use this klasse fuer similar purposes."""
 
@@ -111,7 +111,7 @@ klasse SAXNotRecognizedException(SAXException):
 klasse SAXNotSupportedException(SAXException):
     """Exception klasse fuer an unsupported operation.
 
-    An XMLReader will raise this exception when a service it cannot
+    An XMLReader will wirf this exception when a service it cannot
     perform is requested (specifically setting a state oder value). SAX
     applications und extensions may use this klasse fuer similar
     purposes."""
@@ -121,7 +121,7 @@ klasse SAXNotSupportedException(SAXException):
 klasse SAXReaderNotAvailable(SAXNotSupportedException):
     """Exception klasse fuer a missing driver.
 
-    An XMLReader module (driver) should raise this exception when it
+    An XMLReader module (driver) should wirf this exception when it
     is first imported, e.g. when a support module cannot be imported.
     It also may be raised during parsing, e.g. wenn executing an external
     program is nicht permitted."""

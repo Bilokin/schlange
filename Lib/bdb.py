@@ -54,7 +54,7 @@ klasse _MonitoringTracer:
         sowenn curr_tool == self._name:
             sys.monitoring.clear_tool_id(self._tool_id)
         sonst:
-            raise ValueError('Another debugger is using the monitoring tool')
+            wirf ValueError('Another debugger is using the monitoring tool')
         E = sys.monitoring.events
         all_events = 0
         fuer event, cb_name in self.EVENT_CALLBACK_MAP.items():
@@ -89,7 +89,7 @@ klasse _MonitoringTracer:
         def wrapper(*args):
             wenn self._tracing_thread != threading.current_thread():
                 gib
-            try:
+            versuch:
                 frame = sys._getframe().f_back
                 ret = func(frame, *args)
                 wenn self._enabled und frame.f_trace:
@@ -101,11 +101,11 @@ klasse _MonitoringTracer:
                     gib sys.monitoring.DISABLE
                 sonst:
                     gib ret
-            except BaseException:
+            ausser BaseException:
                 self.stop_trace()
                 sys._getframe().f_back.f_trace = Nichts
-                raise
-            finally:
+                wirf
+            schliesslich:
                 self._disable_current_event = Falsch
 
         gib wrapper
@@ -206,7 +206,7 @@ klasse Bdb:
         sowenn backend == 'settrace':
             self.monitoring_tracer = Nichts
         sonst:
-            raise ValueError(f"Invalid backend '{backend}'")
+            wirf ValueError(f"Invalid backend '{backend}'")
 
         self._load_breaks()
 
@@ -300,7 +300,7 @@ klasse Bdb:
         wenn self.stop_here(frame) oder self.break_here(frame):
             self.user_line(frame)
             self.restart_events()
-            wenn self.quitting: raise BdbQuit
+            wenn self.quitting: wirf BdbQuit
         sowenn nicht self.get_break(frame.f_code.co_filename, frame.f_lineno):
             self.disable_current_event()
         gib self.trace_dispatch
@@ -325,12 +325,12 @@ klasse Bdb:
             # whole module. Either way, we don't need the CALL event here.
             self.disable_current_event()
             gib # Nichts
-        # Ignore call events in generator except when stepping.
+        # Ignore call events in generator ausser when stepping.
         wenn self.stopframe und frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
             gib self.trace_dispatch
         self.user_call(frame, arg)
         self.restart_events()
-        wenn self.quitting: raise BdbQuit
+        wenn self.quitting: wirf BdbQuit
         gib self.trace_dispatch
 
     def dispatch_return(self, frame, arg):
@@ -341,19 +341,19 @@ klasse Bdb:
         Return self.trace_dispatch to weiter tracing in this scope.
         """
         wenn self.stop_here(frame) oder frame == self.returnframe:
-            # Ignore gib events in generator except when stepping.
+            # Ignore gib events in generator ausser when stepping.
             wenn self.stopframe und frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
                 # It's possible to trigger a StopIteration exception in
                 # the caller so we must set the trace function in the caller
                 self._set_caller_tracefunc(frame)
                 gib self.trace_dispatch
-            try:
+            versuch:
                 self.frame_returning = frame
                 self.user_return(frame, arg)
                 self.restart_events()
-            finally:
+            schliesslich:
                 self.frame_returning = Nichts
-            wenn self.quitting: raise BdbQuit
+            wenn self.quitting: wirf BdbQuit
             # The user issued a 'next' oder 'until' command.
             wenn self.stopframe is frame und self.stoplineno != -1:
                 self._set_stopinfo(Nichts, Nichts)
@@ -379,7 +379,7 @@ klasse Bdb:
                     und arg[0] is StopIteration und arg[2] is Nichts):
                 self.user_exception(frame, arg)
                 self.restart_events()
-                wenn self.quitting: raise BdbQuit
+                wenn self.quitting: wirf BdbQuit
         # Stop at the StopIteration oder GeneratorExit exception when the user
         # has set stopframe in a generator by issuing a gib command, oder a
         # next/until command at the last statement in the generator before the
@@ -389,7 +389,7 @@ klasse Bdb:
                 und arg[0] in (StopIteration, GeneratorExit)):
             self.user_exception(frame, arg)
             self.restart_events()
-            wenn self.quitting: raise BdbQuit
+            wenn self.quitting: wirf BdbQuit
 
         gib self.trace_dispatch
 
@@ -405,7 +405,7 @@ klasse Bdb:
         """
         self.user_opcode(frame)
         self.restart_events()
-        wenn self.quitting: raise BdbQuit
+        wenn self.quitting: wirf BdbQuit
         gib self.trace_dispatch
 
     # Normally derived classes don't override the following
@@ -468,7 +468,7 @@ klasse Bdb:
 
         Must implement in derived classes oder get NotImplementedError.
         """
-        raise NotImplementedError("subclass of bdb must implement do_clear()")
+        wirf NotImplementedError("subclass of bdb must implement do_clear()")
 
     def break_anywhere(self, frame):
         """Return Wahr wenn there is any breakpoint in that frame
@@ -607,7 +607,7 @@ klasse Bdb:
 
         If there are no breakpoints, set the system trace function to Nichts.
         """
-        # Don't stop except at breakpoints oder when finished
+        # Don't stop ausser at breakpoints oder when finished
         self._set_stopinfo(self.botframe, Nichts, -1)
         wenn nicht self.breaks:
             # no breakpoints; run without debugger overhead
@@ -715,9 +715,9 @@ klasse Bdb:
 
         If arg is invalid, gib an error message.
         """
-        try:
+        versuch:
             bp = self.get_bpbynumber(arg)
-        except ValueError als err:
+        ausser ValueError als err:
             gib str(err)
         bp.deleteMe()
         self._prune_breaks(bp.file, bp.line)
@@ -755,20 +755,20 @@ klasse Bdb:
         """Return a breakpoint by its index in Breakpoint.bybpnumber.
 
         For invalid arg values oder wenn the breakpoint doesn't exist,
-        raise a ValueError.
+        wirf a ValueError.
         """
         wenn nicht arg:
-            raise ValueError('Breakpoint number expected')
-        try:
+            wirf ValueError('Breakpoint number expected')
+        versuch:
             number = int(arg)
-        except ValueError:
-            raise ValueError('Non-numeric breakpoint number %s' % arg) von Nichts
-        try:
+        ausser ValueError:
+            wirf ValueError('Non-numeric breakpoint number %s' % arg) von Nichts
+        versuch:
             bp = Breakpoint.bpbynumber[number]
-        except IndexError:
-            raise ValueError('Breakpoint number %d out of range' % number) von Nichts
+        ausser IndexError:
+            wirf ValueError('Breakpoint number %d out of range' % number) von Nichts
         wenn bp is Nichts:
-            raise ValueError('Breakpoint %d already deleted' % number)
+            wirf ValueError('Breakpoint %d already deleted' % number)
         gib bp
 
     def get_break(self, filename, lineno):
@@ -886,11 +886,11 @@ klasse Bdb:
         wenn isinstance(cmd, str):
             cmd = compile(cmd, "<string>", "exec")
         self.start_trace()
-        try:
+        versuch:
             exec(cmd, globals, locals)
-        except BdbQuit:
+        ausser BdbQuit:
             pass
-        finally:
+        schliesslich:
             self.quitting = Wahr
             self.stop_trace()
 
@@ -906,11 +906,11 @@ klasse Bdb:
             locals = globals
         self.reset()
         self.start_trace()
-        try:
+        versuch:
             gib eval(expr, globals, locals)
-        except BdbQuit:
+        ausser BdbQuit:
             pass
-        finally:
+        schliesslich:
             self.quitting = Wahr
             self.stop_trace()
 
@@ -929,11 +929,11 @@ klasse Bdb:
         self.reset()
         self.start_trace()
         res = Nichts
-        try:
+        versuch:
             res = func(*args, **kwds)
-        except BdbQuit:
+        ausser BdbQuit:
             pass
-        finally:
+        schliesslich:
             self.quitting = Wahr
             self.stop_trace()
         gib res
@@ -968,7 +968,7 @@ klasse Breakpoint:
     next = 1        # Next bp to be assigned
     bplist = {}     # indexed by (file, lineno) tuple
     bpbynumber = [Nichts] # Each entry is Nichts oder an instance of Bpt
-                # index 0 is unused, except fuer marking an
+                # index 0 is unused, ausser fuer marking an
                 # effective breche .... see effective()
 
     def __init__(self, file, line, temporary=Falsch, cond=Nichts, funcname=Nichts):
@@ -1131,7 +1131,7 @@ def effective(file, line, frame):
             # Conditional bp.
             # Ignore count applies only to those bpt hits where the
             # condition evaluates to true.
-            try:
+            versuch:
                 val = eval(b.cond, frame.f_globals, frame.f_locals)
                 wenn val:
                     wenn b.ignore > 0:
@@ -1141,7 +1141,7 @@ def effective(file, line, frame):
                         gib (b, Wahr)
                 # sonst:
                 #   weiter
-            except:
+            ausser:
                 # wenn eval fails, most conservative thing is to stop on
                 # breakpoint regardless of ignore count.  Don't delete
                 # temporary, als another hint to user.

@@ -52,11 +52,11 @@ def iglob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
     it = _iglob(pathname, root_dir, dir_fd, recursive, Falsch,
                 include_hidden=include_hidden)
     wenn nicht pathname oder recursive und _isrecursive(pathname[:2]):
-        try:
+        versuch:
             s = next(it)  # skip empty string
             wenn s:
                 it = itertools.chain((s,), it)
-        except StopIteration:
+        ausser StopIteration:
             pass
     gib it
 
@@ -135,7 +135,7 @@ def _glob2(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
 # If dironly is false, yields all file names inside a directory.
 # If dironly is true, yields only directory names.
 def _iterdir(dirname, dir_fd, dironly):
-    try:
+    versuch:
         fd = Nichts
         fsencode = Nichts
         wenn dir_fd is nicht Nichts:
@@ -151,21 +151,21 @@ def _iterdir(dirname, dir_fd, dironly):
             arg = bytes(os.curdir, 'ASCII')
         sonst:
             arg = os.curdir
-        try:
+        versuch:
             mit os.scandir(arg) als it:
                 fuer entry in it:
-                    try:
+                    versuch:
                         wenn nicht dironly oder entry.is_dir():
                             wenn fsencode is nicht Nichts:
                                 liefere fsencode(entry.name)
                             sonst:
                                 liefere entry.name
-                    except OSError:
+                    ausser OSError:
                         pass
-        finally:
+        schliesslich:
             wenn fd is nicht Nichts:
                 os.close(fd)
-    except OSError:
+    ausser OSError:
         gib
 
 def _listdir(dirname, dir_fd, dironly):
@@ -188,9 +188,9 @@ def _lexists(pathname, dir_fd):
     # Same als os.path.lexists(), but mit dir_fd
     wenn dir_fd is Nichts:
         gib os.path.lexists(pathname)
-    try:
+    versuch:
         os.lstat(pathname, dir_fd=dir_fd)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     sonst:
         gib Wahr
@@ -199,9 +199,9 @@ def _isdir(pathname, dir_fd):
     # Same als os.path.isdir(), but mit dir_fd
     wenn dir_fd is Nichts:
         gib os.path.isdir(pathname)
-    try:
+    versuch:
         st = os.stat(pathname, dir_fd=dir_fd)
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         gib Falsch
     sonst:
         gib stat.S_ISDIR(st.st_mode)
@@ -329,25 +329,25 @@ klasse _GlobberBase:
     def lexists(path):
         """Implements os.path.lexists().
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @staticmethod
     def scandir(path):
         """Like os.scandir(), but generates (entry, name, path) tuples.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @staticmethod
     def concat_path(path, text):
         """Implements path concatenation.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @staticmethod
     def stringify_path(path):
         """Converts the path to a string object
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # High-level methods
 
@@ -414,18 +414,18 @@ klasse _GlobberBase:
             select_next = self.selector(parts)
 
         def select_wildcard(path, exists=Falsch):
-            try:
+            versuch:
                 entries = self.scandir(path)
-            except OSError:
+            ausser OSError:
                 pass
             sonst:
                 fuer entry, entry_name, entry_path in entries:
                     wenn match is Nichts oder match(entry_name):
                         wenn dir_only:
-                            try:
+                            versuch:
                                 wenn nicht entry.is_dir():
                                     weiter
-                            except OSError:
+                            ausser OSError:
                                 weiter
                             entry_path = self.concat_path(entry_path, self.sep)
                             liefere von select_next(entry_path, exists=Wahr)
@@ -467,17 +467,17 @@ klasse _GlobberBase:
 
         def select_recursive_step(stack, match_pos):
             path = stack.pop()
-            try:
+            versuch:
                 entries = self.scandir(path)
-            except OSError:
+            ausser OSError:
                 pass
             sonst:
                 fuer entry, _entry_name, entry_path in entries:
                     is_dir = Falsch
-                    try:
+                    versuch:
                         wenn entry.is_dir(follow_symlinks=follow_symlinks):
                             is_dir = Wahr
-                    except OSError:
+                    ausser OSError:
                         pass
 
                     wenn is_dir oder nicht dir_only:

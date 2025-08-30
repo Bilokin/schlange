@@ -157,21 +157,21 @@ klasse SetComprehensionTest(unittest.TestCase):
         # __next__ should be the iterator expression
 
         def init_raises():
-            try:
+            versuch:
                 {x fuer x in BrokenIter(init_raises=Wahr)}
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def next_raises():
-            try:
+            versuch:
                 {x fuer x in BrokenIter(next_raises=Wahr)}
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def iter_raises():
-            try:
+            versuch:
                 {x fuer x in BrokenIter(iter_raises=Wahr)}
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),

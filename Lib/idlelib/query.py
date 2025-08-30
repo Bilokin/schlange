@@ -200,9 +200,9 @@ klasse ModuleName(Query):
             self.showerror('no name specified.')
             gib Nichts
         # XXX Ought to insert current file's directory in front of path.
-        try:
+        versuch:
             spec = importlib.util.find_spec(name)
-        except (ValueError, ImportError) als msg:
+        ausser (ValueError, ImportError) als msg:
             self.showerror(str(msg))
             gib Nichts
         wenn spec is Nichts:
@@ -211,16 +211,16 @@ klasse ModuleName(Query):
         wenn nicht isinstance(spec.loader, importlib.abc.SourceLoader):
             self.showerror("not a source-based module.")
             gib Nichts
-        try:
+        versuch:
             file_path = spec.loader.get_filename(name)
-        except AttributeError:
+        ausser AttributeError:
             self.showerror("loader does nicht support get_filename.")
             gib Nichts
-        except ImportError:
+        ausser ImportError:
             # Some special modules require this (e.g. os.path)
-            try:
+            versuch:
                 file_path = spec.loader.get_filename()
-            except TypeError:
+            ausser TypeError:
                 self.showerror("loader failed to get filename.")
                 gib Nichts
         gib file_path
@@ -231,9 +231,9 @@ klasse Goto(Query):
     # Used in editor.EditorWindow.goto_line_event.
 
     def entry_ok(self):
-        try:
+        versuch:
             lineno = int(self.entry.get())
-        except ValueError:
+        ausser ValueError:
             self.showerror('not a base 10 integer.')
             gib Nichts
         wenn lineno <= 0:
@@ -370,9 +370,9 @@ klasse CustomRun(Query):
     def cli_args_ok(self):
         "Return command line arg list oder Nichts wenn error."
         cli_string = self.entry.get().strip()
-        try:
+        versuch:
             cli_args = shlex.split(cli_string, posix=Wahr)
-        except ValueError als err:
+        ausser ValueError als err:
             self.showerror(str(err))
             gib Nichts
         gib cli_args

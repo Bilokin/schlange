@@ -950,7 +950,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             def __aiter__(self):
                 gib self
             async def __anext__(self):
-                raise StopAsyncIteration
+                wirf StopAsyncIteration
         self.assertIsInstance(AI(), AsyncIterator)
         self.assertIsSubclass(AI, AsyncIterator)
         non_samples = [Nichts, object, []]
@@ -961,7 +961,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Similarly to regular iterators (see issue 10565)
         klasse AnextOnly:
             async def __anext__(self):
-                raise StopAsyncIteration
+                wirf StopAsyncIteration
         self.assertNotIsInstance(AnextOnly(), AsyncIterator)
         self.validate_abstract_methods(AsyncIterator, '__anext__')
 
@@ -1229,7 +1229,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
         klasse FailOnClose(Generator):
             def send(self, value): gib value
-            def throw(self, *args): raise ValueError
+            def throw(self, *args): wirf ValueError
 
         self.assertRaises(ValueError, FailOnClose().close)
 
@@ -1290,9 +1290,9 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         def run_async(coro):
             result = Nichts
             waehrend Wahr:
-                try:
+                versuch:
                     coro.send(Nichts)
-                except StopIteration als ex:
+                ausser StopIteration als ex:
                     result = ex.args[0] wenn ex.args sonst Nichts
                     breche
             gib result
@@ -1308,7 +1308,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
         klasse FailOnClose(AsyncGenerator):
             async def asend(self, value): gib value
-            async def athrow(self, *args): raise ValueError
+            async def athrow(self, *args): wirf ValueError
 
         mit self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
@@ -1624,7 +1624,7 @@ klasse TestCollectionABCs(ABCTestCase):
         klasse SetUsingInstanceFromIterable(MutableSet):
             def __init__(self, values, created_by):
                 wenn nicht created_by:
-                    raise ValueError('created_by must be specified')
+                    wirf ValueError('created_by must be specified')
                 self.created_by = created_by
                 self._values = set(values)
 
@@ -1848,7 +1848,7 @@ klasse TestCollectionABCs(ABCTestCase):
             def __len__(self):
                 gib 0
             def __getitem__(self, i):
-                raise IndexError
+                wirf IndexError
             def __iter__(self):
                 gib iter(())
         self.validate_comparison(MyMapping())
@@ -1912,9 +1912,9 @@ klasse TestCollectionABCs(ABCTestCase):
 
         # Compare Sequence.index() behavior to (list|str).index() behavior
         def assert_index_same(seq1, seq2, index_args):
-            try:
+            versuch:
                 expected = seq1.index(*index_args)
-            except ValueError:
+            ausser ValueError:
                 mit self.assertRaises(ValueError):
                     seq2.index(*index_args)
             sonst:
@@ -2067,7 +2067,7 @@ klasse TestCounter(unittest.TestCase):
         c['a'] += 1         # increment an existing value
         c['b'] -= 2         # sub existing value to zero
         del c['c']          # remove an entry
-        del c['c']          # make sure that del doesn't raise KeyError
+        del c['c']          # make sure that del doesn't wirf KeyError
         c['d'] -= 2         # sub von a missing value
         c['e'] = -5         # directly assign a missing value
         c['f'] += 4         # add to a missing value

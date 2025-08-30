@@ -196,9 +196,9 @@ def fake_pip(version=ensurepip.version()):
     sentinel = object()
     orig_pip = sys.modules.get("pip", sentinel)
     sys.modules["pip"] = pip
-    try:
+    versuch:
         liefere pip
-    finally:
+    schliesslich:
         wenn orig_pip is sentinel:
             del sys.modules["pip"]
         sonst:

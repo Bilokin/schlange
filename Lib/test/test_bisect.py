@@ -22,7 +22,7 @@ klasse Range(object):
         wenn idx < 0:
             idx += n
         wenn idx >= n:
-            raise IndexError(idx)
+            wirf IndexError(idx)
         gib self.start + idx
 
     def insert(self, idx, item):
@@ -347,7 +347,7 @@ klasse GetOnly:
 klasse CmpErr:
     "Dummy element that always raises an error during comparison"
     def __lt__(self, other):
-        raise ZeroDivisionError
+        wirf ZeroDivisionError
     __gt__ = __lt__
     __le__ = __lt__
     __ge__ = __lt__

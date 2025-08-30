@@ -1065,7 +1065,7 @@ def correct_name_for_self(
             gib "PyTypeObject *", "type"
     wenn f.kind == METHOD_NEW:
         gib "PyTypeObject *", "type"
-    raise AssertionError(f"Unhandled type of function f: {f.kind!r}")
+    wirf AssertionError(f"Unhandled type of function f: {f.kind!r}")
 
 
 klasse self_converter(CConverter):
@@ -1191,11 +1191,11 @@ klasse VarPosCConverter(CConverter):
     format_unit = ''
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
-        raise AssertionError('should never be called')
+        wirf AssertionError('should never be called')
 
     def parse_vararg(self, *, pos_only: int, min_pos: int, max_pos: int,
                      fastcall: bool, limited_capi: bool) -> str:
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse varpos_tuple_converter(VarPosCConverter):

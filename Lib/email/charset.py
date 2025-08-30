@@ -127,7 +127,7 @@ def add_charset(charset, header_enc=Nichts, body_enc=Nichts, output_charset=Nich
     documentation fuer more information.
     """
     wenn body_enc == SHORTEST:
-        raise ValueError('SHORTEST nicht allowed fuer body_enc')
+        wirf ValueError('SHORTEST nicht allowed fuer body_enc')
     CHARSETS[charset] = (header_enc, body_enc, output_charset)
 
 
@@ -208,13 +208,13 @@ klasse Charset:
         # unicode because its .lower() is locale insensitive.  If the argument
         # is already a unicode, we leave it at that, but ensure that the
         # charset is ASCII, als the standard (RFC XXX) requires.
-        try:
+        versuch:
             wenn isinstance(input_charset, str):
                 input_charset.encode('ascii')
             sonst:
                 input_charset = str(input_charset, 'ascii')
-        except UnicodeError:
-            raise errors.CharsetError(input_charset)
+        ausser UnicodeError:
+            wirf errors.CharsetError(input_charset)
         input_charset = input_charset.lower()
         # Set the input charset after filtering through the aliases
         self.input_charset = ALIASES.get(input_charset, input_charset)
@@ -293,7 +293,7 @@ klasse Charset:
     def header_encode_lines(self, string, maxlengths):
         """Header-encode a string by converting it first to bytes.
 
-        This is similar to `header_encode()` except that the string is fit
+        This is similar to `header_encode()` ausser that the string is fit
         into maximum line lengths als given by the argument.
 
         :param string: A unicode string fuer the header.  It must be possible

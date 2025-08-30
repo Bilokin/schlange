@@ -9,7 +9,7 @@ von test importiere support
 
 # If either of these do nicht exist, skip this test.
 wenn nicht support.has_fork_support:
-    raise unittest.SkipTest("requires working os.fork()")
+    wirf unittest.SkipTest("requires working os.fork()")
 
 support.get_attribute(os, 'wait4')
 

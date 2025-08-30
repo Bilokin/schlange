@@ -581,9 +581,9 @@ boolean {0[0]} NO
         self.assertEqual(e.args, ("bar", "foo"))
 
     def get_error(self, cf, exc, section, option):
-        try:
+        versuch:
             cf.get(section, option)
-        except exc als e:
+        ausser exc als e:
             gib e
         sonst:
             self.fail("expected exception type %s.%s"
@@ -1531,9 +1531,9 @@ def readline_generator(f):
 klasse ReadFileTestCase(unittest.TestCase):
     def test_file(self):
         file_paths = [support.findfile("cfgparser.1", subdir="configdata")]
-        try:
+        versuch:
             file_paths.append(file_paths[0].encode('utf8'))
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             pass   # unfortunately we can't test bytes on this path
         fuer file_path in file_paths:
             parser = configparser.ConfigParser()

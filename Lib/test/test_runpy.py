@@ -194,9 +194,9 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests fuer runpy.run_module"""
 
     def expect_import_error(self, mod_name):
-        try:
+        versuch:
             run_module(mod_name)
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             self.fail("Expected importiere error fuer " + mod_name)
@@ -231,7 +231,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                      *, namespace=Falsch, parent_namespaces=Falsch):
         # Enforce a couple of internal sanity checks on test cases
         wenn (namespace oder parent_namespaces) und nicht depth:
-            raise RuntimeError("Can't mark top level module als a "
+            wirf RuntimeError("Can't mark top level module als a "
                                "namespace package")
         pkg_name = "__runpy_pkg__"
         test_fname = mod_base+os.extsep+"py"
@@ -265,20 +265,20 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         wenn verbose > 1: drucke("  Removed sys.path entry")
         fuer root, dirs, files in os.walk(top, topdown=Falsch):
             fuer name in files:
-                try:
+                versuch:
                     os.remove(os.path.join(root, name))
-                except OSError als ex:
+                ausser OSError als ex:
                     wenn verbose > 1: drucke(ex) # Persist mit cleaning up
             fuer name in dirs:
                 fullname = os.path.join(root, name)
-                try:
+                versuch:
                     os.rmdir(fullname)
-                except OSError als ex:
+                ausser OSError als ex:
                     wenn verbose > 1: drucke(ex) # Persist mit cleaning up
-        try:
+        versuch:
             os.rmdir(top)
             wenn verbose > 1: drucke("  Removed package tree")
-        except OSError als ex:
+        ausser OSError als ex:
             wenn verbose > 1: drucke(ex) # Persist mit cleaning up
 
     def _fix_ns_for_legacy_pyc(self, ns, alter_sys):
@@ -316,7 +316,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             })
         def create_ns(init_globals):
             gib run_module(mod_name, init_globals, alter_sys=alter_sys)
-        try:
+        versuch:
             wenn verbose > 1: drucke("Running von source:", mod_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
@@ -329,7 +329,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 wenn verbose > 1: drucke("Running von compiled:", mod_name)
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
-        finally:
+        schliesslich:
             self._del_pkg(pkg_dir)
         wenn verbose > 1: drucke("Module executed successfully")
 
@@ -357,7 +357,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             })
         def create_ns(init_globals):
             gib run_module(pkg_name, init_globals, alter_sys=alter_sys)
-        try:
+        versuch:
             wenn verbose > 1: drucke("Running von source:", pkg_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
@@ -370,13 +370,13 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 importlib.invalidate_caches()
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
-        finally:
+        schliesslich:
             self._del_pkg(pkg_dir)
         wenn verbose > 1: drucke("Package executed successfully")
 
     def _add_relative_modules(self, base_dir, source, depth):
         wenn depth <= 1:
-            raise ValueError("Relative module test needs depth > 1")
+            wirf ValueError("Relative module test needs depth > 1")
         pkg_name = "__runpy_pkg__"
         module_dir = base_dir
         fuer i in range(depth):
@@ -409,7 +409,7 @@ von ..uncle.cousin importiere nephew
             expected_name = mod_name
         sonst:
             expected_name = run_name
-        try:
+        versuch:
             self._add_relative_modules(pkg_dir, contents, depth)
             pkg_name = mod_name.rpartition('.')[0]
             wenn verbose > 1: drucke("Running von source:", mod_name)
@@ -433,7 +433,7 @@ von ..uncle.cousin importiere nephew
                 self.assertIn("sibling", d2)
                 self.assertIn("nephew", d2)
                 del d2 # Ensure __loader__ entry doesn't keep file open
-        finally:
+        schliesslich:
             self._del_pkg(pkg_dir)
         wenn verbose > 1: drucke("Module executed successfully")
 
@@ -467,27 +467,27 @@ von ..uncle.cousin importiere nephew
                 source = "raise {0}('{0} in __init__.py.')".format(name)
                 mit open(init, "wt", encoding="ascii") als mod_file:
                     mod_file.write(source)
-                try:
+                versuch:
                     run_module(mod_name)
-                except exception als err:
+                ausser exception als err:
                     self.assertNotIn("finding spec", format(err))
                 sonst:
                     self.fail("Nothing raised; expected {}".format(name))
-                try:
+                versuch:
                     run_module(mod_name + ".submodule")
-                except exception als err:
+                ausser exception als err:
                     self.assertNotIn("finding spec", format(err))
                 sonst:
                     self.fail("Nothing raised; expected {}".format(name))
 
     def test_submodule_imported_warning(self):
         pkg_dir, _, mod_name, _ = self._make_pkg("", 1)
-        try:
+        versuch:
             __import__(mod_name)
             mit self.assertWarnsRegex(RuntimeWarning,
                     r"found in sys\.modules"):
                 run_module(mod_name)
-        finally:
+        schliesslich:
             self._del_pkg(pkg_dir)
 
     def test_package_imported_no_warning(self):
@@ -556,9 +556,9 @@ von ..uncle.cousin importiere nephew
         })
         def create_ns(init_globals):
             gib run_module(mod_name, init_globals, run_name)
-        try:
+        versuch:
             self.check_code_execution(create_ns, expected_ns)
-        finally:
+        schliesslich:
             self._del_pkg(pkg_dir)
 
     def test_pkgutil_walk_packages(self):
@@ -785,7 +785,7 @@ klasse TestExit(unittest.TestCase):
             ham.write_text(
                 textwrap.dedent(
                     """\
-                    raise KeyboardInterrupt
+                    wirf KeyboardInterrupt
                     """
                 )
             )

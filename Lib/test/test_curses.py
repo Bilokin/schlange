@@ -21,9 +21,9 @@ requires('curses')
 curses = import_module('curses')
 import_module('curses.ascii')
 import_module('curses.textpad')
-try:
+versuch:
     importiere curses.panel
-except ImportError:
+ausser ImportError:
     pass
 
 def requires_curses_func(name):
@@ -35,7 +35,7 @@ def requires_curses_window_meth(name):
         @functools.wraps(test)
         def wrapped(self, *args, **kwargs):
             wenn nicht hasattr(self.stdscr, name):
-                raise unittest.SkipTest('requires curses.window.%s' % name)
+                wirf unittest.SkipTest('requires curses.window.%s' % name)
             test(self, *args, **kwargs)
         gib wrapped
     gib deco
@@ -88,10 +88,10 @@ klasse TestCurses(unittest.TestCase):
                 tmp = sys.__stderr__
                 self.output = sys.__stderr__
             sonst:
-                try:
+                versuch:
                     # Try to open the terminal device.
                     tmp = open('/dev/tty', 'wb', buffering=0)
-                except OSError:
+                ausser OSError:
                     # As a fallback, use regular file to write control codes.
                     # Some functions (like savetty) will nicht work, but at
                     # least the garbage control sequences will nicht be mixed
@@ -262,11 +262,11 @@ klasse TestCurses(unittest.TestCase):
         stdscr.addch(b'A')
         stdscr.addch(65)
         c = '\u20ac'
-        try:
+        versuch:
             stdscr.addch(c)
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             self.assertRaises(UnicodeEncodeError, c.encode, encoding)
-        except OverflowError:
+        ausser OverflowError:
             encoded = c.encode(encoding)
             self.assertNotEqual(len(encoded), 1, repr(encoded))
         stdscr.addch('A', curses.A_BOLD)
@@ -300,9 +300,9 @@ klasse TestCurses(unittest.TestCase):
                 func('abcd')
                 func(b'abcd')
                 s = 'àßçđ'
-                try:
+                versuch:
                     func(s)
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     self.assertRaises(UnicodeEncodeError, s.encode, encoding)
                 func('abcd', curses.A_BOLD)
                 func(1, 2, 'abcd')
@@ -315,9 +315,9 @@ klasse TestCurses(unittest.TestCase):
                 func('1234', 3)
                 func(b'1234', 3)
                 s = '\u0661\u0662\u0663\u0664'
-                try:
+                versuch:
                     func(s, 3)
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     self.assertRaises(UnicodeEncodeError, s.encode, encoding)
                 func('1234', 5)
                 func('1234', 3, curses.A_BOLD)
@@ -825,9 +825,9 @@ klasse TestCurses(unittest.TestCase):
             oder curses.tigetstr("flash") is nicht Nichts):
             curses.beep()
         sonst:
-            try:
+            versuch:
                 curses.beep()
-            except curses.error:
+            ausser curses.error:
                 self.skipTest('beep() failed')
 
     def test_flash(self):
@@ -835,9 +835,9 @@ klasse TestCurses(unittest.TestCase):
             oder curses.tigetstr("flash") is nicht Nichts):
             curses.flash()
         sonst:
-            try:
+            versuch:
                 curses.flash()
-            except curses.error:
+            ausser curses.error:
                 self.skipTest('flash() failed')
 
     def test_curs_set(self):
@@ -845,9 +845,9 @@ klasse TestCurses(unittest.TestCase):
             wenn curses.tigetstr(cap) is nicht Nichts:
                 curses.curs_set(vis)
             sonst:
-                try:
+                versuch:
                     curses.curs_set(vis)
-                except curses.error:
+                ausser curses.error:
                     pass
 
     @requires_curses_func('get_escdelay')
@@ -911,9 +911,9 @@ klasse TestCurses(unittest.TestCase):
             self.skipTest('cannot change color')
 
         old = curses.color_content(0)
-        try:
+        versuch:
             curses.init_color(0, *old)
-        except curses.error:
+        ausser curses.error:
             self.skipTest('cannot change color (init_color() failed)')
         self.addCleanup(curses.init_color, 0, *old)
         curses.init_color(0, 0, 0, 0)
@@ -946,9 +946,9 @@ klasse TestCurses(unittest.TestCase):
             # If use_default_colors() is called, the upper limit of the extended
             # range may be restricted, so we need to check wenn the limit is still
             # correct
-            try:
+            versuch:
                 curses.init_pair(pair_limit - 1, 0, 0)
-            except ValueError:
+            ausser ValueError:
                 pair_limit = curses.COLOR_PAIRS
         gib pair_limit
 
@@ -998,18 +998,18 @@ klasse TestCurses(unittest.TestCase):
     @requires_curses_func('use_default_colors')
     @requires_colors
     def test_use_default_colors(self):
-        try:
+        versuch:
             curses.use_default_colors()
-        except curses.error:
+        ausser curses.error:
             self.skipTest('cannot change color (use_default_colors() failed)')
         self.assertEqual(curses.pair_content(0), (-1, -1))
 
     @requires_curses_func('assume_default_colors')
     @requires_colors
     def test_assume_default_colors(self):
-        try:
+        versuch:
             curses.assume_default_colors(-1, -1)
-        except curses.error:
+        ausser curses.error:
             self.skipTest('cannot change color (assume_default_colors() failed)')
         self.assertEqual(curses.pair_content(0), (-1, -1))
         curses.assume_default_colors(curses.COLOR_YELLOW, curses.COLOR_BLUE)
@@ -1152,13 +1152,13 @@ klasse TestCurses(unittest.TestCase):
         stdscr = self.stdscr
         encoding = stdscr.encoding
         fuer ch in ('a', '\xe9', '\u20ac', '\U0010FFFF'):
-            try:
+            versuch:
                 ch.encode(encoding)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 weiter
-            try:
+            versuch:
                 curses.unget_wch(ch)
-            except Exception als err:
+            ausser Exception als err:
                 self.fail("unget_wch(%a) failed mit encoding %s: %s"
                           % (ch, stdscr.encoding, err))
             read = stdscr.get_wch()
@@ -1193,10 +1193,10 @@ klasse TestCurses(unittest.TestCase):
 
         # wenn someday we can represent the signature of addch
         # we will need to rewrite this test.
-        try:
+        versuch:
             signature = inspect.signature(stdscr.addch)
             self.assertFalsch(signature)
-        except ValueError:
+        ausser ValueError:
             # nicht generating a signature is fine.
             pass
 

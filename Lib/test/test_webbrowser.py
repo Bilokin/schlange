@@ -471,9 +471,9 @@ klasse ImportTest(unittest.TestCase):
     )
     def test_environment(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
-        try:
+        versuch:
             browser = webbrowser.get().name
-        except webbrowser.Error als err:
+        ausser webbrowser.Error als err:
             self.skipTest(str(err))
         mit os_helper.EnvironmentVarGuard() als env:
             env["BROWSER"] = browser
@@ -486,10 +486,10 @@ klasse ImportTest(unittest.TestCase):
     )
     def test_environment_preferred(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
-        try:
+        versuch:
             webbrowser.get()
             least_preferred_browser = webbrowser.get(webbrowser._tryorder[-1]).name
-        except (webbrowser.Error, IndexError) als err:
+        ausser (webbrowser.Error, IndexError) als err:
             self.skipTest(str(err))
 
         mit os_helper.EnvironmentVarGuard() als env:

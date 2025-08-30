@@ -17,10 +17,10 @@ klasse OverwriteTests:
             f.write(content)
 
     def open(self, path):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def extractall(self, ar):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
     def test_overwrite_file_as_file(self):

@@ -39,15 +39,15 @@ klasse SubClass(BaseClass):
     @BaseClass.spam.getter
     def spam(self):
         """SubClass.getter"""
-        raise PropertyGet(self._spam)
+        wirf PropertyGet(self._spam)
 
     @spam.setter
     def spam(self, value):
-        raise PropertySet(self._spam)
+        wirf PropertySet(self._spam)
 
     @spam.deleter
     def spam(self):
-        raise PropertyDel(self._spam)
+        wirf PropertyDel(self._spam)
 
 klasse PropertyDocBase(object):
     _spam = 1
@@ -141,7 +141,7 @@ klasse PropertyTests(unittest.TestCase):
         # right thing when presented mit a value that fails truth testing:
         klasse NotBool(object):
             def __bool__(self):
-                raise ValueError()
+                wirf ValueError()
             __len__ = __bool__
         mit self.assertRaises(ValueError):
             klasse C(object):
@@ -245,7 +245,7 @@ klasse PropertyTests(unittest.TestCase):
 
         klasse Err:
             def __getattr__(self, attr):
-                raise RuntimeError('fail')
+                wirf RuntimeError('fail')
 
         p = property(Err())
         mit self.assertRaisesRegex(RuntimeError, 'fail'):
@@ -306,7 +306,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             klasse Foo(object):
                 @PropertySubSlots
                 def spam(self):
-                    """Trying to copy this docstring will raise an exception"""
+                    """Trying to copy this docstring will wirf an exception"""
                     gib 1
 
     def test_property_with_slots_no_docstring(self):
@@ -492,7 +492,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         klasse NoDoc:
             @property
             def __doc__(self):
-                raise AttributeError
+                wirf AttributeError
 
         self.assertEqual(property(NoDoc()).__doc__, Nichts)
         self.assertEqual(PropertySub(NoDoc()).__doc__, Nichts)

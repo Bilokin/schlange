@@ -67,7 +67,7 @@ klasse Math:
         sowenn method == 'add':
             gib params[0] + params[1]
         sonst:
-            raise ValueError('bad method')
+            wirf ValueError('bad method')
 
 server = SimpleXMLRPCServer(("localhost", 8000))
 server.register_introspection_functions()
@@ -78,13 +78,13 @@ server.serve_forever()
 
 klasse MathServer(SimpleXMLRPCServer):
     def _dispatch(self, method, params):
-        try:
+        versuch:
             # We are forcing the 'export_' prefix on methods that are
             # callable through XML-RPC to prevent potential security
             # problems
             func = getattr(self, 'export_' + method)
-        except AttributeError:
-            raise Exception('method "%s" is nicht supported' % method)
+        ausser AttributeError:
+            wirf Exception('method "%s" is nicht supported' % method)
         sonst:
             gib func(*params)
 
@@ -116,9 +116,9 @@ importiere os
 importiere re
 importiere pydoc
 importiere traceback
-try:
+versuch:
     importiere fcntl
-except ImportError:
+ausser ImportError:
     fcntl = Nichts
 
 def resolve_dotted_attribute(obj, attr, allow_dotted_names=Wahr):
@@ -138,7 +138,7 @@ def resolve_dotted_attribute(obj, attr, allow_dotted_names=Wahr):
 
     fuer i in attrs:
         wenn i.startswith('_'):
-            raise AttributeError(
+            wirf AttributeError(
                 'attempt to access private attribute "%s"' % i
                 )
         sonst:
@@ -253,7 +253,7 @@ klasse SimpleXMLRPCDispatcher:
         of changing method dispatch behavior.
         """
 
-        try:
+        versuch:
             params, method = loads(data, use_builtin_types=self.use_builtin_types)
 
             # generate response
@@ -265,10 +265,10 @@ klasse SimpleXMLRPCDispatcher:
             response = (response,)
             response = dumps(response, methodresponse=1,
                              allow_none=self.allow_none, encoding=self.encoding)
-        except Fault als fault:
+        ausser Fault als fault:
             response = dumps(fault, allow_none=self.allow_none,
                              encoding=self.encoding)
-        except BaseException als exc:
+        ausser BaseException als exc:
             response = dumps(
                 Fault(1, "%s:%s" % (type(exc), exc)),
                 encoding=self.encoding, allow_none=self.allow_none,
@@ -322,13 +322,13 @@ klasse SimpleXMLRPCDispatcher:
             # wenn the instance has a _dispatch method then we
             # don't have enough information to provide help
             sowenn nicht hasattr(self.instance, '_dispatch'):
-                try:
+                versuch:
                     method = resolve_dotted_attribute(
                                 self.instance,
                                 method_name,
                                 self.allow_dotted_names
                                 )
-                except AttributeError:
+                ausser AttributeError:
                     pass
 
         # Note that we aren't checking that the method actually
@@ -353,16 +353,16 @@ klasse SimpleXMLRPCDispatcher:
             method_name = call['methodName']
             params = call['params']
 
-            try:
+            versuch:
                 # XXX A marshalling error in any response will fail the entire
                 # multicall. If someone cares they should fix this.
                 results.append([self._dispatch(method_name, params)])
-            except Fault als fault:
+            ausser Fault als fault:
                 results.append(
                     {'faultCode' : fault.faultCode,
                      'faultString' : fault.faultString}
                     )
-            except BaseException als exc:
+            ausser BaseException als exc:
                 results.append(
                     {'faultCode' : 1,
                      'faultString' : "%s:%s" % (type(exc), exc)}
@@ -390,15 +390,15 @@ klasse SimpleXMLRPCDispatcher:
         nicht be called.
         """
 
-        try:
+        versuch:
             # call the matching registered function
             func = self.funcs[method]
-        except KeyError:
+        ausser KeyError:
             pass
         sonst:
             wenn func is nicht Nichts:
                 gib func(*params)
-            raise Exception('method "%s" is nicht supported' % method)
+            wirf Exception('method "%s" is nicht supported' % method)
 
         wenn self.instance is nicht Nichts:
             wenn hasattr(self.instance, '_dispatch'):
@@ -406,19 +406,19 @@ klasse SimpleXMLRPCDispatcher:
                 gib self.instance._dispatch(method, params)
 
             # call the instance's method directly
-            try:
+            versuch:
                 func = resolve_dotted_attribute(
                     self.instance,
                     method,
                     self.allow_dotted_names
                 )
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 wenn func is nicht Nichts:
                     gib func(*params)
 
-        raise Exception('method "%s" is nicht supported' % method)
+        wirf Exception('method "%s" is nicht supported' % method)
 
 klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
     """Simple XML-RPC request handler class.
@@ -475,7 +475,7 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             self.report_404()
             gib
 
-        try:
+        versuch:
             # Get arguments by reading body of request.
             # We read this in chunks to avoid straining
             # socket.read(); around the 10 oder 15Mb mark, some platforms
@@ -504,7 +504,7 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             response = self.server._marshaled_dispatch(
                     data, getattr(self, '_dispatch', Nichts), self.path
                 )
-        except Exception als e: # This should only happen wenn the module is buggy
+        ausser Exception als e: # This should only happen wenn the module is buggy
             # internal error, report als HTTP server error
             self.send_response(500)
 
@@ -525,10 +525,10 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
                 wenn len(response) > self.encode_threshold:
                     q = self.accept_encodings().get("gzip", 0)
                     wenn q:
-                        try:
+                        versuch:
                             response = gzip_encode(response)
                             self.send_header("Content-Encoding", "gzip")
-                        except NotImplementedError:
+                        ausser NotImplementedError:
                             pass
             self.send_header("Content-length", str(len(response)))
             self.end_headers()
@@ -540,11 +540,11 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         wenn encoding == "identity":
             gib data
         wenn encoding == "gzip":
-            try:
+            versuch:
                 gib gzip_decode(data)
-            except NotImplementedError:
+            ausser NotImplementedError:
                 self.send_response(501, "encoding %r nicht supported" % encoding)
-            except ValueError:
+            ausser ValueError:
                 self.send_response(400, "error decoding gzip content")
         sonst:
             self.send_response(501, "encoding %r nicht supported" % encoding)
@@ -621,10 +621,10 @@ klasse MultiPathXMLRPCServer(SimpleXMLRPCServer):
         gib self.dispatchers[path]
 
     def _marshaled_dispatch(self, data, dispatch_method = Nichts, path = Nichts):
-        try:
+        versuch:
             response = self.dispatchers[path]._marshaled_dispatch(
                data, dispatch_method, path)
-        except BaseException als exc:
+        ausser BaseException als exc:
             # report low level exception back to server
             # (each dispatcher should have handled their own
             # exceptions)
@@ -690,9 +690,9 @@ klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
             self.handle_get()
         sonst:
             # POST data is normally available through stdin
-            try:
+            versuch:
                 length = int(os.environ.get('CONTENT_LENGTH', Nichts))
-            except (ValueError, TypeError):
+            ausser (ValueError, TypeError):
                 length = -1
             wenn request_text is Nichts:
                 request_text = sys.stdin.read(length)
@@ -871,12 +871,12 @@ klasse XMLRPCDocGenerator:
                 wenn method_info != (Nichts, Nichts):
                     method = method_info
                 sowenn nicht hasattr(self.instance, '_dispatch'):
-                    try:
+                    versuch:
                         method = resolve_dotted_attribute(
                                     self.instance,
                                     method_name
                                     )
-                    except AttributeError:
+                    ausser AttributeError:
                         method = method_info
                 sonst:
                     method = method_info
@@ -996,8 +996,8 @@ wenn __name__ == '__main__':
         server.register_multicall_functions()
         drucke('Serving XML-RPC on localhost port 8000')
         drucke('It is advisable to run this example server within a secure, closed network.')
-        try:
+        versuch:
             server.serve_forever()
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             drucke("\nKeyboard interrupt received, exiting.")
             sys.exit(0)

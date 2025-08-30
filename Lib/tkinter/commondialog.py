@@ -40,11 +40,11 @@ klasse Dialog:
         master = self.master
         wenn master is Nichts:
             master = _get_temp_root()
-        try:
+        versuch:
             self._test_callback(master)  # The function below is replaced fuer some tests.
             s = master.tk.call(self.command, *master._options(self.options))
             s = self._fixresult(master, s)
-        finally:
+        schliesslich:
             _destroy_temp_root(master)
 
         gib s

@@ -22,12 +22,12 @@ klasse ExceptionTest(unittest.TestCase):
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
-        try:
-            raise ex2 von ex1
-        except UnhashableException:
-            try:
-                raise ex1
-            except UnhashableException:
+        versuch:
+            wirf ex2 von ex1
+        ausser UnhashableException:
+            versuch:
+                wirf ex1
+            ausser UnhashableException:
                 mit captured_stderr() als output:
                     mit mock.patch.object(run, 'cleanup_traceback') als ct:
                         ct.side_effect = lambda t, e: t
@@ -51,9 +51,9 @@ klasse ExceptionTest(unittest.TestCase):
     def test_get_message(self):
         fuer code, exc, msg in self.data:
             mit self.subTest(code=code):
-                try:
+                versuch:
                     eval(compile(code, '', 'eval'))
-                except exc:
+                ausser exc:
                     typ, val, tb = sys.exc_info()
                     actual = run.get_message_lines(typ, val, tb)[0]
                     expect = f'{exc.__name__}: {msg}'
@@ -68,12 +68,12 @@ klasse ExceptionTest(unittest.TestCase):
         subtests = 0
         fuer (code1, exc1, msg1), (code2, exc2, msg2) in data2:
             mit self.subTest(codes=(code1,code2)):
-                try:
+                versuch:
                     eval(compile(code1, '', 'eval'))
-                except exc1:
-                    try:
+                ausser exc1:
+                    versuch:
                         eval(compile(code2, '', 'eval'))
-                    except exc2:
+                    ausser exc2:
                         mit captured_stderr() als output:
                             run.print_exception()
                         actual = output.getvalue()
@@ -376,17 +376,17 @@ klasse HandleErrorTest(unittest.TestCase):
         mit captured_output('__stderr__') als err,\
              mock.patch('idlelib.run.thread.interrupt_main',
                         new_callable=Func) als func:
-            try:
-                raise EOFError
-            except EOFError:
+            versuch:
+                wirf EOFError
+            ausser EOFError:
                 run.MyRPCServer.handle_error(Nichts, 'abc', '123')
             eq(run.exit_now, Wahr)
             run.exit_now = Falsch
             eq(err.getvalue(), '')
 
-            try:
-                raise IndexError
-            except IndexError:
+            versuch:
+                wirf IndexError
+            ausser IndexError:
                 run.MyRPCServer.handle_error(Nichts, 'abc', '123')
             eq(run.quitting, Wahr)
             run.quitting = Falsch

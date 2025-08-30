@@ -11,9 +11,9 @@ von test importiere support
 von test.support importiere import_helper
 von test.support importiere warnings_helper
 von test.support.script_helper importiere assert_python_ok
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 
@@ -45,9 +45,9 @@ def run_async(coro):
     buffer = []
     result = Nichts
     waehrend Wahr:
-        try:
+        versuch:
             buffer.append(coro.send(Nichts))
-        except StopIteration als ex:
+        ausser StopIteration als ex:
             result = ex.args[0] wenn ex.args sonst Nichts
             breche
     gib buffer, result
@@ -60,13 +60,13 @@ def run_async__await__(coro):
     result = Nichts
     i = 0
     waehrend Wahr:
-        try:
+        versuch:
             wenn i % 2:
                 buffer.append(next(aw))
             sonst:
                 buffer.append(aw.send(Nichts))
             i += 1
-        except StopIteration als ex:
+        ausser StopIteration als ex:
             result = ex.args[0] wenn ex.args sonst Nichts
             breche
     gib buffer, result
@@ -489,9 +489,9 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
                 def foo(): pass
                 async def bar(): gib await_
                 await_ = await
-                try:
+                versuch:
                     bar().send(Nichts)
-                except StopIteration als ex:
+                ausser StopIteration als ex:
                     gib ex.args[0] + 1
             '''
         ]
@@ -548,7 +548,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_func_2(self):
         async def foo():
-            raise StopIteration
+            wirf StopIteration
 
         mit self.assertRaisesRegex(
                 RuntimeError, "coroutine raised StopIteration"):
@@ -557,7 +557,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_func_3(self):
         async def foo():
-            raise StopIteration
+            wirf StopIteration
 
         coro = foo()
         self.assertRegex(repr(coro), '^<coroutine object.* at 0x.*>$')
@@ -565,7 +565,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_func_4(self):
         async def foo():
-            raise StopIteration
+            wirf StopIteration
         coro = foo()
 
         check = lambda: self.assertRaisesRegex(
@@ -687,13 +687,13 @@ klasse CoroutineTest(unittest.TestCase):
         @types.coroutine
         def gen():
             nonlocal N
-            try:
+            versuch:
                 a = liefere
                 liefere (a ** 2)
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 N += 100
-                raise
-            finally:
+                wirf
+            schliesslich:
                 N += 1
 
         async def foo():
@@ -759,9 +759,9 @@ klasse CoroutineTest(unittest.TestCase):
         def gen():
             liefere
         async def coro():
-            try:
+            versuch:
                 await gen()
-            except GeneratorExit:
+            ausser GeneratorExit:
                 await gen()
         c = coro()
         c.send(Nichts)
@@ -835,7 +835,7 @@ klasse CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             coro.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even wenn it's
+        # Closing a coroutine shouldn't wirf any exception even wenn it's
         # already closed/exhausted (similar to generators)
         coro.close()
         coro.close()
@@ -860,8 +860,8 @@ klasse CoroutineTest(unittest.TestCase):
         mit self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
             # Although the iterator protocol requires iterators to
-            # raise another StopIteration here, we don't want to do
-            # that.  In this particular case, the iterator will raise
+            # wirf another StopIteration here, we don't want to do
+            # that.  In this particular case, the iterator will wirf
             # a RuntimeError, so that 'yield from' und 'await'
             # expressions will trigger the error, instead of silently
             # ignoring the call.
@@ -875,7 +875,7 @@ klasse CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even wenn it's
+        # Closing a coroutine shouldn't wirf any exception even wenn it's
         # already closed/exhausted (similar to generators)
         it.close()
         it.close()
@@ -887,9 +887,9 @@ klasse CoroutineTest(unittest.TestCase):
         def foo():
             nonlocal CHK
             liefere
-            try:
+            versuch:
                 liefere
-            except GeneratorExit:
+            ausser GeneratorExit:
                 CHK += 1
 
         async def coroutine():
@@ -905,7 +905,7 @@ klasse CoroutineTest(unittest.TestCase):
         self.assertEqual(CHK, 1)
 
         fuer _ in range(3):
-            # Closing a coroutine shouldn't raise any exception even wenn it's
+            # Closing a coroutine shouldn't wirf any exception even wenn it's
             # already closed/exhausted (similar to generators)
             coro.close()
             self.assertEqual(CHK, 1)
@@ -1141,10 +1141,10 @@ klasse CoroutineTest(unittest.TestCase):
             pass
 
         async def coro1():
-            try:
+            versuch:
                 gib await FutureLike()
-            except ZeroDivisionError:
-                raise Marker
+            ausser ZeroDivisionError:
+                wirf Marker
         async def coro2():
             gib await Wrapper(coro1())
 
@@ -1183,9 +1183,9 @@ klasse CoroutineTest(unittest.TestCase):
             gib ValueError()
 
         async def g():
-            try:
-                raise KeyError
-            except KeyError:
+            versuch:
+                wirf KeyError
+            ausser KeyError:
                 gib await f()
 
         _, result = run_async(g())
@@ -1195,7 +1195,7 @@ klasse CoroutineTest(unittest.TestCase):
         # See https://github.com/python/cpython/issues/131666 fuer details.
         klasse A:
             async def __anext__(self):
-                raise StopAsyncIteration
+                wirf StopAsyncIteration
             def __aiter__(self):
                 gib self
 
@@ -1340,9 +1340,9 @@ klasse CoroutineTest(unittest.TestCase):
             async mit CM():
                 1/0
 
-        try:
+        versuch:
             run_async(foo())
-        except TypeError als exc:
+        ausser TypeError als exc:
             self.assertRegex(
                 exc.args[0],
                 "'async with' received an object von __aexit__ "
@@ -1451,11 +1451,11 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal CNT
             async mit CM():
                 async mit CM():
-                    raise RuntimeError
+                    wirf RuntimeError
 
-        try:
+        versuch:
             run_async(foo())
-        except ZeroDivisionError als exc:
+        ausser ZeroDivisionError als exc:
             self.assertWahr(exc.__context__ is nicht Nichts)
             self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
             self.assertWahr(isinstance(exc.__context__.__context__,
@@ -1468,7 +1468,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         klasse CM:
             async def __aenter__(self):
-                raise NotImplementedError
+                wirf NotImplementedError
 
             async def __aexit__(self, *e):
                 1/0
@@ -1476,11 +1476,11 @@ klasse CoroutineTest(unittest.TestCase):
         async def foo():
             nonlocal CNT
             async mit CM():
-                raise RuntimeError
+                wirf RuntimeError
 
-        try:
+        versuch:
             run_async(foo())
-        except NotImplementedError als exc:
+        ausser NotImplementedError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
             self.fail('exception von __aenter__ did nicht propagate')
@@ -1499,7 +1499,7 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal CNT
             async mit CM() als cm:
                 self.assertIs(cm.__class__, CM)
-                raise RuntimeError
+                wirf RuntimeError
 
         run_async(foo())
 
@@ -1543,7 +1543,7 @@ klasse CoroutineTest(unittest.TestCase):
                     await AsyncYield(self.i * 10)
 
                 wenn self.i > 100:
-                    raise StopAsyncIteration
+                    wirf StopAsyncIteration
 
                 gib self.i, self.i
 
@@ -1675,7 +1675,7 @@ klasse CoroutineTest(unittest.TestCase):
 
             async def __anext__(self):
                 wenn self.i > 10:
-                    raise StopAsyncIteration
+                    wirf StopAsyncIteration
                 self.i += 1
                 gib self.i
 
@@ -1807,7 +1807,7 @@ klasse CoroutineTest(unittest.TestCase):
                 gib self
             async def __anext__(self):
                 wenn self.i >= len(self):
-                    raise StopAsyncIteration
+                    wirf StopAsyncIteration
                 self.i += 1
                 gib self[self.i - 1]
 
@@ -1815,7 +1815,7 @@ klasse CoroutineTest(unittest.TestCase):
         async def foo():
             async fuer i in AIter([42]):
                 result.append(i)
-            raise Done
+            wirf Done
 
         mit self.assertRaises(Done):
             foo().send(Nichts)
@@ -1830,7 +1830,7 @@ klasse CoroutineTest(unittest.TestCase):
                 gib self
             async def __anext__(self):
                 wenn self.i:
-                    raise StopAsyncIteration
+                    wirf StopAsyncIteration
                 self.i += 1
                 gib self.value
 
@@ -1838,7 +1838,7 @@ klasse CoroutineTest(unittest.TestCase):
         async def foo():
             async fuer i in AIter(42):
                 result.append(i)
-            raise Done
+            wirf Done
 
         mit self.assertRaises(Done):
             foo().send(Nichts)
@@ -2016,7 +2016,7 @@ klasse CoroutineTest(unittest.TestCase):
         async def f():
             liefere 1
             liefere 2
-            raise Exception('aaa')
+            wirf Exception('aaa')
 
         async def run_list():
             gib [i async fuer i in f()]
@@ -2114,10 +2114,10 @@ klasse CoroutineTest(unittest.TestCase):
             copy.copy(coro)
 
         aw = coro.__await__()
-        try:
+        versuch:
             mit self.assertRaises(TypeError):
                 copy.copy(aw)
-        finally:
+        schliesslich:
             aw.close()
 
     def test_pickle(self):
@@ -2128,11 +2128,11 @@ klasse CoroutineTest(unittest.TestCase):
                 pickle.dumps(coro, proto)
 
         aw = coro.__await__()
-        try:
+        versuch:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 mit self.assertRaises((TypeError, pickle.PicklingError)):
                     pickle.dumps(aw, proto)
-        finally:
+        schliesslich:
             aw.close()
 
     def test_fatal_coro_warning(self):
@@ -2155,7 +2155,7 @@ klasse CoroutineTest(unittest.TestCase):
     def test_for_assign_raising_stop_async_iteration(self):
         klasse BadTarget:
             def __setitem__(self, key, value):
-                raise StopAsyncIteration(42)
+                wirf StopAsyncIteration(42)
         tgt = BadTarget()
         async def source():
             liefere 10
@@ -2188,7 +2188,7 @@ klasse CoroutineTest(unittest.TestCase):
     def test_for_assign_raising_stop_async_iteration_2(self):
         klasse BadIterable:
             def __iter__(self):
-                raise StopAsyncIteration(42)
+                wirf StopAsyncIteration(42)
         async def badpairs():
             liefere BadIterable()
 
@@ -2252,10 +2252,10 @@ klasse CoroutineTest(unittest.TestCase):
 
         @types.coroutine
         def c():
-            try:
+            versuch:
                 # traceback.print_stack()
                 liefere len(traceback.extract_stack())
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 # traceback.print_stack()
                 liefere len(traceback.extract_stack())
 
@@ -2296,16 +2296,16 @@ klasse CoroAsyncIOCompatTest(unittest.TestCase):
         async def f():
             async mit CM():
                 await asyncio.sleep(0.01)
-                raise MyException
+                wirf MyException
             buffer.append('unreachable')
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        try:
+        versuch:
             loop.run_until_complete(f())
-        except MyException:
+        ausser MyException:
             pass
-        finally:
+        schliesslich:
             loop.close()
             asyncio.events._set_event_loop_policy(Nichts)
 
@@ -2319,7 +2319,7 @@ klasse OriginTrackingTest(unittest.TestCase):
 
     def test_origin_tracking(self):
         orig_depth = sys.get_coroutine_origin_tracking_depth()
-        try:
+        versuch:
             async def corofn():
                 pass
 
@@ -2360,7 +2360,7 @@ klasse OriginTrackingTest(unittest.TestCase):
             # And trying leaves it unchanged
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 1000)
 
-        finally:
+        schliesslich:
             sys.set_coroutine_origin_tracking_depth(orig_depth)
 
     def test_origin_tracking_warning(self):
@@ -2385,7 +2385,7 @@ klasse OriginTrackingTest(unittest.TestCase):
             self.assertEqual(msg, str(cm.warning))
 
         orig_depth = sys.get_coroutine_origin_tracking_depth()
-        try:
+        versuch:
             check(0, f"coroutine '{corofn.__qualname__}' was never awaited")
             check(1, "".join([
                 f"coroutine '{corofn.__qualname__}' was never awaited\n",
@@ -2402,7 +2402,7 @@ klasse OriginTrackingTest(unittest.TestCase):
                 "    gib corofn()  # comment in a1",
             ]))
 
-        finally:
+        schliesslich:
             sys.set_coroutine_origin_tracking_depth(orig_depth)
 
     def test_unawaited_warning_when_module_broken(self):
@@ -2413,7 +2413,7 @@ klasse OriginTrackingTest(unittest.TestCase):
             pass
 
         orig_wuc = warnings._warn_unawaited_coroutine
-        try:
+        versuch:
             warnings._warn_unawaited_coroutine = lambda coro: 1/0
             mit support.catch_unraisable_exception() als cm, \
                  warnings_helper.check_warnings(
@@ -2438,7 +2438,7 @@ klasse OriginTrackingTest(unittest.TestCase):
                 corofn()
                 support.gc_collect()
 
-        finally:
+        schliesslich:
             warnings._warn_unawaited_coroutine = orig_wuc
 
 

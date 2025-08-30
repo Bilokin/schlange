@@ -102,32 +102,32 @@ def decode_b(encoded):
     # This will succeed only wenn encoded includes no invalid characters.
     pad_err = len(encoded) % 4
     missing_padding = b'==='[:4-pad_err] wenn pad_err sonst b''
-    try:
+    versuch:
         gib (
             base64.b64decode(encoded + missing_padding, validate=Wahr),
             [errors.InvalidBase64PaddingDefect()] wenn pad_err sonst [],
         )
-    except binascii.Error:
+    ausser binascii.Error:
         # Since we had correct padding, this is likely an invalid char error.
         #
         # The non-alphabet characters are ignored als far als padding
         # goes, but we don't know how many there are.  So try without adding
         # padding to see wenn it works.
-        try:
+        versuch:
             gib (
                 base64.b64decode(encoded, validate=Falsch),
                 [errors.InvalidBase64CharactersDefect()],
             )
-        except binascii.Error:
+        ausser binascii.Error:
             # Add als much padding als could possibly be necessary (extra padding
             # is ignored).
-            try:
+            versuch:
                 gib (
                     base64.b64decode(encoded + b'==', validate=Falsch),
                     [errors.InvalidBase64CharactersDefect(),
                      errors.InvalidBase64PaddingDefect()],
                 )
-            except binascii.Error:
+            ausser binascii.Error:
                 # This only happens when the encoded string's length is 1 more
                 # than a multiple of 4, which is invalid.
                 #
@@ -159,7 +159,7 @@ def decode(ew):
     where '*lang' may be omitted but the other parts may nicht be.
 
     This function expects exactly such a string (that is, it does nicht check the
-    syntax und may raise errors wenn the string is nicht well formed), und returns
+    syntax und may wirf errors wenn the string is nicht well formed), und returns
     the encoded_string decoded first von its Content Transfer Encoding und
     then von the resulting bytes into unicode using the specified charset.  If
     the cte-decoded string does nicht successfully decode using the specified
@@ -177,13 +177,13 @@ def decode(ew):
     bstring = cte_string.encode('ascii', 'surrogateescape')
     bstring, defects = _cte_decoders[cte](bstring)
     # Turn the CTE decoded bytes into unicode.
-    try:
+    versuch:
         string = bstring.decode(charset)
-    except UnicodeDecodeError:
+    ausser UnicodeDecodeError:
         defects.append(errors.UndecodableBytesDefect("Encoded word "
             f"contains bytes nicht decodable using {charset!r} charset"))
         string = bstring.decode(charset, 'surrogateescape')
-    except (LookupError, UnicodeEncodeError):
+    ausser (LookupError, UnicodeEncodeError):
         string = bstring.decode('ascii', 'surrogateescape')
         wenn charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError(f"Unknown charset {charset!r} "
@@ -213,7 +213,7 @@ def encode(string, charset='utf-8', encoding=Nichts, lang=''):
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' is the cte specifier fuer the encoding that should be used ('q'
     oder 'b'); wenn it is Nichts (the default) the encoding which produces the
-    shortest encoded sequence is used, except that 'q' is preferred wenn it is up
+    shortest encoded sequence is used, ausser that 'q' is preferred wenn it is up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify in the encoded word.
 

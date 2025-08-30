@@ -223,7 +223,7 @@ klasse BaseServer:
         another thread.
         """
         self.__is_shut_down.clear()
-        try:
+        versuch:
             # XXX: Consider using another file descriptor oder connecting to the
             # socket to wake this up instead of polling. Polling reduces our
             # responsiveness to a shutdown request und wastes cpu at all other
@@ -240,7 +240,7 @@ klasse BaseServer:
                         self._handle_request_noblock()
 
                     self.service_actions()
-        finally:
+        schliesslich:
             self.__shutdown_request = Falsch
             self.__is_shut_down.set()
 
@@ -309,19 +309,19 @@ klasse BaseServer:
         readable before this function was called, so there should be no risk of
         blocking in get_request().
         """
-        try:
+        versuch:
             request, client_address = self.get_request()
-        except OSError:
+        ausser OSError:
             gib
         wenn self.verify_request(request, client_address):
-            try:
+            versuch:
                 self.process_request(request, client_address)
-            except Exception:
+            ausser Exception:
                 self.handle_error(request, client_address)
                 self.shutdown_request(request)
-            except:
+            ausser:
                 self.shutdown_request(request)
-                raise
+                wirf
         sonst:
             self.shutdown_request(request)
 
@@ -453,12 +453,12 @@ klasse TCPServer(BaseServer):
         self.socket = socket.socket(self.address_family,
                                     self.socket_type)
         wenn bind_and_activate:
-            try:
+            versuch:
                 self.server_bind()
                 self.server_activate()
-            except:
+            ausser:
                 self.server_close()
-                raise
+                wirf
 
     def server_bind(self):
         """Called by constructor to bind the socket.
@@ -512,12 +512,12 @@ klasse TCPServer(BaseServer):
 
     def shutdown_request(self, request):
         """Called to shutdown und close an individual request."""
-        try:
+        versuch:
             #explicitly shutdown.  socket.close() merely releases
             #the socket und waits fuer GC to perform the actual close.
             request.shutdown(socket.SHUT_WR)
-        except OSError:
-            pass #some platforms may raise ENOTCONN here
+        ausser OSError:
+            pass #some platforms may wirf ENOTCONN here
         self.close_request(request)
 
     def close_request(self, request):
@@ -575,27 +575,27 @@ wenn hasattr(os, "fork"):
             # which we didn't spawn, which is why we only resort to this when we're
             # above max_children.
             waehrend len(self.active_children) >= self.max_children:
-                try:
+                versuch:
                     pid, _ = os.waitpid(-1, 0)
                     self.active_children.discard(pid)
-                except ChildProcessError:
+                ausser ChildProcessError:
                     # we don't have any children, we're done
                     self.active_children.clear()
-                except OSError:
+                ausser OSError:
                     breche
 
             # Now reap all defunct children.
             fuer pid in self.active_children.copy():
-                try:
+                versuch:
                     flags = 0 wenn blocking sonst os.WNOHANG
                     pid, _ = os.waitpid(pid, flags)
                     # wenn the child hasn't exited yet, pid will be 0 und ignored by
                     # discard() below
                     self.active_children.discard(pid)
-                except ChildProcessError:
+                ausser ChildProcessError:
                     # someone sonst reaped it
                     self.active_children.discard(pid)
-                except OSError:
+                ausser OSError:
                     pass
 
         def handle_timeout(self):
@@ -626,15 +626,15 @@ wenn hasattr(os, "fork"):
                 # Child process.
                 # This must never return, hence os._exit()!
                 status = 1
-                try:
+                versuch:
                     self.finish_request(request, client_address)
                     status = 0
-                except Exception:
+                ausser Exception:
                     self.handle_error(request, client_address)
-                finally:
-                    try:
+                schliesslich:
+                    versuch:
                         self.shutdown_request(request)
-                    finally:
+                    schliesslich:
                         os._exit(status)
 
         def server_close(self):
@@ -693,11 +693,11 @@ klasse ThreadingMixIn:
         In addition, exception handling is done here.
 
         """
-        try:
+        versuch:
             self.finish_request(request, client_address)
-        except Exception:
+        ausser Exception:
             self.handle_error(request, client_address)
-        finally:
+        schliesslich:
             self.shutdown_request(request)
 
     def process_request(self, request, client_address):
@@ -762,9 +762,9 @@ klasse BaseRequestHandler:
         self.client_address = client_address
         self.server = server
         self.setup()
-        try:
+        versuch:
             self.handle()
-        finally:
+        schliesslich:
             self.finish()
 
     def setup(self):
@@ -821,9 +821,9 @@ klasse StreamRequestHandler(BaseRequestHandler):
 
     def finish(self):
         wenn nicht self.wfile.closed:
-            try:
+            versuch:
                 self.wfile.flush()
-            except socket.error:
+            ausser socket.error:
                 # A final socket error may have occurred here, such as
                 # the local error ECONNABORTED.
                 pass

@@ -547,7 +547,7 @@ klasse TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    # outcome is whether xxx_method should raise ValueError error when called
+    # outcome is whether xxx_method should wirf ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
     # headers but payload is Nichts...this happening in practice would be very
@@ -699,7 +699,7 @@ klasse TestEmailMessageBase:
         klasse CustomError(Exception):
             pass
         def set_content(self, msg, content, *args, **kw):
-            raise self.CustomError('test')
+            wirf self.CustomError('test')
 
     def test_default_content_manager_for_add_comes_from_policy(self):
         cm = self._TestSetRaisingContentManager()
@@ -1051,7 +1051,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             XU89 - 08.11.2017
             """)
         m = self._str_msg(msg)
-        # In bpo-42892, this would raise
+        # In bpo-42892, this would wirf
         # AttributeError: 'str' object has no attribute 'is_attachment'
         m.get_body()
 

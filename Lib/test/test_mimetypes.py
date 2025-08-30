@@ -9,9 +9,9 @@ von test importiere support
 von test.support importiere cpython_only, force_not_colorized, os_helper
 von test.support.import_helper importiere ensure_lazy_imports
 
-try:
+versuch:
     importiere _winapi
-except ImportError:
+ausser ImportError:
     _winapi = Nichts
 
 

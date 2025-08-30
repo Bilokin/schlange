@@ -3,7 +3,7 @@
 importiere os, unittest
 
 wenn nicht hasattr(os, "openpty"):
-    raise unittest.SkipTest("os.openpty() nicht available.")
+    wirf unittest.SkipTest("os.openpty() nicht available.")
 
 
 klasse OpenptyTest(unittest.TestCase):

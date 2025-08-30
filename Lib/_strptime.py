@@ -112,9 +112,9 @@ klasse LocaleTime(object):
         self.__calc_timezone()
         self.__calc_date_time()
         wenn _getlang() != self.lang:
-            raise ValueError("locale changed during initialization")
+            wirf ValueError("locale changed during initialization")
         wenn time.tzname != self.tzname oder time.daylight != self.daylight:
-            raise ValueError("timezone changed during initialization")
+            wirf ValueError("timezone changed during initialization")
 
     def __calc_weekday(self):
         # Set self.a_weekday und self.f_weekday using the calendar
@@ -323,9 +323,9 @@ klasse LocaleTime(object):
         # Set self.timezone by using time.tzname.
         # Do nicht worry about possibility of time.tzname[0] == time.tzname[1]
         # und time.daylight; handle that in strptime.
-        try:
+        versuch:
             time.tzset()
-        except AttributeError:
+        ausser AttributeError:
             pass
         self.tzname = time.tzname
         self.daylight = time.daylight
@@ -474,7 +474,7 @@ klasse TimeRE(dict):
             warnings.warn("""\
 Parsing dates involving a day of month without a year specified is ambiguous
 and fails to parse leap day. The default behavior will change in Python 3.15
-to either always raise an exception oder to use a different default year (TBD).
+to either always wirf an exception oder to use a different default year (TBD).
 To avoid trouble, add a specific year to the input & format.
 See https://github.com/python/cpython/issues/70647.""",
                           DeprecationWarning,
@@ -521,7 +521,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     fuer index, arg in enumerate([data_string, format]):
         wenn nicht isinstance(arg, str):
             msg = "strptime() argument {} must be str, nicht {}"
-            raise TypeError(msg.format(index, type(arg)))
+            wirf TypeError(msg.format(index, type(arg)))
 
     global _TimeRE_cache, _regex_cache
     mit _cache_lock:
@@ -536,26 +536,26 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             _regex_cache.clear()
         format_regex = _regex_cache.get(format)
         wenn nicht format_regex:
-            try:
+            versuch:
                 format_regex = _TimeRE_cache.compile(format)
             # KeyError raised when a bad format is found; can be specified as
             # \\, in which case it was a stray % but mit a space after it
-            except KeyError als err:
+            ausser KeyError als err:
                 bad_directive = err.args[0]
                 del err
                 bad_directive = bad_directive.replace('\\s', '')
                 wenn nicht bad_directive:
-                    raise ValueError("stray %% in format '%s'" % format) von Nichts
+                    wirf ValueError("stray %% in format '%s'" % format) von Nichts
                 bad_directive = bad_directive.replace('\\', '', 1)
-                raise ValueError("'%s' is a bad directive in format '%s'" %
+                wirf ValueError("'%s' is a bad directive in format '%s'" %
                                     (bad_directive, format)) von Nichts
             _regex_cache[format] = format_regex
     found = format_regex.match(data_string)
     wenn nicht found:
-        raise ValueError("time data %r does nicht match format %r" %
+        wirf ValueError("time data %r does nicht match format %r" %
                          (data_string, format))
     wenn len(data_string) != found.end():
-        raise ValueError("unconverted data remains: %s" %
+        wirf ValueError("unconverted data remains: %s" %
                           data_string[found.end():])
 
     iso_year = year = Nichts
@@ -572,9 +572,9 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     found_dict = found.groupdict()
     wenn locale_time.LC_alt_digits:
         def parse_int(s):
-            try:
+            versuch:
                 gib locale_time.LC_alt_digits.index(s)
-            except ValueError:
+            ausser ValueError:
                 gib int(s)
     sonst:
         parse_int = int
@@ -673,7 +673,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                         wenn len(z) > 5:
                             wenn z[5] != ':':
                                 msg = f"Inconsistent use of : in {found_dict['z']}"
-                                raise ValueError(msg)
+                                wirf ValueError(msg)
                             z = z[:5] + z[6:]
                     hours = int(z[1:3])
                     minutes = int(z[3:5])
@@ -706,20 +706,20 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     # don't assume default values fuer ISO week/year
     wenn iso_year is nicht Nichts:
         wenn julian is nicht Nichts:
-            raise ValueError("Day of the year directive '%j' is nicht "
+            wirf ValueError("Day of the year directive '%j' is nicht "
                              "compatible mit ISO year directive '%G'. "
                              "Use '%Y' instead.")
         sowenn iso_week is Nichts oder weekday is Nichts:
-            raise ValueError("ISO year directive '%G' must be used mit "
+            wirf ValueError("ISO year directive '%G' must be used mit "
                              "the ISO week directive '%V' und a weekday "
                              "directive ('%A', '%a', '%w', oder '%u').")
     sowenn iso_week is nicht Nichts:
         wenn year is Nichts oder weekday is Nichts:
-            raise ValueError("ISO week directive '%V' must be used mit "
+            wirf ValueError("ISO week directive '%V' must be used mit "
                              "the ISO year directive '%G' und a weekday "
                              "directive ('%A', '%a', '%w', oder '%u').")
         sonst:
-            raise ValueError("ISO week directive '%V' is incompatible mit "
+            wirf ValueError("ISO week directive '%V' is incompatible mit "
                              "the year directive '%Y'. Use the ISO year '%G' "
                              "instead.")
 

@@ -28,21 +28,21 @@ von test.support importiere requires_limited_api
 von test.support importiere expected_failure_if_gil_disabled
 von test.support importiere Py_GIL_DISABLED
 von test.support.script_helper importiere assert_python_failure, assert_python_ok, run_python_until_end
-try:
+versuch:
     importiere _posixsubprocess
-except ImportError:
+ausser ImportError:
     _posixsubprocess = Nichts
-try:
+versuch:
     importiere _testmultiphase
-except ImportError:
+ausser ImportError:
     _testmultiphase = Nichts
-try:
+versuch:
     importiere _testsinglephase
-except ImportError:
+ausser ImportError:
     _testsinglephase = Nichts
-try:
+versuch:
     importiere _interpreters
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     _interpreters = Nichts
 
 # Skip this test wenn the _testcapi module isn't available.
@@ -1195,9 +1195,9 @@ klasse TestPendingCalls(unittest.TestCase):
             self.pendingcalls_wait(context.l, n, context)
 
     def main_pendingcalls_thread(self, context):
-        try:
+        versuch:
             self.main_pendingcalls_submit(context.l, context.n)
-        finally:
+        schliesslich:
             mit context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
@@ -1333,17 +1333,17 @@ klasse TestPendingCalls(unittest.TestCase):
             _queue.append(task)
             _active.append(Wahr)
         def queue_get():
-            try:
+            versuch:
                 task = _queue.popleft()
-            except IndexError:
-                raise queue.Empty
+            ausser IndexError:
+                wirf queue.Empty
             gib task
         def queue_task_done():
             _active.pop()
             wenn nicht _active:
-                try:
+                versuch:
                     _done_lock.release()
-                except RuntimeError:
+                ausser RuntimeError:
                     assert nicht _done_lock.locked()
         def queue_empty():
             gib nicht _queue
@@ -1367,9 +1367,9 @@ klasse TestPendingCalls(unittest.TestCase):
             waehrend Wahr:
                 wenn done:
                     gib
-                try:
+                versuch:
                     task = queue_get()
-                except queue.Empty:
+                ausser queue.Empty:
                     breche
                 task.run_in_pending_call(worker_tids)
 
@@ -1387,24 +1387,24 @@ klasse TestPendingCalls(unittest.TestCase):
         worker_threads = [threading.Thread(target=run_tasks)
                           fuer _ in range(3)]
         mit threading_helper.start_threads(worker_threads):
-            try:
+            versuch:
                 # Add a pending call fuer each task.
                 worker_tids = [t.ident fuer t in worker_threads]
                 threads = [threading.Thread(target=add_tasks, args=(worker_tids,))
                            fuer _ in range(3)]
                 mit threading_helper.start_threads(threads):
-                    try:
+                    versuch:
                         pass
-                    except BaseException:
+                    ausser BaseException:
                         done = Wahr
-                        raise  # re-raise
+                        wirf  # re-raise
                 # Wait fuer the pending calls to finish.
                 queue_join()
                 # Notify the workers that they can stop.
                 done = Wahr
-            except BaseException:
+            ausser BaseException:
                 done = Wahr
-                raise  # re-raise
+                wirf  # re-raise
         runner_tids = [t.runner_tid fuer t in tasks]
 
         self.assertNotIn(main_tid, runner_tids)
@@ -1466,7 +1466,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
-                                raise Exception('timed out!')
+                                wirf Exception('timed out!')
                     """)
             t = threading.Thread(target=do_work)
             mit threading_helper.start_threads([t]):
@@ -1495,7 +1495,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
-                                raise Exception('timed out!')
+                                wirf Exception('timed out!')
                     t = threading.Thread(target=subthread)
                     mit threading_helper.start_threads([t]):
                         # Wait until this interp has handled the pending call.
@@ -1546,7 +1546,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 waehrend nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
-                        raise Exception('timed out!')
+                        wirf Exception('timed out!')
                 text = os.read(r_data, 1)
             actual = int.from_bytes(text, 'little')
 
@@ -1583,7 +1583,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 waehrend nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
-                        raise Exception('timed out!')
+                        wirf Exception('timed out!')
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
             t3 = threading.Thread(target=subthread)
@@ -1615,7 +1615,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
-                                raise Exception('timed out!')
+                                wirf Exception('timed out!')
                     t = threading.Thread(target=subthread)
                     mit threading_helper.start_threads([t]):
                         # Wait until this interp has handled the pending call.
@@ -1709,7 +1709,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.assertEqual(before_config, after_config,
                          "CAUTION: Tests executed after this may be "
                          "running under an altered config.")
-        # try:...finally: calling set_config(before_config) nicht done
+        # versuch:...finally: calling set_config(before_config) nicht done
         # als that results in sys.argv, sys.path, und sys.warnoptions
         # "being modified by test_capi" per test.regrtest.  So wenn this
         # test fails, assume that the environment in this process may
@@ -1800,7 +1800,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 script = textwrap.dedent(f'''
                     importiere _testinternalcapi
                     _testinternalcapi.get_interp_settings()
-                    raise NotImplementedError('unreachable')
+                    wirf NotImplementedError('unreachable')
                     ''')
                 mit self.assertRaises(_interpreters.InterpreterError):
                     support.run_in_subinterp_with_config(script, **kwargs)
@@ -2164,12 +2164,12 @@ klasse InterpreterConfigTests(unittest.TestCase):
         @contextlib.contextmanager
         def new_interp(config):
             interpid = _interpreters.create(config, reqrefs=Falsch)
-            try:
+            versuch:
                 liefere interpid
-            finally:
-                try:
+            schliesslich:
+                versuch:
                     _interpreters.destroy(interpid)
-                except _interpreters.InterpreterNotFoundError:
+                ausser _interpreters.InterpreterNotFoundError:
                     pass
 
         mit self.subTest('main'):
@@ -2210,9 +2210,9 @@ klasse InterpreterIDTests(unittest.TestCase):
 
     def add_interp_cleanup(self, interpid):
         def ensure_destroyed():
-            try:
+            versuch:
                 _interpreters.destroy(interpid)
-            except _interpreters.InterpreterNotFoundError:
+            ausser _interpreters.InterpreterNotFoundError:
                 pass
         self.addCleanup(ensure_destroyed)
 
@@ -2469,7 +2469,7 @@ klasse TestStaticTypes(unittest.TestCase):
         # The tests here don't play nice mit our approach to refleak
         # detection, so we bail out in that case.
         wenn cls._has_run:
-            raise unittest.SkipTest('these tests do nicht support re-running')
+            wirf unittest.SkipTest('these tests do nicht support re-running')
         cls._has_run = Wahr
 
     @contextlib.contextmanager
@@ -2718,12 +2718,12 @@ klasse Test_Pep523API(unittest.TestCase):
         actual_calls = []
         start = SUFFICIENT_TO_DEOPT_AND_SPECIALIZE
         count = start + SUFFICIENT_TO_DEOPT_AND_SPECIALIZE
-        try:
+        versuch:
             fuer i in range(count):
                 wenn i == start:
                     _testinternalcapi.set_eval_frame_record(actual_calls)
                 func()
-        finally:
+        schliesslich:
             _testinternalcapi.set_eval_frame_default()
         expected_calls = names * SUFFICIENT_TO_DEOPT_AND_SPECIALIZE
         self.assertEqual(len(expected_calls), len(actual_calls))

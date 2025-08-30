@@ -150,18 +150,18 @@ def uncache(*names):
     """
     fuer name in names:
         wenn name in ('sys', 'marshal'):
-            raise ValueError("cannot uncache {}".format(name))
-        try:
+            wirf ValueError("cannot uncache {}".format(name))
+        versuch:
             del sys.modules[name]
-        except KeyError:
+        ausser KeyError:
             pass
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         fuer name in names:
-            try:
+            versuch:
                 del sys.modules[name]
-            except KeyError:
+            ausser KeyError:
                 pass
 
 
@@ -200,7 +200,7 @@ def import_state(**kwargs):
 
     """
     originals = {}
-    try:
+    versuch:
         fuer attr, default in (('meta_path', []), ('path', []),
                               ('path_hooks', []),
                               ('path_importer_cache', {})):
@@ -212,9 +212,9 @@ def import_state(**kwargs):
                 new_value = default
             setattr(sys, attr, new_value)
         wenn len(kwargs):
-            raise ValueError('unrecognized arguments: {}'.format(kwargs))
+            wirf ValueError('unrecognized arguments: {}'.format(kwargs))
         liefere
-    finally:
+    schliesslich:
         fuer attr, value in originals.items():
             setattr(sys, attr, value)
 
@@ -265,9 +265,9 @@ klasse mock_spec(_ImporterMock):
     """Importer mock using PEP 451 APIs."""
 
     def find_spec(self, fullname, path=Nichts, parent=Nichts):
-        try:
+        versuch:
             module = self.modules[fullname]
-        except KeyError:
+        ausser KeyError:
             gib Nichts
         spec = util.spec_from_file_location(
                 fullname, module.__file__, loader=self,
@@ -276,13 +276,13 @@ klasse mock_spec(_ImporterMock):
 
     def create_module(self, spec):
         wenn spec.name nicht in self.modules:
-            raise ImportError
+            wirf ImportError
         gib self.modules[spec.name]
 
     def exec_module(self, module):
-        try:
+        versuch:
             self.module_code[module.__spec__.name]()
-        except KeyError:
+        ausser KeyError:
             pass
 
 
@@ -295,9 +295,9 @@ def writes_bytecode_files(fxn):
     def wrapper(*args, **kwargs):
         original = sys.dont_write_bytecode
         sys.dont_write_bytecode = Falsch
-        try:
+        versuch:
             to_return = fxn(*args, **kwargs)
-        finally:
+        schliesslich:
             sys.dont_write_bytecode = original
         gib to_return
     gib wrapper
@@ -308,11 +308,11 @@ def ensure_bytecode_path(bytecode_path):
 
     :param bytecode_path: File system path to PEP 3147 pyc file.
     """
-    try:
+    versuch:
         os.mkdir(os.path.dirname(bytecode_path))
-    except OSError als error:
+    ausser OSError als error:
         wenn error.errno != errno.EEXIST:
-            raise
+            wirf
 
 
 @contextlib.contextmanager
@@ -320,9 +320,9 @@ def temporary_pycache_prefix(prefix):
     """Adjust und restore sys.pycache_prefix."""
     _orig_prefix = sys.pycache_prefix
     sys.pycache_prefix = prefix
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         sys.pycache_prefix = _orig_prefix
 
 
@@ -347,7 +347,7 @@ def create_modules(*names):
     mapping = {}
     state_manager = Nichts
     uncache_manager = Nichts
-    try:
+    versuch:
         temp_dir = tempfile.mkdtemp()
         mapping['.root'] = temp_dir
         import_names = set()
@@ -376,7 +376,7 @@ def create_modules(*names):
         state_manager = import_state(path=[temp_dir])
         state_manager.__enter__()
         liefere mapping
-    finally:
+    schliesslich:
         wenn state_manager is nicht Nichts:
             state_manager.__exit__(Nichts, Nichts, Nichts)
         wenn uncache_manager is nicht Nichts:
@@ -388,7 +388,7 @@ def mock_path_hook(*entries, importer):
     """A mock sys.path_hooks entry."""
     def hook(entry):
         wenn entry nicht in entries:
-            raise ImportError
+            wirf ImportError
         gib importer
     gib hook
 

@@ -22,18 +22,18 @@ klasse TestHashing(object):
     # Check fuer a valid __hash__ implementation
     def test_hash(self):
         fuer obj_1, obj_2 in self.eq_pairs:
-            try:
+            versuch:
                 wenn nicht hash(obj_1) == hash(obj_2):
                     self.fail("%r und %r do nicht hash equal" % (obj_1, obj_2))
-            except Exception als e:
+            ausser Exception als e:
                 self.fail("Problem hashing %r und %r: %s" % (obj_1, obj_2, e))
 
         fuer obj_1, obj_2 in self.ne_pairs:
-            try:
+            versuch:
                 wenn hash(obj_1) == hash(obj_2):
                     self.fail("%s und %s hash equal, but shouldn't" %
                               (obj_1, obj_2))
-            except Exception als e:
+            ausser Exception als e:
                 self.fail("Problem hashing %s und %s: %s" % (obj_1, obj_2, e))
 
 
@@ -91,7 +91,7 @@ klasse LegacyLoggingResult(_BaseLoggingResult):
 
     @property
     def addSubTest(self):
-        raise AttributeError
+        wirf AttributeError
 
 
 klasse LoggingResult(_BaseLoggingResult):

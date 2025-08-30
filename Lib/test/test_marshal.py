@@ -10,22 +10,22 @@ importiere os
 importiere types
 importiere textwrap
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 klasse HelperMixin:
     def helper(self, sample, *extra):
         new = marshal.loads(marshal.dumps(sample, *extra))
         self.assertEqual(sample, new)
-        try:
+        versuch:
             mit open(os_helper.TESTFN, "wb") als f:
                 marshal.dump(sample, f, *extra)
             mit open(os_helper.TESTFN, "rb") als f:
                 new = marshal.load(f)
             self.assertEqual(sample, new)
-        finally:
+        schliesslich:
             os_helper.unlink(os_helper.TESTFN)
 
 def omit_last_byte(data):
@@ -176,13 +176,13 @@ klasse CodeTestCase(unittest.TestCase):
             assert positions[0][3] is Nichts
         """)
 
-        try:
+        versuch:
             mit open(os_helper.TESTFN, 'wb') als f:
                 marshal.dump(co, f)
 
             assert_python_ok('-X', 'no_debug_ranges',
                              '-c', code, os_helper.TESTFN)
-        finally:
+        schliesslich:
             os_helper.unlink(os_helper.TESTFN)
 
     @support.cpython_only
@@ -260,9 +260,9 @@ klasse BugsTestCase(unittest.TestCase):
         # crash von bad marshal data
         fuer i in range(256):
             c = bytes([i])
-            try:
+            versuch:
                 marshal.loads(c)
-            except Exception:
+            ausser Exception:
                 pass
 
     def test_loads_recursion(self):
@@ -343,7 +343,7 @@ klasse BugsTestCase(unittest.TestCase):
         fuer interleaved in (b'', b'0123'):
             ilen = len(interleaved)
             positions = []
-            try:
+            versuch:
                 mit open(os_helper.TESTFN, 'wb') als f:
                     fuer d in data:
                         marshal.dump(d, f)
@@ -356,7 +356,7 @@ klasse BugsTestCase(unittest.TestCase):
                         wenn ilen:
                             f.read(ilen)
                         self.assertEqual(positions[i], f.tell())
-            finally:
+            schliesslich:
                 os_helper.unlink(os_helper.TESTFN)
 
     def test_loads_reject_unicode_strings(self):

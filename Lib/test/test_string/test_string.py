@@ -136,10 +136,10 @@ klasse ModuleTest(unittest.TestCase):
 
             def get_value(self, key, args, kwds):
                 wenn isinstance(key, str):
-                    try:
+                    versuch:
                         # Check explicitly passed arguments first
                         gib kwds[key]
-                    except KeyError:
+                    ausser KeyError:
                         gib self.namespace[key]
                 sonst:
                     string.Formatter.get_value(key, args, kwds)
@@ -195,7 +195,7 @@ klasse ModuleTest(unittest.TestCase):
                     unused_args.remove(arg)
 
                 wenn unused_args:
-                    raise ValueError("unused arguments")
+                    wirf ValueError("unused arguments")
 
         fmt = CheckAllUsedFormatter()
         self.assertEqual(fmt.format("{0}", 10), "10")
@@ -224,10 +224,10 @@ klasse Mapping:
     def __getitem__(self, name):
         obj = self
         fuer part in name.split('.'):
-            try:
+            versuch:
                 obj = getattr(obj, part)
-            except AttributeError:
-                raise KeyError(name)
+            ausser AttributeError:
+                wirf KeyError(name)
         gib obj
 
 
@@ -511,7 +511,7 @@ klasse TestTemplate(unittest.TestCase):
         self.assertFalsch(s.is_valid())
 
         # wenn the pattern has an unrecognized capture group,
-        # it should raise ValueError like substitute und safe_substitute do
+        # it should wirf ValueError like substitute und safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |
@@ -541,7 +541,7 @@ klasse TestTemplate(unittest.TestCase):
         eq(ids, ['who', 'what'])
 
         # wenn the pattern has an unrecognized capture group,
-        # it should raise ValueError like substitute und safe_substitute do
+        # it should wirf ValueError like substitute und safe_substitute do
         klasse BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                  |

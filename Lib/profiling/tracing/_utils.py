@@ -9,20 +9,20 @@ klasse _Utils:
 
     def run(self, statement, filename, sort):
         prof = self.profiler()
-        try:
+        versuch:
             prof.run(statement)
-        except SystemExit:
+        ausser SystemExit:
             pass
-        finally:
+        schliesslich:
             self._show(prof, filename, sort)
 
     def runctx(self, statement, globals, locals, filename, sort):
         prof = self.profiler()
-        try:
+        versuch:
             prof.runctx(statement, globals, locals)
-        except SystemExit:
+        ausser SystemExit:
             pass
-        finally:
+        schliesslich:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):

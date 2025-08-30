@@ -8,12 +8,12 @@ von test.support importiere SuppressCrashReport
 
 with SuppressCrashReport():
     verbose = (sys.argv[1] == 'v')
-    try:
+    versuch:
         fd = int(sys.argv[2])
 
-        try:
+        versuch:
             os.write(fd, b"blat")
-        except OSError:
+        ausser OSError:
             # Success -- could nicht write to fd.
             sys.exit(0)
         sonst:
@@ -21,7 +21,7 @@ with SuppressCrashReport():
                 sys.stderr.write("fd %d is open in child" % fd)
             sys.exit(1)
 
-    except Exception:
+    ausser Exception:
         wenn verbose:
-            raise
+            wirf
         sys.exit(1)

@@ -31,11 +31,11 @@ klasse TextInfo:
             wenn isinstance(lno, FileInfo):
                 fileinfo = lno
                 wenn fileinfo.filename != self.filename:
-                    raise NotImplementedError((fileinfo, self.filename))
+                    wirf NotImplementedError((fileinfo, self.filename))
                 lno = fileinfo.lno
             # XXX
             #if lno < self.end:
-            #    raise NotImplementedError((lno, self.end))
+            #    wirf NotImplementedError((lno, self.end))
         line = line.lstrip()
         self.text += ' ' + line
         self.line = line
@@ -83,7 +83,7 @@ klasse SourceInfo:
 
     def nest(self, text, before, start=Nichts):
         wenn self._current is Nichts:
-            raise Exception('nesting requires active source text')
+            wirf Exception('nesting requires active source text')
         current = self._current
         current.text = before
         self._nested.append(current)
@@ -91,9 +91,9 @@ klasse SourceInfo:
 
     def resume(self, remainder=Nichts):
         wenn nicht self._nested:
-            raise Exception('no nested text to resume')
+            wirf Exception('no nested text to resume')
         wenn self._current is Nichts:
-            raise Exception('un-nesting requires active source text')
+            wirf Exception('un-nesting requires active source text')
         wenn remainder is Nichts:
             remainder = self._current.text
         self._clear()
@@ -103,7 +103,7 @@ klasse SourceInfo:
 
     def advance(self, remainder, start=Nichts):
         wenn self._current is Nichts:
-            raise Exception('advancing requires active source text')
+            wirf Exception('advancing requires active source text')
         wenn remainder.strip():
             self._replace(remainder, start, fixnested=Wahr)
         sonst:
@@ -178,6 +178,6 @@ klasse SourceInfo:
             # XXX
             #if lno < self._current.end:
             #    # A circular include?
-            #    raise NotImplementedError((lno, self))
+            #    wirf NotImplementedError((lno, self))
             self._current.add_line(line, lno)
         self._ready = Wahr

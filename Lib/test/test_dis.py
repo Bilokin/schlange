@@ -23,9 +23,9 @@ CACHE = dis.opmap["CACHE"]
 
 def get_tb():
     def _error():
-        try:
+        versuch:
             1 / 0
-        except Exception als e:
+        ausser Exception als e:
             tb = e.__traceback__
         gib tb
 
@@ -704,15 +704,15 @@ ExceptionTable:
 
 
 def _tryfinally(a, b):
-    try:
+    versuch:
         gib a
-    finally:
+    schliesslich:
         b()
 
 def _tryfinallyconst(b):
-    try:
+    versuch:
         gib 1
-    finally:
+    schliesslich:
         b()
 
 dis_tryfinally = """\
@@ -1046,8 +1046,8 @@ klasse DisTests(DisTestBase):
     @requires_debug_ranges()
     def test_dis_with_some_positions(self):
         code = ("def f():\n"
-                "   try: pass\n"
-                "   finally:pass")
+                "   versuch: pass\n"
+                "   schliesslich:pass")
         f = compile(ast.parse(code), "?", "exec").co_consts[0]
 
         expect = '\n'.join([
@@ -1222,26 +1222,26 @@ klasse DisTests(DisTestBase):
         self.do_disassembly_test(_tryfinallyconst, dis_tryfinallyconst)
 
     def test_dis_none(self):
-        try:
+        versuch:
             del sys.last_exc
-        except AttributeError:
+        ausser AttributeError:
             pass
-        try:
+        versuch:
             del sys.last_traceback
-        except AttributeError:
+        ausser AttributeError:
             pass
         self.assertRaises(RuntimeError, dis.dis, Nichts)
 
     def test_dis_traceback(self):
         self.maxDiff = Nichts
-        try:
+        versuch:
             del sys.last_traceback
-        except AttributeError:
+        ausser AttributeError:
             pass
 
-        try:
+        versuch:
             1/0
-        except Exception als e:
+        ausser Exception als e:
             tb = e.__traceback__
             sys.last_exc = e
 
@@ -1266,9 +1266,9 @@ klasse DisTests(DisTestBase):
 
     def test__try_compile_no_context_exc_on_error(self):
         # see gh-102114
-        try:
+        versuch:
             dis._try_compile(")", "")
-        except Exception als e:
+        ausser Exception als e:
             self.assertIsNichts(e.__context__)
 
     def test_async_for_presentation(self):
@@ -1674,14 +1674,14 @@ def jumpy():
             breche
     sonst:
         drucke("Who let lolcatz into this test suite?")
-    try:
+    versuch:
         1 / 0
-    except ZeroDivisionError:
+    ausser ZeroDivisionError:
         drucke("Here we go, here we go, here we go...")
     sonst:
         mit i als dodgy:
             drucke("Never reach this")
-    finally:
+    schliesslich:
         drucke("OK, now we're done")
 
 # End fodder fuer opinfo generation tests
@@ -2420,13 +2420,13 @@ klasse TestFinderMethods(unittest.TestCase):
 
 klasse TestDisTraceback(DisTestBase):
     def setUp(self) -> Nichts:
-        try:  # We need to clean up existing tracebacks
+        versuch:  # We need to clean up existing tracebacks
             del sys.last_exc
-        except AttributeError:
+        ausser AttributeError:
             pass
-        try:  # We need to clean up existing tracebacks
+        versuch:  # We need to clean up existing tracebacks
             del sys.last_traceback
-        except AttributeError:
+        ausser AttributeError:
             pass
         gib super().setUp()
 

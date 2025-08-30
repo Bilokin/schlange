@@ -55,10 +55,10 @@ klasse MockResource(object):
 @mock_contextmanager
 def mock_contextmanager_generator():
     mock = MockResource()
-    try:
+    versuch:
         mock.yielded = Wahr
         liefere mock
-    finally:
+    schliesslich:
         mock.stopped = Wahr
 
 
@@ -70,16 +70,16 @@ klasse Nested(object):
 
     def __enter__(self):
         wenn self.entered is nicht Nichts:
-            raise RuntimeError("Context is nicht reentrant")
+            wirf RuntimeError("Context is nicht reentrant")
         self.entered = deque()
         vars = []
-        try:
+        versuch:
             fuer mgr in self.managers:
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
-        except:
+        ausser:
             wenn nicht self.__exit__(*sys.exc_info()):
-                raise
+                wirf
         gib vars
 
     def __exit__(self, *exc_info):
@@ -88,14 +88,14 @@ klasse Nested(object):
         # New exceptions override old ones
         ex = exc_info
         fuer mgr in self.entered:
-            try:
+            versuch:
                 wenn mgr.__exit__(*ex):
                     ex = (Nichts, Nichts, Nichts)
-            except BaseException als e:
+            ausser BaseException als e:
                 ex = (type(e), e, e.__traceback__)
         self.entered = Nichts
         wenn ex is nicht exc_info:
-            raise ex
+            wirf ex
 
 
 klasse MockNested(Nested):
@@ -218,7 +218,7 @@ klasse FailureTestCase(unittest.TestCase):
     def testEnterThrows(self):
         klasse EnterThrows(object):
             def __enter__(self):
-                raise RuntimeError("Enter threw")
+                wirf RuntimeError("Enter threw")
             def __exit__(self, *args):
                 pass
 
@@ -238,7 +238,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __enter__(self):
                 gib
             def __exit__(self, *args):
-                raise RuntimeError(42)
+                wirf RuntimeError(42)
         def shouldThrow():
             mit ExitThrows():
                 pass
@@ -273,7 +273,7 @@ klasse ContextmanagerAssertionMixin(object):
         self.assertWahr(mock_generator.stopped)
 
     def raiseTestException(self):
-        raise self.TEST_EXCEPTION
+        wirf self.TEST_EXCEPTION
 
     def assertAfterWithManagerInvariantsWithError(self, mock_manager,
                                                   exc_type=Nichts):
@@ -514,7 +514,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
 
         def shouldThrow():
             mit cm():
-                raise StopIteration("from with")
+                wirf StopIteration("from with")
 
         mit self.assertRaisesRegex(StopIteration, 'from with'):
             shouldThrow()
@@ -529,7 +529,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
 
         def shouldThrow():
             mit cm():
-                raise StopIteration("from with")
+                wirf StopIteration("from with")
 
         mit self.assertRaisesRegex(StopIteration, 'from with'):
             shouldThrow()
@@ -543,7 +543,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
 
         def shouldThrow():
             mit cm():
-                raise next(iter([]))
+                wirf next(iter([]))
 
         mit self.assertRaises(StopIteration):
             shouldThrow()
@@ -556,7 +556,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
 
         def shouldThrow():
             mit cm():
-                raise GeneratorExit("from with")
+                wirf GeneratorExit("from with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
 
@@ -570,12 +570,12 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
 
         def shouldThrow():
             mit cm():
-                raise GeneratorExit("from with")
+                wirf GeneratorExit("from with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
 
     def testErrorsInBool(self):
-        # issue4589: __exit__ gib code may raise an exception
+        # issue4589: __exit__ gib code may wirf an exception
         # when looking at its truth value.
 
         klasse cm(object):
@@ -650,16 +650,16 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
 
     def testWithRaise(self):
         counter = 0
-        try:
+        versuch:
             counter += 1
             mit mock_contextmanager_generator():
                 counter += 10
-                raise RuntimeError
+                wirf RuntimeError
             counter += 100 # Not reached
-        except RuntimeError:
+        ausser RuntimeError:
             self.assertEqual(counter, 11)
         sonst:
-            self.fail("Didn't raise RuntimeError")
+            self.fail("Didn't wirf RuntimeError")
 
 
 klasse AssignmentTargetTestCase(unittest.TestCase):
@@ -712,20 +712,20 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
         klasse AfricanSwallow:
             def __enter__(self): pass
             def __exit__(self, t, v, tb): gib Wahr
-        try:
+        versuch:
             mit AfricanSwallow():
                 1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             self.fail("ZeroDivisionError should have been swallowed")
 
     def testExitFalschDoesntSwallowException(self):
         klasse EuropeanSwallow:
             def __enter__(self): pass
             def __exit__(self, t, v, tb): gib Falsch
-        try:
+        versuch:
             mit EuropeanSwallow():
                 1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
             self.fail("ZeroDivisionError should have been raised")
@@ -753,15 +753,15 @@ klasse NestedWith(unittest.TestCase):
                 gib Wahr
 
     klasse InitRaises(object):
-        def __init__(self): raise RuntimeError()
+        def __init__(self): wirf RuntimeError()
 
     klasse EnterRaises(object):
-        def __enter__(self): raise RuntimeError()
+        def __enter__(self): wirf RuntimeError()
         def __exit__(self, *exc_info): pass
 
     klasse ExitRaises(object):
         def __enter__(self): pass
-        def __exit__(self, *exc_info): raise RuntimeError()
+        def __exit__(self, *exc_info): wirf RuntimeError()
 
     def testNoExceptions(self):
         mit self.Dummy() als a, self.Dummy() als b:
@@ -771,19 +771,19 @@ klasse NestedWith(unittest.TestCase):
         self.assertWahr(b.exit_called)
 
     def testExceptionInExprList(self):
-        try:
+        versuch:
             mit self.Dummy() als a, self.InitRaises():
                 pass
-        except RuntimeError:
+        ausser RuntimeError:
             pass
         self.assertWahr(a.enter_called)
         self.assertWahr(a.exit_called)
 
     def testExceptionInEnter(self):
-        try:
+        versuch:
             mit self.Dummy() als a, self.EnterRaises():
                 self.fail('body of bad mit executed')
-        except RuntimeError:
+        ausser RuntimeError:
             pass
         sonst:
             self.fail('RuntimeError nicht reraised')
@@ -815,24 +815,24 @@ klasse NestedWith(unittest.TestCase):
         # is more than one.
 
         def init_raises():
-            try:
+            versuch:
                 mit self.Dummy(), self.InitRaises() als cm, self.Dummy() als d:
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def enter_raises():
-            try:
+            versuch:
                 mit self.EnterRaises(), self.Dummy() als d:
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         def exit_raises():
-            try:
+            versuch:
                 mit self.ExitRaises(), self.Dummy() als d:
                     pass
-            except Exception als e:
+            ausser Exception als e:
                 gib e
 
         fuer func, expected in [(init_raises, "self.InitRaises()"),

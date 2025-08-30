@@ -24,10 +24,10 @@ klasse AutoExpandTest(unittest.TestCase):
 # If mock_tk.Text._decode understood indexes 'insert' mit suffixed 'linestart',
 # 'wordstart', und 'lineend', used by autoexpand, we could use the following
 # to run these test on non-gui machines (but check bell).
-##        try:
+##        versuch:
 ##            requires('gui')
 ##            #raise ResourceDenied()  # Uncomment to test mock.
-##        except ResourceDenied:
+##        ausser ResourceDenied:
 ##            von idlelib.idle_test.mock_tk importiere Text
 ##            cls.text = Text()
 ##            cls.text.bell = lambda: Nichts

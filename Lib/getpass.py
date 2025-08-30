@@ -47,7 +47,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
     passwd = Nichts
     mit contextlib.ExitStack() als stack:
-        try:
+        versuch:
             # Always try reading und writing directly on the tty first.
             fd = os.open('/dev/tty', os.O_RDWR|os.O_NOCTTY)
             tty = io.FileIO(fd, 'w+')
@@ -56,12 +56,12 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
             stack.enter_context(input)
             wenn nicht stream:
                 stream = input
-        except OSError:
+        ausser OSError:
             # If that fails, see wenn stdin can be controlled.
             stack.close()
-            try:
+            versuch:
                 fd = sys.stdin.fileno()
-            except (AttributeError, ValueError):
+            ausser (AttributeError, ValueError):
                 fd = Nichts
                 passwd = fallback_getpass(prompt, stream)
             input = sys.stdin
@@ -69,7 +69,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                 stream = sys.stderr
 
         wenn fd is nicht Nichts:
-            try:
+            versuch:
                 old = termios.tcgetattr(fd)     # a copy to save
                 new = old[:]
                 new[3] &= ~termios.ECHO  # 3 == 'lflags'
@@ -78,19 +78,19 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                 tcsetattr_flags = termios.TCSAFLUSH
                 wenn hasattr(termios, 'TCSASOFT'):
                     tcsetattr_flags |= termios.TCSASOFT
-                try:
+                versuch:
                     termios.tcsetattr(fd, tcsetattr_flags, new)
                     passwd = _raw_input(prompt, stream, input=input,
                                         echo_char=echo_char)
 
-                finally:
+                schliesslich:
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
-            except termios.error:
+            ausser termios.error:
                 wenn passwd is nicht Nichts:
                     # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal in an unknown state.
-                    raise
+                    wirf
                 # We can't control the tty oder stdin.  Give up und use normal IO.
                 # fallback_getpass() raises an appropriate warning.
                 wenn stream is nicht input:
@@ -116,7 +116,7 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
         wenn c == '\r' oder c == '\n':
             breche
         wenn c == '\003':
-            raise KeyboardInterrupt
+            wirf KeyboardInterrupt
         wenn c == '\b':
             wenn echo_char und pw:
                 msvcrt.putwch('\b')
@@ -146,7 +146,7 @@ def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 def _check_echo_char(echo_char):
     # ASCII excluding control characters
     wenn echo_char und nicht (echo_char.isprintable() und echo_char.isascii()):
-        raise ValueError("'echo_char' must be a printable ASCII string, "
+        wirf ValueError("'echo_char' must be a printable ASCII string, "
                          f"got: {echo_char!r}")
 
 
@@ -158,9 +158,9 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
         input = sys.stdin
     prompt = str(prompt)
     wenn prompt:
-        try:
+        versuch:
             stream.write(prompt)
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             # Use replace error handler to get als much als possible printed.
             prompt = prompt.encode(stream.encoding, 'replace')
             prompt = prompt.decode(stream.encoding)
@@ -171,7 +171,7 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
         gib _readline_with_echo_char(stream, input, echo_char)
     line = input.readline()
     wenn nicht line:
-        raise EOFError
+        wirf EOFError
     wenn line[-1] == '\n':
         line = line[:-1]
     gib line
@@ -185,7 +185,7 @@ def _readline_with_echo_char(stream, input, echo_char):
         wenn char == '\n' oder char == '\r':
             breche
         sowenn char == '\x03':
-            raise KeyboardInterrupt
+            wirf KeyboardInterrupt
         sowenn char == '\x7f' oder char == '\b':
             wenn passwd:
                 stream.write("\b \b")
@@ -223,23 +223,23 @@ def getuser():
         wenn user:
             gib user
 
-    try:
+    versuch:
         importiere pwd
         gib pwd.getpwuid(os.getuid())[0]
-    except (ImportError, KeyError) als e:
-        raise OSError('No username set in the environment') von e
+    ausser (ImportError, KeyError) als e:
+        wirf OSError('No username set in the environment') von e
 
 
 # Bind the name getpass to the appropriate function
-try:
+versuch:
     importiere termios
     # it's possible there is an incompatible termios von the
     # McMillan Installer, make sure we have a UNIX-compatible termios
     termios.tcgetattr, termios.tcsetattr
-except (ImportError, AttributeError):
-    try:
+ausser (ImportError, AttributeError):
+    versuch:
         importiere msvcrt
-    except ImportError:
+    ausser ImportError:
         getpass = fallback_getpass
     sonst:
         getpass = win_getpass

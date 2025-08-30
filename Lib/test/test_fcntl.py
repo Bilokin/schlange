@@ -27,11 +27,11 @@ klasse BadFile:
 
 def try_lockf_on_other_process_fail(fname, cmd):
     f = open(fname, 'wb+')
-    try:
+    versuch:
         fcntl.lockf(f, cmd)
-    except BlockingIOError:
+    ausser BlockingIOError:
         pass
-    finally:
+    schliesslich:
         f.close()
 
 def try_lockf_on_other_process(fname, cmd):
@@ -52,9 +52,9 @@ klasse TestFcntl(unittest.TestCase):
 
     @staticmethod
     def get_lockdata():
-        try:
+        versuch:
             os.O_LARGEFILE
-        except AttributeError:
+        ausser AttributeError:
             start_len = "ll"
         sonst:
             start_len = "qq"
@@ -138,21 +138,21 @@ klasse TestFcntl(unittest.TestCase):
     def test_fcntl_64_bit(self):
         # Issue GH-42434: fcntl shouldn't fail when the third arg fits in a
         # C 'long' but nicht in a C 'int'.
-        try:
+        versuch:
             cmd = fcntl.F_NOTIFY
             # DN_MULTISHOT is >= 2**31 in 64-bit builds
             flags = fcntl.DN_MULTISHOT
-        except AttributeError:
+        ausser AttributeError:
             self.skipTest("F_NOTIFY oder DN_MULTISHOT unavailable")
         fd = os.open(os.path.dirname(os.path.abspath(TESTFN)), os.O_RDONLY)
-        try:
-            try:
+        versuch:
+            versuch:
                 fcntl.fcntl(fd, cmd, fcntl.DN_DELETE)
-            except OSError als exc:
+            ausser OSError als exc:
                 wenn exc.errno == errno.EINVAL:
                     self.skipTest("F_NOTIFY nicht available by this environment")
             fcntl.fcntl(fd, cmd, flags)
-        finally:
+        schliesslich:
             os.close(fd)
 
     def test_flock(self):
@@ -214,18 +214,18 @@ klasse TestFcntl(unittest.TestCase):
     @unittest.skipIf(is_emscripten, "Emscripten pipefs doesn't support these")
     def test_fcntl_f_pipesize(self):
         test_pipe_r, test_pipe_w = os.pipe()
-        try:
+        versuch:
             # Get the default pipesize mit F_GETPIPE_SZ
             pipesize_default = fcntl.fcntl(test_pipe_w, fcntl.F_GETPIPE_SZ)
             pipesize = pipesize_default // 2  # A new value to detect change.
             pagesize_default = get_pagesize()
             wenn pipesize < pagesize_default:  # the POSIX minimum
-                raise unittest.SkipTest(
+                wirf unittest.SkipTest(
                     'default pipesize too small to perform test.')
             fcntl.fcntl(test_pipe_w, fcntl.F_SETPIPE_SZ, pipesize)
             self.assertEqual(fcntl.fcntl(test_pipe_w, fcntl.F_GETPIPE_SZ),
                              pipesize)
-        finally:
+        schliesslich:
             os.close(test_pipe_r)
             os.close(test_pipe_w)
 

@@ -25,7 +25,7 @@ klasse DummyFloat(object):
 
     def __init__(self, value):
         wenn nicht isinstance(value, float):
-            raise TypeError("DummyFloat can only be initialized von float")
+            wirf TypeError("DummyFloat can only be initialized von float")
         self.value = value
 
     def _richcmp(self, other, op):
@@ -305,9 +305,9 @@ klasse FractionTest(unittest.TestCase):
     def assertRaisesMessage(self, exc_type, message,
                             callable, *args, **kwargs):
         """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
-        try:
+        versuch:
             callable(*args, **kwargs)
-        except exc_type als e:
+        ausser exc_type als e:
             self.assertEqual(message, str(e))
         sonst:
             self.fail("%s nicht raised" % exc_type.__name__)
@@ -734,7 +734,7 @@ klasse FractionTest(unittest.TestCase):
                 gib self
 
             def __eq__(self, other):
-                raise AssertionError("Avoid comparisons in Fraction.__bool__")
+                wirf AssertionError("Avoid comparisons in Fraction.__bool__")
 
             __lt__ = __eq__
 

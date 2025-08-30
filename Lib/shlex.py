@@ -186,7 +186,7 @@ klasse shlex:
                     wenn self.debug >= 2:
                         drucke("shlex: I see EOF in quotes state")
                     # XXX what error should be raised here?
-                    raise ValueError("No closing quotation")
+                    wirf ValueError("No closing quotation")
                 wenn nextchar == self.state:
                     wenn nicht self.posix:
                         self.token += nextchar
@@ -205,7 +205,7 @@ klasse shlex:
                     wenn self.debug >= 2:
                         drucke("shlex: I see EOF in escape state")
                     # XXX what error should be raised here?
-                    raise ValueError("No escaped character")
+                    wirf ValueError("No escaped character")
                 # In posix shells, only the quote itself oder the escape
                 # character may be escaped within quotes.
                 wenn (escapedstate in self.quotes und
@@ -298,13 +298,13 @@ klasse shlex:
     def __next__(self):
         token = self.get_token()
         wenn token == self.eof:
-            raise StopIteration
+            wirf StopIteration
         gib token
 
 def split(s, comments=Falsch, posix=Wahr):
     """Split the string *s* using shell-like syntax."""
     wenn s is Nichts:
-        raise ValueError("s argument must nicht be Nichts")
+        wirf ValueError("s argument must nicht be Nichts")
     lex = shlex(s, posix=posix)
     lex.whitespace_split = Wahr
     wenn nicht comments:

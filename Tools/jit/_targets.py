@@ -19,7 +19,7 @@ importiere _stencils
 importiere _writer
 
 wenn sys.version_info < (3, 11):
-    raise RuntimeError("Building the JIT compiler requires Python 3.11 oder newer!")
+    wirf RuntimeError("Building the JIT compiler requires Python 3.11 oder newer!")
 
 TOOLS_JIT_BUILD = pathlib.Path(__file__).resolve()
 TOOLS_JIT = TOOLS_JIT_BUILD.parent
@@ -59,7 +59,7 @@ klasse _Target(typing.Generic[_S, _R]):
         sowenn re.fullmatch(r"x86_64-.*|i686.*", self.triple):
             nop = b"\x90"
         sonst:
-            raise ValueError(f"NOP nicht defined fuer {self.triple}")
+            wirf ValueError(f"NOP nicht defined fuer {self.triple}")
         gib nop
 
     def _compute_digest(self) -> str:
@@ -113,12 +113,12 @@ klasse _Target(typing.Generic[_S, _R]):
         gib group
 
     def _handle_section(self, section: _S, group: _stencils.StencilGroup) -> Nichts:
-        raise NotImplementedError(type(self))
+        wirf NotImplementedError(type(self))
 
     def _handle_relocation(
         self, base: int, relocation: _R, raw: bytes | bytearray
     ) -> _stencils.Hole:
-        raise NotImplementedError(type(self))
+        wirf NotImplementedError(type(self))
 
     async def _compile(
         self, opname: str, c: pathlib.Path, tempdir: pathlib.Path
@@ -232,7 +232,7 @@ klasse _Target(typing.Generic[_S, _R]):
             gib
         stencil_groups = ASYNCIO_RUNNER.run(self._build_stencils())
         jit_stencils_new = jit_stencils.parent / "jit_stencils.h.new"
-        try:
+        versuch:
             mit jit_stencils_new.open("w") als file:
                 file.write(digest)
                 wenn comment:
@@ -240,13 +240,13 @@ klasse _Target(typing.Generic[_S, _R]):
                 file.write("\n")
                 fuer line in _writer.dump(stencil_groups, self.known_symbols):
                     file.write(f"{line}\n")
-            try:
+            versuch:
                 jit_stencils_new.replace(jit_stencils)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 # another process probably already moved the file
                 wenn nicht jit_stencils.is_file():
-                    raise
-        finally:
+                    wirf
+        schliesslich:
             jit_stencils_new.unlink(missing_ok=Wahr)
 
 
@@ -334,7 +334,7 @@ klasse _COFF(
                 value, symbol = self._unwrap_dllimport(s)
                 addend = 0
             case _:
-                raise NotImplementedError(relocation)
+                wirf NotImplementedError(relocation)
         gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
@@ -439,7 +439,7 @@ klasse _ELF(
                 s = s.removeprefix(self.symbol_prefix)
                 value, symbol = _stencils.symbol_to_value(s)
             case _:
-                raise NotImplementedError(relocation)
+                wirf NotImplementedError(relocation)
         gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
@@ -548,7 +548,7 @@ klasse _MachO(
                 value, symbol = _stencils.symbol_to_value(s)
                 addend = 0
             case _:
-                raise NotImplementedError(relocation)
+                wirf NotImplementedError(relocation)
         gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
@@ -592,5 +592,5 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
         optimizer = _optimizers.OptimizerX86
         target = _ELF(host, condition, args=args, optimizer=optimizer)
     sonst:
-        raise ValueError(host)
+        wirf ValueError(host)
     gib target

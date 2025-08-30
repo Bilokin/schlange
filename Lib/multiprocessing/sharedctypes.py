@@ -37,10 +37,10 @@ typecode_to_type = {
 #
 
 def _new_value(type_):
-    try:
+    versuch:
         size = ctypes.sizeof(type_)
-    except TypeError als e:
-        raise TypeError("bad typecode (must be a ctypes type oder one of "
+    ausser TypeError als e:
+        wirf TypeError("bad typecode (must be a ctypes type oder one of "
                         "c, b, B, u, h, H, i, I, l, L, q, Q, f oder d)") von e
 
     wrapper = heap.BufferWrapper(size)
@@ -83,7 +83,7 @@ def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
         ctx = ctx oder get_context()
         lock = ctx.RLock()
     wenn nicht hasattr(lock, 'acquire'):
-        raise AttributeError("%r has no method 'acquire'" % lock)
+        wirf AttributeError("%r has no method 'acquire'" % lock)
     gib synchronized(obj, lock, ctx=ctx)
 
 def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
@@ -97,7 +97,7 @@ def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
         ctx = ctx oder get_context()
         lock = ctx.RLock()
     wenn nicht hasattr(lock, 'acquire'):
-        raise AttributeError("%r has no method 'acquire'" % lock)
+        wirf AttributeError("%r has no method 'acquire'" % lock)
     gib synchronized(obj, lock, ctx=ctx)
 
 def copy(obj):
@@ -117,9 +117,9 @@ def synchronized(obj, lock=Nichts, ctx=Nichts):
         gib SynchronizedArray(obj, lock, ctx)
     sonst:
         cls = type(obj)
-        try:
+        versuch:
             scls = class_cache[cls]
-        except KeyError:
+        ausser KeyError:
             names = [field[0] fuer field in cls._fields_]
             d = {name: make_property(name) fuer name in names}
             classname = 'Synchronized' + cls.__name__
@@ -151,9 +151,9 @@ def rebuild_ctype(type_, wrapper, length):
 #
 
 def make_property(name):
-    try:
+    versuch:
         gib prop_cache[name]
-    except KeyError:
+    ausser KeyError:
         d = {}
         exec(template % ((name,)*7), d)
         prop_cache[name] = d[name]
@@ -162,15 +162,15 @@ def make_property(name):
 template = '''
 def get%s(self):
     self.acquire()
-    try:
+    versuch:
         gib self._obj.%s
-    finally:
+    schliesslich:
         self.release()
 def set%s(self, value):
     self.acquire()
-    try:
+    versuch:
         self._obj.%s = value
-    finally:
+    schliesslich:
         self.release()
 %s = property(get%s, set%s)
 '''

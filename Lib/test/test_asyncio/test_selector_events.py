@@ -8,9 +8,9 @@ importiere unittest
 von asyncio importiere selector_events
 von unittest importiere mock
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 importiere asyncio
@@ -385,7 +385,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
             # whose sockets generate this errno more reproducibly than
             # Linux und other OS.
             wenn sock.accept.call_count % 2 == 0:
-                raise ConnectionAbortedError
+                wirf ConnectionAbortedError
             gib (mock.Mock(), mock.Mock())
 
         sock.accept.side_effect = mock_sock_accept

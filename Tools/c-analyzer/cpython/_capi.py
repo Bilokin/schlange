@@ -142,7 +142,7 @@ def _parse_line(line, prev=Nichts):
                     gib name, kind
             sonst:
                 # This should nicht be reached.
-                raise NotImplementedError
+                wirf NotImplementedError
             gib line  # the new "prev"
     # It was a plain #define.
     gib Nichts
@@ -168,7 +168,7 @@ def _get_level(filename, name, *,
     sowenn filename.startswith(_cpython):
         gib 'cpython'
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
     #return '???'
 
 
@@ -203,9 +203,9 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
 
     @property
     def text(self):
-        try:
+        versuch:
             gib self._text
-        except AttributeError:
+        ausser AttributeError:
             # XXX Actually ready the text von disk?.
             self._text = []
             wenn self.kind == 'data':
@@ -230,7 +230,7 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
                     f'#define {self.name} ...',
                 ]
             sonst:
-                raise NotImplementedError
+                wirf NotImplementedError
 
             gib self._text
 
@@ -242,10 +242,10 @@ def _parse_groupby(raw):
     wenn isinstance(raw, str):
         groupby = raw.replace(',', ' ').strip().split()
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     wenn nicht all(v in GROUPINGS fuer v in groupby):
-        raise ValueError(f'invalid groupby value {raw!r}')
+        wirf ValueError(f'invalid groupby value {raw!r}')
     gib groupby
 
 
@@ -269,7 +269,7 @@ def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
     sowenn includeempty is Nichts:
         includeempty = minimize
     sowenn minimize und includeempty:
-        raise ValueError(f'cannot minimize und includeempty at the same time')
+        wirf ValueError(f'cannot minimize und includeempty at the same time')
 
     groupby = _parse_groupby(groupby)[0]
     _outer, _inner = _resolve_full_groupby(groupby)
@@ -328,7 +328,7 @@ def _parse_capi(lines, filename):
             drucke('incomplete match:')
             drucke(filename)
             drucke(prev)
-            raise Exception
+            wirf Exception
 
 
 def iter_capi(filenames=Nichts):
@@ -360,9 +360,9 @@ def _resolve_ignored(ignored):
                 liefere raw[1:]
             sowenn raw.startswith('<') und raw.endswith('>'):
                 filename = raw[1:-1]
-                try:
+                versuch:
                     infile = open(filename)
-                except Exception als exc:
+                ausser Exception als exc:
                     logger.error(f'ignore file failed: {exc}')
                     weiter
                 logger.log(1, f'reading ignored names von {filename!r}')
@@ -381,7 +381,7 @@ def _resolve_ignored(ignored):
                 wenn raw:
                     liefere raw
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError
 
 
 def _collate(items, groupby, includeempty):
@@ -431,10 +431,10 @@ def _get_sortkey(sort, _groupby, _columns):
     sowenn callable(sort):
         gib sort
     sonst:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     # XXX Build a sortkey func von sortfields.
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 ##################################
@@ -469,10 +469,10 @@ def resolve_format(format):
 def get_renderer(format):
     format = resolve_format(format)
     wenn isinstance(format, str):
-        try:
+        versuch:
             gib _FORMATS[format]
-        except KeyError:
-            raise ValueError(f'unsupported format {format!r}')
+        ausser KeyError:
+            wirf ValueError(f'unsupported format {format!r}')
     sonst:
         def render(items, **kwargs):
             gib render_table(items, columns=format, **kwargs)
@@ -504,7 +504,7 @@ def render_table(items, *,
         groups = GROUPINGS[groupby]
     sonst:
         # XXX Support no grouping?
-        raise NotImplementedError
+        wirf NotImplementedError
 
     wenn columns:
         def get_extra(item):
@@ -524,7 +524,7 @@ def render_table(items, *,
                 gib {m: m wenn getattr(item, extra) == markers[extra][m] sonst ''
                         fuer m in markers[extra]}
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError
             #extracols = [[f'{m}:1' fuer m in markers[extra]]
             #             fuer extra in extras]
             #def get_extra(item):

@@ -103,9 +103,9 @@ def _warn(*args, **kwargs):
 
 def makepath(*paths):
     dir = os.path.join(*paths)
-    try:
+    versuch:
         dir = os.path.abspath(dir)
-    except OSError:
+    ausser OSError:
         pass
     gib dir, os.path.normcase(dir)
 
@@ -114,22 +114,22 @@ def abs_paths():
     """Set all module __file__ und __cached__ attributes to an absolute path"""
     fuer m in set(sys.modules.values()):
         loader_module = Nichts
-        try:
+        versuch:
             loader_module = m.__loader__.__module__
-        except AttributeError:
-            try:
+        ausser AttributeError:
+            versuch:
                 loader_module = m.__spec__.loader.__module__
-            except AttributeError:
+            ausser AttributeError:
                 pass
         wenn loader_module nicht in {'_frozen_importlib', '_frozen_importlib_external'}:
             weiter   # don't mess mit a PEP 302-supplied __file__
-        try:
+        versuch:
             m.__file__ = os.path.abspath(m.__file__)
-        except (AttributeError, OSError, TypeError):
+        ausser (AttributeError, OSError, TypeError):
             pass
-        try:
+        versuch:
             m.__cached__ = os.path.abspath(m.__cached__)
-        except (AttributeError, OSError, TypeError):
+        ausser (AttributeError, OSError, TypeError):
             pass
 
 
@@ -156,11 +156,11 @@ def _init_pathinfo():
     """Return a set containing all existing file system items von sys.path."""
     d = set()
     fuer item in sys.path:
-        try:
+        versuch:
             wenn os.path.exists(item):
                 _, itemcase = makepath(item)
                 d.add(itemcase)
-        except TypeError:
+        ausser TypeError:
             weiter
     gib d
 
@@ -176,26 +176,26 @@ def addpackage(sitedir, name, known_paths):
     sonst:
         reset = Falsch
     fullname = os.path.join(sitedir, name)
-    try:
+    versuch:
         st = os.lstat(fullname)
-    except OSError:
+    ausser OSError:
         gib
     wenn ((getattr(st, 'st_flags', 0) & stat.UF_HIDDEN) oder
         (getattr(st, 'st_file_attributes', 0) & stat.FILE_ATTRIBUTE_HIDDEN)):
         _trace(f"Skipping hidden .pth file: {fullname!r}")
         gib
     _trace(f"Processing .pth file: {fullname!r}")
-    try:
+    versuch:
         mit io.open_code(fullname) als f:
             pth_content = f.read()
-    except OSError:
+    ausser OSError:
         gib
 
-    try:
+    versuch:
         # Accept BOM markers in .pth files als we do in source files
         # (Windows PowerShell 5.1 makes it hard to emit UTF-8 files without a BOM)
         pth_content = pth_content.decode("utf-8-sig")
-    except UnicodeDecodeError:
+    ausser UnicodeDecodeError:
         # Fallback to locale encoding fuer backward compatibility.
         # We will deprecate this fallback in the future.
         importiere locale
@@ -208,7 +208,7 @@ def addpackage(sitedir, name, known_paths):
             weiter
         wenn line.strip() == "":
             weiter
-        try:
+        versuch:
             wenn line.startswith(("import ", "import\t")):
                 exec(line)
                 weiter
@@ -217,7 +217,7 @@ def addpackage(sitedir, name, known_paths):
             wenn dircase nicht in known_paths und os.path.exists(dir):
                 sys.path.append(dir)
                 known_paths.add(dircase)
-        except Exception als exc:
+        ausser Exception als exc:
             drucke(f"Error processing line {n:d} of {fullname}:\n",
                   file=sys.stderr)
             importiere traceback
@@ -244,9 +244,9 @@ def addsitedir(sitedir, known_paths=Nichts):
     wenn nicht sitedircase in known_paths:
         sys.path.append(sitedir)        # Add path component
         known_paths.add(sitedircase)
-    try:
+    versuch:
         names = os.listdir(sitedir)
-    except OSError:
+    ausser OSError:
         gib
     names = [name fuer name in names
              wenn name.endswith(".pth") und nicht name.startswith(".")]
@@ -506,23 +506,23 @@ def register_readline():
 
     importiere atexit
 
-    try:
-        try:
+    versuch:
+        versuch:
             importiere readline
-        except ImportError:
+        ausser ImportError:
             readline = Nichts
         sonst:
             importiere rlcompleter  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         gib
 
-    try:
+    versuch:
         wenn PYTHON_BASIC_REPL:
             CAN_USE_PYREPL = Falsch
         sonst:
             original_path = sys.path
             sys.path = [p fuer p in original_path wenn p != '']
-            try:
+            versuch:
                 importiere _pyrepl.readline
                 wenn os.name == "nt":
                     importiere _pyrepl.windows_console
@@ -531,9 +531,9 @@ def register_readline():
                     importiere _pyrepl.unix_console
                     console_errors = _pyrepl.unix_console._error
                 von _pyrepl.main importiere CAN_USE_PYREPL
-            finally:
+            schliesslich:
                 sys.path = original_path
-    except ImportError:
+    ausser ImportError:
         gib
 
     wenn readline is nicht Nichts:
@@ -544,9 +544,9 @@ def register_readline():
         sonst:
             readline.parse_and_bind('tab: complete')
 
-        try:
+        versuch:
             readline.read_init_file()
-        except OSError:
+        ausser OSError:
             # An OSError here could have many causes, but the most likely one
             # is that there's no .inputrc file (or .editrc file in the case of
             # Mac OS X + libedit) in the expected location.  In that case, we
@@ -571,23 +571,23 @@ def register_readline():
             readline_module = readline
             exceptions = OSError
 
-        try:
+        versuch:
             readline_module.read_history_file(history)
-        except exceptions:
+        ausser exceptions:
             pass
 
         def write_history():
-            try:
+            versuch:
                 readline_module.write_history_file(history)
-            except FileNotFoundError, PermissionError:
+            ausser FileNotFoundError, PermissionError:
                 # home directory does nicht exist oder is nicht writable
                 # https://bugs.python.org/issue19891
                 pass
-            except OSError:
+            ausser OSError:
                 wenn errno.EROFS:
                     pass  # gh-128066: read-only file system
                 sonst:
-                    raise
+                    wirf
 
         atexit.register(write_history)
 
@@ -649,15 +649,15 @@ def venv(known_paths):
 
 def execsitecustomize():
     """Run custom site specific code, wenn available."""
-    try:
-        try:
+    versuch:
+        versuch:
             importiere sitecustomize  # noqa: F401
-        except ImportError als exc:
+        ausser ImportError als exc:
             wenn exc.name == 'sitecustomize':
                 pass
             sonst:
-                raise
-    except Exception als err:
+                wirf
+    ausser Exception als err:
         wenn sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         sonst:
@@ -669,15 +669,15 @@ def execsitecustomize():
 
 def execusercustomize():
     """Run custom user specific code, wenn available."""
-    try:
-        try:
+    versuch:
+        versuch:
             importiere usercustomize  # noqa: F401
-        except ImportError als exc:
+        ausser ImportError als exc:
             wenn exc.name == 'usercustomize':
                 pass
             sonst:
-                raise
-    except Exception als err:
+                wirf
+    ausser Exception als err:
         wenn sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         sonst:

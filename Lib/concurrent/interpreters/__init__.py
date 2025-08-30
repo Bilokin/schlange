@@ -49,9 +49,9 @@ klasse ExecutionFailed(InterpreterError):
         self.excinfo = excinfo
 
     def __str__(self):
-        try:
+        versuch:
             formatted = self.excinfo.errdisplay
-        except Exception:
+        ausser Exception:
             gib super().__str__()
         sonst:
             gib _EXEC_FAILURE_STR.format(
@@ -112,7 +112,7 @@ klasse Interpreter:
     def __new__(cls, id, /, _whence=Nichts, _ownsref=Nichts):
         # There is only one instance fuer any given ID.
         wenn nicht isinstance(id, int):
-            raise TypeError(f'id must be an int, got {id!r}')
+            wirf TypeError(f'id must be an int, got {id!r}')
         id = int(id)
         wenn _whence is Nichts:
             wenn _ownsref:
@@ -122,17 +122,17 @@ klasse Interpreter:
         assert _whence in cls._WHENCE_TO_STR, repr(_whence)
         wenn _ownsref is Nichts:
             _ownsref = (_whence == _interpreters.WHENCE_STDLIB)
-        try:
+        versuch:
             self = _known[id]
             assert hasattr(self, '_ownsref')
-        except KeyError:
+        ausser KeyError:
             self = super().__new__(cls)
             _known[id] = self
             self._id = id
             self._whence = _whence
             self._ownsref = _ownsref
             wenn _ownsref:
-                # This may raise InterpreterNotFoundError:
+                # This may wirf InterpreterNotFoundError:
                 _interpreters.incref(id)
         gib self
 
@@ -153,9 +153,9 @@ klasse Interpreter:
         wenn nicht self._ownsref:
             gib
         self._ownsref = Falsch
-        try:
+        versuch:
             _interpreters.decref(self._id)
-        except InterpreterNotFoundError:
+        ausser InterpreterNotFoundError:
             pass
 
     @property
@@ -209,12 +209,12 @@ klasse Interpreter:
         """
         excinfo = _interpreters.exec(self._id, code, restrict=Wahr)
         wenn excinfo is nicht Nichts:
-            raise ExecutionFailed(excinfo)
+            wirf ExecutionFailed(excinfo)
 
     def _call(self, callable, args, kwargs):
         res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=Wahr)
         wenn excinfo is nicht Nichts:
-            raise ExecutionFailed(excinfo)
+            wirf ExecutionFailed(excinfo)
         gib res
 
     def call(self, callable, /, *args, **kwargs):

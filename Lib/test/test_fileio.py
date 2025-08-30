@@ -190,12 +190,12 @@ klasse AutoFileTests:
 
     def testReprNoCloseFD(self):
         fd = os.open(TESTFN, os.O_RDONLY)
-        try:
+        versuch:
             mit self.FileIO(fd, 'r', closefd=Falsch) als f:
                 self.assertEqual(repr(f),
                                  "<%s.FileIO name=%r mode=%r closefd=Falsch>" %
                                  (self.modulename, f.name, f.mode))
-        finally:
+        schliesslich:
             os.close(fd)
 
     @infinite_recursion(25)
@@ -229,7 +229,7 @@ klasse AutoFileTests:
 
         fuer methodname in methods:
             method = getattr(self.f, methodname)
-            # should raise on closed file
+            # should wirf on closed file
             self.assertRaises(ValueError, method)
 
         self.assertRaises(TypeError, self.f.readinto)
@@ -245,9 +245,9 @@ klasse AutoFileTests:
         # Issue 3703: opening a directory should fill the errno
         # Windows always returns "[Errno 13]: Permission denied
         # Unix uses fstat und returns "[Errno 21]: Is a directory"
-        try:
+        versuch:
             self.FileIO('.', 'r')
-        except OSError als e:
+        ausser OSError als e:
             self.assertNotEqual(e.errno, 0)
             self.assertEqual(e.filename, ".")
         sonst:
@@ -269,12 +269,12 @@ klasse AutoFileTests:
             #forcibly close the fd before invoking the problem function
             f = self.f
             os.close(f.fileno())
-            try:
+            versuch:
                 func(self, f)
-            finally:
-                try:
+            schliesslich:
+                versuch:
                     self.f.close()
-                except OSError:
+                ausser OSError:
                     pass
         gib wrapper
 
@@ -284,16 +284,16 @@ klasse AutoFileTests:
             #forcibly close the fd before invoking the problem function
             f = self.f
             os.close(f.fileno())
-            try:
+            versuch:
                 func(self, f)
-            except OSError als e:
+            ausser OSError als e:
                 self.assertEqual(e.errno, errno.EBADF)
             sonst:
                 self.fail("Should have raised OSError")
-            finally:
-                try:
+            schliesslich:
+                versuch:
                     self.f.close()
-                except OSError:
+                ausser OSError:
                     pass
         gib wrapper
 
@@ -338,9 +338,9 @@ klasse AutoFileTests:
         self.assertEqual(f.isatty(), Falsch)
 
     def ReopenForRead(self):
-        try:
+        versuch:
             self.f.close()
-        except OSError:
+        ausser OSError:
             pass
         self.f = self.FileIO(TESTFN, 'r')
         os.close(self.f.fileno())
@@ -511,7 +511,7 @@ klasse PyAutoFileTests(AutoFileTests, unittest.TestCase):
 klasse OtherFileTests:
 
     def testAbles(self):
-        try:
+        versuch:
             f = self.FileIO(TESTFN, "w")
             self.assertEqual(f.readable(), Falsch)
             self.assertEqual(f.writable(), Wahr)
@@ -532,9 +532,9 @@ klasse OtherFileTests:
             f.close()
 
             wenn sys.platform != "win32":
-                try:
+                versuch:
                     f = self.FileIO("/dev/tty", "a")
-                except OSError:
+                ausser OSError:
                     # When run in a cron job there just aren't any
                     # ttys, so skip the test.  This also handles other
                     # OS'es that don't support /dev/tty.
@@ -549,15 +549,15 @@ klasse OtherFileTests:
                         self.assertEqual(f.seekable(), Falsch)
                     self.assertEqual(f.isatty(), Wahr)
                     f.close()
-        finally:
+        schliesslich:
             os.unlink(TESTFN)
 
     def testInvalidModeStrings(self):
         # check invalid mode strings
         fuer mode in ("", "aU", "wU+", "rw", "rt"):
-            try:
+            versuch:
                 f = self.FileIO(TESTFN, mode)
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
                 f.close()
@@ -566,7 +566,7 @@ klasse OtherFileTests:
     def testModeStrings(self):
         # test that the mode attribute is correct fuer various mode strings
         # given als init args
-        try:
+        versuch:
             fuer modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
                           ('w+b', 'rb+'), ('a', 'ab'), ('ab', 'ab'),
                           ('ab+', 'ab+'), ('a+b', 'ab+'), ('r', 'rb'),
@@ -574,7 +574,7 @@ klasse OtherFileTests:
                 # read modes are last so that TESTFN will exist first
                 mit self.FileIO(TESTFN, modes[0]) als f:
                     self.assertEqual(f.mode, modes[1])
-        finally:
+        schliesslich:
             wenn os.path.exists(TESTFN):
                 os.unlink(TESTFN)
 
@@ -588,29 +588,29 @@ klasse OtherFileTests:
         # Opening a bytes filename
         fn = TESTFN_ASCII.encode("ascii")
         f = self.FileIO(fn, "w")
-        try:
+        versuch:
             f.write(b"abc")
             f.close()
             mit self.open(TESTFN_ASCII, "rb") als f:
                 self.assertEqual(f.read(), b"abc")
-        finally:
+        schliesslich:
             os.unlink(TESTFN_ASCII)
 
     @unittest.skipIf(sys.getfilesystemencoding() != 'utf-8',
                      "test only works fuer utf-8 filesystems")
     def testUtf8BytesOpen(self):
         # Opening a UTF-8 bytes filename
-        try:
+        versuch:
             fn = TESTFN_UNICODE.encode("utf-8")
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             self.skipTest('could nicht encode %r to utf-8' % TESTFN_UNICODE)
         f = self.FileIO(fn, "w")
-        try:
+        versuch:
             f.write(b"abc")
             f.close()
             mit self.open(TESTFN_UNICODE, "rb") als f:
                 self.assertEqual(f.read(), b"abc")
-        finally:
+        schliesslich:
             os.unlink(TESTFN_UNICODE)
 
     def testConstructorHandlesNULChars(self):
@@ -636,9 +636,9 @@ klasse OtherFileTests:
     def testBadModeArgument(self):
         # verify that we get a sensible error message fuer bad mode argument
         bad_mode = "qwerty"
-        try:
+        versuch:
             f = self.FileIO(TESTFN, bad_mode)
-        except ValueError als msg:
+        ausser ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
                 wenn TESTFN in s oder bad_mode nicht in s:
@@ -685,13 +685,13 @@ klasse OtherFileTests:
             wenn size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
 
-        try:
+        versuch:
             bug801631()
-        finally:
+        schliesslich:
             os.unlink(TESTFN)
 
     def testAppend(self):
-        try:
+        versuch:
             f = self.FileIO(TESTFN, 'wb')
             f.write(b'spam')
             f.close()
@@ -702,10 +702,10 @@ klasse OtherFileTests:
             d = f.read()
             f.close()
             self.assertEqual(d, b'spameggs')
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 os.unlink(TESTFN)
-            except:
+            ausser:
                 pass
 
     def testInvalidInit(self):
@@ -724,11 +724,11 @@ klasse OtherFileTests:
         klasse MyFileIO(self.FileIO):
             def __setattr__(self, name, value):
                 wenn name == "name":
-                    raise MyException("blocked setting name")
+                    wirf MyException("blocked setting name")
                 gib super(MyFileIO, self).__setattr__(name, value)
         fd = os.open(__file__, os.O_RDONLY)
         self.assertRaises(MyException, MyFileIO, fd)
-        os.close(fd)  # should nicht raise OSError(EBADF)
+        os.close(fd)  # should nicht wirf OSError(EBADF)
 
 
 klasse COtherFileTests(OtherFileTests, unittest.TestCase):

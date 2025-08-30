@@ -12,9 +12,9 @@ von test.support importiere os_helper
 von test.support importiere socket_helper
 importiere os
 importiere socket
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 importiere sys
 importiere tempfile
@@ -23,7 +23,7 @@ importiere collections
 
 
 wenn nicht socket_helper.has_gethostname:
-    raise unittest.SkipTest("test requires gethostname()")
+    wirf unittest.SkipTest("test requires gethostname()")
 
 
 def hexescape(char):
@@ -104,9 +104,9 @@ klasse urlopen_FileTests(unittest.TestCase):
         self.text = bytes("test_urllib: %s\n" % self.__class__.__name__,
                           "ascii")
         f = open(os_helper.TESTFN, 'wb')
-        try:
+        versuch:
             f.write(self.text)
-        finally:
+        schliesslich:
             f.close()
         self.pathname = os_helper.TESTFN
         self.quoted_pathname = urllib.parse.quote(os.fsencode(self.pathname))
@@ -214,14 +214,14 @@ klasse ProxyTests(unittest.TestCase):
         self.assertWahr(urllib.request.proxy_bypass_environment('newdomain.com:1234'))
 
     def test_proxy_cgi_ignore(self):
-        try:
+        versuch:
             self.env.set('HTTP_PROXY', 'http://somewhere:3128')
             proxies = urllib.request.getproxies_environment()
             self.assertEqual('http://somewhere:3128', proxies['http'])
             self.env.set('REQUEST_METHOD', 'GET')
             proxies = urllib.request.getproxies_environment()
             self.assertNotIn('http', proxies)
-        finally:
+        schliesslich:
             self.env.unset('REQUEST_METHOD')
             self.env.unset('HTTP_PROXY')
 
@@ -304,31 +304,31 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
 
     def check_read(self, ver):
         self.fakehttp(b"HTTP/" + ver + b" 200 OK\r\n\r\nHello!")
-        try:
+        versuch:
             fp = urllib.request.urlopen("http://python.org/")
             self.assertEqual(fp.readline(), b"Hello!")
             self.assertEqual(fp.readline(), b"")
             self.assertEqual(fp.geturl(), 'http://python.org/')
             self.assertEqual(fp.getcode(), 200)
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_url_fragment(self):
         # Issue #11703: geturl() omits fragments in the original URL.
         url = 'http://docs.python.org/library/urllib.html#OK'
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello!")
-        try:
+        versuch:
             fp = urllib.request.urlopen(url)
             self.assertEqual(fp.geturl(), url)
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_willclose(self):
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello!")
-        try:
+        versuch:
             resp = urllib.request.urlopen("http://www.python.org")
             self.assertWahr(resp.will_close)
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
@@ -337,7 +337,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
             char = chr(char_no)
             schemeless_url = f"//localhost:7777/test{char}/"
             self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
-            try:
+            versuch:
                 # We explicitly test urllib.request.urlopen() instead of the top
                 # level 'def urlopen()' function defined in this... (quite ugly)
                 # test suite.  They use different url opening codepaths.  Plain
@@ -352,7 +352,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
                 mit self.assertRaisesRegex(
                     InvalidURL, f"contain control.*{escaped_char_repr}"):
                     urllib.request.urlopen(f"https:{schemeless_url}")
-            finally:
+            schliesslich:
                 self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
@@ -360,7 +360,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
         host = "localhost:7777?a=1 HTTP/1.1\r\nX-injected: header\r\nTEST: 123"
         schemeless_url = "//" + host + ":8080/test/?test=a"
-        try:
+        versuch:
             # We explicitly test urllib.request.urlopen() instead of the top
             # level 'def urlopen()' function defined in this... (quite ugly)
             # test suite.  They use different url opening codepaths.  Plain
@@ -373,7 +373,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
                 urllib.request.urlopen(f"http:{schemeless_url}")
             mit self.assertRaisesRegex(InvalidURL, r"contain control.*\\n"):
                 urllib.request.urlopen(f"https:{schemeless_url}")
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
@@ -382,7 +382,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
             char = chr(char_no)
             schemeless_url = f"//localhost{char}/test/"
             self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
-            try:
+            versuch:
                 escaped_char_repr = repr(char).replace('\\', r'\\')
                 InvalidURL = http.client.InvalidURL
                 mit self.assertRaisesRegex(
@@ -390,7 +390,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
                     urllib.request.urlopen(f"http:{schemeless_url}")
                 mit self.assertRaisesRegex(InvalidURL, f"contain control.*{escaped_char_repr}"):
                     urllib.request.urlopen(f"https:{schemeless_url}")
-            finally:
+            schliesslich:
                 self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
@@ -398,14 +398,14 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
         host = "localhost\r\nX-injected: header\r\n"
         schemeless_url = "//" + host + ":8080/test/?test=a"
-        try:
+        versuch:
             InvalidURL = http.client.InvalidURL
             mit self.assertRaisesRegex(
                 InvalidURL, r"contain control.*\\r"):
                 urllib.request.urlopen(f"http:{schemeless_url}")
             mit self.assertRaisesRegex(InvalidURL, r"contain control.*\\n"):
                 urllib.request.urlopen(f"https:{schemeless_url}")
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_read_0_9(self):
@@ -420,22 +420,22 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
         self.check_read(b"1.1")
 
     def test_read_bogus(self):
-        # urlopen() should raise OSError fuer many error codes.
+        # urlopen() should wirf OSError fuer many error codes.
         self.fakehttp(b'''HTTP/1.1 401 Authentication Required
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
 Connection: close
 Content-Type: text/html; charset=iso-8859-1
 ''', mock_close=Wahr)
-        try:
+        versuch:
             mit self.assertRaises(urllib.error.HTTPError) als cm:
                 urllib.request.urlopen("http://python.org/")
             cm.exception.close()
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_invalid_redirect(self):
-        # urlopen() should raise OSError fuer many error codes.
+        # urlopen() should wirf OSError fuer many error codes.
         self.fakehttp(b'''HTTP/1.1 302 Found
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -443,12 +443,12 @@ Location: file://guidocomputer.athome.com:/python/license
 Connection: close
 Content-Type: text/html; charset=iso-8859-1
 ''', mock_close=Wahr)
-        try:
+        versuch:
             msg = "Redirection to url 'file:"
             mit self.assertRaisesRegex(urllib.error.HTTPError, msg) als cm:
                 urllib.request.urlopen("http://python.org/")
             cm.exception.close()
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_redirect_limit_independent(self):
@@ -459,20 +459,20 @@ Content-Type: text/html; charset=iso-8859-1
 Location: file://guidocomputer.athome.com:/python/license
 Connection: close
 ''', mock_close=Wahr)
-            try:
+            versuch:
                 mit self.assertRaises(urllib.error.HTTPError) als cm:
                     urllib.request.urlopen("http://something")
                 cm.exception.close()
-            finally:
+            schliesslich:
                 self.unfakehttp()
 
     def test_empty_socket(self):
         # urlopen() raises OSError wenn the underlying socket does nicht send any
         # data. (#1680230)
         self.fakehttp(b'')
-        try:
+        versuch:
             self.assertRaises(OSError, urllib.request.urlopen, "http://something")
-        finally:
+        schliesslich:
             self.unfakehttp()
 
     def test_missing_localfile(self):
@@ -487,12 +487,12 @@ Connection: close
         tmp_file_canon_url = urllib.request.pathname2url(tmp_file, add_scheme=Wahr)
         parsed = urllib.parse.urlsplit(tmp_file_canon_url)
         tmp_fileurl = parsed._replace(netloc='localhost').geturl()
-        try:
+        versuch:
             self.assertWahr(os.path.exists(tmp_file))
             mit urllib.request.urlopen(tmp_fileurl) als fobj:
                 self.assertWahr(fobj)
                 self.assertEqual(fobj.url, tmp_file_canon_url)
-        finally:
+        schliesslich:
             os.close(fd)
             os.unlink(tmp_file)
         self.assertFalsch(os.path.exists(tmp_file))
@@ -610,19 +610,19 @@ klasse urlretrieve_FileTests(unittest.TestCase):
         # Create a temporary file.
         self.registerFileForCleanUp(os_helper.TESTFN)
         self.text = b'testing urllib.urlretrieve'
-        try:
+        versuch:
             FILE = open(os_helper.TESTFN, 'wb')
             FILE.write(self.text)
             FILE.close()
-        finally:
-            try: FILE.close()
-            except: pass
+        schliesslich:
+            versuch: FILE.close()
+            ausser: pass
 
     def tearDown(self):
         # Delete the temporary files.
         fuer each in self.tempFiles:
-            try: os.remove(each)
-            except: pass
+            versuch: os.remove(each)
+            ausser: pass
 
     def constructLocalFileUrl(self, filePath):
         filePath = os.path.abspath(filePath)
@@ -634,14 +634,14 @@ klasse urlretrieve_FileTests(unittest.TestCase):
         returns the absolute path of the file."""
 
         newFd, newFilePath = tempfile.mkstemp()
-        try:
+        versuch:
             self.registerFileForCleanUp(newFilePath)
             newFile = os.fdopen(newFd, "wb")
             newFile.write(data)
             newFile.close()
-        finally:
-            try: newFile.close()
-            except: pass
+        schliesslich:
+            versuch: newFile.close()
+            ausser: pass
         gib newFilePath
 
     def registerFileForCleanUp(self, fileName):
@@ -666,12 +666,12 @@ klasse urlretrieve_FileTests(unittest.TestCase):
         self.assertWahr(os.path.exists(second_temp), "copy of the file was nicht "
                                                   "made")
         FILE = open(second_temp, 'rb')
-        try:
+        versuch:
             text = FILE.read()
             FILE.close()
-        finally:
-            try: FILE.close()
-            except: pass
+        schliesslich:
+            versuch: FILE.close()
+            ausser: pass
         self.assertEqual(self.text, text)
 
     def test_reporthook(self):
@@ -750,10 +750,10 @@ FF
             pass
 
         mit self.assertRaises(urllib.error.ContentTooShortError):
-            try:
+            versuch:
                 urllib.request.urlretrieve(support.TEST_HTTP_URL,
                                            reporthook=_reporthook)
-            finally:
+            schliesslich:
                 self.unfakehttp()
 
     def test_short_content_raises_ContentTooShortError_without_reporthook(self):
@@ -769,9 +769,9 @@ Content-Type: text/html; charset=iso-8859-1
 FF
 ''')
         mit self.assertRaises(urllib.error.ContentTooShortError):
-            try:
+            versuch:
                 urllib.request.urlretrieve(support.TEST_HTTP_URL)
-            finally:
+            schliesslich:
                 self.unfakehttp()
 
 
@@ -913,7 +913,7 @@ klasse QuotingTests(unittest.TestCase):
         result = urllib.parse.quote(given)
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Encoding argument should raise type error on bytes input
+        # Encoding argument should wirf type error on bytes input
         self.assertRaises(TypeError, urllib.parse.quote, given,
                             encoding="latin-1")
         # quote_from_bytes should work the same

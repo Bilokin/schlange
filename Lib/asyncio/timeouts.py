@@ -49,8 +49,8 @@ klasse Timeout:
         """Reschedule the timeout."""
         wenn self._state is nicht _State.ENTERED:
             wenn self._state is _State.CREATED:
-                raise RuntimeError("Timeout has nicht been entered")
-            raise RuntimeError(
+                wirf RuntimeError("Timeout has nicht been entered")
+            wirf RuntimeError(
                 f"Cannot change state of {self._state.value} Timeout",
             )
 
@@ -82,10 +82,10 @@ klasse Timeout:
 
     async def __aenter__(self) -> "Timeout":
         wenn self._state is nicht _State.CREATED:
-            raise RuntimeError("Timeout has already been entered")
+            wirf RuntimeError("Timeout has already been entered")
         task = tasks.current_task()
         wenn task is Nichts:
-            raise RuntimeError("Timeout should be used inside a task")
+            wirf RuntimeError("Timeout should be used inside a task")
         self._state = _State.ENTERED
         self._task = task
         self._cancelling = self._task.cancelling()
@@ -111,7 +111,7 @@ klasse Timeout:
                 # Since there are no new cancel requests, we're
                 # handling this.
                 wenn issubclass(exc_type, exceptions.CancelledError):
-                    raise TimeoutError von exc_val
+                    wirf TimeoutError von exc_val
                 sowenn exc_val is nicht Nichts:
                     self._insert_timeout_error(exc_val)
                     wenn isinstance(exc_val, ExceptionGroup):

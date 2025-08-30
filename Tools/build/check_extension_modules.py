@@ -182,12 +182,12 @@ klasse ModuleChecker:
             sowenn modinfo.state == ModuleState.NA:
                 self.notavailable.append(modinfo)
             sonst:
-                try:
+                versuch:
                     wenn self.cross_compiling:
                         self.check_module_cross(modinfo)
                     sonst:
                         self.check_module_import(modinfo)
-                except (ImportError, FileNotFoundError):
+                ausser (ImportError, FileNotFoundError):
                     self.rename_module(modinfo)
                     self.failed_on_import.append(modinfo)
                 sonst:
@@ -273,7 +273,7 @@ klasse ModuleChecker:
     def check_strict_build(self) -> Nichts:
         """Fail wenn modules are missing und it's a strict build"""
         wenn self.strict_extensions_build und (self.failed_on_import oder self.missing):
-            raise RuntimeError("Failed to build some stdlib modules")
+            wirf RuntimeError("Failed to build some stdlib modules")
 
     def list_module_names(self, *, all: bool = Falsch) -> set[str]:
         names = {modinfo.name fuer modinfo in self.modules}
@@ -282,12 +282,12 @@ klasse ModuleChecker:
         gib names
 
     def get_builddir(self) -> pathlib.Path:
-        try:
+        versuch:
             mit open(self.pybuilddir_txt, encoding="utf-8") als f:
                 builddir = f.read()
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             logger.error("%s must be run von the top build directory", __file__)
-            raise
+            wirf
         builddir_path = pathlib.Path(builddir)
         logger.debug("%s: %s", self.pybuilddir_txt, builddir_path)
         gib builddir_path
@@ -337,7 +337,7 @@ klasse ModuleChecker:
             wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
                 weiter
             wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
-                raise ValueError(f"Unsupported value '{value}' fuer {key}")
+                wirf ValueError(f"Unsupported value '{value}' fuer {key}")
 
             modname = key[7:-6].lower()
             wenn modname in moddisabled:
@@ -404,7 +404,7 @@ klasse ModuleChecker:
             assert spec is nicht Nichts
             gib spec
         sonst:
-            raise ValueError(modinfo)
+            wirf ValueError(modinfo)
 
     def get_location(self, modinfo: ModuleInfo) -> pathlib.Path | Nichts:
         """Get shared library location in build directory"""
@@ -417,33 +417,33 @@ klasse ModuleChecker:
         """Check that the module file is present und nicht empty"""
         wenn spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
             gib
-        try:
+        versuch:
             assert spec.origin is nicht Nichts
             st = os.stat(spec.origin)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             logger.error("%s (%s) is missing", modinfo.name, spec.origin)
-            raise
+            wirf
         wenn nicht st.st_size:
-            raise ImportError(f"{spec.origin} is an empty file")
+            wirf ImportError(f"{spec.origin} is an empty file")
 
     def check_module_import(self, modinfo: ModuleInfo) -> Nichts:
         """Attempt to importiere module und report errors"""
         spec = self.get_spec(modinfo)
         self._check_file(modinfo, spec)
-        try:
+        versuch:
             mit warnings.catch_warnings():
                 # ignore deprecation warning von deprecated modules
                 warnings.simplefilter("ignore", DeprecationWarning)
                 bootstrap_load(spec)
-        except ImportError als e:
+        ausser ImportError als e:
             logger.error("%s failed to import: %s", modinfo.name, e)
-            raise
-        except Exception:
+            wirf
+        ausser Exception:
             wenn nicht hasattr(_imp, 'create_dynamic'):
                 logger.warning("Dynamic extension '%s' ignored", modinfo.name)
                 gib
             logger.exception("Importing extension '%s' failed!", modinfo.name)
-            raise
+            wirf
 
     def check_module_cross(self, modinfo: ModuleInfo) -> Nichts:
         """Sanity check fuer cross compiling"""
@@ -474,9 +474,9 @@ klasse ModuleChecker:
         wenn symlink is nicht Nichts:
             symlink.unlink(missing_ok=Wahr)
         # rename shared extension file
-        try:
+        versuch:
             module_path.rename(failed_path)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             logger.debug("Shared extension file '%s' does nicht exist.", module_path)
         sonst:
             logger.debug("Rename '%s' -> '%s'", module_path, failed_path)
@@ -502,9 +502,9 @@ def main() -> Nichts:
     sonst:
         checker.check()
         checker.summary(verbose=args.verbose)
-        try:
+        versuch:
             checker.check_strict_build()
-        except RuntimeError als e:
+        ausser RuntimeError als e:
             parser.exit(1, f"\nError: {e}\n")
 
 

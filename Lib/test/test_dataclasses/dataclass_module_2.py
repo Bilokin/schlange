@@ -2,7 +2,7 @@
 USING_STRINGS = Falsch
 
 # dataclass_module_2.py und dataclass_module_2_str.py are identical
-# except only the latter uses string annotations.
+# ausser only the latter uses string annotations.
 
 von dataclasses importiere dataclass, InitVar
 von typing importiere ClassVar

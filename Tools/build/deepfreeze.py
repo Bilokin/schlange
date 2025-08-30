@@ -145,10 +145,10 @@ klasse Printer:
     @contextlib.contextmanager
     def indent(self) -> Iterator[Nichts]:
         save_level = self.level
-        try:
+        versuch:
             self.level += 1
             liefere
-        finally:
+        schliesslich:
             self.level = save_level
 
     def write(self, arg: str) -> Nichts:
@@ -395,9 +395,9 @@ klasse Printer:
         gib f"&{name}.ob_base"
 
     def generate_frozenset(self, name: str, fs: frozenset[Any]) -> str:
-        try:
+        versuch:
             fs_sorted = sorted(fs)
-        except TypeError:
+        ausser TypeError:
             # frozen set mit incompatible types, fallback to repr()
             fs_sorted = sorted(fs, key=repr)
         ret = self.generate_tuple(name, tuple(fs_sorted))
@@ -442,7 +442,7 @@ klasse Printer:
         sowenn obj is Nichts:
             gib "Py_Nichts"
         sonst:
-            raise TypeError(
+            wirf TypeError(
                 f"Cannot generate code fuer {type(obj).__name__} object")
         # drucke(f"Cache store {key!r:.40}: {val!r:.40}")
         self.cache[key] = val
@@ -511,9 +511,9 @@ group.add_argument('args', nargs="*", default=(),
 @contextlib.contextmanager
 def report_time(label: str) -> Iterator[Nichts]:
     t0 = time.perf_counter()
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         t1 = time.perf_counter()
     wenn verbose:
         drucke(f"{label}: {t1-t0:.3f} sec")

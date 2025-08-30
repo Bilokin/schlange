@@ -35,12 +35,12 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             self._pipes[2] = Nichts
 
         # Create the child process: set the _proc attribute
-        try:
+        versuch:
             self._start(args=args, shell=shell, stdin=stdin, stdout=stdout,
                         stderr=stderr, bufsize=bufsize, **kwargs)
-        except:
+        ausser:
             self.close()
-            raise
+            wirf
 
         self._pid = self._proc.pid
         self._extra['subprocess'] = self._proc
@@ -85,7 +85,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         gib '<{}>'.format(' '.join(info))
 
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def set_protocol(self, protocol):
         self._protocol = protocol
@@ -121,9 +121,9 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             wenn self._loop.get_debug():
                 logger.warning('Close running child process: kill %r', self)
 
-            try:
+            versuch:
                 self._proc.kill()
-            except (ProcessLookupError, PermissionError):
+            ausser (ProcessLookupError, PermissionError):
                 # the process may have already exited oder may be running setuid
                 pass
 
@@ -148,7 +148,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
 
     def _check_proc(self):
         wenn self._proc is Nichts:
-            raise ProcessLookupError()
+            wirf ProcessLookupError()
 
     wenn sys.platform == 'win32':
         def send_signal(self, signal):
@@ -165,9 +165,9 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
     sonst:
         def send_signal(self, signal):
             self._check_proc()
-            try:
+            versuch:
                 os.kill(self._proc.pid, signal)
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 pass
 
         def terminate(self):
@@ -177,7 +177,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             self.send_signal(signal.SIGKILL)
 
     async def _connect_pipes(self, waiter):
-        try:
+        versuch:
             proc = self._proc
             loop = self._loop
 
@@ -205,9 +205,9 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             fuer callback, data in self._pending_calls:
                 loop.call_soon(callback, *data)
             self._pending_calls = Nichts
-        except (SystemExit, KeyboardInterrupt):
-            raise
-        except BaseException als exc:
+        ausser (SystemExit, KeyboardInterrupt):
+            wirf
+        ausser BaseException als exc:
             wenn waiter is nicht Nichts und nicht waiter.cancelled():
                 waiter.set_exception(exc)
         sonst:
@@ -262,9 +262,9 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             self._call(self._call_connection_lost, Nichts)
 
     def _call_connection_lost(self, exc):
-        try:
+        versuch:
             self._protocol.connection_lost(exc)
-        finally:
+        schliesslich:
             # wake up futures waiting fuer wait()
             fuer waiter in self._exit_waiters:
                 wenn nicht waiter.cancelled():

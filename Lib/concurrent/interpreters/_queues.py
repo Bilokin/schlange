@@ -102,10 +102,10 @@ klasse Queue:
         wenn isinstance(id, int):
             id = int(id)
         sonst:
-            raise TypeError(f'id must be an int, got {id!r}')
-        try:
+            wirf TypeError(f'id must be an int, got {id!r}')
+        versuch:
             self = _known_queues[id]
-        except KeyError:
+        ausser KeyError:
             self = super().__new__(cls)
             self._id = id
             _known_queues[id] = self
@@ -113,13 +113,13 @@ klasse Queue:
         gib self
 
     def __del__(self):
-        try:
+        versuch:
             _queues.release(self._id)
-        except QueueNotFoundError:
+        ausser QueueNotFoundError:
             pass
-        try:
+        versuch:
             del _known_queues[self._id]
-        except KeyError:
+        ausser KeyError:
             pass
 
     def __repr__(self):
@@ -146,18 +146,18 @@ klasse Queue:
 
     @property
     def unbounditems(self):
-        try:
+        versuch:
             _, items = self._unbound
-        except AttributeError:
+        ausser AttributeError:
             op, _ = _queues.get_queue_defaults(self._id)
             _, items = self._set_unbound(op)
         gib items
 
     @property
     def maxsize(self):
-        try:
+        versuch:
             gib self._maxsize
-        except AttributeError:
+        ausser AttributeError:
             self._maxsize = _queues.get_maxsize(self._id)
             gib self._maxsize
 
@@ -195,7 +195,7 @@ klasse Queue:
         queue's default, set mit create_queue(),
         which is usually UNBOUND.
 
-        If "unbounditems" is UNBOUND_ERROR then get() will raise an
+        If "unbounditems" is UNBOUND_ERROR then get() will wirf an
         ItemInterpreterDestroyed exception wenn the original interpreter
         has been destroyed.  This does nicht otherwise affect the queue;
         the next call to put() will work like normal, returning the next
@@ -216,14 +216,14 @@ klasse Queue:
         wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
-                raise ValueError(f'timeout value must be non-negative')
+                wirf ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         waehrend Wahr:
-            try:
+            versuch:
                 _queues.put(self._id, obj, unboundop)
-            except QueueFull als exc:
+            ausser QueueFull als exc:
                 wenn timeout is nicht Nichts und time.time() >= end:
-                    raise  # re-raise
+                    wirf  # re-raise
                 time.sleep(_delay)
             sonst:
                 breche
@@ -249,14 +249,14 @@ klasse Queue:
         wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
-                raise ValueError(f'timeout value must be non-negative')
+                wirf ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         waehrend Wahr:
-            try:
+            versuch:
                 obj, unboundop = _queues.get(self._id)
-            except QueueEmpty als exc:
+            ausser QueueEmpty als exc:
                 wenn timeout is nicht Nichts und time.time() >= end:
-                    raise  # re-raise
+                    wirf  # re-raise
                 time.sleep(_delay)
             sonst:
                 breche
@@ -268,13 +268,13 @@ klasse Queue:
     def get_nowait(self):
         """Return the next object von the channel.
 
-        If the queue is empty then raise QueueEmpty.  Otherwise this
+        If the queue is empty then wirf QueueEmpty.  Otherwise this
         is the same als get().
         """
-        try:
+        versuch:
             obj, unboundop = _queues.get(self._id)
-        except QueueEmpty als exc:
-            raise  # re-raise
+        ausser QueueEmpty als exc:
+            wirf  # re-raise
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             gib _resolve_unbound(unboundop)

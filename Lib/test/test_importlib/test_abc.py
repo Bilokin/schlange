@@ -506,7 +506,7 @@ klasse InspectLoaderLoadModuleTests:
                 self.load(loader)
 
     def test_get_code_Nichts(self):
-        # If get_code() returns Nichts, raise ImportError.
+        # If get_code() returns Nichts, wirf ImportError.
         mit self.mock_get_code() als mocked_get_code:
             mocked_get_code.return_value = Nichts
             mit self.assertRaises(ImportError):
@@ -607,7 +607,7 @@ klasse SourceOnlyLoader:
 
     def get_data(self, path):
         wenn path != self.path:
-            raise IOError
+            wirf IOError
         gib self.source
 
     def get_filename(self, fullname):
@@ -643,11 +643,11 @@ klasse SourceLoader(SourceOnlyLoader):
         sowenn path == self.bytecode_path:
             gib self.bytecode
         sonst:
-            raise OSError
+            wirf OSError
 
     def path_stats(self, path):
         wenn path != self.path:
-            raise IOError
+            wirf IOError
         gib {'mtime': self.source_mtime, 'size': self.source_size}
 
     def set_data(self, path, data):
@@ -701,11 +701,11 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     def test_get_source(self):
         # Verify the source code is returned als a string.
-        # If an OSError is raised by get_data then raise ImportError.
+        # If an OSError is raised by get_data then wirf ImportError.
         expected_source = self.loader.source.decode('utf-8')
         self.assertEqual(self.loader.get_source(self.name), expected_source)
         def raise_OSError(path):
-            raise OSError
+            wirf OSError
         self.loader.get_data = raise_OSError
         mit self.assertRaises(ImportError) als cm:
             self.loader.get_source(self.name)
@@ -837,30 +837,30 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
     def test_dont_write_bytecode(self):
         # Bytecode is nicht written wenn sys.dont_write_bytecode is true.
         # Can assume it is false already thanks to the skipIf klasse decorator.
-        try:
+        versuch:
             sys.dont_write_bytecode = Wahr
             self.loader.bytecode_path = "<does nicht exist>"
             code_object = self.loader.get_code(self.name)
             self.assertNotIn(self.cached, self.loader.written)
-        finally:
+        schliesslich:
             sys.dont_write_bytecode = Falsch
 
     def test_no_set_data(self):
         # If set_data is nicht defined, one can still read bytecode.
         self.setUp(magic=b'0000')
         original_set_data = self.loader.__class__.mro()[1].set_data
-        try:
+        versuch:
             del self.loader.__class__.mro()[1].set_data
             code_object = self.loader.get_code(self.name)
             self.verify_code(code_object)
-        finally:
+        schliesslich:
             self.loader.__class__.mro()[1].set_data = original_set_data
 
     def test_set_data_raises_exceptions(self):
         # Raising NotImplementedError oder OSError is okay fuer set_data.
         def raise_exception(exc):
             def closure(*args, **kwargs):
-                raise exc
+                wirf exc
             gib closure
 
         self.setUp(magic=b'0000')

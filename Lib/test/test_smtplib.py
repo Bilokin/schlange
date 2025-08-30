@@ -42,9 +42,9 @@ wenn sys.platform == 'darwin':
 def server(evt, buf, serv):
     serv.listen()
     evt.set()
-    try:
+    versuch:
         conn, addr = serv.accept()
-    except TimeoutError:
+    ausser TimeoutError:
         pass
     sonst:
         n = 500
@@ -57,7 +57,7 @@ def server(evt, buf, serv):
             n -= 1
 
         conn.close()
-    finally:
+    schliesslich:
         serv.close()
         evt.set()
 
@@ -109,9 +109,9 @@ klasse GeneralTests:
         self.assertIsNichts(mock_socket.getdefaulttimeout())
         mock_socket.setdefaulttimeout(30)
         self.assertEqual(mock_socket.getdefaulttimeout(), 30)
-        try:
+        versuch:
             client = self.client(HOST, self.port)
-        finally:
+        schliesslich:
             mock_socket.setdefaulttimeout(Nichts)
         self.assertEqual(client.sock.gettimeout(), 30)
         client.close()
@@ -120,9 +120,9 @@ klasse GeneralTests:
         mock_socket.reply_with(b"220 Hola mundo")
         self.assertIsNichts(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        versuch:
             client = self.client(HOST, self.port, timeout=Nichts)
-        finally:
+        schliesslich:
             socket.setdefaulttimeout(Nichts)
         self.assertIsNichts(client.sock.gettimeout())
         client.close()
@@ -173,9 +173,9 @@ klasse LMTPGeneralTests(GeneralTests, unittest.TestCase):
     def testUnixDomainSocketTimeoutDefault(self):
         local_host = '/some/local/lmtp/delivery/program'
         mock_socket.reply_with(b"220 Hello world")
-        try:
+        versuch:
             client = self.client(local_host, self.port)
-        finally:
+        schliesslich:
             mock_socket.setdefaulttimeout(Nichts)
         self.assertIsNichts(client.sock.gettimeout())
         client.close()
@@ -190,7 +190,7 @@ klasse LMTPGeneralTests(GeneralTests, unittest.TestCase):
 def debugging_server(serv, serv_evt, client_evt):
     serv_evt.set()
 
-    try:
+    versuch:
         wenn hasattr(select, 'poll'):
             poll_fun = asyncore.poll2
         sonst:
@@ -208,9 +208,9 @@ def debugging_server(serv, serv_evt, client_evt):
 
             n -= 1
 
-    except TimeoutError:
+    ausser TimeoutError:
         pass
-    finally:
+    schliesslich:
         wenn nicht client_evt.is_set():
             # allow some time fuer the client to read the result
             time.sleep(0.5)
@@ -288,7 +288,7 @@ klasse DebuggingServerTests(unittest.TestCase):
     def testSourceAddress(self):
         # connect
         src_port = socket_helper.find_unused_port()
-        try:
+        versuch:
             smtp = smtplib.SMTP(self.host, self.port, local_hostname='localhost',
                                 timeout=support.LOOPBACK_TIMEOUT,
                                 source_address=(self.host, src_port))
@@ -296,10 +296,10 @@ klasse DebuggingServerTests(unittest.TestCase):
             self.assertEqual(smtp.source_address, (self.host, src_port))
             self.assertEqual(smtp.local_hostname, 'localhost')
             smtp.quit()
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to source port %d" % src_port)
-            raise
+            wirf
 
     def testNOOP(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
@@ -700,7 +700,7 @@ klasse NonConnectingTests(unittest.TestCase):
 
     def testNotConnected(self):
         # Test various operations on an unconnected SMTP object that
-        # should raise exceptions (at present the attempt in SMTP.send
+        # should wirf exceptions (at present the attempt in SMTP.send
         # to reference the nonexistent 'sock' attribute of the SMTP object
         # causes an AttributeError)
         smtp = smtplib.SMTP()
@@ -840,9 +840,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             line = self._emptystring.join(self.received_lines)
             drucke('Data:', repr(line), file=smtpd.DEBUGSTREAM)
             self.received_lines = []
-            try:
+            versuch:
                 self.auth_object(line)
-            except ResponseException als e:
+            ausser ResponseException als e:
                 self.smtp_state = self.COMMAND
                 self.push('%s %s' % (e.smtp_code, e.smtp_error))
             gib
@@ -866,9 +866,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
             gib
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
-        try:
+        versuch:
             self.auth_object = getattr(self, auth_object_name)
-        except AttributeError:
+        ausser AttributeError:
             self.push('504 Command parameter nicht implemented: unsupported '
                       ' authentication mechanism {!r}'.format(auth_object_name))
             gib
@@ -891,9 +891,9 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             self.push('334 ')
         sonst:
             logpass = self._decode_base64(arg)
-            try:
+            versuch:
                 *_, user, password = logpass.split('\0')
-            except ValueError als e:
+            ausser ValueError als e:
                 self.push('535 Splitting response {!r} into user und password'
                           ' failed: {}'.format(logpass, e))
                 gib
@@ -922,17 +922,17 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             self.push('334 {}'.format(sim_cram_md5_challenge))
         sonst:
             logpass = self._decode_base64(arg)
-            try:
+            versuch:
                 user, hashed_pass = logpass.split()
-            except ValueError als e:
+            ausser ValueError als e:
                 self.push('535 Splitting response {!r} into user und password '
                           'failed: {}'.format(logpass, e))
                 gib
             pwd = sim_auth[1].encode('ascii')
             msg = self._decode_base64(sim_cram_md5_challenge).encode('ascii')
-            try:
+            versuch:
                 valid_hashed_pass = hmac.HMAC(pwd, msg, 'md5').hexdigest()
-            except ValueError:
+            ausser ValueError:
                 self.push('504 CRAM-MD5 is nicht supported')
                 gib
             self._authenticated(user, hashed_pass == valid_hashed_pass)
@@ -1002,7 +1002,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             self.push(self.data_response)
 
     def handle_error(self):
-        raise
+        wirf
 
 
 klasse SimSMTPServer(smtpd.SMTPServer):
@@ -1027,7 +1027,7 @@ klasse SimSMTPServer(smtpd.SMTPServer):
         self._extra_features.append(feature)
 
     def handle_error(self):
-        raise
+        wirf
 
 
 # Test various SMTP & ESMTP commands/behaviors that require a simulated server
@@ -1167,13 +1167,13 @@ klasse SMTPSimTests(unittest.TestCase):
             HOST, self.port, local_hostname='localhost',
             timeout=support.LOOPBACK_TIMEOUT
         )
-        try:
+        versuch:
             smtp.user, smtp.password = sim_auth
             smtp.ehlo("test_auth_buggy")
             expect = r"^Server AUTH mechanism infinite loop.*"
             mit self.assertRaisesRegex(smtplib.SMTPException, expect) als cm:
                 smtp.auth("BUGGY", auth_buggy, initial_response_ok=Falsch)
-        finally:
+        schliesslich:
             smtp.close()
 
     @hashlib_helper.requires_hashdigest('md5', openssl=Wahr)
@@ -1230,9 +1230,9 @@ klasse SMTPSimTests(unittest.TestCase):
 
     def test_auth_function(self):
         supported = {'PLAIN', 'LOGIN'}
-        try:
+        versuch:
             hashlib.md5()
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             supported.add('CRAM-MD5')
@@ -1285,7 +1285,7 @@ klasse SMTPSimTests(unittest.TestCase):
     #TODO: add tests fuer correct AUTH method fallback now that the
     #test infrastructure can support it.
 
-    # Issue 17498: make sure _rset does nicht raise SMTPServerDisconnected exception
+    # Issue 17498: make sure _rset does nicht wirf SMTPServerDisconnected exception
     def test__rest_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost',
                             timeout=support.LOOPBACK_TIMEOUT)

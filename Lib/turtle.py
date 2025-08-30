@@ -174,9 +174,9 @@ def config_dict(filename):
         line = line.strip()
         wenn nicht line oder line.startswith("#"):
             weiter
-        try:
+        versuch:
             key, value = line.split("=")
-        except ValueError:
+        ausser ValueError:
             drucke("Bad line in config-file %s:\n%s" % (filename,line))
             weiter
         key = key.strip()
@@ -184,12 +184,12 @@ def config_dict(filename):
         wenn value in ["Wahr", "Falsch", "Nichts", "''", '""']:
             value = eval(value)
         sonst:
-            try:
+            versuch:
                 wenn "." in value:
                     value = float(value)
                 sonst:
                     value = int(value)
-            except ValueError:
+            ausser ValueError:
                 pass # value need nicht be converted
         cfgdict[key] = value
     gib cfgdict
@@ -214,19 +214,19 @@ def readconfig(cfgdict):
         cfgdict1 = config_dict(default_cfg)
     wenn "importconfig" in cfgdict1:
         default_cfg = "turtle_%s.cfg" % cfgdict1["importconfig"]
-    try:
+    versuch:
         head, tail = split(__file__)
         cfg_file2 = join(head, default_cfg)
-    except Exception:
+    ausser Exception:
         cfg_file2 = ""
     wenn isfile(cfg_file2):
         cfgdict2 = config_dict(cfg_file2)
     _CFG.update(cfgdict2)
     _CFG.update(cfgdict1)
 
-try:
+versuch:
     readconfig(_CFG)
-except Exception:
+ausser Exception:
     drucke ("No configfile read, reason unknown")
 
 
@@ -564,10 +564,10 @@ klasse TurtleScreenBase(object):
     def _iscolorstring(self, color):
         """Check wenn the string color is a legal Tkinter color string.
         """
-        try:
+        versuch:
             rgb = self.cv.winfo_rgb(color)
             ok = Wahr
-        except TK.TclError:
+        ausser TK.TclError:
             ok = Falsch
         gib ok
 
@@ -641,11 +641,11 @@ klasse TurtleScreenBase(object):
             self.cv.tag_unbind(item, "<Button%s-Motion>" % num)
         sonst:
             def eventfun(event):
-                try:
+                versuch:
                     x, y = (self.cv.canvasx(event.x)/self.xscale,
                            -self.cv.canvasy(event.y)/self.yscale)
                     fun(x, y)
-                except Exception:
+                ausser Exception:
                     pass
             self.cv.tag_bind(item, "<Button%s-Motion>" % num, eventfun, add)
 
@@ -878,7 +878,7 @@ klasse Shape(object):
         sowenn type_ == "compound":
             data = []
         sonst:
-            raise TurtleGraphicsError("There is no shape type %s" % type_)
+            wirf TurtleGraphicsError("There is no shape type %s" % type_)
         self._data = data
 
     def addcomponent(self, poly, fill, outline=Nichts):
@@ -898,7 +898,7 @@ klasse Shape(object):
         >>> # .. add more components und then use register_shape()
         """
         wenn self._type != "compound":
-            raise TurtleGraphicsError("Cannot add component to %s Shape"
+            wirf TurtleGraphicsError("Cannot add component to %s Shape"
                                                                 % self._type)
         wenn outline is Nichts:
             outline = fill
@@ -1048,7 +1048,7 @@ klasse TurtleScreen(TurtleScreenBase):
             gib self._mode
         mode = mode.lower()
         wenn mode nicht in ["standard", "logo", "world"]:
-            raise TurtleGraphicsError("No turtle-graphics-mode %s" % mode)
+            wirf TurtleGraphicsError("No turtle-graphics-mode %s" % mode)
         self._mode = mode
         wenn mode in ["standard", "logo"]:
             self._setscrollregion(-self.canvwidth//2, -self.canvheight//2,
@@ -1147,15 +1147,15 @@ klasse TurtleScreen(TurtleScreenBase):
             wenn self._iscolorstring(color) oder color == "":
                 gib color
             sonst:
-                raise TurtleGraphicsError("bad color string: %s" % str(color))
-        try:
+                wirf TurtleGraphicsError("bad color string: %s" % str(color))
+        versuch:
             r, g, b = color
-        except (TypeError, ValueError):
-            raise TurtleGraphicsError("bad color arguments: %s" % str(color))
+        ausser (TypeError, ValueError):
+            wirf TurtleGraphicsError("bad color arguments: %s" % str(color))
         wenn self._colormode == 1.0:
             r, g, b = [round(255.0*x) fuer x in (r, g, b)]
         wenn nicht ((0 <= r <= 255) und (0 <= g <= 255) und (0 <= b <= 255)):
-            raise TurtleGraphicsError("bad color sequence: %s" % str(color))
+            wirf TurtleGraphicsError("bad color sequence: %s" % str(color))
         gib "#%02x%02x%02x" % (r, g, b)
 
     def _color(self, cstr):
@@ -1166,7 +1166,7 @@ klasse TurtleScreen(TurtleScreenBase):
         sowenn len(cstr) == 4:
             cl = [16*int(cstr[h], 16) fuer h in cstr[1:]]
         sonst:
-            raise TurtleGraphicsError("bad colorstring: %s" % cstr)
+            wirf TurtleGraphicsError("bad colorstring: %s" % cstr)
         gib tuple(c * self._colormode/255 fuer c in cl)
 
     def colormode(self, cmode=Nichts):
@@ -1291,17 +1291,17 @@ klasse TurtleScreen(TurtleScreenBase):
         ...    turtle.circle(50)
         """
         tracer = self.tracer()
-        try:
+        versuch:
             self.tracer(0)
             liefere
-        finally:
+        schliesslich:
             self.tracer(tracer)
 
     def _incrementudc(self):
         """Increment update counter."""
         wenn nicht TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Wahr
-            raise Terminator
+            wirf Terminator
         wenn self._tracing > 0:
             self._updatecounter += 1
             self._updatecounter %= self._tracing
@@ -1528,17 +1528,17 @@ klasse TurtleScreen(TurtleScreenBase):
         """
         filename = Path(filename)
         wenn nicht filename.parent.exists():
-            raise FileNotFoundError(
+            wirf FileNotFoundError(
                 f"The directory '{filename.parent}' does nicht exist."
                 " Cannot save to it."
             )
         wenn nicht overwrite und filename.exists():
-            raise FileExistsError(
+            wirf FileExistsError(
                 f"The file '{filename}' already exists. To overwrite it use"
                 " the 'overwrite=Wahr' argument of the save function."
             )
         wenn (ext := filename.suffix) nicht in {".ps", ".eps"}:
-            raise ValueError(
+            wirf ValueError(
                 f"Unknown file extension: '{ext}',"
                  " must be one of {'.ps', '.eps'}"
             )
@@ -2596,7 +2596,7 @@ klasse RawTurtle(TPen, TNavigator):
                 self.screen = TurtleScreen(canvas)
                 RawTurtle.screens.append(self.screen)
         sonst:
-            raise TurtleGraphicsError("bad canvas argument %s" % canvas)
+            wirf TurtleGraphicsError("bad canvas argument %s" % canvas)
 
         screen = self.screen
         TNavigator.__init__(self, screen.mode())
@@ -2761,14 +2761,14 @@ klasse RawTurtle(TPen, TNavigator):
         """
         wenn isinstance(args, str):
             gib args
-        try:
+        versuch:
             r, g, b = args
-        except (TypeError, ValueError):
-            raise TurtleGraphicsError("bad color arguments: %s" % str(args))
+        ausser (TypeError, ValueError):
+            wirf TurtleGraphicsError("bad color arguments: %s" % str(args))
         wenn self.screen._colormode == 1.0:
             r, g, b = [round(255.0*x) fuer x in (r, g, b)]
         wenn nicht ((0 <= r <= 255) und (0 <= g <= 255) und (0 <= b <= 255)):
-            raise TurtleGraphicsError("bad color sequence: %s" % str(args))
+            wirf TurtleGraphicsError("bad color sequence: %s" % str(args))
         gib "#%02x%02x%02x" % (r, g, b)
 
     def teleport(self, x=Nichts, y=Nichts, *, fill_gap: bool = Falsch) -> Nichts:
@@ -2882,7 +2882,7 @@ klasse RawTurtle(TPen, TNavigator):
         wenn name is Nichts:
             gib self.turtle.shapeIndex
         wenn nicht name in self.screen.getshapes():
-            raise TurtleGraphicsError("There is no shape named %s" % name)
+            wirf TurtleGraphicsError("There is no shape named %s" % name)
         self.turtle._setshape(name)
         self._update()
 
@@ -2911,7 +2911,7 @@ klasse RawTurtle(TPen, TNavigator):
             stretch_wid, stretch_len = self._stretchfactor
             gib stretch_wid, stretch_len, self._outlinewidth
         wenn stretch_wid == 0 oder stretch_len == 0:
-            raise TurtleGraphicsError("stretch_wid/stretch_len must nicht be zero")
+            wirf TurtleGraphicsError("stretch_wid/stretch_len must nicht be zero")
         wenn stretch_wid is nicht Nichts:
             wenn stretch_len is Nichts:
                 stretchfactor = stretch_wid, stretch_wid
@@ -3032,7 +3032,7 @@ klasse RawTurtle(TPen, TNavigator):
         wenn t21 is nicht Nichts: m21 = t21
         wenn t22 is nicht Nichts: m22 = t22
         wenn t11 * t22 - t12 * t21 == 0:
-            raise TurtleGraphicsError("Bad shape transform matrix: must nicht be singular")
+            wirf TurtleGraphicsError("Bad shape transform matrix: must nicht be singular")
         self._shapetrafo = (m11, m12, m21, m22)
         alfa = math.atan2(-m21, m11) % math.tau
         sa, ca = math.sin(alfa), math.cos(alfa)
@@ -3415,9 +3415,9 @@ klasse RawTurtle(TPen, TNavigator):
         ...     turtle.circle(60)
         """
         self.begin_fill()
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             self.end_fill()
 
     def begin_fill(self):
@@ -3491,14 +3491,14 @@ klasse RawTurtle(TPen, TNavigator):
         wenn self.undobuffer:
             self.undobuffer.push(["seq"])
             self.undobuffer.cumulate = Wahr
-        try:
+        versuch:
             wenn self.resizemode() == 'auto':
                 self.ht()
             self.pendown()
             self.pensize(size)
             self.pencolor(color)
             self.forward(0)
-        finally:
+        schliesslich:
             self.pen(pen)
         wenn self.undobuffer:
             self.undobuffer.cumulate = Falsch
@@ -3559,9 +3559,9 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.forward(100)
         """
         self.begin_poly()
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             self.end_poly()
 
     def begin_poly(self):
@@ -3914,9 +3914,9 @@ klasse _Screen(TurtleScreen):
         self.onclick(exitGracefully)
         wenn _CFG["using_IDLE"]:
             gib
-        try:
+        versuch:
             mainloop()
-        except AttributeError:
+        ausser AttributeError:
             exit(0)
 
 klasse Turtle(RawTurtle):
@@ -3986,20 +3986,20 @@ def read_docstrings(lang):
     module = __import__(modname)
     docsdict = module.docsdict
     fuer key in docsdict:
-        try:
+        versuch:
 #            eval(key).im_func.__doc__ = docsdict[key]
             eval(key).__doc__ = docsdict[key]
-        except Exception:
+        ausser Exception:
             drucke("Bad docstring-entry: %s" % key)
 
 _LANGUAGE = _CFG["language"]
 
-try:
+versuch:
     wenn _LANGUAGE != "english":
         read_docstrings(_LANGUAGE)
-except ImportError:
+ausser ImportError:
     drucke("Cannot find docsdict for", _LANGUAGE)
-except Exception:
+ausser Exception:
     drucke ("Unknown Error when trying to importiere %s-docstring-dictionary" %
                                                                   _LANGUAGE)
 
@@ -4035,7 +4035,7 @@ def getmethparlist(ob):
             case inspect.Parameter.VAR_KEYWORD:
                 call_args.append(f'**{param.name}')
             case _:
-                raise RuntimeError('Unsupported parameter kind', param.kind)
+                wirf RuntimeError('Unsupported parameter kind', param.kind)
     call_text = f'({', '.join(call_args)})'
 
     gib str(func_sig), call_text
@@ -4073,15 +4073,15 @@ def {name}{paramslist}:
     wenn {obj} is Nichts:
         wenn nicht TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Wahr
-            raise Terminator
+            wirf Terminator
         {obj} = {init}
-    try:
+    versuch:
         gib {obj}.{name}{argslist}
-    except TK.TclError:
+    ausser TK.TclError:
         wenn nicht TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Wahr
-            raise Terminator
-        raise
+            wirf Terminator
+        wirf
 """
 
 def _make_global_funcs(functions, cls, obj, init, docrevise):

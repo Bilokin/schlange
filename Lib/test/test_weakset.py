@@ -372,7 +372,7 @@ klasse TestWeakSet(unittest.TestCase):
         s = WeakSet(items)
         @contextlib.contextmanager
         def testcontext():
-            try:
+            versuch:
                 it = iter(s)
                 # Start iterator
                 yielded = ustr(str(next(it)))
@@ -384,7 +384,7 @@ klasse TestWeakSet(unittest.TestCase):
                     next(it)
                 gc.collect()      # just in case
                 liefere u
-            finally:
+            schliesslich:
                 it = Nichts           # should commit all removals
 
         mit testcontext() als u:
@@ -409,9 +409,9 @@ klasse TestWeakSet(unittest.TestCase):
         s = WeakSet(items)
         del items
         it = iter(s)
-        try:
+        versuch:
             next(it)
-        except StopIteration:
+        ausser StopIteration:
             pass
         gc.collect()
         n1 = len(s)
@@ -435,9 +435,9 @@ klasse TestWeakSet(unittest.TestCase):
             del items
             # All items will be collected at next garbage collection pass
             it = iter(s)
-            try:
+            versuch:
                 next(it)
-            except StopIteration:
+            ausser StopIteration:
                 pass
             n1 = len(s)
             del it

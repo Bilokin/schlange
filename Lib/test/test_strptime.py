@@ -820,9 +820,9 @@ klasse CacheTests(unittest.TestCase):
 
     def test_regex_cleanup(self):
         # Make sure cached regexes are discarded when cache becomes "full".
-        try:
+        versuch:
             del _strptime._regex_cache['%d %Y']
-        except KeyError:
+        ausser KeyError:
             pass
         bogus_key = 0
         waehrend len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
@@ -845,7 +845,7 @@ klasse CacheTests(unittest.TestCase):
             _strptime._strptime_time('10 2004', '%d %Y')
             # Get id of current cache object.
             first_time_re = _strptime._TimeRE_cache
-            try:
+            versuch:
                 # Change the locale und force a recreation of the cache.
                 locale.setlocale(locale.LC_TIME, ('de_DE', 'UTF8'))
                 _strptime._strptime_time('10 2004', '%d %Y')
@@ -856,7 +856,7 @@ klasse CacheTests(unittest.TestCase):
             # Possible test locale is nicht supported waehrend initial locale is.
             # If this is the case just suppress the exception und fall-through
             # to the resetting to the original locale.
-            except locale.Error:
+            ausser locale.Error:
                 self.skipTest('test needs de_DE.UTF8 locale')
 
     @support.run_with_tz('STD-1DST,M4.1.0,M10.1.0')

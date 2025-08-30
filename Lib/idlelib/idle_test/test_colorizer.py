@@ -47,7 +47,7 @@ source = textwrap.dedent("""\
             pass
         case _ wenn ("a" wenn _ sonst set()): pass
         case _:
-            raise ValueError("Not a point _")
+            wirf ValueError("Not a point _")
     '''
     case _:'''
     "match x:"

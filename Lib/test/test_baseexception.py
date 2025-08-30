@@ -20,20 +20,20 @@ klasse ExceptionClassTests(unittest.TestCase):
         # Make sure the inheritance hierarchy matches the documentation
         exc_set = set()
         fuer object_ in builtins.__dict__.values():
-            try:
+            versuch:
                 wenn issubclass(object_, BaseException):
                     exc_set.add(object_.__name__)
-            except TypeError:
+            ausser TypeError:
                 pass
 
         inheritance_tree = open(
                 os.path.join(os.path.split(__file__)[0], 'exception_hierarchy.txt'),
                 encoding="utf-8")
-        try:
+        versuch:
             superclass_name = inheritance_tree.readline().rstrip()
-            try:
+            versuch:
                 last_exc = getattr(builtins, superclass_name)
-            except AttributeError:
+            ausser AttributeError:
                 self.fail("base klasse %s nicht a built-in" % superclass_name)
             self.assertIn(superclass_name, exc_set,
                           '%s nicht found' % superclass_name)
@@ -54,9 +54,9 @@ klasse ExceptionClassTests(unittest.TestCase):
                 wenn '[' in exc_name:
                     left_bracket = exc_name.index('[')
                     exc_name = exc_name[:left_bracket-1]  # cover space
-                try:
+                versuch:
                     exc = getattr(builtins, exc_name)
-                except AttributeError:
+                ausser AttributeError:
                     self.fail("%s nicht a built-in exception" % exc_name)
                 wenn last_depth < depth:
                     superclasses.append((last_depth, last_exc))
@@ -66,15 +66,15 @@ klasse ExceptionClassTests(unittest.TestCase):
                 self.assertIsSubclass(exc, superclasses[-1][1],
                 "%s is nicht a subclass of %s" % (exc.__name__,
                     superclasses[-1][1].__name__))
-                try:  # Some exceptions require arguments; just skip them
+                versuch:  # Some exceptions require arguments; just skip them
                     self.verify_instance_interface(exc())
-                except TypeError:
+                ausser TypeError:
                     pass
                 self.assertIn(exc_name, exc_set)
                 exc_set.discard(exc_name)
                 last_exc = exc
                 last_depth = depth
-        finally:
+        schliesslich:
             inheritance_tree.close()
 
         # Underscore-prefixed (private) exceptions don't need to be documented
@@ -146,37 +146,37 @@ klasse UsageTests(unittest.TestCase):
 
     def raise_fails(self, object_):
         """Make sure that raising 'object_' triggers a TypeError."""
-        try:
-            raise object_
-        except TypeError:
+        versuch:
+            wirf object_
+        ausser TypeError:
             gib  # What is expected.
         self.fail("TypeError expected fuer raising %s" % type(object_))
 
     def catch_fails(self, object_):
-        """Catching 'object_' should raise a TypeError."""
-        try:
-            try:
-                raise Exception
-            except object_:
+        """Catching 'object_' should wirf a TypeError."""
+        versuch:
+            versuch:
+                wirf Exception
+            ausser object_:
                 pass
-        except TypeError:
+        ausser TypeError:
             pass
-        except Exception:
+        ausser Exception:
             self.fail("TypeError expected when catching %s" % type(object_))
 
-        try:
-            try:
-                raise Exception
-            except (object_,):
+        versuch:
+            versuch:
+                wirf Exception
+            ausser (object_,):
                 pass
-        except TypeError:
+        ausser TypeError:
             gib
-        except Exception:
+        ausser Exception:
             self.fail("TypeError expected when catching %s als specified in a "
                         "tuple" % type(object_))
 
     def test_raise_new_style_non_exception(self):
-        # You cannot raise a new-style klasse that does nicht inherit from
+        # You cannot wirf a new-style klasse that does nicht inherit from
         # BaseException; the ability was nicht possible until BaseException's
         # introduction so no need to support new-style objects that do not
         # inherit von it.

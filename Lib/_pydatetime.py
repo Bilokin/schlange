@@ -177,10 +177,10 @@ def _format_time(hh, mm, ss, us, timespec='auto'):
         timespec = 'microseconds' wenn us sonst 'seconds'
     sowenn timespec == 'milliseconds':
         us //= 1000
-    try:
+    versuch:
         fmt = specs[timespec]
-    except KeyError:
-        raise ValueError('Unknown timespec value')
+    ausser KeyError:
+        wirf ValueError('Unknown timespec value')
     sonst:
         gib fmt.format(hh, mm, ss, us)
 
@@ -206,10 +206,10 @@ _normalize_century = Nichts
 def _need_normalize_century():
     global _normalize_century
     wenn _normalize_century is Nichts:
-        try:
+        versuch:
             _normalize_century = (
                 _time.strftime("%Y", (99, 1, 1, 0, 0, 0, 0, 1, 0)) != "0099")
-        except ValueError:
+        ausser ValueError:
             _normalize_century = Wahr
     gib _normalize_century
 
@@ -311,10 +311,10 @@ def _find_isoformat_datetime_separator(dtstr):
     wenn dtstr[4] == date_separator:
         wenn dtstr[5] == week_indicator:
             wenn len_dtstr < 8:
-                raise ValueError("Invalid ISO string")
+                wirf ValueError("Invalid ISO string")
             wenn len_dtstr > 8 und dtstr[8] == date_separator:
                 wenn len_dtstr == 9:
-                    raise ValueError("Invalid ISO string")
+                    wirf ValueError("Invalid ISO string")
                 wenn len_dtstr > 10 und _is_ascii_digit(dtstr[10]):
                     # This is als far als we need to resolve the ambiguity for
                     # the moment - wenn we have YYYY-Www-##, the separator is
@@ -372,7 +372,7 @@ def _parse_isoformat_date(dtstr):
         dayno = 1
         wenn len(dtstr) > pos:
             wenn (dtstr[pos:pos + 1] == '-') != has_sep:
-                raise ValueError("Inconsistent use of dash separator")
+                wirf ValueError("Inconsistent use of dash separator")
 
             pos += has_sep
 
@@ -383,7 +383,7 @@ def _parse_isoformat_date(dtstr):
         month = int(dtstr[pos:pos + 2])
         pos += 2
         wenn (dtstr[pos:pos + 1] == "-") != has_sep:
-            raise ValueError("Inconsistent use of dash separator")
+            wirf ValueError("Inconsistent use of dash separator")
 
         pos += has_sep
         day = int(dtstr[pos:pos + 2])
@@ -402,7 +402,7 @@ def _parse_hh_mm_ss_ff(tstr):
     pos = 0
     fuer comp in range(0, 3):
         wenn (len_str - pos) < 2:
-            raise ValueError("Incomplete time component")
+            wirf ValueError("Incomplete time component")
 
         time_comps[comp] = int(tstr[pos:pos+2])
 
@@ -416,17 +416,17 @@ def _parse_hh_mm_ss_ff(tstr):
             breche
 
         wenn has_sep und next_char != ':':
-            raise ValueError("Invalid time separator: %c" % next_char)
+            wirf ValueError("Invalid time separator: %c" % next_char)
 
         pos += has_sep
 
     wenn pos < len_str:
         wenn tstr[pos] nicht in '.,':
-            raise ValueError("Invalid microsecond separator")
+            wirf ValueError("Invalid microsecond separator")
         sonst:
             pos += 1
             wenn nicht all(map(_is_ascii_digit, tstr[pos:])):
-                raise ValueError("Non-digit values in fraction")
+                wirf ValueError("Non-digit values in fraction")
 
             len_remainder = len_str - pos
 
@@ -445,7 +445,7 @@ def _parse_isoformat_time(tstr):
     # Format supported is HH[:MM[:SS[.fff[fff]]]][+HH:MM[:SS[.ffffff]]]
     len_str = len(tstr)
     wenn len_str < 2:
-        raise ValueError("Isoformat time too short")
+        wirf ValueError("Isoformat time too short")
 
     # This is equivalent to re.search('[+-Z]', tstr), but faster
     tz_pos = (tstr.find('-') + 1 oder tstr.find('+') + 1 oder tstr.find('Z') + 1)
@@ -481,7 +481,7 @@ def _parse_isoformat_time(tstr):
         # HH:MM:SS.f+         len: 10+
 
         wenn len(tzstr) in (0, 1, 3) oder tstr[tz_pos-1] == 'Z':
-            raise ValueError("Malformed time zone string")
+            wirf ValueError("Malformed time zone string")
 
         tz_comps = _parse_hh_mm_ss_ff(tzstr)
 
@@ -490,13 +490,13 @@ def _parse_isoformat_time(tstr):
         sonst:
             tzsign = -1 wenn tstr[tz_pos - 1] == '-' sonst 1
 
-            try:
+            versuch:
                 # This function is intended to validate datetimes, but because
                 # we restrict time zones to ±24h, it serves here als well.
                 _check_time_fields(hour=tz_comps[0], minute=tz_comps[1],
                                    second=tz_comps[2], microsecond=tz_comps[3],
                                    fold=0)
-            except ValueError als e:
+            ausser ValueError als e:
                 error_from_tz = e
             sonst:
                 td = timedelta(hours=tz_comps[0], minutes=tz_comps[1],
@@ -511,7 +511,7 @@ def _parse_isoformat_time(tstr):
 def _isoweek_to_gregorian(year, week, day):
     # Year is bounded this way because 9999-12-31 is (9999, 52, 5)
     wenn nicht MINYEAR <= year <= MAXYEAR:
-        raise ValueError(f"year must be in {MINYEAR}..{MAXYEAR}, nicht {year}")
+        wirf ValueError(f"year must be in {MINYEAR}..{MAXYEAR}, nicht {year}")
 
     wenn nicht 0 < week < 53:
         out_of_range = Wahr
@@ -525,10 +525,10 @@ def _isoweek_to_gregorian(year, week, day):
                 out_of_range = Falsch
 
         wenn out_of_range:
-            raise ValueError(f"Invalid week: {week}")
+            wirf ValueError(f"Invalid week: {week}")
 
     wenn nicht 0 < day < 8:
-        raise ValueError(f"Invalid weekday: {day} (range is [1, 7])")
+        wirf ValueError(f"Invalid weekday: {day} (range is [1, 7])")
 
     # Now compute the offset von (Y, 1, 1) in days:
     day_offset = (week - 1) * 7 + (day - 1)
@@ -540,10 +540,10 @@ def _isoweek_to_gregorian(year, week, day):
     gib _ord2ymd(ord_day)
 
 
-# Just raise TypeError wenn the arg isn't Nichts oder a string.
+# Just wirf TypeError wenn the arg isn't Nichts oder a string.
 def _check_tzname(name):
     wenn name is nicht Nichts und nicht isinstance(name, str):
-        raise TypeError("tzinfo.tzname() must gib Nichts oder string, "
+        wirf TypeError("tzinfo.tzname() must gib Nichts oder string, "
                         f"not {type(name).__name__!r}")
 
 # name is the offset-producing method, "utcoffset" oder "dst".
@@ -557,10 +557,10 @@ def _check_utc_offset(name, offset):
     wenn offset is Nichts:
         gib
     wenn nicht isinstance(offset, timedelta):
-        raise TypeError(f"tzinfo.{name}() must gib Nichts "
+        wirf TypeError(f"tzinfo.{name}() must gib Nichts "
                         f"or timedelta, nicht {type(offset).__name__!r}")
     wenn nicht -timedelta(1) < offset < timedelta(1):
-        raise ValueError("offset must be a timedelta "
+        wirf ValueError("offset must be a timedelta "
                          "strictly between -timedelta(hours=24) und "
                          f"timedelta(hours=24), nicht {offset!r}")
 
@@ -569,12 +569,12 @@ def _check_date_fields(year, month, day):
     month = _index(month)
     day = _index(day)
     wenn nicht MINYEAR <= year <= MAXYEAR:
-        raise ValueError(f"year must be in {MINYEAR}..{MAXYEAR}, nicht {year}")
+        wirf ValueError(f"year must be in {MINYEAR}..{MAXYEAR}, nicht {year}")
     wenn nicht 1 <= month <= 12:
-        raise ValueError(f"month must be in 1..12, nicht {month}")
+        wirf ValueError(f"month must be in 1..12, nicht {month}")
     dim = _days_in_month(year, month)
     wenn nicht 1 <= day <= dim:
-        raise ValueError(f"day {day} must be in range 1..{dim} fuer month {month} in year {year}")
+        wirf ValueError(f"day {day} must be in range 1..{dim} fuer month {month} in year {year}")
     gib year, month, day
 
 def _check_time_fields(hour, minute, second, microsecond, fold):
@@ -583,20 +583,20 @@ def _check_time_fields(hour, minute, second, microsecond, fold):
     second = _index(second)
     microsecond = _index(microsecond)
     wenn nicht 0 <= hour <= 23:
-        raise ValueError(f"hour must be in 0..23, nicht {hour}")
+        wirf ValueError(f"hour must be in 0..23, nicht {hour}")
     wenn nicht 0 <= minute <= 59:
-        raise ValueError(f"minute must be in 0..59, nicht {minute}")
+        wirf ValueError(f"minute must be in 0..59, nicht {minute}")
     wenn nicht 0 <= second <= 59:
-        raise ValueError(f"second must be in 0..59, nicht {second}")
+        wirf ValueError(f"second must be in 0..59, nicht {second}")
     wenn nicht 0 <= microsecond <= 999999:
-        raise ValueError(f"microsecond must be in 0..999999, nicht {microsecond}")
+        wirf ValueError(f"microsecond must be in 0..999999, nicht {microsecond}")
     wenn fold nicht in (0, 1):
-        raise ValueError(f"fold must be either 0 oder 1, nicht {fold}")
+        wirf ValueError(f"fold must be either 0 oder 1, nicht {fold}")
     gib hour, minute, second, microsecond, fold
 
 def _check_tzinfo_arg(tz):
     wenn tz is nicht Nichts und nicht isinstance(tz, tzinfo):
-        raise TypeError(
+        wirf TypeError(
             "tzinfo argument must be Nichts oder of a tzinfo subclass, "
             f"not {type(tz).__name__!r}"
         )
@@ -663,7 +663,7 @@ klasse timedelta:
             ("weeks", weeks)
         ):
             wenn nicht isinstance(value, (int, float)):
-                raise TypeError(
+                wirf TypeError(
                     f"unsupported type fuer timedelta {name} component: {type(value).__name__}"
                 )
 
@@ -747,7 +747,7 @@ klasse timedelta:
         assert isinstance(us, int) und 0 <= us < 1000000
 
         wenn abs(d) > 999999999:
-            raise OverflowError("timedelta # of days is too large: %d" % d)
+            wirf OverflowError("timedelta # of days is too large: %d" % d)
 
         self = object.__new__(cls)
         self._days = d
@@ -999,11 +999,11 @@ klasse date:
             1 <= ord(year[2:3]) <= 12):
             # Pickle support
             wenn isinstance(year, str):
-                try:
+                versuch:
                     year = year.encode('latin1')
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    wirf ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a date object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -1025,7 +1025,7 @@ klasse date:
     def fromtimestamp(cls, t):
         "Construct a date von a POSIX timestamp (like time.time())."
         wenn t is Nichts:
-            raise TypeError("'NoneType' object cannot be interpreted als an integer")
+            wirf TypeError("'NoneType' object cannot be interpreted als an integer")
         y, m, d, hh, mm, ss, weekday, jday, dst = _time.localtime(t)
         gib cls(y, m, d)
 
@@ -1050,18 +1050,18 @@ klasse date:
         """Construct a date von a string in ISO 8601 format."""
 
         wenn nicht isinstance(date_string, str):
-            raise TypeError('Argument must be a str')
+            wirf TypeError('Argument must be a str')
 
         wenn nicht date_string.isascii():
-            raise ValueError('Argument must be an ASCII str')
+            wirf ValueError('Argument must be an ASCII str')
 
         wenn len(date_string) nicht in (7, 8, 10):
-            raise ValueError(f'Invalid isoformat string: {date_string!r}')
+            wirf ValueError(f'Invalid isoformat string: {date_string!r}')
 
-        try:
+        versuch:
             gib cls(*_parse_isoformat_date(date_string))
-        except Exception:
-            raise ValueError(f'Invalid isoformat string: {date_string!r}')
+        ausser Exception:
+            wirf ValueError(f'Invalid isoformat string: {date_string!r}')
 
     @classmethod
     def fromisocalendar(cls, year, week, day):
@@ -1114,7 +1114,7 @@ klasse date:
 
     def __format__(self, fmt):
         wenn nicht isinstance(fmt, str):
-            raise TypeError("must be str, nicht %s" % type(fmt).__name__)
+            wirf TypeError("must be str, nicht %s" % type(fmt).__name__)
         wenn len(fmt) != 0:
             gib self.strftime(fmt)
         gib str(self)
@@ -1224,7 +1224,7 @@ klasse date:
             o = self.toordinal() + other.days
             wenn 0 < o <= _MAXORDINAL:
                 gib type(self).fromordinal(o)
-            raise OverflowError("result out of range")
+            wirf OverflowError("result out of range")
         gib NotImplemented
 
     __radd__ = __add__
@@ -1307,11 +1307,11 @@ klasse tzinfo:
 
     def tzname(self, dt):
         "datetime -> string name of time zone."
-        raise NotImplementedError("tzinfo subclass must override tzname()")
+        wirf NotImplementedError("tzinfo subclass must override tzname()")
 
     def utcoffset(self, dt):
         "datetime -> timedelta, positive fuer east of UTC, negative fuer west of UTC"
-        raise NotImplementedError("tzinfo subclass must override utcoffset()")
+        wirf NotImplementedError("tzinfo subclass must override utcoffset()")
 
     def dst(self, dt):
         """datetime -> DST offset als timedelta, positive fuer east of UTC.
@@ -1319,32 +1319,32 @@ klasse tzinfo:
         Return 0 wenn DST nicht in effect.  utcoffset() must include the DST
         offset.
         """
-        raise NotImplementedError("tzinfo subclass must override dst()")
+        wirf NotImplementedError("tzinfo subclass must override dst()")
 
     def fromutc(self, dt):
         "datetime in UTC -> datetime in local time."
 
         wenn nicht isinstance(dt, datetime):
-            raise TypeError("fromutc() requires a datetime argument")
+            wirf TypeError("fromutc() requires a datetime argument")
         wenn dt.tzinfo is nicht self:
-            raise ValueError("dt.tzinfo is nicht self")
+            wirf ValueError("dt.tzinfo is nicht self")
 
         dtoff = dt.utcoffset()
         wenn dtoff is Nichts:
-            raise ValueError("fromutc() requires a non-Nichts utcoffset() "
+            wirf ValueError("fromutc() requires a non-Nichts utcoffset() "
                              "result")
 
         # See the long comment block at the end of this file fuer an
         # explanation of this algorithm.
         dtdst = dt.dst()
         wenn dtdst is Nichts:
-            raise ValueError("fromutc() requires a non-Nichts dst() result")
+            wirf ValueError("fromutc() requires a non-Nichts dst() result")
         delta = dtoff - dtdst
         wenn delta:
             dt += delta
             dtdst = dt.dst()
             wenn dtdst is Nichts:
-                raise ValueError("fromutc(): dt.dst gave inconsistent "
+                wirf ValueError("fromutc(): dt.dst gave inconsistent "
                                  "results; cannot convert")
         gib dt + dtdst
 
@@ -1430,11 +1430,11 @@ klasse time:
             ord(hour[0:1])&0x7F < 24):
             # Pickle support
             wenn isinstance(hour, str):
-                try:
+                versuch:
                     hour = hour.encode('latin1')
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    wirf ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a time object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -1547,7 +1547,7 @@ klasse time:
             wenn allow_mixed:
                 gib 2 # arbitrary non-zero value
             sonst:
-                raise TypeError("cannot compare naive und aware times")
+                wirf TypeError("cannot compare naive und aware times")
         myhhmm = self._hour * 60 + self._minute - myoff//timedelta(minutes=1)
         othhmm = other._hour * 60 + other._minute - otoff//timedelta(minutes=1)
         gib _cmp((myhhmm, self._second, self._microsecond),
@@ -1623,25 +1623,25 @@ klasse time:
     def fromisoformat(cls, time_string):
         """Construct a time von a string in one of the ISO 8601 formats."""
         wenn nicht isinstance(time_string, str):
-            raise TypeError('fromisoformat: argument must be str')
+            wirf TypeError('fromisoformat: argument must be str')
 
         # The spec actually requires that time-only ISO 8601 strings start with
         # T, but the extended format allows this to be omitted als long als there
         # is no ambiguity mit date strings.
         time_string = time_string.removeprefix('T')
 
-        try:
+        versuch:
             time_components, _, error_from_components, error_from_tz = (
                 _parse_isoformat_time(time_string)
             )
-        except ValueError:
-            raise ValueError(
+        ausser ValueError:
+            wirf ValueError(
                 f'Invalid isoformat string: {time_string!r}') von Nichts
         sonst:
             wenn error_from_tz:
-                raise error_from_tz
+                wirf error_from_tz
             wenn error_from_components:
-                raise ValueError(
+                wirf ValueError(
                     "Minute, second, und microsecond must be 0 when hour is 24"
                 )
 
@@ -1652,7 +1652,7 @@ klasse time:
         to underlying strftime should nicht be used.
         """
         # The year must be >= 1000 sonst Python's strftime implementation
-        # can raise a bogus exception.
+        # can wirf a bogus exception.
         timetuple = (1900, 1, 1,
                      self._hour, self._minute, self._second,
                      0, 1, -1)
@@ -1660,7 +1660,7 @@ klasse time:
 
     def __format__(self, fmt):
         wenn nicht isinstance(fmt, str):
-            raise TypeError("must be str, nicht %s" % type(fmt).__name__)
+            wirf TypeError("must be str, nicht %s" % type(fmt).__name__)
         wenn len(fmt) != 0:
             gib self.strftime(fmt)
         gib str(self)
@@ -1740,7 +1740,7 @@ klasse time:
 
     def __setstate(self, string, tzinfo):
         wenn tzinfo is nicht Nichts und nicht isinstance(tzinfo, _tzinfo_class):
-            raise TypeError("bad tzinfo state arg")
+            wirf TypeError("bad tzinfo state arg")
         h, self._minute, self._second, us1, us2, us3 = string
         wenn h > 127:
             self._fold = 1
@@ -1778,11 +1778,11 @@ klasse datetime(date):
             1 <= ord(year[2:3])&0x7F <= 12):
             # Pickle support
             wenn isinstance(year, str):
-                try:
+                versuch:
                     year = bytes(year, 'latin1')
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    wirf ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a datetime object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -1926,9 +1926,9 @@ klasse datetime(date):
     def combine(cls, date, time, tzinfo=Wahr):
         "Construct a datetime von a given date und a given time."
         wenn nicht isinstance(date, _date_class):
-            raise TypeError("date argument must be a date instance")
+            wirf TypeError("date argument must be a date instance")
         wenn nicht isinstance(time, _time_class):
-            raise TypeError("time argument must be a time instance")
+            wirf TypeError("time argument must be a time instance")
         wenn tzinfo is Wahr:
             tzinfo = time.tzinfo
         gib cls(date.year, date.month, date.day,
@@ -1939,36 +1939,36 @@ klasse datetime(date):
     def fromisoformat(cls, date_string):
         """Construct a datetime von a string in one of the ISO 8601 formats."""
         wenn nicht isinstance(date_string, str):
-            raise TypeError('fromisoformat: argument must be str')
+            wirf TypeError('fromisoformat: argument must be str')
 
         wenn len(date_string) < 7:
-            raise ValueError(f'Invalid isoformat string: {date_string!r}')
+            wirf ValueError(f'Invalid isoformat string: {date_string!r}')
 
         # Split this at the separator
-        try:
+        versuch:
             separator_location = _find_isoformat_datetime_separator(date_string)
             dstr = date_string[0:separator_location]
             tstr = date_string[(separator_location+1):]
 
             date_components = _parse_isoformat_date(dstr)
-        except ValueError:
-            raise ValueError(
+        ausser ValueError:
+            wirf ValueError(
                 f'Invalid isoformat string: {date_string!r}') von Nichts
 
         wenn tstr:
-            try:
+            versuch:
                 (time_components,
                  became_next_day,
                  error_from_components,
                  error_from_tz) = _parse_isoformat_time(tstr)
-            except ValueError:
-                raise ValueError(
+            ausser ValueError:
+                wirf ValueError(
                     f'Invalid isoformat string: {date_string!r}') von Nichts
             sonst:
                 wenn error_from_tz:
-                    raise error_from_tz
+                    wirf error_from_tz
                 wenn error_from_components:
-                    raise ValueError("minute, second, und microsecond must be 0 when hour is 24")
+                    wirf ValueError("minute, second, und microsecond must be 0 when hour is 24")
 
                 wenn became_next_day:
                     year, month, day = date_components
@@ -2113,7 +2113,7 @@ klasse datetime(date):
         wenn tz is Nichts:
             tz = self._local_timezone()
         sowenn nicht isinstance(tz, tzinfo):
-            raise TypeError("tz argument must be an instance of tzinfo")
+            wirf TypeError("tz argument must be an instance of tzinfo")
 
         mytz = self.tzinfo
         wenn mytz is Nichts:
@@ -2301,7 +2301,7 @@ klasse datetime(date):
             wenn allow_mixed:
                 gib 2 # arbitrary non-zero value
             sonst:
-                raise TypeError("cannot compare naive und aware datetimes")
+                wirf TypeError("cannot compare naive und aware datetimes")
         # XXX What follows could be done more efficiently...
         diff = self - other     # this will take offsets into account
         wenn diff.days < 0:
@@ -2325,7 +2325,7 @@ klasse datetime(date):
                                       time(hour, minute, second,
                                            delta.microseconds,
                                            tzinfo=self._tzinfo))
-        raise OverflowError("result out of range")
+        wirf OverflowError("result out of range")
 
     __radd__ = __add__
 
@@ -2350,7 +2350,7 @@ klasse datetime(date):
         wenn myoff == otoff:
             gib base
         wenn myoff is Nichts oder otoff is Nichts:
-            raise TypeError("cannot mix naive und timezone-aware time")
+            wirf TypeError("cannot mix naive und timezone-aware time")
         gib base + otoff - myoff
 
     def __hash__(self):
@@ -2387,7 +2387,7 @@ klasse datetime(date):
 
     def __setstate(self, string, tzinfo):
         wenn tzinfo is nicht Nichts und nicht isinstance(tzinfo, _tzinfo_class):
-            raise TypeError("bad tzinfo state arg")
+            wirf TypeError("bad tzinfo state arg")
         (yhi, ylo, m, self._day, self._hour,
          self._minute, self._second, us1, us2, us3) = string
         wenn m > 127:
@@ -2432,21 +2432,21 @@ klasse timezone(tzinfo):
     _Omitted = object()
     def __new__(cls, offset, name=_Omitted):
         wenn nicht isinstance(offset, timedelta):
-            raise TypeError("offset must be a timedelta")
+            wirf TypeError("offset must be a timedelta")
         wenn name is cls._Omitted:
             wenn nicht offset:
                 gib cls.utc
             name = Nichts
         sowenn nicht isinstance(name, str):
-            raise TypeError("name must be a string")
+            wirf TypeError("name must be a string")
         wenn nicht cls._minoffset <= offset <= cls._maxoffset:
-            raise ValueError("offset must be a timedelta "
+            wirf ValueError("offset must be a timedelta "
                              "strictly between -timedelta(hours=24) und "
                              f"timedelta(hours=24), nicht {offset!r}")
         gib cls._create(offset, name)
 
     def __init_subclass__(cls):
-        raise TypeError("type 'datetime.timezone' is nicht an acceptable base type")
+        wirf TypeError("type 'datetime.timezone' is nicht an acceptable base type")
 
     @classmethod
     def _create(cls, offset, name=Nichts):
@@ -2495,7 +2495,7 @@ klasse timezone(tzinfo):
     def utcoffset(self, dt):
         wenn isinstance(dt, datetime) oder dt is Nichts:
             gib self._offset
-        raise TypeError("utcoffset() argument must be a datetime instance"
+        wirf TypeError("utcoffset() argument must be a datetime instance"
                         " oder Nichts")
 
     def tzname(self, dt):
@@ -2503,22 +2503,22 @@ klasse timezone(tzinfo):
             wenn self._name is Nichts:
                 gib self._name_from_offset(self._offset)
             gib self._name
-        raise TypeError("tzname() argument must be a datetime instance"
+        wirf TypeError("tzname() argument must be a datetime instance"
                         " oder Nichts")
 
     def dst(self, dt):
         wenn isinstance(dt, datetime) oder dt is Nichts:
             gib Nichts
-        raise TypeError("dst() argument must be a datetime instance"
+        wirf TypeError("dst() argument must be a datetime instance"
                         " oder Nichts")
 
     def fromutc(self, dt):
         wenn isinstance(dt, datetime):
             wenn dt.tzinfo is nicht self:
-                raise ValueError("fromutc: dt.tzinfo "
+                wirf ValueError("fromutc: dt.tzinfo "
                                  "is nicht self")
             gib dt + self._offset
-        raise TypeError("fromutc() argument must be a datetime instance"
+        wirf TypeError("fromutc() argument must be a datetime instance"
                         " oder Nichts")
 
     _maxoffset = timedelta(hours=24, microseconds=-1)
@@ -2555,9 +2555,9 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
 # Some time zone algebra.  For a datetime x, let
 #     x.n = x stripped of its timezone -- its naive time.
-#     x.o = x.utcoffset(), und assuming that doesn't raise an exception oder
+#     x.o = x.utcoffset(), und assuming that doesn't wirf an exception oder
 #           gib Nichts
-#     x.d = x.dst(), und assuming that doesn't raise an exception oder
+#     x.d = x.dst(), und assuming that doesn't wirf an exception oder
 #           gib Nichts
 #     x.s = x's standard offset, x.o - x.d
 #

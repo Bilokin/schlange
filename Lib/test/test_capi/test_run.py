@@ -105,11 +105,11 @@ klasse CAPITest(unittest.TestCase):
     @unittest.skipIf(os.name == 'nt', 'does nicht work on Windows')
     def test_run_fileexflags_with_undecodable_filename(self):
         run = _testcapi.run_fileexflags
-        try:
+        versuch:
             mit open(TESTFN_UNDECODABLE, 'wb') als fp:
                 fp.write(b'a\n')
             self.addCleanup(unlink, TESTFN_UNDECODABLE)
-        except OSError:
+        ausser OSError:
             self.skipTest('undecodable paths are nicht supported')
         self.assertIsNichts(run(TESTFN_UNDECODABLE, Py_file_input, dict(a=1)))
 

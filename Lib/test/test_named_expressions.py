@@ -671,7 +671,7 @@ spam()"""
         self.assertEqual(ns["a"], 20)
 
     def test_named_expression_variable_reuse_in_comprehensions(self):
-        # The compiler is expected to raise syntax error fuer comprehension
+        # The compiler is expected to wirf syntax error fuer comprehension
         # iteration variables, but should be fine mit rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 
@@ -705,10 +705,10 @@ spam()"""
             global GLOBAL_VAR
             [GLOBAL_VAR := sentinel fuer _ in range(1)]
             self.assertEqual(GLOBAL_VAR, sentinel)
-        try:
+        versuch:
             f()
             self.assertEqual(GLOBAL_VAR, sentinel)
-        finally:
+        schliesslich:
             GLOBAL_VAR = Nichts
 
     def test_named_expression_global_scope_no_global_keyword(self):

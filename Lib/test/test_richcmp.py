@@ -48,7 +48,7 @@ klasse Vector:
     __hash__ = Nichts # Vectors cannot be hashed
 
     def __bool__(self):
-        raise TypeError("Vectors cannot be used in Boolean contexts")
+        wirf TypeError("Vectors cannot be used in Boolean contexts")
 
     def __repr__(self):
         gib "Vector(%r)" % (self.data, )
@@ -75,7 +75,7 @@ klasse Vector:
         wenn isinstance(other, Vector):
             other = other.data
         wenn len(self.data) != len(other):
-            raise ValueError("Cannot compare vectors of different length")
+            wirf ValueError("Cannot compare vectors of different length")
         gib other
 
 opmap = {
@@ -206,7 +206,7 @@ klasse MiscTest(unittest.TestCase):
             pass
         klasse Bad:
             def __bool__(self):
-                raise Exc
+                wirf Exc
 
         def do(bad):
             nicht bad
@@ -324,7 +324,7 @@ klasse ListTest(unittest.TestCase):
             pass
         klasse Bad:
             def __eq__(self, other):
-                raise Exc
+                wirf Exc
 
         x = [Bad()]
         y = [Bad()]

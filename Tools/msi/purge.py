@@ -14,13 +14,13 @@ von urllib.request importiere Request, urlopen
 
 VERSION_RE = re.compile(r'(\d+\.\d+\.\d+)([A-Za-z_]+\d+)?$')
 
-try:
+versuch:
     m = VERSION_RE.match(sys.argv[1])
     wenn nicht m:
         drucke('Invalid version:', sys.argv[1])
         drucke('Expected something like "3.5.1rc1"')
         sys.exit(1)
-except LookupError:
+ausser LookupError:
     drucke('Missing version argument. Expected something like "3.5.1rc1"')
     sys.exit(1)
 

@@ -31,16 +31,16 @@ von _pyrepl.readline importiere (ReadlineAlikeReader, ReadlineConfig,
                               _ReadlineWrapper)
 von _pyrepl.readline importiere multiline_input als readline_multiline_input
 
-try:
+versuch:
     importiere pty
-except ImportError:
+ausser ImportError:
     pty = Nichts
 
 
 klasse ReplTestCase(TestCase):
     def setUp(self):
         wenn nicht has_subprocess_support:
-            raise SkipTest("test module requires subprocess")
+            wirf SkipTest("test module requires subprocess")
 
     def run_repl(
         self,
@@ -57,7 +57,7 @@ klasse ReplTestCase(TestCase):
         wenn cwd is Nichts:
             temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=Wahr)
             cwd = temp_dir.name
-        try:
+        versuch:
             gib self._run_repl(
                 repl_input,
                 env=env,
@@ -67,7 +67,7 @@ klasse ReplTestCase(TestCase):
                 timeout=timeout,
                 exit_on_output=exit_on_output,
             )
-        finally:
+        schliesslich:
             wenn temp_dir is nicht Nichts:
                 temp_dir.cleanup()
 
@@ -92,9 +92,9 @@ klasse ReplTestCase(TestCase):
         wenn cmdline_args is nicht Nichts:
             cmd.extend(cmdline_args)
 
-        try:
+        versuch:
             importiere termios
-        except ModuleNotFoundError:
+        ausser ModuleNotFoundError:
             pass
         sonst:
             term_attr = termios.tcgetattr(slave_fd)
@@ -119,11 +119,11 @@ klasse ReplTestCase(TestCase):
 
         output = []
         waehrend select.select([master_fd], [], [], timeout)[0]:
-            try:
+            versuch:
                 data = os.read(master_fd, 1024).decode("utf-8")
                 wenn nicht data:
                     breche
-            except OSError:
+            ausser OSError:
                 breche
             output.append(data)
             wenn exit_on_output is nicht Nichts:
@@ -138,9 +138,9 @@ klasse ReplTestCase(TestCase):
             self.fail(f"Timeout waehrend waiting fuer output, got: {''.join(output)}")
 
         os.close(master_fd)
-        try:
+        versuch:
             exit_code = process.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
+        ausser subprocess.TimeoutExpired:
             process.kill()
             exit_code = process.wait()
         output = "".join(output)
@@ -629,20 +629,20 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
 
     def test_stdin_is_tty(self):
         # Used during test log analysis to figure out wenn a TTY was available.
-        try:
+        versuch:
             wenn os.isatty(sys.stdin.fileno()):
                 gib
-        except OSError als ose:
+        ausser OSError als ose:
             self.skipTest(f"stdin tty check failed: {ose}")
         sonst:
             self.skipTest("stdin is nicht a tty")
 
     def test_stdout_is_tty(self):
         # Used during test log analysis to figure out wenn a TTY was available.
-        try:
+        versuch:
             wenn os.isatty(sys.stdout.fileno()):
                 gib
-        except OSError als ose:
+        ausser OSError als ose:
             self.skipTest(f"stdout tty check failed: {ose}")
         sonst:
             self.skipTest("stdout is nicht a tty")

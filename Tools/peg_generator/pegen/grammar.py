@@ -39,7 +39,7 @@ klasse Grammar:
         all_rules = {}
         fuer rule in rules:
             wenn rule.name in all_rules:
-                raise GrammarError(f"Repeated rule {rule.name!r}")
+                wirf GrammarError(f"Repeated rule {rule.name!r}")
             all_rules[rule.name] = rule
         self.rules = all_rules
         self.metas = dict(metas)

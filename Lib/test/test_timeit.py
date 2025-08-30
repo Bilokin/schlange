@@ -44,9 +44,9 @@ klasse FakeTimer:
 klasse TestTimeit(unittest.TestCase):
 
     def tearDown(self):
-        try:
+        versuch:
             del timeit._fake_timer
-        except AttributeError:
+        ausser AttributeError:
             pass
 
     def test_reindent_empty(self):
@@ -228,9 +228,9 @@ klasse TestTimeit(unittest.TestCase):
     def test_print_exc(self):
         s = io.StringIO()
         t = timeit.Timer("1/0")
-        try:
+        versuch:
             t.timeit()
-        except:
+        ausser:
             t.print_exc(s)
         self.assert_exc_string(s.getvalue(), 'ZeroDivisionError')
 

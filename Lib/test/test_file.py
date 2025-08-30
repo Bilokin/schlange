@@ -118,15 +118,15 @@ klasse AutoFileTests:
 
         fuer methodname, args in methods:
             method = getattr(self.f, methodname)
-            # should raise on closed file
+            # should wirf on closed file
             self.assertRaises(ValueError, method, *args)
 
         # file is closed, __exit__ shouldn't do anything
         self.assertEqual(self.f.__exit__(Nichts, Nichts, Nichts), Nichts)
         # it must also gib Nichts wenn an exception was given
-        try:
+        versuch:
             1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             self.assertEqual(self.f.__exit__(*sys.exc_info()), Nichts)
 
     def testReadWhenWriting(self):
@@ -148,9 +148,9 @@ klasse OtherFileTests:
         # check invalid mode strings
         self.open(TESTFN, 'wb').close()
         fuer mode in ("", "aU", "wU+", "U+", "+U", "rU+"):
-            try:
+            versuch:
                 f = self.open(TESTFN, mode)
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
                 f.close()
@@ -175,9 +175,9 @@ klasse OtherFileTests:
     def testBadModeArgument(self):
         # verify that we get a sensible error message fuer bad mode argument
         bad_mode = "qwerty"
-        try:
+        versuch:
             f = self.open(TESTFN, bad_mode)
-        except ValueError als msg:
+        ausser ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
                 wenn TESTFN in s oder bad_mode nicht in s:
@@ -189,7 +189,7 @@ klasse OtherFileTests:
             self.fail("no error fuer invalid mode: %s" % bad_mode)
 
     def _checkBufferSize(self, s):
-        try:
+        versuch:
             f = self.open(TESTFN, 'wb', s)
             f.write(str(s).encode("ascii"))
             f.close()
@@ -198,7 +198,7 @@ klasse OtherFileTests:
             d = int(f.read().decode("ascii"))
             f.close()
             f.close()
-        except OSError als msg:
+        ausser OSError als msg:
             self.fail('error setting buffer size %d: %s' % (s, str(msg)))
         self.assertEqual(d, s)
 
@@ -232,7 +232,7 @@ klasse OtherFileTests:
 
         f = self.open(TESTFN, 'wb')
 
-        try:
+        versuch:
             f.write(b'12345678901')   # 11 bytes
             f.close()
 
@@ -251,7 +251,7 @@ klasse OtherFileTests:
             size = os.path.getsize(TESTFN)
             wenn size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
-        finally:
+        schliesslich:
             f.close()
 
     def testIteration(self):
@@ -297,9 +297,9 @@ klasse OtherFileTests:
         fuer i in range(nchunks):
             next(f)
         testline = testlines.pop(0)
-        try:
+        versuch:
             line = f.readline()
-        except ValueError:
+        ausser ValueError:
             self.fail("readline() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn line != testline:
@@ -307,9 +307,9 @@ klasse OtherFileTests:
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
         buf = array("b", b"\x00" * len(testline))
-        try:
+        versuch:
             f.readinto(buf)
-        except ValueError:
+        ausser ValueError:
             self.fail("readinto() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
@@ -318,17 +318,17 @@ klasse OtherFileTests:
                         "failed. Got %r, expected %r" % (line, testline))
 
         testline = testlines.pop(0)
-        try:
+        versuch:
             line = f.read(len(testline))
-        except ValueError:
+        ausser ValueError:
             self.fail("read() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn line != testline:
             self.fail("read() after next() mit empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
-        try:
+        versuch:
             lines = f.readlines()
-        except ValueError:
+        ausser ValueError:
             self.fail("readlines() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn lines != testlines:
@@ -338,17 +338,17 @@ klasse OtherFileTests:
 
         # Reading after iteration hit EOF shouldn't hurt either
         f = self.open(TESTFN, 'rb')
-        try:
+        versuch:
             fuer line in f:
                 pass
-            try:
+            versuch:
                 f.readline()
                 f.readinto(buf)
                 f.read()
                 f.readlines()
-            except ValueError:
+            ausser ValueError:
                 self.fail("read* failed after next() consumed file")
-        finally:
+        schliesslich:
             f.close()
 
 klasse COtherFileTests(OtherFileTests, unittest.TestCase):

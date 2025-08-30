@@ -13,7 +13,7 @@ parser.  It returns when there's nothing more it can do mit the available
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing und returns the root message object.
 
-The other advantage of this parser is that it will never raise a parsing
+The other advantage of this parser is that it will never wirf a parsing
 exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
@@ -33,7 +33,7 @@ NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
 NLCRE_eol = re.compile(r'(\r\n|\r|\n)\z')
 NLCRE_crack = re.compile(r'(\r\n|\r|\n)')
 # RFC 2822 $3.6.8 Optional fields.  ftext is %d33-57 / %d59-126, Any character
-# except controls, SP, und ":".
+# ausser controls, SP, und ":".
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 EMPTYSTRING = ''
 NL = '\n'
@@ -129,7 +129,7 @@ klasse BufferedSubFile(object):
     def __next__(self):
         line = self.readline()
         wenn line == '':
-            raise StopIteration
+            wirf StopIteration
         gib line
 
 
@@ -154,9 +154,9 @@ klasse FeedParser:
                 self._factory = policy.message_factory
         sonst:
             self._factory = _factory
-            try:
+            versuch:
                 _factory(policy=self.policy)
-            except TypeError:
+            ausser TypeError:
                 # Assume this is an old-style factory
                 self._old_style_factory = Wahr
         self._input = BufferedSubFile()
@@ -176,9 +176,9 @@ klasse FeedParser:
         self._call_parse()
 
     def _call_parse(self):
-        try:
+        versuch:
             self._parse()
-        except StopIteration:
+        ausser StopIteration:
             pass
 
     def close(self):
@@ -239,7 +239,7 @@ klasse FeedParser:
         # supposed to see in the body of the message.
         self._parse_headers(headers)
         # Headers-only parsing is a backwards compatibility hack, which was
-        # necessary in the older parser, which could raise errors.  All
+        # necessary in the older parser, which could wirf errors.  All
         # remaining lines in the input are thrown into the message body.
         wenn self._headersonly:
             lines = []

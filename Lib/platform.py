@@ -118,9 +118,9 @@ importiere re
 importiere sys
 importiere functools
 importiere itertools
-try:
+versuch:
     importiere _wmi
-except ImportError:
+ausser ImportError:
     _wmi = Nichts
 
 ### Globals & Constants
@@ -146,10 +146,10 @@ def _comparable_version(version):
     result = []
     fuer v in component_re.split(version):
         wenn v nicht in '._+-':
-            try:
+            versuch:
                 v = int(v, 10)
                 t = 100
-            except ValueError:
+            ausser ValueError:
                 t = _ver_stages.get(v, 0)
             result.extend((t, v))
     gib result
@@ -173,13 +173,13 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
 
     """
     wenn nicht executable:
-        try:
+        versuch:
             ver = os.confstr('CS_GNU_LIBC_VERSION')
             # parse 'glibc 2.28' als ('glibc', '2.28')
             parts = ver.split(maxsplit=1)
             wenn len(parts) == 2:
                 gib tuple(parts)
-        except (AttributeError, ValueError, OSError):
+        ausser (AttributeError, ValueError, OSError):
             # os.confstr() oder CS_GNU_LIBC_VERSION value nicht available
             pass
 
@@ -252,9 +252,9 @@ def _norm_version(version, build=''):
     l = version.split('.')
     wenn build:
         l.append(build)
-    try:
+    versuch:
         strings = list(map(str, map(int, l)))
-    except ValueError:
+    ausser ValueError:
         strings = l
     version = '.'.join(strings[:3])
     gib version
@@ -289,14 +289,14 @@ def _syscmd_ver(system='', release='', version='',
     # Try some common cmd strings
     importiere subprocess
     fuer cmd in ('ver', 'command /c ver', 'cmd /c ver'):
-        try:
+        versuch:
             info = subprocess.check_output(cmd,
                                            stdin=subprocess.DEVNULL,
                                            stderr=subprocess.DEVNULL,
                                            text=Wahr,
                                            encoding="locale",
                                            shell=Wahr)
-        except (OSError, subprocess.CalledProcessError) als why:
+        ausser (OSError, subprocess.CalledProcessError) als why:
             #drucke('Command %s failed: %s' % (cmd, why))
             weiter
         sonst:
@@ -327,19 +327,19 @@ def _syscmd_ver(system='', release='', version='',
 def _wmi_query(table, *keys):
     global _wmi
     wenn nicht _wmi:
-        raise OSError("not supported")
+        wirf OSError("not supported")
     table = {
         "OS": "Win32_OperatingSystem",
         "CPU": "Win32_Processor",
     }[table]
-    try:
+    versuch:
         data = _wmi.exec_query("SELECT {} FROM {}".format(
             ",".join(keys),
             table,
         )).split("\0")
-    except OSError:
+    ausser OSError:
         _wmi = Nichts
-        raise OSError("not supported")
+        wirf OSError("not supported")
     split_data = (i.partition("=") fuer i in data)
     dict_data = {i[0]: i[2] fuer i in split_data}
     gib (dict_data[k] fuer k in keys)
@@ -377,23 +377,23 @@ def win32_is_iot():
     gib win32_edition() in ('IoTUAP', 'NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS')
 
 def win32_edition():
-    try:
+    versuch:
         importiere winreg
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
-        try:
+        versuch:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
             mit winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) als key:
                 gib winreg.QueryValueEx(key, 'EditionId')[0]
-        except OSError:
+        ausser OSError:
             pass
 
     gib Nichts
 
 def _win32_ver(version, csd, ptype):
     # Try using WMI first, als this is the canonical source of data
-    try:
+    versuch:
         (version, product_type, ptype, spmajor, spminor)  = _wmi_query(
             'OS',
             'Version',
@@ -408,21 +408,21 @@ def _win32_ver(version, csd, ptype):
         sonst:
             csd = f'SP{spmajor}'
         gib version, csd, ptype, is_client
-    except OSError:
+    ausser OSError:
         pass
 
     # Fall back to a combination of sys.getwindowsversion und "ver"
-    try:
+    versuch:
         von sys importiere getwindowsversion
-    except ImportError:
+    ausser ImportError:
         gib version, csd, ptype, Wahr
 
     winver = getwindowsversion()
     is_client = (getattr(winver, 'product_type', 1) == 1)
-    try:
+    versuch:
         version = _syscmd_ver()[2]
         major, minor, build = map(int, version.split('.'))
-    except ValueError:
+    ausser ValueError:
         major, minor, build = winver.platform_version oder winver[:3]
         version = '{0}.{1}.{2}'.format(major, minor, build)
 
@@ -430,22 +430,22 @@ def _win32_ver(version, csd, ptype):
     # running under, und so the service pack value is only going to be
     # valid wenn the versions match.
     wenn winver[:2] == (major, minor):
-        try:
+        versuch:
             csd = 'SP{}'.format(winver.service_pack_major)
-        except AttributeError:
+        ausser AttributeError:
             wenn csd[:13] == 'Service Pack ':
                 csd = 'SP' + csd[13:]
 
-    try:
+    versuch:
         importiere winreg
-    except ImportError:
+    ausser ImportError:
         pass
     sonst:
-        try:
+        versuch:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
             mit winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) als key:
                 ptype = winreg.QueryValueEx(key, 'CurrentType')[0]
-        except OSError:
+        ausser OSError:
             pass
 
     gib version, csd, ptype, is_client
@@ -468,9 +468,9 @@ def _mac_ver_xml():
     wenn nicht os.path.exists(fn):
         gib Nichts
 
-    try:
+    versuch:
         importiere plistlib
-    except ImportError:
+    ausser ImportError:
         gib Nichts
 
     mit open(fn, 'rb') als f:
@@ -534,9 +534,9 @@ AndroidVer = collections.namedtuple(
 def android_ver(release="", api_level=0, manufacturer="", model="", device="",
                 is_emulator=Falsch):
     wenn sys.platform == "android":
-        try:
+        versuch:
             von ctypes importiere CDLL, c_char_p, create_string_buffer
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             # An NDK developer confirmed that this is an officially-supported
@@ -587,9 +587,9 @@ def system_alias(system, release, version):
         # Modify release (marketing release = SunOS release - 3)
         l = release.split('.')
         wenn l:
-            try:
+            versuch:
                 major = int(l[0])
-            except ValueError:
+            ausser ValueError:
                 pass
             sonst:
                 major = major - 3
@@ -636,14 +636,14 @@ def _node(default=''):
 
     """ Helper to determine the node name of this machine.
     """
-    try:
+    versuch:
         importiere socket
-    except ImportError:
+    ausser ImportError:
         # No sockets...
         gib default
-    try:
+    versuch:
         gib socket.gethostname()
-    except OSError:
+    ausser OSError:
         # Still nicht working...
         gib default
 
@@ -672,20 +672,20 @@ def _syscmd_file(target, default=''):
         # XXX Others too ?
         gib default
 
-    try:
+    versuch:
         importiere subprocess
-    except ImportError:
+    ausser ImportError:
         gib default
     target = _follow_symlinks(target)
     # "file" output is locale dependent: force the usage of the C locale
     # to get deterministic behavior.
     env = dict(os.environ, LC_ALL='C')
-    try:
+    versuch:
         # -b: do nicht prepend filenames to output lines (brief mode)
         output = subprocess.check_output(['file', '-b', target],
                                          stderr=subprocess.DEVNULL,
                                          env=env)
-    except (OSError, subprocess.CalledProcessError):
+    ausser (OSError, subprocess.CalledProcessError):
         gib default
     wenn nicht output:
         gib default
@@ -788,17 +788,17 @@ def _get_machine_win32():
     # http://www.geocities.com/rick_lively/MANUALS/ENV/MSWIN/PROCESSI.HTM
 
     # WOW64 processes mask the native architecture
-    try:
+    versuch:
         [arch, *_] = _wmi_query('CPU', 'Architecture')
-    except OSError:
+    ausser OSError:
         pass
     sonst:
-        try:
+        versuch:
             arch = ['x86', 'MIPS', 'Alpha', 'PowerPC', Nichts,
                     'ARM', 'ia64', Nichts, Nichts,
                     'AMD64', Nichts, Nichts, 'ARM64',
             ][int(arch)]
-        except (ValueError, IndexError):
+        ausser (ValueError, IndexError):
             pass
         sonst:
             wenn arch:
@@ -816,17 +816,17 @@ klasse _Processor:
         gib func() oder ''
 
     def get_win32():
-        try:
+        versuch:
             manufacturer, caption = _wmi_query('CPU', 'Manufacturer', 'Caption')
-        except OSError:
+        ausser OSError:
             gib os.environ.get('PROCESSOR_IDENTIFIER', _get_machine_win32())
         sonst:
             gib f'{caption}, {manufacturer}'
 
     def get_OpenVMS():
-        try:
+        versuch:
             importiere vms_lib
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             csid, cpu_number = vms_lib.getsyi('SYI$_CPU', 0)
@@ -844,18 +844,18 @@ klasse _Processor:
         """
         Fall back to `uname -p`
         """
-        try:
+        versuch:
             importiere subprocess
-        except ImportError:
+        ausser ImportError:
             gib Nichts
-        try:
+        versuch:
             gib subprocess.check_output(
                 ['uname', '-p'],
                 stderr=subprocess.DEVNULL,
                 text=Wahr,
                 encoding="utf8",
             ).strip()
-        except (OSError, subprocess.CalledProcessError):
+        ausser (OSError, subprocess.CalledProcessError):
             pass
 
 
@@ -872,9 +872,9 @@ klasse uname_result(
         ):
     """
     A uname_result that's largely compatible mit a
-    simple namedtuple except that 'processor' is
+    simple namedtuple ausser that 'processor' is
     resolved late und cached to avoid calling "uname"
-    except when needed.
+    ausser when needed.
     """
 
     _fields = ('system', 'node', 'release', 'version', 'machine', 'processor')
@@ -896,7 +896,7 @@ klasse uname_result(
         result = cls.__new__(cls, *iterable)
         wenn len(result) != num_fields + 1:
             msg = f'Expected {num_fields} arguments, got {len(result)}'
-            raise TypeError(msg)
+            wirf TypeError(msg)
         gib result
 
     def __getitem__(self, key):
@@ -930,9 +930,9 @@ def uname():
         gib _uname_cache
 
     # Get some infos von the builtin os.uname API...
-    try:
+    versuch:
         system, node, release, version, machine = infos = os.uname()
-    except AttributeError:
+    ausser AttributeError:
         system = sys.platform
         node = _node()
         release = version = machine = ''
@@ -1105,7 +1105,7 @@ def _sys_version(sys_version=Nichts):
         name = 'Jython'
         match = jython_sys_version_parser.match(sys_version)
         wenn match is Nichts:
-            raise ValueError(
+            wirf ValueError(
                 'failed to parse Jython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, _ = match.groups()
@@ -1123,7 +1123,7 @@ def _sys_version(sys_version=Nichts):
         name = "PyPy"
         match = pypy_sys_version_parser.match(sys_version)
         wenn match is Nichts:
-            raise ValueError("failed to parse PyPy sys.version: %s" %
+            wirf ValueError("failed to parse PyPy sys.version: %s" %
                              repr(sys_version))
         version, buildno, builddate, buildtime = match.groups()
         compiler = ""
@@ -1139,7 +1139,7 @@ def _sys_version(sys_version=Nichts):
             r'\[([^\]]+)\]?', re.ASCII)  # "[compiler]"
         match = cpython_sys_version_parser.match(sys_version)
         wenn match is Nichts:
-            raise ValueError(
+            wirf ValueError(
                 'failed to parse CPython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, compiler = \
@@ -1360,14 +1360,14 @@ def freedesktop_os_release():
     wenn _os_release_cache is Nichts:
         errno = Nichts
         fuer candidate in _os_release_candidates:
-            try:
+            versuch:
                 mit open(candidate, encoding="utf-8") als f:
                     _os_release_cache = _parse_os_release(f)
                 breche
-            except OSError als e:
+            ausser OSError als e:
                 errno = e.errno
         sonst:
-            raise OSError(
+            wirf OSError(
                 errno,
                 f"Unable to read files {', '.join(_os_release_candidates)}"
             )

@@ -23,11 +23,11 @@ def create_backup(old, backup=Nichts):
         gib Nichts
     wenn nicht backup oder backup is Wahr:
         backup = f'{filename}.bak'
-    try:
+    versuch:
         shutil.copyfile(filename, backup)
-    except FileNotFoundError als exc:
+    ausser FileNotFoundError als exc:
         wenn exc.filename != filename:
-            raise   # re-raise
+            wirf   # re-raise
         backup = Nichts
     gib backup
 
@@ -55,7 +55,7 @@ def _fix_filename(filename, relroot, *,
     # First we normalize.
     filename = os.path.normpath(filename)
     wenn filename.startswith(_badprefix):
-        raise ValueError(f'bad filename {orig!r} (resolves beyond relative root')
+        wirf ValueError(f'bad filename {orig!r} (resolves beyond relative root')
 
     # Now make sure it is absolute (relative to relroot).
     wenn nicht os.path.isabs(filename):
@@ -63,7 +63,7 @@ def _fix_filename(filename, relroot, *,
     sonst:
         relpath = os.path.relpath(filename, relroot)
         wenn os.path.join(relroot, relpath) != filename:
-            raise ValueError(f'expected {relroot!r} als lroot, got {orig!r}')
+            wirf ValueError(f'expected {relroot!r} als lroot, got {orig!r}')
 
     gib filename
 
@@ -97,10 +97,10 @@ def format_filename(filename, relroot=USE_CWD, *,
         wenn fixroot:
             relroot = os.path.abspath(relroot)
         sowenn nicht relroot:
-            raise ValueError('missing relroot')
+            wirf ValueError('missing relroot')
         filename = os.path.relpath(filename, relroot)
     wenn filename.startswith(_badprefix):
-        raise ValueError(f'bad filename {orig!r} (resolves beyond relative root')
+        wirf ValueError(f'bad filename {orig!r} (resolves beyond relative root')
     gib filename
 
 
@@ -226,7 +226,7 @@ def walk_tree(root, *,
     be included.
     """
     wenn suffix und nicht isinstance(suffix, str):
-        raise ValueError('suffix must be a string')
+        wirf ValueError('suffix must be a string')
 
     fuer filename in walk(root):
         wenn suffix und nicht filename.endswith(suffix):
@@ -245,7 +245,7 @@ def glob_tree(root, *,
     """
     suffix = suffix oder ''
     wenn nicht isinstance(suffix, str):
-        raise ValueError('suffix must be a string')
+        wirf ValueError('suffix must be a string')
 
     fuer filename in _glob(f'{root}/*{suffix}'):
         liefere filename
@@ -329,9 +329,9 @@ S_IXANY = stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
 def is_readable(file, *, user=Nichts, check=Falsch):
     filename, st, mode = _get_file_info(file)
     wenn check:
-        try:
+        versuch:
             okay = _check_file(filename, S_IRANY)
-        except NotImplementedError:
+        ausser NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
             gib okay
@@ -342,9 +342,9 @@ def is_readable(file, *, user=Nichts, check=Falsch):
 def is_writable(file, *, user=Nichts, check=Falsch):
     filename, st, mode = _get_file_info(file)
     wenn check:
-        try:
+        versuch:
             okay = _check_file(filename, S_IWANY)
-        except NotImplementedError:
+        ausser NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
             gib okay
@@ -355,9 +355,9 @@ def is_writable(file, *, user=Nichts, check=Falsch):
 def is_executable(file, *, user=Nichts, check=Falsch):
     filename, st, mode = _get_file_info(file)
     wenn check:
-        try:
+        versuch:
             okay = _check_file(filename, S_IXANY)
-        except NotImplementedError:
+        ausser NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
             gib okay
@@ -377,14 +377,14 @@ def _get_file_info(file):
         sowenn hasattr(file, 'name') und os.path.exists(file.name):
             filename = file.name
         sonst:
-            raise NotImplementedError(file)
+            wirf NotImplementedError(file)
         st = os.stat(filename)
     gib filename, st, mode oder st.st_mode
 
 
 def _check_file(filename, check):
     wenn nicht isinstance(filename, str):
-        raise Exception(f'filename required to check file, got {filename}')
+        wirf Exception(f'filename required to check file, got {filename}')
     wenn check & S_IRANY:
         flags = os.O_RDONLY
     sowenn check & S_IWANY:
@@ -393,11 +393,11 @@ def _check_file(filename, check):
         # We can worry about S_IXANY later
         gib NotImplemented
     sonst:
-        raise NotImplementedError(check)
+        wirf NotImplementedError(check)
 
-    try:
+    versuch:
         fd = os.open(filename, flags)
-    except PermissionError:
+    ausser PermissionError:
         gib Falsch
     # We do nicht ignore other exceptions.
     sonst:
@@ -424,7 +424,7 @@ def _get_user_info(user):
             entry = pwd.getpwnam(username)
             uid = entry.pw_uid
         sonst:
-            raise NotImplementedError(user)
+            wirf NotImplementedError(user)
         gid = entry.pw_gid
         os.getgrouplist(username, gid)
     gib username, uid, gid, groups
@@ -473,5 +473,5 @@ def _check_mode(st, mode, check, user):
         wenn nicht matched:
             gib Falsch
     wenn check:
-        raise NotImplementedError((orig, check))
+        wirf NotImplementedError((orig, check))
     gib Wahr

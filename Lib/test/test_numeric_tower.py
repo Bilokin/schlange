@@ -205,7 +205,7 @@ klasse ComparisonTest(unittest.TestCase):
     def test_complex(self):
         # comparisons mit complex are special:  equality und inequality
         # comparisons should always succeed, but order comparisons should
-        # raise TypeError.
+        # wirf TypeError.
         z = 1.0 + 0j
         w = -3.14 + 2.7j
 

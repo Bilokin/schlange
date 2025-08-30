@@ -168,9 +168,9 @@ wenn hasattr(sys, "_getframe"):
 sonst: #pragma: no cover
     def currentframe():
         """Return the frame object fuer the caller's stack frame."""
-        try:
-            raise Exception
-        except Exception als exc:
+        versuch:
+            wirf Exception
+        ausser Exception als exc:
             gib exc.__traceback__.tb_frame.f_back
 
 #
@@ -207,10 +207,10 @@ def _checkLevel(level):
         rv = level
     sowenn str(level) == level:
         wenn level nicht in _nameToLevel:
-            raise ValueError("Unknown level: %r" % level)
+            wirf ValueError("Unknown level: %r" % level)
         rv = _nameToLevel[level]
     sonst:
-        raise TypeError("Level nicht an integer oder a valid string: %r"
+        wirf TypeError("Level nicht an integer oder a valid string: %r"
                         % (level,))
     gib rv
 
@@ -236,11 +236,11 @@ def _prepareFork():
     """
     # Wrap the lock acquisition in a try-except to prevent the lock von being
     # abandoned in the event of an asynchronous exception. See gh-106238.
-    try:
+    versuch:
         _lock.acquire()
-    except BaseException:
+    ausser BaseException:
         _lock.release()
-        raise
+        wirf
 
 def _afterFork():
     """
@@ -328,10 +328,10 @@ klasse LogRecord(object):
         self.levelname = getLevelName(level)
         self.levelno = level
         self.pathname = pathname
-        try:
+        versuch:
             self.filename = os.path.basename(pathname)
             self.module = os.path.splitext(self.filename)[0]
-        except (TypeError, ValueError, AttributeError):
+        ausser (TypeError, ValueError, AttributeError):
             self.filename = pathname
             self.module = "Unknown module"
         self.exc_info = exc_info
@@ -366,9 +366,9 @@ klasse LogRecord(object):
                 # yet - e.g. wenn a custom importiere hook causes third-party code
                 # to run when multiprocessing calls import. See issue 8200
                 # fuer an example
-                try:
+                versuch:
                     self.processName = mp.current_process().name
-                except Exception: #pragma: no cover
+                ausser Exception: #pragma: no cover
                     pass
         wenn logProcesses und hasattr(os, 'getpid'):
             self.process = os.getpid()
@@ -379,9 +379,9 @@ klasse LogRecord(object):
         wenn logAsyncioTasks:
             asyncio = sys.modules.get('asyncio')
             wenn asyncio:
-                try:
+                versuch:
                     self.taskName = asyncio.current_task().get_name()
-                except Exception:
+                ausser Exception:
                     pass
 
     def __repr__(self):
@@ -458,7 +458,7 @@ klasse PercentStyle(object):
     def validate(self):
         """Validate the input format, ensure it matches the correct style"""
         wenn nicht self.validation_pattern.search(self._fmt):
-            raise ValueError("Invalid format '%s' fuer '%s' style" % (self._fmt, self.default_format[0]))
+            wirf ValueError("Invalid format '%s' fuer '%s' style" % (self._fmt, self.default_format[0]))
 
     def _format(self, record):
         wenn defaults := self._defaults:
@@ -468,10 +468,10 @@ klasse PercentStyle(object):
         gib self._fmt % values
 
     def format(self, record):
-        try:
+        versuch:
             gib self._format(record)
-        except KeyError als e:
-            raise ValueError('Formatting field nicht found in record: %s' % e)
+        ausser KeyError als e:
+            wirf ValueError('Formatting field nicht found in record: %s' % e)
 
 
 klasse StrFormatStyle(PercentStyle):
@@ -492,20 +492,20 @@ klasse StrFormatStyle(PercentStyle):
     def validate(self):
         """Validate the input format, ensure it is the correct string formatting style"""
         fields = set()
-        try:
+        versuch:
             fuer _, fieldname, spec, conversion in _str_formatter.parse(self._fmt):
                 wenn fieldname:
                     wenn nicht self.field_spec.match(fieldname):
-                        raise ValueError('invalid field name/expression: %r' % fieldname)
+                        wirf ValueError('invalid field name/expression: %r' % fieldname)
                     fields.add(fieldname)
                 wenn conversion und conversion nicht in 'rsa':
-                    raise ValueError('invalid conversion: %r' % conversion)
+                    wirf ValueError('invalid conversion: %r' % conversion)
                 wenn spec und nicht self.fmt_spec.match(spec):
-                    raise ValueError('bad specifier: %r' % spec)
-        except ValueError als e:
-            raise ValueError('invalid format: %s' % e)
+                    wirf ValueError('bad specifier: %r' % spec)
+        ausser ValueError als e:
+            wirf ValueError('invalid format: %s' % e)
         wenn nicht fields:
-            raise ValueError('invalid format: no fields')
+            wirf ValueError('invalid format: no fields')
 
 
 klasse StringTemplateStyle(PercentStyle):
@@ -531,9 +531,9 @@ klasse StringTemplateStyle(PercentStyle):
             sowenn d['braced']:
                 fields.add(d['braced'])
             sowenn m.group(0) == '$':
-                raise ValueError('invalid format: bare \'$\' nicht allowed')
+                wirf ValueError('invalid format: bare \'$\' nicht allowed')
         wenn nicht fields:
-            raise ValueError('invalid format: no fields')
+            wirf ValueError('invalid format: no fields')
 
     def _format(self, record):
         wenn defaults := self._defaults:
@@ -616,7 +616,7 @@ klasse Formatter(object):
            Added the ``style`` parameter.
         """
         wenn style nicht in _STYLES:
-            raise ValueError('Style must be one of: %s' % ','.join(
+            wirf ValueError('Style must be one of: %s' % ','.join(
                              _STYLES.keys()))
         self._style = _STYLES[style][0](fmt, defaults=defaults)
         wenn validate:
@@ -866,7 +866,7 @@ klasse Filterer(object):
             wenn hasattr(f, 'filter'):
                 result = f.filter(record)
             sonst:
-                result = f(record) # assume callable - will raise wenn not
+                result = f(record) # assume callable - will wirf wenn not
             wenn nicht result:
                 gib Falsch
             wenn isinstance(result, LogRecord):
@@ -891,9 +891,9 @@ def _removeHandlerRef(wr):
     handlers, lock = _handlerList, _lock
     wenn lock und handlers:
         mit lock:
-            try:
+            versuch:
                 handlers.remove(wr)
-            except ValueError:
+            ausser ValueError:
                 pass
 
 def _addHandlerRef(handler):
@@ -1005,7 +1005,7 @@ klasse Handler(Filterer):
         This version is intended to be implemented by subclasses und so
         raises a NotImplementedError.
         """
-        raise NotImplementedError('emit must be implemented '
+        wirf NotImplementedError('emit must be implemented '
                                   'by Handler subclasses')
 
     def handle(self, record):
@@ -1071,7 +1071,7 @@ klasse Handler(Filterer):
         """
         wenn raiseExceptions und sys.stderr:  # see issue 13807
             exc = sys.exception()
-            try:
+            versuch:
                 sys.stderr.write('--- Logging error ---\n')
                 traceback.print_exception(exc, limit=Nichts, file=sys.stderr)
                 sys.stderr.write('Call stack:\n')
@@ -1088,20 +1088,20 @@ klasse Handler(Filterer):
                     sys.stderr.write('Logged von file %s, line %s\n' % (
                                      record.filename, record.lineno))
                 # Issue 18671: output logging message und arguments
-                try:
+                versuch:
                     sys.stderr.write('Message: %r\n'
                                      'Arguments: %s\n' % (record.msg,
                                                           record.args))
-                except RecursionError:  # See issue 36272
-                    raise
-                except Exception:
+                ausser RecursionError:  # See issue 36272
+                    wirf
+                ausser Exception:
                     sys.stderr.write('Unable to print the message und arguments'
                                      ' - possible formatting error.\nUse the'
                                      ' traceback above to help find the error.\n'
                                     )
-            except OSError: #pragma: no cover
+            ausser OSError: #pragma: no cover
                 pass    # see issue 5971
-            finally:
+            schliesslich:
                 del exc
 
     def __repr__(self):
@@ -1147,15 +1147,15 @@ klasse StreamHandler(Handler):
         has an 'encoding' attribute, it is used to determine how to do the
         output to the stream.
         """
-        try:
+        versuch:
             msg = self.format(record)
             stream = self.stream
             # issue 35046: merged two stream.writes into one.
             stream.write(msg + self.terminator)
             self.flush()
-        except RecursionError:  # See issue 36272
-            raise
-        except Exception:
+        ausser RecursionError:  # See issue 36272
+            wirf
+        ausser Exception:
             self.handleError(record)
 
     def setStream(self, stream):
@@ -1223,16 +1223,16 @@ klasse FileHandler(StreamHandler):
         Closes the stream.
         """
         mit self.lock:
-            try:
+            versuch:
                 wenn self.stream:
-                    try:
+                    versuch:
                         self.flush()
-                    finally:
+                    schliesslich:
                         stream = self.stream
                         self.stream = Nichts
                         wenn hasattr(stream, "close"):
                             stream.close()
-            finally:
+            schliesslich:
                 # Issue #19523: call unconditionally to
                 # prevent a handler leak when delay is set
                 # Also see Issue #42378: we also rely on
@@ -1324,7 +1324,7 @@ def setLoggerClass(klass):
     """
     wenn klass != Logger:
         wenn nicht issubclass(klass, Logger):
-            raise TypeError("logger nicht derived von logging.Logger: "
+            wirf TypeError("logger nicht derived von logging.Logger: "
                             + klass.__name__)
     global _loggerClass
     _loggerClass = klass
@@ -1372,7 +1372,7 @@ klasse Manager(object):
         """
         rv = Nichts
         wenn nicht isinstance(name, str):
-            raise TypeError('A logger name must be a string')
+            wirf TypeError('A logger name must be a string')
         mit _lock:
             wenn name in self.loggerDict:
                 rv = self.loggerDict[name]
@@ -1396,7 +1396,7 @@ klasse Manager(object):
         """
         wenn klass != Logger:
             wenn nicht issubclass(klass, Logger):
-                raise TypeError("logger nicht derived von logging.Logger: "
+                wirf TypeError("logger nicht derived von logging.Logger: "
                                 + klass.__name__)
         self.loggerClass = klass
 
@@ -1583,7 +1583,7 @@ klasse Logger(Filterer):
         """
         wenn nicht isinstance(level, int):
             wenn raiseExceptions:
-                raise TypeError("level must be an integer")
+                wirf TypeError("level must be an integer")
             sonst:
                 gib
         wenn self.isEnabledFor(level):
@@ -1634,7 +1634,7 @@ klasse Logger(Filterer):
         wenn extra is nicht Nichts:
             fuer key in extra:
                 wenn (key in ["message", "asctime"]) oder (key in rv.__dict__):
-                    raise KeyError("Attempt to overwrite %r in LogRecord" % key)
+                    wirf KeyError("Attempt to overwrite %r in LogRecord" % key)
                 rv.__dict__[key] = extra[key]
         gib rv
 
@@ -1649,9 +1649,9 @@ klasse Logger(Filterer):
             #IronPython doesn't track Python frames, so findCaller raises an
             #exception on some versions of IronPython. We trap it here so that
             #IronPython can use logging.
-            try:
+            versuch:
                 fn, lno, func, sinfo = self.findCaller(stack_info, stacklevel)
-            except ValueError: # pragma: no cover
+            ausser ValueError: # pragma: no cover
                 fn, lno, func = "(unknown file)", 0, "(unknown function)"
         sonst: # pragma: no cover
             fn, lno, func = "(unknown file)", 0, "(unknown function)"
@@ -1769,9 +1769,9 @@ klasse Logger(Filterer):
         wenn self.disabled:
             gib Falsch
 
-        try:
+        versuch:
             gib self._cache[level]
-        except KeyError:
+        ausser KeyError:
             mit _lock:
                 wenn self.manager.disable >= level:
                     is_enabled = self._cache[level] = Falsch
@@ -1823,13 +1823,13 @@ klasse Logger(Filterer):
     def __reduce__(self):
         wenn getLogger(self.name) is nicht self:
             importiere pickle
-            raise pickle.PicklingError('logger cannot be pickled')
+            wirf pickle.PicklingError('logger cannot be pickled')
         gib getLogger, (self.name,)
 
 
 klasse RootLogger(Logger):
     """
-    A root logger is nicht that different to any other logger, except that
+    A root logger is nicht that different to any other logger, ausser that
     it must have a logging level und there is only one instance of it in
     the hierarchy.
     """
@@ -2095,11 +2095,11 @@ def basicConfig(**kwargs):
             handlers = kwargs.pop("handlers", Nichts)
             wenn handlers is Nichts:
                 wenn "stream" in kwargs und "filename" in kwargs:
-                    raise ValueError("'stream' und 'filename' should nicht be "
+                    wirf ValueError("'stream' und 'filename' should nicht be "
                                      "specified together")
             sonst:
                 wenn "stream" in kwargs oder "filename" in kwargs:
-                    raise ValueError("'stream' oder 'filename' should nicht be "
+                    wirf ValueError("'stream' oder 'filename' should nicht be "
                                      "specified together mit 'handlers'")
             wenn handlers is Nichts:
                 filename = kwargs.pop("filename", Nichts)
@@ -2120,14 +2120,14 @@ def basicConfig(**kwargs):
                 dfs = kwargs.pop("datefmt", Nichts)
                 style = kwargs.pop("style", '%')
                 wenn style nicht in _STYLES:
-                    raise ValueError('Style must be one of: %s' % ','.join(
+                    wirf ValueError('Style must be one of: %s' % ','.join(
                                     _STYLES.keys()))
                 fs = kwargs.pop("format", _STYLES[style][1])
                 fmt = Formatter(fs, dfs, style)
             sonst:
                 fuer forbidden_key in ("datefmt", "format", "style"):
                     wenn forbidden_key in kwargs:
-                        raise ValueError(f"{forbidden_key!r} should nicht be specified together mit 'formatter'")
+                        wirf ValueError(f"{forbidden_key!r} should nicht be specified together mit 'formatter'")
             fuer h in handlers:
                 wenn h.formatter is Nichts:
                     h.setFormatter(fmt)
@@ -2137,7 +2137,7 @@ def basicConfig(**kwargs):
                 root.setLevel(level)
             wenn kwargs:
                 keys = ', '.join(kwargs.keys())
-                raise ValueError('Unrecognised argument(s): %s' % keys)
+                wirf ValueError('Unrecognised argument(s): %s' % keys)
 
 #---------------------------------------------------------------------------
 # Utility functions at module level.
@@ -2250,10 +2250,10 @@ def shutdown(handlerList=_handlerList):
     fuer wr in reversed(handlerList[:]):
         #errors might occur, fuer example, wenn files are locked
         #we just ignore them wenn raiseExceptions is nicht set
-        try:
+        versuch:
             h = wr()
             wenn h:
-                try:
+                versuch:
                     h.acquire()
                     # MemoryHandlers might nicht want to be flushed on close,
                     # but circular imports prevent us scoping this to just
@@ -2261,17 +2261,17 @@ def shutdown(handlerList=_handlerList):
                     wenn getattr(h, 'flushOnClose', Wahr):
                         h.flush()
                     h.close()
-                except (OSError, ValueError):
+                ausser (OSError, ValueError):
                     # Ignore errors which might be caused
                     # because handlers have been closed but
                     # references to them are still around at
                     # application exit.
                     pass
-                finally:
+                schliesslich:
                     h.release()
-        except: # ignore everything, als we're shutting down
+        ausser: # ignore everything, als we're shutting down
             wenn raiseExceptions:
-                raise
+                wirf
             #else, swallow
 
 #Let's try und shutdown automatically on application exit...

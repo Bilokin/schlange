@@ -150,7 +150,7 @@ klasse EmailPolicy(Policy):
         wenn isinstance(value, str) und len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm nicht sure what should happen here.
-            raise ValueError("Header values may nicht contain linefeed "
+            wirf ValueError("Header values may nicht contain linefeed "
                              "or carriage gib characters")
         gib (name, self.header_factory(name, value))
 
@@ -192,7 +192,7 @@ klasse EmailPolicy(Policy):
 
     def fold_binary(self, name, value):
         """+
-        The same als fold wenn cte_type is 7bit, except that the returned value is
+        The same als fold wenn cte_type is 7bit, ausser that the returned value is
         bytes.
 
         If cte_type is 8bit, non-ASCII binary data is converted back into

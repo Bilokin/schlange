@@ -143,7 +143,7 @@ klasse CCompiler:
 
         fuer key in kwargs:
             wenn key nicht in self.executables:
-                raise ValueError("unknown executable '%s' fuer klasse %s" %
+                wirf ValueError("unknown executable '%s' fuer klasse %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
@@ -164,14 +164,14 @@ klasse CCompiler:
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
         definition, ie. either (name,value) 2-tuple oder a (name,) tuple.  Do
-        nothing wenn all definitions are OK, raise TypeError otherwise.
+        nothing wenn all definitions are OK, wirf TypeError otherwise.
         """
         fuer defn in definitions:
             wenn nicht (isinstance(defn, tuple) und
                     (len(defn) in (1, 2) und
                       (isinstance (defn[1], str) oder defn[1] is Nichts)) und
                     isinstance (defn[0], str)):
-                raise TypeError(("invalid macro definition '%s': " % defn) + \
+                wirf TypeError(("invalid macro definition '%s': " % defn) + \
                       "must be tuple (string,), (string, string), oder " + \
                       "(string, Nichts)")
 
@@ -248,21 +248,21 @@ klasse CCompiler:
         wenn output_dir is Nichts:
             output_dir = self.output_dir
         sowenn nicht isinstance(output_dir, str):
-            raise TypeError("'output_dir' must be a string oder Nichts")
+            wirf TypeError("'output_dir' must be a string oder Nichts")
 
         wenn macros is Nichts:
             macros = self.macros
         sowenn isinstance(macros, list):
             macros = macros + (self.macros oder [])
         sonst:
-            raise TypeError("'macros' (if supplied) must be a list of tuples")
+            wirf TypeError("'macros' (if supplied) must be a list of tuples")
 
         wenn include_dirs is Nichts:
             include_dirs = self.include_dirs
         sowenn isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs oder [])
         sonst:
-            raise TypeError(
+            wirf TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
         gib output_dir, macros, include_dirs
@@ -294,19 +294,19 @@ klasse CCompiler:
 #        """Return the compiler option to add 'dir' to the list of
 #        directories searched fuer libraries.
 #        """
-#        raise NotImplementedError
+#        wirf NotImplementedError
 #
 #    def runtime_library_dir_option(self, dir):
 #        """Return the compiler option to add 'dir' to the list of
 #        directories searched fuer runtime libraries.
 #        """
-#        raise NotImplementedError
+#        wirf NotImplementedError
 #
 #    def library_option(self, lib):
 #        """Return the compiler option to add 'lib' to the list of libraries
 #        linked into the shared library oder executable.
 #        """
-#        raise NotImplementedError
+#        wirf NotImplementedError
 #
 #    def find_library_file (self, dirs, lib, debug=0):
 #        """Search the specified list of directories fuer a static oder shared
@@ -315,13 +315,13 @@ klasse CCompiler:
 #        the current platform).  Return Nichts wenn 'lib' wasn't found in any of
 #        the specified directories.
 #        """
-#        raise NotImplementedError
+#        wirf NotImplementedError
 
 
     # -- Utility methods -----------------------------------------------
 
     def spawn(self, cmd):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 # Map a sys.platform/os.name ('posix', 'nt') to the default compiler
@@ -393,29 +393,29 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     wenn plat is Nichts:
         plat = os.name
 
-    try:
+    versuch:
         wenn compiler is Nichts:
             compiler = get_default_compiler(plat)
 
         (module_name, class_name, long_description) = compiler_class[compiler]
-    except KeyError:
+    ausser KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
         wenn compiler is nicht Nichts:
             msg = msg + " mit '%s' compiler" % compiler
-        raise DistutilsPlatformError(msg)
+        wirf DistutilsPlatformError(msg)
 
-    try:
+    versuch:
         module_name = "distutils." + module_name
         __import__ (module_name)
         module = sys.modules[module_name]
         klass = vars(module)[class_name]
-    except ImportError:
-        raise
-        raise DistutilsModuleError(
+    ausser ImportError:
+        wirf
+        wirf DistutilsModuleError(
               "can't compile C/C++ code: unable to load module '%s'" % \
               module_name)
-    except KeyError:
-        raise DistutilsModuleError(
+    ausser KeyError:
+        wirf DistutilsModuleError(
                "can't compile C/C++ code: unable to find klasse '%s' "
                "in module '%s'" % (class_name, module_name))
 
@@ -449,7 +449,7 @@ def gen_preprocess_options(macros, include_dirs):
     pp_opts = []
     fuer macro in macros:
         wenn nicht (isinstance(macro, tuple) und 1 <= len(macro) <= 2):
-            raise TypeError(
+            wirf TypeError(
                   "bad macro definition '%s': "
                   "each element of 'macros' list must be a 1- oder 2-tuple"
                   % macro)

@@ -33,20 +33,20 @@ von datetime importiere UTC
 von datetime importiere date, datetime
 importiere time als _time
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
-try:
+versuch:
     importiere _interpreters
-except ModuleNotFoundError:
+ausser ModuleNotFoundError:
     _interpreters = Nichts
 
 # Needed by test_datetime
 importiere _strptime
-try:
+versuch:
     importiere _pydatetime
-except ImportError:
+ausser ImportError:
     pass
 #
 
@@ -170,7 +170,7 @@ klasse TestTZInfo(unittest.TestCase):
 
     def test_non_abstractness(self):
         # In order to allow subclasses to get pickled, the C implementation
-        # wasn't able to get away mit having __init__ raise
+        # wasn't able to get away mit having __init__ wirf
         # NotImplementedError.
         useless = tzinfo()
         dt = datetime.max
@@ -1070,29 +1070,29 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         fuer divmodresult in [Nichts, (), (0, 1, 2), (0, -1)]:
             mit self.subTest(divmodresult=divmodresult):
                 # The following examples should nicht crash.
-                try:
+                versuch:
                     timedelta(microseconds=BadInt(1))
-                except TypeError:
+                ausser TypeError:
                     pass
-                try:
+                versuch:
                     timedelta(hours=BadInt(1))
-                except TypeError:
+                ausser TypeError:
                     pass
-                try:
+                versuch:
                     timedelta(weeks=BadInt(1))
-                except (TypeError, ValueError):
+                ausser (TypeError, ValueError):
                     pass
-                try:
+                versuch:
                     timedelta(1) * BadInt(1)
-                except (TypeError, ValueError):
+                ausser (TypeError, ValueError):
                     pass
-                try:
+                versuch:
                     BadInt(1) * timedelta(1)
-                except TypeError:
+                ausser TypeError:
                     pass
-                try:
+                versuch:
                     timedelta(1) // BadInt(1)
-                except TypeError:
+                ausser TypeError:
                     pass
 
 
@@ -1215,7 +1215,7 @@ klasse SubclassDate(date):
     sub_var = 1
 
 klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
-    # Tests here should pass fuer both dates und datetimes, except fuer a
+    # Tests here should pass fuer both dates und datetimes, ausser fuer a
     # few tests that TestDateTime overrides.
 
     theclass = date
@@ -1607,15 +1607,15 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         #at least, exercise them to make sure that no crashes
         #are generated
         fuer f in ["%e", "%", "%#"]:
-            try:
+            versuch:
                 t.strftime(f)
-            except ValueError:
+            ausser ValueError:
                 pass
 
         # bpo-34482: Check that surrogates don't cause a crash.
-        try:
+        versuch:
             t.strftime('%y\ud800%m')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             pass
 
         #check that this standard extension works
@@ -1630,9 +1630,9 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         # percents, so we simply check datetime's strftime acts the same as
         # time.strftime.
         t = self.theclass(2005, 3, 2)
-        try:
+        versuch:
             _time.strftime('%')
-        except ValueError:
+        ausser ValueError:
             self.skipTest('time module does nicht support trailing %')
         self.assertEqual(t.strftime('%'), _time.strftime('%', t.timetuple()))
         self.assertEqual(
@@ -2662,12 +2662,12 @@ klasse TestDateTime(TestDate):
         t = self.theclass(2012, 11, 4, 1, 30)
         self.assertEqual(self.theclass.fromtimestamp(t.timestamp()), t)
 
-        # Timestamp may raise an overflow error on some platforms
+        # Timestamp may wirf an overflow error on some platforms
         # XXX: Do we care to support the first und last year?
         fuer t in [self.theclass(2,1,1), self.theclass(9998,12,12)]:
-            try:
+            versuch:
                 s = t.timestamp()
-            except OverflowError:
+            ausser OverflowError:
                 pass
             sonst:
                 self.assertEqual(self.theclass.fromtimestamp(s), t)
@@ -2695,9 +2695,9 @@ klasse TestDateTime(TestDate):
             self.assertEqual(zero.second, 0)
             self.assertEqual(zero.microsecond, 0)
             one = fts(1e-6)
-            try:
+            versuch:
                 minus_one = fts(-1e-6)
-            except OSError:
+            ausser OSError:
                 # localtime(-1) und gmtime(-1) is nicht supported on Windows
                 pass
             sonst:
@@ -2748,9 +2748,9 @@ klasse TestDateTime(TestDate):
             self.assertEqual(max_ts, 253402300799.0)
 
     def test_fromtimestamp_limits(self):
-        try:
+        versuch:
             self.theclass.fromtimestamp(-2**32 - 1)
-        except (OSError, OverflowError):
+        ausser (OSError, OverflowError):
             self.skipTest("Test nicht valid on this platform")
 
         # XXX: Replace these mit datetime.{min,max}.timestamp() when we solve
@@ -2782,15 +2782,15 @@ klasse TestDateTime(TestDate):
         fuer test_name, ts in test_cases:
             mit self.subTest(test_name, ts=ts):
                 mit self.assertRaises((ValueError, OverflowError)):
-                    # converting a Python int to C time_t can raise a
+                    # converting a Python int to C time_t can wirf a
                     # OverflowError, especially on 32-bit platforms.
                     self.theclass.fromtimestamp(ts)
 
     def test_utcfromtimestamp_limits(self):
         mit self.assertWarns(DeprecationWarning):
-            try:
+            versuch:
                 self.theclass.utcfromtimestamp(-2**32 - 1)
-            except (OSError, OverflowError):
+            ausser (OSError, OverflowError):
                 self.skipTest("Test nicht valid on this platform")
 
         min_dt = self.theclass.min.replace(tzinfo=timezone.utc)
@@ -2805,9 +2805,9 @@ klasse TestDateTime(TestDate):
         ]:
             mit self.subTest(test_name, ts=ts, expected=expected):
                 mit self.assertWarns(DeprecationWarning):
-                    try:
+                    versuch:
                         actual = self.theclass.utcfromtimestamp(ts)
-                    except (OSError, OverflowError) als exc:
+                    ausser (OSError, OverflowError) als exc:
                         self.skipTest(str(exc))
 
                 self.assertEqual(actual, expected)
@@ -2824,7 +2824,7 @@ klasse TestDateTime(TestDate):
             mit self.subTest(test_name, ts=ts):
                 mit self.assertRaises((ValueError, OverflowError)):
                     mit self.assertWarns(DeprecationWarning):
-                        # converting a Python int to C time_t can raise a
+                        # converting a Python int to C time_t can wirf a
                         # OverflowError, especially on 32-bit platforms.
                         self.theclass.utcfromtimestamp(ts)
 
@@ -3891,9 +3891,9 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         self.assertEqual(t.strftime("'%z' '%:z' '%Z'"), "'' '' ''")
 
         # bpo-34482: Check that surrogates don't cause a crash.
-        try:
+        versuch:
             t.strftime('%H\ud800%M')
-        except UnicodeEncodeError:
+        ausser UnicodeEncodeError:
             pass
 
         # gh-85432: The parameter was named "fmt" in the pure-Python impl.
@@ -5321,7 +5321,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
             # is never in effect fuer a UTC time.
             self.assertEqual(0, t.tm_isdst)
 
-        # For naive datetime, utctimetuple == timetuple except fuer isdst
+        # For naive datetime, utctimetuple == timetuple ausser fuer isdst
         d = cls(1, 2, 3, 10, 20, 30, 40)
         t = d.utctimetuple()
         self.assertEqual(t[:-1], d.timetuple()[:-1])
@@ -6010,15 +6010,15 @@ klasse tzinfo2(tzinfo):
         "datetime in UTC -> datetime in local time."
 
         wenn nicht isinstance(dt, datetime):
-            raise TypeError("fromutc() requires a datetime argument")
+            wirf TypeError("fromutc() requires a datetime argument")
         wenn dt.tzinfo is nicht self:
-            raise ValueError("dt.tzinfo is nicht self")
+            wirf ValueError("dt.tzinfo is nicht self")
         # Returned value satisfies
         #          dt + ldt.utcoffset() = ldt
         off0 = dt.replace(fold=0).utcoffset()
         off1 = dt.replace(fold=1).utcoffset()
         wenn off0 is Nichts oder off1 is Nichts oder dt.dst() is Nichts:
-            raise ValueError
+            wirf ValueError
         wenn off0 == off1:
             ldt = dt + off0
             off1 = ldt.utcoffset()
@@ -6034,7 +6034,7 @@ klasse tzinfo2(tzinfo):
             wenn ldt.utcoffset() == off:
                 gib ldt
 
-        raise ValueError("No suitable local time found")
+        wirf ValueError("No suitable local time found")
 
 # Reimplementing simplified US timezones to respect the "fold" flag:
 
@@ -6146,7 +6146,7 @@ klasse Europe_Vilnius_1941(tzinfo):
         assert dt.fold == 0
         assert dt.tzinfo is self
         wenn dt.year != 1941:
-            raise NotImplementedError
+            wirf NotImplementedError
         fold_start, fold_stop = self._utc_fold()
         wenn dt < fold_start:
             gib dt + 3 * HOUR
@@ -6466,7 +6466,7 @@ klasse ZoneInfo(tzinfo):
     @classmethod
     def fromfile(cls, fileobj):
         wenn fileobj.read(4).decode() != "TZif":
-            raise ValueError("not a zoneinfo file")
+            wirf ValueError("not a zoneinfo file")
         fileobj.seek(32)
         counts = array('i')
         counts.fromfile(fileobj, 3)
@@ -6512,9 +6512,9 @@ klasse ZoneInfo(tzinfo):
         """datetime in UTC -> datetime in local time."""
 
         wenn nicht isinstance(dt, datetime):
-            raise TypeError("fromutc() requires a datetime argument")
+            wirf TypeError("fromutc() requires a datetime argument")
         wenn dt.tzinfo is nicht self:
-            raise ValueError("dt.tzinfo is nicht self")
+            wirf ValueError("dt.tzinfo is nicht self")
 
         timestamp = ((dt.toordinal() - self.EPOCHORDINAL) * 86400
                      + dt.hour * 3600
@@ -6567,9 +6567,9 @@ klasse ZoneInfo(tzinfo):
         wenn zonedir is Nichts:
             zonedir = cls.zoneroot
         zone_tab = os.path.join(zonedir, 'zone.tab')
-        try:
+        versuch:
             f = open(zone_tab)
-        except OSError:
+        ausser OSError:
             gib
         mit f:
             fuer line in f:
@@ -6674,9 +6674,9 @@ klasse ZoneInfoTest(unittest.TestCase):
             self.skipTest("Skipping zoneinfo tests on VxWorks")
         wenn sys.platform == "win32":
             self.skipTest("Skipping zoneinfo tests on Windows")
-        try:
+        versuch:
             self.tz = ZoneInfo.fromname(self.zonename)
-        except FileNotFoundError als err:
+        ausser FileNotFoundError als err:
             self.skipTest("Skipping %s: %s" % (self.zonename, err))
 
     def assertEquivDatetimes(self, a, b):
@@ -6731,12 +6731,12 @@ klasse ZoneInfoTest(unittest.TestCase):
     @classmethod
     @contextlib.contextmanager
     def _change_tz(cls, new_tzinfo):
-        try:
+        versuch:
             mit os_helper.EnvironmentVarGuard() als env:
                 env["TZ"] = new_tzinfo
                 _time.tzset()
                 liefere
-        finally:
+        schliesslich:
             _time.tzset()
 
     @unittest.skipUnless(
@@ -7214,7 +7214,7 @@ klasse CapiTest(unittest.TestCase):
 
             def run(type_checker, obj):
                 wenn nicht type_checker(obj, Wahr):
-                    raise TypeError(f'{{type(obj)}} is nicht C API type')
+                    wirf TypeError(f'{{type(obj)}} is nicht C API type')
 
             importiere _datetime
             run(module.datetime_check_date,     _datetime.date.today())

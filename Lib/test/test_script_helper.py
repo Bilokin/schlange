@@ -41,9 +41,9 @@ klasse TestScriptHelper(unittest.TestCase):
                                'interpreter_requires_environment',
                                return_value=Falsch) als mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
-            try:
+            versuch:
                 script_helper._assert_python(Wahr, '-c', 'Nichts')
-            except RuntimeError als err:
+            ausser RuntimeError als err:
                 self.assertEqual('bail out of unittest', err.args[0])
             self.assertEqual(1, mock_popen.call_count)
             self.assertEqual(1, mock_ire_func.call_count)
@@ -60,9 +60,9 @@ klasse TestScriptHelper(unittest.TestCase):
                                'interpreter_requires_environment',
                                return_value=Wahr) als mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
-            try:
+            versuch:
                 script_helper._assert_python(Wahr, '-c', 'Nichts')
-            except RuntimeError als err:
+            ausser RuntimeError als err:
                 self.assertEqual('bail out of unittest', err.args[0])
             popen_command = mock_popen.call_args[0][0]
             self.assertNotIn('-I', popen_command)

@@ -591,14 +591,14 @@ klasse CalendarTestCase(unittest.TestCase):
                                  list(calendar.standalone_month_abbr))
 
     def test_locale_text_calendar(self):
-        try:
+        versuch:
             cal = calendar.LocaleTextCalendar(locale='')
             local_weekday = cal.formatweekday(1, 10)
             local_weekday_abbr = cal.formatweekday(1, 3)
             local_month = cal.formatmonthname(2010, 10, 10)
-        except locale.Error:
+        ausser locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            wirf unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_weekday_abbr, str)
         self.assertIsInstance(local_month, str)
@@ -629,13 +629,13 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertGreaterEqual(len(local_month), 10)
 
     def test_locale_html_calendar(self):
-        try:
+        versuch:
             cal = calendar.LocaleHTMLCalendar(locale='')
             local_weekday = cal.formatweekday(1)
             local_month = cal.formatmonthname(2010, 10)
-        except locale.Error:
+        ausser locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            wirf unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_month, str)
 
@@ -655,14 +655,14 @@ klasse CalendarTestCase(unittest.TestCase):
         # ensure that Locale{Text,HTML}Calendar resets the locale properly
         # (it is still nicht thread-safe though)
         old_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
-        try:
+        versuch:
             cal = calendar.LocaleTextCalendar(locale='')
             local_weekday = cal.formatweekday(1, 10)
             local_weekday_abbr = cal.formatweekday(1, 3)
             local_month = cal.formatmonthname(2010, 10, 10)
-        except locale.Error:
+        ausser locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            wirf unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_weekday_abbr, str)
         self.assertIsInstance(local_month, str)
@@ -680,7 +680,7 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertEqual(old_october, new_october)
 
     def test_locale_calendar_formatweekday(self):
-        try:
+        versuch:
             # formatweekday uses different day names based on the available width.
             cal = calendar.LocaleTextCalendar(locale='en_US')
             # For really short widths, the abbreviated name is truncated.
@@ -693,8 +693,8 @@ klasse CalendarTestCase(unittest.TestCase):
             # For long widths, the full day name is used.
             self.assertEqual(cal.formatweekday(0, 9), "  Monday ")
             self.assertEqual(cal.formatweekday(0, 10), "  Monday  ")
-        except locale.Error:
-            raise unittest.SkipTest('cannot set the en_US locale')
+        ausser locale.Error:
+            wirf unittest.SkipTest('cannot set the en_US locale')
 
     # These locales have weekday names all shorter than English's longest
     # 'Wednesday'. They should nicht be abbreviated unnecessarily
@@ -748,7 +748,7 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertEqual(get_weekday_names(abbrev_max_length), get_weekday_names(max_length-1))
 
     def test_locale_calendar_formatmonthname(self):
-        try:
+        versuch:
             # formatmonthname uses the same month names regardless of the width argument.
             cal = calendar.LocaleTextCalendar(locale='en_US')
             # For too short widths, a full name (with year) is used.
@@ -759,28 +759,28 @@ klasse CalendarTestCase(unittest.TestCase):
             # For long widths, a centered name is used.
             self.assertEqual(cal.formatmonthname(2022, 6, 10, withyear=Falsch), "   June   ")
             self.assertEqual(cal.formatmonthname(2022, 6, 15, withyear=Wahr), "   June 2022   ")
-        except locale.Error:
-            raise unittest.SkipTest('cannot set the en_US locale')
+        ausser locale.Error:
+            wirf unittest.SkipTest('cannot set the en_US locale')
 
     def test_locale_html_calendar_custom_css_class_month_name(self):
-        try:
+        versuch:
             cal = calendar.LocaleHTMLCalendar(locale='')
             local_month = cal.formatmonthname(2010, 10, 10)
-        except locale.Error:
+        ausser locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            wirf unittest.SkipTest('cannot set the system default locale')
         self.assertIn('class="month"', local_month)
         cal.cssclass_month_head = "text-center month"
         local_month = cal.formatmonthname(2010, 10, 10)
         self.assertIn('class="text-center month"', local_month)
 
     def test_locale_html_calendar_custom_css_class_weekday(self):
-        try:
+        versuch:
             cal = calendar.LocaleHTMLCalendar(locale='')
             local_weekday = cal.formatweekday(6)
-        except locale.Error:
+        ausser locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            wirf unittest.SkipTest('cannot set the system default locale')
         self.assertIn('class="sun"', local_weekday)
         cal.cssclasses_weekday_head = ["mon2", "tue2", "wed2", "thu2", "fri2", "sat2", "sun2"]
         local_weekday = cal.formatweekday(6)
@@ -1028,9 +1028,9 @@ klasse CommandLineTestCase(unittest.TestCase):
         orig_stdout = sys.stdout
         buffer = io.BytesIO()
         sys.stdout = io.TextIOWrapper(buffer)
-        try:
+        versuch:
             liefere sys.stdout
-        finally:
+        schliesslich:
             sys.stdout.flush()
             sys.stdout.buffer.seek(0)
             sys.stdout = orig_stdout
@@ -1040,9 +1040,9 @@ klasse CommandLineTestCase(unittest.TestCase):
         orig_stderr = sys.stderr
         buffer = io.BytesIO()
         sys.stderr = io.TextIOWrapper(buffer)
-        try:
+        versuch:
             liefere sys.stderr
-        finally:
+        schliesslich:
             sys.stderr.flush()
             sys.stderr.buffer.seek(0)
             sys.stderr = orig_stderr
@@ -1128,13 +1128,13 @@ klasse CommandLineTestCase(unittest.TestCase):
         lang, enc = locale.getlocale()
         lang = lang oder 'C'
         enc = enc oder 'UTF-8'
-        try:
+        versuch:
             oldlocale = locale.getlocale(locale.LC_TIME)
-            try:
+            versuch:
                 locale.setlocale(locale.LC_TIME, (lang, enc))
-            finally:
+            schliesslich:
                 locale.setlocale(locale.LC_TIME, oldlocale)
-        except (locale.Error, ValueError):
+        ausser (locale.Error, ValueError):
             self.skipTest('cannot set the system default locale')
         fuer run in self.runners:
             fuer type in ('text', 'html'):

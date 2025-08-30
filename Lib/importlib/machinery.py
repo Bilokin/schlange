@@ -47,4 +47,4 @@ def __getattr__(name):
                       DeprecationWarning, stacklevel=2)
         gib _OPTIMIZED_BYTECODE_SUFFIXES
 
-    raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
+    wirf AttributeError(f'module {__name__!r} has no attribute {name!r}')

@@ -10,26 +10,26 @@ klasse OpcodeTest(unittest.TestCase):
         n = 0
         fuer i in range(10):
             n = n+i
-            try: 1/0
-            except NameError: pass
-            except ZeroDivisionError: pass
-            except TypeError: pass
-            try: pass
-            except: pass
-            try: pass
-            finally: pass
+            versuch: 1/0
+            ausser NameError: pass
+            ausser ZeroDivisionError: pass
+            ausser TypeError: pass
+            versuch: pass
+            ausser: pass
+            versuch: pass
+            schliesslich: pass
             n = n+i
         wenn n != 90:
             self.fail('try inside for')
 
     def test_setup_annotations_line(self):
         # check that SETUP_ANNOTATIONS does nicht create spurious line numbers
-        try:
+        versuch:
             mit open(ann_module.__file__, encoding="utf-8") als f:
                 txt = f.read()
             co = compile(txt, ann_module.__file__, 'exec')
             self.assertEqual(co.co_firstlineno, 1)
-        except OSError:
+        ausser OSError:
             pass
 
     def test_default_annotations_exist(self):
@@ -46,9 +46,9 @@ klasse OpcodeTest(unittest.TestCase):
         mit support.swap_item(globals(), '__annotations__', {}):
             globals().pop('__annotations__', Nichts)
             klasse C:
-                try:
+                versuch:
                     del __annotations__
-                except NameError:
+                ausser NameError:
                     pass
                 x: int
             self.assertEqual(C.__annotations__, {"x": int})
@@ -62,36 +62,36 @@ klasse OpcodeTest(unittest.TestCase):
             def __init__(self, ignore):
                 pass
 
-        try: raise AClass()
-        except: pass
+        versuch: wirf AClass()
+        ausser: pass
 
-        try: raise AClass()
-        except AClass: pass
+        versuch: wirf AClass()
+        ausser AClass: pass
 
-        try: raise BClass()
-        except AClass: pass
+        versuch: wirf BClass()
+        ausser AClass: pass
 
-        try: raise BClass()
-        except CClass: self.fail()
-        except: pass
+        versuch: wirf BClass()
+        ausser CClass: self.fail()
+        ausser: pass
 
         a = AClass()
         b = BClass()
 
-        try:
-            raise b
-        except AClass als v:
+        versuch:
+            wirf b
+        ausser AClass als v:
             self.assertEqual(v, b)
         sonst:
             self.fail("no exception")
 
         # nicht enough arguments
-        ##try:  raise BClass, a
+        ##try:  wirf BClass, a
         ##except TypeError: pass
         ##else: self.fail("no exception")
 
-        try:  raise DClass(a)
-        except DClass als v:
+        versuch:  wirf DClass(a)
+        ausser DClass als v:
             self.assertIsInstance(v, DClass)
         sonst:
             self.fail("no exception")

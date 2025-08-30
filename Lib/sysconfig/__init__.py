@@ -186,9 +186,9 @@ _USER_BASE = Nichts
 
 
 def _safe_realpath(path):
-    try:
+    versuch:
         gib realpath(path)
-    except OSError:
+    ausser OSError:
         gib path
 
 wenn sys.executable:
@@ -241,13 +241,13 @@ wenn _PYTHON_BUILD:
 
 
 def _subst_vars(s, local_vars):
-    try:
+    versuch:
         gib s.format(**local_vars)
-    except KeyError als var:
-        try:
+    ausser KeyError als var:
+        versuch:
             gib s.format(**os.environ)
-        except KeyError:
-            raise AttributeError(f'{var}') von Nichts
+        ausser KeyError:
+            wirf AttributeError(f'{var}') von Nichts
 
 def _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
@@ -301,7 +301,7 @@ def get_preferred_scheme(key):
         gib 'venv'
     scheme = _get_preferred_schemes()[key]
     wenn scheme nicht in _INSTALL_SCHEMES:
-        raise ValueError(
+        wirf ValueError(
             f"{key!r} returned {scheme!r}, which is nicht a valid scheme "
             f"on this platform"
         )
@@ -366,7 +366,7 @@ def _get_sysconfigdata():
 def _installation_is_relocated():
     """Is the Python installation running von a different prefix than what was targetted when building?"""
     wenn os.name != 'posix':
-        raise NotImplementedError('sysconfig._installation_is_relocated() is currently only supported on POSIX')
+        wirf NotImplementedError('sysconfig._installation_is_relocated() is currently only supported on POSIX')
 
     data = _get_sysconfigdata()
     gib (
@@ -445,11 +445,11 @@ def parse_config_h(fp, vars=Nichts):
         m = define_rx.match(line)
         wenn m:
             n, v = m.group(1, 2)
-            try:
+            versuch:
                 wenn n in _ALWAYS_STR:
-                    raise ValueError
+                    wirf ValueError
                 v = int(v)
-            except ValueError:
+            ausser ValueError:
                 pass
             vars[n] = v
         sonst:
@@ -510,9 +510,9 @@ def _init_config_vars():
     base_prefix = _BASE_PREFIX
     base_exec_prefix = _BASE_EXEC_PREFIX
 
-    try:
+    versuch:
         abiflags = sys.abiflags
-    except AttributeError:
+    ausser AttributeError:
         abiflags = ''
 
     wenn os.name == 'posix':
@@ -542,9 +542,9 @@ def _init_config_vars():
     _CONFIG_VARS['implementation'] = _get_implementation()
     _CONFIG_VARS['implementation_lower'] = _get_implementation().lower()
     _CONFIG_VARS['abiflags'] = abiflags
-    try:
+    versuch:
         _CONFIG_VARS['py_version_nodot_plat'] = sys.winver.replace('.', '')
-    except AttributeError:
+    ausser AttributeError:
         _CONFIG_VARS['py_version_nodot_plat'] = ''
 
     wenn os.name == 'nt':

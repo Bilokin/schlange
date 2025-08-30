@@ -92,9 +92,9 @@ klasse History:
         source = source.strip()
         wenn len(source) > 2:
             # avoid duplicates
-            try:
+            versuch:
                 self.history.remove(source)
-            except ValueError:
+            ausser ValueError:
                 pass
             self.history.append(source)
         self.pointer = Nichts

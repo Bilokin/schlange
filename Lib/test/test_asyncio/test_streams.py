@@ -7,9 +7,9 @@ importiere socket
 importiere threading
 importiere unittest
 von unittest importiere mock
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 importiere asyncio
@@ -65,9 +65,9 @@ klasse StreamTests(test_utils.TestCase):
     def _basetest_open_connection_no_loop_ssl(self, open_connection_fut):
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
-        try:
+        versuch:
             reader, writer = self.loop.run_until_complete(open_connection_fut)
-        finally:
+        schliesslich:
             asyncio.set_event_loop(Nichts)
         writer.write(b'GET / HTTP/1.0\r\n\r\n')
         f = reader.read()
@@ -260,7 +260,7 @@ klasse StreamTests(test_utils.TestCase):
         # No b'\n' at the end. The 'limit' is set to 3. So before
         # waiting fuer the new data in buffer, 'readline' will consume
         # the entire buffer, und since the length of the consumed data
-        # is more than 3, it will raise a ValueError. The buffer is
+        # is more than 3, it will wirf a ValueError. The buffer is
         # expected to be empty now.
         self.assertEqual(b'', stream._buffer)
 
@@ -1185,7 +1185,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_unhandled_exception(self):
         async def handle_echo(reader, writer):
-            raise Exception('test')
+            wirf Exception('test')
         messages = self._basetest_unhandled_exceptions(handle_echo)
         self.assertEqual(messages[0]['message'],
                     'Unhandled exception in client_connected_cb')
@@ -1201,7 +1201,7 @@ klasse StreamTests(test_utils.TestCase):
         port = socket_helper.find_unused_port()
         async def main():
             exc = Nichts
-            try:
+            versuch:
                 await asyncio.open_connection(
                     host="localhost",
                     port=port,

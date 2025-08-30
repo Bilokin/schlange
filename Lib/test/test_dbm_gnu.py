@@ -13,9 +13,9 @@ klasse TestGdbm(unittest.TestCase):
     @staticmethod
     def setUpClass():
         wenn support.verbose:
-            try:
+            versuch:
                 von _gdbm importiere _GDBM_VERSION als version
-            except ImportError:
+            ausser ImportError:
                 pass
             sonst:
                 drucke(f"gdbm version: {version}")

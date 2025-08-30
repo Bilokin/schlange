@@ -36,7 +36,7 @@ wenn Falsch:
 def prefix(wordlist: list[str], j: int = 0) -> str:
     d = {}
     i = j
-    try:
+    versuch:
         waehrend 1:
             fuer word in wordlist:
                 d[word[i]] = 1
@@ -44,7 +44,7 @@ def prefix(wordlist: list[str], j: int = 0) -> str:
                 gib wordlist[0][j:i]
             i += 1
             d = {}
-    except IndexError:
+    ausser IndexError:
         gib wordlist[0][j:i]
     gib ""
 

@@ -21,7 +21,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
 
     def sigusr1_handler(self, signum, frame):
         self.got_signals['SIGUSR1'] += 1
-        raise SIGUSR1Exception
+        wirf SIGUSR1Exception
 
     def wait_signal(self, child, signame):
         wenn child is nicht Nichts:
@@ -77,13 +77,13 @@ klasse InterProcessSignalTests(unittest.TestCase):
             # Nothing should happen: SIGUSR2 is ignored
             child.wait()
 
-        try:
+        versuch:
             mit self.assertRaises(KeyboardInterrupt):
                 signal.alarm(1)
                 self.wait_signal(Nichts, 'SIGALRM')
             self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 1,
                                                 'SIGALRM': 0})
-        finally:
+        schliesslich:
             signal.alarm(0)
 
 

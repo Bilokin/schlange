@@ -37,12 +37,12 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
 
         self.assertEqual(Falsch, isinstance(I(), C()))
 
-    # Like above except that inst.__class__.__bases__ raises an exception
+    # Like above ausser that inst.__class__.__bases__ raises an exception
     # other than AttributeError
     def test_bases_raises_other_than_attribute_error(self):
         klasse E(object):
             def getbases(self):
-                raise RuntimeError
+                wirf RuntimeError
             __bases__ = property(getbases)
 
         klasse I(object):
@@ -64,19 +64,19 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
 
         klasse C(object):
             def getbases(self):
-                raise RuntimeError
+                wirf RuntimeError
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
-    # Like above, except that getattr(cls, '__bases__') raises an
+    # Like above, ausser that getattr(cls, '__bases__') raises an
     # AttributeError, which /should/ get masked als a TypeError
     def test_mask_attribute_error(self):
         klasse I: pass
 
         klasse C(object):
             def getbases(self):
-                raise AttributeError
+                wirf AttributeError
             __bases__ = property(getbases)
 
         self.assertRaises(TypeError, isinstance, I(), C())
@@ -86,7 +86,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
     def test_isinstance_dont_mask_non_attribute_error(self):
         klasse C(object):
             def getclass(self):
-                raise RuntimeError
+                wirf RuntimeError
             __class__ = property(getclass)
 
         c = C()
@@ -104,7 +104,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
     def test_dont_mask_non_attribute_error(self):
         klasse C(object):
             def getbases(self):
-                raise RuntimeError
+                wirf RuntimeError
             __bases__ = property(getbases)
 
         klasse S(C): pass
@@ -114,7 +114,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
     def test_mask_attribute_error(self):
         klasse C(object):
             def getbases(self):
-                raise AttributeError
+                wirf AttributeError
             __bases__ = property(getbases)
 
         klasse S(C): pass
@@ -130,7 +130,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
         klasse C(object):
             def getbases(self):
-                raise RuntimeError
+                wirf RuntimeError
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, issubclass, B, C())
@@ -140,7 +140,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
         klasse C(object):
             def getbases(self):
-                raise AttributeError
+                wirf AttributeError
             __bases__ = property(getbases)
 
         self.assertRaises(TypeError, issubclass, B, C())
@@ -356,7 +356,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
 
 def blowstack(fxn, arg, compare_to):
     # Make sure that calling isinstance mit a deeply nested tuple fuer its
-    # argument will raise RecursionError eventually.
+    # argument will wirf RecursionError eventually.
     tuple_arg = (compare_to,)
     waehrend Wahr:
         fuer _ in range(100):

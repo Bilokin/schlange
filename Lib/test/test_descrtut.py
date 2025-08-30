@@ -19,9 +19,9 @@ klasse defaultdict(dict):
         self.default = default
 
     def __getitem__(self, key):
-        try:
+        versuch:
             gib dict.__getitem__(self, key)
-        except KeyError:
+        ausser KeyError:
             gib self.default
 
     def get(self, key, *args):
@@ -109,9 +109,9 @@ klasse defaultdict2(dict):
         self.default = default
 
     def __getitem__(self, key):
-        try:
+        versuch:
             gib dict.__getitem__(self, key)
-        except KeyError:
+        ausser KeyError:
             gib self.default
 
     def get(self, key, *args):
@@ -321,7 +321,7 @@ Attributes defined by get/set methods
     ...
     ...     def __set__(self, inst, value):
     ...         wenn self.__set is Nichts:
-    ...             raise AttributeError("this attribute is read-only")
+    ...             wirf AttributeError("this attribute is read-only")
     ...         gib self.__set(inst, value)
 
 Now let's define a klasse mit an attribute x defined by a pair of methods,

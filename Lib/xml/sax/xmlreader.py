@@ -29,7 +29,7 @@ klasse XMLReader:
 
     def parse(self, source):
         "Parse an XML document von a system identifier oder an InputSource."
-        raise NotImplementedError("This method must be implemented!")
+        wirf NotImplementedError("This method must be implemented!")
 
     def getContentHandler(self):
         "Returns the current ContentHandler."
@@ -68,25 +68,25 @@ klasse XMLReader:
 
         SAX parsers are nicht required to provide localization fuer errors
         und warnings; wenn they cannot support the requested locale,
-        however, they must raise a SAX exception. Applications may
+        however, they must wirf a SAX exception. Applications may
         request a locale change in the middle of a parse."""
-        raise SAXNotSupportedException("Locale support nicht implemented")
+        wirf SAXNotSupportedException("Locale support nicht implemented")
 
     def getFeature(self, name):
         "Looks up und returns the state of a SAX2 feature."
-        raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def setFeature(self, name, state):
         "Sets the state of a SAX2 feature."
-        raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def getProperty(self, name):
         "Looks up und returns the value of a SAX2 property."
-        raise SAXNotRecognizedException("Property '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Property '%s' nicht recognized" % name)
 
     def setProperty(self, name, value):
         "Sets the value of a SAX2 property."
-        raise SAXNotRecognizedException("Property '%s' nicht recognized" % name)
+        wirf SAXNotRecognizedException("Property '%s' nicht recognized" % name)
 
 klasse IncrementalParser(XMLReader):
     """This interface adds three extra methods to the XMLReader
@@ -130,13 +130,13 @@ klasse IncrementalParser(XMLReader):
         corresponding events. It is allowed fuer XML constructs to be
         split across several calls to feed.
 
-        feed may raise SAXException."""
-        raise NotImplementedError("This method must be implemented!")
+        feed may wirf SAXException."""
+        wirf NotImplementedError("This method must be implemented!")
 
     def prepareParser(self, source):
         """This method is called by the parse implementation to allow
         the SAX 2.0 driver to prepare itself fuer parsing."""
-        raise NotImplementedError("prepareParser must be overridden!")
+        wirf NotImplementedError("prepareParser must be overridden!")
 
     def close(self):
         """This method is called when the entire XML document has been
@@ -148,15 +148,15 @@ klasse IncrementalParser(XMLReader):
         The parser will nicht be ready to parse another document until
         the reset method has been called.
 
-        close may raise SAXException."""
-        raise NotImplementedError("This method must be implemented!")
+        close may wirf SAXException."""
+        wirf NotImplementedError("This method must be implemented!")
 
     def reset(self):
         """This method is called after close has been called to reset
         the parser so that it is ready to parse new documents. The
         results of calling parse oder feed after close without calling
         reset are undefined."""
-        raise NotImplementedError("This method must be implemented!")
+        wirf NotImplementedError("This method must be implemented!")
 
 # ===== LOCATOR =====
 
@@ -295,12 +295,12 @@ klasse AttributesImpl:
 
     def getNameByQName(self, name):
         wenn name nicht in self._attrs:
-            raise KeyError(name)
+            wirf KeyError(name)
         gib name
 
     def getQNameByName(self, name):
         wenn name nicht in self._attrs:
-            raise KeyError(name)
+            wirf KeyError(name)
         gib name
 
     def getNames(self):
@@ -350,14 +350,14 @@ klasse AttributesNSImpl(AttributesImpl):
             wenn qname == name:
                 gib self._attrs[nsname]
 
-        raise KeyError(name)
+        wirf KeyError(name)
 
     def getNameByQName(self, name):
         fuer (nsname, qname) in self._qnames.items():
             wenn qname == name:
                 gib nsname
 
-        raise KeyError(name)
+        wirf KeyError(name)
 
     def getQNameByName(self, name):
         gib self._qnames[name]

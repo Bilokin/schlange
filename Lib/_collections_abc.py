@@ -156,32 +156,32 @@ klasse Coroutine(Awaitable):
     @abstractmethod
     def send(self, value):
         """Send a value into the coroutine.
-        Return next yielded value oder raise StopIteration.
+        Return next yielded value oder wirf StopIteration.
         """
-        raise StopIteration
+        wirf StopIteration
 
     @abstractmethod
     def throw(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the coroutine.
-        Return next yielded value oder raise StopIteration.
+        Return next yielded value oder wirf StopIteration.
         """
         wenn val is Nichts:
             wenn tb is Nichts:
-                raise typ
+                wirf typ
             val = typ()
         wenn tb is nicht Nichts:
             val = val.with_traceback(tb)
-        raise val
+        wirf val
 
     def close(self):
         """Raise GeneratorExit inside coroutine.
         """
-        try:
+        versuch:
             self.throw(GeneratorExit)
-        except (GeneratorExit, StopIteration):
+        ausser (GeneratorExit, StopIteration):
             pass
         sonst:
-            raise RuntimeError("coroutine ignored GeneratorExit")
+            wirf RuntimeError("coroutine ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -216,8 +216,8 @@ klasse AsyncIterator(AsyncIterable):
 
     @abstractmethod
     async def __anext__(self):
-        """Return the next item oder raise StopAsyncIteration when exhausted."""
-        raise StopAsyncIteration
+        """Return the next item oder wirf StopAsyncIteration when exhausted."""
+        wirf StopAsyncIteration
 
     def __aiter__(self):
         gib self
@@ -235,39 +235,39 @@ klasse AsyncGenerator(AsyncIterator):
 
     async def __anext__(self):
         """Return the next item von the asynchronous generator.
-        When exhausted, raise StopAsyncIteration.
+        When exhausted, wirf StopAsyncIteration.
         """
         gib await self.asend(Nichts)
 
     @abstractmethod
     async def asend(self, value):
         """Send a value into the asynchronous generator.
-        Return next yielded value oder raise StopAsyncIteration.
+        Return next yielded value oder wirf StopAsyncIteration.
         """
-        raise StopAsyncIteration
+        wirf StopAsyncIteration
 
     @abstractmethod
     async def athrow(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the asynchronous generator.
-        Return next yielded value oder raise StopAsyncIteration.
+        Return next yielded value oder wirf StopAsyncIteration.
         """
         wenn val is Nichts:
             wenn tb is Nichts:
-                raise typ
+                wirf typ
             val = typ()
         wenn tb is nicht Nichts:
             val = val.with_traceback(tb)
-        raise val
+        wirf val
 
     async def aclose(self):
         """Raise GeneratorExit inside coroutine.
         """
-        try:
+        versuch:
             await self.athrow(GeneratorExit)
-        except (GeneratorExit, StopAsyncIteration):
+        ausser (GeneratorExit, StopAsyncIteration):
             pass
         sonst:
-            raise RuntimeError("asynchronous generator ignored GeneratorExit")
+            wirf RuntimeError("asynchronous generator ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -304,8 +304,8 @@ klasse Iterator(Iterable):
 
     @abstractmethod
     def __next__(self):
-        'Return the next item von the iterator. When exhausted, raise StopIteration'
-        raise StopIteration
+        'Return the next item von the iterator. When exhausted, wirf StopIteration'
+        wirf StopIteration
 
     def __iter__(self):
         gib self
@@ -355,39 +355,39 @@ klasse Generator(Iterator):
 
     def __next__(self):
         """Return the next item von the generator.
-        When exhausted, raise StopIteration.
+        When exhausted, wirf StopIteration.
         """
         gib self.send(Nichts)
 
     @abstractmethod
     def send(self, value):
         """Send a value into the generator.
-        Return next yielded value oder raise StopIteration.
+        Return next yielded value oder wirf StopIteration.
         """
-        raise StopIteration
+        wirf StopIteration
 
     @abstractmethod
     def throw(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the generator.
-        Return next yielded value oder raise StopIteration.
+        Return next yielded value oder wirf StopIteration.
         """
         wenn val is Nichts:
             wenn tb is Nichts:
-                raise typ
+                wirf typ
             val = typ()
         wenn tb is nicht Nichts:
             val = val.with_traceback(tb)
-        raise val
+        wirf val
 
     def close(self):
         """Raise GeneratorExit inside generator.
         """
-        try:
+        versuch:
             self.throw(GeneratorExit)
-        except (GeneratorExit, StopIteration):
+        ausser (GeneratorExit, StopIteration):
             pass
         sonst:
-            raise RuntimeError("generator ignored GeneratorExit")
+            wirf RuntimeError("generator ignored GeneratorExit")
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -449,7 +449,7 @@ klasse Buffer(metaclass=ABCMeta):
 
     @abstractmethod
     def __buffer__(self, flags: int, /) -> memoryview:
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -472,13 +472,13 @@ klasse _CallableGenericAlias(GenericAlias):
 
     def __new__(cls, origin, args):
         wenn nicht (isinstance(args, tuple) und len(args) == 2):
-            raise TypeError(
+            wirf TypeError(
                 "Callable must be used als Callable[[arg, ...], result].")
         t_args, t_result = args
         wenn isinstance(t_args, (tuple, list)):
             args = (*t_args, t_result)
         sowenn nicht _is_param_expr(t_args):
-            raise TypeError(f"Expected a list of types, an ellipsis, "
+            wirf TypeError(f"Expected a list of types, an ellipsis, "
                             f"ParamSpec, oder Concatenate. Got {t_args}")
         gib super().__new__(cls, origin, args)
 
@@ -550,7 +550,7 @@ klasse Set(Collection):
     """A set is a finite, iterable container.
 
     This klasse provides concrete generic implementations of all
-    methods except fuer __contains__, __iter__ und __len__.
+    methods ausser fuer __contains__, __iter__ und __len__.
 
     To override the comparisons (presumably fuer speed, als the
     semantics are fixed), redefine __le__ und __ge__,
@@ -691,7 +691,7 @@ klasse MutableSet(Set):
     """A mutable set is a finite, iterable container.
 
     This klasse provides concrete generic implementations of all
-    methods except fuer __contains__, __iter__, __len__,
+    methods ausser fuer __contains__, __iter__, __len__,
     add(), und discard().
 
     To override the comparisons (presumably fuer speed, als the
@@ -704,35 +704,35 @@ klasse MutableSet(Set):
     @abstractmethod
     def add(self, value):
         """Add an element."""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     @abstractmethod
     def discard(self, value):
-        """Remove an element.  Do nicht raise an exception wenn absent."""
-        raise NotImplementedError
+        """Remove an element.  Do nicht wirf an exception wenn absent."""
+        wirf NotImplementedError
 
     def remove(self, value):
-        """Remove an element. If nicht a member, raise a KeyError."""
+        """Remove an element. If nicht a member, wirf a KeyError."""
         wenn value nicht in self:
-            raise KeyError(value)
+            wirf KeyError(value)
         self.discard(value)
 
     def pop(self):
         """Return the popped value.  Raise KeyError wenn empty."""
         it = iter(self)
-        try:
+        versuch:
             value = next(it)
-        except StopIteration:
-            raise KeyError von Nichts
+        ausser StopIteration:
+            wirf KeyError von Nichts
         self.discard(value)
         gib value
 
     def clear(self):
         """This is slow (creates N new iterators!) but effective."""
-        try:
+        versuch:
             waehrend Wahr:
                 self.pop()
-        except KeyError:
+        ausser KeyError:
             pass
 
     def __ior__(self, it):
@@ -777,7 +777,7 @@ klasse Mapping(Collection):
     pairs.
 
     This klasse provides concrete generic implementations of all
-    methods except fuer __getitem__, __iter__, und __len__.
+    methods ausser fuer __getitem__, __iter__, und __len__.
     """
 
     __slots__ = ()
@@ -787,19 +787,19 @@ klasse Mapping(Collection):
 
     @abstractmethod
     def __getitem__(self, key):
-        raise KeyError
+        wirf KeyError
 
     def get(self, key, default=Nichts):
         'D.get(k[,d]) -> D[k] wenn k in D, sonst d.  d defaults to Nichts.'
-        try:
+        versuch:
             gib self[key]
-        except KeyError:
+        ausser KeyError:
             gib default
 
     def __contains__(self, key):
-        try:
+        versuch:
             self[key]
-        except KeyError:
+        ausser KeyError:
             gib Falsch
         sonst:
             gib Wahr
@@ -871,9 +871,9 @@ klasse ItemsView(MappingView, Set):
 
     def __contains__(self, item):
         key, value = item
-        try:
+        versuch:
             v = self._mapping[key]
-        except KeyError:
+        ausser KeyError:
             gib Falsch
         sonst:
             gib v is value oder v == value
@@ -910,7 +910,7 @@ klasse MutableMapping(Mapping):
     key/value pairs.
 
     This klasse provides concrete generic implementations of all
-    methods except fuer __getitem__, __setitem__, __delitem__,
+    methods ausser fuer __getitem__, __setitem__, __delitem__,
     __iter__, und __len__.
     """
 
@@ -918,11 +918,11 @@ klasse MutableMapping(Mapping):
 
     @abstractmethod
     def __setitem__(self, key, value):
-        raise KeyError
+        wirf KeyError
 
     @abstractmethod
     def __delitem__(self, key):
-        raise KeyError
+        wirf KeyError
 
     __marker = object()
 
@@ -930,11 +930,11 @@ klasse MutableMapping(Mapping):
         '''D.pop(k[,d]) -> v, remove specified key und gib the corresponding value.
           If key is nicht found, d is returned wenn given, otherwise KeyError is raised.
         '''
-        try:
+        versuch:
             value = self[key]
-        except KeyError:
+        ausser KeyError:
             wenn default is self.__marker:
-                raise
+                wirf
             gib default
         sonst:
             del self[key]
@@ -942,22 +942,22 @@ klasse MutableMapping(Mapping):
 
     def popitem(self):
         '''D.popitem() -> (k, v), remove und gib some (key, value) pair
-           als a 2-tuple; but raise KeyError wenn D is empty.
+           als a 2-tuple; but wirf KeyError wenn D is empty.
         '''
-        try:
+        versuch:
             key = next(iter(self))
-        except StopIteration:
-            raise KeyError von Nichts
+        ausser StopIteration:
+            wirf KeyError von Nichts
         value = self[key]
         del self[key]
         gib key, value
 
     def clear(self):
         'D.clear() -> Nichts.  Remove all items von D.'
-        try:
+        versuch:
             waehrend Wahr:
                 self.popitem()
-        except KeyError:
+        ausser KeyError:
             pass
 
     def update(self, other=(), /, **kwds):
@@ -980,9 +980,9 @@ klasse MutableMapping(Mapping):
 
     def setdefault(self, key, default=Nichts):
         'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d wenn k nicht in D'
-        try:
+        versuch:
             gib self[key]
-        except KeyError:
+        ausser KeyError:
             self[key] = default
         gib default
 
@@ -1006,16 +1006,16 @@ klasse Sequence(Reversible, Collection):
 
     @abstractmethod
     def __getitem__(self, index):
-        raise IndexError
+        wirf IndexError
 
     def __iter__(self):
         i = 0
-        try:
+        versuch:
             waehrend Wahr:
                 v = self[i]
                 liefere v
                 i += 1
-        except IndexError:
+        ausser IndexError:
             gib
 
     def __contains__(self, value):
@@ -1042,14 +1042,14 @@ klasse Sequence(Reversible, Collection):
 
         i = start
         waehrend stop is Nichts oder i < stop:
-            try:
+            versuch:
                 v = self[i]
-            except IndexError:
+            ausser IndexError:
                 breche
             wenn v is value oder v == value:
                 gib i
             i += 1
-        raise ValueError
+        wirf ValueError
 
     def count(self, value):
         'S.count(value) -> integer -- gib number of occurrences of value'
@@ -1073,16 +1073,16 @@ klasse MutableSequence(Sequence):
 
     @abstractmethod
     def __setitem__(self, index, value):
-        raise IndexError
+        wirf IndexError
 
     @abstractmethod
     def __delitem__(self, index):
-        raise IndexError
+        wirf IndexError
 
     @abstractmethod
     def insert(self, index, value):
         'S.insert(index, value) -- insert value before index'
-        raise IndexError
+        wirf IndexError
 
     def append(self, value):
         'S.append(value) -- append value to the end of the sequence'
@@ -1090,10 +1090,10 @@ klasse MutableSequence(Sequence):
 
     def clear(self):
         'S.clear() -> Nichts -- remove all items von S'
-        try:
+        versuch:
             waehrend Wahr:
                 self.pop()
-        except IndexError:
+        ausser IndexError:
             pass
 
     def reverse(self):

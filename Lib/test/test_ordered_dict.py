@@ -25,9 +25,9 @@ c_coll = import_helper.import_fresh_module('collections',
 def replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         sys.modules[name] = original_module
 
 
@@ -486,7 +486,7 @@ klasse OrderedDictTests:
         # Verify that subclasses can override update() without breaking __init__()
         klasse MyOD(OrderedDict):
             def update(self, *args, **kwds):
-                raise Exception()
+                wirf Exception()
         items = [('a', 1), ('c', 3), ('b', 2)]
         self.assertEqual(list(MyOD(items).items()), items)
 
@@ -528,9 +528,9 @@ klasse OrderedDictTests:
             def __hash__(self):
                 gib self._hash
             def __eq__(self, other):
-                try:
+                versuch:
                     gib self.value == other.value
-                except AttributeError:
+                ausser AttributeError:
                     gib Falsch
             def __repr__(self):
                 gib self.value
@@ -609,7 +609,7 @@ klasse OrderedDictTests:
         fuer c0 in '0123456789ABCDEF':
             fuer c1 in '0123456789ABCDEF':
                 wenn len(od) == 4:
-                    # This should nicht raise a KeyError.
+                    # This should nicht wirf a KeyError.
                     od.popitem(last=Falsch)
                 key = c0 + c1
                 od[key] = key
@@ -757,7 +757,7 @@ klasse _TriggerSideEffectOnEqual:
         gib -1
 
     def side_effect(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 klasse PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
 

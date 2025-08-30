@@ -7,7 +7,7 @@ von ._functools importiere method_cache
 klasse FoldedCase(str):
     """
     A case insensitive string class; behaves just like str
-    except compares equal when the only variation is case.
+    ausser compares equal when the only variation is case.
 
     >>> s = FoldedCase('hello world')
 

@@ -96,7 +96,7 @@ klasse UnixCCompiler(CCompiler):
         wenn self.force oder output_file is Nichts oder newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
-            try:
+            versuch:
                 self.spawn(pp_args)
-            except DistutilsExecError als msg:
-                raise CompileError(msg)
+            ausser DistutilsExecError als msg:
+                wirf CompileError(msg)

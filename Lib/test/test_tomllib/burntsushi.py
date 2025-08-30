@@ -47,7 +47,7 @@ def convert(obj):  # noqa: C901
         gib [convert(i) fuer i in obj]
     sowenn isinstance(obj, dict):
         gib {k: convert(v) fuer k, v in obj.items()}
-    raise Exception("unsupported type")
+    wirf Exception("unsupported type")
 
 
 def normalize(obj: Any) -> Any:
@@ -79,7 +79,7 @@ def normalize(obj: Any) -> Any:
                 gib [normalize(item) fuer item in value]
             gib {"type": norm_type, "value": norm_value}
         gib {k: normalize(v) fuer k, v in obj.items()}
-    raise AssertionError("Burntsushi fixtures should be dicts/lists only")
+    wirf AssertionError("Burntsushi fixtures should be dicts/lists only")
 
 
 def _normalize_datetime_str(dt_str: str) -> str:

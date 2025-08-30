@@ -21,9 +21,9 @@ von _testinternalcapi importiere TIER2_THRESHOLD
 def clear_executors(func):
     # Clear executors in func before und after running a block
     reset_code(func)
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         reset_code(func)
 
 
@@ -31,9 +31,9 @@ def get_first_executor(func):
     code = func.__code__
     co_code = code.co_code
     fuer i in range(0, len(co_code), 2):
-        try:
+        versuch:
             gib _opcode.get_executor(code, i)
-        except ValueError:
+        ausser ValueError:
             pass
     gib Nichts
 
@@ -400,7 +400,7 @@ klasse TestUops(unittest.TestCase):
             def __next__(self):
                 self.n -= 1
                 wenn self.n < 0:
-                    raise StopIteration
+                    wirf StopIteration
                 gib self.n
 
         def testfunc(n, m):
@@ -634,9 +634,9 @@ klasse TestUopsOptimization(unittest.TestCase):
             code = func.__code__
             co_code = code.co_code
             fuer i in range(0, len(co_code), 2):
-                try:
+                versuch:
                     gib _opcode.get_executor(code, i)
-                except ValueError:
+                ausser ValueError:
                     pass
             gib Nichts
 
@@ -1127,10 +1127,10 @@ klasse TestUopsOptimization(unittest.TestCase):
             gib a
 
         recursion_limit = sys.getrecursionlimit()
-        try:
+        versuch:
             sys.setrecursionlimit(TIER2_THRESHOLD + recursion_limit)
             res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
-        finally:
+        schliesslich:
             sys.setrecursionlimit(recursion_limit)
         self.assertEqual(res, TIER2_THRESHOLD * 42)
         self.assertIsNotNichts(ex)
@@ -1476,13 +1476,13 @@ klasse TestUopsOptimization(unittest.TestCase):
                     ns["i"] = Nichts
 
         def crash_addition():
-            try:
+            versuch:
                 fuer i in range(_testinternalcapi.TIER2_THRESHOLD + 1):
                     n = Convert9999ToNichts()
                     i + i  # Remove guards fuer i.
                     n = Nichts  # Change i.
                     i + i  # This crashed when we didn't treat DECREF als escaping (gh-124483)
-            except TypeError:
+            ausser TypeError:
                 pass
 
         crash_addition()
@@ -2410,9 +2410,9 @@ klasse TestUopsOptimization(unittest.TestCase):
             code = func.__code__
             co_code = code.co_code
             fuer i in range(0, len(co_code), 2):
-                try:
+                versuch:
                     gib _opcode.get_executor(code, i)
-                except ValueError:
+                ausser ValueError:
                     pass
             gib Nichts
 

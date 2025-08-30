@@ -16,7 +16,7 @@ von test.support importiere warnings_helper
 
 # Skip test wenn fork does nicht exist.
 wenn nicht support.has_fork_support:
-    raise unittest.SkipTest("test module requires working os.fork")
+    wirf unittest.SkipTest("test module requires working os.fork")
 
 
 klasse ForkTest(ForkWait):
@@ -39,7 +39,7 @@ klasse ForkTest(ForkWait):
         import_started.wait()
         exitcode = 42
         pid = os.fork()
-        try:
+        versuch:
             # PyOS_BeforeFork should have waited fuer the importiere to complete
             # before forking, so the child can recreate the importiere lock
             # correctly, but also won't see a partially initialised module
@@ -57,10 +57,10 @@ klasse ForkTest(ForkWait):
                 # exitcode (but a hang, which manifests als 'got pid 0')
                 # means the child deadlocked (also bad.)
                 self.wait_impl(pid, exitcode=exitcode)
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 os.kill(pid, signal.SIGKILL)
-            except OSError:
+            ausser OSError:
                 pass
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -71,22 +71,22 @@ klasse ForkTest(ForkWait):
         def fork_with_import_lock(level):
             release = 0
             in_child = Falsch
-            try:
-                try:
+            versuch:
+                versuch:
                     fuer i in range(level):
                         imp.acquire_lock()
                         release += 1
                     pid = os.fork()
                     in_child = nicht pid
-                finally:
+                schliesslich:
                     fuer i in range(release):
                         imp.release_lock()
-            except RuntimeError:
+            ausser RuntimeError:
                 wenn in_child:
                     wenn support.verbose > 1:
                         drucke("RuntimeError in child")
                     os._exit(1)
-                raise
+                wirf
             wenn in_child:
                 os._exit(exitcode)
             self.wait_impl(pid, exitcode=exitcode)

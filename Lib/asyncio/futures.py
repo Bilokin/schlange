@@ -36,7 +36,7 @@ klasse Future:
     - This klasse is nicht thread-safe.
 
     - result() und exception() do nicht take a timeout argument und
-      raise an exception when the future isn't done yet.
+      wirf an exception when the future isn't done yet.
 
     - Callbacks registered mit add_done_callback() are always called
       via the event loop's call_soon().
@@ -116,7 +116,7 @@ klasse Future:
     @_log_traceback.setter
     def _log_traceback(self, val):
         wenn val:
-            raise ValueError('_log_traceback can only be set to Falsch')
+            wirf ValueError('_log_traceback can only be set to Falsch')
         self.__log_traceback = Falsch
 
     @property
@@ -129,11 +129,11 @@ klasse Future:
         """Return the event loop the Future is bound to."""
         loop = self._loop
         wenn loop is Nichts:
-            raise RuntimeError("Future object is nicht initialized.")
+            wirf RuntimeError("Future object is nicht initialized.")
         gib loop
 
     def _make_cancelled_error(self):
-        """Create the CancelledError to raise wenn the Future is cancelled.
+        """Create the CancelledError to wirf wenn the Future is cancelled.
 
         This should only be called once when handling a cancellation since
         it erases the saved context exception value.
@@ -200,12 +200,12 @@ klasse Future:
         the future is done und has an exception set, this exception is raised.
         """
         wenn self._state == _CANCELLED:
-            raise self._make_cancelled_error()
+            wirf self._make_cancelled_error()
         wenn self._state != _FINISHED:
-            raise exceptions.InvalidStateError('Result is nicht ready.')
+            wirf exceptions.InvalidStateError('Result is nicht ready.')
         self.__log_traceback = Falsch
         wenn self._exception is nicht Nichts:
-            raise self._exception.with_traceback(self._exception_tb)
+            wirf self._exception.with_traceback(self._exception_tb)
         gib self._result
 
     def exception(self):
@@ -217,9 +217,9 @@ klasse Future:
         InvalidStateError.
         """
         wenn self._state == _CANCELLED:
-            raise self._make_cancelled_error()
+            wirf self._make_cancelled_error()
         wenn self._state != _FINISHED:
-            raise exceptions.InvalidStateError('Exception is nicht set.')
+            wirf exceptions.InvalidStateError('Exception is nicht set.')
         self.__log_traceback = Falsch
         gib self._exception
 
@@ -261,7 +261,7 @@ klasse Future:
         InvalidStateError.
         """
         wenn self._state != _PENDING:
-            raise exceptions.InvalidStateError(f'{self._state}: {self!r}')
+            wirf exceptions.InvalidStateError(f'{self._state}: {self!r}')
         self._result = result
         self._state = _FINISHED
         self.__schedule_callbacks()
@@ -273,7 +273,7 @@ klasse Future:
         InvalidStateError.
         """
         wenn self._state != _PENDING:
-            raise exceptions.InvalidStateError(f'{self._state}: {self!r}')
+            wirf exceptions.InvalidStateError(f'{self._state}: {self!r}')
         wenn isinstance(exception, type):
             exception = exception()
         wenn isinstance(exception, StopIteration):
@@ -294,8 +294,8 @@ klasse Future:
             self._asyncio_future_blocking = Wahr
             liefere self  # This tells Task to wait fuer completion.
         wenn nicht self.done():
-            raise RuntimeError("await wasn't used mit future")
-        gib self.result()  # May raise too.
+            wirf RuntimeError("await wasn't used mit future")
+        gib self.result()  # May wirf too.
 
     __iter__ = __await__  # make compatible mit 'yield from'.
 
@@ -307,9 +307,9 @@ _PyFuture = Future
 def _get_loop(fut):
     # Tries to call Future.get_loop() wenn it's available.
     # Otherwise fallbacks to using the old '_loop' property.
-    try:
+    versuch:
         get_loop = fut.get_loop
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         gib get_loop()
@@ -374,10 +374,10 @@ def _chain_future(source, destination):
     """
     wenn nicht isfuture(source) und nicht isinstance(source,
                                                concurrent.futures.Future):
-        raise TypeError('A future is required fuer source argument')
+        wirf TypeError('A future is required fuer source argument')
     wenn nicht isfuture(destination) und nicht isinstance(destination,
                                                     concurrent.futures.Future):
-        raise TypeError('A future is required fuer destination argument')
+        wirf TypeError('A future is required fuer destination argument')
     source_loop = _get_loop(source) wenn isfuture(source) sonst Nichts
     dest_loop = _get_loop(destination) wenn isfuture(destination) sonst Nichts
 
@@ -465,9 +465,9 @@ def future_discard_from_awaited_by(fut, waiter, /):
 _py_future_add_to_awaited_by = future_add_to_awaited_by
 _py_future_discard_from_awaited_by = future_discard_from_awaited_by
 
-try:
+versuch:
     importiere _asyncio
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     # _CFuture is needed fuer tests.

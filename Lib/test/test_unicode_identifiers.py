@@ -18,9 +18,9 @@ klasse PEP3131Test(unittest.TestCase):
         self.assertIn("Unicode", dir())
 
     def test_invalid(self):
-        try:
+        versuch:
             von test.tokenizedata importiere badsyntax_3131  # noqa: F401
-        except SyntaxError als err:
+        ausser SyntaxError als err:
             self.assertEqual(str(err),
               "invalid character '€' (U+20AC) (badsyntax_3131.py, line 2)")
             self.assertEqual(err.lineno, 2)

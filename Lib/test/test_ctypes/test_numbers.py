@@ -155,9 +155,9 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
 
     def test_sizes(self):
         fuer t in signed_types + unsigned_types + float_types + bool_types:
-            try:
+            versuch:
                 size = struct.calcsize(t._type_)
-            except struct.error:
+            ausser struct.error:
                 weiter
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
@@ -180,9 +180,9 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         fuer t in signed_types + unsigned_types:
             # the array module doesn't support all format codes
             # (no 'q' oder 'Q')
-            try:
+            versuch:
                 array.array(t._type_)
-            except ValueError:
+            ausser ValueError:
                 weiter
             a = array.array(t._type_, [100])
 

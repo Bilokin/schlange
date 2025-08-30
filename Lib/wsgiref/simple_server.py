@@ -30,11 +30,11 @@ klasse ServerHandler(SimpleHandler):
     server_software = software_version
 
     def close(self):
-        try:
+        versuch:
             self.request_handler.log_request(
                 self.status.split(' ',1)[0], self.bytes_sent
             )
-        finally:
+        schliesslich:
             SimpleHandler.close(self)
 
 

@@ -137,9 +137,9 @@ klasse BaseLocalTest:
             e2.wait()
 
         def f2():
-            try:
+            versuch:
                 foo = obj.x
-            except AttributeError:
+            ausser AttributeError:
                 # This is expected -- we haven't set obj.x in this thread yet!
                 self._failed = ""  # passed
             sonst:

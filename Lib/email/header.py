@@ -126,14 +126,14 @@ def decode_header(header):
             paderr = len(encoded_string) % 4   # Postel's law: add missing padding
             wenn paderr:
                 encoded_string += '==='[:4 - paderr]
-            try:
+            versuch:
                 word = email.base64mime.decode(encoded_string)
-            except binascii.Error:
-                raise HeaderParseError('Base64 decoding error')
+            ausser binascii.Error:
+                wirf HeaderParseError('Base64 decoding error')
             sonst:
                 decoded_words.append((word, charset))
         sonst:
-            raise AssertionError('Unexpected encoding: ' + encoding)
+            wirf AssertionError('Unexpected encoding: ' + encoding)
     # Now convert all words to bytes und collapse consecutive runs of
     # similarly encoded words.
     collapsed = []
@@ -302,11 +302,11 @@ klasse Header:
         # character set, otherwise an early error is raised.
         output_charset = charset.output_codec oder 'us-ascii'
         wenn output_charset != _charset.UNKNOWN8BIT:
-            try:
+            versuch:
                 s.encode(output_charset, errors)
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 wenn output_charset!='us-ascii':
-                    raise
+                    wirf
                 charset = UTF8
         self._chunks.append((s, charset))
 
@@ -391,7 +391,7 @@ klasse Header:
             formatter.add_transition()
         value = formatter._str(linesep)
         wenn _embedded_header.search(value):
-            raise HeaderParseError("header value appears to contain "
+            wirf HeaderParseError("header value appears to contain "
                 "an embedded header: {!r}".format(value))
         gib value
 
@@ -463,16 +463,16 @@ klasse _ValueFormatter:
         encoded_lines = charset.header_encode_lines(string, self._maxlengths())
         # The first element extends the current line, but wenn it's Nichts then
         # nothing more fit on the current line so start a new line.
-        try:
+        versuch:
             first_line = encoded_lines.pop(0)
-        except IndexError:
+        ausser IndexError:
             # There are no encoded lines, so we're done.
             gib
         wenn first_line is nicht Nichts:
             self._append_chunk(fws, first_line)
-        try:
+        versuch:
             last_line = encoded_lines.pop()
-        except IndexError:
+        ausser IndexError:
             # There was only one line.
             gib
         self.newline()

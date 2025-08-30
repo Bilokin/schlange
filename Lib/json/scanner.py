@@ -1,9 +1,9 @@
 """JSON token scanner
 """
 importiere re
-try:
+versuch:
     von _json importiere make_scanner als c_make_scanner
-except ImportError:
+ausser ImportError:
     c_make_scanner = Nichts
 
 __all__ = ['make_scanner']
@@ -26,10 +26,10 @@ def py_make_scanner(context):
     memo = context.memo
 
     def _scan_once(string, idx):
-        try:
+        versuch:
             nextchar = string[idx]
-        except IndexError:
-            raise StopIteration(idx) von Nichts
+        ausser IndexError:
+            wirf StopIteration(idx) von Nichts
 
         wenn nextchar == '"':
             gib parse_string(string, idx + 1, strict)
@@ -60,12 +60,12 @@ def py_make_scanner(context):
         sowenn nextchar == '-' und string[idx:idx + 9] == '-Infinity':
             gib parse_constant('-Infinity'), idx + 9
         sonst:
-            raise StopIteration(idx)
+            wirf StopIteration(idx)
 
     def scan_once(string, idx):
-        try:
+        versuch:
             gib _scan_once(string, idx)
-        finally:
+        schliesslich:
             memo.clear()
 
     gib scan_once

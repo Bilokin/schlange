@@ -581,10 +581,10 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
     def basic_encode_test(self, size, enc, c='.', expectedsize=Nichts):
         wenn expectedsize is Nichts:
             expectedsize = size
-        try:
+        versuch:
             s = c * size
             self.assertEqual(len(s.encode(enc)), expectedsize)
-        finally:
+        schliesslich:
             s = Nichts
 
     def setUp(self):
@@ -595,9 +595,9 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
             wenn nicht name.startswith('test_'):
                 weiter
             meth = getattr(type(self), name)
-            try:
+            versuch:
                 memuse = meth.memuse
-            except AttributeError:
+            ausser AttributeError:
                 weiter
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
@@ -627,23 +627,23 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
 
     @bigmemtest(size=_4G // 6 + 2, memuse=ascii_char_size + ucs4_char_size + 1)
     def test_encode_raw_unicode_escape(self, size):
-        try:
+        versuch:
             gib self.basic_encode_test(size, 'raw_unicode_escape')
-        except MemoryError:
+        ausser MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
     def test_encode_utf7(self, size):
-        try:
+        versuch:
             gib self.basic_encode_test(size, 'utf7')
-        except MemoryError:
+        ausser MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     def test_encode_utf32(self, size):
-        try:
+        versuch:
             gib self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
-        except MemoryError:
+        ausser MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
@@ -716,26 +716,26 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         # It is in the range of the low surrogates \uDC00-\uDFFF.
         char = "\uDCBA"
         s = char * size
-        try:
+        versuch:
             fuer f in (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
                 self.assertWahr(r.endswith(r"\udcba'"), r[-10:])
                 r = Nichts
-        finally:
+        schliesslich:
             r = s = Nichts
 
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs4_char_size * 2 + ascii_char_size * 10)
     def test_unicode_repr_wide(self, size):
         char = "\U0001DCBA"
         s = char * size
-        try:
+        versuch:
             fuer f in (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
                 self.assertWahr(r.endswith(r"\U0001dcba'"), r[-12:])
                 r = Nichts
-        finally:
+        schliesslich:
             r = s = Nichts
 
     # The original test_translate is overridden here, so als to get the
@@ -908,9 +908,9 @@ klasse TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_1G - 1, memuse=pointer_size * 2)
     def test_from_2G_generator(self, size):
-        try:
+        versuch:
             t = tuple(iter([42]*size))
-        except MemoryError:
+        ausser MemoryError:
             pass # acceptable on 32-bit
         sonst:
             self.assertEqual(len(t), size)
@@ -919,9 +919,9 @@ klasse TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_1G - 25, memuse=pointer_size * 2)
     def test_from_almost_2G_generator(self, size):
-        try:
+        versuch:
             t = tuple(iter([42]*size))
-        except MemoryError:
+        ausser MemoryError:
             pass # acceptable on 32-bit
         sonst:
             self.assertEqual(len(t), size)

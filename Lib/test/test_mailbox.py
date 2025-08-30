@@ -19,7 +19,7 @@ importiere glob
 
 
 wenn nicht socket_helper.has_gethostname:
-    raise unittest.SkipTest("test requires gethostname()")
+    wirf unittest.SkipTest("test requires gethostname()")
 
 
 klasse TestBase:
@@ -121,7 +121,7 @@ klasse TestMailbox(TestBase):
         exc_msg = "a fake error"
 
         def raiser(*args, **kw):
-            raise CustomError(exc_msg)
+            wirf CustomError(exc_msg)
         support.patch(self, email.generator.BytesGenerator, 'flatten', raiser)
         mit self.assertRaisesRegex(CustomError, exc_msg):
             self._box.add(email.message_from_string("From: Alphöso"))
@@ -562,7 +562,7 @@ klasse TestMailbox(TestBase):
 klasse TestMailboxSuperclass(TestBase, unittest.TestCase):
 
     def test_notimplemented(self):
-        # Test that all Mailbox methods raise NotImplementedException.
+        # Test that all Mailbox methods wirf NotImplementedException.
         box = mailbox.Mailbox('path')
         self.assertRaises(NotImplementedError, lambda: box.add(''))
         self.assertRaises(NotImplementedError, lambda: box.remove(''))
@@ -977,9 +977,9 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # Verify that message files are created without execute permissions
         msg = mailbox.MaildirMessage(self._template % 0)
         orig_umask = os.umask(0)
-        try:
+        versuch:
             key = self._box.add(msg)
-        finally:
+        schliesslich:
             os.umask(orig_umask)
         path = os.path.join(self._path, self._box._lookup(key))
         mode = os.stat(path).st_mode
@@ -990,9 +990,9 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # From bug #3228, we want to verify that the file created inside a Maildir
         # subfolder isn't marked als executable.
         orig_umask = os.umask(0)
-        try:
+        versuch:
             subfolder = self._box.add_folder('subfolder')
-        finally:
+        schliesslich:
             os.umask(orig_umask)
 
         path = os.path.join(subfolder._path, 'maildirfolder')
@@ -1103,9 +1103,9 @@ klasse _TestSingleFile(TestMailbox):
         sonst:
             self.skipTest("test needs more than one group")
 
-        try:
+        versuch:
             os.chown(self._path, other_uid, other_gid)
-        except OSError:
+        ausser OSError:
             self.skipTest('test needs root privilege')
         # Change permissions als in test_permissions_after_flush.
         mode = st.st_mode | 0o666
@@ -1225,7 +1225,7 @@ klasse _TestMboxMMDF(_TestSingleFile):
         pid = os.fork()
         wenn pid == 0:
             # child
-            try:
+            versuch:
                 # lock the mailbox, und signal the parent it can proceed
                 self._box.lock()
                 c.send(b'c')
@@ -1233,15 +1233,15 @@ klasse _TestMboxMMDF(_TestSingleFile):
                 # wait until the parent is done, und unlock the mailbox
                 c.recv(1)
                 self._box.unlock()
-            finally:
+            schliesslich:
                 os._exit(0)
 
         # In the parent, wait until the child signals it locked the mailbox.
         p.recv(1)
-        try:
+        versuch:
             self.assertRaises(mailbox.ExternalClashError,
                               self._box.lock)
-        finally:
+        schliesslich:
             # Signal the child it can now release the lock und exit.
             p.send(b'p')
             # Wait fuer child to exit.  Locking should now succeed.
@@ -1275,14 +1275,14 @@ klasse TestMbox(_TestMboxMMDF, unittest.TestCase):
         # From bug #3228, we want to verify that the mailbox file isn't executable,
         # even wenn the umask is set to something that would leave executable bits set.
         # We only run this test on platforms that support umask.
-        try:
+        versuch:
             old_umask = os.umask(0o077)
             self._box.close()
             os.unlink(self._path)
             self._box = mailbox.mbox(self._path, create=Wahr)
             self._box.add('')
             self._box.close()
-        finally:
+        schliesslich:
             os.umask(old_umask)
 
         st = os.stat(self._path)
@@ -2345,9 +2345,9 @@ klasse MaildirTestCase(unittest.TestCase):
             wenn mbox:
                 fp.write(FROM_)
             fp.write(DUMMY_MESSAGE)
-        try:
+        versuch:
             os.link(tmpname, newname)
-        except (AttributeError, PermissionError):
+        ausser (AttributeError, PermissionError):
             mit open(newname, "w") als fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)

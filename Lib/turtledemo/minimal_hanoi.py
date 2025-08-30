@@ -44,11 +44,11 @@ def hanoi(n, from_, with_, to_):
 def play():
     onkey(Nichts,"space")
     clear()
-    try:
+    versuch:
         hanoi(6, t1, t2, t3)
         write("press STOP button to exit",
               align="center", font=("Courier", 16, "bold"))
-    except Terminator:
+    ausser Terminator:
         pass  # turtledemo user pressed STOP
 
 def main():

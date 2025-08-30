@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 def unrepr(value):
-    raise NotImplementedError
+    wirf NotImplementedError
 
 
 def parse_entries(entries, *, ignoresep=Nichts):
@@ -17,9 +17,9 @@ def parse_entries(entries, *, ignoresep=Nichts):
         fuer item in subentries:
             wenn item.startswith('+'):
                 filename = item[1:]
-                try:
+                versuch:
                     infile = open(filename)
-                except FileNotFoundError:
+                ausser FileNotFoundError:
                     logger.debug(f'ignored in parse_entries(): +{filename}')
                     gib
                 mit infile:

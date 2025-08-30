@@ -381,7 +381,7 @@ klasse MockHTTPClass:
             self.data = body
         self.encode_chunked = encode_chunked
         wenn self.raise_on_endheaders:
-            raise OSError()
+            wirf OSError()
 
     def getresponse(self):
         gib MockHTTPResponse(MockFile(), {}, 200, "OK")
@@ -420,14 +420,14 @@ klasse MockHandler:
             gib Request("http://blah/")
         sowenn action.startswith("error"):
             code = action[action.rfind(" ")+1:]
-            try:
+            versuch:
                 code = int(code)
-            except ValueError:
+            ausser ValueError:
                 pass
             res = MockResponse(200, "OK", {}, "")
             gib self.parent.error("http", args[0], res, code, "", {})
         sowenn action == "raise":
-            raise urllib.error.URLError("blah")
+            wirf urllib.error.URLError("blah")
         assert Falsch
 
     def close(self):
@@ -788,19 +788,19 @@ klasse HandlerTests(unittest.TestCase):
 
             def connect_ftp(self, user, passwd, host, port, dirs,
                             timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
-                raise self._exception
+                wirf self._exception
 
         exception = ftplib.error_perm(
             "500 OOPS: cannot change directory:/nonexistent")
         h = ErrorFTPHandler(exception)
         urlopen = urllib.request.build_opener(h).open
-        try:
+        versuch:
             urlopen("ftp://www.pythontest.net/")
-        except urllib.error.URLError als raised:
+        ausser urllib.error.URLError als raised:
             self.assertEqual(raised.reason,
                              f"ftp error: {exception.args[0]}")
         sonst:
-            self.fail("Did nicht raise ftplib exception")
+            self.fail("Did nicht wirf ftplib exception")
 
     def test_file(self):
         importiere email.utils
@@ -812,37 +812,37 @@ klasse HandlerTests(unittest.TestCase):
         canonurl = urllib.request.pathname2url(os.path.abspath(TESTFN), add_scheme=Wahr)
         parsed = urlsplit(canonurl)
         wenn parsed.netloc:
-            raise unittest.SkipTest("non-local working directory")
+            wirf unittest.SkipTest("non-local working directory")
         urls = [
             canonurl,
             parsed._replace(netloc='localhost').geturl(),
             parsed._replace(netloc=socket.gethostbyname('localhost')).geturl(),
             ]
-        try:
+        versuch:
             localaddr = socket.gethostbyname(socket.gethostname())
-        except socket.gaierror:
+        ausser socket.gaierror:
             localaddr = ''
         wenn localaddr:
             urls.append(parsed._replace(netloc=localaddr).geturl())
 
         fuer url in urls:
             f = open(TESTFN, "wb")
-            try:
-                try:
+            versuch:
+                versuch:
                     f.write(towrite)
-                finally:
+                schliesslich:
                     f.close()
 
                 r = h.file_open(Request(url))
-                try:
+                versuch:
                     data = r.read()
                     headers = r.info()
                     respurl = r.geturl()
-                finally:
+                schliesslich:
                     r.close()
                 stats = os.stat(TESTFN)
                 modified = email.utils.formatdate(stats.st_mtime, usegmt=Wahr)
-            finally:
+            schliesslich:
                 os.remove(TESTFN)
             self.assertEqual(data, towrite)
             self.assertEqual(headers["Content-type"], "text/plain")
@@ -859,16 +859,16 @@ klasse HandlerTests(unittest.TestCase):
             "file://somerandomhost.ontheinternet.com%s/%s" %
             (os.getcwd(), TESTFN),
             ]:
-            try:
+            versuch:
                 f = open(TESTFN, "wb")
-                try:
+                versuch:
                     f.write(towrite)
-                finally:
+                schliesslich:
                     f.close()
 
                 self.assertRaises(urllib.error.URLError,
                                   h.file_open, Request(url))
-            finally:
+            schliesslich:
                 os.remove(TESTFN)
 
         h = urllib.request.FileHandler()
@@ -888,9 +888,9 @@ klasse HandlerTests(unittest.TestCase):
             ("file://localhost//foo/something.txt", Falsch),
             ]:
             req = Request(url)
-            try:
+            versuch:
                 h.file_open(req)
-            except urllib.error.URLError:
+            ausser urllib.error.URLError:
                 self.assertFalsch(ftp)
             sonst:
                 self.assertIs(o.req, req)
@@ -1241,18 +1241,18 @@ klasse HandlerTests(unittest.TestCase):
                 wenn data is nicht Nichts:
                     req.add_header("Content-Length", str(len(data)))
                 req.add_unredirected_header("Spam", "spam")
-                try:
+                versuch:
                     method(req, MockFile(), code, "Blah",
                            MockHeaders({"location": to_url}))
-                except urllib.error.HTTPError als err:
+                ausser urllib.error.HTTPError als err:
                     # 307 und 308 in response to POST require user OK
                     self.assertIn(code, (307, 308))
                     self.assertIsNotNichts(data)
                     err.close()
                 self.assertEqual(o.req.get_full_url(), to_url)
-                try:
+                versuch:
                     self.assertEqual(o.req.get_method(), "GET")
-                except AttributeError:
+                ausser AttributeError:
                     self.assertFalsch(o.req.data)
 
                 # now it's a GET, there should nicht be headers regarding content
@@ -1280,11 +1280,11 @@ klasse HandlerTests(unittest.TestCase):
         req = Request(from_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
-        try:
+        versuch:
             waehrend 1:
                 redirect(h, req, "http://example.com/")
                 count = count + 1
-        except urllib.error.HTTPError als err:
+        ausser urllib.error.HTTPError als err:
             # don't stop until max_repeats, because cookies may introduce state
             self.assertEqual(count, urllib.request.HTTPRedirectHandler.max_repeats)
             err.close()
@@ -1293,11 +1293,11 @@ klasse HandlerTests(unittest.TestCase):
         req = Request(from_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
-        try:
+        versuch:
             waehrend 1:
                 redirect(h, req, "http://example.com/%d" % count)
                 count = count + 1
-        except urllib.error.HTTPError als err:
+        ausser urllib.error.HTTPError als err:
             self.assertEqual(count,
                              urllib.request.HTTPRedirectHandler.max_redirections)
             err.close()

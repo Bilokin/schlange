@@ -3420,9 +3420,9 @@ klasse TestTracing(unittest.TestCase):
 
         old_trace = sys.gettrace()
         sys.settrace(trace)
-        try:
+        versuch:
             func(*args, **kwargs)
-        finally:
+        schliesslich:
             sys.settrace(old_trace)
         gib actual_linenos
 

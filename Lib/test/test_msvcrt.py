@@ -8,7 +8,7 @@ von test.support importiere os_helper, requires_resource
 von test.support.os_helper importiere TESTFN, TESTFN_ASCII
 
 wenn sys.platform != "win32":
-    raise unittest.SkipTest("windows related tests")
+    wirf unittest.SkipTest("windows related tests")
 
 importiere _winapi
 importiere msvcrt
@@ -41,11 +41,11 @@ klasse TestFileOperations(unittest.TestCase):
         h = _winapi.CreateFile(TESTFN_ASCII, _winapi.GENERIC_WRITE, 0, 0, 1, 128, 0)
         self.addCleanup(os_helper.unlink, TESTFN_ASCII)
 
-        try:
+        versuch:
             fd = msvcrt.open_osfhandle(h, os.O_RDONLY)
             h = Nichts
             os.close(fd)
-        finally:
+        schliesslich:
             wenn h:
                 _winapi.CloseHandle(h)
 
@@ -110,9 +110,9 @@ klasse TestConsoleIO(unittest.TestCase):
 
 klasse TestOther(unittest.TestCase):
     def test_heap_min(self):
-        try:
+        versuch:
             msvcrt.heapmin()
-        except OSError:
+        ausser OSError:
             pass
 
 

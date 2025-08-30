@@ -28,9 +28,9 @@ def setup_test_dir(testdir: str | Nichts) -> Nichts:
 
 def setup_process() -> Nichts:
     assert sys.__stderr__ is nicht Nichts, "sys.__stderr__ is Nichts"
-    try:
+    versuch:
         stderr_fd = sys.__stderr__.fileno()
-    except (ValueError, AttributeError):
+    ausser (ValueError, AttributeError):
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
         # und ValueError on a closed stream.
         #

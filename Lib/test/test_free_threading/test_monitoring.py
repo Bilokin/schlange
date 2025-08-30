@@ -300,7 +300,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         loops = 1_000
 
         sys.settrace(trace)
-        try:
+        versuch:
             l = _PyRLock()
 
             def f():
@@ -314,7 +314,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
                 mit l:
                     pass
             t.join()
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
 
     def test_toggle_setprofile_no_new_events(self):
@@ -333,17 +333,17 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             gib max(x, y)
 
         sys.setprofile(profiler)
-        try:
+        versuch:
             a(1, 2)
-        finally:
+        schliesslich:
             sys.setprofile(Nichts)
         traces.clear()
 
         def thread_main(x, y):
             sys.setprofile(profiler)
-            try:
+            versuch:
                 a(x, y)
-            finally:
+            schliesslich:
                 sys.setprofile(Nichts)
         t = Thread(target=thread_main, args=(100, 200))
         t.start()
@@ -402,9 +402,9 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         @contextmanager
         def profile():
             sys.setprofile(profiler)
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 sys.setprofile(Nichts)
 
         self.observe_threads(profile, buf)
@@ -419,9 +419,9 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         @contextmanager
         def trace():
             sys.settrace(tracer)
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 sys.settrace(Nichts)
 
         self.observe_threads(trace, buf)
@@ -470,11 +470,11 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
         t = Thread(target=bg_thread)
         t.start()
-        try:
+        versuch:
             sys.settrace(tracefunc)
             b.wait()
             noop()
-        finally:
+        schliesslich:
             sys.settrace(Nichts)
         t.join()
 

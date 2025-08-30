@@ -143,10 +143,10 @@ klasse GrepDialog(SearchDialogBase):
             gib
         von idlelib.outwin importiere OutputWindow  # leave here!
         save = sys.stdout
-        try:
+        versuch:
             sys.stdout = OutputWindow(self.flist)
             self.grep_it(prog, path)
-        finally:
+        schliesslich:
             sys.stdout = save
 
     def grep_it(self, prog, path):
@@ -169,9 +169,9 @@ klasse GrepDialog(SearchDialogBase):
         pat = self.engine.getpat()
         drucke(f"Searching {pat!r} in {path} ...")
         hits = 0
-        try:
+        versuch:
             fuer fn in filelist:
-                try:
+                versuch:
                     mit open(fn, errors='replace') als f:
                         fuer lineno, line in enumerate(f, 1):
                             wenn line[-1:] == '\n':
@@ -179,11 +179,11 @@ klasse GrepDialog(SearchDialogBase):
                             wenn prog.search(line):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
-                except OSError als msg:
+                ausser OSError als msg:
                     drucke(msg)
             drucke(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   wenn hits sonst "No hits.")
-        except AttributeError:
+        ausser AttributeError:
             # Tk window has been closed, OutputWindow.text = Nichts,
             # so in OW.write, OW.text.insert fails.
             pass

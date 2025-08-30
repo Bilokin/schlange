@@ -59,42 +59,42 @@ klasse Test_Assertions(unittest.TestCase):
 
     def test_assertRaises(self):
         def _raise(e):
-            raise e
+            wirf e
         self.assertRaises(KeyError, _raise, KeyError)
         self.assertRaises(KeyError, _raise, KeyError("key"))
-        try:
+        versuch:
             self.assertRaises(KeyError, lambda: Nichts)
-        except self.failureException als e:
+        ausser self.failureException als e:
             self.assertIn("KeyError nicht raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
-        try:
+        versuch:
             self.assertRaises(KeyError, _raise, ValueError)
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
             self.fail("assertRaises() didn't let exception pass through")
         mit self.assertRaises(KeyError) als cm:
-            try:
-                raise KeyError
-            except Exception als e:
+            versuch:
+                wirf KeyError
+            ausser Exception als e:
                 exc = e
-                raise
+                wirf
         self.assertIs(cm.exception, exc)
 
         mit self.assertRaises(KeyError):
-            raise KeyError("key")
-        try:
+            wirf KeyError("key")
+        versuch:
             mit self.assertRaises(KeyError):
                 pass
-        except self.failureException als e:
+        ausser self.failureException als e:
             self.assertIn("KeyError nicht raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
-        try:
+        versuch:
             mit self.assertRaises(KeyError):
-                raise ValueError
-        except ValueError:
+                wirf ValueError
+        ausser ValueError:
             pass
         sonst:
             self.fail("assertRaises() didn't let exception pass through")
@@ -112,10 +112,10 @@ klasse Test_Assertions(unittest.TestCase):
                 nonlocal wr
                 a = A()
                 wr = weakref.ref(a)
-                try:
-                    raise OSError
-                except OSError:
-                    raise ValueError
+                versuch:
+                    wirf OSError
+                ausser OSError:
+                    wirf ValueError
 
             def test_functional(self):
                 self.assertRaises(ValueError, self.foo)
@@ -133,9 +133,9 @@ klasse Test_Assertions(unittest.TestCase):
 
     def testAssertNotRegex(self):
         self.assertNotRegex('Ala ma kota', r'r+')
-        try:
+        versuch:
             self.assertNotRegex('Ala ma kota', r'k.t', 'Message')
-        except self.failureException als e:
+        ausser self.failureException als e:
             self.assertIn('Message', e.args[0])
         sonst:
             self.fail('assertNotRegex should have failed.')
@@ -373,7 +373,7 @@ klasse TestLongMessage(unittest.TestCase):
                                '^TypeError nicht raised : oops$'])
         # test error raised but mit wrong message
         def raise_wrong_message():
-            raise TypeError('foo')
+            wirf TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
                               raise_wrong_message,
                               ['^"regex" does nicht match "foo"$', '^oops$',

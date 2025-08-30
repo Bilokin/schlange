@@ -11,32 +11,32 @@ importiere fnmatch
 importiere collections
 importiere errno
 
-try:
+versuch:
     importiere zlib
     del zlib
     _ZLIB_SUPPORTED = Wahr
-except ImportError:
+ausser ImportError:
     _ZLIB_SUPPORTED = Falsch
 
-try:
+versuch:
     importiere bz2
     del bz2
     _BZ2_SUPPORTED = Wahr
-except ImportError:
+ausser ImportError:
     _BZ2_SUPPORTED = Falsch
 
-try:
+versuch:
     importiere lzma
     del lzma
     _LZMA_SUPPORTED = Wahr
-except ImportError:
+ausser ImportError:
     _LZMA_SUPPORTED = Falsch
 
-try:
+versuch:
     von compression importiere zstd
     del zstd
     _ZSTD_SUPPORTED = Wahr
-except ImportError:
+ausser ImportError:
     _ZSTD_SUPPORTED = Falsch
 
 _WINDOWS = os.name == 'nt'
@@ -99,21 +99,21 @@ def _fastcopy_fcopyfile(fsrc, fdst, flags):
     """Copy a regular file content oder metadata by using high-performance
     fcopyfile(3) syscall (macOS).
     """
-    try:
+    versuch:
         infd = fsrc.fileno()
         outfd = fdst.fileno()
-    except Exception als err:
-        raise _GiveupOnFastCopy(err)  # nicht a regular file
+    ausser Exception als err:
+        wirf _GiveupOnFastCopy(err)  # nicht a regular file
 
-    try:
+    versuch:
         posix._fcopyfile(infd, outfd, flags)
-    except OSError als err:
+    ausser OSError als err:
         err.filename = fsrc.name
         err.filename2 = fdst.name
         wenn err.errno in {errno.EINVAL, errno.ENOTSUP}:
-            raise _GiveupOnFastCopy(err)
+            wirf _GiveupOnFastCopy(err)
         sonst:
-            raise err von Nichts
+            wirf err von Nichts
 
 def _determine_linux_fastcopy_blocksize(infd):
     """Determine blocksize fuer fastcopying on Linux.
@@ -124,9 +124,9 @@ def _determine_linux_fastcopy_blocksize(infd):
     file size should nicht make any difference, also in case the file
     content changes waehrend being copied.
     """
-    try:
+    versuch:
         blocksize = max(os.fstat(infd).st_size, 2 ** 23)  # min 8 MiB
-    except OSError:
+    ausser OSError:
         blocksize = 2 ** 27  # 128 MiB
     # On 32-bit architectures truncate to 1 GiB to avoid OverflowError,
     # see gh-82500.
@@ -141,37 +141,37 @@ def _fastcopy_copy_file_range(fsrc, fdst):
 
     This should work on Linux >= 4.5 only.
     """
-    try:
+    versuch:
         infd = fsrc.fileno()
         outfd = fdst.fileno()
-    except Exception als err:
-        raise _GiveupOnFastCopy(err)  # nicht a regular file
+    ausser Exception als err:
+        wirf _GiveupOnFastCopy(err)  # nicht a regular file
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
     waehrend Wahr:
-        try:
+        versuch:
             n_copied = os.copy_file_range(infd, outfd, blocksize, offset_dst=offset)
-        except OSError als err:
+        ausser OSError als err:
             # ...in oder to have a more informative exception.
             err.filename = fsrc.name
             err.filename2 = fdst.name
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err von Nichts
+                wirf err von Nichts
 
             # Give up on first call und wenn no data was copied.
             wenn offset == 0 und os.lseek(outfd, 0, os.SEEK_CUR) == 0:
-                raise _GiveupOnFastCopy(err)
+                wirf _GiveupOnFastCopy(err)
 
-            raise err
+            wirf err
         sonst:
             wenn n_copied == 0:
                 # If no bytes have been copied yet, copy_file_range
                 # might silently fail.
                 # https://lore.kernel.org/linux-fsdevel/20210126233840.GG4626@dread.disaster.area/T/#m05753578c7f7882f6e9ffe01f981bc223edef2b0
                 wenn offset == 0:
-                    raise _GiveupOnFastCopy()
+                    wirf _GiveupOnFastCopy()
                 breche
             offset += n_copied
 
@@ -190,18 +190,18 @@ def _fastcopy_sendfile(fsrc, fdst):
     #   chunks).
     # - possibly others (e.g. encrypted fs/partition?)
     global _USE_CP_SENDFILE
-    try:
+    versuch:
         infd = fsrc.fileno()
         outfd = fdst.fileno()
-    except Exception als err:
-        raise _GiveupOnFastCopy(err)  # nicht a regular file
+    ausser Exception als err:
+        wirf _GiveupOnFastCopy(err)  # nicht a regular file
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
     waehrend Wahr:
-        try:
+        versuch:
             sent = os.sendfile(outfd, infd, offset, blocksize)
-        except OSError als err:
+        ausser OSError als err:
             # ...in order to have a more informative exception.
             err.filename = fsrc.name
             err.filename2 = fdst.name
@@ -211,16 +211,16 @@ def _fastcopy_sendfile(fsrc, fdst):
                 # does nicht support copies between regular files (only
                 # sockets).
                 _USE_CP_SENDFILE = Falsch
-                raise _GiveupOnFastCopy(err)
+                wirf _GiveupOnFastCopy(err)
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err von Nichts
+                wirf err von Nichts
 
             # Give up on first call und wenn no data was copied.
             wenn offset == 0 und os.lseek(outfd, 0, os.SEEK_CUR) == 0:
-                raise _GiveupOnFastCopy(err)
+                wirf _GiveupOnFastCopy(err)
 
-            raise err
+            wirf err
         sonst:
             wenn sent == 0:
                 breche  # EOF
@@ -259,15 +259,15 @@ def copyfileobj(fsrc, fdst, length=0):
 def _samefile(src, dst):
     # Macintosh, Unix.
     wenn isinstance(src, os.DirEntry) und hasattr(os.path, 'samestat'):
-        try:
+        versuch:
             gib os.path.samestat(src.stat(), os.stat(dst))
-        except OSError:
+        ausser OSError:
             gib Falsch
 
     wenn hasattr(os.path, 'samefile'):
-        try:
+        versuch:
             gib os.path.samefile(src, dst)
-        except OSError:
+        ausser OSError:
             gib Falsch
 
     # All other platforms: check fuer same pathname.
@@ -290,20 +290,20 @@ def copyfile(src, dst, *, follow_symlinks=Wahr):
     sys.audit("shutil.copyfile", src, dst)
 
     wenn _samefile(src, dst):
-        raise SameFileError("{!r} und {!r} are the same file".format(src, dst))
+        wirf SameFileError("{!r} und {!r} are the same file".format(src, dst))
 
     file_size = 0
     fuer i, fn in enumerate([src, dst]):
-        try:
+        versuch:
             st = _stat(fn)
-        except OSError:
+        ausser OSError:
             # File most likely does nicht exist
             pass
         sonst:
             # XXX What about other special files? (sockets, devices...)
             wenn stat.S_ISFIFO(st.st_mode):
                 fn = fn.path wenn isinstance(fn, os.DirEntry) sonst fn
-                raise SpecialFileError("`%s` is a named pipe" % fn)
+                wirf SpecialFileError("`%s` is a named pipe" % fn)
             wenn _WINDOWS und i == 0:
                 file_size = st.st_size
 
@@ -311,29 +311,29 @@ def copyfile(src, dst, *, follow_symlinks=Wahr):
         os.symlink(os.readlink(src), dst)
     sonst:
         mit open(src, 'rb') als fsrc:
-            try:
+            versuch:
                 mit open(dst, 'wb') als fdst:
                     # macOS
                     wenn _HAS_FCOPYFILE:
-                        try:
+                        versuch:
                             _fastcopy_fcopyfile(fsrc, fdst, posix._COPYFILE_DATA)
                             gib dst
-                        except _GiveupOnFastCopy:
+                        ausser _GiveupOnFastCopy:
                             pass
                     # Linux / Android / Solaris
                     sowenn _USE_CP_SENDFILE oder _USE_CP_COPY_FILE_RANGE:
                         # reflink may be implicit in copy_file_range.
                         wenn _USE_CP_COPY_FILE_RANGE:
-                            try:
+                            versuch:
                                 _fastcopy_copy_file_range(fsrc, fdst)
                                 gib dst
-                            except _GiveupOnFastCopy:
+                            ausser _GiveupOnFastCopy:
                                 pass
                         wenn _USE_CP_SENDFILE:
-                            try:
+                            versuch:
                                 _fastcopy_sendfile(fsrc, fdst)
                                 gib dst
-                            except _GiveupOnFastCopy:
+                            ausser _GiveupOnFastCopy:
                                 pass
                     # Windows, see:
                     # https://github.com/python/cpython/pull/7160#discussion_r195405230
@@ -343,12 +343,12 @@ def copyfile(src, dst, *, follow_symlinks=Wahr):
 
                     copyfileobj(fsrc, fdst)
 
-            # Issue 43219, raise a less confusing exception
-            except IsADirectoryError als e:
+            # Issue 43219, wirf a less confusing exception
+            ausser IsADirectoryError als e:
                 wenn nicht os.path.exists(dst):
-                    raise FileNotFoundError(f'Directory does nicht exist: {dst}') von e
+                    wirf FileNotFoundError(f'Directory does nicht exist: {dst}') von e
                 sonst:
-                    raise
+                    wirf
 
     gib dst
 
@@ -388,20 +388,20 @@ wenn hasattr(os, 'listxattr'):
 
         """
 
-        try:
+        versuch:
             names = os.listxattr(src, follow_symlinks=follow_symlinks)
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno nicht in (errno.ENOTSUP, errno.ENODATA, errno.EINVAL):
-                raise
+                wirf
             gib
         fuer name in names:
-            try:
+            versuch:
                 value = os.getxattr(src, name, follow_symlinks=follow_symlinks)
                 os.setxattr(dst, name, value, follow_symlinks=follow_symlinks)
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno nicht in (errno.EPERM, errno.ENOTSUP, errno.ENODATA,
                                    errno.EINVAL, errno.EACCES):
-                    raise
+                    wirf
 sonst:
     def _copyxattr(*args, **kwargs):
         pass
@@ -448,9 +448,9 @@ def copystat(src, dst, *, follow_symlinks=Wahr):
     # We must copy extended attributes before the file is (potentially)
     # chmod()'ed read-only, otherwise setxattr() will error mit -EACCES.
     _copyxattr(src, dst, follow_symlinks=follow)
-    try:
+    versuch:
         lookup("chmod")(dst, mode, follow_symlinks=follow)
-    except NotImplementedError:
+    ausser NotImplementedError:
         # wenn we got a NotImplementedError, it's because
         #   * follow_symlinks=Falsch,
         #   * lchown() is unavailable, und
@@ -463,14 +463,14 @@ def copystat(src, dst, *, follow_symlinks=Wahr):
         # (which is what shutil always did in this circumstance.)
         pass
     wenn hasattr(st, 'st_flags'):
-        try:
+        versuch:
             lookup("chflags")(dst, st.st_flags, follow_symlinks=follow)
-        except OSError als why:
+        ausser OSError als why:
             fuer err in 'EOPNOTSUPP', 'ENOTSUP':
                 wenn hasattr(errno, err) und why.errno == getattr(errno, err):
                     breche
             sonst:
-                raise
+                wirf
 
 def copy(src, dst, *, follow_symlinks=Wahr):
     """Copy data und mode bits ("cp src dst"). Return the file's destination.
@@ -510,10 +510,10 @@ def copy2(src, dst, *, follow_symlinks=Wahr):
         flags = _winapi.COPY_FILE_ALLOW_DECRYPTED_DESTINATION # fuer compat
         wenn nicht follow_symlinks:
             flags |= _winapi.COPY_FILE_COPY_SYMLINK
-        try:
+        versuch:
             _winapi.CopyFile2(src_, dst_, flags)
             gib dst
-        except OSError als exc:
+        ausser OSError als exc:
             wenn (exc.winerror == _winapi.ERROR_PRIVILEGE_NOT_HELD
                 und nicht follow_symlinks):
                 # Likely encountered a symlink we aren't allowed to create.
@@ -524,7 +524,7 @@ def copy2(src, dst, *, follow_symlinks=Wahr):
                 # overwrite. Fall back on old code
                 pass
             sonst:
-                raise
+                wirf
 
     copyfile(src, dst, follow_symlinks=follow_symlinks)
     copystat(src, dst, follow_symlinks=follow_symlinks)
@@ -559,7 +559,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
         srcname = os.path.join(src, srcentry.name)
         dstname = os.path.join(dst, srcentry.name)
         srcobj = srcentry wenn use_srcentry sonst srcname
-        try:
+        versuch:
             is_symlink = srcentry.is_symlink()
             wenn is_symlink und os.name == 'nt':
                 # Special check fuer directory junctions, which appear as
@@ -579,7 +579,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
                     # ignore dangling symlink wenn the flag is on
                     wenn nicht os.path.exists(linkto) und ignore_dangling_symlinks:
                         weiter
-                    # otherwise let the copy occur. copy2 will raise an error
+                    # otherwise let the copy occur. copy2 will wirf an error
                     wenn srcentry.is_dir():
                         copytree(srcobj, dstname, symlinks, ignore,
                                  copy_function, ignore_dangling_symlinks,
@@ -590,22 +590,22 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
                 copytree(srcobj, dstname, symlinks, ignore, copy_function,
                          ignore_dangling_symlinks, dirs_exist_ok)
             sonst:
-                # Will raise a SpecialFileError fuer unsupported file types
+                # Will wirf a SpecialFileError fuer unsupported file types
                 copy_function(srcobj, dstname)
         # catch the Error von the recursive copytree so that we can
         # weiter mit other files
-        except Error als err:
+        ausser Error als err:
             errors.extend(err.args[0])
-        except OSError als why:
+        ausser OSError als why:
             errors.append((srcname, dstname, str(why)))
-    try:
+    versuch:
         copystat(src, dst)
-    except OSError als why:
+    ausser OSError als why:
         # Copying file access times may fail on Windows
         wenn getattr(why, 'winerror', Nichts) is Nichts:
             errors.append((src, dst, str(why)))
     wenn errors:
-        raise Error(errors)
+        wirf Error(errors)
     gib dst
 
 def copytree(src, dst, symlinks=Falsch, ignore=Nichts, copy_function=copy2,
@@ -668,17 +668,17 @@ sonst:
 # version vulnerable to race conditions
 def _rmtree_unsafe(path, dir_fd, onexc):
     wenn dir_fd is nicht Nichts:
-        raise NotImplementedError("dir_fd unavailable on this platform")
-    try:
+        wirf NotImplementedError("dir_fd unavailable on this platform")
+    versuch:
         st = os.lstat(path)
-    except OSError als err:
+    ausser OSError als err:
         onexc(os.lstat, path, err)
         gib
-    try:
+    versuch:
         wenn _rmtree_islink(st):
             # symlinks to directories are forbidden, see bug #1669
-            raise OSError("Cannot call rmtree on a symbolic link")
-    except OSError als err:
+            wirf OSError("Cannot call rmtree on a symbolic link")
+    ausser OSError als err:
         onexc(os.path.islink, path, err)
         # can't weiter even wenn onexc hook returns
         gib
@@ -689,25 +689,25 @@ def _rmtree_unsafe(path, dir_fd, onexc):
     fuer dirpath, dirnames, filenames in results:
         fuer name in dirnames:
             fullname = os.path.join(dirpath, name)
-            try:
+            versuch:
                 os.rmdir(fullname)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 weiter
-            except OSError als err:
+            ausser OSError als err:
                 onexc(os.rmdir, fullname, err)
         fuer name in filenames:
             fullname = os.path.join(dirpath, name)
-            try:
+            versuch:
                 os.unlink(fullname)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 weiter
-            except OSError als err:
+            ausser OSError als err:
                 onexc(os.unlink, fullname, err)
-    try:
+    versuch:
         os.rmdir(path)
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         pass
-    except OSError als err:
+    ausser OSError als err:
         onexc(os.rmdir, path, err)
 
 # Version using fd-based APIs to protect against races
@@ -716,18 +716,18 @@ def _rmtree_safe_fd(path, dir_fd, onexc):
     wenn isinstance(path, bytes):
         path = os.fsdecode(path)
     stack = [(os.lstat, dir_fd, path, Nichts)]
-    try:
+    versuch:
         waehrend stack:
             _rmtree_safe_fd_step(stack, onexc)
-    finally:
+    schliesslich:
         # Close any file descriptors still on the stack.
         waehrend stack:
             func, fd, path, entry = stack.pop()
             wenn func is nicht os.close:
                 weiter
-            try:
+            versuch:
                 os.close(fd)
-            except OSError als err:
+            ausser OSError als err:
                 onexc(os.close, path, err)
 
 def _rmtree_safe_fd_step(stack, onexc):
@@ -745,7 +745,7 @@ def _rmtree_safe_fd_step(stack, onexc):
     #   save a call to os.lstat() when walking subdirectories.
     func, dirfd, path, orig_entry = stack.pop()
     name = path wenn orig_entry is Nichts sonst orig_entry.name
-    try:
+    versuch:
         wenn func is os.close:
             os.close(dirfd)
             gib
@@ -765,12 +765,12 @@ def _rmtree_safe_fd_step(stack, onexc):
         topfd = os.open(name, os.O_RDONLY | os.O_NONBLOCK, dir_fd=dirfd)
 
         func = os.path.islink  # For error reporting.
-        try:
+        versuch:
             wenn nicht os.path.samestat(orig_st, os.fstat(topfd)):
                 # Symlinks to directories are forbidden, see GH-46010.
-                raise OSError("Cannot call rmtree on a symbolic link")
+                wirf OSError("Cannot call rmtree on a symbolic link")
             stack.append((os.rmdir, dirfd, path, orig_entry))
-        finally:
+        schliesslich:
             stack.append((os.close, topfd, path, orig_entry))
 
         func = os.scandir  # For error reporting.
@@ -778,26 +778,26 @@ def _rmtree_safe_fd_step(stack, onexc):
             entries = list(scandir_it)
         fuer entry in entries:
             fullname = os.path.join(path, entry.name)
-            try:
+            versuch:
                 wenn entry.is_dir(follow_symlinks=Falsch):
                     # Traverse into sub-directory.
                     stack.append((os.lstat, topfd, fullname, entry))
                     weiter
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 weiter
-            except OSError:
+            ausser OSError:
                 pass
-            try:
+            versuch:
                 os.unlink(entry.name, dir_fd=topfd)
-            except FileNotFoundError:
+            ausser FileNotFoundError:
                 weiter
-            except OSError als err:
+            ausser OSError als err:
                 onexc(os.unlink, fullname, err)
-    except FileNotFoundError als err:
+    ausser FileNotFoundError als err:
         wenn orig_entry is Nichts oder func is os.close:
             err.filename = path
             onexc(func, path, err)
-    except OSError als err:
+    ausser OSError als err:
         err.filename = path
         onexc(func, path, err)
 
@@ -813,7 +813,7 @@ def rmtree(path, ignore_errors=Falsch, onerror=Nichts, *, onexc=Nichts, dir_fd=N
     If dir_fd is nicht Nichts, it should be a file descriptor open to a directory;
     path will then be relative to that directory.
     dir_fd may nicht be implemented on your platform.
-    If it is unavailable, using it will raise a NotImplementedError.
+    If it is unavailable, using it will wirf a NotImplementedError.
 
     If ignore_errors is set, errors are ignored; otherwise, wenn onexc oder
     onerror is set, it is called to handle the error mit arguments (func,
@@ -834,11 +834,11 @@ def rmtree(path, ignore_errors=Falsch, onerror=Nichts, *, onexc=Nichts, dir_fd=N
             pass
     sowenn onerror is Nichts und onexc is Nichts:
         def onexc(*args):
-            raise
+            wirf
     sowenn onexc is Nichts:
         wenn onerror is Nichts:
             def onexc(*args):
-                raise
+                wirf
         sonst:
             # delegate to onerror
             def onexc(*args):
@@ -913,22 +913,22 @@ def move(src, dst, copy_function=copy2):
         real_dst = os.path.join(dst, _basename(src))
 
         wenn os.path.exists(real_dst):
-            raise Error("Destination path '%s' already exists" % real_dst)
-    try:
+            wirf Error("Destination path '%s' already exists" % real_dst)
+    versuch:
         os.rename(src, real_dst)
-    except OSError:
+    ausser OSError:
         wenn os.path.islink(src):
             linkto = os.readlink(src)
             os.symlink(linkto, real_dst)
             os.unlink(src)
         sowenn os.path.isdir(src):
             wenn _destinsrc(src, dst):
-                raise Error("Cannot move a directory '%s' into itself"
+                wirf Error("Cannot move a directory '%s' into itself"
                             " '%s'." % (src, dst))
             wenn (_is_immutable(src)
                     oder (nicht os.access(src, os.W_OK) und os.listdir(src)
                         und sys.platform == 'darwin')):
-                raise PermissionError("Cannot move the non-empty directory "
+                wirf PermissionError("Cannot move the non-empty directory "
                                       "'%s': Lacking write permission to '%s'."
                                       % (src, src))
             copytree(src, real_dst, copy_function=copy_function,
@@ -958,14 +958,14 @@ def _get_gid(name):
     wenn name is Nichts:
         gib Nichts
 
-    try:
+    versuch:
         von grp importiere getgrnam
-    except ImportError:
+    ausser ImportError:
         gib Nichts
 
-    try:
+    versuch:
         result = getgrnam(name)
-    except KeyError:
+    ausser KeyError:
         result = Nichts
     wenn result is nicht Nichts:
         gib result[2]
@@ -976,14 +976,14 @@ def _get_uid(name):
     wenn name is Nichts:
         gib Nichts
 
-    try:
+    versuch:
         von pwd importiere getpwnam
-    except ImportError:
+    ausser ImportError:
         gib Nichts
 
-    try:
+    versuch:
         result = getpwnam(name)
-    except KeyError:
+    ausser KeyError:
         result = Nichts
     wenn result is nicht Nichts:
         gib result[2]
@@ -1016,7 +1016,7 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     sowenn _ZSTD_SUPPORTED und compress == 'zst':
         tar_compression = 'zst'
     sonst:
-        raise ValueError("bad value fuer 'compress', oder compression format nicht "
+        wirf ValueError("bad value fuer 'compress', oder compression format nicht "
                          "supported : {0}".format(compress))
 
     importiere tarfile  # late importiere fuer breaking circular dependency
@@ -1052,9 +1052,9 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
         arcname = base_dir
         wenn root_dir is nicht Nichts:
             base_dir = os.path.join(root_dir, base_dir)
-        try:
+        versuch:
             tar.add(base_dir, arcname, filter=_set_uid_gid)
-        finally:
+        schliesslich:
             tar.close()
 
     wenn root_dir is nicht Nichts:
@@ -1169,12 +1169,12 @@ def register_archive_format(name, function, extra_args=Nichts, description=''):
     wenn extra_args is Nichts:
         extra_args = []
     wenn nicht callable(function):
-        raise TypeError('The %s object is nicht callable' % function)
+        wirf TypeError('The %s object is nicht callable' % function)
     wenn nicht isinstance(extra_args, (tuple, list)):
-        raise TypeError('extra_args needs to be a sequence')
+        wirf TypeError('extra_args needs to be a sequence')
     fuer element in extra_args:
         wenn nicht isinstance(element, (tuple, list)) oder len(element) !=2:
-            raise TypeError('extra_args elements are : (arg_name, value)')
+            wirf TypeError('extra_args elements are : (arg_name, value)')
 
     _ARCHIVE_FORMATS[name] = (function, extra_args, description)
 
@@ -1200,10 +1200,10 @@ def make_archive(base_name, format, root_dir=Nichts, base_dir=Nichts, verbose=0,
     uses the current owner und group.
     """
     sys.audit("shutil.make_archive", base_name, format, root_dir, base_dir)
-    try:
+    versuch:
         format_info = _ARCHIVE_FORMATS[format]
-    except KeyError:
-        raise ValueError("unknown archive format '%s'" % format) von Nichts
+    ausser KeyError:
+        wirf ValueError("unknown archive format '%s'" % format) von Nichts
 
     kwargs = {'dry_run': dry_run, 'logger': logger,
               'owner': owner, 'group': group}
@@ -1220,7 +1220,7 @@ def make_archive(base_name, format, root_dir=Nichts, base_dir=Nichts, verbose=0,
     wenn root_dir is nicht Nichts:
         stmd = os.stat(root_dir).st_mode
         wenn nicht stat.S_ISDIR(stmd):
-            raise NotADirectoryError(errno.ENOTDIR, 'Not a directory', root_dir)
+            wirf NotADirectoryError(errno.ENOTDIR, 'Not a directory', root_dir)
 
         wenn supports_root_dir:
             # Support path-like base_name here fuer backwards-compatibility.
@@ -1234,9 +1234,9 @@ def make_archive(base_name, format, root_dir=Nichts, base_dir=Nichts, verbose=0,
             wenn nicht dry_run:
                 os.chdir(root_dir)
 
-    try:
+    versuch:
         filename = func(base_name, base_dir, **kwargs)
-    finally:
+    schliesslich:
         wenn save_cwd is nicht Nichts:
             wenn logger is nicht Nichts:
                 logger.debug("changing back to '%s'", save_cwd)
@@ -1267,11 +1267,11 @@ def _check_unpack_options(extensions, function, extra_args):
     fuer extension in extensions:
         wenn extension in existing_extensions:
             msg = '%s is already registered fuer "%s"'
-            raise RegistryError(msg % (extension,
+            wirf RegistryError(msg % (extension,
                                        existing_extensions[extension]))
 
     wenn nicht callable(function):
-        raise TypeError('The registered function must be a callable')
+        wirf TypeError('The registered function must be a callable')
 
 
 def register_unpack_format(name, extensions, function, extra_args=Nichts,
@@ -1283,7 +1283,7 @@ def register_unpack_format(name, extensions, function, extra_args=Nichts,
 
     `function` is the callable that will be
     used to unpack archives. The callable will receive archives to unpack.
-    If it's unable to handle an archive, it needs to raise a ReadError
+    If it's unable to handle an archive, it needs to wirf a ReadError
     exception.
 
     If provided, `extra_args` is a sequence of
@@ -1312,10 +1312,10 @@ def _unpack_zipfile(filename, extract_dir):
     importiere zipfile  # late importiere fuer breaking circular dependency
 
     wenn nicht zipfile.is_zipfile(filename):
-        raise ReadError("%s is nicht a zip file" % filename)
+        wirf ReadError("%s is nicht a zip file" % filename)
 
     zip = zipfile.ZipFile(filename)
-    try:
+    versuch:
         fuer info in zip.infolist():
             name = info.filename
 
@@ -1333,21 +1333,21 @@ def _unpack_zipfile(filename, extract_dir):
                 mit zip.open(name, 'r') als source, \
                         open(targetpath, 'wb') als target:
                     copyfileobj(source, target)
-    finally:
+    schliesslich:
         zip.close()
 
 def _unpack_tarfile(filename, extract_dir, *, filter=Nichts):
     """Unpack tar/tar.gz/tar.bz2/tar.xz/tar.zst `filename` to `extract_dir`
     """
     importiere tarfile  # late importiere fuer breaking circular dependency
-    try:
+    versuch:
         tarobj = tarfile.open(filename)
-    except tarfile.TarError:
-        raise ReadError(
+    ausser tarfile.TarError:
+        wirf ReadError(
             "%s is nicht a compressed oder uncompressed tar file" % filename)
-    try:
+    versuch:
         tarobj.extractall(extract_dir, filter=filter)
-    finally:
+    schliesslich:
         tarobj.close()
 
 # Maps the name of the unpack format to a tuple containing:
@@ -1414,10 +1414,10 @@ def unpack_archive(filename, extract_dir=Nichts, format=Nichts, *, filter=Nichts
     sonst:
         filter_kwargs = {'filter': filter}
     wenn format is nicht Nichts:
-        try:
+        versuch:
             format_info = _UNPACK_FORMATS[format]
-        except KeyError:
-            raise ValueError("Unknown unpack format '{0}'".format(format)) von Nichts
+        ausser KeyError:
+            wirf ValueError("Unknown unpack format '{0}'".format(format)) von Nichts
 
         func = format_info[1]
         func(filename, extract_dir, **dict(format_info[2]), **filter_kwargs)
@@ -1425,7 +1425,7 @@ def unpack_archive(filename, extract_dir=Nichts, format=Nichts, *, filter=Nichts
         # we need to look at the registered unpackers supported extensions
         format = _find_unpack_format(filename)
         wenn format is Nichts:
-            raise ReadError("Unknown archive format '{0}'".format(filename))
+            wirf ReadError("Unknown archive format '{0}'".format(filename))
 
         func = _UNPACK_FORMATS[format][1]
         kwargs = dict(_UNPACK_FORMATS[format][2]) | filter_kwargs
@@ -1484,7 +1484,7 @@ def chown(path, user=Nichts, group=Nichts, *, dir_fd=Nichts, follow_symlinks=Wah
     sys.audit('shutil.chown', path, user, group)
 
     wenn user is Nichts und group is Nichts:
-        raise ValueError("user and/or group must be set")
+        wirf ValueError("user and/or group must be set")
 
     _user = user
     _group = group
@@ -1496,14 +1496,14 @@ def chown(path, user=Nichts, group=Nichts, *, dir_fd=Nichts, follow_symlinks=Wah
     sowenn isinstance(user, str):
         _user = _get_uid(user)
         wenn _user is Nichts:
-            raise LookupError("no such user: {!r}".format(user))
+            wirf LookupError("no such user: {!r}".format(user))
 
     wenn group is Nichts:
         _group = -1
     sowenn nicht isinstance(group, int):
         _group = _get_gid(group)
         wenn _group is Nichts:
-            raise LookupError("no such group: {!r}".format(group))
+            wirf LookupError("no such group: {!r}".format(group))
 
     os.chown(path, _user, _group, dir_fd=dir_fd,
              follow_symlinks=follow_symlinks)
@@ -1528,21 +1528,21 @@ def get_terminal_size(fallback=(80, 24)):
     The value returned is a named tuple of type os.terminal_size.
     """
     # columns, lines are the working values
-    try:
+    versuch:
         columns = int(os.environ['COLUMNS'])
-    except (KeyError, ValueError):
+    ausser (KeyError, ValueError):
         columns = 0
 
-    try:
+    versuch:
         lines = int(os.environ['LINES'])
-    except (KeyError, ValueError):
+    ausser (KeyError, ValueError):
         lines = 0
 
     # only query wenn necessary
     wenn columns <= 0 oder lines <= 0:
-        try:
+        versuch:
             size = os.get_terminal_size(sys.__stdout__.fileno())
-        except (AttributeError, ValueError, OSError):
+        ausser (AttributeError, ValueError, OSError):
             # stdout is Nichts, closed, detached, oder nicht a terminal, oder
             # os.get_terminal_size() is unsupported
             size = os.terminal_size(fallback)
@@ -1594,9 +1594,9 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=Nichts):
         wenn path is Nichts:
             path = os.environ.get("PATH", Nichts)
             wenn path is Nichts:
-                try:
+                versuch:
                     path = os.confstr("CS_PATH")
-                except (AttributeError, ValueError):
+                ausser (AttributeError, ValueError):
                     # os.confstr() oder CS_PATH is nicht available
                     path = os.defpath
             # bpo-35755: Don't use os.defpath wenn the PATH environment variable
@@ -1664,4 +1664,4 @@ def __getattr__(name):
             remove=(3, 16)
         )
         gib RuntimeError
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    wirf AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -43,7 +43,7 @@ def _build_graph_for_future(
     limit: int | Nichts = Nichts,
 ) -> FutureCallGraph:
     wenn nicht isinstance(future, futures.Future):
-        raise TypeError(
+        wirf TypeError(
             f"{future!r} object does nicht appear to be compatible "
             f"with asyncio.Future"
         )
@@ -132,7 +132,7 @@ def capture_call_graph(
         # sonst: future is the current task, move on.
     sonst:
         wenn loop is Nichts:
-            raise RuntimeError(
+            wirf RuntimeError(
                 'capture_call_graph() is called outside of a running '
                 'event loop und no *future* to introspect was provided')
         future = tasks.current_task(loop=loop)
@@ -144,7 +144,7 @@ def capture_call_graph(
         gib Nichts
 
     wenn nicht isinstance(future, futures.Future):
-        raise TypeError(
+        wirf TypeError(
             f"{future!r} object does nicht appear to be compatible "
             f"with asyncio.Future"
         )
@@ -152,7 +152,7 @@ def capture_call_graph(
     call_stack: list[FrameCallGraphEntry] = []
 
     f = sys._getframe(depth) wenn limit != 0 sonst Nichts
-    try:
+    versuch:
         waehrend f is nicht Nichts:
             is_async = f.f_generator is nicht Nichts
             call_stack.append(FrameCallGraphEntry(f))
@@ -164,7 +164,7 @@ def capture_call_graph(
                     breche
 
             f = f.f_back
-    finally:
+    schliesslich:
         del f
 
     awaited_by = []
@@ -224,16 +224,16 @@ def format_call_graph(
                 sonst:
                     c = f.f_generator
 
-                    try:
+                    versuch:
                         f = c.cr_frame
                         code = c.cr_code
                         tag = 'async'
-                    except AttributeError:
-                        try:
+                    ausser AttributeError:
+                        versuch:
                             f = c.ag_frame
                             code = c.ag_code
                             tag = 'async generator'
-                        except AttributeError:
+                        ausser AttributeError:
                             f = c.gi_frame
                             code = c.gi_code
                             tag = 'generator'
@@ -256,9 +256,9 @@ def format_call_graph(
         gib ""
 
     buf: list[str] = []
-    try:
+    versuch:
         render_level(graph, buf, 0)
-    finally:
+    schliesslich:
         # 'graph' has references to frames so we should
         # make sure it's GC'ed als soon als we don't need it.
         del graph

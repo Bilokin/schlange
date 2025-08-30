@@ -49,10 +49,10 @@ def _aix_bos_rte():
     """
     # All AIX systems to have lslpp installed in this location
     # subprocess may nicht be available during python bootstrap
-    try:
+    versuch:
         importiere subprocess
         out = subprocess.check_output(["/usr/bin/lslpp", "-Lqc", "bos.rte"])
-    except ImportError:
+    ausser ImportError:
         out = _read_cmd_output("/usr/bin/lslpp -Lqc bos.rte")
     out = out.decode("utf-8")
     out = out.strip().split(":")  # type: ignore
@@ -88,7 +88,7 @@ def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")
     wenn nicht gnu_type:
-        raise ValueError("BUILD_GNU_TYPE is nicht defined")
+        wirf ValueError("BUILD_GNU_TYPE is nicht defined")
     gib _aix_vrtl(vrmf=gnu_type)
 
 
@@ -100,9 +100,9 @@ def aix_buildtag():
     # AIX_BUILDDATE is defined by configure with:
     # lslpp -Lcq bos.rte | awk -F:  '{ print $NF }'
     build_date = sysconfig.get_config_var("AIX_BUILDDATE")
-    try:
+    versuch:
         build_date = int(build_date)
-    except (ValueError, TypeError):
-        raise ValueError(f"AIX_BUILDDATE is nicht defined oder invalid: "
+    ausser (ValueError, TypeError):
+        wirf ValueError(f"AIX_BUILDDATE is nicht defined oder invalid: "
                          f"{build_date!r}")
     gib _aix_tag(_aix_bgt(), build_date)

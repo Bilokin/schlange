@@ -41,9 +41,9 @@ decimal = import_helper.import_fresh_module('decimal', fresh=['_decimal'])
 def replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         sys.modules[name] = original_module
 
 def capture(*args, **kw):
@@ -93,9 +93,9 @@ klasse TestPartial:
 
     def test_argument_checking(self):
         self.assertRaises(TypeError, self.partial)     # need at least a func arg
-        try:
+        versuch:
             self.partial(2)()
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail('First arg nicht checked fuer callability')
@@ -315,23 +315,23 @@ klasse TestPartial:
 
         f = self.partial(capture)
         f.__setstate__((f, (), {}, {}))
-        try:
+        versuch:
             self.assertEqual(repr(f), '%s(...)' % (name,))
-        finally:
+        schliesslich:
             f.__setstate__((capture, (), {}, {}))
 
         f = self.partial(capture)
         f.__setstate__((capture, (f,), {}, {}))
-        try:
+        versuch:
             self.assertEqual(repr(f), '%s(%r, ...)' % (name, capture,))
-        finally:
+        schliesslich:
             f.__setstate__((capture, (), {}, {}))
 
         f = self.partial(capture)
         f.__setstate__((capture, (), {'a': f}, {}))
-        try:
+        versuch:
             self.assertEqual(repr(f), '%s(%r, a=...)' % (name, capture,))
-        finally:
+        schliesslich:
             f.__setstate__((capture, (), {}, {}))
 
     def test_pickle(self):
@@ -440,37 +440,37 @@ klasse TestPartial:
         mit replaced_module('functools', self.module):
             f = self.partial(capture)
             f.__setstate__((f, (), {}, {}))
-            try:
+            versuch:
                 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     # gh-117008: Small limit since pickle uses C stack memory
                     mit support.infinite_recursion(100):
                         mit self.assertRaises(RecursionError):
                             pickle.dumps(f, proto)
-            finally:
+            schliesslich:
                 f.__setstate__((capture, (), {}, {}))
 
             f = self.partial(capture)
             f.__setstate__((capture, (f,), {}, {}))
-            try:
+            versuch:
                 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     f_copy = pickle.loads(pickle.dumps(f, proto))
-                    try:
+                    versuch:
                         self.assertIs(f_copy.args[0], f_copy)
-                    finally:
+                    schliesslich:
                         f_copy.__setstate__((capture, (), {}, {}))
-            finally:
+            schliesslich:
                 f.__setstate__((capture, (), {}, {}))
 
             f = self.partial(capture)
             f.__setstate__((capture, (), {'a': f}, {}))
-            try:
+            versuch:
                 fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     f_copy = pickle.loads(pickle.dumps(f, proto))
-                    try:
+                    versuch:
                         self.assertIs(f_copy.keywords['a'], f_copy)
-                    finally:
+                    schliesslich:
                         f_copy.__setstate__((capture, (), {}, {}))
-            finally:
+            schliesslich:
                 f.__setstate__((capture, (), {}, {}))
 
     # Issue 6083: Reference counting bug
@@ -485,7 +485,7 @@ klasse TestPartial:
                     gib tuple(range(1000000))
                 sowenn key in (2, 3):
                     gib {}
-                raise IndexError
+                wirf IndexError
 
         f = self.partial(object)
         self.assertRaises(TypeError, f.__setstate__, BadSequence())
@@ -525,9 +525,9 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
         self.assertRaises(AttributeError, setattr, p, 'keywords', dict(a=1, b=2))
 
         p = self.partial(hex)
-        try:
+        versuch:
             del p.__dict__
-        except TypeError:
+        ausser TypeError:
             pass
         sonst:
             self.fail('partial object allowed __dict__ to be deleted')
@@ -976,7 +976,7 @@ klasse TestReduce:
                 gib len(self.sofar)
 
             def __getitem__(self, i):
-                wenn nicht 0 <= i < self.max: raise IndexError
+                wenn nicht 0 <= i < self.max: wirf IndexError
                 n = len(self.sofar)
                 waehrend n <= i:
                     self.sofar.append(n*n)
@@ -1010,7 +1010,7 @@ klasse TestReduce:
 
         klasse TestFailingIter:
             def __iter__(self):
-                raise RuntimeError
+                wirf RuntimeError
         self.assertRaises(RuntimeError, self.reduce, add, TestFailingIter())
 
         self.assertEqual(self.reduce(add, [], Nichts), Nichts)
@@ -1018,7 +1018,7 @@ klasse TestReduce:
 
         klasse BadSeq:
             def __getitem__(self, index):
-                raise ValueError
+                wirf ValueError
         self.assertRaises(ValueError, self.reduce, 42, BadSeq())
 
     # Test reduce()'s use of iterators.
@@ -1030,7 +1030,7 @@ klasse TestReduce:
                 wenn 0 <= i < self.n:
                     gib i
                 sonst:
-                    raise IndexError
+                    wirf IndexError
 
         von operator importiere add
         self.assertEqual(self.reduce(add, SequenceClass(5)), 10)
@@ -1123,14 +1123,14 @@ klasse TestCmpToKey:
 
     def test_bad_cmp(self):
         def cmp1(x, y):
-            raise ZeroDivisionError
+            wirf ZeroDivisionError
         key = self.cmp_to_key(cmp1)
         mit self.assertRaises(ZeroDivisionError):
             key(3) > key(1)
 
         klasse BadCmp:
             def __lt__(self, other):
-                raise ZeroDivisionError
+                wirf ZeroDivisionError
         def cmp1(x, y):
             gib BadCmp()
         mit self.assertRaises(ZeroDivisionError):
@@ -1715,11 +1715,11 @@ klasse TestLRU:
         # caching the built-in len() function.  Since len() can be
         # cached, we shouldn't use it inside the lru code itself.
         old_len = builtins.len
-        try:
+        versuch:
             builtins.len = self.module.lru_cache(4)(len)
             fuer i in [0, 0, 1, 2, 3, 3, 4, 5, 6, 1, 7, 2, 1]:
                 self.assertEqual(len('abcdefghijklmn'[:i]), i)
-        finally:
+        schliesslich:
             builtins.len = old_len
 
     def test_lru_star_arg_handling(self):
@@ -1902,7 +1902,7 @@ klasse TestLRU:
 
         orig_si = sys.getswitchinterval()
         support.setswitchinterval(1e-6)
-        try:
+        versuch:
             # create n threads in order to fill cache
             threads = [threading.Thread(target=full, args=[k])
                        fuer k in range(n)]
@@ -1926,7 +1926,7 @@ klasse TestLRU:
             start.clear()
             mit threading_helper.start_threads(threads):
                 start.set()
-        finally:
+        schliesslich:
             sys.setswitchinterval(orig_si)
 
     @threading_helper.requires_working_threading()
@@ -3065,9 +3065,9 @@ klasse TestSingleDispatch(unittest.TestCase):
             @classmethod
             @contextlib.contextmanager
             def cls_context_manager(cls, arg: int) -> str:
-                try:
+                versuch:
                     liefere str(arg)
-                finally:
+                schliesslich:
                     pass
                 gib 'Done'
 
@@ -3082,9 +3082,9 @@ klasse TestSingleDispatch(unittest.TestCase):
             @contextlib.contextmanager
             def cls_context_manager(cls, arg: int) -> str:
                 """My function docstring"""
-                try:
+                versuch:
                     liefere str(arg)
-                finally:
+                schliesslich:
                     pass
                 gib 'Done'
 
@@ -3392,14 +3392,14 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_method_bad_hash(self):
         klasse A:
             def __eq__(self, other):
-                raise AssertionError
+                wirf AssertionError
             def __hash__(self):
-                raise AssertionError
+                wirf AssertionError
             @functools.singledispatchmethod
             def t(self, arg):
                 pass
 
-        # Should nicht raise
+        # Should nicht wirf
         A().t(1)
         hash(A().t)
         A().t == A().t
@@ -3516,7 +3516,7 @@ klasse CachedCostItemWithSlots:
 
     @py_functools.cached_property
     def cost(self):
-        raise RuntimeError('never called, slots nicht supported')
+        wirf RuntimeError('never called, slots nicht supported')
 
 
 klasse TestCachedProperty(unittest.TestCase):
@@ -3622,7 +3622,7 @@ klasse TestCachedProperty(unittest.TestCase):
         """Caching still works fuer a subclass defining __set__."""
         klasse readonly_cached_property(py_functools.cached_property):
             def __set__(self, obj, value):
-                raise AttributeError("read only property")
+                wirf AttributeError("read only property")
 
         klasse Test:
             def __init__(self, prop):

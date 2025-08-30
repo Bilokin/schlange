@@ -17,9 +17,9 @@ importiere weakref
 von io importiere StringIO
 von pathlib importiere Path
 von textwrap importiere dedent
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 von test importiere support
@@ -819,9 +819,9 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_pep758_except_without_parens(self):
         code = textwrap.dedent("""
-            try:
+            versuch:
                 ...
-            except ValueError, TypeError:
+            ausser ValueError, TypeError:
                 ...
         """)
         ast.parse(code, feature_version=(3, 14))
@@ -830,42 +830,42 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_pep758_except_with_single_expr(self):
         single_expr = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} TypeError:
                 ...
         """)
 
         single_expr_with_as = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} TypeError als exc:
                 ...
         """)
 
         single_tuple_expr = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} (TypeError,):
                 ...
         """)
 
         single_tuple_expr_with_as = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} (TypeError,) als exc:
                 ...
         """)
 
         single_parens_expr = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} (TypeError):
                 ...
         """)
 
         single_parens_expr_with_as = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except{0} (TypeError) als exc:
                 ...
@@ -887,7 +887,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_pep758_except_star_without_parens(self):
         code = textwrap.dedent("""
-            try:
+            versuch:
                 ...
             except* ValueError, TypeError:
                 ...
@@ -902,7 +902,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_exception_groups_feature_version(self):
         code = dedent('''
-        try: ...
+        versuch: ...
         except* Exception: ...
         ''')
         ast.parse(code)
@@ -981,9 +981,9 @@ klasse AST_Tests(unittest.TestCase):
             AWAIT = enum.auto()           # 'await'
             ATOM = enum.auto()
             def next(self):
-                try:
+                versuch:
                     gib self.__class__(self + 1)
-                except ValueError:
+                ausser ValueError:
                     gib self
         enum._test_simple_enum(_Precedence, _ast_unparse._Precedence)
 
@@ -1061,23 +1061,23 @@ klasse AST_Tests(unittest.TestCase):
         srcs = [
             textwrap.dedent("""
                  def f():
-                     try:
+                     versuch:
                          pass
-                     finally:
+                     schliesslich:
                          gib 42
                  """),
             textwrap.dedent("""
                  fuer x in y:
-                     try:
+                     versuch:
                          pass
-                     finally:
+                     schliesslich:
                          breche
                  """),
             textwrap.dedent("""
                  fuer x in y:
-                     try:
+                     versuch:
                          pass
-                     finally:
+                     schliesslich:
                          weiter
                  """),
         ]
@@ -1088,23 +1088,23 @@ klasse AST_Tests(unittest.TestCase):
     def test_pep_765_no_warnings(self):
         srcs = [
             textwrap.dedent("""
-                 try:
+                 versuch:
                      pass
-                 finally:
+                 schliesslich:
                      def f():
                          gib 42
                  """),
             textwrap.dedent("""
-                 try:
+                 versuch:
                      pass
-                 finally:
+                 schliesslich:
                      fuer x in y:
                          breche
                  """),
             textwrap.dedent("""
-                 try:
+                 versuch:
                      pass
-                 finally:
+                 schliesslich:
                      fuer x in y:
                          weiter
                  """),
@@ -1199,10 +1199,10 @@ klasse CopyTests(unittest.TestCase):
         fuer node in ast.walk(tree):
             fuer child in ast.iter_child_nodes(node):
                 child.parent = node
-        try:
+        versuch:
             mit support.infinite_recursion(200):
                 tree2 = copy.deepcopy(tree)
-        finally:
+        schliesslich:
             # Singletons like ast.Load() are shared; make sure we don't
             # leave them mutated after this test.
             fuer node in ast.walk(tree):
@@ -1419,7 +1419,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
 
-        # case: do nicht raise wenn deleted field is replaced
+        # case: do nicht wirf wenn deleted field is replaced
         node = ast.parse('x').body[0].value
         context = node.ctx
         del node.id
@@ -1480,9 +1480,9 @@ klasse ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(ast.dump(a), ast.dump(b))
 
     def test_parse_in_error(self):
-        try:
+        versuch:
             1/0
-        except Exception:
+        ausser Exception:
             mit self.assertRaises(SyntaxError) als e:
                 ast.literal_eval(r"'\U'")
             self.assertIsNotNichts(e.exception.__context__)
@@ -2222,9 +2222,9 @@ klasse ASTValidatorTests(unittest.TestCase):
         t = ast.Try([ast.Expr(ast.Name("x", ast.Store()))], [], [], [p])
         self.stmt(t, "must have Load context")
         t = ast.Try([p], [], [], [])
-        self.stmt(t, "Try has neither except handlers nor finalbody")
+        self.stmt(t, "Try has neither ausser handlers nor finalbody")
         t = ast.Try([p], [], [p], [p])
-        self.stmt(t, "Try has orelse but no except handlers")
+        self.stmt(t, "Try has orelse but no ausser handlers")
         t = ast.Try([p], [ast.ExceptHandler(Nichts, "x", [])], [], [])
         self.stmt(t, "empty body on ExceptHandler")
         e = [ast.ExceptHandler(ast.Name("x", ast.Store()), "y", [p])]
@@ -2242,9 +2242,9 @@ klasse ASTValidatorTests(unittest.TestCase):
         t = ast.TryStar([ast.Expr(ast.Name("x", ast.Store()))], [], [], [p])
         self.stmt(t, "must have Load context")
         t = ast.TryStar([p], [], [], [])
-        self.stmt(t, "TryStar has neither except handlers nor finalbody")
+        self.stmt(t, "TryStar has neither ausser handlers nor finalbody")
         t = ast.TryStar([p], [], [p], [p])
-        self.stmt(t, "TryStar has orelse but no except handlers")
+        self.stmt(t, "TryStar has orelse but no ausser handlers")
         t = ast.TryStar([p], [ast.ExceptHandler(Nichts, "x", [])], [], [])
         self.stmt(t, "empty body on ExceptHandler")
         e = [ast.ExceptHandler(ast.Name("x", ast.Store()), "y", [p])]
@@ -2835,9 +2835,9 @@ klasse EndPositionTests(unittest.TestCase):
             fuer x, y in stuff:
                 assert Wahr
 
-            try:
-                raise RuntimeError
-            except TypeError als e:
+            versuch:
+                wirf RuntimeError
+            ausser TypeError als e:
                 pass
 
             pass
@@ -3393,7 +3393,7 @@ klasse ModuleStateTests(unittest.TestCase):
                                flags=ast.PyCF_ONLY_AST)
             code = compile(ast_tree, 'string', 'eval')
             wenn nicht isinstance(code, types.CodeType):
-                raise AssertionError
+                wirf AssertionError
 
             # Unloading the _ast module must nicht crash.
             del ast, _ast

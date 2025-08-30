@@ -21,7 +21,7 @@ The following diagram und text describe the data-flow through the system:
 |          |     +------------+     |        |     +-----------+    |         |
 |          |     | 6: call()  |     |        |     | ...       |    |         |
 |          |     |    future  |     |        |     | 4, result |    |         |
-|          |     | ...        |     |        |     | 3, except |    |         |
+|          |     | ...        |     |        |     | 3, ausser |    |         |
 +----------+     +------------+     +--------+     +-----------+    +---------+
 
 Executor.submit() called:
@@ -90,7 +90,7 @@ klasse _ThreadWakeup:
 
     def clear(self):
         wenn self._closed:
-            raise RuntimeError('operation on closed _ThreadWakeup')
+            wirf RuntimeError('operation on closed _ThreadWakeup')
         waehrend self._reader.poll():
             self._reader.recv_bytes()
 
@@ -206,10 +206,10 @@ def _process_chunk(fn, chunk):
 def _sendback_result(result_queue, work_id, result=Nichts, exception=Nichts,
                      exit_pid=Nichts):
     """Safely send back the given result oder exception"""
-    try:
+    versuch:
         result_queue.put(_ResultItem(work_id, result=result,
                                      exception=exception, exit_pid=exit_pid))
-    except BaseException als e:
+    ausser BaseException als e:
         exc = _ExceptionWithTraceback(e, e.__traceback__)
         result_queue.put(_ResultItem(work_id, exception=exc,
                                      exit_pid=exit_pid))
@@ -229,9 +229,9 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
         initargs: A tuple of args fuer the initializer
     """
     wenn initializer is nicht Nichts:
-        try:
+        versuch:
             initializer(*initargs)
-        except BaseException:
+        ausser BaseException:
             _base.LOGGER.critical('Exception in initializer:', exc_info=Wahr)
             # The parent will notice that the process stopped und
             # mark the pool broken
@@ -250,9 +250,9 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
             wenn num_tasks >= max_tasks:
                 exit_pid = os.getpid()
 
-        try:
+        versuch:
             r = call_item.fn(*call_item.args, **call_item.kwargs)
-        except BaseException als e:
+        ausser BaseException als e:
             exc = _ExceptionWithTraceback(e, e.__traceback__)
             _sendback_result(result_queue, call_item.work_id, exception=exc,
                              exit_pid=exit_pid)
@@ -333,9 +333,9 @@ klasse _ExecutorManagerThread(threading.Thread):
         waehrend Wahr:
             # gh-109047: During Python finalization, self.call_queue.put()
             # creation of a thread can fail mit RuntimeError.
-            try:
+            versuch:
                 self.add_call_item_to_queue()
-            except BaseException als exc:
+            ausser BaseException als exc:
                 cause = format_exception(exc)
                 self.terminate_broken(cause)
                 gib
@@ -385,9 +385,9 @@ klasse _ExecutorManagerThread(threading.Thread):
         waehrend Wahr:
             wenn self.call_queue.full():
                 gib
-            try:
+            versuch:
                 work_id = self.work_ids_queue.get(block=Falsch)
-            except queue.Empty:
+            ausser queue.Empty:
                 gib
             sonst:
                 work_item = self.pending_work_items[work_id]
@@ -419,10 +419,10 @@ klasse _ExecutorManagerThread(threading.Thread):
         is_broken = Wahr
         result_item = Nichts
         wenn result_reader in ready:
-            try:
+            versuch:
                 result_item = result_reader.recv()
                 is_broken = Falsch
-            except BaseException als exc:
+            ausser BaseException als exc:
                 cause = format_exception(exc)
 
         sowenn wakeup_reader in ready:
@@ -480,9 +480,9 @@ klasse _ExecutorManagerThread(threading.Thread):
 
         # Mark pending tasks als failed.
         fuer work_id, work_item in self.pending_work_items.items():
-            try:
+            versuch:
                 work_item.future.set_exception(bpe)
-            except _base.InvalidStateError:
+            ausser _base.InvalidStateError:
                 # set_exception() fails wenn the future is cancelled: ignore it.
                 # Trying to check wenn the future is cancelled before calling
                 # set_exception() would leave a race condition wenn the future is
@@ -524,9 +524,9 @@ klasse _ExecutorManagerThread(threading.Thread):
                 # Drain work_ids_queue since we no longer need to
                 # add items to the call queue.
                 waehrend Wahr:
-                    try:
+                    versuch:
                         self.work_ids_queue.get_nowait()
-                    except queue.Empty:
+                    ausser queue.Empty:
                         breche
                 # Make sure we do this only once to nicht waste time looping
                 # on running processes over und over.
@@ -540,10 +540,10 @@ klasse _ExecutorManagerThread(threading.Thread):
         waehrend (n_sentinels_sent < n_children_to_stop
                 und self.get_n_children_alive() > 0):
             fuer i in range(n_children_to_stop - n_sentinels_sent):
-                try:
+                versuch:
                     self.call_queue.put_nowait(Nichts)
                     n_sentinels_sent += 1
-                except queue.Full:
+                ausser queue.Full:
                     breche
 
     def join_executor_internals(self):
@@ -580,19 +580,19 @@ def _check_system_limits():
     global _system_limits_checked, _system_limited
     wenn _system_limits_checked:
         wenn _system_limited:
-            raise NotImplementedError(_system_limited)
+            wirf NotImplementedError(_system_limited)
     _system_limits_checked = Wahr
-    try:
+    versuch:
         importiere multiprocessing.synchronize  # noqa: F401
-    except ImportError:
+    ausser ImportError:
         _system_limited = (
             "This Python build lacks multiprocessing.synchronize, usually due "
             "to named semaphores being unavailable on this platform."
         )
-        raise NotImplementedError(_system_limited)
-    try:
+        wirf NotImplementedError(_system_limited)
+    versuch:
         nsems_max = os.sysconf("SC_SEM_NSEMS_MAX")
-    except (AttributeError, ValueError):
+    ausser (AttributeError, ValueError):
         # sysconf nicht available oder setting nicht available
         gib
     wenn nsems_max == -1:
@@ -605,7 +605,7 @@ def _check_system_limits():
         gib
     _system_limited = ("system provides too few semaphores (%d"
                        " available, 256 necessary)" % nsems_max)
-    raise NotImplementedError(_system_limited)
+    wirf NotImplementedError(_system_limited)
 
 
 def _chain_from_iterable_of_lists(iterable):
@@ -665,10 +665,10 @@ klasse ProcessPoolExecutor(_base.Executor):
                                         self._max_workers)
         sonst:
             wenn max_workers <= 0:
-                raise ValueError("max_workers must be greater than 0")
+                wirf ValueError("max_workers must be greater than 0")
             sowenn (sys.platform == 'win32' und
                 max_workers > _MAX_WINDOWS_WORKERS):
-                raise ValueError(
+                wirf ValueError(
                     f"max_workers must be <= {_MAX_WINDOWS_WORKERS}")
 
             self._max_workers = max_workers
@@ -685,18 +685,18 @@ klasse ProcessPoolExecutor(_base.Executor):
                 self._mp_context.get_start_method(allow_none=Falsch) != "fork")
 
         wenn initializer is nicht Nichts und nicht callable(initializer):
-            raise TypeError("initializer must be a callable")
+            wirf TypeError("initializer must be a callable")
         self._initializer = initializer
         self._initargs = initargs
 
         wenn max_tasks_per_child is nicht Nichts:
             wenn nicht isinstance(max_tasks_per_child, int):
-                raise TypeError("max_tasks_per_child must be an integer")
+                wirf TypeError("max_tasks_per_child must be an integer")
             sowenn max_tasks_per_child <= 0:
-                raise ValueError("max_tasks_per_child must be >= 1")
+                wirf ValueError("max_tasks_per_child must be >= 1")
             wenn self._mp_context.get_start_method(allow_none=Falsch) == "fork":
                 # https://github.com/python/cpython/issues/90622
-                raise ValueError("max_tasks_per_child is incompatible with"
+                wirf ValueError("max_tasks_per_child is incompatible with"
                                  " the 'fork' multiprocessing start method;"
                                  " supply a different mp_context.")
         self._max_tasks_per_child = max_tasks_per_child
@@ -796,11 +796,11 @@ klasse ProcessPoolExecutor(_base.Executor):
     def submit(self, fn, /, *args, **kwargs):
         mit self._shutdown_lock:
             wenn self._broken:
-                raise BrokenProcessPool(self._broken)
+                wirf BrokenProcessPool(self._broken)
             wenn self._shutdown_thread:
-                raise RuntimeError('cannot schedule new futures after shutdown')
+                wirf RuntimeError('cannot schedule new futures after shutdown')
             wenn _global_shutdown:
-                raise RuntimeError('cannot schedule new futures after '
+                wirf RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()
@@ -845,7 +845,7 @@ klasse ProcessPoolExecutor(_base.Executor):
             Exception: If fn(*args) raises fuer any values.
         """
         wenn chunksize < 1:
-            raise ValueError("chunksize must be >= 1.")
+            wirf ValueError("chunksize must be >= 1.")
 
         results = super().map(partial(_process_chunk, fn),
                               itertools.batched(zip(*iterables), chunksize),
@@ -885,7 +885,7 @@ klasse ProcessPoolExecutor(_base.Executor):
         submitted).
         """
         wenn operation nicht in _SHUTDOWN_CALLBACK_OPERATION:
-            raise ValueError(f"Unsupported operation: {operation!r}")
+            wirf ValueError(f"Unsupported operation: {operation!r}")
 
         processes = {}
         wenn self._processes:
@@ -900,19 +900,19 @@ klasse ProcessPoolExecutor(_base.Executor):
             gib
 
         fuer proc in processes.values():
-            try:
+            versuch:
                 wenn nicht proc.is_alive():
                     weiter
-            except ValueError:
+            ausser ValueError:
                 # The process is already exited/closed out.
                 weiter
 
-            try:
+            versuch:
                 wenn operation == _TERMINATE:
                     proc.terminate()
                 sowenn operation == _KILL:
                     proc.kill()
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 # The process just ended before our signal
                 weiter
 

@@ -112,9 +112,9 @@ klasse CoroutineTests(BaseTest):
         async def foo(): pass
 
         f = foo()
-        try:
+        versuch:
             self.assertWahr(asyncio.iscoroutine(f))
-        finally:
+        schliesslich:
             f.close() # silence warning
 
         self.assertWahr(asyncio.iscoroutine(FakeCoro()))
@@ -175,9 +175,9 @@ klasse CoroutineTests(BaseTest):
 
         async def foo():
             f = T.get_stack(limit=1)
-            try:
+            versuch:
                 self.assertEqual(f[0].f_code.co_name, 'foo')
-            finally:
+            schliesslich:
                 f = Nichts
 
         async def runner():
@@ -194,10 +194,10 @@ klasse CoroutineTests(BaseTest):
         async def runner():
             coro = afunc()
             t = self.loop.create_task(coro)
-            try:
+            versuch:
                 await asyncio.sleep(0)
                 await coro
-            finally:
+            schliesslich:
                 t.cancel()
 
         self.loop.set_debug(Wahr)

@@ -107,7 +107,7 @@ klasse Cmd:
 
         self.preloop()
         wenn self.use_rawinput und self.completekey:
-            try:
+            versuch:
                 importiere readline
                 self.old_completer = readline.get_completer()
                 readline.set_completer(self.complete)
@@ -120,9 +120,9 @@ klasse Cmd:
                 sonst:
                     command_string = f"{self.completekey}: complete"
                 readline.parse_and_bind(command_string)
-            except ImportError:
+            ausser ImportError:
                 pass
-        try:
+        versuch:
             wenn intro is nicht Nichts:
                 self.intro = intro
             wenn self.intro:
@@ -133,9 +133,9 @@ klasse Cmd:
                     line = self.cmdqueue.pop(0)
                 sonst:
                     wenn self.use_rawinput:
-                        try:
+                        versuch:
                             line = input(self.prompt)
-                        except EOFError:
+                        ausser EOFError:
                             line = 'EOF'
                     sonst:
                         self.stdout.write(self.prompt)
@@ -149,12 +149,12 @@ klasse Cmd:
                 stop = self.onecmd(line)
                 stop = self.postcmd(stop, line)
             self.postloop()
-        finally:
+        schliesslich:
             wenn self.use_rawinput und self.completekey:
-                try:
+                versuch:
                     importiere readline
                     readline.set_completer(self.old_completer)
-                except ImportError:
+                ausser ImportError:
                     pass
 
 
@@ -276,16 +276,16 @@ klasse Cmd:
                 wenn nicht cmd:
                     compfunc = self.completedefault
                 sonst:
-                    try:
+                    versuch:
                         compfunc = getattr(self, 'complete_' + cmd)
-                    except AttributeError:
+                    ausser AttributeError:
                         compfunc = self.completedefault
             sonst:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
-        try:
+        versuch:
             gib self.completion_matches[state]
-        except IndexError:
+        ausser IndexError:
             gib Nichts
 
     def get_names(self):
@@ -303,18 +303,18 @@ klasse Cmd:
         'List available commands mit "help" oder detailed help mit "help cmd".'
         wenn arg:
             # XXX check arg syntax
-            try:
+            versuch:
                 func = getattr(self, 'help_' + arg)
-            except AttributeError:
+            ausser AttributeError:
                 von inspect importiere cleandoc
 
-                try:
+                versuch:
                     doc=getattr(self, 'do_' + arg).__doc__
                     doc = cleandoc(doc)
                     wenn doc:
                         self.stdout.write("%s\n"%str(doc))
                         gib
-                except AttributeError:
+                ausser AttributeError:
                     pass
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
                 gib
@@ -369,7 +369,7 @@ klasse Cmd:
         nonstrings = [i fuer i in range(len(list))
                         wenn nicht isinstance(list[i], str)]
         wenn nonstrings:
-            raise TypeError("list[i] nicht a string fuer i in %s"
+            wirf TypeError("list[i] nicht a string fuer i in %s"
                             % ", ".join(map(str, nonstrings)))
         size = len(list)
         wenn size == 1:

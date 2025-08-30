@@ -15,9 +15,9 @@ def skip_if_different_mount_drives():
     root_drive = os.path.splitroot(ROOT)[0]
     cwd_drive = os.path.splitroot(os.getcwd())[0]
     wenn root_drive != cwd_drive:
-        # May raise ValueError wenn ROOT und the current working
+        # May wirf ValueError wenn ROOT und the current working
         # different have different mount drives (on Windows).
-        raise unittest.SkipTest(
+        wirf unittest.SkipTest(
             f"the current working directory und the Python source code "
             f"directory have different mount drives "
             f"({cwd_drive} und {root_drive})"
@@ -96,9 +96,9 @@ klasse TestGeneratedCases(unittest.TestCase):
             self.temp_pymetadata_filename,
             self.temp_executor_filename,
         ]:
-            try:
+            versuch:
                 os.remove(filename)
-            except:
+            ausser:
                 pass
         super().tearDown()
 
@@ -1587,7 +1587,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         macro(OP2) = unused/1 + OP;
         """
 
-        output = ""  # No output needed als this should raise an error.
+        output = ""  # No output needed als this should wirf an error.
         mit self.assertRaisesRegex(SyntaxError, "All instructions containing a uop"):
             self.run_cases_test(input, output)
 
@@ -1907,9 +1907,9 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
             self.temp_input2_filename,
             self.temp_output_filename,
         ]:
-            try:
+            versuch:
                 os.remove(filename)
-            except:
+            ausser:
                 pass
         super().tearDown()
 

@@ -72,20 +72,20 @@ def make_parser(parser_list=()):
     modules containing both a SAX parser und a create_parser function."""
 
     fuer parser_name in list(parser_list) + default_parser_list:
-        try:
+        versuch:
             gib _create_parser(parser_name)
-        except ImportError:
+        ausser ImportError:
             importiere sys
             wenn parser_name in sys.modules:
                 # The parser module was found, but importing it
                 # failed unexpectedly, pass this exception through
-                raise
-        except SAXReaderNotAvailable:
+                wirf
+        ausser SAXReaderNotAvailable:
             # The parser module detected that it won't work properly,
             # so try the next one
             pass
 
-    raise SAXReaderNotAvailable("No parsers found", Nichts)
+    wirf SAXReaderNotAvailable("No parsers found", Nichts)
 
 # --- Internal utility methods used by make_parser
 

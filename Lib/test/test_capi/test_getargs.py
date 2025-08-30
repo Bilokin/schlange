@@ -10,9 +10,9 @@ von test.support.testcase importiere FloatsAreIdenticalMixin
 _testcapi = import_helper.import_module('_testcapi')
 von _testcapi importiere getargs_keywords, getargs_keyword_only
 
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = NULL
 
 # > How about the following counterproposal. This also changes some of
@@ -569,7 +569,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 klasse Paradox:
     "This statement is false."
     def __bool__(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 klasse Boolean_TestCase(unittest.TestCase):
     def test_p(self):
@@ -636,7 +636,7 @@ klasse Tuple_TestCase(unittest.TestCase):
             def __len__(self):
                 gib 2
             def __getitem__(self, n):
-                raise CustomError
+                wirf CustomError
         self.assertRaises(CustomError, getargs_tuple, 1, TestSeq())
 
 klasse Keywords_TestCase(unittest.TestCase):
@@ -693,35 +693,35 @@ klasse Keywords_TestCase(unittest.TestCase):
 
     def test_required_args(self):
         # required arg missing
-        try:
+        versuch:
             getargs_keywords(arg1=(1,2))
-        except TypeError als err:
+        ausser TypeError als err:
             self.assertEqual(
                 str(err), "function missing required argument 'arg2' (pos 2)")
         sonst:
             self.fail('TypeError should have been raised')
 
     def test_too_many_args(self):
-        try:
+        versuch:
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
-        except TypeError als err:
+        ausser TypeError als err:
             self.assertEqual(str(err), "function takes at most 5 arguments (6 given)")
         sonst:
             self.fail('TypeError should have been raised')
 
     def test_invalid_keyword(self):
         # extraneous keyword arg
-        try:
+        versuch:
             getargs_keywords((1,2),3,arg5=10,arg666=666)
-        except TypeError als err:
+        ausser TypeError als err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument 'arg666'")
         sonst:
             self.fail('TypeError should have been raised')
 
     def test_surrogate_keyword(self):
-        try:
+        versuch:
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
-        except TypeError als err:
+        ausser TypeError als err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument '\udc80'")
         sonst:
             self.fail('TypeError should have been raised')
@@ -1170,23 +1170,23 @@ klasse SkipitemTest(unittest.TestCase):
 
             # test the format unit when nicht skipped
             format = c + "i"
-            try:
+            versuch:
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
                     format, keywords)
                 when_not_skipped = Falsch
-            except SystemError als e:
+            ausser SystemError als e:
                 s = "argument 1 (impossible<bad format char>)"
                 when_not_skipped = (str(e) == s)
-            except TypeError:
+            ausser TypeError:
                 when_not_skipped = Falsch
 
             # test the format unit when skipped
             optional_format = "|" + format
-            try:
+            versuch:
                 _testcapi.parse_tuple_and_keywords(empty_tuple, dict_b,
                     optional_format, keywords)
                 when_skipped = Falsch
-            except SystemError als e:
+            ausser SystemError als e:
                 s = "impossible<bad format char>: '{}'".format(format)
                 when_skipped = (str(e) == s)
 

@@ -14,16 +14,16 @@ klasse IoctlTestsTty(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         TIOCGPGRP = support.get_attribute(termios, 'TIOCGPGRP')
-        try:
+        versuch:
             tty = open("/dev/tty", "rb")
-        except OSError:
-            raise unittest.SkipTest("Unable to open /dev/tty")
+        ausser OSError:
+            wirf unittest.SkipTest("Unable to open /dev/tty")
         mit tty:
             # Skip wenn another process is in foreground
             r = fcntl.ioctl(tty, TIOCGPGRP, struct.pack("i", 0))
         rpgrp = struct.unpack("i", r)[0]
         wenn rpgrp nicht in (os.getpgrp(), os.getsid(0)):
-            raise unittest.SkipTest("Neither the process group nor the session "
+            wirf unittest.SkipTest("Neither the process group nor the session "
                                     "are attached to /dev/tty")
 
     def test_ioctl_immutable_buf(self):
@@ -181,14 +181,14 @@ klasse IoctlTestsPty(unittest.TestCase):
 
         mit threading_helper.start_threads([threading.Thread(target=writer)]):
             self.assertEqual(os.read(rfd, 3), b'abc')
-            try:
-                try:
+            versuch:
+                versuch:
                     fcntl.ioctl(wfd, termios.TCXONC, termios.TCOOFF)
-                finally:
+                schliesslich:
                     write_suspended.set()
                 self.assertFalsch(write_finished.wait(0.5),
                                  'output was nicht suspended')
-            finally:
+            schliesslich:
                 fcntl.ioctl(wfd, termios.TCXONC, termios.TCOON)
             self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
                             'output was nicht resumed')

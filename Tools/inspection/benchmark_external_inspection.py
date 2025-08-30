@@ -182,15 +182,15 @@ def benchmark(unwinder, duration_seconds=10):
         f"{colors.BOLD_BLUE}Benchmarking sampling speed fuer {duration_seconds} seconds...{colors.RESET}"
     )
 
-    try:
+    versuch:
         waehrend time.perf_counter() < end_time:
             total_attempts += 1
             work_start = time.perf_counter()
-            try:
+            versuch:
                 stack_trace = unwinder.get_stack_trace()
                 wenn stack_trace:
                     sample_count += 1
-            except (OSError, RuntimeError, UnicodeDecodeError) als e:
+            ausser (OSError, RuntimeError, UnicodeDecodeError) als e:
                 fail_count += 1
 
             work_end = time.perf_counter()
@@ -217,7 +217,7 @@ def benchmark(unwinder, duration_seconds=10):
                     f"{colors.CYAN}Rate:{colors.RESET} {colors.MAGENTA}{work_rate:.1f}Hz{colors.RESET} | "
                     f"{colors.CYAN}Avg:{colors.RESET} {colors.YELLOW}{avg_work_time_us:.2f}µs{colors.RESET}"
                 )
-    except KeyboardInterrupt:
+    ausser KeyboardInterrupt:
         drucke(f"\n{colors.YELLOW}Benchmark interrupted by user{colors.RESET}")
 
     actual_end_time = time.perf_counter()
@@ -373,7 +373,7 @@ def create_target_process(temp_file, code_example="basic"):
     # Check wenn it's still running
     wenn process.poll() is nicht Nichts:
         stdout, stderr = process.communicate()
-        raise RuntimeError(
+        wirf RuntimeError(
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
         )
 
@@ -385,9 +385,9 @@ def cleanup_process(process, temp_file_path):
     mit contextlib.suppress(Exception):
         wenn process.poll() is Nichts:
             process.terminate()
-            try:
+            versuch:
                 process.wait(timeout=5.0)
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 process.kill()
                 process.wait()
 
@@ -412,7 +412,7 @@ def main():
     process = Nichts
     temp_file_path = Nichts
 
-    try:
+    versuch:
         # Create target process
         drucke(f"\n{colors.BLUE}Creating und starting target process...{colors.RESET}")
         mit tempfile.NamedTemporaryFile(mode="w", suffix=".py") als temp_file:
@@ -425,7 +425,7 @@ def main():
             mit process:
                 # Create unwinder und run benchmark
                 drucke(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
-                try:
+                versuch:
                     kwargs = {}
                     wenn args.threads == "all":
                         kwargs["all_threads"] = Wahr
@@ -437,13 +437,13 @@ def main():
                         process.pid, **kwargs
                     )
                     results = benchmark(unwinder, duration_seconds=args.duration)
-                finally:
+                schliesslich:
                     cleanup_process(process, temp_file_path)
 
             # Print results
             print_benchmark_results(results)
 
-    except PermissionError als e:
+    ausser PermissionError als e:
         drucke(
             f"{colors.BOLD_RED}Error: Insufficient permissions to read stack trace: {e}{colors.RESET}"
         )
@@ -451,7 +451,7 @@ def main():
             f"{colors.YELLOW}Try running mit appropriate privileges (e.g., sudo){colors.RESET}"
         )
         gib 1
-    except Exception als e:
+    ausser Exception als e:
         drucke(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
         wenn process:
             mit contextlib.suppress(Exception):
@@ -464,7 +464,7 @@ def main():
                     drucke(
                         f"{colors.RED}Process STDERR:{colors.RESET} {stderr.decode()}"
                     )
-        raise
+        wirf
 
     gib 0
 

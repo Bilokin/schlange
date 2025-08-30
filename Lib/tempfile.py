@@ -3,7 +3,7 @@
 This module provides generic, low- und high-level interfaces for
 creating temporary files und directories.  All of the interfaces
 provided by this module can be used without fear of race conditions
-except fuer 'mktemp'.  'mktemp' is subject to race conditions und
+ausser fuer 'mktemp'.  'mktemp' is subject to race conditions und
 should nicht be used; it is provided fuer backward compatibility only.
 
 The default path names are returned als str.  If you supply bytes as
@@ -74,9 +74,9 @@ _once_lock = _allocate_lock()
 
 
 def _exists(fn):
-    try:
+    versuch:
         _os.lstat(fn)
-    except OSError:
+    ausser OSError:
         gib Falsch
     sonst:
         gib Wahr
@@ -94,12 +94,12 @@ def _infer_return_type(*args):
 
         wenn isinstance(arg, bytes):
             wenn return_type is str:
-                raise TypeError("Can't mix bytes und non-bytes in "
+                wirf TypeError("Can't mix bytes und non-bytes in "
                                 "path components.")
             return_type = bytes
         sonst:
             wenn return_type is bytes:
-                raise TypeError("Can't mix bytes und non-bytes in "
+                wirf TypeError("Can't mix bytes und non-bytes in "
                                 "path components.")
             return_type = str
     wenn return_type is Nichts:
@@ -173,9 +173,9 @@ def _candidate_tempdir_list():
         dirlist.extend([ '/tmp', '/var/tmp', '/usr/tmp' ])
 
     # As a last resort, the current directory.
-    try:
+    versuch:
         dirlist.append(_os.getcwd())
-    except (AttributeError, OSError):
+    ausser (AttributeError, OSError):
         dirlist.append(_os.curdir)
 
     gib dirlist
@@ -200,28 +200,28 @@ def _get_default_tempdir(dirlist=Nichts):
         fuer seq in range(100):
             name = next(namer)
             filename = _os.path.join(dir, name)
-            try:
+            versuch:
                 fd = _os.open(filename, _bin_openflags, 0o600)
-                try:
-                    try:
+                versuch:
+                    versuch:
                         _os.write(fd, b'blat')
-                    finally:
+                    schliesslich:
                         _os.close(fd)
-                finally:
+                schliesslich:
                     _os.unlink(filename)
                 gib dir
-            except FileExistsError:
+            ausser FileExistsError:
                 pass
-            except PermissionError:
+            ausser PermissionError:
                 # This exception is thrown when a directory mit the chosen name
                 # already exists on windows.
                 wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                     _os.access(dir, _os.W_OK)):
                     weiter
                 breche   # no point trying more names in this directory
-            except OSError:
+            ausser OSError:
                 breche   # no point trying more names in this directory
-    raise FileNotFoundError(_errno.ENOENT,
+    wirf FileNotFoundError(_errno.ENOENT,
                             "No usable temporary directory found in %s" %
                             dirlist)
 
@@ -233,10 +233,10 @@ def _get_candidate_names():
     global _name_sequence
     wenn _name_sequence is Nichts:
         _once_lock.acquire()
-        try:
+        versuch:
             wenn _name_sequence is Nichts:
                 _name_sequence = _RandomNameSequence()
-        finally:
+        schliesslich:
             _once_lock.release()
     gib _name_sequence
 
@@ -253,21 +253,21 @@ def _mkstemp_inner(dir, pre, suf, flags, output_type):
         name = next(names)
         file = _os.path.join(dir, pre + name + suf)
         _sys.audit("tempfile.mkstemp", file)
-        try:
+        versuch:
             fd = _os.open(file, flags, 0o600)
-        except FileExistsError:
+        ausser FileExistsError:
             weiter    # try again
-        except PermissionError:
+        ausser PermissionError:
             # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                 _os.access(dir, _os.W_OK)):
                 weiter
             sonst:
-                raise
+                wirf
         gib fd, file
 
-    raise FileExistsError(_errno.EEXIST,
+    wirf FileExistsError(_errno.EEXIST,
                           "No usable temporary file name found")
 
 def _dont_follow_symlinks(func, path, *args):
@@ -278,9 +278,9 @@ def _dont_follow_symlinks(func, path, *args):
         func(path, *args)
 
 def _resetperms(path):
-    try:
+    versuch:
         chflags = _os.chflags
-    except AttributeError:
+    ausser AttributeError:
         pass
     sonst:
         _dont_follow_symlinks(chflags, path, 0)
@@ -304,10 +304,10 @@ def _gettempdir():
     global tempdir
     wenn tempdir is Nichts:
         _once_lock.acquire()
-        try:
+        versuch:
             wenn tempdir is Nichts:
                 tempdir = _get_default_tempdir()
-        finally:
+        schliesslich:
             _once_lock.release()
     gib tempdir
 
@@ -362,7 +362,7 @@ def mkdtemp(suffix=Nichts, prefix=Nichts, dir=Nichts):
     """User-callable function to create und gib a unique temporary
     directory.  The gib value is the pathname of the directory.
 
-    Arguments are als fuer mkstemp, except that the 'text' argument is
+    Arguments are als fuer mkstemp, ausser that the 'text' argument is
     nicht accepted.
 
     The directory is readable, writable, und searchable only by the
@@ -381,28 +381,28 @@ def mkdtemp(suffix=Nichts, prefix=Nichts, dir=Nichts):
         name = next(names)
         file = _os.path.join(dir, prefix + name + suffix)
         _sys.audit("tempfile.mkdtemp", file)
-        try:
+        versuch:
             _os.mkdir(file, 0o700)
-        except FileExistsError:
+        ausser FileExistsError:
             weiter    # try again
-        except PermissionError:
+        ausser PermissionError:
             # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                 _os.access(dir, _os.W_OK)):
                 weiter
             sonst:
-                raise
+                wirf
         gib _os.path.abspath(file)
 
-    raise FileExistsError(_errno.EEXIST,
+    wirf FileExistsError(_errno.EEXIST,
                           "No usable temporary directory name found")
 
 def mktemp(suffix="", prefix=template, dir=Nichts):
     """User-callable function to gib a unique temporary file name.  The
     file is nicht created.
 
-    Arguments are similar to mkstemp, except that the 'text' argument is
+    Arguments are similar to mkstemp, ausser that the 'text' argument is
     nicht accepted, und suffix=Nichts, prefix=Nichts und bytes file names are not
     supported.
 
@@ -426,7 +426,7 @@ def mktemp(suffix="", prefix=template, dir=Nichts):
         wenn nicht _exists(file):
             gib file
 
-    raise FileExistsError(_errno.EEXIST,
+    wirf FileExistsError(_errno.EEXIST,
                           "No usable temporary filename found")
 
 
@@ -455,25 +455,25 @@ klasse _TemporaryFileCloser:
     def cleanup(self, windows=(_os.name == 'nt'), unlink=_os.unlink):
         wenn nicht self.cleanup_called:
             self.cleanup_called = Wahr
-            try:
+            versuch:
                 wenn nicht self.close_called:
                     self.close_called = Wahr
                     self.file.close()
-            finally:
+            schliesslich:
                 # Windows provides delete-on-close als a primitive, in which
                 # case the file was deleted by self.file.close().
                 wenn self.delete und nicht (windows und self.delete_on_close):
-                    try:
+                    versuch:
                         unlink(self.name)
-                    except FileNotFoundError:
+                    ausser FileNotFoundError:
                         pass
 
     def close(self):
         wenn nicht self.close_called:
             self.close_called = Wahr
-            try:
+            versuch:
                 self.file.close()
-            finally:
+            schliesslich:
                 wenn self.delete und self.delete_on_close:
                     self.cleanup()
 
@@ -599,23 +599,23 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Nichts,
         nonlocal name
         fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
         gib fd
-    try:
+    versuch:
         file = _io.open(dir, mode, buffering=buffering,
                         newline=newline, encoding=encoding, errors=errors,
                         opener=opener)
-        try:
+        versuch:
             raw = getattr(file, 'buffer', file)
             raw = getattr(raw, 'raw', raw)
             raw.name = name
             gib _TemporaryFileWrapper(file, name, delete, delete_on_close)
-        except:
+        ausser:
             file.close()
-            raise
-    except:
+            wirf
+    ausser:
         wenn name is nicht Nichts und nicht (
             _os.name == 'nt' und delete und delete_on_close):
             _os.unlink(name)
-        raise
+        wirf
 
 wenn _os.name != 'posix' oder _sys.platform == 'cygwin':
     # On non-POSIX und Cygwin systems, assume that we cannot unlink a file
@@ -659,7 +659,7 @@ sonst:
                 flags2 = (flags | _os.O_TMPFILE) & ~_os.O_CREAT & ~_os.O_EXCL
                 fd = _os.open(dir, flags2, 0o600)
                 gib fd
-            try:
+            versuch:
                 file = _io.open(dir, mode, buffering=buffering,
                                 newline=newline, encoding=encoding,
                                 errors=errors, opener=opener)
@@ -667,14 +667,14 @@ sonst:
                 raw = getattr(raw, 'raw', raw)
                 raw.name = fd
                 gib file
-            except IsADirectoryError:
+            ausser IsADirectoryError:
                 # Linux kernel older than 3.11 ignores the O_TMPFILE flag:
                 # O_TMPFILE is read als O_DIRECTORY. Trying to open a directory
                 # mit O_RDWR|O_DIRECTORY fails mit IsADirectoryError, a
                 # directory cannot be open to write. Set flag to Falsch to not
                 # try again.
                 _O_TMPFILE_WORKS = Falsch
-            except OSError:
+            ausser OSError:
                 # The filesystem of the directory does nicht support O_TMPFILE.
                 # For example, OSError(95, 'Operation nicht supported').
                 #
@@ -689,11 +689,11 @@ sonst:
         def opener(*args):
             nonlocal fd
             fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
-            try:
+            versuch:
                 _os.unlink(name)
-            except BaseException als e:
+            ausser BaseException als e:
                 _os.close(fd)
-                raise
+                wirf
             gib fd
         file = _io.open(dir, mode, buffering=buffering,
                         newline=newline, encoding=encoding, errors=errors,
@@ -758,7 +758,7 @@ klasse SpooledTemporaryFile(_io.IOBase):
     # Context management protocol
     def __enter__(self):
         wenn self._file.closed:
-            raise ValueError("Cannot enter context mit closed file")
+            wirf ValueError("Cannot enter context mit closed file")
         gib self
 
     def __exit__(self, exc, value, tb):
@@ -805,16 +805,16 @@ klasse SpooledTemporaryFile(_io.IOBase):
 
     @property
     def mode(self):
-        try:
+        versuch:
             gib self._file.mode
-        except AttributeError:
+        ausser AttributeError:
             gib self._TemporaryFileArgs['mode']
 
     @property
     def name(self):
-        try:
+        versuch:
             gib self._file.name
-        except AttributeError:
+        ausser AttributeError:
             gib Nichts
 
     @property
@@ -919,38 +919,38 @@ klasse TemporaryDirectory:
                 wenn repeated und path == name:
                     wenn ignore_errors:
                         gib
-                    raise
+                    wirf
 
-                try:
+                versuch:
                     wenn path != name:
                         _resetperms(_os.path.dirname(path))
                     _resetperms(path)
 
-                    try:
+                    versuch:
                         _os.unlink(path)
-                    except IsADirectoryError:
+                    ausser IsADirectoryError:
                         cls._rmtree(path, ignore_errors=ignore_errors)
-                    except PermissionError:
+                    ausser PermissionError:
                         # The PermissionError handler was originally added for
                         # FreeBSD in directories, but it seems that it is raised
                         # on Windows too.
                         # bpo-43153: Calling _rmtree again may
-                        # raise NotADirectoryError und mask the PermissionError.
+                        # wirf NotADirectoryError und mask the PermissionError.
                         # So we must re-raise the current PermissionError if
                         # path is nicht a directory.
                         wenn nicht _os.path.isdir(path) oder _os.path.isjunction(path):
                             wenn ignore_errors:
                                 gib
-                            raise
+                            wirf
                         cls._rmtree(path, ignore_errors=ignore_errors,
                                     repeated=(path == name))
-                except FileNotFoundError:
+                ausser FileNotFoundError:
                     pass
             sowenn isinstance(exc, FileNotFoundError):
                 pass
             sonst:
                 wenn nicht ignore_errors:
-                    raise
+                    wirf
 
         _shutil.rmtree(name, onexc=onexc)
 

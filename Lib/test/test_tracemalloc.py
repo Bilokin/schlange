@@ -12,10 +12,10 @@ von test.support importiere force_not_colorized, warnings_helper
 von test.support importiere os_helper
 von test.support importiere threading_helper
 
-try:
+versuch:
     importiere _testcapi
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
     _testinternalcapi = Nichts
 
@@ -362,9 +362,9 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         wenn nicht pid:
             # child
             exitcode = 1
-            try:
+            versuch:
                 exitcode = self.fork_child()
-            finally:
+            schliesslich:
                 os._exit(exitcode)
         sonst:
             support.wait_process(pid, exitcode=0)

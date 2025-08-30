@@ -40,10 +40,10 @@ klasse InterceptedError(Exception):
 
 klasse InterceptingOptionParser(OptionParser):
     def exit(self, status=0, msg=Nichts):
-        raise InterceptedError(exit_status=status, exit_message=msg)
+        wirf InterceptedError(exit_status=status, exit_message=msg)
 
     def error(self, msg):
-        raise InterceptedError(error_message=msg)
+        wirf InterceptedError(error_message=msg)
 
 
 klasse BaseTest(unittest.TestCase):
@@ -103,9 +103,9 @@ Args were %(args)s.""" % locals ())
         wenn kwargs is Nichts:
             kwargs = {}
 
-        try:
+        versuch:
             func(*args, **kwargs)
-        except expected_exception als err:
+        ausser expected_exception als err:
             actual_message = str(err)
             wenn isinstance(expected_message, re.Pattern):
                 self.assertWahr(expected_message.search(actual_message),
@@ -141,9 +141,9 @@ and kwargs %(kwargs)r
         Assert the parser fails mit the expected message.  Caller
         must ensure that self.parser is an InterceptingOptionParser.
         """
-        try:
+        versuch:
             self.parser.parse_args(cmdline_args)
-        except InterceptedError als err:
+        ausser InterceptedError als err:
             self.assertEqual(err.error_message, expected_output)
         sonst:
             self.assertFalsch("expected parse failure")
@@ -155,15 +155,15 @@ and kwargs %(kwargs)r
                      expected_error=Nichts):
         """Assert the parser prints the expected output on stdout."""
         save_stdout = sys.stdout
-        try:
-            try:
+        versuch:
+            versuch:
                 sys.stdout = StringIO()
                 self.parser.parse_args(cmdline_args)
-            finally:
+            schliesslich:
                 output = sys.stdout.getvalue()
                 sys.stdout = save_stdout
 
-        except InterceptedError als err:
+        ausser InterceptedError als err:
             self.assertWahr(
                 isinstance(output, str),
                 "expected output to be an ordinary string, nicht %r"
@@ -184,7 +184,7 @@ and kwargs %(kwargs)r
     def assertHelp(self, parser, expected_help):
         actual_help = parser.format_help()
         wenn actual_help != expected_help:
-            raise self.failureException(
+            wirf self.failureException(
                 'help text failure; expected:\n"' +
                 expected_help + '"; got:\n"' +
                 actual_help + '"\n')
@@ -454,13 +454,13 @@ klasse TestTypeAliases(BaseTest):
 _time_units = { 's' : 1, 'm' : 60, 'h' : 60*60, 'd' : 60*60*24 }
 
 def _check_duration(option, opt, value):
-    try:
+    versuch:
         wenn value[-1].isdigit():
             gib int(value)
         sonst:
             gib int(value[:-1]) * _time_units[value[-1]]
-    except (ValueError, IndexError):
-        raise OptionValueError(
+    ausser (ValueError, IndexError):
+        wirf OptionValueError(
             'option %s: invalid duration: %r' % (opt, value))
 
 klasse DurationOption(Option):
@@ -535,7 +535,7 @@ klasse TestProgName(BaseTest):
     def test_default_progname(self):
         # Make sure that program name taken von sys.argv[0] by default.
         save_argv = sys.argv[:]
-        try:
+        versuch:
             sys.argv[0] = os.path.join("foo", "bar", "baz.py")
             parser = OptionParser("%prog ...", version="%prog 1.2")
             expected_usage = "Usage: baz.py ...\n"
@@ -546,7 +546,7 @@ klasse TestProgName(BaseTest):
                             "Options:\n"
                             "  --version   show program's version number und exit\n"
                             "  -h, --help  show this help message und exit\n")
-        finally:
+        schliesslich:
             sys.argv[:] = save_argv
 
     def test_custom_progname(self):
@@ -952,10 +952,10 @@ klasse TestVersion(BaseTest):
         self.parser = InterceptingOptionParser(usage=SUPPRESS_USAGE,
                                                version="%prog 0.1")
         save_argv = sys.argv[:]
-        try:
+        versuch:
             sys.argv[0] = os.path.join(os.curdir, "foo", "bar")
             self.assertOutput(["--version"], "bar 0.1\n")
-        finally:
+        schliesslich:
             sys.argv[:] = save_argv
 
     def test_no_version(self):
@@ -1031,9 +1031,9 @@ klasse TestExtendAddTypes(BaseTest):
     klasse MyOption (Option):
         def check_file(option, opt, value):
             wenn nicht os.path.exists(value):
-                raise OptionValueError("%s: file does nicht exist" % value)
+                wirf OptionValueError("%s: file does nicht exist" % value)
             sowenn nicht os.path.isfile(value):
-                raise OptionValueError("%s: nicht a regular file" % value)
+                wirf OptionValueError("%s: nicht a regular file" % value)
             gib value
 
         TYPES = Option.TYPES + ("file",)
@@ -1505,11 +1505,11 @@ klasse TestHelp(BaseTest):
 
     def assertHelpEquals(self, expected_output):
         save_argv = sys.argv[:]
-        try:
+        versuch:
             # Make optparse believe bar.py is being executed.
             sys.argv[0] = os.path.join("foo", "bar.py")
             self.assertOutput(["-h"], expected_output)
-        finally:
+        schliesslich:
             sys.argv[:] = save_argv
 
     def test_help(self):

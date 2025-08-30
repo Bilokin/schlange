@@ -5,9 +5,9 @@ importiere importlib
 importiere importlib.metadata
 von test.support importiere os_helper
 
-try:
+versuch:
     importiere pyfakefs.fake_filesystem_unittest als ffs
-except ImportError:
+ausser ImportError:
     von .stubs importiere fake_filesystem_unittest als ffs
 
 von . importiere fixtures

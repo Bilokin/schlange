@@ -21,9 +21,9 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
         # Ensure no errors raised when all are triggered
         fuer e in evts:
             _winapi.SetEvent(e)
-        try:
+        versuch:
             _winapi.BatchedWaitForMultipleObjects(evts, Wahr, 100)
-        except TimeoutError:
+        ausser TimeoutError:
             self.fail("expected wait to complete immediately")
 
         # Choose 8 events to set, distributed throughout the list, to make sure
@@ -98,7 +98,7 @@ klasse WinAPITests(unittest.TestCase):
     def test_getlongpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles")).parents[-1] / "PROGRA~1"
         wenn nicht os.path.isdir(testfn):
-            raise unittest.SkipTest("require x:\\PROGRA~1 to test")
+            wirf unittest.SkipTest("require x:\\PROGRA~1 to test")
 
         # pathlib.Path will be rejected - only str is accepted
         mit self.assertRaises(TypeError):
@@ -114,7 +114,7 @@ klasse WinAPITests(unittest.TestCase):
     def test_getshortpathname(self):
         testfn = pathlib.Path(os.getenv("ProgramFiles"))
         wenn nicht os.path.isdir(testfn):
-            raise unittest.SkipTest("require '%ProgramFiles%' to test")
+            wirf unittest.SkipTest("require '%ProgramFiles%' to test")
 
         # pathlib.Path will be rejected - only str is accepted
         mit self.assertRaises(TypeError):

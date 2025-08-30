@@ -54,10 +54,10 @@ def f():
 
 # also acts als test fuer 'except ... als ...'
 raise_from = """\
-try:
+versuch:
     1 / 0
-except ZeroDivisionError als e:
-    raise ArithmeticError von e
+ausser ZeroDivisionError als e:
+    wirf ArithmeticError von e
 """
 
 klasse_decorator = """\
@@ -83,11 +83,11 @@ sowenn cond2:
 """
 
 try_except_finally = """\
-try:
+versuch:
     suite1
-except ex1:
+ausser ex1:
     suite2
-except ex2:
+ausser ex2:
     suite3
 sonst:
     suite4
@@ -96,7 +96,7 @@ finally:
 """
 
 try_except_star_finally = """\
-try:
+versuch:
     suite1
 except* ex1:
     suite2
@@ -476,7 +476,7 @@ klasse UnparseTestCase(ASTTestCase):
 
     def test_unparse_interactive_semicolons(self):
         # gh-129598: Fix ast.unparse() when ast.Interactive contains multiple statements
-        self.check_src_roundtrip("i = 1; 'expr'; raise Exception", mode='single')
+        self.check_src_roundtrip("i = 1; 'expr'; wirf Exception", mode='single')
         self.check_src_roundtrip("i: int = 1; j: float = 0; k += l", mode='single')
         combinable = (
             "'expr'",
@@ -508,18 +508,18 @@ klasse UnparseTestCase(ASTTestCase):
     def test_unparse_interactive_integrity_1(self):
         # rest of unparse_interactive_integrity tests just make sure mode='single' parse und unparse didn't breche
         self.check_src_roundtrip(
-            "if i:\n 'expr'\nelse:\n raise Exception",
-            "if i:\n    'expr'\nelse:\n    raise Exception",
+            "if i:\n 'expr'\nelse:\n wirf Exception",
+            "if i:\n    'expr'\nelse:\n    wirf Exception",
             mode='single'
         )
         self.check_src_roundtrip(
-            "@decorator1\n@decorator2\ndef func():\n 'docstring'\n i = 1; 'expr'; raise Exception",
-            '''@decorator1\n@decorator2\ndef func():\n    """docstring"""\n    i = 1\n    'expr'\n    raise Exception''',
+            "@decorator1\n@decorator2\ndef func():\n 'docstring'\n i = 1; 'expr'; wirf Exception",
+            '''@decorator1\n@decorator2\ndef func():\n    """docstring"""\n    i = 1\n    'expr'\n    wirf Exception''',
             mode='single'
         )
         self.check_src_roundtrip(
-            "@decorator1\n@decorator2\nclass cls:\n 'docstring'\n i = 1; 'expr'; raise Exception",
-            '''@decorator1\n@decorator2\nclass cls:\n    """docstring"""\n    i = 1\n    'expr'\n    raise Exception''',
+            "@decorator1\n@decorator2\nclass cls:\n 'docstring'\n i = 1; 'expr'; wirf Exception",
+            '''@decorator1\n@decorator2\nclass cls:\n    """docstring"""\n    i = 1\n    'expr'\n    wirf Exception''',
             mode='single'
         )
 

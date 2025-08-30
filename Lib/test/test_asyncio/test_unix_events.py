@@ -21,7 +21,7 @@ von test.support importiere wait_process
 von test.support importiere hashlib_helper
 
 wenn sys.platform == 'win32':
-    raise unittest.SkipTest('UNIX only')
+    wirf unittest.SkipTest('UNIX only')
 
 
 importiere asyncio
@@ -42,7 +42,7 @@ def EXITCODE(exitcode):
 
 def SIGNAL(signum):
     wenn nicht 1 <= signum <= 68:
-        raise AssertionError(f'invalid signum {signum}')
+        wirf AssertionError(f'invalid signum {signum}')
     gib 32768 - signum
 
 
@@ -127,7 +127,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
 
         def set_wakeup_fd(fd):
             wenn fd == -1:
-                raise ValueError()
+                wirf ValueError()
         m_signal.set_wakeup_fd = set_wakeup_fd
 
         klasse Err(OSError):
@@ -1145,7 +1145,7 @@ klasse TestFunctional(unittest.TestCase):
             tr, pr = await self.loop.create_connection(
                 lambda: asyncio.Protocol(), sock=rsock)
 
-            try:
+            versuch:
                 cb = lambda: Nichts
 
                 mit assert_raises():
@@ -1168,13 +1168,13 @@ klasse TestFunctional(unittest.TestCase):
                 mit assert_raises():
                     self.loop.remove_writer(rsock.fileno())
 
-            finally:
+            schliesslich:
                 tr.close()
 
         rsock, wsock = socket.socketpair()
-        try:
+        versuch:
             self.loop.run_until_complete(runner())
-        finally:
+        schliesslich:
             rsock.close()
             wsock.close()
 
@@ -1192,14 +1192,14 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
             pid = os.fork()
             wenn pid == 0:
                 # child
-                try:
+                versuch:
                     loop = asyncio.get_event_loop()
                     os.write(w, b'LOOP:' + str(id(loop)).encode())
-                except RuntimeError:
+                ausser RuntimeError:
                     os.write(w, b'NO LOOP')
-                except BaseException als e:
+                ausser BaseException als e:
                     os.write(w, b'ERROR:' + ascii(e).encode())
-                finally:
+                schliesslich:
                     os._exit(0)
             sonst:
                 # parent

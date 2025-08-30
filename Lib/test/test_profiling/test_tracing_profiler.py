@@ -133,9 +133,9 @@ klasse CProfileTest(ProfileTest):
         pr = self.profilerclass()
         pr.enable()
         g = gen()
-        try:
+        versuch:
             g.throw(SyntaxError)
-        except SyntaxError:
+        ausser SyntaxError:
             pass
         pr.disable()
         pr.create_stats()

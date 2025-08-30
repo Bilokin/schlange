@@ -158,10 +158,10 @@ def regenerate_expected_output(filename, cls):
 @contextmanager
 def silent():
     stdout = sys.stdout
-    try:
+    versuch:
         sys.stdout = StringIO()
         liefere
-    finally:
+    schliesslich:
         sys.stdout = stdout
 
 

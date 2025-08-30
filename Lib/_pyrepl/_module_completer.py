@@ -47,9 +47,9 @@ klasse ModuleCompleter:
         result = ImportParser(line).parse()
         wenn nicht result:
             gib Nichts
-        try:
+        versuch:
             gib self.complete(*result)
-        except Exception:
+        ausser Exception:
             # Some unexpected error occurred, make it look like
             # no completions are available
             gib []
@@ -199,18 +199,18 @@ klasse ImportParser:
     def __init__(self, code: str) -> Nichts:
         self.code = code
         tokens = []
-        try:
+        versuch:
             fuer t in tokenize.generate_tokens(StringIO(code).readline):
                 wenn t.type nicht in self._ignored_tokens:
                     tokens.append(t)
-        except tokenize.TokenError als e:
+        ausser tokenize.TokenError als e:
             wenn 'unexpected EOF' nicht in str(e):
                 # unexpected EOF is fine, since we're parsing an
                 # incomplete statement, but other errors are not
                 # because we may nicht have all the tokens so it's
                 # safer to bail out
                 tokens = []
-        except SyntaxError:
+        ausser SyntaxError:
             tokens = []
         self.tokens = TokenQueue(tokens[::-1])
 
@@ -232,16 +232,16 @@ klasse ImportParser:
             name = ''
         sonst:
             wenn self.code.endswith(' '):
-                raise ParseError('parse_import')
+                wirf ParseError('parse_import')
             name = self.parse_dotted_name()
         wenn name.startswith('.'):
-            raise ParseError('parse_import')
+            wirf ParseError('parse_import')
         waehrend self.tokens.peek_string(','):
             self.tokens.pop()
             self.parse_dotted_as_name()
         wenn self.tokens.peek_string('import'):
             gib Result(name=name)
-        raise ParseError('parse_import')
+        wirf ParseError('parse_import')
 
     def parse_from_import(self) -> Result:
         stripped = self.code.rstrip()
@@ -252,7 +252,7 @@ klasse ImportParser:
         wenn self.tokens.peek_string('(') oder self.tokens.peek_string(','):
             gib Result(from_name=self.parse_empty_from_import(), name='')
         wenn self.code.endswith(' '):
-            raise ParseError('parse_from_import')
+            wirf ParseError('parse_from_import')
         name = self.parse_dotted_name()
         wenn '.' in name:
             self.tokens.pop_string('from')
@@ -293,7 +293,7 @@ klasse ImportParser:
             und tok.string nicht in self._keywords):
             name.append(self.tokens.pop_name())
         wenn nicht name:
-            raise ParseError('parse_dotted_name')
+            wirf ParseError('parse_dotted_name')
         waehrend self.tokens.peek_string('.'):
             name.append('.')
             self.tokens.pop()
@@ -342,10 +342,10 @@ klasse TokenQueue:
 
     @contextmanager
     def save_state(self) -> Any:
-        try:
+        versuch:
             self.stack.append(self.index)
             liefere
-        except ParseError:
+        ausser ParseError:
             self.index = self.stack.pop()
         sonst:
             self.stack.pop()
@@ -366,7 +366,7 @@ klasse TokenQueue:
     def pop_name(self) -> str:
         tok = self.pop()
         wenn tok.type != token.NAME:
-            raise ParseError('pop_name')
+            wirf ParseError('pop_name')
         gib tok.string
 
     def peek_string(self, string: str) -> bool:
@@ -377,12 +377,12 @@ klasse TokenQueue:
     def pop_string(self, string: str) -> str:
         tok = self.pop()
         wenn tok.string != string:
-            raise ParseError('pop_string')
+            wirf ParseError('pop_string')
         gib tok.string
 
     def pop(self) -> TokenInfo:
         wenn nicht self:
-            raise ParseError('pop')
+            wirf ParseError('pop')
         tok = self.tokens[self.index]
         self.index += 1
         gib tok

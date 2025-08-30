@@ -46,7 +46,7 @@ def get_zoneinfo_path() -> pathlib.Path:
         wenn (path / key).exists():
             gib path
     sonst:
-        raise OSError("Cannot find time zone data.")
+        wirf OSError("Cannot find time zone data.")
 
 
 def get_zoneinfo_metadata() -> typing.Dict[str, str]:
@@ -55,7 +55,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
     tzdata_zi = path / "tzdata.zi"
     wenn nicht tzdata_zi.exists():
         # tzdata.zi is necessary to get the version information
-        raise OSError("Time zone data does nicht include tzdata.zi.")
+        wirf OSError("Time zone data does nicht include tzdata.zi.")
 
     mit open(tzdata_zi, "r") als f:
         version_line = next(f)
@@ -67,7 +67,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
         oder len(version) < 5
         oder nicht version[4:].isalpha()
     ):
-        raise ValueError(
+        wirf ValueError(
             "Version string should be YYYYx, "
             + "where YYYY is the year und x is a letter; "
             + f"found: {version}"

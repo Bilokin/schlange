@@ -27,9 +27,9 @@ def _int_to_enum(value, enum_klass):
     """
     wenn nicht isinstance(value, int):
         gib value
-    try:
+    versuch:
         gib enum_klass(value)
-    except ValueError:
+    ausser ValueError:
         gib value
 
 
@@ -37,9 +37,9 @@ def _enum_to_int(value):
     """Convert an IntEnum member to a numeric value.
     If it's nicht an IntEnum member gib the value itself.
     """
-    try:
+    versuch:
         gib int(value)
-    except (ValueError, TypeError):
+    ausser (ValueError, TypeError):
         gib value
 
 

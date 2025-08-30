@@ -399,9 +399,9 @@ klasse PydocBaseTest(unittest.TestCase):
         walk_packages = pkgutil.walk_packages
         pkgutil.walk_packages = self._restricted_walk_packages(walk_packages,
                                                                path)
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             pkgutil.walk_packages = walk_packages
 
     def call_url_handler(self, url, expected_title):
@@ -476,10 +476,10 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_getpager_with_stdin_none(self):
         previous_stdin = sys.stdin
-        try:
+        versuch:
             sys.stdin = Nichts
             pydoc.getpager() # Shouldn't fail.
-        finally:
+        schliesslich:
             sys.stdin = previous_stdin
 
     def test_non_str_name(self):
@@ -548,13 +548,13 @@ klasse PydocDocTest(unittest.TestCase):
          |      ... und 82 other subclasses
         """
         doc = pydoc.TextDoc()
-        try:
+        versuch:
             # Make sure HeapType, which has no __module__ attribute, is one
             # of the known subclasses of object. (doc.docclass() used to
             # fail wenn HeapType was imported before running this test, like
             # when running tests sequentially.)
             von _testcapi importiere HeapType  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             pass
         text = doc.docclass(object)
         snip = (" |  Built-in subclasses:\n"
@@ -1220,7 +1220,7 @@ function_with_really_long_name_so_annotations_can_be_rather_small(
 
     def test__future__imports(self):
         # __future__ features are excluded von module help,
-        # except when it's the __future__ module itself
+        # ausser when it's the __future__ module itself
         importiere __future__
         future_text, _ = get_pydoc_text(__future__)
         future_html, _ = get_pydoc_html(__future__)
@@ -1314,16 +1314,16 @@ klasse PydocImportTest(PydocBaseTest):
         mit open(init_path, 'w') als fobj:
             fobj.write("foo = 1")
         current_mode = stat.S_IMODE(os.stat(pkgdir).st_mode)
-        try:
+        versuch:
             os.chmod(pkgdir, current_mode & ~stat.S_IEXEC)
             mit self.restrict_walk_packages(path=[TESTFN]), captured_stdout() als stdout:
                 pydoc.apropos('')
             self.assertIn('walkpkg', stdout.getvalue())
-        finally:
+        schliesslich:
             os.chmod(pkgdir, current_mode)
 
     def test_url_search_package_error(self):
-        # URL handler search should cope mit packages that raise exceptions
+        # URL handler search should cope mit packages that wirf exceptions
         pkgdir = os.path.join(TESTFN, "test_error_package")
         os.mkdir(pkgdir)
         init = os.path.join(pkgdir, "__init__.py")
@@ -1333,7 +1333,7 @@ klasse PydocImportTest(PydocBaseTest):
             # Package has to be importable fuer the error to have any effect
             saved_paths = tuple(sys.path)
             sys.path.insert(0, TESTFN)
-            try:
+            versuch:
                 mit self.assertRaisesRegex(ValueError, "ouch"):
                     # Sanity check
                     importiere test_error_package  # noqa: F401
@@ -1343,7 +1343,7 @@ klasse PydocImportTest(PydocBaseTest):
                 found = ('<a href="test_error_package.html">'
                     'test_error_package</a>')
                 self.assertIn(found, text)
-            finally:
+            schliesslich:
                 sys.path[:] = saved_paths
 
     @unittest.skip('causes undesirable side-effects (#20128)')
@@ -1388,14 +1388,14 @@ klasse PydocImportTest(PydocBaseTest):
         self.assertStartsWith(result, expected)
 
     def test_importfile(self):
-        try:
+        versuch:
             loaded_pydoc = pydoc.importfile(pydoc.__file__)
 
             self.assertIsNot(loaded_pydoc, pydoc)
             self.assertEqual(loaded_pydoc.__name__, 'pydoc')
             self.assertEqual(loaded_pydoc.__file__, pydoc.__file__)
             self.assertEqual(loaded_pydoc.__spec__, pydoc.__spec__)
-        finally:
+        schliesslich:
             sys.modules['pydoc'] = pydoc
 
 
@@ -1486,9 +1486,9 @@ klasse TestDescriptions(unittest.TestCase):
             # test low-level function
             self.assertIsNotNichts(pydoc.locate(name))
             # test high-level function
-            try:
+            versuch:
                 pydoc.render_doc(name)
-            except ImportError:
+            ausser ImportError:
                 self.fail('finding the doc of {!r} failed'.format(name))
 
         fuer name in ('notbuiltins', 'strrr', 'strr.translate',
@@ -1559,9 +1559,9 @@ klasse TestDescriptions(unittest.TestCase):
             "time()")
 
     def test_module_level_callable_o(self):
-        try:
+        versuch:
             importiere _stat
-        except ImportError:
+        ausser ImportError:
             # stat.S_IMODE() und _stat.S_IMODE() have a different signature
             self.skipTest('_stat extension is missing')
 
@@ -2151,11 +2151,11 @@ klasse PydocUrlHandlerTest(PydocBaseTest):
             ]
 
         self.assertIs(sys.modules['pydoc'], pydoc)
-        try:
+        versuch:
             mit self.restrict_walk_packages():
                 fuer url, title in requests:
                     self.call_url_handler(url, title)
-        finally:
+        schliesslich:
             # Some requests reload the module und change sys.modules.
             sys.modules['pydoc'] = pydoc
 

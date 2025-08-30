@@ -28,34 +28,34 @@ importiere textwrap
 importiere json
 von test.support.os_helper importiere FakePath
 
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
-try:
+versuch:
     importiere pwd
-except ImportError:
+ausser ImportError:
     pwd = Nichts
-try:
+versuch:
     importiere grp
-except ImportError:
+ausser ImportError:
     grp = Nichts
-try:
+versuch:
     importiere resource
-except ImportError:
+ausser ImportError:
     resource = Nichts
 
-try:
+versuch:
     importiere fcntl
-except:
+ausser:
     fcntl = Nichts
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is nicht helpful fuer PGO")
+    wirf unittest.SkipTest("test is nicht helpful fuer PGO")
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 mswindows = (sys.platform == "win32")
 
@@ -114,7 +114,7 @@ klasse PopenExecuteChildRaises(subprocess.Popen):
     _execute_child fails.
     """
     def _execute_child(self, *args, **kwargs):
-        raise PopenTestException("Forced Exception fuer Test")
+        wirf PopenTestException("Forced Exception fuer Test")
 
 
 klasse ProcessTestCase(BaseTestCase):
@@ -123,11 +123,11 @@ klasse ProcessTestCase(BaseTestCase):
         p = subprocess.Popen(ZERO_RETURN_CMD,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-        try:
+        versuch:
             self.assertIsInstance(p.stdin, io.BufferedIOBase)
             self.assertIsInstance(p.stdout, io.BufferedIOBase)
             self.assertIsInstance(p.stderr, io.BufferedIOBase)
-        finally:
+        schliesslich:
             p.stdin.close()
             p.stdout.close()
             p.stderr.close()
@@ -137,11 +137,11 @@ klasse ProcessTestCase(BaseTestCase):
         p = subprocess.Popen(ZERO_RETURN_CMD,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, bufsize=0)
-        try:
+        versuch:
             self.assertIsInstance(p.stdin, io.RawIOBase)
             self.assertIsInstance(p.stdout, io.RawIOBase)
             self.assertIsInstance(p.stderr, io.RawIOBase)
-        finally:
+        schliesslich:
             p.stdin.close()
             p.stdout.close()
             p.stderr.close()
@@ -163,15 +163,15 @@ klasse ProcessTestCase(BaseTestCase):
                           timeout=0.1)
 
     def test_timeout_exception(self):
-        try:
+        versuch:
             subprocess.run([sys.executable, '-c', 'import time;time.sleep(9)'], timeout = -1)
-        except subprocess.TimeoutExpired als e:
+        ausser subprocess.TimeoutExpired als e:
             self.assertIn("-1 seconds", str(e))
         sonst:
             self.fail("Expected TimeoutExpired exception nicht raised")
-        try:
+        versuch:
             subprocess.run([sys.executable, '-c', 'import time;time.sleep(9)'], timeout = 0)
-        except subprocess.TimeoutExpired als e:
+        ausser subprocess.TimeoutExpired als e:
             self.assertIn("0 seconds", str(e))
         sonst:
             self.fail("Expected TimeoutExpired exception nicht raised")
@@ -306,7 +306,7 @@ klasse ProcessTestCase(BaseTestCase):
         self.assertEqual(rc, 1)
 
     def test_invalid_args(self):
-        # Popen() called mit invalid arguments should raise TypeError
+        # Popen() called mit invalid arguments should wirf TypeError
         # but Popen.__del__ should nicht complain (issue #12085)
         mit support.captured_stderr() als s:
             self.assertRaises(TypeError, subprocess.Popen, invalid_arg_name=1)
@@ -723,16 +723,16 @@ klasse ProcessTestCase(BaseTestCase):
                          'fcntl.F_GETPIPE_SZ required fuer test.')
     def test_pipesizes(self):
         test_pipe_r, test_pipe_w = os.pipe()
-        try:
+        versuch:
             # Get the default pipesize mit F_GETPIPE_SZ
             pipesize_default = fcntl.fcntl(test_pipe_w, fcntl.F_GETPIPE_SZ)
-        finally:
+        schliesslich:
             os.close(test_pipe_r)
             os.close(test_pipe_w)
         pipesize = pipesize_default // 2
         pagesize_default = support.get_pagesize()
         wenn pipesize < pagesize_default:  # the POSIX minimum
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 'default pipesize too small to perform test.')
         p = subprocess.Popen(
             [sys.executable, "-c",
@@ -740,7 +740,7 @@ klasse ProcessTestCase(BaseTestCase):
              'sys.stderr.write("error!")'],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, pipesize=pipesize)
-        try:
+        versuch:
             fuer fifo in [p.stdin, p.stdout, p.stderr]:
                 self.assertEqual(
                     fcntl.fcntl(fifo.fileno(), fcntl.F_GETPIPE_SZ),
@@ -752,7 +752,7 @@ klasse ProcessTestCase(BaseTestCase):
             p.stdin.close()
             p.stdout.close()
             p.stderr.close()
-        finally:
+        schliesslich:
             p.kill()
             p.wait()
 
@@ -767,12 +767,12 @@ klasse ProcessTestCase(BaseTestCase):
             stderr=subprocess.PIPE, pipesize=-1)
 
         mit proc:
-            try:
+            versuch:
                 fp_r, fp_w = os.pipe()
-                try:
+                versuch:
                     default_read_pipesize = fcntl.fcntl(fp_r, fcntl.F_GETPIPE_SZ)
                     default_write_pipesize = fcntl.fcntl(fp_w, fcntl.F_GETPIPE_SZ)
-                finally:
+                schliesslich:
                     os.close(fp_r)
                     os.close(fp_w)
 
@@ -787,7 +787,7 @@ klasse ProcessTestCase(BaseTestCase):
                     default_write_pipesize)
                 # On other platforms we cannot test the pipe size (yet). But above
                 # code using pipesize=-1 should nicht crash.
-            finally:
+            schliesslich:
                 proc.kill()
 
     def test_env(self):
@@ -1231,24 +1231,24 @@ klasse ProcessTestCase(BaseTestCase):
             max_handles = 2050 # too much fuer (at least some) Windows setups
         wenn resource:
             # And wenn it is nicht too much, try to make it too much.
-            try:
+            versuch:
                 soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
                 wenn soft > 1024:
                     resource.setrlimit(resource.RLIMIT_NOFILE, (1024, hard))
                     self.addCleanup(resource.setrlimit, resource.RLIMIT_NOFILE,
                                     (soft, hard))
-            except (OSError, ValueError):
+            ausser (OSError, ValueError):
                 pass
         handles = []
         tmpdir = tempfile.mkdtemp()
-        try:
+        versuch:
             fuer i in range(max_handles):
-                try:
+                versuch:
                     tmpfile = os.path.join(tmpdir, os_helper.TESTFN)
                     handles.append(os.open(tmpfile, os.O_WRONLY|os.O_CREAT))
-                except OSError als e:
+                ausser OSError als e:
                     wenn e.errno != errno.EMFILE:
-                        raise
+                        wirf
                     breche
             sonst:
                 self.skipTest("failed to reach the file descriptor limit "
@@ -1269,7 +1269,7 @@ klasse ProcessTestCase(BaseTestCase):
                                      stderr=subprocess.PIPE)
                 data = p.communicate(b"lime")[0]
                 self.assertEqual(data, b"lime")
-        finally:
+        schliesslich:
             fuer h in handles:
                 os.close(h)
             shutil.rmtree(tmpdir)
@@ -1318,7 +1318,7 @@ klasse ProcessTestCase(BaseTestCase):
         self.assertEqual(p.wait(timeout=support.SHORT_TIMEOUT), 0)
 
     def test_invalid_bufsize(self):
-        # an invalid type of the bufsize argument should raise
+        # an invalid type of the bufsize argument should wirf
         # TypeError.
         mit self.assertRaises(TypeError):
             subprocess.Popen(ZERO_RETURN_CMD, "orange")
@@ -1345,9 +1345,9 @@ klasse ProcessTestCase(BaseTestCase):
             os.close(p.stdin.fileno()) # close it without flushing the buffer
             read_line = p.stdout.readline()
             mit support.SuppressCrashReport():
-                try:
+                versuch:
                     p.stdin.close()
-                except OSError:
+                ausser OSError:
                     pass
             p.stdin = Nichts
         self.assertEqual(p.returncode, 0)
@@ -1386,10 +1386,10 @@ klasse ProcessTestCase(BaseTestCase):
         #
         # Run the test in a subprocess to control how the CRT reports errors
         # und to get stderr content.
-        try:
+        versuch:
             importiere msvcrt
             msvcrt.CrtSetReportMode
-        except (AttributeError, ImportError):
+        ausser (AttributeError, ImportError):
             self.skipTest("need msvcrt.CrtSetReportMode")
 
         code = textwrap.dedent(f"""
@@ -1404,11 +1404,11 @@ klasse ProcessTestCase(BaseTestCase):
                 msvcrt.CrtSetReportMode(report_type, msvcrt.CRTDBG_MODE_FILE)
                 msvcrt.CrtSetReportFile(report_type, msvcrt.CRTDBG_FILE_STDERR)
 
-            try:
+            versuch:
                 subprocess.Popen(cmd,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-            except OSError:
+            ausser OSError:
                 pass
         """)
         cmd = [sys.executable, "-c", code]
@@ -1429,25 +1429,25 @@ klasse ProcessTestCase(BaseTestCase):
                 time.sleep(0.001)
         t = threading.Thread(target=open_fds)
         t.start()
-        try:
+        versuch:
             mit self.assertRaises(OSError):
                 subprocess.Popen(NONEXISTING_CMD,
                                  stdin=subprocess.PIPE,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-        finally:
+        schliesslich:
             t.join()
             exc = Nichts
             fuer fd in fds:
                 # If a double close occurred, some of those fds will
                 # already have been closed by mistake, und os.close()
                 # here will raise.
-                try:
+                versuch:
                     os.close(fd)
-                except OSError als e:
+                ausser OSError als e:
                     exc = e
             wenn exc is nicht Nichts:
-                raise exc
+                wirf exc
 
     def test_threadsafe_wait(self):
         """Issue21291: Popen.wait() needs to be threadsafe fuer returncode."""
@@ -1518,10 +1518,10 @@ klasse ProcessTestCase(BaseTestCase):
         ifhandle, ifname = tempfile.mkstemp()
         ofhandle, ofname = tempfile.mkstemp()
         efhandle, efname = tempfile.mkstemp()
-        try:
+        versuch:
             subprocess.Popen (["*"], stdin=ifhandle, stdout=ofhandle,
               stderr=efhandle)
-        except OSError:
+        ausser OSError:
             os.close(ifhandle)
             os.remove(ifname)
             os.close(ofhandle)
@@ -1663,7 +1663,7 @@ klasse RunFuncTestCase(BaseTestCase):
         self.assertEqual(c.exception.returncode, 47)
 
     def test_check_zero(self):
-        # check_returncode shouldn't raise when returncode is zero
+        # check_returncode shouldn't wirf when returncode is zero
         cp = subprocess.run(ZERO_RETURN_CMD, check=Wahr)
         self.assertEqual(cp.returncode, 0)
 
@@ -1763,7 +1763,7 @@ klasse RunFuncTestCase(BaseTestCase):
         # gh-105436: fix subprocess.run(..., env={}) broken on Windows
         args = [sys.executable, "-c", 'pass']
         # Ignore subprocess errors - we only care that the API doesn't
-        # raise an OSError
+        # wirf an OSError
         subprocess.run(args, env={})
 
     def test_capture_output(self):
@@ -1813,10 +1813,10 @@ klasse RunFuncTestCase(BaseTestCase):
     def test_run_with_shell_timeout_and_capture_output(self):
         """Output capturing after a timeout mustn't hang forever on open filehandles."""
         before_secs = time.monotonic()
-        try:
+        versuch:
             subprocess.run('sleep 3', shell=Wahr, timeout=0.1,
                            capture_output=Wahr)  # New session unspecified.
-        except subprocess.TimeoutExpired als exc:
+        ausser subprocess.TimeoutExpired als exc:
             after_secs = time.monotonic()
             stacks = traceback.format_exc()  # assertRaises doesn't give this.
         sonst:
@@ -1842,13 +1842,13 @@ klasse RunFuncTestCase(BaseTestCase):
 def _get_test_grp_name():
     fuer name_group in ('staff', 'nogroup', 'grp', 'nobody', 'nfsnobody'):
         wenn grp:
-            try:
+            versuch:
                 grp.getgrnam(name_group)
-            except KeyError:
+            ausser KeyError:
                 weiter
             gib name_group
     sonst:
-        raise unittest.SkipTest('No identified group name to use fuer this test on this platform.')
+        wirf unittest.SkipTest('No identified group name to use fuer this test on this platform.')
 
 
 @unittest.skipIf(mswindows, "POSIX specific tests")
@@ -1859,9 +1859,9 @@ klasse POSIXProcessTestCase(BaseTestCase):
         self._nonexistent_dir = "/_this/pa.th/does/not/exist"
 
     def _get_chdir_exception(self):
-        try:
+        versuch:
             os.chdir(self._nonexistent_dir)
-        except OSError als e:
+        ausser OSError als e:
             # This avoids hard coding the errno value oder the OS perror()
             # string und instead capture the exception that we want to see
             # below fuer comparison.
@@ -1874,10 +1874,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
     def test_exception_cwd(self):
         """Test error in the child raised in the parent fuer a bad cwd."""
         desired_exception = self._get_chdir_exception()
-        try:
+        versuch:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  cwd=self._nonexistent_dir)
-        except OSError als e:
+        ausser OSError als e:
             # Test that the child process chdir failure actually makes
             # it up to the parent process als the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
@@ -1889,10 +1889,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
     def test_exception_bad_executable(self):
         """Test error in the child raised in the parent fuer a bad executable."""
         desired_exception = self._get_chdir_exception()
-        try:
+        versuch:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  executable=self._nonexistent_dir)
-        except OSError als e:
+        ausser OSError als e:
             # Test that the child process exec failure actually makes
             # it up to the parent process als the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
@@ -1904,9 +1904,9 @@ klasse POSIXProcessTestCase(BaseTestCase):
     def test_exception_bad_args_0(self):
         """Test error in the child raised in the parent fuer a bad args[0]."""
         desired_exception = self._get_chdir_exception()
-        try:
+        versuch:
             p = subprocess.Popen([self._nonexistent_dir, "-c", ""])
-        except OSError als e:
+        ausser OSError als e:
             # Test that the child process exec failure actually makes
             # it up to the parent process als the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
@@ -1993,13 +1993,13 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # For code coverage of calling setsid().  We don't care wenn we get an
         # EPERM error von it depending on the test execution environment, that
         # still indicates that it was called.
-        try:
+        versuch:
             output = subprocess.check_output(
                     [sys.executable, "-c", "import os; drucke(os.getsid(0))"],
                     start_new_session=Wahr)
-        except PermissionError als e:
+        ausser PermissionError als e:
             wenn e.errno != errno.EPERM:
-                raise  # EACCES?
+                wirf  # EACCES?
         sonst:
             parent_sid = os.getsid(0)
             child_sid = int(output)
@@ -2011,13 +2011,13 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # For code coverage of calling setpgid().  We don't care wenn we get an
         # EPERM error von it depending on the test execution environment, that
         # still indicates that it was called.
-        try:
+        versuch:
             output = subprocess.check_output(
                     [sys.executable, "-c", "import os; drucke(os.getpgid(0))"],
                     process_group=0)
-        except PermissionError als e:
+        ausser PermissionError als e:
             wenn e.errno != errno.EPERM:
-                raise  # EACCES?
+                wirf  # EACCES?
         sonst:
             parent_pgid = os.getpgid(0)
             child_pgid = int(output)
@@ -2034,10 +2034,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
         name_uid = "nobody" wenn sys.platform != 'darwin' sonst "unknown"
 
         wenn pwd is nicht Nichts:
-            try:
+            versuch:
                 pwd.getpwnam(name_uid)
                 test_users.append(name_uid)
-            except KeyError:
+            ausser KeyError:
                 # unknown user name
                 name_uid = Nichts
 
@@ -2045,13 +2045,13 @@ klasse POSIXProcessTestCase(BaseTestCase):
             # posix_spawn() may be used mit close_fds=Falsch
             fuer close_fds in (Falsch, Wahr):
                 mit self.subTest(user=user, close_fds=close_fds):
-                    try:
+                    versuch:
                         output = subprocess.check_output(
                                 [sys.executable, "-c",
                                  "import os; drucke(os.getuid())"],
                                 user=user,
                                 close_fds=close_fds)
-                    except PermissionError als e:  # (EACCES, EPERM)
+                    ausser PermissionError als e:  # (EACCES, EPERM)
                         wenn e.errno == errno.EACCES:
                             self.assertEqual(e.filename, sys.executable)
                         sonst:
@@ -2093,13 +2093,13 @@ klasse POSIXProcessTestCase(BaseTestCase):
             # posix_spawn() may be used mit close_fds=Falsch
             fuer close_fds in (Falsch, Wahr):
                 mit self.subTest(group=group, close_fds=close_fds):
-                    try:
+                    versuch:
                         output = subprocess.check_output(
                                 [sys.executable, "-c",
                                  "import os; drucke(os.getgid())"],
                                 group=group,
                                 close_fds=close_fds)
-                    except PermissionError als e:  # (EACCES, EPERM)
+                    ausser PermissionError als e:  # (EACCES, EPERM)
                         self.assertIsNichts(e.filename)
                     sonst:
                         wenn isinstance(group, str):
@@ -2143,12 +2143,12 @@ klasse POSIXProcessTestCase(BaseTestCase):
         wenn grp is nicht Nichts:
             group_list.append(name_group)
 
-        try:
+        versuch:
             output = subprocess.check_output(
                     [sys.executable, "-c",
                      "import os, sys, json; json.dump(os.getgroups(), sys.stdout)"],
                     extra_groups=group_list)
-        except PermissionError als e:
+        ausser PermissionError als e:
             self.assertIsNichts(e.filename)
             self.skipTest("setgroup() EPERM; this test may require root.")
         sonst:
@@ -2182,7 +2182,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                      'POSIX umask() is nicht available.')
     def test_umask(self):
         tmpdir = Nichts
-        try:
+        versuch:
             tmpdir = tempfile.mkdtemp()
             name = os.path.join(tmpdir, "beans")
             # We set an unusual umask in the child so als a unique mode
@@ -2196,7 +2196,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             expected_mode = 0o624
             self.assertEqual(expected_mode, st_mode,
                              msg=f'{oct(expected_mode)} != {oct(st_mode)}')
-        finally:
+        schliesslich:
             wenn tmpdir is nicht Nichts:
                 shutil.rmtree(tmpdir)
 
@@ -2242,15 +2242,15 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
     def test_preexec_exception(self):
         def raise_it():
-            raise ValueError("What wenn two swallows carried a coconut?")
-        try:
+            wirf ValueError("What wenn two swallows carried a coconut?")
+        versuch:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  preexec_fn=raise_it)
-        except subprocess.SubprocessError als e:
+        ausser subprocess.SubprocessError als e:
             self.assertWahr(
                     subprocess._fork_exec,
                     "Expected a ValueError von the preexec_fn")
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertIn("coconut", e.args[0])
         sonst:
             self.fail("Exception raised by preexec_fn did nicht make it "
@@ -2263,21 +2263,21 @@ klasse POSIXProcessTestCase(BaseTestCase):
             subprocess.Popen.__init__(self, *args, **kwargs)
 
         def _execute_child(self, *args, **kwargs):
-            try:
+            versuch:
                 subprocess.Popen._execute_child(self, *args, **kwargs)
-            finally:
+            schliesslich:
                 # Open a bunch of file descriptors und verify that
                 # none of them are the same als the ones the Popen
                 # instance is using fuer stdin/stdout/stderr.
                 devzero_fds = [os.open("/dev/zero", os.O_RDONLY)
                                fuer _ in range(8)]
-                try:
+                versuch:
                     fuer fd in devzero_fds:
                         self._testcase.assertNotIn(
                                 fd, (self.stdin.fileno(), self.stdout.fileno(),
                                      self.stderr.fileno()),
                                 msg="At least one fd was closed early.")
-                finally:
+                schliesslich:
                     fuer fd in devzero_fds:
                         os.close(fd)
 
@@ -2286,7 +2286,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         """Issue16140: Don't double close pipes on preexec error."""
 
         def raise_it():
-            raise subprocess.SubprocessError(
+            wirf subprocess.SubprocessError(
                     "force the _execute_child() errpipe_data path.")
 
         mit self.assertRaises(subprocess.SubprocessError):
@@ -2299,7 +2299,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # This tests the code that disables garbage collection wenn the child
         # process will execute any Python.
         enabled = gc.isenabled()
-        try:
+        versuch:
             gc.disable()
             self.assertFalsch(gc.isenabled())
             subprocess.call([sys.executable, '-c', ''],
@@ -2312,7 +2312,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             subprocess.call([sys.executable, '-c', ''],
                             preexec_fn=lambda: Nichts)
             self.assertWahr(gc.isenabled(), "Popen left gc disabled.")
-        finally:
+        schliesslich:
             wenn nicht enabled:
                 gc.disable()
 
@@ -2321,19 +2321,19 @@ klasse POSIXProcessTestCase(BaseTestCase):
     def test_preexec_fork_failure(self):
         # The internal code did nicht preserve the previous exception when
         # re-enabling garbage collection
-        try:
+        versuch:
             von resource importiere getrlimit, setrlimit, RLIMIT_NPROC
-        except ImportError als err:
+        ausser ImportError als err:
             self.skipTest(err)  # RLIMIT_NPROC is specific to Linux und BSD
         limits = getrlimit(RLIMIT_NPROC)
         [_, hard] = limits
         setrlimit(RLIMIT_NPROC, (0, hard))
         self.addCleanup(setrlimit, RLIMIT_NPROC, limits)
-        try:
+        versuch:
             subprocess.call([sys.executable, '-c', ''],
                             preexec_fn=lambda: Nichts)
-        except BlockingIOError:
-            # Forking should raise EAGAIN, translated to BlockingIOError
+        ausser BlockingIOError:
+            # Forking should wirf EAGAIN, translated to BlockingIOError
             pass
         sonst:
             self.skipTest('RLIMIT_NPROC had no effect; probably superuser')
@@ -2353,7 +2353,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 47)
 
     def test_invalid_args(self):
-        # invalid arguments should raise ValueError
+        # invalid arguments should wirf ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
                            "import sys; sys.exit(47)"],
@@ -2422,7 +2422,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # Also set the SIGINT handler to the default to make sure it's not
         # being ignored (some tests rely on that.)
         old_handler = signal.signal(signal.SIGINT, signal.default_int_handler)
-        try:
+        versuch:
             p = subprocess.Popen([sys.executable, "-c", """if 1:
                                  importiere sys, time
                                  sys.stdout.write('x\\n')
@@ -2433,7 +2433,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                                  stdin=subprocess.PIPE,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-        finally:
+        schliesslich:
             signal.signal(signal.SIGINT, old_handler)
         # Wait fuer the interpreter to be completely initialized before
         # sending any signal.
@@ -2460,7 +2460,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         p.stdout.read(1)
         # The process should end after this
         time.sleep(1)
-        # This shouldn't raise even though the child is now dead
+        # This shouldn't wirf even though the child is now dead
         getattr(p, method)(*args)
         p.communicate()
 
@@ -2516,7 +2516,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             wenn fd == 0:
                 stdin = saved
                 breche
-        try:
+        versuch:
             fuer fd in fds:
                 os.close(fd)
             out, err = subprocess.Popen([sys.executable, "-c",
@@ -2529,7 +2529,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                        stderr=subprocess.PIPE).communicate()
             self.assertEqual(out, b'apple')
             self.assertEqual(err, b'orange')
-        finally:
+        schliesslich:
             self._restore_fds(saved_fds)
 
     def test_close_fd_0(self):
@@ -2559,7 +2559,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         """Issue #15798: Popen should work when stdio fds are available."""
         new_stdin = os.dup(0)
         new_stdout = os.dup(1)
-        try:
+        versuch:
             os.close(0)
             os.close(1)
 
@@ -2569,7 +2569,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             subprocess.Popen([
                     sys.executable, "-c",
                     "drucke('AssertionError:0:CLOEXEC failure.')"]).wait()
-        finally:
+        schliesslich:
             # Restore original stdin und stdout
             os.dup2(new_stdin, 0)
             os.dup2(new_stdout, 1)
@@ -2579,7 +2579,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
     def test_remapping_std_fds(self):
         # open up some temporary files
         temps = [tempfile.mkstemp() fuer i in range(3)]
-        try:
+        versuch:
             temp_fds = [fd fuer fd, fname in temps]
 
             # unlink the files -- we won't need to reopen them
@@ -2592,7 +2592,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
             # move the standard file descriptors out of the way
             saved_fds = self._save_fds(range(3))
-            try:
+            versuch:
                 # duplicate the file objects over the standard fd's
                 fuer fd, temp_fd in enumerate(temp_fds):
                     os.dup2(temp_fd, fd)
@@ -2606,7 +2606,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                     stdout=temp_fds[2],
                     stderr=temp_fds[0])
                 p.wait()
-            finally:
+            schliesslich:
                 self._restore_fds(saved_fds)
 
             fuer fd in temp_fds:
@@ -2617,7 +2617,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             self.assertEqual(out, b"got STDIN")
             self.assertEqual(err, b"err")
 
-        finally:
+        schliesslich:
             fuer fd in temp_fds:
                 os.close(fd)
 
@@ -2625,14 +2625,14 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # open up some temporary files
         temps = [tempfile.mkstemp() fuer i in range(3)]
         temp_fds = [fd fuer fd, fname in temps]
-        try:
+        versuch:
             # unlink the files -- we won't need to reopen them
             fuer fd, fname in temps:
                 os.unlink(fname)
 
             # save a copy of the standard file descriptors
             saved_fds = self._save_fds(range(3))
-            try:
+            versuch:
                 # duplicate the temp files over the standard fd's 0, 1, 2
                 fuer fd, temp_fd in enumerate(temp_fds):
                     os.dup2(temp_fd, fd)
@@ -2656,13 +2656,13 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
                 out = os.read(stdout_no, 1024)
                 err = os.read(stderr_no, 1024).strip()
-            finally:
+            schliesslich:
                 self._restore_fds(saved_fds)
 
             self.assertEqual(out, b"got STDIN")
             self.assertEqual(err, b"err")
 
-        finally:
+        schliesslich:
             fuer fd in temp_fds:
                 os.close(fd)
 
@@ -2679,7 +2679,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
     def _check_swap_std_fds_with_one_closed(self, from_fds, to_fds):
         saved_fds = self._save_fds(range(3))
-        try:
+        versuch:
             fuer from_fd in from_fds:
                 mit tempfile.TemporaryFile() als f:
                     os.dup2(f.fileno(), from_fd)
@@ -2716,7 +2716,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                     to descriptor(s) {read_fds} instead of descriptor {to_fd}.
                 """)
                 self.assertEqual([to_fd], read_fds, msg)
-        finally:
+        schliesslich:
             self._restore_fds(saved_fds)
 
     # Check that subprocess can remap std fds correctly even
@@ -2728,17 +2728,17 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
     def test_surrogates_error_message(self):
         def prepare():
-            raise ValueError("surrogate:\uDCff")
+            wirf ValueError("surrogate:\uDCff")
 
-        try:
+        versuch:
             subprocess.call(
                 ZERO_RETURN_CMD,
                 preexec_fn=prepare)
-        except ValueError als err:
+        ausser ValueError als err:
             # Pure Python implementations keeps the message
             self.assertIsNichts(subprocess._fork_exec)
             self.assertEqual(str(err), "surrogate:\uDCff")
-        except subprocess.SubprocessError als err:
+        ausser subprocess.SubprocessError als err:
             # _posixsubprocess uses a default message
             self.assertIsNotNichts(subprocess._fork_exec)
             self.assertEqual(str(err), "Exception occurred in preexec_fn.")
@@ -2842,14 +2842,14 @@ klasse POSIXProcessTestCase(BaseTestCase):
         self.addCleanup(p1.wait)
         self.addCleanup(p2.wait)
         def kill_p1():
-            try:
+            versuch:
                 p1.terminate()
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 pass
         def kill_p2():
-            try:
+            versuch:
                 p2.terminate()
-            except ProcessLookupError:
+            ausser ProcessLookupError:
                 pass
         self.addCleanup(kill_p1)
         self.addCleanup(kill_p2)
@@ -2959,7 +2959,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         sys.stdout.flush()
 
         rlim_cur, rlim_max = resource.getrlimit(resource.RLIMIT_NOFILE)
-        try:
+        versuch:
             # 29 is lower than the highest fds we are leaving open.
             resource.setrlimit(resource.RLIMIT_NOFILE, (29, rlim_max))
             # Launch a new Python interpreter mit our low fd rlim_cur that
@@ -2977,7 +2977,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                                       close_fds=Wahr).wait()
                      """.format(max_fd=max_fd_open+1))],
                 close_fds=Falsch).wait()
-        finally:
+        schliesslich:
             resource.setrlimit(resource.RLIMIT_NOFILE, (rlim_cur, rlim_max))
         ''' % fd_status)], stdout=subprocess.PIPE)
 
@@ -2995,7 +2995,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
     # Mac OS X Tiger (10.4) has a kernel bug: sometimes, the file
     # descriptor of a pipe closed in the parent process is valid in the
     # child process according to fstat(), but the mode of the file
-    # descriptor is invalid, und read oder write raise an error.
+    # descriptor is invalid, und read oder write wirf an error.
     @support.requires_mac_ver(10, 5)
     def test_pass_fds(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
@@ -3126,10 +3126,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
                              bufsize=0)
         f = p.stdout
         self.addCleanup(f.close)
-        try:
+        versuch:
             self.assertEqual(f.read(4), b"appl")
             self.assertIn(f, select.select([f], [], [], 0.0)[0])
-        finally:
+        schliesslich:
             p.wait()
 
     def test_zombie_fast_process_del(self):
@@ -3222,7 +3222,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # oder other errors
         importiere _posixsubprocess
         gc_enabled = gc.isenabled()
-        try:
+        versuch:
             # Use a preexec function und enable the garbage collector
             # to force fork_exec() to re-enable the garbage collector
             # on error.
@@ -3249,10 +3249,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
                 # von passing the test.  More refactoring to have us start
                 # mit a valid *args list, confirm a good call mit that works
                 # before mutating it in various ways to ensure that bad calls
-                # mit individual arg type errors raise a typeerror would be
+                # mit individual arg type errors wirf a typeerror would be
                 # ideal.  Saving that fuer a future PR...
                 self.assertNotIn('takes exactly', str(err.exception))
-        finally:
+        schliesslich:
             wenn nicht gc_enabled:
                 gc.disable()
 
@@ -3268,10 +3268,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
                 wenn self.first:
                     self.first = Falsch
                     gib self.value
-                raise ValueError
+                wirf ValueError
 
         gc_enabled = gc.isenabled()
-        try:
+        versuch:
             gc.enable()
 
             fuer fds_to_keep in (
@@ -3294,7 +3294,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                         Nichts, Nichts, Nichts, -1,
                         Nichts)
                 self.assertIn('fds_to_keep', str(c.exception))
-        finally:
+        schliesslich:
             wenn nicht gc_enabled:
                 gc.disable()
 
@@ -3402,10 +3402,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
                                  'import os, time; os.close(1), time.sleep(2)'],
                                 stdout=subprocess.PIPE)
         waehrend Wahr:
-            try:
+            versuch:
                 proc.communicate(timeout=0.1)
                 gib
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 pass
 
     def test_preexec_at_exit(self):
@@ -3472,10 +3472,10 @@ klasse POSIXProcessTestCase(BaseTestCase):
                     f"""\
                     importiere subprocess
                     {preamble}
-                    try:
+                    versuch:
                         subprocess.check_call(
                                 [{true_binary!r}], **dict({sp_kwarg}))
-                    except PermissionError:
+                    ausser PermissionError:
                         wenn nicht {expect_permission_error}:
                             raise""",
                     strace_args
@@ -3554,7 +3554,7 @@ klasse Win32ProcessTestCase(BaseTestCase):
                         creationflags=CREATE_NEW_CONSOLE)
 
     def test_invalid_args(self):
-        # invalid arguments should raise ValueError
+        # invalid arguments should wirf ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
                            "import sys; sys.exit(47)"],
@@ -3713,7 +3713,7 @@ klasse Win32ProcessTestCase(BaseTestCase):
             p.stdout.read(1)
             # The process should end after this
             time.sleep(1)
-            # This shouldn't raise even though the child is now dead
+            # This shouldn't wirf even though the child is now dead
             getattr(p, method)(*args)
             _, stderr = p.communicate()
             self.assertEqual(stderr, b'')
@@ -3760,7 +3760,7 @@ klasse MiscTests(unittest.TestCase):
         """
 
         mock__communicate.side_effect = KeyboardInterrupt
-        try:
+        versuch:
             mit mock.patch.object(subprocess.Popen, "_wait") als mock__wait:
                 # We patch out _wait() als no signal was involved so the
                 # child process isn't actually going to exit rapidly.
@@ -3785,7 +3785,7 @@ klasse MiscTests(unittest.TestCase):
                                      msg=mock__wait.call_args_list)
                 self.assertEqual(len(sigint_calls), 1,
                                  msg=mock__wait.call_args_list)
-        finally:
+        schliesslich:
             # cleanup the forgotten (due to our mocks) child process
             process = self.RecordingPopen.instances_created.pop()
             process.kill()
@@ -3801,7 +3801,7 @@ klasse MiscTests(unittest.TestCase):
     def test_context_manager_keyboardinterrupt_no_kill(self):
         def popen_via_context_manager(*args, **kwargs):
             mit subprocess.Popen(*args, **kwargs) als unused_process:
-                raise KeyboardInterrupt  # Test how __exit__ handles ^C.
+                wirf KeyboardInterrupt  # Test how __exit__ handles ^C.
         self._test_keyboardinterrupt_no_kill(popen_via_context_manager)
 
     def test_getoutput(self):
@@ -3813,13 +3813,13 @@ klasse MiscTests(unittest.TestCase):
         # under our exclusive control; von that, we can invent a pathname
         # that we _know_ won't exist.  This is guaranteed to fail.
         dir = Nichts
-        try:
+        versuch:
             dir = tempfile.mkdtemp()
             name = os.path.join(dir, "foo")
             status, output = subprocess.getstatusoutput(
                 ("type " wenn mswindows sonst "cat ") + name)
             self.assertNotEqual(status, 0)
-        finally:
+        schliesslich:
             wenn dir is nicht Nichts:
                 os.rmdir(dir)
 

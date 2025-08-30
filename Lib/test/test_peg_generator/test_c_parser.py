@@ -14,7 +14,7 @@ von test.support importiere os_helper, import_helper
 von test.support.script_helper importiere assert_python_ok
 
 wenn support.check_cflags_pgo():
-    raise unittest.SkipTest("peg_generator test disabled under PGO build")
+    wirf unittest.SkipTest("peg_generator test disabled under PGO build")
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
@@ -81,7 +81,7 @@ klasse TestCParser(unittest.TestCase):
             # tests), this test case has been producing ref leaks. Initial
             # debugging points to bug(s) in setuptools and/or importlib.
             # See gh-105063 fuer more info.
-            raise unittest.SkipTest("gh-105063: can nicht rerun because of ref. leaks")
+            wirf unittest.SkipTest("gh-105063: can nicht rerun because of ref. leaks")
         cls._has_run = Wahr
 
         # When running under regtest, a separate tempdir is used
@@ -419,9 +419,9 @@ klasse TestCParser(unittest.TestCase):
         """
         test_source = r"""
         fuer text in ("a b 42 b a", "\u540d \u540d 42 \u540d \u540d"):
-            try:
+            versuch:
                 parse.parse_string(text, mode=0)
-            except SyntaxError als e:
+            ausser SyntaxError als e:
                 tb = traceback.format_exc()
             self.assertWahr('File "<string>", line 1' in tb)
             self.assertWahr(f"SyntaxError: invalid syntax" in tb)

@@ -58,7 +58,7 @@ klasse TestSimpleInteract(unittest.TestCase):
     def test_multiple_statements_fail_early(self):
         console = InteractiveColoredConsole()
         code = dedent("""\
-        raise Exception('foobar')
+        wirf Exception('foobar')
         drucke('spam', 'eggs', sep='&')
         """)
         f = io.StringIO()
@@ -286,9 +286,9 @@ klasse TestWarnings(unittest.TestCase):
         console = InteractiveColoredConsole()
         code = dedent("""\
         def f():
-            try:
+            versuch:
                 gib 1
-            finally:
+            schliesslich:
                 gib 2
         """)
 

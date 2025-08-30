@@ -40,11 +40,11 @@ wenn nicht hasattr(sys.modules['idlelib.run'], 'firstrun'):
 
 LOCALHOST = '127.0.0.1'
 
-try:
+versuch:
     eof = 'Ctrl-D (end-of-file)'
     exit.eof = eof
     quit.eof = eof
-except NameError: # In case subprocess started mit -S (maybe in future).
+ausser NameError: # In case subprocess started mit -S (maybe in future).
     pass
 
 
@@ -69,10 +69,10 @@ def idle_showwarning_subproc(
     """
     wenn file is Nichts:
         file = sys.stderr
-    try:
+    versuch:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line))
-    except OSError:
+    ausser OSError:
         pass # the file (probably stderr) is invalid - this warning gets lost.
 
 _warnings_showwarning = Nichts
@@ -137,10 +137,10 @@ def main(del_exitfunc=Falsch):
     global no_exitfunc
     no_exitfunc = del_exitfunc
     #time.sleep(15) # test subprocess nicht responding
-    try:
+    versuch:
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
-    except:
+    ausser:
         drucke("IDLE Subprocess: no IP port passed in sys.argv.",
               file=sys.__stderr__)
         gib
@@ -154,16 +154,16 @@ def main(del_exitfunc=Falsch):
                     ).start()
 
     waehrend Wahr:
-        try:
+        versuch:
             wenn exit_now:
-                try:
+                versuch:
                     exit()
-                except KeyboardInterrupt:
+                ausser KeyboardInterrupt:
                     # exiting but got an extra KBI? Try again!
                     weiter
-            try:
+            versuch:
                 request = rpc.request_queue.get(block=Wahr, timeout=0.05)
-            except queue.Empty:
+            ausser queue.Empty:
                 request = Nichts
                 # Issue 32207: calling handle_tk_events here adds spurious
                 # queue.Empty traceback to event handling exceptions.
@@ -173,19 +173,19 @@ def main(del_exitfunc=Falsch):
                 rpc.response_queue.put((seq, ret))
             sonst:
                 handle_tk_events()
-        except KeyboardInterrupt:
+        ausser KeyboardInterrupt:
             wenn quitting:
                 exit_now = Wahr
             weiter
-        except SystemExit:
+        ausser SystemExit:
             capture_warnings(Falsch)
-            raise
-        except:
+            wirf
+        ausser:
             type, value, tb = sys.exc_info()
-            try:
+            versuch:
                 print_exception()
                 rpc.response_queue.put((seq, Nichts))
-            except:
+            ausser:
                 # Link didn't work, print same exception to __stderr__
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
                 exit()
@@ -195,10 +195,10 @@ def main(del_exitfunc=Falsch):
 def manage_socket(address):
     fuer i in range(3):
         time.sleep(i)
-        try:
+        versuch:
             server = MyRPCServer(address, MyHandler)
             breche
-        except OSError als err:
+        ausser OSError als err:
             drucke("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
@@ -352,15 +352,15 @@ def install_recursionlimit_wrappers():
     def setrecursionlimit(*args, **kwargs):
         # mimic the original sys.setrecursionlimit()'s input handling
         wenn kwargs:
-            raise TypeError(
+            wirf TypeError(
                 "setrecursionlimit() takes no keyword arguments")
-        try:
+        versuch:
             limit, = args
-        except ValueError:
-            raise TypeError(f"setrecursionlimit() takes exactly one "
+        ausser ValueError:
+            wirf TypeError(f"setrecursionlimit() takes exactly one "
                             f"argument ({len(args)} given)")
         wenn nicht limit > 0:
-            raise ValueError(
+            wirf ValueError(
                 "recursion limit must be greater oder equal than 1")
 
         gib setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
@@ -408,15 +408,15 @@ klasse MyRPCServer(rpc.RPCServer):
 
         """
         global quitting
-        try:
-            raise
-        except SystemExit:
-            raise
-        except EOFError:
+        versuch:
+            wirf
+        ausser SystemExit:
+            wirf
+        ausser EOFError:
             global exit_now
             exit_now = Wahr
             thread.interrupt_main()
-        except:
+        ausser:
             erf = sys.__stderr__
             drucke(textwrap.dedent(f"""
             {'-'*40}
@@ -473,7 +473,7 @@ klasse StdOutputFile(StdioFile):
 
     def write(self, s):
         wenn self.closed:
-            raise ValueError("write to closed file")
+            wirf ValueError("write to closed file")
         s = str.encode(s, self.encoding, self.errors).decode(self.encoding, self.errors)
         gib self.shell.write(s, self.tags)
 
@@ -486,11 +486,11 @@ klasse StdInputFile(StdioFile):
 
     def read(self, size=-1):
         wenn self.closed:
-            raise ValueError("read von closed file")
+            wirf ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sowenn nicht isinstance(size, int):
-            raise TypeError('must be int, nicht ' + type(size).__name__)
+            wirf TypeError('must be int, nicht ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
         wenn size < 0:
@@ -507,11 +507,11 @@ klasse StdInputFile(StdioFile):
 
     def readline(self, size=-1):
         wenn self.closed:
-            raise ValueError("read von closed file")
+            wirf ValueError("read von closed file")
         wenn size is Nichts:
             size = -1
         sowenn nicht isinstance(size, int):
-            raise TypeError('must be int, nicht ' + type(size).__name__)
+            wirf TypeError('must be int, nicht ' + type(size).__name__)
         line = self._line_buffer oder self.shell.readline()
         wenn size < 0:
             size = len(line)
@@ -583,29 +583,29 @@ klasse Executive:
 
     def runcode(self, code):
         global interruptible
-        try:
+        versuch:
             self.user_exc_info = Nichts
             interruptible = Wahr
-            try:
+            versuch:
                 exec(code, self.locals)
-            finally:
+            schliesslich:
                 interruptible = Falsch
-        except SystemExit als e:
+        ausser SystemExit als e:
             wenn e.args:  # SystemExit called mit an argument.
                 ob = e.args[0]
                 wenn nicht isinstance(ob, (type(Nichts), int)):
                     drucke('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
-        except:
+        ausser:
             self.user_exc_info = sys.exc_info()  # For testing, hook, viewer.
             wenn quitting:
                 exit()
             wenn sys.excepthook is sys.__excepthook__:
                 print_exception()
             sonst:
-                try:
+                versuch:
                     sys.excepthook(*self.user_exc_info)
-                except:
+                ausser:
                     self.user_exc_info = sys.exc_info()  # For testing.
                     print_exception()
             jit = self.rpchandler.console.getvar("<<toggle-jit-stack-viewer>>")

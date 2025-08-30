@@ -60,15 +60,15 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
     # Disable compiler warnings when checking fuer incomplete input.
     mit warnings.catch_warnings():
         warnings.simplefilter("ignore", (SyntaxWarning, DeprecationWarning))
-        try:
+        versuch:
             compiler(source, filename, symbol, flags=flags)
-        except SyntaxError:  # Let other compile() errors propagate.
-            try:
+        ausser SyntaxError:  # Let other compile() errors propagate.
+            versuch:
                 compiler(source + "\n", filename, symbol, flags=flags)
                 gib Nichts
-            except _IncompleteInputError als e:
+            ausser _IncompleteInputError als e:
                 gib Nichts
-            except SyntaxError als e:
+            ausser SyntaxError als e:
                 pass
                 # fallthrough
 

@@ -12,14 +12,14 @@ importiere unittest
 importiere unittest.mock
 importiere tempfile
 von time importiere monotonic als time
-try:
+versuch:
     importiere resource
-except ImportError:
+ausser ImportError:
     resource = Nichts
 
 
 wenn support.is_emscripten oder support.is_wasi:
-    raise unittest.SkipTest("Cannot create socketpair on Emscripten/WASI.")
+    wirf unittest.SkipTest("Cannot create socketpair on Emscripten/WASI.")
 
 
 wenn hasattr(socket, 'socketpair'):
@@ -30,7 +30,7 @@ sonst:
             l.bind((socket_helper.HOST, 0))
             l.listen()
             c = socket.socket(family, type, proto)
-            try:
+            versuch:
                 c.connect(l.getsockname())
                 caddr = c.getsockname()
                 waehrend Wahr:
@@ -39,9 +39,9 @@ sonst:
                     wenn addr == caddr:
                         gib c, a
                     a.close()
-            except OSError:
+            ausser OSError:
                 c.close()
-                raise
+                wirf
 
 
 def find_ready_matching(ready, flag):
@@ -193,7 +193,7 @@ klasse BaseSelectorTestCase:
             patch = unittest.mock.patch(
                 'selectors.DevpollSelector._selector_cls')
         sonst:
-            raise self.skipTest("")
+            wirf self.skipTest("")
 
         mit patch als m:
             m.return_value.modify = unittest.mock.Mock(
@@ -435,12 +435,12 @@ klasse BaseSelectorTestCase:
             pass
 
         def handler(*args):
-            raise InterruptSelect
+            wirf InterruptSelect
 
         orig_alrm_handler = signal.signal(signal.SIGALRM, handler)
         self.addCleanup(signal.signal, signal.SIGALRM, orig_alrm_handler)
 
-        try:
+        versuch:
             signal.alarm(1)
 
             s.register(rd, selectors.EVENT_READ)
@@ -450,7 +450,7 @@ klasse BaseSelectorTestCase:
                 s.select(30)
             # select() was interrupted before the timeout of 30 seconds
             self.assertLess(time() - t, 5.0)
-        finally:
+        schliesslich:
             signal.alarm(0)
 
     @unittest.skipUnless(hasattr(signal, "alarm"),
@@ -464,17 +464,17 @@ klasse BaseSelectorTestCase:
         orig_alrm_handler = signal.signal(signal.SIGALRM, lambda *args: Nichts)
         self.addCleanup(signal.signal, signal.SIGALRM, orig_alrm_handler)
 
-        try:
+        versuch:
             signal.alarm(1)
 
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() is interrupted by a signal, but the signal handler doesn't
-            # raise an exception, so select() should by retries mit a recomputed
+            # wirf an exception, so select() should by retries mit a recomputed
             # timeout
             self.assertFalsch(s.select(1.5))
             self.assertGreaterEqual(time() - t, 1.0)
-        finally:
+        schliesslich:
             signal.alarm(0)
 
 
@@ -489,12 +489,12 @@ klasse ScalableSelectorMixIn:
         # FD_SETSIZE file descriptors. Since we don't know the value, we just
         # try to set the soft RLIMIT_NOFILE to the hard RLIMIT_NOFILE ceiling.
         soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-        try:
+        versuch:
             resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
             self.addCleanup(resource.setrlimit, resource.RLIMIT_NOFILE,
                             (soft, hard))
             NUM_FDS = min(hard, 2**16)
-        except (OSError, ValueError):
+        ausser (OSError, ValueError):
             NUM_FDS = soft
 
         # guard fuer already allocated FDs (stdin, stdout...)
@@ -504,31 +504,31 @@ klasse ScalableSelectorMixIn:
         self.addCleanup(s.close)
 
         fuer i in range(NUM_FDS // 2):
-            try:
+            versuch:
                 rd, wr = self.make_socketpair()
-            except OSError:
+            ausser OSError:
                 # too many FDs, skip - note that we should only catch EMFILE
                 # here, but apparently *BSD und Solaris can fail upon connect()
                 # oder bind() mit EADDRNOTAVAIL, so let's be safe
                 self.skipTest("FD limit reached")
 
-            try:
+            versuch:
                 s.register(rd, selectors.EVENT_READ)
                 s.register(wr, selectors.EVENT_WRITE)
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno == errno.ENOSPC:
                     # this can be raised by epoll wenn we go over
                     # fs.epoll.max_user_watches sysctl
                     self.skipTest("FD limit reached")
-                raise
+                wirf
 
-        try:
+        versuch:
             fds = s.select()
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EINVAL und is_apple:
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
-            raise
+            wirf
         self.assertEqual(NUM_FDS // 2, len(fds))
 
 
@@ -576,7 +576,7 @@ klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
     SELECTOR = getattr(selectors, 'KqueueSelector', Nichts)
 
     def test_register_bad_fd(self):
-        # a file descriptor that's been closed should raise an OSError
+        # a file descriptor that's been closed should wirf an OSError
         # mit EBADF
         s = self.SELECTOR()
         bad_f = os_helper.make_bad_fd()

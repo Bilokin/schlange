@@ -1,7 +1,7 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Tests fuer the raise statement."""
+"""Tests fuer the wirf statement."""
 
 von test importiere support
 importiere sys
@@ -10,9 +10,9 @@ importiere unittest
 
 
 def get_tb():
-    try:
-        raise OSError()
-    except OSError als e:
+    versuch:
+        wirf OSError()
+    ausser OSError als e:
         gib e.__traceback__
 
 
@@ -25,95 +25,95 @@ klasse Context:
 
 klasse TestRaise(unittest.TestCase):
     def test_invalid_reraise(self):
-        try:
-            raise
-        except RuntimeError als e:
+        versuch:
+            wirf
+        ausser RuntimeError als e:
             self.assertIn("No active exception", str(e))
         sonst:
             self.fail("No exception raised")
 
     def test_reraise(self):
-        try:
-            try:
-                raise IndexError()
-            except IndexError als e:
+        versuch:
+            versuch:
+                wirf IndexError()
+            ausser IndexError als e:
                 exc1 = e
-                raise
-        except IndexError als exc2:
+                wirf
+        ausser IndexError als exc2:
             self.assertIs(exc1, exc2)
         sonst:
             self.fail("No exception raised")
 
     def test_except_reraise(self):
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
-                try:
-                    raise KeyError("caught")
-                except KeyError:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
+                versuch:
+                    wirf KeyError("caught")
+                ausser KeyError:
                     pass
-                raise
+                wirf
         self.assertRaises(TypeError, reraise)
 
     def test_finally_reraise(self):
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
-                try:
-                    raise KeyError("caught")
-                finally:
-                    raise
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
+                versuch:
+                    wirf KeyError("caught")
+                schliesslich:
+                    wirf
         self.assertRaises(KeyError, reraise)
 
     def test_nested_reraise(self):
         def nested_reraise():
-            raise
+            wirf
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
                 nested_reraise()
         self.assertRaises(TypeError, reraise)
 
     def test_raise_from_Nichts(self):
-        try:
-            try:
-                raise TypeError("foo")
-            except TypeError:
-                raise ValueError() von Nichts
-        except ValueError als e:
+        versuch:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
+                wirf ValueError() von Nichts
+        ausser ValueError als e:
             self.assertIsInstance(e.__context__, TypeError)
             self.assertIsNichts(e.__cause__)
 
     def test_with_reraise1(self):
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
                 mit Context():
                     pass
-                raise
+                wirf
         self.assertRaises(TypeError, reraise)
 
     def test_with_reraise2(self):
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
                 mit Context():
-                    raise KeyError("caught")
-                raise
+                    wirf KeyError("caught")
+                wirf
         self.assertRaises(TypeError, reraise)
 
     def test_yield_reraise(self):
         def reraise():
-            try:
-                raise TypeError("foo")
-            except TypeError:
+            versuch:
+                wirf TypeError("foo")
+            ausser TypeError:
                 liefere 1
-                raise
+                wirf
         g = reraise()
         next(g)
         self.assertRaises(TypeError, lambda: next(g))
@@ -122,11 +122,11 @@ klasse TestRaise(unittest.TestCase):
     def test_erroneous_exception(self):
         klasse MyException(Exception):
             def __init__(self):
-                raise RuntimeError()
+                wirf RuntimeError()
 
-        try:
-            raise MyException
-        except RuntimeError:
+        versuch:
+            wirf MyException
+        ausser RuntimeError:
             pass
         sonst:
             self.fail("No exception raised")
@@ -138,12 +138,12 @@ klasse TestRaise(unittest.TestCase):
                 gib object()
 
         mit self.assertRaises(TypeError):
-            raise MyException
+            wirf MyException
 
     def test_assert_with_tuple_arg(self):
-        try:
+        versuch:
             assert Falsch, (3,)
-        except AssertionError als e:
+        ausser AssertionError als e:
             self.assertEqual(str(e), "(3,)")
 
 
@@ -151,18 +151,18 @@ klasse TestRaise(unittest.TestCase):
 klasse TestCause(unittest.TestCase):
 
     def testCauseSyntax(self):
-        try:
-            try:
-                try:
-                    raise TypeError
-                except Exception:
-                    raise ValueError von Nichts
-            except ValueError als exc:
+        versuch:
+            versuch:
+                versuch:
+                    wirf TypeError
+                ausser Exception:
+                    wirf ValueError von Nichts
+            ausser ValueError als exc:
                 self.assertIsNichts(exc.__cause__)
                 self.assertWahr(exc.__suppress_context__)
                 exc.__suppress_context__ = Falsch
-                raise exc
-        except ValueError als exc:
+                wirf exc
+        ausser ValueError als exc:
             e = exc
 
         self.assertIsNichts(e.__cause__)
@@ -170,17 +170,17 @@ klasse TestCause(unittest.TestCase):
         self.assertIsInstance(e.__context__, TypeError)
 
     def test_invalid_cause(self):
-        try:
-            raise IndexError von 5
-        except TypeError als e:
+        versuch:
+            wirf IndexError von 5
+        ausser TypeError als e:
             self.assertIn("exception cause", str(e))
         sonst:
             self.fail("No exception raised")
 
     def test_class_cause(self):
-        try:
-            raise IndexError von KeyError
-        except IndexError als e:
+        versuch:
+            wirf IndexError von KeyError
+        ausser IndexError als e:
             self.assertIsInstance(e.__cause__, KeyError)
         sonst:
             self.fail("No exception raised")
@@ -190,20 +190,20 @@ klasse TestCause(unittest.TestCase):
             @classmethod
             def __new__(*args, **kwargs):
                 gib Nichts
-        try:
-            raise IndexError von ConstructsNichts
-        except TypeError als e:
+        versuch:
+            wirf IndexError von ConstructsNichts
+        ausser TypeError als e:
             self.assertIn("should have returned an instance of BaseException", str(e))
-        except IndexError:
+        ausser IndexError:
             self.fail("Wrong kind of exception raised")
         sonst:
             self.fail("No exception raised")
 
     def test_instance_cause(self):
         cause = KeyError()
-        try:
-            raise IndexError von cause
-        except IndexError als e:
+        versuch:
+            wirf IndexError von cause
+        ausser IndexError als e:
             self.assertIs(e.__cause__, cause)
         sonst:
             self.fail("No exception raised")
@@ -211,11 +211,11 @@ klasse TestCause(unittest.TestCase):
     def test_erroneous_cause(self):
         klasse MyException(Exception):
             def __init__(self):
-                raise RuntimeError()
+                wirf RuntimeError()
 
-        try:
-            raise IndexError von MyException
-        except RuntimeError:
+        versuch:
+            wirf IndexError von MyException
+        ausser RuntimeError:
             pass
         sonst:
             self.fail("No exception raised")
@@ -224,18 +224,18 @@ klasse TestCause(unittest.TestCase):
 klasse TestTraceback(unittest.TestCase):
 
     def test_sets_traceback(self):
-        try:
-            raise IndexError()
-        except IndexError als e:
+        versuch:
+            wirf IndexError()
+        ausser IndexError als e:
             self.assertIsInstance(e.__traceback__, types.TracebackType)
         sonst:
             self.fail("No exception raised")
 
     def test_accepts_traceback(self):
         tb = get_tb()
-        try:
-            raise IndexError().with_traceback(tb)
-        except IndexError als e:
+        versuch:
+            wirf IndexError().with_traceback(tb)
+        ausser IndexError als e:
             self.assertNotEqual(e.__traceback__, tb)
             self.assertEqual(e.__traceback__.tb_next, tb)
         sonst:
@@ -245,12 +245,12 @@ klasse TestTraceback(unittest.TestCase):
 klasse TestTracebackType(unittest.TestCase):
 
     def raiser(self):
-        raise ValueError
+        wirf ValueError
 
     def test_attrs(self):
-        try:
+        versuch:
             self.raiser()
-        except Exception als exc:
+        ausser Exception als exc:
             tb = exc.__traceback__
 
         self.assertIsInstance(tb.tb_next, types.TracebackType)
@@ -311,24 +311,24 @@ klasse TestTracebackType(unittest.TestCase):
 klasse TestContext(unittest.TestCase):
     def test_instance_context_instance_raise(self):
         context = IndexError()
-        try:
-            try:
-                raise context
-            except IndexError:
-                raise OSError()
-        except OSError als e:
+        versuch:
+            versuch:
+                wirf context
+            ausser IndexError:
+                wirf OSError()
+        ausser OSError als e:
             self.assertIs(e.__context__, context)
         sonst:
             self.fail("No exception raised")
 
     def test_class_context_instance_raise(self):
         context = IndexError
-        try:
-            try:
-                raise context
-            except IndexError:
-                raise OSError()
-        except OSError als e:
+        versuch:
+            versuch:
+                wirf context
+            ausser IndexError:
+                wirf OSError()
+        ausser OSError als e:
             self.assertIsNot(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
         sonst:
@@ -336,57 +336,57 @@ klasse TestContext(unittest.TestCase):
 
     def test_class_context_class_raise(self):
         context = IndexError
-        try:
-            try:
-                raise context
-            except IndexError:
-                raise OSError
-        except OSError als e:
+        versuch:
+            versuch:
+                wirf context
+            ausser IndexError:
+                wirf OSError
+        ausser OSError als e:
             self.assertIsNot(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
         sonst:
             self.fail("No exception raised")
 
     def test_c_exception_context(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 1/0
-            except ZeroDivisionError:
-                raise OSError
-        except OSError als e:
+            ausser ZeroDivisionError:
+                wirf OSError
+        ausser OSError als e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
         sonst:
             self.fail("No exception raised")
 
     def test_c_exception_raise(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 1/0
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 xyzzy
-        except NameError als e:
+        ausser NameError als e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
         sonst:
             self.fail("No exception raised")
 
     def test_noraise_finally(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 pass
-            finally:
-                raise OSError
-        except OSError als e:
+            schliesslich:
+                wirf OSError
+        ausser OSError als e:
             self.assertIsNichts(e.__context__)
         sonst:
             self.fail("No exception raised")
 
     def test_raise_finally(self):
-        try:
-            try:
+        versuch:
+            versuch:
                 1/0
-            finally:
-                raise OSError
-        except OSError als e:
+            schliesslich:
+                wirf OSError
+        ausser OSError als e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
         sonst:
             self.fail("No exception raised")
@@ -397,72 +397,72 @@ klasse TestContext(unittest.TestCase):
                 pass
             def __exit__(self, t, v, tb):
                 xyzzy
-        try:
+        versuch:
             mit ContextManager():
                 1/0
-        except NameError als e:
+        ausser NameError als e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
         sonst:
             self.fail("No exception raised")
 
     def test_cycle_broken(self):
         # Self-cycles (when re-raising a caught exception) are broken
-        try:
-            try:
+        versuch:
+            versuch:
                 1/0
-            except ZeroDivisionError als e:
-                raise e
-        except ZeroDivisionError als e:
+            ausser ZeroDivisionError als e:
+                wirf e
+        ausser ZeroDivisionError als e:
             self.assertIsNichts(e.__context__)
 
     def test_reraise_cycle_broken(self):
         # Non-trivial context cycles (through re-raising a previous exception)
         # are broken too.
-        try:
-            try:
+        versuch:
+            versuch:
                 xyzzy
-            except NameError als a:
-                try:
+            ausser NameError als a:
+                versuch:
                     1/0
-                except ZeroDivisionError:
-                    raise a
-        except NameError als e:
+                ausser ZeroDivisionError:
+                    wirf a
+        ausser NameError als e:
             self.assertIsNichts(e.__context__.__context__)
 
     def test_not_last(self):
         # Context is nicht necessarily the last exception
         context = Exception("context")
-        try:
-            raise context
-        except Exception:
-            try:
-                raise Exception("caught")
-            except Exception:
+        versuch:
+            wirf context
+        ausser Exception:
+            versuch:
+                wirf Exception("caught")
+            ausser Exception:
                 pass
-            try:
-                raise Exception("new")
-            except Exception als exc:
+            versuch:
+                wirf Exception("new")
+            ausser Exception als exc:
                 raised = exc
         self.assertIs(raised.__context__, context)
 
     def test_3118(self):
         # deleting the generator caused the __context__ to be cleared
         def gen():
-            try:
+            versuch:
                 liefere 1
-            finally:
+            schliesslich:
                 pass
 
         def f():
             g = gen()
             next(g)
-            try:
-                try:
-                    raise ValueError
-                except ValueError:
+            versuch:
+                versuch:
+                    wirf ValueError
+                ausser ValueError:
                     del g
-                    raise KeyError
-            except Exception als e:
+                    wirf KeyError
+            ausser Exception als e:
                 self.assertIsInstance(e.__context__, ValueError)
 
         f()
@@ -473,22 +473,22 @@ klasse TestContext(unittest.TestCase):
         # to be cleared
         klasse C:
             def __del__(self):
-                try:
+                versuch:
                     1/0
-                except ZeroDivisionError:
-                    raise
+                ausser ZeroDivisionError:
+                    wirf
 
         def f():
             x = C()
-            try:
-                try:
+            versuch:
+                versuch:
                     f.x
-                except AttributeError:
+                ausser AttributeError:
                     # make x.__del__ trigger
                     del x
                     gc.collect()  # For PyPy oder other GCs.
-                    raise TypeError
-            except Exception als e:
+                    wirf TypeError
+            ausser Exception als e:
                 self.assertNotEqual(e.__context__, Nichts)
                 self.assertIsInstance(e.__context__, AttributeError)
 
@@ -500,17 +500,17 @@ klasse TestContext(unittest.TestCase):
 
 klasse TestRemovedFunctionality(unittest.TestCase):
     def test_tuples(self):
-        try:
-            raise (IndexError, KeyError) # This should be a tuple!
-        except TypeError:
+        versuch:
+            wirf (IndexError, KeyError) # This should be a tuple!
+        ausser TypeError:
             pass
         sonst:
             self.fail("No exception raised")
 
     def test_strings(self):
-        try:
-            raise "foo"
-        except TypeError:
+        versuch:
+            wirf "foo"
+        ausser TypeError:
             pass
         sonst:
             self.fail("No exception raised")

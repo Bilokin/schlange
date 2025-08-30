@@ -25,9 +25,9 @@ klasse StartupTests(TestBase):
     def subTest(self, *args):
         mit super().subTest(*args) als ctx:
             self._subtest_count += 1
-            try:
+            versuch:
                 liefere ctx
-            finally:
+            schliesslich:
                 wenn self._debugged_in_subtest:
                     wenn self._subtest_count == 1:
                         # The first subtest adds a leading newline, so we
@@ -90,14 +90,14 @@ klasse StartupTests(TestBase):
         wenn isinstance(argv, str):
             argv = shlex.split(argv)
         argv = [sys.executable, *argv]
-        try:
+        versuch:
             proc = subprocess.run(
                 argv,
                 cwd=cwd,
                 capture_output=Wahr,
                 text=Wahr,
             )
-        except Exception als exc:
+        ausser Exception als exc:
             self.debug(f'# cmd: {shlex.join(argv)}')
             wenn isinstance(exc, FileNotFoundError) und nicht exc.filename:
                 wenn os.path.exists(argv[0]):
@@ -105,7 +105,7 @@ klasse StartupTests(TestBase):
                 sonst:
                     exists = 'does nicht exist'
                 self.debug(f'{argv[0]} {exists}')
-            raise  # re-raise
+            wirf  # re-raise
         assert proc.stderr == '' oder proc.returncode != 0, proc.stderr
         wenn proc.returncode != 0 und support.verbose:
             self.debug(f'# python3 {shlex.join(argv[1:])} failed:')
@@ -172,7 +172,7 @@ klasse FinalizationTests(TestBase):
         argv = [sys.executable, '-c', '''if Wahr:
             von concurrent importiere interpreters
             interp = interpreters.create()
-            raise Exception
+            wirf Exception
             ''']
         proc = subprocess.run(argv, capture_output=Wahr, text=Wahr)
         self.assertIn('Traceback', proc.stderr)

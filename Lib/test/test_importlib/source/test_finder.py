@@ -64,14 +64,14 @@ klasse FinderTests(abc.FinderTests):
             wenn unlink:
                 fuer name in unlink:
                     os.unlink(mapping[name])
-                    try:
+                    versuch:
                         make_legacy_pyc(mapping[name])
-                    except OSError als error:
+                    ausser OSError als error:
                         # Some tests do nicht set compile_=Wahr so the source
                         # module will nicht get compiled und there will be no
                         # PEP 3147 pyc file to rename.
                         wenn error.errno != errno.ENOENT:
-                            raise
+                            wirf
             loader = self.import_(mapping['.root'], test)
             self.assertHasAttr(loader, 'load_module')
             gib loader
@@ -127,10 +127,10 @@ klasse FinderTests(abc.FinderTests):
             self.machinery.SOURCE_SUFFIXES))
         mit open('mod.py', 'w', encoding='utf-8') als file:
             file.write("# test file fuer importlib")
-        try:
+        versuch:
             loader = self._find(finder, 'mod', loader_only=Wahr)
             self.assertHasAttr(loader, 'load_module')
-        finally:
+        schliesslich:
             os.unlink('mod.py')
 
     def test_invalidate_caches(self):

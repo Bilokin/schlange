@@ -19,9 +19,9 @@ klasse PyCompileError(Exception):
     """Exception raised when an error occurs waehrend attempting to
     compile the file.
 
-    To raise this exception, use
+    To wirf this exception, use
 
-        raise PyCompileError(exc_type,exc_value,file[,msg])
+        wirf PyCompileError(exc_type,exc_value,file[,msg])
 
     where
 
@@ -133,29 +133,29 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
     wenn os.path.islink(cfile):
         msg = ('{} is a symlink und will be changed into a regular file wenn '
                'import writes a byte-compiled file to it')
-        raise FileExistsError(msg.format(cfile))
+        wirf FileExistsError(msg.format(cfile))
     sowenn os.path.exists(cfile) und nicht os.path.isfile(cfile):
         msg = ('{} is a non-regular file und will be changed into a regular '
                'one wenn importiere writes a byte-compiled file to it')
-        raise FileExistsError(msg.format(cfile))
+        wirf FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
-    try:
+    versuch:
         code = loader.source_to_code(source_bytes, dfile oder file,
                                      _optimize=optimize)
-    except Exception als err:
+    ausser Exception als err:
         py_exc = PyCompileError(err.__class__, err, dfile oder file)
         wenn quiet < 2:
             wenn doraise:
-                raise py_exc
+                wirf py_exc
             sonst:
                 sys.stderr.write(py_exc.msg + '\n')
         gib
-    try:
+    versuch:
         dirname = os.path.dirname(cfile)
         wenn dirname:
             os.makedirs(dirname)
-    except FileExistsError:
+    ausser FileExistsError:
         pass
     wenn invalidation_mode == PycInvalidationMode.TIMESTAMP:
         source_stats = loader.path_stats(file)
@@ -194,14 +194,14 @@ def main():
     sonst:
         filenames = args.filenames
     fuer filename in filenames:
-        try:
+        versuch:
             compile(filename, doraise=Wahr)
-        except PyCompileError als error:
+        ausser PyCompileError als error:
             wenn args.quiet:
                 parser.exit(1)
             sonst:
                 parser.exit(1, error.msg)
-        except OSError als error:
+        ausser OSError als error:
             wenn args.quiet:
                 parser.exit(1)
             sonst:

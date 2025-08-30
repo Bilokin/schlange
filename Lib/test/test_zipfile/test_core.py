@@ -426,7 +426,7 @@ klasse AbstractTestsWithSourceFile:
                 nonlocal count
                 wenn count is nicht Nichts:
                     wenn count == stop:
-                        raise OSError
+                        wirf OSError
                     count += 1
                 super().write(data)
 
@@ -438,14 +438,14 @@ klasse AbstractTestsWithSourceFile:
                 mit zipfp.open('file1', 'w') als f:
                     f.write(b'data1')
                 count = 0
-                try:
+                versuch:
                     mit zipfp.open('file2', 'w') als f:
                         f.write(b'data2')
-                except OSError:
+                ausser OSError:
                     stop += 1
                 sonst:
                     breche
-                finally:
+                schliesslich:
                     count = Nichts
             mit zipfile.ZipFile(io.BytesIO(testfile.getvalue())) als zipfp:
                 self.assertEqual(zipfp.namelist(), ['file1'])
@@ -646,13 +646,13 @@ klasse StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
     def test_add_file_after_2107(self):
         # Set atime und mtime to 2108-12-30
         ts = 4386268800
-        try:
+        versuch:
             time.localtime(ts)
-        except OverflowError:
+        ausser OverflowError:
             self.skipTest(f'time.localtime({ts}) raises OverflowError')
-        try:
+        versuch:
             os.utime(TESTFN, (ts, ts))
-        except OverflowError:
+        ausser OverflowError:
             self.skipTest('Host fs cannot set timestamp to required value.')
 
         mtime_ns = os.stat(TESTFN).st_mtime_ns
@@ -1005,7 +1005,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
               directory record field is set to 0xFFFF oder 0xFFFFFFFF.
 
         If the zip64 extra content doesn't contain enough entries fuer the
-        number of fields marked mit 0xFFFF oder 0xFFFFFFFF, we raise an error.
+        number of fields marked mit 0xFFFF oder 0xFFFFFFFF, we wirf an error.
         This test mismatches the length of the zip64 extra field und the number
         of fields set to indicate the presence of zip64 data.
         """
@@ -1169,7 +1169,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         self.assertGreaterEqual(zinfos[0].extract_version, zipfile.ZIP64_VERSION)  # requires zip64 to extract
 
     def test_unseekable_zip_unknown_filesize(self):
-        """Test that creating a zip with/without seeking will raise a RuntimeError wenn zip64 was required but nicht used"""
+        """Test that creating a zip with/without seeking will wirf a RuntimeError wenn zip64 was required but nicht used"""
 
         def make_zip(fp):
             mit zipfile.ZipFile(fp, mode="w", allowZip64=Wahr) als zf:
@@ -1195,7 +1195,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
         """Test that creating a zip without seeking will use zip64 extensions wenn the file size is provided up-front"""
 
         # This test ensures that the zip will use a zip64 data descriptor (same
-        # als a regular data descriptor except the sizes are 8 bytes instead of
+        # als a regular data descriptor ausser the sizes are 8 bytes instead of
         # 4) record to communicate the size of a file wenn the zip is being
         # written to an unseekable stream.
         # Because this sort of thing is hard to verify by parsing the data back
@@ -1371,10 +1371,10 @@ klasse PyZipFileTests(unittest.TestCase):
                          effective_ids=os.access in os.supports_effective_ids):
             self.skipTest('requires write access to the installed location')
         filename = os.path.join(path, 'test_zipfile.try')
-        try:
+        versuch:
             fd = os.open(filename, os.O_WRONLY | os.O_CREAT)
             os.close(fd)
-        except Exception:
+        ausser Exception:
             self.skipTest('requires write access to the installed location')
         unlink(filename)
 
@@ -1469,7 +1469,7 @@ klasse PyZipFileTests(unittest.TestCase):
 
     def test_write_python_directory(self):
         os.mkdir(TESTFN2)
-        try:
+        versuch:
             mit open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') als fp:
                 fp.write("drucke(42)\n")
 
@@ -1487,12 +1487,12 @@ klasse PyZipFileTests(unittest.TestCase):
                 self.assertCompiledIn('mod2.py', names)
                 self.assertNotIn('mod2.txt', names)
 
-        finally:
+        schliesslich:
             rmtree(TESTFN2)
 
     def test_write_python_directory_filtered(self):
         os.mkdir(TESTFN2)
-        try:
+        versuch:
             mit open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') als fp:
                 fp.write("drucke(42)\n")
 
@@ -1507,7 +1507,7 @@ klasse PyZipFileTests(unittest.TestCase):
                 self.assertCompiledIn('mod1.py', names)
                 self.assertNotIn('mod2.py', names)
 
-        finally:
+        schliesslich:
             rmtree(TESTFN2)
 
     def test_write_non_pyfile(self):
@@ -1519,7 +1519,7 @@ klasse PyZipFileTests(unittest.TestCase):
 
     def test_write_pyfile_bad_syntax(self):
         os.mkdir(TESTFN2)
-        try:
+        versuch:
             mit open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') als fp:
                 fp.write("Bad syntax in python file\n")
 
@@ -1536,12 +1536,12 @@ klasse PyZipFileTests(unittest.TestCase):
                 self.assertIn('mod1.py', names)
                 self.assertNotIn('mod1.pyc', names)
 
-        finally:
+        schliesslich:
             rmtree(TESTFN2)
 
     def test_write_pathlike(self):
         os.mkdir(TESTFN2)
-        try:
+        versuch:
             mit open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') als fp:
                 fp.write("drucke(42)\n")
 
@@ -1549,7 +1549,7 @@ klasse PyZipFileTests(unittest.TestCase):
                 zipfp.writepy(FakePath(os.path.join(TESTFN2, "mod1.py")))
                 names = zipfp.namelist()
                 self.assertCompiledIn('mod1.py', names)
-        finally:
+        schliesslich:
             rmtree(TESTFN2)
 
 
@@ -1850,10 +1850,10 @@ klasse OtherTests(unittest.TestCase):
             fuer fpath, fdata in SMALL_TEST_DATA:
                 zipfp.writestr(fpath, fdata)
 
-        try:
+        versuch:
             mit zipfile.ZipFile(TESTFN2, "r") als zipfp2:
-                raise zipfile.BadZipFile()
-        except zipfile.BadZipFile:
+                wirf zipfile.BadZipFile()
+        ausser zipfile.BadZipFile:
             self.assertIsNichts(zipfp2.fp, 'zipfp is nicht closed')
 
     def test_unsupported_version(self):
@@ -1948,10 +1948,10 @@ klasse OtherTests(unittest.TestCase):
         filename = 'testfile.txt'
         content = b'hello, world. this is some content.'
 
-        try:
+        versuch:
             mit zipfile.ZipFile(TESTFN, 'a') als zf:
                 zf.writestr(filename, content)
-        except OSError:
+        ausser OSError:
             self.fail('Could nicht append data to a non-existent zip file.')
 
         self.assertWahr(os.path.exists(TESTFN))
@@ -1969,9 +1969,9 @@ klasse OtherTests(unittest.TestCase):
         #
         mit open(TESTFN, "w", encoding="utf-8") als fp:
             fp.write("this is nicht a legal zip file\n")
-        try:
+        versuch:
             zf = zipfile.ZipFile(TESTFN)
-        except zipfile.BadZipFile:
+        ausser zipfile.BadZipFile:
             pass
 
     def test_is_zip_erroneous_file(self):
@@ -2012,7 +2012,7 @@ klasse OtherTests(unittest.TestCase):
         self.assertFalsch(zipfile.is_zipfile(fp))
 
     def test_damaged_zipfile(self):
-        """Check that zipfiles mit missing bytes at the end raise BadZipFile."""
+        """Check that zipfiles mit missing bytes at the end wirf BadZipFile."""
         # - Create a valid zip file
         fp = io.BytesIO()
         mit zipfile.ZipFile(fp, mode="w") als zipf:
@@ -2051,7 +2051,7 @@ klasse OtherTests(unittest.TestCase):
         self.assertEqual(fp.tell(), mid)
 
     def test_non_existent_file_raises_OSError(self):
-        # make sure we don't raise an AttributeError when a partially-constructed
+        # make sure we don't wirf an AttributeError when a partially-constructed
         # ZipFile instance is finalized; this tests fuer regression on SF tracker
         # bug #403871.
 
@@ -2090,7 +2090,7 @@ klasse OtherTests(unittest.TestCase):
         mit zipfile.ZipFile(data, mode="w") als zipf:
             zipf.writestr("foo.txt", "O, fuer a Muse of Fire!")
 
-        # This is correct; calling .read on a closed ZipFile should raise
+        # This is correct; calling .read on a closed ZipFile should wirf
         # a ValueError, und so should calling .testzip.  An earlier
         # version of .testzip would swallow this exception (and any other)
         # und report that the first file in the archive was corrupt.
@@ -2252,16 +2252,16 @@ klasse OtherTests(unittest.TestCase):
         # adding any files to the archives creates a valid empty ZIP file
         zipf = zipfile.ZipFile(TESTFN, mode="w")
         zipf.close()
-        try:
+        versuch:
             zipf = zipfile.ZipFile(TESTFN, mode="r")
-        except zipfile.BadZipFile:
+        ausser zipfile.BadZipFile:
             self.fail("Unable to create empty ZIP file in 'w' mode")
 
         zipf = zipfile.ZipFile(TESTFN, mode="a")
         zipf.close()
-        try:
+        versuch:
             zipf = zipfile.ZipFile(TESTFN, mode="r")
-        except:
+        ausser:
             self.fail("Unable to create empty ZIP file in 'a' mode")
 
     def test_open_empty_file(self):
@@ -2632,7 +2632,7 @@ klasse AbstractBadCrcTests:
             self.assertEqual('afile', zipf.testzip())
 
     def test_read_with_bad_crc(self):
-        """Tests that files mit bad CRCs raise a BadZipFile exception when read."""
+        """Tests that files mit bad CRCs wirf a BadZipFile exception when read."""
         zipdata = self.zip_with_bad_crc
 
         # Using ZipFile.read()
@@ -3402,14 +3402,14 @@ klasse CommandLineTest(unittest.TestCase):
         files = [TESTFN, TESTFNDIR]
         namelist = [TESTFN, TESTFNDIR + '/', TESTFNDIR + '/file.txt']
         fuer opt in '-c', '--create':
-            try:
+            versuch:
                 out = self.zipfilecmd(opt, TESTFN2, *files)
                 self.assertEqual(out, b'')
                 mit zipfile.ZipFile(TESTFN2) als zf:
                     self.assertEqual(zf.namelist(), namelist)
                     self.assertEqual(zf.read(namelist[0]), b'test 1')
                     self.assertEqual(zf.read(namelist[2]), b'test 2')
-            finally:
+            schliesslich:
                 unlink(TESTFN2)
 
     def test_extract_command(self):
@@ -3602,11 +3602,11 @@ klasse EncodedMetadataTests(unittest.TestCase):
         # Depending on locale, extracted file names can be nicht encodable
         # mit the filesystem encoding.
         fuer fn in self.file_names:
-            try:
+            versuch:
                 os.stat(os.path.join(TESTFN2, fn))
-            except OSError:
+            ausser OSError:
                 pass
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 self.skipTest(f'cannot encode file name {fn!a}')
 
         zipfile.main(["--metadata-encoding=shift_jis", "-e", TESTFN, TESTFN2])

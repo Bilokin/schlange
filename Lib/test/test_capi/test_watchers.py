@@ -26,9 +26,9 @@ klasse TestDictWatchers(unittest.TestCase):
     @contextmanager
     def watcher(self, kind=EVENTS):
         wid = self.add_watcher(kind)
-        try:
+        versuch:
             liefere wid
-        finally:
+        schliesslich:
             self.clear_watcher(wid)
 
     def assert_events(self, expected):
@@ -220,9 +220,9 @@ klasse TestTypeWatchers(unittest.TestCase):
     @contextmanager
     def watcher(self, kind=TYPES):
         wid = self.add_watcher(kind)
-        try:
+        versuch:
             liefere wid
-        finally:
+        schliesslich:
             self.clear_watcher(wid)
 
     def assert_events(self, expected):
@@ -387,9 +387,9 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
     @contextmanager
     def code_watcher(self, which_watcher):
         wid = _testcapi.add_code_watcher(which_watcher)
-        try:
+        versuch:
             liefere wid
-        finally:
+        schliesslich:
             _testcapi.clear_code_watcher(wid)
 
     def assert_event_counts(self, exp_created_0, exp_destroyed_0,
@@ -478,9 +478,9 @@ klasse TestFuncWatchers(unittest.TestCase):
     @contextmanager
     def add_watcher(self, func):
         wid = _testcapi.add_func_watcher(func)
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             _testcapi.clear_func_watcher(wid)
 
     def test_func_events_dispatched(self):
@@ -542,7 +542,7 @@ klasse TestFuncWatchers(unittest.TestCase):
             pass
 
         def watcher(*args):
-            raise MyError("testing 123")
+            wirf MyError("testing 123")
 
         mit self.add_watcher(watcher):
             mit catch_unraisable_exception() als cm:
@@ -561,7 +561,7 @@ klasse TestFuncWatchers(unittest.TestCase):
             pass
 
         def watcher(*args):
-            raise MyError("testing 123")
+            wirf MyError("testing 123")
 
         def myfunc():
             pass
@@ -591,13 +591,13 @@ klasse TestContextObjectWatchers(unittest.TestCase):
     @contextmanager
     def context_watcher(self, which_watcher):
         wid = _testcapi.add_context_watcher(which_watcher)
-        try:
+        versuch:
             switches = _testcapi.get_context_switches(which_watcher)
-        except ValueError:
+        ausser ValueError:
             switches = Nichts
-        try:
+        versuch:
             liefere switches
-        finally:
+        schliesslich:
             _testcapi.clear_context_watcher(wid)
 
     def assert_event_counts(self, want_0, want_1):
@@ -641,7 +641,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
                     ctx_inner.run(lambda: unraisables.append(cm.unraisable))
                     unraisables.append(cm.unraisable)
 
-        try:
+        versuch:
             ctx_outer.run(_in_outer)
             self.assertEqual([x.err_msg fuer x in unraisables],
                              ["Exception ignored in Py_CONTEXT_SWITCHED "
@@ -649,7 +649,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
                               fuer ctx in [ctx_inner, ctx_outer]])
             self.assertEqual([str(x.exc_value) fuer x in unraisables],
                              ["boom!", "boom!"])
-        finally:
+        schliesslich:
             # Break reference cycle
             unraisables = Nichts
 

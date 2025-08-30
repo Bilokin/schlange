@@ -320,7 +320,7 @@ klasse ClinicWholeFileTest(TestCase):
             /*[python input]
             klasse Custom_return_converter(CReturnConverter):
                 def __init__(self):
-                    raise ValueError("abc")
+                    wirf ValueError("abc")
             [python start generated code]*/
             /*[clinic input]
             module m
@@ -2953,9 +2953,9 @@ klasse ClinicExternalTest(TestCase):
                 data = f.read()
                 self.assertEqual(data, expected_output)
 
-try:
+versuch:
     importiere _testclinic als ac_tester
-except ImportError:
+ausser ImportError:
     ac_tester = Nichts
 
 @unittest.skipIf(ac_tester is Nichts, "_testclinic is missing")
@@ -3978,9 +3978,9 @@ klasse LimitedCAPIOutputTests(unittest.TestCase):
         self.assertIn("f = PyFloat_AsDouble", generated)
 
 
-try:
+versuch:
     importiere _testclinic_limited
-except ImportError:
+ausser ImportError:
     _testclinic_limited = Nichts
 
 @unittest.skipIf(_testclinic_limited is Nichts, "_testclinic_limited is missing")

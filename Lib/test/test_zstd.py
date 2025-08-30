@@ -64,9 +64,9 @@ TRAINED_DICT = Nichts
 
 # Cannot be deferred to setup als it is used to check whether oder nicht to skip
 # tests
-try:
+versuch:
     SUPPORT_MULTITHREADING = CompressionParameter.nb_workers.bounds() != (0, 0)
-except Exception:
+ausser Exception:
     SUPPORT_MULTITHREADING = Falsch
 
 C_INT_MIN = -(2**31)
@@ -754,7 +754,7 @@ klasse DecompressorTestCase(unittest.TestCase):
                 wenn nicht dat:
                     breche
             sonst:
-                raise Exception('should nicht get here')
+                wirf Exception('should nicht get here')
 
             ret = d.decompress(dat)
             lst.append(ret)
@@ -1309,9 +1309,9 @@ klasse ZstdDictTestCase(unittest.TestCase):
         DICT_SIZE2 = 200*_1K
         C_LEVEL = 6
 
-        try:
+        versuch:
             dic2 = finalize_dict(TRAINED_DICT, SAMPLES, DICT_SIZE2, C_LEVEL)
-        except NotImplementedError:
+        ausser NotImplementedError:
             # < v1.4.5 at compile-time, >= v.1.4.5 at run-time
             gib
 
@@ -1505,9 +1505,9 @@ klasse ZstdDictTestCase(unittest.TestCase):
 
         # use wrong prefix
         zd2 = ZstdDict(SAMPLES[0], is_raw=Wahr)
-        try:
+        versuch:
             decompressed = decompress(dat, zd2.as_prefix)
-        except ZstdError: # expected
+        ausser ZstdError: # expected
             pass
         sonst:
             self.assertNotEqual(decompressed, V2)
@@ -1736,27 +1736,27 @@ klasse FileTestCase(unittest.TestCase):
 
     def test_closed(self):
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             self.assertFalsch(f.closed)
             f.read()
             self.assertFalsch(f.closed)
-        finally:
+        schliesslich:
             f.close()
         self.assertWahr(f.closed)
 
         f = ZstdFile(io.BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.closed)
-        finally:
+        schliesslich:
             f.close()
         self.assertWahr(f.closed)
 
     def test_fileno(self):
         # 1
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             self.assertRaises(io.UnsupportedOperation, f.fileno)
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.fileno)
 
@@ -1765,10 +1765,10 @@ klasse FileTestCase(unittest.TestCase):
             filename = pathlib.Path(tmp_f.name)
 
         f = ZstdFile(filename)
-        try:
+        versuch:
             self.assertEqual(f.fileno(), f._fp.fileno())
             self.assertIsInstance(f.fileno(), int)
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.fileno)
 
@@ -1785,10 +1785,10 @@ klasse FileTestCase(unittest.TestCase):
     def test_name(self):
         # 1
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             mit self.assertRaises(AttributeError):
                 f.name
-        finally:
+        schliesslich:
             f.close()
         mit self.assertRaises(ValueError):
             f.name
@@ -1798,10 +1798,10 @@ klasse FileTestCase(unittest.TestCase):
             filename = pathlib.Path(tmp_f.name)
 
         f = ZstdFile(filename)
-        try:
+        versuch:
             self.assertEqual(f.name, f._fp.name)
             self.assertIsInstance(f.name, str)
-        finally:
+        schliesslich:
             f.close()
         mit self.assertRaises(ValueError):
             f.name
@@ -1818,61 +1818,61 @@ klasse FileTestCase(unittest.TestCase):
 
     def test_seekable(self):
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             self.assertWahr(f.seekable())
             f.read()
             self.assertWahr(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         f = ZstdFile(io.BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         src = io.BytesIO(COMPRESSED_100_PLUS_32KB)
         src.seekable = lambda: Falsch
         f = ZstdFile(src)
-        try:
+        versuch:
             self.assertFalsch(f.seekable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
     def test_readable(self):
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             self.assertWahr(f.readable())
             f.read()
             self.assertWahr(f.readable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.readable)
 
         f = ZstdFile(io.BytesIO(), "w")
-        try:
+        versuch:
             self.assertFalsch(f.readable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.readable)
 
     def test_writable(self):
         f = ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB))
-        try:
+        versuch:
             self.assertFalsch(f.writable())
             f.read()
             self.assertFalsch(f.writable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.writable)
 
         f = ZstdFile(io.BytesIO(), "w")
-        try:
+        versuch:
             self.assertWahr(f.writable())
-        finally:
+        schliesslich:
             f.close()
         self.assertRaises(ValueError, f.writable)
 
@@ -1933,7 +1933,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertRaises(EOFError, f.read)
 
         mit ZstdFile(io.BytesIO(truncated)) als f:
-            # this is an important test, make sure it doesn't raise EOFError.
+            # this is an important test, make sure it doesn't wirf EOFError.
             self.assertEqual(f.read(130*_1K), DAT_130K_D)
             mit self.assertRaises(EOFError):
                 f.read(1)
@@ -1959,7 +1959,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_read_exception(self):
         klasse C:
             def read(self, size=-1):
-                raise OSError
+                wirf OSError
         mit ZstdFile(C()) als f:
             mit self.assertRaises(OSError):
                 f.read(10)

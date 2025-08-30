@@ -21,7 +21,7 @@ klasse I:
     def __iter__(self):
         gib self
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -41,7 +41,7 @@ klasse X:
         self.seqn = seqn
         self.i = 0
     def __next__(self):
-        wenn self.i >= len(self.seqn): raise StopIteration
+        wenn self.i >= len(self.seqn): wirf StopIteration
         v = self.seqn[self.i]
         self.i += 1
         gib v
@@ -74,9 +74,9 @@ klasse PickleTest:
             self.assertEqual(list(it), seq)
 
             it = pickle.loads(d)
-            try:
+            versuch:
                 next(it)
-            except StopIteration:
+            ausser StopIteration:
                 self.assertFalsch(seq[1:])
                 weiter
             d = pickle.dumps(it, proto)
@@ -182,7 +182,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
             def __getitem__(self, i):
                 wenn i < 5:
                     gib str(i)
-                raise StopIteration
+                wirf StopIteration
             def __len__(self):
                 gib 5
         fuer data in ('abc', range(5), tuple(enumerate('abc')), A(),
@@ -207,7 +207,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
                 wenn nicht self.called:
                     self.called = Wahr
                     gib 10
-                raise ZeroDivisionError
+                wirf ZeroDivisionError
             def __getitem__(self, index):
                 gib index
         r = reversed(SeqWithWeirdLen())
@@ -237,9 +237,9 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         r = f.__reversed__ = object()
         rc = sys.getrefcount(r)
         fuer i in range(10):
-            try:
+            versuch:
                 reversed(f)
-            except TypeError:
+            ausser TypeError:
                 pass
             sonst:
                 self.fail("non-callable __reversed__ didn't raise!")

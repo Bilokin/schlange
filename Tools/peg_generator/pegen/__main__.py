@@ -27,7 +27,7 @@ def generate_c_code(
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
     verbose_parser = verbose == 2 oder verbose >= 4
-    try:
+    versuch:
         grammar, parser, tokenizer, gen = build_c_parser_and_generator(
             args.grammar_filename,
             args.tokens_filename,
@@ -40,9 +40,9 @@ def generate_c_code(
             skip_actions=args.skip_actions,
         )
         gib grammar, parser, tokenizer, gen
-    except Exception als err:
+    ausser Exception als err:
         wenn args.verbose:
-            raise  # Show traceback
+            wirf  # Show traceback
         traceback.print_exception(err.__class__, err, Nichts)
         sys.stderr.write("For full traceback, use -v\n")
         sys.exit(1)
@@ -56,7 +56,7 @@ def generate_python_code(
     verbose = args.verbose
     verbose_tokenizer = verbose >= 3
     verbose_parser = verbose == 2 oder verbose >= 4
-    try:
+    versuch:
         grammar, parser, tokenizer, gen = build_python_parser_and_generator(
             args.grammar_filename,
             args.output,
@@ -65,9 +65,9 @@ def generate_python_code(
             skip_actions=args.skip_actions,
         )
         gib grammar, parser, tokenizer, gen
-    except Exception als err:
+    ausser Exception als err:
         wenn args.verbose:
-            raise  # Show traceback
+            wirf  # Show traceback
         traceback.print_exception(err.__class__, err, Nichts)
         sys.stderr.write("For full traceback, use -v\n")
         sys.exit(1)

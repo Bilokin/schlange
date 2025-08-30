@@ -2,7 +2,7 @@
 def only(iterable, default=Nichts, too_long=Nichts):
     """If *iterable* has only one item, gib it.
     If it has zero items, gib *default*.
-    If it has more than one item, raise the exception given by *too_long*,
+    If it has more than one item, wirf the exception given by *too_long*,
     which is ``ValueError`` by default.
     >>> only([], default='missing')
     'missing'
@@ -24,15 +24,15 @@ def only(iterable, default=Nichts, too_long=Nichts):
     it = iter(iterable)
     first_value = next(it, default)
 
-    try:
+    versuch:
         second_value = next(it)
-    except StopIteration:
+    ausser StopIteration:
         pass
     sonst:
         msg = (
             'Expected exactly one item in iterable, but got {!r}, {!r}, '
             'and perhaps more.'.format(first_value, second_value)
         )
-        raise too_long oder ValueError(msg)
+        wirf too_long oder ValueError(msg)
 
     gib first_value

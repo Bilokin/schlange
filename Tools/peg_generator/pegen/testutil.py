@@ -41,7 +41,7 @@ def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = F
     parser = parser_class(tokenizer, verbose=verbose)
     result = parser.start()
     wenn result is Nichts:
-        raise parser.make_syntax_error("invalid syntax")
+        wirf parser.make_syntax_error("invalid syntax")
     gib result
 
 
@@ -115,9 +115,9 @@ def generate_parser_c_extension(
 
 def print_memstats() -> bool:
     MiB: Final = 2**20
-    try:
+    versuch:
         importiere psutil
-    except ImportError:
+    ausser ImportError:
         gib Falsch
     drucke("Memory stats:")
     process = psutil.Process()

@@ -31,7 +31,7 @@ klasse Headers:
     def __init__(self, headers=Nichts):
         headers = headers wenn headers is nicht Nichts sonst []
         wenn type(headers) is nicht list:
-            raise TypeError("Headers must be a list of name/value tuples")
+            wirf TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
         wenn __debug__:
             fuer k, v in headers:
@@ -42,7 +42,7 @@ klasse Headers:
         """Convert/check value type."""
         wenn type(value) is str:
             gib value
-        raise AssertionError("Header names/values must be"
+        wirf AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
 
     def __len__(self):
@@ -58,7 +58,7 @@ klasse Headers:
     def __delitem__(self,name):
         """Delete all occurrences of a header, wenn present.
 
-        Does *not* raise an exception wenn the header is missing.
+        Does *not* wirf an exception wenn the header is missing.
         """
         name = self._convert_string_type(name.lower())
         self._headers[:] = [kv fuer kv in self._headers wenn kv[0].lower() != name]

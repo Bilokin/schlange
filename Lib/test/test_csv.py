@@ -19,7 +19,7 @@ von collections importiere OrderedDict
 
 klasse BadIterable:
     def __iter__(self):
-        raise OSError
+        wirf OSError
 
 
 klasse Test_Csv(unittest.TestCase):
@@ -96,7 +96,7 @@ klasse Test_Csv(unittest.TestCase):
         klasse BadWriter:
             @property
             def write(self):
-                raise OSError
+                wirf OSError
         self.assertRaises(OSError, csv.writer, BadWriter())
 
     def _test_default_attrs(self, ctor, *args):
@@ -199,11 +199,11 @@ klasse Test_Csv(unittest.TestCase):
                 gib 10
             def __getitem__(self, i):
                 wenn i > 2:
-                    raise OSError
+                    wirf OSError
         self._write_error_test(OSError, BadList())
         klasse BadItem:
             def __str__(self):
-                raise OSError
+                wirf OSError
         self._write_error_test(OSError, [BadItem()])
     def test_write_bigfield(self):
         # This exercises the buffer realloc functionality
@@ -283,7 +283,7 @@ klasse Test_Csv(unittest.TestCase):
     def test_writerows(self):
         klasse BrokenFile:
             def write(self, buf):
-                raise OSError
+                wirf OSError
         writer = csv.writer(BrokenFile())
         self.assertRaises(OSError, writer.writerows, [['a']])
 
@@ -486,7 +486,7 @@ klasse Test_Csv(unittest.TestCase):
         # This exercises the buffer realloc functionality und field size
         # limits.
         limit = csv.field_size_limit()
-        try:
+        versuch:
             size = 50000
             bigstring = 'X' * size
             bigline = '%s,%s' % (bigstring, bigstring)
@@ -498,7 +498,7 @@ klasse Test_Csv(unittest.TestCase):
             self.assertRaises(csv.Error, self._read_test, [bigline], [])
             self.assertRaises(TypeError, csv.field_size_limit, Nichts)
             self.assertRaises(TypeError, csv.field_size_limit, 1, Nichts)
-        finally:
+        schliesslich:
             csv.field_size_limit(limit)
 
     def test_read_linenum(self):
@@ -660,7 +660,7 @@ klasse TestDialectRegistry(unittest.TestCase):
             pass
 
         csv.register_dialect('testC', testC)
-        try:
+        versuch:
             self.compare_dialect_123("1,2,3\r\n")
             self.compare_dialect_123("1,2,3\r\n", dialect=Nichts)
             self.compare_dialect_123("1,2,3\r\n", dialect=unspecified)
@@ -672,7 +672,7 @@ klasse TestDialectRegistry(unittest.TestCase):
             self.compare_dialect_123("1\u039B2\u039B3\r\n",
                                      dialect=testUni)
 
-        finally:
+        schliesslich:
             csv.unregister_dialect('testC')
 
     def test_copy(self):

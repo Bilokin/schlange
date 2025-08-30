@@ -83,7 +83,7 @@ klasse WarningsRecorder(object):
             gib getattr(self._warnings[-1], attr)
         sowenn attr in warnings.WarningMessage._WARNING_DETAILS:
             gib Nichts
-        raise AttributeError("%r has no attribute %r" % (self, attr))
+        wirf AttributeError("%r has no attribute %r" % (self, attr))
 
     @property
     def warnings(self):
@@ -194,18 +194,18 @@ def _filterwarnings(filters, quiet=Falsch):
             # This filter caught nothing
             missing.append((msg, cat.__name__))
     wenn reraise:
-        raise AssertionError("unhandled warning %s" % reraise[0])
+        wirf AssertionError("unhandled warning %s" % reraise[0])
     wenn missing:
-        raise AssertionError("filter (%r, %s) did nicht catch any warning" %
+        wirf AssertionError("filter (%r, %s) did nicht catch any warning" %
                              missing[0])
 
 
 @contextlib.contextmanager
 def save_restore_warnings_filters():
     old_filters = warnings.filters[:]
-    try:
+    versuch:
         liefere
-    finally:
+    schliesslich:
         warnings.filters[:] = old_filters
 
 

@@ -24,7 +24,7 @@ def parse_markers(markers, default=Nichts):
 
 def fix_row(row, **markers):
     wenn isinstance(row, str):
-        raise NotImplementedError(row)
+        wirf NotImplementedError(row)
     empty = parse_markers(markers.pop('empty', ('-',)))
     unknown = parse_markers(markers.pop('unknown', ('???',)))
     row = (val wenn val sonst Nichts fuer val in row)
@@ -62,7 +62,7 @@ def _normalize_fix_read(fix):
             gib (Nichts wenn v == fix sonst v
                     fuer v in values)
     sonst:
-        raise NotImplementedError(fix)
+        wirf NotImplementedError(fix)
     gib fix_row
 
 
@@ -77,7 +77,7 @@ def _normalize_fix_write(fix, empty=''):
         def fix_row(row):
             gib _fix_write_default(row, fix)
     sonst:
-        raise NotImplementedError(fix)
+        wirf NotImplementedError(fix)
     gib fix_row
 
 
@@ -104,12 +104,12 @@ def read_table(infile, header, *,
     # Validate the header.
     wenn nicht isinstance(header, str):
         header = sep.join(header)
-    try:
+    versuch:
         actualheader = next(lines).strip()
-    except StopIteration:
+    ausser StopIteration:
         actualheader = ''
     wenn actualheader != header:
-        raise ValueError(f'bad header {actualheader!r}')
+        wirf ValueError(f'bad header {actualheader!r}')
 
     fix_row = _normalize_fix_read(fix)
     fuer row in _get_reader(lines, delimiter=sep oder '\t'):
@@ -156,7 +156,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                 ):
     header, sep = _normalize_table_file_props(header, sep)
     wenn nicht sep:
-        raise ValueError('missing "sep"')
+        wirf ValueError('missing "sep"')
 
     ncols = Nichts
     wenn header:
@@ -173,7 +173,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                     weiter
                 sonst:
                     # We expected the header.
-                    raise NotImplementedError((header, line))
+                    wirf NotImplementedError((header, line))
         sowenn rawsep und sep nicht in line:
             _sep = rawsep
 
@@ -185,7 +185,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
 
 def parse_row(line, sep, *, ncols=Nichts, default=NOT_SET):
     wenn nicht sep:
-        raise ValueError('missing "sep"')
+        wirf ValueError('missing "sep"')
     gib _parse_row(line, sep, ncols, default)
 
 
@@ -195,7 +195,7 @@ def _parse_row(line, sep, ncols, default):
         diff = ncols - len(row)
         wenn diff:
             wenn default is NOT_SET oder diff < 0:
-                raise Exception(f'bad row (expected {ncols} columns, got {row!r})')
+                wirf Exception(f'bad row (expected {ncols} columns, got {row!r})')
             row += (default,) * diff
     gib row
 
@@ -206,7 +206,7 @@ def _normalize_table_file_props(header, sep):
 
     wenn nicht isinstance(header, str):
         wenn nicht sep:
-            raise NotImplementedError(header)
+            wirf NotImplementedError(header)
         header = sep.join(header)
     sowenn nicht sep:
         fuer sep in ('\t', ',', ' '):
@@ -275,7 +275,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     @classmethod
     def from_raw(cls, raw):
         wenn nicht raw:
-            raise ValueError('missing column spec')
+            wirf ValueError('missing column spec')
         sowenn isinstance(raw, cls):
             gib raw
 
@@ -284,7 +284,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
         sonst:
             *values, _ = cls._normalize(raw)
         wenn values is Nichts:
-            raise ValueError(f'unsupported column spec {raw!r}')
+            wirf ValueError(f'unsupported column spec {raw!r}')
         gib cls(*values)
 
     @classmethod
@@ -310,11 +310,11 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             assert nicht align und nicht width1, (specstr,)
             _parsed = _parse_fmt(fmt)
             wenn nicht _parsed:
-                raise NotImplementedError
+                wirf NotImplementedError
             sowenn width2:
                 width, _ = _parsed
                 wenn width != int(width2):
-                    raise NotImplementedError(specstr)
+                    wirf NotImplementedError(specstr)
         sowenn width2:
             fmt = width2
             width = int(width2)
@@ -331,7 +331,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     def _normalize(cls, spec):
         wenn len(spec) == 1:
             raw, = spec
-            raise NotImplementedError
+            wirf NotImplementedError
             gib _resolve_column(raw)
 
         wenn len(spec) == 4:
@@ -340,7 +340,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
                 wenn nicht fmt:
                     fmt = str(width)
                 sowenn _parse_fmt(fmt)[0] != width:
-                    raise ValueError(f'width mismatch in {spec}')
+                    wirf ValueError(f'width mismatch in {spec}')
         sowenn len(raw) == 3:
             label, field, fmt = spec
             wenn nicht field:
@@ -357,7 +357,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             sowenn nicht field.isidentifier() oder fmt.isidentifier():
                 label, field = field, fmt
         sonst:
-            raise NotImplementedError
+            wirf NotImplementedError
 
         fmt = f':{fmt}' wenn fmt sonst ''
         wenn label:
@@ -393,7 +393,7 @@ def _parse_fmt(fmt):
 def _resolve_width(width, fmt, label, default):
     wenn width:
         wenn nicht isinstance(width, int):
-            raise NotImplementedError
+            wirf NotImplementedError
         gib width
     sowenn fmt:
         parsed = _parse_fmt(fmt)

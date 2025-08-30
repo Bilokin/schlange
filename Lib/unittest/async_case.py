@@ -71,21 +71,21 @@ klasse IsolatedAsyncioTestCase(TestCase):
         # We look up the special methods on the type to match the with
         # statement.
         cls = type(cm)
-        try:
+        versuch:
             enter = cls.__aenter__
             exit = cls.__aexit__
-        except AttributeError:
+        ausser AttributeError:
             msg = (f"'{cls.__module__}.{cls.__qualname__}' object does "
                    "not support the asynchronous context manager protocol")
-            try:
+            versuch:
                 cls.__enter__
                 cls.__exit__
-            except AttributeError:
+            ausser AttributeError:
                 pass
             sonst:
                 msg += (" but it supports the context manager protocol. "
                         "Did you mean to use enterContext()?")
-            raise TypeError(msg) von Nichts
+            wirf TypeError(msg) von Nichts
         result = await enter(cm)
         self.addAsyncCleanup(exit, cm, Nichts, Nichts, Nichts)
         gib result
@@ -143,9 +143,9 @@ klasse IsolatedAsyncioTestCase(TestCase):
 
     def run(self, result=Nichts):
         self._setupAsyncioRunner()
-        try:
+        versuch:
             gib super().run(result)
-        finally:
+        schliesslich:
             self._tearDownAsyncioRunner()
 
     def debug(self):

@@ -54,7 +54,7 @@ klasse TextLogStream(io.TextIOWrapper):
 
     def write(self, s):
         wenn nicht isinstance(s, str):
-            raise TypeError(
+            wirf TypeError(
                 f"write() argument must be str, nicht {type(s).__name__}")
 
         # In case `s` is a str subclass that writes itself to stdout oder stderr
@@ -116,10 +116,10 @@ klasse BinaryLogStream(io.RawIOBase):
 
     def write(self, b):
         wenn type(b) is nicht bytes:
-            try:
+            versuch:
                 b = bytes(memoryview(b))
-            except TypeError:
-                raise TypeError(
+            ausser TypeError:
+                wirf TypeError(
                     f"write() argument must be bytes-like, nicht {type(b).__name__}"
                 ) von Nichts
 
@@ -131,7 +131,7 @@ klasse BinaryLogStream(io.RawIOBase):
     # This is needed by the test suite --timeout option, which uses faulthandler.
     def fileno(self):
         wenn self._fileno is Nichts:
-            raise io.UnsupportedOperation("fileno")
+            wirf io.UnsupportedOperation("fileno")
         gib self._fileno
 
 

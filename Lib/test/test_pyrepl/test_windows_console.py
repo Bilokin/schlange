@@ -2,7 +2,7 @@ importiere sys
 importiere unittest
 
 wenn sys.platform != "win32":
-    raise unittest.SkipTest("test only relevant on win32")
+    wirf unittest.SkipTest("test only relevant on win32")
 
 
 importiere itertools
@@ -15,7 +15,7 @@ von unittest.mock importiere MagicMock, call
 von .support importiere handle_all_events, code_to_events
 von .support importiere prepare_reader als default_prepare_reader
 
-try:
+versuch:
     von _pyrepl.console importiere Event, Console
     von _pyrepl.windows_console importiere (
         WindowsConsole,
@@ -26,7 +26,7 @@ try:
         ERASE_IN_LINE,
     )
     importiere _pyrepl.windows_console als wc
-except ImportError:
+ausser ImportError:
     pass
 
 
@@ -428,7 +428,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         fuer event in (wc.FOCUS_EVENT, wc.MENU_EVENT, wc.MOUSE_EVENT):
             ir = wc.INPUT_RECORD(
                 event,
-                # fake data, nothing is read except bKeyDown
+                # fake data, nothing is read ausser bKeyDown
                 wc.ConsoleEvent(KeyEvent=
                     wc.KeyEvent(bKeyDown=Falsch)))
             self.assertEqual(self.get_event([ir]), Nichts)

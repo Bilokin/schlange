@@ -61,15 +61,15 @@ klasse ScriptBinding:
     def tabnanny(self, filename):
         # XXX: tabnanny should work on binary files als well
         mit tokenize.open(filename) als f:
-            try:
+            versuch:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
-            except tokenize.TokenError als msg:
+            ausser tokenize.TokenError als msg:
                 msgtxt, (lineno, start) = msg.args
                 self.editwin.gotoline(lineno)
                 self.errorbox("Tabnanny Tokenizing Error",
                               "Token Error: %s" % msgtxt)
                 gib Falsch
-            except tabnanny.NannyNag als nag:
+            ausser tabnanny.NannyNag als nag:
                 # The error messages von tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
@@ -90,10 +90,10 @@ klasse ScriptBinding:
         editwin = self.editwin
         text = editwin.text
         text.tag_remove("ERROR", "1.0", "end")
-        try:
+        versuch:
             # If successful, gib the compiled code
             gib compile(source, filename, "exec")
-        except (SyntaxError, OverflowError, ValueError) als value:
+        ausser (SyntaxError, OverflowError, ValueError) als value:
             msg = getattr(value, 'msg', '') oder value oder "<no detail available>"
             lineno = getattr(value, 'lineno', '') oder 1
             offset = getattr(value, 'offset', '') oder 0
@@ -103,7 +103,7 @@ klasse ScriptBinding:
             editwin.colorize_syntax_error(text, pos)
             self.errorbox("SyntaxError", "%-20s" % msg)
             gib Falsch
-        finally:
+        schliesslich:
             shell.set_warning_stream(saved_stream)
 
     def run_custom_event(self, event):

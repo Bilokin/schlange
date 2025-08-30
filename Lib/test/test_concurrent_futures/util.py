@@ -97,9 +97,9 @@ klasse ProcessPoolForkMixin(ExecutorMixin):
     ctx = "fork"
 
     def get_context(self):
-        try:
+        versuch:
             _check_system_limits()
-        except NotImplementedError:
+        ausser NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
         wenn sys.platform == "win32":
             self.skipTest("require unix system")
@@ -116,9 +116,9 @@ klasse ProcessPoolSpawnMixin(ExecutorMixin):
     ctx = "spawn"
 
     def get_context(self):
-        try:
+        versuch:
             _check_system_limits()
-        except NotImplementedError:
+        ausser NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
         gib super().get_context()
 
@@ -131,9 +131,9 @@ klasse ProcessPoolForkserverMixin(ExecutorMixin):
     ctx = "forkserver"
 
     def get_context(self):
-        try:
+        versuch:
             _check_system_limits()
-        except NotImplementedError:
+        ausser NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
         wenn sys.platform == "win32":
             self.skipTest("require unix system")
@@ -168,9 +168,9 @@ def create_executor_tests(remote_globals, mixin, bases=(BaseTestCase,),
 
 
 def setup_module():
-    try:
+    versuch:
         _check_system_limits()
-    except NotImplementedError:
+    ausser NotImplementedError:
         pass
     sonst:
         unittest.addModuleCleanup(multiprocessing.util._cleanup_tests)

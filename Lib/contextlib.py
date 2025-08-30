@@ -137,35 +137,35 @@ klasse _GeneratorContextManager(
         # do nicht keep args und kwds alive unnecessarily
         # they are only needed fuer recreation, which is nicht possible anymore
         del self.args, self.kwds, self.func
-        try:
+        versuch:
             gib next(self.gen)
-        except StopIteration:
-            raise RuntimeError("generator didn't yield") von Nichts
+        ausser StopIteration:
+            wirf RuntimeError("generator didn't yield") von Nichts
 
     def __exit__(self, typ, value, traceback):
         wenn typ is Nichts:
-            try:
+            versuch:
                 next(self.gen)
-            except StopIteration:
+            ausser StopIteration:
                 gib Falsch
             sonst:
-                try:
-                    raise RuntimeError("generator didn't stop")
-                finally:
+                versuch:
+                    wirf RuntimeError("generator didn't stop")
+                schliesslich:
                     self.gen.close()
         sonst:
             wenn value is Nichts:
                 # Need to force instantiation so we can reliably
                 # tell wenn we get the same exception back
                 value = typ()
-            try:
+            versuch:
                 self.gen.throw(value)
-            except StopIteration als exc:
+            ausser StopIteration als exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
                 # raised inside the "with" statement von being suppressed.
                 gib exc is nicht value
-            except RuntimeError als exc:
+            ausser RuntimeError als exc:
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
@@ -182,21 +182,21 @@ klasse _GeneratorContextManager(
                 ):
                     value.__traceback__ = traceback
                     gib Falsch
-                raise
-            except BaseException als exc:
+                wirf
+            ausser BaseException als exc:
                 # only re-raise wenn it's *not* the exception that was
-                # passed to throw(), because __exit__() must nicht raise
+                # passed to throw(), because __exit__() must nicht wirf
                 # an exception unless __exit__() itself failed.  But throw()
-                # has to raise the exception to signal propagation, so this
+                # has to wirf the exception to signal propagation, so this
                 # fixes the impedance mismatch between the throw() protocol
                 # und the __exit__() protocol.
                 wenn exc is nicht value:
-                    raise
+                    wirf
                 exc.__traceback__ = traceback
                 gib Falsch
-            try:
-                raise RuntimeError("generator didn't stop after throw()")
-            finally:
+            versuch:
+                wirf RuntimeError("generator didn't stop after throw()")
+            schliesslich:
                 self.gen.close()
 
 klasse _AsyncGeneratorContextManager(
@@ -210,35 +210,35 @@ klasse _AsyncGeneratorContextManager(
         # do nicht keep args und kwds alive unnecessarily
         # they are only needed fuer recreation, which is nicht possible anymore
         del self.args, self.kwds, self.func
-        try:
+        versuch:
             gib await anext(self.gen)
-        except StopAsyncIteration:
-            raise RuntimeError("generator didn't yield") von Nichts
+        ausser StopAsyncIteration:
+            wirf RuntimeError("generator didn't yield") von Nichts
 
     async def __aexit__(self, typ, value, traceback):
         wenn typ is Nichts:
-            try:
+            versuch:
                 await anext(self.gen)
-            except StopAsyncIteration:
+            ausser StopAsyncIteration:
                 gib Falsch
             sonst:
-                try:
-                    raise RuntimeError("generator didn't stop")
-                finally:
+                versuch:
+                    wirf RuntimeError("generator didn't stop")
+                schliesslich:
                     await self.gen.aclose()
         sonst:
             wenn value is Nichts:
                 # Need to force instantiation so we can reliably
                 # tell wenn we get the same exception back
                 value = typ()
-            try:
+            versuch:
                 await self.gen.athrow(value)
-            except StopAsyncIteration als exc:
+            ausser StopAsyncIteration als exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
                 # raised inside the "with" statement von being suppressed.
                 gib exc is nicht value
-            except RuntimeError als exc:
+            ausser RuntimeError als exc:
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
@@ -255,21 +255,21 @@ klasse _AsyncGeneratorContextManager(
                 ):
                     value.__traceback__ = traceback
                     gib Falsch
-                raise
-            except BaseException als exc:
+                wirf
+            ausser BaseException als exc:
                 # only re-raise wenn it's *not* the exception that was
-                # passed to throw(), because __exit__() must nicht raise
+                # passed to throw(), because __exit__() must nicht wirf
                 # an exception unless __exit__() itself failed.  But throw()
-                # has to raise the exception to signal propagation, so this
+                # has to wirf the exception to signal propagation, so this
                 # fixes the impedance mismatch between the throw() protocol
                 # und the __exit__() protocol.
                 wenn exc is nicht value:
-                    raise
+                    wirf
                 exc.__traceback__ = traceback
                 gib Falsch
-            try:
-                raise RuntimeError("generator didn't stop after athrow()")
-            finally:
+            versuch:
+                wirf RuntimeError("generator didn't stop after athrow()")
+            schliesslich:
                 await self.gen.aclose()
 
 
@@ -281,9 +281,9 @@ def contextmanager(func):
         @contextmanager
         def some_generator(<arguments>):
             <setup>
-            try:
+            versuch:
                 liefere <value>
-            finally:
+            schliesslich:
                 <cleanup>
 
     This makes this:
@@ -294,10 +294,10 @@ def contextmanager(func):
     equivalent to this:
 
         <setup>
-        try:
+        versuch:
             <variable> = <value>
             <body>
-        finally:
+        schliesslich:
             <cleanup>
     """
     @wraps(func)
@@ -314,9 +314,9 @@ def asynccontextmanager(func):
         @asynccontextmanager
         async def some_async_generator(<arguments>):
             <setup>
-            try:
+            versuch:
                 liefere <value>
-            finally:
+            schliesslich:
                 <cleanup>
 
     This makes this:
@@ -327,10 +327,10 @@ def asynccontextmanager(func):
     equivalent to this:
 
         <setup>
-        try:
+        versuch:
             <variable> = <value>
             <body>
-        finally:
+        schliesslich:
             <cleanup>
     """
     @wraps(func)
@@ -350,9 +350,9 @@ klasse closing(AbstractContextManager):
     is equivalent to this:
 
         f = <module>.open(<arguments>)
-        try:
+        versuch:
             <block>
-        finally:
+        schliesslich:
             f.close()
 
     """
@@ -376,9 +376,9 @@ klasse aclosing(AbstractAsyncContextManager):
     is equivalent to this:
 
         agen = <module>.fetch(<arguments>)
-        try:
+        versuch:
             <block>
-        finally:
+        schliesslich:
             await agen.aclose()
 
     """
@@ -465,7 +465,7 @@ klasse suppress(AbstractContextManager):
             match, rest = excinst.split(self._exceptions)
             wenn rest is Nichts:
                 gib Wahr
-            raise rest
+            wirf rest
         gib Falsch
 
 
@@ -503,9 +503,9 @@ klasse _BaseExitStack:
         # the standard lookup behaviour fuer special methods.
         _cb_type = type(exit)
 
-        try:
+        versuch:
             exit_method = _cb_type.__exit__
-        except AttributeError:
+        ausser AttributeError:
             # Not a context manager, so assume it's a callable.
             self._push_exit_callback(exit)
         sonst:
@@ -521,11 +521,11 @@ klasse _BaseExitStack:
         # We look up the special methods on the type to match the with
         # statement.
         cls = type(cm)
-        try:
+        versuch:
             _enter = cls.__enter__
             _exit = cls.__exit__
-        except AttributeError:
-            raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
+        ausser AttributeError:
+            wirf TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
                             f"not support the context manager protocol") von Nichts
         result = _enter(cm)
         self._push_cm_exit(cm, _exit)
@@ -562,7 +562,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
             files = [stack.enter_context(open(fname)) fuer fname in filenames]
             # All opened files will automatically be closed at the end of
             # the mit statement, even wenn attempts to open files later
-            # in the list raise an exception.
+            # in the list wirf an exception.
     """
 
     def __enter__(self):
@@ -596,7 +596,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         waehrend self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             assert is_sync
-            try:
+            versuch:
                 wenn exc is Nichts:
                     exc_details = Nichts, Nichts, Nichts
                 sonst:
@@ -605,21 +605,21 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
                     suppressed_exc = Wahr
                     pending_raise = Falsch
                     exc = Nichts
-            except BaseException als new_exc:
+            ausser BaseException als new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
                 pending_raise = Wahr
                 exc = new_exc
 
         wenn pending_raise:
-            try:
+            versuch:
                 # bare "raise exc" replaces our carefully
                 # set-up context
                 fixed_ctx = exc.__context__
-                raise exc
-            except BaseException:
+                wirf exc
+            ausser BaseException:
                 exc.__context__ = fixed_ctx
-                raise
+                wirf
         gib received_exc und suppressed_exc
 
     def close(self):
@@ -638,7 +638,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                 fuer i in range(5)]
             # All opened connections will automatically be released at the
             # end of the async mit statement, even wenn attempts to open a
-            # connection later in the list raise an exception.
+            # connection later in the list wirf an exception.
     """
 
     @staticmethod
@@ -658,11 +658,11 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         returns the result of the __aenter__ method.
         """
         cls = type(cm)
-        try:
+        versuch:
             _enter = cls.__aenter__
             _exit = cls.__aexit__
-        except AttributeError:
-            raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
+        ausser AttributeError:
+            wirf TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
                             f"not support the asynchronous context manager protocol"
                            ) von Nichts
         result = await _enter(cm)
@@ -678,9 +678,9 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         to the method instead of the object itself).
         """
         _cb_type = type(exit)
-        try:
+        versuch:
             exit_method = _cb_type.__aexit__
-        except AttributeError:
+        ausser AttributeError:
             # Not an async context manager, so assume it's a coroutine function
             self._push_exit_callback(exit, Falsch)
         sonst:
@@ -740,7 +740,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         pending_raise = Falsch
         waehrend self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
-            try:
+            versuch:
                 wenn exc is Nichts:
                     exc_details = Nichts, Nichts, Nichts
                 sonst:
@@ -754,21 +754,21 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                     suppressed_exc = Wahr
                     pending_raise = Falsch
                     exc = Nichts
-            except BaseException als new_exc:
+            ausser BaseException als new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
                 pending_raise = Wahr
                 exc = new_exc
 
         wenn pending_raise:
-            try:
+            versuch:
                 # bare "raise exc" replaces our carefully
                 # set-up context
                 fixed_ctx = exc.__context__
-                raise exc
-            except BaseException:
+                wirf exc
+            ausser BaseException:
                 exc.__context__ = fixed_ctx
-                raise
+                wirf
         gib received_exc und suppressed_exc
 
 

@@ -12,9 +12,9 @@ def x():
 
 def g(*args):
     wenn Wahr: # change to Wahr to crash interpreter
-        try:
+        versuch:
             x()
-        except:
+        ausser:
             pass
     gib g
 

@@ -78,9 +78,9 @@ klasse Calltip:
                 gib
 
         hp.set_index(sur_paren[0])
-        try:
+        versuch:
             expression = hp.get_expression()
-        except ValueError:
+        ausser ValueError:
             expression = Nichts
         wenn nicht expression:
             # No expression before the opening parenthesis, e.g.
@@ -119,9 +119,9 @@ klasse Calltip:
         To find methods, fetch_tip must be fed a fully qualified name.
 
         """
-        try:
+        versuch:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
-        except AttributeError:
+        ausser AttributeError:
             rpcclt = Nichts
         wenn rpcclt:
             gib rpcclt.remotecall("exec", "get_the_calltip",
@@ -136,10 +136,10 @@ def get_entity(expression):
     """
     wenn expression:
         namespace = {**sys.modules, **__main__.__dict__}
-        try:
+        versuch:
             gib eval(expression, namespace)  # Only protect user code.
-        except BaseException:
-            # An uncaught exception closes idle, und eval can raise any
+        ausser BaseException:
+            # An uncaught exception closes idle, und eval can wirf any
             # exception, especially wenn user classes are involved.
             gib Nichts
 
@@ -161,17 +161,17 @@ def get_argspec(ob):
     the arguments in addition to the gib value.
     '''
     # Determine function object fob to inspect.
-    try:
+    versuch:
         ob_call = ob.__call__
-    except BaseException:  # Buggy user object could raise anything.
+    ausser BaseException:  # Buggy user object could wirf anything.
         gib ''  # No popup fuer non-callables.
     # For Get_argspecTest.test_buggy_getattr_class, CallA() & CallB().
     fob = ob_call wenn isinstance(ob_call, types.MethodType) sonst ob
 
     # Initialize argspec und wrap it to get lines.
-    try:
+    versuch:
         argspec = str(inspect.signature(fob))
-    except Exception als err:
+    ausser Exception als err:
         msg = str(err)
         wenn msg.startswith(_invalid_method):
             gib _invalid_method

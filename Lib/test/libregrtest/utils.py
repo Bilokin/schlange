@@ -134,13 +134,13 @@ def regrtest_unraisable_hook(unraisable) -> Nichts:
     support.environment_altered = Wahr
     support.print_warning("Unraisable exception")
     old_stderr = sys.stderr
-    try:
+    versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
         assert orig_unraisablehook is nicht Nichts, "orig_unraisablehook nicht set"
         orig_unraisablehook(unraisable)
         sys.stderr.flush()
-    finally:
+    schliesslich:
         sys.stderr = old_stderr
 
 
@@ -158,13 +158,13 @@ def regrtest_threading_excepthook(args) -> Nichts:
     support.environment_altered = Wahr
     support.print_warning(f"Uncaught thread exception: {args.exc_type.__name__}")
     old_stderr = sys.stderr
-    try:
+    versuch:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
         assert orig_threading_excepthook is nicht Nichts, "orig_threading_excepthook nicht set"
         orig_threading_excepthook(args)
         sys.stderr.flush()
-    finally:
+    schliesslich:
         sys.stderr = old_stderr
 
 
@@ -187,79 +187,79 @@ def clear_caches():
         wenn stream is nicht Nichts:
             stream.flush()
 
-    try:
+    versuch:
         re = sys.modules['re']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         re.purge()
 
-    try:
+    versuch:
         _strptime = sys.modules['_strptime']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         _strptime._regex_cache.clear()
 
-    try:
+    versuch:
         urllib_parse = sys.modules['urllib.parse']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         urllib_parse.clear_cache()
 
-    try:
+    versuch:
         urllib_request = sys.modules['urllib.request']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         urllib_request.urlcleanup()
 
-    try:
+    versuch:
         linecache = sys.modules['linecache']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         linecache.clearcache()
 
-    try:
+    versuch:
         mimetypes = sys.modules['mimetypes']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         mimetypes._default_mime_types()
 
-    try:
+    versuch:
         filecmp = sys.modules['filecmp']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         filecmp._cache.clear()
 
-    try:
+    versuch:
         struct = sys.modules['struct']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         struct._clearcache()
 
-    try:
+    versuch:
         doctest = sys.modules['doctest']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         doctest.master = Nichts
 
-    try:
+    versuch:
         ctypes = sys.modules['ctypes']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         ctypes._reset_cache()
 
-    try:
+    versuch:
         typing = sys.modules['typing']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         fuer f in typing._cleanups:
@@ -271,25 +271,25 @@ def clear_caches():
             fuer obj in abc.__subclasses__() + [abc]:
                 obj._abc_caches_clear()
 
-    try:
+    versuch:
         fractions = sys.modules['fractions']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         fractions._hash_algorithm.cache_clear()
 
-    try:
+    versuch:
         inspect = sys.modules['inspect']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         inspect._shadowed_dict_from_weakref_mro_tuple.cache_clear()
         inspect._filesbymodname.clear()
         inspect.modulesbyfile.clear()
 
-    try:
+    versuch:
         importlib_metadata = sys.modules['importlib.metadata']
-    except KeyError:
+    ausser KeyError:
         pass
     sonst:
         importlib_metadata.FastPath.__new__.cache_clear()
@@ -420,7 +420,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
                         # source tree is read only.
                         tmp_dir = sysconfig.get_config_var('srcdir')
                         wenn nicht tmp_dir:
-                            raise RuntimeError(
+                            wirf RuntimeError(
                                 "Could nicht determine the correct value fuer tmp_dir"
                             )
                 tmp_dir = os.path.join(tmp_dir, 'build')
@@ -428,7 +428,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
                 # WASI platform
                 tmp_dir = sysconfig.get_config_var('projectbase')
                 wenn nicht tmp_dir:
-                    raise RuntimeError(
+                    wirf RuntimeError(
                         "sysconfig.get_config_var('projectbase') "
                         f"unexpectedly returned {tmp_dir!r} on WASI"
                     )
@@ -467,9 +467,9 @@ def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
 
 @contextlib.contextmanager
 def exit_timeout():
-    try:
+    versuch:
         liefere
-    except SystemExit als exc:
+    ausser SystemExit als exc:
         # bpo-38203: Python can hang at exit in Py_Finalize(), especially
         # on threading._shutdown() call: put a timeout
         wenn threading_helper.can_start_thread:
@@ -497,19 +497,19 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     sowenn os.path.isfile(name):
         kind, nuker = "file", os.unlink
     sonst:
-        raise RuntimeError(f"os.path says {name!r} exists but is neither "
+        wirf RuntimeError(f"os.path says {name!r} exists but is neither "
                            f"directory nor file")
 
     wenn verbose:
         print_warning(f"{test_name} left behind {kind} {name!r}")
         support.environment_altered = Wahr
 
-    try:
+    versuch:
         importiere stat
         # fix possible permissions problems that might prevent cleanup
         os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
         nuker(name)
-    except Exception als exc:
+    ausser Exception als exc:
         print_warning(f"{test_name} left behind {kind} {name!r} "
                       f"and it couldn't be removed: {exc}")
 
@@ -558,9 +558,9 @@ def adjust_rlimit_nofile() -> Nichts:
     fuer our test suite to succeed. Raise it to something more reasonable. 1024
     is a common Linux default.
     """
-    try:
+    versuch:
         importiere resource
-    except ImportError:
+    ausser ImportError:
         gib
 
     fd_limit, max_fds = resource.getrlimit(resource.RLIMIT_NOFILE)
@@ -569,12 +569,12 @@ def adjust_rlimit_nofile() -> Nichts:
 
     wenn fd_limit < desired_fds und fd_limit < max_fds:
         new_fd_limit = min(desired_fds, max_fds)
-        try:
+        versuch:
             resource.setrlimit(resource.RLIMIT_NOFILE,
                                (new_fd_limit, max_fds))
             drucke(f"Raised RLIMIT_NOFILE: {fd_limit} -> {new_fd_limit}")
-        except (ValueError, OSError) als err:
-            print_warning(f"Unable to raise RLIMIT_NOFILE von {fd_limit} to "
+        ausser (ValueError, OSError) als err:
+            print_warning(f"Unable to wirf RLIMIT_NOFILE von {fd_limit} to "
                           f"{new_fd_limit}: {err}.")
 
 

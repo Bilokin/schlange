@@ -218,7 +218,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         self, call: FunctionCall, wrapper: str, expected_rtype: str | Nichts,
     ) -> Nichts:
         wenn call.return_type != expected_rtype:
-            raise RuntimeError(
+            wirf RuntimeError(
                 f"{call.function} gib type is incompatible mit {wrapper}: "
                 f"expect: {expected_rtype}, actual: {call.return_type}"
             )
@@ -289,7 +289,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
                 comment=f"forced_token=({node.node.rhs!s})",
             )
         sonst:
-            raise NotImplementedError(f"Forced tokens don't work mit {node.node} nodes")
+            wirf NotImplementedError(f"Forced tokens don't work mit {node.node} nodes")
 
     def visit_Opt(self, node: Opt) -> FunctionCall:
         call = self.generate_call(node.node)

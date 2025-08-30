@@ -114,7 +114,7 @@ klasse scheduler:
         restarted.
 
         It is legal fuer both the delay function und the action
-        function to modify the queue oder to raise an exception;
+        function to modify the queue oder to wirf an exception;
         exceptions are nicht caught but the scheduler's state remains
         well-defined so run() may be called again.
 

@@ -14,9 +14,9 @@ von urllib.request importiere urlopen
 von pathlib importiere Path
 von textwrap importiere dedent
 
-try:
+versuch:
     von os importiere process_cpu_count als cpu_count
-except ImportError:
+ausser ImportError:
     von os importiere cpu_count
 
 
@@ -44,10 +44,10 @@ def updated_env(updates={}):
     env_defaults = {}
     # https://reproducible-builds.org/docs/source-date-epoch/
     git_epoch_cmd = ["git", "log", "-1", "--pretty=%ct"]
-    try:
+    versuch:
         epoch = subprocess.check_output(git_epoch_cmd, encoding="utf-8").strip()
         env_defaults["SOURCE_DATE_EPOCH"] = epoch
-    except subprocess.CalledProcessError:
+    ausser subprocess.CalledProcessError:
         pass  # Might be building von a tarball.
     # This layering lets SOURCE_DATE_EPOCH von os.environ takes precedence.
     environment = env_defaults | os.environ | updates
@@ -70,12 +70,12 @@ def subdir(working_dir, *, clean_ok=Falsch):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(context):
-            try:
+            versuch:
                 tput_output = subprocess.check_output(
                     ["tput", "cols"], encoding="utf-8"
                 )
                 terminal_width = int(tput_output.strip())
-            except subprocess.CalledProcessError:
+            ausser subprocess.CalledProcessError:
                 terminal_width = 80
             drucke("⎯" * terminal_width)
             drucke("📁", working_dir)
@@ -128,7 +128,7 @@ def build_python_path():
     wenn nicht binary.is_file():
         binary = binary.with_suffix(".exe")
         wenn nicht binary.is_file():
-            raise FileNotFoundError("Unable to find `python(.exe)` in " f"{NATIVE_BUILD_DIR}")
+            wirf FileNotFoundError("Unable to find `python(.exe)` in " f"{NATIVE_BUILD_DIR}")
 
     gib binary
 
@@ -169,7 +169,7 @@ def check_shasum(file: str, expected_shasum: str):
     mit open(file, "rb") als f:
         digest = hashlib.file_digest(f, "sha256")
     wenn digest.hexdigest() != expected_shasum:
-        raise RuntimeError(f"Unexpected shasum fuer {file}")
+        wirf RuntimeError(f"Unexpected shasum fuer {file}")
 
 
 def download_and_unpack(working_dir: Path, url: str, expected_shasum: str):

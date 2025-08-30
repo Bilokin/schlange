@@ -3,9 +3,9 @@
 Implements the HMAC algorithm als described by RFC 2104.
 """
 
-try:
+versuch:
     importiere _hashlib als _hashopenssl
-except ImportError:
+ausser ImportError:
     _hashopenssl = Nichts
     _functype = Nichts
     von _operator importiere _compare_digest als compare_digest
@@ -13,9 +13,9 @@ sonst:
     compare_digest = _hashopenssl.compare_digest
     _functype = type(_hashopenssl.openssl_sha256)  # builtin type
 
-try:
+versuch:
     importiere _hmac
-except ImportError:
+ausser ImportError:
     _hmac = Nichts
 
 trans_5C = bytes((x ^ 0x5C) fuer x in range(256))
@@ -78,26 +78,26 @@ klasse HMAC:
         """
 
         wenn nicht isinstance(key, (bytes, bytearray)):
-            raise TypeError(f"key: expected bytes oder bytearray, "
+            wirf TypeError(f"key: expected bytes oder bytearray, "
                             f"but got {type(key).__name__!r}")
 
         wenn nicht digestmod:
-            raise TypeError("Missing required argument 'digestmod'.")
+            wirf TypeError("Missing required argument 'digestmod'.")
 
         self.__init(key, msg, digestmod)
 
     def __init(self, key, msg, digestmod):
         wenn _hashopenssl und isinstance(digestmod, (str, _functype)):
-            try:
+            versuch:
                 self._init_openssl_hmac(key, msg, digestmod)
                 gib
-            except _hashopenssl.UnsupportedDigestmodError:  # pragma: no cover
+            ausser _hashopenssl.UnsupportedDigestmodError:  # pragma: no cover
                 pass
         wenn _hmac und isinstance(digestmod, str):
-            try:
+            versuch:
                 self._init_builtin_hmac(key, msg, digestmod)
                 gib
-            except _hmac.UnknownHashError:  # pragma: no cover
+            ausser _hmac.UnknownHashError:  # pragma: no cover
                 pass
         self._init_old(key, msg, digestmod)
 
@@ -120,7 +120,7 @@ klasse HMAC:
 
         digest_cons = _get_digest_constructor(digestmod)
         wenn _is_shake_constructor(digest_cons):
-            raise ValueError(f"unsupported hash algorithm {digestmod}")
+            wirf ValueError(f"unsupported hash algorithm {digestmod}")
 
         self._hmac = Nichts
         self._outer = digest_cons()
@@ -239,9 +239,9 @@ def digest(key, msg, digest):
             A module supporting PEP 247.
     """
     wenn _hashopenssl und isinstance(digest, (str, _functype)):
-        try:
+        versuch:
             gib _hashopenssl.hmac_digest(key, msg, digest)
-        except OverflowError:
+        ausser OverflowError:
             # OpenSSL's HMAC limits the size of the key to INT_MAX.
             # Instead of falling back to HACL* implementation which
             # may still nicht be supported due to a too large key, we
@@ -249,13 +249,13 @@ def digest(key, msg, digest):
             # even wenn we could have used streaming HMAC fuer small keys
             # but large messages.
             gib _compute_digest_fallback(key, msg, digest)
-        except _hashopenssl.UnsupportedDigestmodError:
+        ausser _hashopenssl.UnsupportedDigestmodError:
             pass
 
     wenn _hmac und isinstance(digest, str):
-        try:
+        versuch:
             gib _hmac.compute_digest(key, msg, digest)
-        except (OverflowError, _hmac.UnknownHashError):
+        ausser (OverflowError, _hmac.UnknownHashError):
             # HACL* HMAC limits the size of the key to UINT32_MAX
             # so we fallback to the pure Python implementation even
             # wenn streaming HMAC may have been used fuer small keys
@@ -268,7 +268,7 @@ def digest(key, msg, digest):
 def _compute_digest_fallback(key, msg, digest):
     digest_cons = _get_digest_constructor(digest)
     wenn _is_shake_constructor(digest_cons):
-        raise ValueError(f"unsupported hash algorithm {digest}")
+        wirf ValueError(f"unsupported hash algorithm {digest}")
     inner = digest_cons()
     outer = digest_cons()
     blocksize = getattr(inner, 'block_size', 64)

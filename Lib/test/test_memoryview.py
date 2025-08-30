@@ -75,9 +75,9 @@ klasse AbstractMemoryTests:
 
                 fuer start, stop in product(range(-k, k), range(-k, k)):
                     index = -1
-                    try:
+                    versuch:
                         index = l.index(chi, start, stop)
-                    except ValueError:
+                    ausser ValueError:
                         pass
 
                     wenn index == -1:
@@ -614,7 +614,7 @@ klasse OtherTest(unittest.TestCase):
     def test_use_released_memory(self):
         # gh-92888: Previously it was possible to use a memoryview even after
         # backing buffer is freed in certain cases. This tests that those
-        # cases raise an exception.
+        # cases wirf an exception.
         size = 128
         def release():
             m.release()
@@ -739,9 +739,9 @@ klasse OtherTest(unittest.TestCase):
 klasse RacingTest(unittest.TestCase):
     def test_racing_getbuf_and_releasebuf(self):
         """Repeatly access the memoryview fuer racing."""
-        try:
+        versuch:
             von multiprocessing.managers importiere SharedMemoryManager
-        except ImportError:
+        ausser ImportError:
             self.skipTest("Test requires multiprocessing")
         von threading importiere Thread, Event
 

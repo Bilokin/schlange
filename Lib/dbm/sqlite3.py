@@ -38,7 +38,7 @@ klasse _Database(MutableMapping):
 
     def __init__(self, path, /, *, flag, mode):
         wenn hasattr(self, "_cx"):
-            raise error(_ERR_REINIT)
+            wirf error(_ERR_REINIT)
 
         path = os.fsdecode(path)
         match flag:
@@ -54,7 +54,7 @@ klasse _Database(MutableMapping):
                 Path(path).unlink(missing_ok=Wahr)
                 Path(path).touch(mode=mode)
             case _:
-                raise ValueError("Flag must be one of 'r', 'w', 'c', oder 'n', "
+                wirf ValueError("Flag must be one of 'r', 'w', 'c', oder 'n', "
                                  f"not {flag!r}")
 
         # We use the URI format when opening the database.
@@ -64,10 +64,10 @@ klasse _Database(MutableMapping):
             # Add immutable=1 to allow read-only SQLite access even wenn wal/shm missing
             uri += "&immutable=1"
 
-        try:
+        versuch:
             self._cx = sqlite3.connect(uri, autocommit=Wahr, uri=Wahr)
-        except sqlite3.Error als exc:
-            raise error(str(exc))
+        ausser sqlite3.Error als exc:
+            wirf error(str(exc))
 
         wenn flag != "ro":
             # This is an optimization only; it's ok wenn it fails.
@@ -79,11 +79,11 @@ klasse _Database(MutableMapping):
 
     def _execute(self, *args, **kwargs):
         wenn nicht self._cx:
-            raise error(_ERR_CLOSED)
-        try:
+            wirf error(_ERR_CLOSED)
+        versuch:
             gib closing(self._cx.execute(*args, **kwargs))
-        except sqlite3.Error als exc:
-            raise error(str(exc))
+        ausser sqlite3.Error als exc:
+            wirf error(str(exc))
 
     def __len__(self):
         mit self._execute(GET_SIZE) als cu:
@@ -94,7 +94,7 @@ klasse _Database(MutableMapping):
         mit self._execute(LOOKUP_KEY, (key,)) als cu:
             row = cu.fetchone()
         wenn nicht row:
-            raise KeyError(key)
+            wirf KeyError(key)
         gib row[0]
 
     def __setitem__(self, key, value):
@@ -103,15 +103,15 @@ klasse _Database(MutableMapping):
     def __delitem__(self, key):
         mit self._execute(DELETE_KEY, (key,)) als cu:
             wenn nicht cu.rowcount:
-                raise KeyError(key)
+                wirf KeyError(key)
 
     def __iter__(self):
-        try:
+        versuch:
             mit self._execute(ITER_KEYS) als cu:
                 fuer row in cu:
                     liefere row[0]
-        except sqlite3.Error als exc:
-            raise error(str(exc))
+        ausser sqlite3.Error als exc:
+            wirf error(str(exc))
 
     def close(self):
         wenn self._cx:

@@ -25,9 +25,9 @@ von _weakrefset importiere WeakSet
 #
 #
 
-try:
+versuch:
     ORIGINAL_DIR = os.path.abspath(os.getcwd())
-except OSError:
+ausser OSError:
     ORIGINAL_DIR = Nichts
 
 #
@@ -75,7 +75,7 @@ klasse BaseProcess(object):
     The klasse is analogous to `threading.Thread`
     '''
     def _Popen(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def __init__(self, group=Nichts, target=Nichts, name=Nichts, args=(), kwargs={},
                  *, daemon=Nichts):
@@ -98,7 +98,7 @@ klasse BaseProcess(object):
 
     def _check_closed(self):
         wenn self._closed:
-            raise ValueError("process object is closed")
+            wirf ValueError("process object is closed")
 
     def run(self):
         '''
@@ -185,7 +185,7 @@ klasse BaseProcess(object):
         '''
         wenn self._popen is nicht Nichts:
             wenn self._popen.poll() is Nichts:
-                raise ValueError("Cannot close a process waehrend it is still running. "
+                wirf ValueError("Cannot close a process waehrend it is still running. "
                                  "You should first call join() oder terminate().")
             self._popen.close()
             self._popen = Nichts
@@ -258,10 +258,10 @@ klasse BaseProcess(object):
         waiting fuer process termination.
         '''
         self._check_closed()
-        try:
+        versuch:
             gib self._sentinel
-        except AttributeError:
-            raise ValueError("process nicht started") von Nichts
+        ausser AttributeError:
+            wirf ValueError("process nicht started") von Nichts
 
     def __repr__(self):
         exitcode = Nichts
@@ -298,7 +298,7 @@ klasse BaseProcess(object):
         von . importiere util, context
         global _current_process, _parent_process, _process_counter, _children
 
-        try:
+        versuch:
             wenn self._start_method is nicht Nichts:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
@@ -310,16 +310,16 @@ klasse BaseProcess(object):
                 self._parent_name, self._parent_pid, parent_sentinel)
             wenn threading._HAVE_THREAD_NATIVE_ID:
                 threading.main_thread()._set_native_id()
-            try:
+            versuch:
                 self._after_fork()
-            finally:
+            schliesslich:
                 # delay finalization of the old process object until after
                 # _run_after_forkers() is executed
                 del old_process
             util.info('child process calling self.run()')
             self.run()
             exitcode = 0
-        except SystemExit als e:
+        ausser SystemExit als e:
             wenn e.code is Nichts:
                 exitcode = 0
             sowenn isinstance(e.code, int):
@@ -327,12 +327,12 @@ klasse BaseProcess(object):
             sonst:
                 sys.stderr.write(str(e.code) + '\n')
                 exitcode = 1
-        except:
+        ausser:
             exitcode = 1
             importiere traceback
             sys.stderr.write('Process %s:\n' % self.name)
             traceback.print_exc()
-        finally:
+        schliesslich:
             threading._shutdown()
             util.info('process exiting mit exitcode %d' % exitcode)
             util._flush_std_streams()
@@ -354,7 +354,7 @@ klasse AuthenticationString(bytes):
     def __reduce__(self):
         von .context importiere get_spawning_popen
         wenn get_spawning_popen() is Nichts:
-            raise TypeError(
+            wirf TypeError(
                 'Pickling an AuthenticationString object is '
                 'disallowed fuer security reasons'
                 )

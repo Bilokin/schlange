@@ -30,7 +30,7 @@ klasse FunctionalTestCaseMixin:
         self.__unhandled_exceptions = []
 
     def tearDown(self):
-        try:
+        versuch:
             self.loop.close()
 
             wenn self.__unhandled_exceptions:
@@ -38,7 +38,7 @@ klasse FunctionalTestCaseMixin:
                 pprint.pdrucke(self.__unhandled_exceptions)
                 self.fail('unexpected calls to loop.call_exception_handler()')
 
-        finally:
+        schliesslich:
             asyncio.set_event_loop(Nichts)
             self.loop = Nichts
 
@@ -58,9 +58,9 @@ klasse FunctionalTestCaseMixin:
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
         wenn timeout is Nichts:
-            raise RuntimeError('timeout is required')
+            wirf RuntimeError('timeout is required')
         wenn timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         gib TestThreadedServer(
@@ -73,9 +73,9 @@ klasse FunctionalTestCaseMixin:
         sock = socket.socket(family, socket.SOCK_STREAM)
 
         wenn timeout is Nichts:
-            raise RuntimeError('timeout is required')
+            wirf RuntimeError('timeout is required')
         wenn timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            wirf RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         gib TestThreadedClient(
@@ -83,30 +83,30 @@ klasse FunctionalTestCaseMixin:
 
     def unix_server(self, *args, **kwargs):
         wenn nicht hasattr(socket, 'AF_UNIX'):
-            raise NotImplementedError
+            wirf NotImplementedError
         gib self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
         wenn nicht hasattr(socket, 'AF_UNIX'):
-            raise NotImplementedError
+            wirf NotImplementedError
         gib self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     @contextlib.contextmanager
     def unix_sock_name(self):
         mit tempfile.TemporaryDirectory() als td:
             fn = os.path.join(td, 'sock')
-            try:
+            versuch:
                 liefere fn
-            finally:
-                try:
+            schliesslich:
+                versuch:
                     os.unlink(fn)
-                except OSError:
+                ausser OSError:
                     pass
 
     def _abort_socket_test(self, ex):
-        try:
+        versuch:
             self.loop.stop()
-        finally:
+        schliesslich:
             self.fail(ex)
 
 
@@ -125,7 +125,7 @@ klasse TestSocketWrapper:
         waehrend len(buf) < n:
             data = self.recv(n - len(buf))
             wenn data == b'':
-                raise ConnectionAbortedError
+                wirf ConnectionAbortedError
             buf += data
         gib buf
 
@@ -138,12 +138,12 @@ klasse TestSocketWrapper:
             server_hostname=server_hostname,
             do_handshake_on_connect=Falsch)
 
-        try:
+        versuch:
             ssl_sock.do_handshake()
-        except:
+        ausser:
             ssl_sock.close()
-            raise
-        finally:
+            wirf
+        schliesslich:
             self.__sock.close()
 
         self.__sock = ssl_sock
@@ -182,9 +182,9 @@ klasse TestThreadedClient(SocketThread):
         self._test = test
 
     def run(self):
-        try:
+        versuch:
             self._prog(TestSocketWrapper(self._sock))
-        except Exception als ex:
+        ausser Exception als ex:
             self._test._abort_socket_test(ex)
 
 
@@ -209,13 +209,13 @@ klasse TestThreadedServer(SocketThread):
         self._test = test
 
     def stop(self):
-        try:
+        versuch:
             wenn self._s2 und self._s2.fileno() != -1:
-                try:
+                versuch:
                     self._s2.send(b'stop')
-                except OSError:
+                ausser OSError:
                     pass
-        finally:
+        schliesslich:
             super().stop()
             self._sock.close()
             self._s1.close()
@@ -238,26 +238,26 @@ klasse TestThreadedServer(SocketThread):
                 gib
 
             wenn self._sock in r:
-                try:
+                versuch:
                     conn, addr = self._sock.accept()
-                except BlockingIOError:
+                ausser BlockingIOError:
                     weiter
-                except TimeoutError:
+                ausser TimeoutError:
                     wenn nicht self._active:
                         gib
                     sonst:
-                        raise
+                        wirf
                 sonst:
                     self._clients += 1
                     conn.settimeout(self._timeout)
-                    try:
+                    versuch:
                         mit conn:
                             self._handle_client(conn)
-                    except Exception als ex:
+                    ausser Exception als ex:
                         self._active = Falsch
-                        try:
-                            raise
-                        finally:
+                        versuch:
+                            wirf
+                        schliesslich:
                             self._test._abort_socket_test(ex)
 
     def _handle_client(self, sock):

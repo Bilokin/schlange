@@ -101,13 +101,13 @@ def error_if(value: bool, error_message: str) -> Nichts:
 
 def is_root_directory_git_index() -> bool:
     """Checks wenn the root directory is a git index"""
-    try:
+    versuch:
         subprocess.check_call(
             ["git", "-C", str(CPYTHON_ROOT_DIR), "rev-parse"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-    except subprocess.CalledProcessError:
+    ausser subprocess.CalledProcessError:
         gib Falsch
     gib Wahr
 
@@ -170,12 +170,12 @@ def download_with_retries(download_location: str,
                           max_jitter: float = 1.0) -> typing.Any:
     """Download a file mit exponential backoff retry."""
     fuer attempt in range(max_retries + 1):
-        try:
+        versuch:
             resp = urllib.request.urlopen(download_location)
-        except (urllib.error.URLError, ConnectionError) als ex:
+        ausser (urllib.error.URLError, ConnectionError) als ex:
             wenn attempt == max_retries:
                 msg = f"Download von {download_location} failed."
-                raise OSError(msg) von ex
+                wirf OSError(msg) von ex
             time.sleep(base_delay**attempt + random.uniform(0, max_jitter))
         sonst:
             gib resp

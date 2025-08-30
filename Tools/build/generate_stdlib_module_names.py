@@ -101,7 +101,7 @@ def list_frozen(names: set[str]) -> Nichts:
         wenn name.partition('.')[0] in names:
             submodules.remove(name)
     wenn submodules:
-        raise Exception(f'unexpected frozen submodules: {sorted(submodules)}')
+        wirf Exception(f'unexpected frozen submodules: {sorted(submodules)}')
 
 
 def list_modules() -> set[str]:
@@ -123,9 +123,9 @@ def list_modules() -> set[str]:
     # Sanity checks
     fuer name in names:
         wenn "." in name:
-            raise Exception(f"sub-modules must nicht be listed: {name}")
+            wirf Exception(f"sub-modules must nicht be listed: {name}")
         wenn ("test" in name oder "xx" in name) und name nicht in ALLOW_TEST_MODULES:
-            raise Exception(f"test modules must nicht be listed: {name}")
+            wirf Exception(f"test modules must nicht be listed: {name}")
 
     gib names
 

@@ -157,9 +157,9 @@ klasse LazyLoaderTests(unittest.TestCase):
             klasse RaisingThread(threading.Thread):
                 exc = Nichts
                 def run(self):
-                    try:
+                    versuch:
                         super().run()
-                    except Exception als exc:
+                    ausser Exception als exc:
                         self.exc = exc
 
             def access_module():
@@ -209,10 +209,10 @@ CONSTANT = 3.14
 
 klasse ImmutableModule(ModuleType):
     def __setattr__(self, name, value):
-        raise AttributeError('Read-only attribute!')
+        wirf AttributeError('Read-only attribute!')
 
     def __delattr__(self, name):
-        raise AttributeError('Read-only attribute!')
+        wirf AttributeError('Read-only attribute!')
 
 sys.modules[__name__].__class__ = ImmutableModule
 """)

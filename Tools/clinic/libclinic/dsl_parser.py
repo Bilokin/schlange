@@ -495,12 +495,12 @@ klasse DSLParser:
             wenn '\t' in line:
                 fail(f'Tab characters are illegal in the Clinic DSL: {line!r}',
                      line_number=block_start)
-            try:
+            versuch:
                 self.state(line)
-            except ClinicError als exc:
+            ausser ClinicError als exc:
                 exc.lineno = line_number
                 exc.filename = self.clinic.filename
-                raise
+                wirf
 
         self.do_post_block_processing_cleanup(line_number)
         block.output.extend(self.clinic.language.render(self.clinic, block.signatures))
@@ -548,9 +548,9 @@ klasse DSLParser:
         directive_name = fields[0]
         directive = self.directives.get(directive_name, Nichts)
         wenn directive:
-            try:
+            versuch:
                 directive(*fields[1:])
-            except TypeError als e:
+            ausser TypeError als e:
                 fail(str(e))
             gib
 
@@ -606,20 +606,20 @@ klasse DSLParser:
             wenn self.kind is METHOD_INIT:
                 fail("__init__ methods cannot define a gib type")
             ast_input = f"def x() -> {forced_converter}: pass"
-            try:
+            versuch:
                 module_node = ast.parse(ast_input)
-            except SyntaxError:
+            ausser SyntaxError:
                 fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
             function_node = module_node.body[0]
             assert isinstance(function_node, ast.FunctionDef)
-            try:
+            versuch:
                 name, legacy, kwargs = self.parse_converter(function_node.returns)
                 wenn legacy:
                     fail(f"Legacy converter {name!r} nicht allowed als a gib converter")
                 wenn name nicht in return_converters:
                     fail(f"No available gib converter called {name!r}")
                 gib return_converters[name](**kwargs)
-            except ValueError:
+            ausser ValueError:
                 fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
 
         wenn self.kind in {METHOD_INIT, SETTER}:
@@ -896,10 +896,10 @@ klasse DSLParser:
             c_name = m[2]
             line = line[:m.start(1)] + line[m.end(1):]
 
-        try:
+        versuch:
             ast_input = f"def x({line}\n): pass"
             module = ast.parse(ast_input)
-        except SyntaxError:
+        ausser SyntaxError:
             fail(f"Function {self.function.name!r} has an invalid parameter declaration: {line!r}")
 
         function = module.body[0]
@@ -945,7 +945,7 @@ klasse DSLParser:
             wenn self.parameter_state is ParamState.REQUIRED:
                 self.parameter_state = ParamState.OPTIONAL
             bad = Falsch
-            try:
+            versuch:
                 wenn 'c_default' nicht in kwargs:
                     # we can only represent very simple data values in C.
                     # detect whether default is okay, via a denylist
@@ -978,11 +978,11 @@ klasse DSLParser:
                     # wenn they specify a c_default, we can be more lenient about the default value.
                     # but at least make an attempt at ensuring it's a valid expression.
                     code = compile(ast.Expression(expr), '<expr>', 'eval')
-                    try:
+                    versuch:
                         value = eval(code)
-                    except NameError:
+                    ausser NameError:
                         pass # probably a named constant
-                    except Exception als e:
+                    ausser Exception als e:
                         fail("Malformed expression given als default value "
                              f"{default!r} caused {e!r}")
                     sonst:
@@ -1028,9 +1028,9 @@ klasse DSLParser:
                              "as your default value, "
                              "you MUST specify a valid c_default.")
 
-                    try:
+                    versuch:
                         value = eval(py_default)
-                    except NameError:
+                    ausser NameError:
                         value = unknown
                 sonst:
                     value = ast.literal_eval(expr)
@@ -1042,7 +1042,7 @@ klasse DSLParser:
                     sonst:
                         c_default = py_default
 
-            except (ValueError, AttributeError):
+            ausser (ValueError, AttributeError):
                 value = unknown
                 c_default = kwargs.get("c_default")
                 py_default = default
@@ -1144,10 +1144,10 @@ klasse DSLParser:
         """Parse Python version in `[from ...]` marker."""
         assert isinstance(self.function, Function)
 
-        try:
+        versuch:
             major, minor = thenceforth.split(".")
             gib int(major), int(minor)
-        except ValueError:
+        ausser ValueError:
             fail(
                 f"Function {self.function.name!r}: expected format '[from major.minor]' "
                 f"where 'major' und 'minor' are integers; got {thenceforth!r}"
@@ -1609,9 +1609,9 @@ klasse DSLParser:
             gib
 
         self.check_remaining_star(lineno)
-        try:
+        versuch:
             self.function.docstring = self.format_docstring()
-        except ClinicError als exc:
+        ausser ClinicError als exc:
             exc.lineno = lineno
             exc.filename = self.clinic.filename
-            raise
+            wirf

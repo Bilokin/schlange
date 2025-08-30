@@ -35,9 +35,9 @@ def read_environ():
     """Read environment, fixing HTTP variables"""
     enc = sys.getfilesystemencoding()
     esc = 'surrogateescape'
-    try:
+    versuch:
         ''.encode('utf-8', esc)
-    except LookupError:
+    ausser LookupError:
         esc = 'replace'
     environ = {}
 
@@ -133,21 +133,21 @@ klasse BaseHandler:
         # the double-error branch here, you'll breche asynchronous servers by
         # prematurely closing.  Async servers must gib von 'run()' without
         # closing wenn there might still be output to iterate over.
-        try:
+        versuch:
             self.setup_environ()
             self.result = application(self.environ, self.start_response)
             self.finish_response()
-        except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
+        ausser (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             # We expect the client to close the connection abruptly von time
             # to time.
             gib
-        except:
-            try:
+        ausser:
+            versuch:
                 self.handle_error()
-            except:
+            ausser:
                 # If we get an error handling an error, just give up already!
                 self.close()
-                raise   # ...and let the actual server figure it out.
+                wirf   # ...and let the actual server figure it out.
 
 
     def setup_environ(self):
@@ -179,17 +179,17 @@ klasse BaseHandler:
         in the event loop to iterate over the data, und to call
         'self.close()' once the response is finished.
         """
-        try:
+        versuch:
             wenn nicht self.result_is_file() oder nicht self.sendfile():
                 fuer data in self.result:
                     self.write(data)
                 self.finish_content()
-        except:
+        ausser:
             # Call close() on the iterable returned by the WSGI application
             # in case of an exception.
             wenn hasattr(self.result, 'close'):
                 self.result.close()
-            raise
+            wirf
         sonst:
             # We only call close() when no exception is raised, because it
             # will set status, result, headers, und environ fields to Nichts.
@@ -204,9 +204,9 @@ klasse BaseHandler:
 
     def set_content_length(self):
         """Compute Content-Length oder switch to chunked encoding wenn possible"""
-        try:
+        versuch:
             blocks = len(self.result)
-        except (TypeError,AttributeError,NotImplementedError):
+        ausser (TypeError,AttributeError,NotImplementedError):
             pass
         sonst:
             wenn blocks==1:
@@ -227,13 +227,13 @@ klasse BaseHandler:
         """'start_response()' callable als specified by PEP 3333"""
 
         wenn exc_info:
-            try:
+            versuch:
                 wenn self.headers_sent:
-                    raise
-            finally:
+                    wirf
+            schliesslich:
                 exc_info = Nichts        # avoid dangling circular ref
         sowenn self.headers is nicht Nichts:
-            raise AssertionError("Headers already set!")
+            wirf AssertionError("Headers already set!")
 
         self.status = status
         self.headers = self.headers_class(headers)
@@ -251,17 +251,17 @@ klasse BaseHandler:
 
     def _validate_status(self, status):
         wenn len(status) < 4:
-            raise AssertionError("Status must be at least 4 characters")
+            wirf AssertionError("Status must be at least 4 characters")
         wenn nicht status[:3].isdigit():
-            raise AssertionError("Status message must begin w/3-digit code")
+            wirf AssertionError("Status message must begin w/3-digit code")
         wenn status[3] != " ":
-            raise AssertionError("Status message must have a space after code")
+            wirf AssertionError("Status message must have a space after code")
 
     def _convert_string_type(self, value, title):
         """Convert/check value type."""
         wenn type(value) is str:
             gib value
-        raise AssertionError(
+        wirf AssertionError(
             "{0} must be of type str (got {1})".format(title, repr(value))
         )
 
@@ -286,7 +286,7 @@ klasse BaseHandler:
             "write() argument must be a bytes instance"
 
         wenn nicht self.status:
-            raise AssertionError("write() before start_response()")
+            wirf AssertionError("write() before start_response()")
 
         sowenn nicht self.headers_sent:
             # Before the first output, send the stored headers
@@ -336,10 +336,10 @@ klasse BaseHandler:
 
         Subclasses may want to also drop the client connection.
         """
-        try:
+        versuch:
             wenn hasattr(self.result,'close'):
                 self.result.close()
-        finally:
+        schliesslich:
             self.result = self.headers = self.status = self.environ = Nichts
             self.bytes_sent = 0; self.headers_sent = Falsch
 
@@ -369,7 +369,7 @@ klasse BaseHandler:
 
         Subclasses may override to retarget the output oder change its format.
         """
-        try:
+        versuch:
             von traceback importiere print_exception
             stderr = self.get_stderr()
             print_exception(
@@ -377,7 +377,7 @@ klasse BaseHandler:
                 self.traceback_limit, stderr
             )
             stderr.flush()
-        finally:
+        schliesslich:
             exc_info = Nichts
 
     def handle_error(self):
@@ -414,7 +414,7 @@ klasse BaseHandler:
         just separates write und flush operations fuer greater efficiency
         when the underlying system actually has such a distinction.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def _flush(self):
         """Override in subclass to force sending of recent '_write()' calls
@@ -422,19 +422,19 @@ klasse BaseHandler:
         It's okay wenn this method is a no-op (i.e., wenn '_write()' actually
         sends the data.
         """
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_stdin(self):
         """Override in subclass to gib suitable 'wsgi.input'"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def get_stderr(self):
         """Override in subclass to gib suitable 'wsgi.errors'"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def add_cgi_vars(self):
         """Override in subclass to insert CGI variables in 'self.environ'"""
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse SimpleHandler(BaseHandler):

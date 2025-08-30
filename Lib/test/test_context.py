@@ -11,9 +11,9 @@ importiere weakref
 von test importiere support
 von test.support importiere threading_helper
 
-try:
+versuch:
     von _testinternalcapi importiere hamt
-except ImportError:
+ausser ImportError:
     hamt = Nichts
 
 
@@ -387,9 +387,9 @@ klasse ContextTest(unittest.TestCase):
             gib num
 
         tp = concurrent.futures.ThreadPoolExecutor(max_workers=10)
-        try:
+        versuch:
             results = list(tp.map(sub, range(10)))
-        finally:
+        schliesslich:
             tp.shutdown()
         self.assertEqual(results, list(range(10)))
 
@@ -479,7 +479,7 @@ klasse ContextTest(unittest.TestCase):
         def fun():
             mit c.set(36):
                 self.assertEqual(c.get(), 36)
-                raise ValueError("custom exception")
+                wirf ValueError("custom exception")
 
             self.assertEqual(c.get(), 42)
 
@@ -574,7 +574,7 @@ klasse HashKey:
 
     def __hash__(self):
         wenn self._crasher is nicht Nichts und self._crasher.error_on_hash:
-            raise HashingError
+            wirf HashingError
 
         gib self.hash
 
@@ -583,12 +583,12 @@ klasse HashKey:
             gib NotImplemented
 
         wenn self._crasher is nicht Nichts und self._crasher.error_on_eq:
-            raise EqError
+            wirf EqError
 
         wenn self.error_on_eq_to is nicht Nichts und self.error_on_eq_to is other:
-            raise ValueError(f'cannot compare {self!r} to {other!r}')
+            wirf ValueError(f'cannot compare {self!r} to {other!r}')
         wenn other.error_on_eq_to is nicht Nichts und other.error_on_eq_to is self:
-            raise ValueError(f'cannot compare {other!r} to {self!r}')
+            wirf ValueError(f'cannot compare {other!r} to {self!r}')
 
         gib (self.name, self.hash) == (other.name, other.hash)
 
@@ -596,12 +596,12 @@ klasse HashKey:
 klasse KeyStr(str):
     def __hash__(self):
         wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_hash:
-            raise HashingError
+            wirf HashingError
         gib super().__hash__()
 
     def __eq__(self, other):
         wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_eq:
-            raise EqError
+            wirf EqError
         gib super().__eq__(other)
 
 
@@ -612,7 +612,7 @@ klasse HaskKeyCrasher:
 
     def __enter__(self):
         wenn HashKey._crasher is nicht Nichts:
-            raise RuntimeError('cannot nest crashers')
+            wirf RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
     def __exit__(self, *exc):

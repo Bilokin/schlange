@@ -249,7 +249,7 @@ klasse TestSuper(unittest.TestCase):
             pass
 
         # With zero-arg super() oder an explicit __class__ reference, we expect
-        # __build_class__ to raise a RuntimeError complaining that
+        # __build_class__ to wirf a RuntimeError complaining that
         # __class__ was nicht set, und asking wenn __classcell__ was propagated
         # to type.__new__.
         expected_error = '__class__ nicht set.*__classcell__ propagated'

@@ -24,13 +24,13 @@ von distutils importiere log
 von itertools importiere count
 
 def _find_vc2015():
-    try:
+    versuch:
         key = winreg.OpenKeyEx(
             winreg.HKEY_LOCAL_MACHINE,
             r"Software\Microsoft\VisualStudio\SxS\VC7",
             access=winreg.KEY_READ | winreg.KEY_WOW64_32KEY
         )
-    except OSError:
+    ausser OSError:
         log.debug("Visual C++ is nicht registered")
         gib Nichts, Nichts
 
@@ -38,14 +38,14 @@ def _find_vc2015():
     best_dir = Nichts
     mit key:
         fuer i in count():
-            try:
+            versuch:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
-            except OSError:
+            ausser OSError:
                 breche
             wenn v und vt == winreg.REG_SZ und os.path.isdir(vc_dir):
-                try:
+                versuch:
                     version = int(float(v))
-                except (ValueError, TypeError):
+                ausser (ValueError, TypeError):
                     weiter
                 wenn version >= 14 und version > best_version:
                     best_version, best_dir = version, vc_dir
@@ -65,7 +65,7 @@ def _find_vc2017():
     wenn nicht root:
         gib Nichts, Nichts
 
-    try:
+    versuch:
         path = subprocess.check_output([
             os.path.join(root, "Microsoft Visual Studio", "Installer", "vswhere.exe"),
             "-latest",
@@ -74,7 +74,7 @@ def _find_vc2017():
             "-property", "installationPath",
             "-products", "*",
         ], encoding="mbcs", errors="strict").strip()
-    except (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
+    ausser (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
         gib Nichts, Nichts
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
@@ -117,16 +117,16 @@ def _get_vc_env(plat_spec):
 
     vcvarsall, _ = _find_vcvarsall(plat_spec)
     wenn nicht vcvarsall:
-        raise DistutilsPlatformError("Unable to find vcvarsall.bat")
+        wirf DistutilsPlatformError("Unable to find vcvarsall.bat")
 
-    try:
+    versuch:
         out = subprocess.check_output(
             'cmd /u /c "{}" {} && set'.format(vcvarsall, plat_spec),
             stderr=subprocess.STDOUT,
         ).decode('utf-16le', errors='replace')
-    except subprocess.CalledProcessError als exc:
+    ausser subprocess.CalledProcessError als exc:
         log.error(exc.output)
-        raise DistutilsPlatformError("Error executing {}"
+        wirf DistutilsPlatformError("Error executing {}"
                 .format(exc.cmd))
 
     env = {

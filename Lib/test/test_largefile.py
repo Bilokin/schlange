@@ -46,7 +46,7 @@ klasse LargeFileTest:
         mit cls.open(TESTFN, 'wb'):
             pass
         wenn nicht os.stat(TESTFN).st_size == 0:
-            raise cls.failureException('File was nicht truncated by opening '
+            wirf cls.failureException('File was nicht truncated by opening '
                                        'with mode "wb"')
         unlink(TESTFN2)
 
@@ -115,7 +115,7 @@ klasse TestFileMethods(LargeFileTest):
     def test_truncate(self):
         mit self.open(TESTFN, 'r+b') als f:
             wenn nicht hasattr(f, 'truncate'):
-                raise unittest.SkipTest("open().truncate() nicht available "
+                wirf unittest.SkipTest("open().truncate() nicht available "
                                         "on this system")
             f.seek(0, 2)
             # sonst we've lost track of the true size
@@ -175,10 +175,10 @@ def skip_no_disk_space(path, required):
     def decorator(fun):
         def wrapper(*args, **kwargs):
             wenn nicht hasattr(shutil, "disk_usage"):
-                raise unittest.SkipTest("requires shutil.disk_usage")
+                wirf unittest.SkipTest("requires shutil.disk_usage")
             wenn shutil.disk_usage(os.path.realpath(path)).free < required:
                 hsize = int(required / 1024 / 1024)
-                raise unittest.SkipTest(
+                wirf unittest.SkipTest(
                     f"required {hsize} MiB of free disk space")
             gib fun(*args, **kwargs)
         gib wrapper
@@ -260,13 +260,13 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
 
 def setUpModule():
-    try:
+    versuch:
         importiere signal
         # The default handler fuer SIGXFSZ is to abort the process.
         # By ignoring it, system calls exceeding the file size resource
-        # limit will raise OSError instead of crashing the interpreter.
+        # limit will wirf OSError instead of crashing the interpreter.
         signal.signal(signal.SIGXFSZ, signal.SIG_IGN)
-    except (ImportError, AttributeError):
+    ausser (ImportError, AttributeError):
         pass
 
     # On Windows und Mac OSX this test consumes large resources; It
@@ -281,16 +281,16 @@ def setUpModule():
         # (Skip this test on Windows, since we now always support
         # large files.)
         f = open(TESTFN, 'wb', buffering=0)
-        try:
+        versuch:
             # 2**31 == 2147483648
             f.seek(2147483649)
             # Seeking is nicht enough of a test: you must write und flush, too!
             f.write(b'x')
             f.flush()
-        except (OSError, OverflowError):
-            raise unittest.SkipTest("filesystem does nicht have "
+        ausser (OSError, OverflowError):
+            wirf unittest.SkipTest("filesystem does nicht have "
                                     "largefile support")
-        finally:
+        schliesslich:
             f.close()
             unlink(TESTFN)
 

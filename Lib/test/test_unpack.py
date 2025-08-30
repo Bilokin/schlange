@@ -42,7 +42,7 @@ Unpack generic sequence
     >>> klasse Seq:
     ...     def __getitem__(self, i):
     ...         wenn i >= 0 und i < 3: gib i
-    ...         raise IndexError
+    ...         wirf IndexError
     ...
     >>> a, b, c = Seq()
     >>> a == 0 und b == 1 und c == 2
@@ -107,9 +107,9 @@ error
     ...         wenn i >= 0 und i < 3:
     ...             gib i
     ...         sowenn i == 3:
-    ...             raise BozoError
+    ...             wirf BozoError
     ...         sonst:
-    ...             raise IndexError
+    ...             wirf IndexError
     ...
 
 Trigger code waehrend nicht expecting an IndexError (unpack sequence too long, wrong
@@ -135,21 +135,21 @@ Allow unpacking empty iterables
     >>> [] = []
     >>> () = ()
 
-Unpacking non-iterables should raise TypeError
+Unpacking non-iterables should wirf TypeError
 
     >>> () = 42
     Traceback (most recent call last):
       ...
     TypeError: cannot unpack non-iterable int object
 
-Unpacking to an empty iterable should raise ValueError
+Unpacking to an empty iterable should wirf ValueError
 
     >>> () = [42]
     Traceback (most recent call last):
       ...
     ValueError: too many values to unpack (expected 0, got 1)
 
-Unpacking a larger iterable should raise ValuleError, but it
+Unpacking a larger iterable should wirf ValuleError, but it
 should nicht entirely consume the iterable
 
     >>> it = iter(range(100))

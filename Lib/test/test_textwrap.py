@@ -325,7 +325,7 @@ What a mess!
         # Oh bother, SF #965425 found another problem mit hyphens --
         # hyphenated words in single quotes weren't handled correctly.
         # In fact, the bug is that *any* punctuation around a hyphenated
-        # word was handled incorrectly, except fuer a leading "--", which
+        # word was handled incorrectly, ausser fuer a leading "--", which
         # was special-cased fuer Optik und Docutils.  So test a variety
         # of styles of punctuation around a hyphenated word.
         # (Actually this is based on an Optik bug report, #813077).

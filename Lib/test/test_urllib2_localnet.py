@@ -12,9 +12,9 @@ von test importiere support
 von test.support importiere hashlib_helper
 von test.support importiere threading_helper
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 support.requires_working_socket(module=Wahr)
@@ -307,9 +307,9 @@ klasse BasicAuthTests(unittest.TestCase):
         ah = urllib.request.HTTPBasicAuthHandler()
         ah.add_password(self.REALM, self.server_url, self.USER, self.PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
-        try:
+        versuch:
             self.assertWahr(urllib.request.urlopen(self.server_url))
-        except urllib.error.HTTPError:
+        ausser urllib.error.HTTPError:
             self.fail("Basic auth failed fuer the url: %s" % self.server_url)
 
     def test_basic_auth_httperror(self):
@@ -386,9 +386,9 @@ klasse ProxyAuthTests(unittest.TestCase):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth-int")
-        try:
+        versuch:
             result = self.opener.open(self.URL)
-        except urllib.error.URLError:
+        ausser urllib.error.URLError:
             # It's okay wenn we don't support auth-int, but we certainly
             # shouldn't receive any kind of exception here other than
             # a URLError.
@@ -468,13 +468,13 @@ klasse TestUrlopen(unittest.TestCase):
     def urlopen(self, url, data=Nichts, **kwargs):
         l = []
         f = urllib.request.urlopen(url, data, **kwargs)
-        try:
+        versuch:
             # Exercise various methods
             l.extend(f.readlines(200))
             l.append(f.readline())
             l.append(f.read(1024))
             l.append(f.read())
-        finally:
+        schliesslich:
             f.close()
         gib b"".join(l)
 
@@ -537,13 +537,13 @@ klasse TestUrlopen(unittest.TestCase):
         expected_response = b"Bad bad bad..."
         handler = self.start_server([(404, [], expected_response)])
 
-        try:
+        versuch:
             self.urlopen("http://localhost:%s/weeble" % handler.port)
-        except urllib.error.URLError als f:
+        ausser urllib.error.URLError als f:
             data = f.read()
             f.close()
         sonst:
-            self.fail("404 should raise URLError")
+            self.fail("404 should wirf URLError")
 
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/weeble"])

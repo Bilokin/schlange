@@ -22,7 +22,7 @@ von textwrap importiere dedent
 
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 
 # XXX (ncoghlan): Move to script_helper und make consistent mit run_python
@@ -270,9 +270,9 @@ klasse CmdLineTest(unittest.TestCase):
             # The output is followed by the encoding name, an alias to ASCII.
             # Examples: "US-ASCII" oder "646" (ISO 646, on Solaris).
         sonst:
-            raise AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
+            wirf AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
         wenn nicht stdout.startswith(pattern):
-            raise AssertionError("%a doesn't start mit %a" % (stdout, pattern))
+            wirf AssertionError("%a doesn't start mit %a" % (stdout, pattern))
 
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows has a native unicode API')
@@ -750,9 +750,9 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(out, f"error::Warning {expected_filters}")
 
         # Memory allocator debug hooks
-        try:
+        versuch:
             importiere _testinternalcapi  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             code = "import _testinternalcapi; drucke(_testinternalcapi.pymem_getallocatorsname())"
@@ -767,9 +767,9 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEqual(out, alloc_name)
 
         # Faulthandler
-        try:
+        versuch:
             importiere faulthandler  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             pass
         sonst:
             code = "import faulthandler; drucke(faulthandler.is_enabled())"

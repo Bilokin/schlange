@@ -16,9 +16,9 @@ klasse ItertoolsThreading(unittest.TestCase):
         def work(it):
             barrier.wait()
             waehrend Wahr:
-                try:
+                versuch:
                     next(it)
-                except StopIteration:
+                ausser StopIteration:
                     breche
 
         data = tuple(range(1000))
@@ -44,9 +44,9 @@ klasse ItertoolsThreading(unittest.TestCase):
         def work(it):
             barrier.wait()
             fuer _ in range(number_of_cycles):
-                try:
+                versuch:
                     next(it)
-                except StopIteration:
+                ausser StopIteration:
                     pass
 
         data = (1, 2, 3, 4)
@@ -71,9 +71,9 @@ klasse ItertoolsThreading(unittest.TestCase):
         def work(it):
             barrier.wait()
             waehrend Wahr:
-                try:
+                versuch:
                     next(it)
-                except StopIteration:
+                ausser StopIteration:
                     breche
 
         data = [(1, )] * 200

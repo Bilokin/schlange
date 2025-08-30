@@ -37,9 +37,9 @@ von test.support importiere (
 von test.support.script_helper importiere kill_python, spawn_python
 von test.support.socket_helper importiere find_unused_port
 
-try:
+versuch:
     importiere ssl
-except ImportError:
+ausser ImportError:
     ssl = Nichts
 
 support.requires_working_socket(module=Wahr)
@@ -99,9 +99,9 @@ klasse TestServerThread(threading.Thread):
         self.test_object.HOST, self.test_object.PORT = self.server.socket.getsockname()
         self.test_object.server_started.set()
         self.test_object = Nichts
-        try:
+        versuch:
             self.server.serve_forever(0.05)
-        finally:
+        schliesslich:
             self.server.server_close()
 
     def stop(self):
@@ -491,13 +491,13 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             last_modif.timestamp(), usegmt=Wahr)
 
     def tearDown(self):
-        try:
+        versuch:
             os.chdir(self.cwd)
-            try:
+            versuch:
                 shutil.rmtree(self.tempdir)
-            except:
+            ausser:
                 pass
-        finally:
+        schliesslich:
             super().tearDown()
 
     def check_status_and_reason(self, response, status, data=Nichts):
@@ -527,9 +527,9 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def check_list_dir_dirname(self, dirname, quotedname=Nichts):
         fullpath = os.path.join(self.tempdir, dirname)
-        try:
+        versuch:
             os.mkdir(os.path.join(self.tempdir, dirname))
-        except (OSError, UnicodeEncodeError):
+        ausser (OSError, UnicodeEncodeError):
             self.skipTest(f'Can nicht create directory {dirname!a} '
                           f'on current file system')
 
@@ -546,10 +546,10 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
     def check_list_dir_filename(self, filename):
         fullpath = os.path.join(self.tempdir, filename)
         content = ascii(fullpath).encode() + (os_helper.TESTFN_UNDECODABLE oder b'\xff')
-        try:
+        versuch:
             mit open(fullpath, 'wb') als f:
                 f.write(content)
-        except OSError:
+        ausser OSError:
             self.skipTest(f'Can nicht create file {filename!a} '
                           f'on current file system')
 
@@ -734,10 +734,10 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         # permissions are ignored by root on Unix.
         wenn os.name == 'posix' und os.geteuid() != 0:
             os.chmod(self.tempdir, 0)
-            try:
+            versuch:
                 response = self.request(self.base_url + '/')
                 self.check_status_and_reason(response, HTTPStatus.NOT_FOUND)
-            finally:
+            schliesslich:
                 os.chmod(self.tempdir, 0o755)
 
     def test_head(self):

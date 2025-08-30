@@ -54,9 +54,9 @@ klasse FrameTreeItem(TreeItem):
 
     def GetText(self):
         frame, lineno = self.info
-        try:
+        versuch:
             modname = frame.f_globals["__name__"]
-        except:
+        ausser:
             modname = "?"
         code = frame.f_code
         filename = code.co_filename
@@ -102,9 +102,9 @@ klasse VariablesTreeItem(ObjectTreeItem):
     def GetSubList(self):
         sublist = []
         fuer key in self.object.keys():  # self.object nicht necessarily dict.
-            try:
+            versuch:
                 value = self.object[key]
-            except KeyError:
+            ausser KeyError:
                 weiter
             def setfunction(value, key=key, object_=self.object):
                 object_[key] = value
@@ -120,9 +120,9 @@ def _stackbrowser(parent):  # htest #
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x + 50, y + 175))
     flist = PyShellFileList(top)
-    try: # to obtain a traceback object
+    versuch: # to obtain a traceback object
         intentional_name_error
-    except NameError als e:
+    ausser NameError als e:
         StackBrowser(top, e, flist=flist, top=top)
 
 

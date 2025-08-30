@@ -30,9 +30,9 @@ importiere warnings
 importiere weakref
 
 
-try:
+versuch:
     von concurrent.futures importiere ThreadPoolExecutor
-except ImportError:
+ausser ImportError:
     ThreadPoolExecutor = Nichts
 
 von test.support importiere cpython_only, import_helper
@@ -156,9 +156,9 @@ klasse TestPredicates(IsTestBase):
         self.istest(inspect.isbuiltin, 'sys.exit')
         self.istest(inspect.isbuiltin, '[].append')
         self.istest(inspect.iscode, 'mod.spam.__code__')
-        try:
+        versuch:
             1/0
-        except Exception als e:
+        ausser Exception als e:
             tb = e.__traceback__
             self.istest(inspect.isframe, 'tb.tb_frame')
             self.istest(inspect.istraceback, 'tb')
@@ -167,7 +167,7 @@ klasse TestPredicates(IsTestBase):
                             'type(tb.tb_frame).f_locals')
             sonst:
                 self.assertFalsch(inspect.isgetsetdescriptor(type(tb.tb_frame).f_locals))
-        finally:
+        schliesslich:
             # Clear traceback und all the frames und local variables hanging to it.
             tb = Nichts
         self.istest(inspect.isfunction, 'mod.spam')
@@ -703,9 +703,9 @@ klasse TestRetrievingSourceCode(GetSourceBase):
 
     @cpython_only
     def test_c_cleandoc(self):
-        try:
+        versuch:
             importiere _testinternalcapi
-        except ImportError:
+        ausser ImportError:
             gib unittest.skip("requires _testinternalcapi")
         func = _testinternalcapi.compiler_cleandoc
         fuer i, (input, expected) in enumerate(self.cleandoc_testdata):
@@ -739,7 +739,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
     def test_getmodule_file_not_found(self):
         # See bpo-45406
         def _getabsfile(obj, _filename):
-            raise FileNotFoundError('bad file')
+            wirf FileNotFoundError('bad file')
         mit unittest.mock.patch('inspect.getabsfile', _getabsfile):
             f = inspect.currentframe()
             self.assertIsNichts(inspect.getmodule(f))
@@ -763,9 +763,9 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         co = compile("x=1", fn, "exec")
         self.assertEqual(inspect.getsourcefile(co), Nichts)
         linecache.cache[co.co_filename] = (1, Nichts, "Nichts", co.co_filename)
-        try:
+        versuch:
             self.assertEqual(normcase(inspect.getsourcefile(co)), fn)
-        finally:
+        schliesslich:
             del linecache.cache[co.co_filename]
 
     def test_getsource_empty_file(self):
@@ -773,11 +773,11 @@ klasse TestRetrievingSourceCode(GetSourceBase):
             mit open('empty_file.py', 'w'):
                 pass
             sys.path.insert(0, cwd)
-            try:
+            versuch:
                 importiere empty_file
                 self.assertEqual(inspect.getsource(empty_file), '\n')
                 self.assertEqual(inspect.getsourcelines(empty_file), (['\n'], 0))
-            finally:
+            schliesslich:
                 sys.path.remove(cwd)
 
     def test_getfile(self):
@@ -805,7 +805,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         klasse CM(type):
             @property
             def __module__(cls):
-                raise AttributeError
+                wirf AttributeError
         klasse C(metaclass=CM):
             pass
         mit self.assertRaises(TypeError):
@@ -814,7 +814,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
     def test_getfile_broken_repr(self):
         klasse ErrorRepr:
             def __repr__(self):
-                raise Exception('xyz')
+                wirf Exception('xyz')
         er = ErrorRepr()
         mit self.assertRaises(TypeError):
             inspect.getfile(er)
@@ -840,11 +840,11 @@ klasse TestRetrievingSourceCode(GetSourceBase):
             sonst:
                 gib getlines(filename, module_globals)
         linecache.getlines = monkey
-        try:
+        versuch:
             ns = {}
             exec(compile(source, fn, 'single'), ns)
             inspect.getsource(ns["x"])
-        finally:
+        schliesslich:
             linecache.getlines = getlines
 
     def test_getsource_on_code_object(self):
@@ -888,10 +888,10 @@ klasse TestGetsourceStdlib(unittest.TestCase):
             self.assertRaises(OSError, inspect.getsourcelines, abc.ABCMeta)
         # With C acceleration
         importiere abc
-        try:
+        versuch:
             src = inspect.getsource(abc.ABCMeta)
             lines, lineno = inspect.getsourcelines(abc.ABCMeta)
-        except OSError:
+        ausser OSError:
             pass
         sonst:
             self.assertEqual(lines[0], '    klasse ABCMeta(type):\n')
@@ -1075,10 +1075,10 @@ klasse TestBuggyCases(GetSourceBase):
         self.assertRaises(OSError, inspect.findsource, co)
         self.assertRaises(OSError, inspect.getsource, co)
         linecache.cache[co.co_filename] = (1, Nichts, lines, co.co_filename)
-        try:
+        versuch:
             self.assertEqual(inspect.findsource(co), (lines,0))
             self.assertEqual(inspect.getsource(co), lines[0])
-        finally:
+        schliesslich:
             del linecache.cache[co.co_filename]
 
     def test_findsource_without_filename(self):
@@ -1231,13 +1231,13 @@ klasse _BrokenDataDescriptor(object):
     A broken data descriptor. See bug #1785.
     """
     def __get__(*args):
-        raise AttributeError("broken data descriptor")
+        wirf AttributeError("broken data descriptor")
 
     def __set__(*args):
-        raise RuntimeError
+        wirf RuntimeError
 
     def __getattr__(*args):
-        raise AttributeError("broken data descriptor")
+        wirf AttributeError("broken data descriptor")
 
 
 klasse _BrokenMethodDescriptor(object):
@@ -1245,10 +1245,10 @@ klasse _BrokenMethodDescriptor(object):
     A broken method descriptor. See bug #1785.
     """
     def __get__(*args):
-        raise AttributeError("broken method descriptor")
+        wirf AttributeError("broken method descriptor")
 
     def __getattr__(*args):
-        raise AttributeError("broken method descriptor")
+        wirf AttributeError("broken method descriptor")
 
 
 # Helper fuer testing classify_class_attrs.
@@ -1393,9 +1393,9 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             (dict.__dict__['__class_getitem__'], meth_type_o),
             (dict.__class_getitem__, meth_type_o),
         ]
-        try:
+        versuch:
             importiere _stat  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             # wenn the _stat extension is nicht available, stat.S_IMODE() is
             # implemented in Python, nicht in C
             pass
@@ -1539,7 +1539,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
                 gib NoBool()
 
             def __bool__(self):
-                raise NotImplementedError(
+                wirf NotImplementedError(
                     "This object does nicht specify a boolean value")
 
         klasse HasNB(object):
@@ -1730,10 +1730,10 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         klasse A:
             @property
             def name(self):
-                raise NotImplementedError
+                wirf NotImplementedError
             @types.DynamicClassAttribute
             def eggs(self):
-                raise NotImplementedError
+                wirf NotImplementedError
 
         a = A()
         instance_members = inspect.getmembers_static(a)
@@ -2083,16 +2083,16 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
 
     def assertEqualException(self, func, call_param_string, locs=Nichts):
         locs = dict(locs oder {}, func=func)
-        try:
+        versuch:
             eval('func(%s)' % call_param_string, Nichts, locs)
-        except Exception als e:
+        ausser Exception als e:
             ex1 = e
         sonst:
             self.fail('Exception nicht raised')
-        try:
+        versuch:
             eval('inspect.getcallargs(func, %s)' % call_param_string, Nichts,
                  locs)
-        except Exception als e:
+        ausser Exception als e:
             ex2 = e
         sonst:
             self.fail('Exception nicht raised')
@@ -2344,14 +2344,14 @@ klasse TestGetattrStatic(unittest.TestCase):
         klasse Thing(object):
             @property
             def x(self):
-                raise AttributeError("I'm pretending nicht to exist")
+                wirf AttributeError("I'm pretending nicht to exist")
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
     def test_descriptor_raises_AttributeError(self):
         klasse descriptor(object):
             def __get__(*_):
-                raise AttributeError("I'm pretending nicht to exist")
+                wirf AttributeError("I'm pretending nicht to exist")
         desc = descriptor()
         klasse Thing(object):
             x = desc
@@ -2720,9 +2720,9 @@ klasse TestGetGeneratorState(unittest.TestCase):
         self.assertEqual(inspect.getgeneratorlocals(numbers),
                          {'a': Nichts, 'lst': [1, 2, 3], 'v': 3,
                           'b': (1, 2, 3), 'c': 12})
-        try:
+        versuch:
             next(numbers)
-        except StopIteration:
+        ausser StopIteration:
             pass
         self.assertEqual(inspect.getgeneratorlocals(numbers), {})
 
@@ -2731,9 +2731,9 @@ klasse TestGetGeneratorState(unittest.TestCase):
             liefere 1
         one = yield_one()
         self.assertEqual(inspect.getgeneratorlocals(one), {})
-        try:
+        versuch:
             next(one)
-        except StopIteration:
+        ausser StopIteration:
             pass
         self.assertEqual(inspect.getgeneratorlocals(one), {})
 
@@ -2770,9 +2770,9 @@ klasse TestGetCoroutineState(unittest.TestCase):
 
     def test_closed_after_exhaustion(self):
         waehrend Wahr:
-            try:
+            versuch:
                 self.coroutine.send(Nichts)
-            except StopIteration:
+            ausser StopIteration:
                 breche
 
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
@@ -3281,9 +3281,9 @@ klasse TestSignatureObject(unittest.TestCase):
             (dict.__dict__['__class_getitem__'], meth_type_o),
             (dict.__class_getitem__, meth_o),
         ]
-        try:
+        versuch:
             importiere _stat  # noqa: F401
-        except ImportError:
+        ausser ImportError:
             # wenn the _stat extension is nicht available, stat.S_IMODE() is
             # implemented in Python, nicht in C
             pass
@@ -4071,7 +4071,7 @@ klasse TestSignatureObject(unittest.TestCase):
             def __init__(self, b):
                 pass
 
-        C(1)  # does nicht raise
+        C(1)  # does nicht wirf
         self.assertEqual(self.signature(C),
                         ((('b', ..., ..., "positional_or_keyword"),),
                         ...))
@@ -4082,7 +4082,7 @@ klasse TestSignatureObject(unittest.TestCase):
                 def __init__(cls, b):
                     pass
 
-            C(1)  # does nicht raise
+            C(1)  # does nicht wirf
             self.assertEqual(self.signature(C),
                             ((('b', ..., ..., "positional_or_keyword"),),
                             ...))
@@ -4093,7 +4093,7 @@ klasse TestSignatureObject(unittest.TestCase):
                 def __init__(b):
                     pass
 
-            C(1)  # does nicht raise
+            C(1)  # does nicht wirf
             self.assertEqual(self.signature(C),
                             ((('b', ..., ..., "positional_or_keyword"),),
                             ...))
@@ -4105,7 +4105,7 @@ klasse TestSignatureObject(unittest.TestCase):
             klasse C:
                 __init__ = A().call
 
-            C(1)  # does nicht raise
+            C(1)  # does nicht wirf
             self.assertEqual(self.signature(C),
                             ((('a', ..., ..., "positional_or_keyword"),),
                             ...))
@@ -4114,7 +4114,7 @@ klasse TestSignatureObject(unittest.TestCase):
             klasse C:
                 __init__ = functools.partial(lambda x, a, b: Nichts, 2)
 
-            C(1)  # does nicht raise
+            C(1)  # does nicht wirf
             self.assertEqual(self.signature(C),
                             ((('b', ..., ..., "positional_or_keyword"),),
                             ...))
@@ -5265,10 +5265,10 @@ klasse TestSignatureBind(unittest.TestCase):
         sig = inspect.signature(func)
         ba = sig.bind(*args, **kwargs)
         # Prevent unexpected success of assertRaises(TypeError, ...)
-        try:
+        versuch:
             gib func(*ba.args, **ba.kwargs)
-        except TypeError als e:
-            raise AssertionError von e
+        ausser TypeError als e:
+            wirf AssertionError von e
 
     def test_signature_bind_empty(self):
         def test():
@@ -5705,9 +5705,9 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         no_signature = no_signature oder set()
         # Check the signatures we expect to be there
         ns = vars(module)
-        try:
+        versuch:
             names = set(module.__all__)
-        except AttributeError:
+        ausser AttributeError:
             names = set(name fuer name in ns wenn self.is_public(name))
         fuer name, obj in sorted(ns.items()):
             wenn name nicht in names:
@@ -6038,7 +6038,7 @@ klasse NTimesUnwrappable:
     @property
     def __wrapped__(self):
         wenn self.n <= 0:
-            raise Exception("Unwrapped too many times")
+            wirf Exception("Unwrapped too many times")
         wenn self._next is Nichts:
             self._next = NTimesUnwrappable(self.n - 1)
         gib self._next
@@ -6234,7 +6234,7 @@ klasse TestRepl(unittest.TestCase):
         output = kill_python(process)
 
         wenn process.returncode != 0:
-            raise ValueError("Process didn't exit properly.")
+            wirf ValueError("Process didn't exit properly.")
         gib output
 
     @unittest.skipIf(nicht has_subprocess_support, "test requires subprocess")

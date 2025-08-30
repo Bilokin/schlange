@@ -633,14 +633,14 @@ x = (
     @unittest.skipIf(support.is_wasi, "exhausts limited stack on WASI")
     def test_fstring_nested_too_deeply(self):
         def raises_syntax_or_memory_error(txt):
-            try:
+            versuch:
                 eval(txt)
-            except SyntaxError:
+            ausser SyntaxError:
                 pass
-            except MemoryError:
+            ausser MemoryError:
                 pass
-            except Exception als ex:
-                self.fail(f"Should raise SyntaxError oder MemoryError, nicht {type(ex)}")
+            ausser Exception als ex:
+                self.fail(f"Should wirf SyntaxError oder MemoryError, nicht {type(ex)}")
             sonst:
                 self.fail("No exception raised")
 
@@ -1540,7 +1540,7 @@ x = (
 
     def test_backslash_char(self):
         # Check eval of a backslash followed by a control char.
-        # See bpo-30682: this used to raise an assert in pydebug mode.
+        # See bpo-30682: this used to wirf an assert in pydebug mode.
         self.assertEqual(eval('f"\\\n"'), '')
         self.assertEqual(eval('f"\\\r"'), '')
 
@@ -1738,9 +1738,9 @@ sdfsdfs{1+
 2} dfigdf {3+
 4}sdufsd""
 '''
-        try:
+        versuch:
             compile(data, "?", "exec")
-        except SyntaxError als e:
+        ausser SyntaxError als e:
             self.assertEqual(e.text, 'z = f"""')
             self.assertEqual(e.lineno, 3)
     def test_syntax_error_after_debug(self):

@@ -109,22 +109,22 @@ klasse TimeoutTestCase(unittest.TestCase):
     localhost = socket_helper.HOST
 
     def setUp(self):
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def _sock_operation(self, count, timeout, method, *args):
         """
         Test the specified socket method.
 
-        The method is run at most `count` times und must raise a TimeoutError
+        The method is run at most `count` times und must wirf a TimeoutError
         within `timeout` + self.fuzz seconds.
         """
         self.sock.settimeout(timeout)
         method = getattr(self.sock, method)
         fuer i in range(count):
             t1 = time.monotonic()
-            try:
+            versuch:
                 method(*args)
-            except TimeoutError als e:
+            ausser TimeoutError als e:
                 delta = time.monotonic() - t1
                 breche
         sonst:
@@ -185,13 +185,13 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
         skip = Wahr
         mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als sock:
-            try:
+            versuch:
                 timeout = support.LOOPBACK_TIMEOUT
                 sock.settimeout(timeout)
                 sock.connect((whitehole))
-            except TimeoutError:
+            ausser TimeoutError:
                 pass
-            except OSError als err:
+            ausser OSError als err:
                 wenn err.errno == errno.ECONNREFUSED:
                     skip = Falsch
 

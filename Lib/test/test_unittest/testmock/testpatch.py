@@ -153,11 +153,11 @@ klasse PatchTest(unittest.TestCase):
         def test():
             pass
 
-        try:
+        versuch:
             something = sentinel.replacement_value
             test()
             self.assertEqual(something, sentinel.replacement_value)
-        finally:
+        schliesslich:
             something = original
 
 
@@ -317,7 +317,7 @@ klasse PatchTest(unittest.TestCase):
         @patch('%s.SomeClass' % __name__, spec=Wahr)
         def test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should nicht raise attribute error
+            # Should nicht wirf attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -329,7 +329,7 @@ klasse PatchTest(unittest.TestCase):
         @patch.object(PTModule, 'SomeClass', spec=Wahr)
         def test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should nicht raise attribute error
+            # Should nicht wirf attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -343,7 +343,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertWahr(is_instance(MockSomeClass, MagicMock))
             instance = MockSomeClass()
             self.assertNotCallable(instance)
-            # Should nicht raise attribute error
+            # Should nicht wirf attribute error
             instance.wibble
 
             self.assertRaises(AttributeError, lambda: instance.not_wibble)
@@ -650,7 +650,7 @@ klasse PatchTest(unittest.TestCase):
 
         @patch.dict(foo, {'a': 'b'})
         def test():
-            raise NameError('Konrad')
+            wirf NameError('Konrad')
 
         mit self.assertRaises(NameError):
             test()
@@ -675,11 +675,11 @@ klasse PatchTest(unittest.TestCase):
         def test():
             self.assertEqual(support.target, {'foo': 'BAZ', 'bar': 'BAR'})
 
-        try:
+        versuch:
             support.target = {'foo': 'BAZ'}
             test()
             self.assertEqual(support.target, {'foo': 'BAZ'})
-        finally:
+        schliesslich:
             support.target = original
 
 
@@ -722,10 +722,10 @@ klasse PatchTest(unittest.TestCase):
         patcher = patch('%s.something' % __name__)
         self.assertIs(something, original)
         mock = patcher.start()
-        try:
+        versuch:
             self.assertIsNot(mock, original)
             self.assertIs(something, mock)
-        finally:
+        schliesslich:
             patcher.stop()
         self.assertIs(something, original)
 
@@ -754,9 +754,9 @@ klasse PatchTest(unittest.TestCase):
     def test_second_start_failure(self):
         patcher = patch(foo_name, 'bar', 3)
         patcher.start()
-        try:
+        versuch:
             self.assertRaises(RuntimeError, patcher.start)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -798,10 +798,10 @@ klasse PatchTest(unittest.TestCase):
         patcher = patch.object(PTModule, 'something', 'foo')
         self.assertIs(something, original)
         replaced = patcher.start()
-        try:
+        versuch:
             self.assertEqual(replaced, 'foo')
             self.assertIs(something, replaced)
-        finally:
+        schliesslich:
             patcher.stop()
         self.assertIs(something, original)
 
@@ -813,9 +813,9 @@ klasse PatchTest(unittest.TestCase):
         self.assertEqual(d, original)
 
         patcher.start()
-        try:
+        versuch:
             self.assertEqual(d, {'spam': 'eggs'})
-        finally:
+        schliesslich:
             patcher.stop()
         self.assertEqual(d, original)
 
@@ -928,9 +928,9 @@ klasse PatchTest(unittest.TestCase):
         patcher = patch.dict(original, foo=3, bar=4, baz=5)
         patcher.start()
 
-        try:
+        versuch:
             self.assertEqual(original, dict(foo=3, bar=4, baz=5))
-        finally:
+        schliesslich:
             patcher.stop()
 
         self.assertEqual(original, copy)
@@ -1091,10 +1091,10 @@ klasse PatchTest(unittest.TestCase):
 
         patcher = patch(foo_name, autospec=Bar)
         mock = patcher.start()
-        try:
+        versuch:
             self.assertIsInstance(mock, Bar)
             self.assertIsInstance(mock.extra, list)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1102,10 +1102,10 @@ klasse PatchTest(unittest.TestCase):
         FooClass = Foo
         patcher = patch(foo_name, autospec=Wahr)
         mock = patcher.start()
-        try:
+        versuch:
             self.assertIsInstance(mock, FooClass)
             self.assertIsInstance(mock(3), FooClass)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1113,22 +1113,22 @@ klasse PatchTest(unittest.TestCase):
         patcher = patch(foo_name, autospec=Wahr)
         mock = patcher.start()
 
-        try:
+        versuch:
             self.assertIn(" name='Foo'", repr(mock))
             self.assertIn(" name='Foo.f'", repr(mock.f))
             self.assertIn(" name='Foo()'", repr(mock(Nichts)))
             self.assertIn(" name='Foo().f'", repr(mock(Nichts).f))
-        finally:
+        schliesslich:
             patcher.stop()
 
 
     def test_tracebacks(self):
         @patch.object(Foo, 'f', object())
         def test():
-            raise AssertionError
-        try:
+            wirf AssertionError
+        versuch:
             test()
-        except:
+        ausser:
             err = sys.exc_info()
 
         result = unittest.TextTestResult(Nichts, Nichts, 0)
@@ -1170,10 +1170,10 @@ klasse PatchTest(unittest.TestCase):
 
         patcher = patch(foo_name, new_callable=Bar, arg1=1, arg2=2)
         m = patcher.start()
-        try:
+        versuch:
             self.assertIs(type(m), Bar)
             self.assertEqual(Bar.kwargs, dict(arg1=1, arg2=2))
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1185,16 +1185,16 @@ klasse PatchTest(unittest.TestCase):
 
         patcher = patch(foo_name, new_callable=Bar, spec=Bar)
         patcher.start()
-        try:
+        versuch:
             self.assertEqual(Bar.kwargs, dict(spec=Bar))
-        finally:
+        schliesslich:
             patcher.stop()
 
         patcher = patch(foo_name, new_callable=Bar, spec_set=Bar)
         patcher.start()
-        try:
+        versuch:
             self.assertEqual(Bar.kwargs, dict(spec_set=Bar))
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1206,9 +1206,9 @@ klasse PatchTest(unittest.TestCase):
         p = patch(non_existent_attr, new_callable=NonCallableMock,
                   create=Wahr)
         m = p.start()
-        try:
+        versuch:
             self.assertNotCallable(m, magic=Falsch)
-        finally:
+        schliesslich:
             p.stop()
 
 
@@ -1245,10 +1245,10 @@ klasse PatchTest(unittest.TestCase):
                 kwargs = {arg: Wahr}
                 p = patch(foo_name, new_callable=Klass, **kwargs)
                 m = p.start()
-                try:
+                versuch:
                     instance = m.return_value
                     self.assertRaises(AttributeError, getattr, instance, 'x')
-                finally:
+                schliesslich:
                     p.stop()
 
 
@@ -1259,10 +1259,10 @@ klasse PatchTest(unittest.TestCase):
 
         p = patch(foo_name, new_callable=NotAMock, spec=Wahr)
         m = p.start()
-        try:
+        versuch:
             self.assertWahr(is_instance(m, NotAMock))
             self.assertRaises(AttributeError, getattr, m, 'return_value')
-        finally:
+        schliesslich:
             p.stop()
 
         self.assertEqual(m.spec, Foo)
@@ -1299,11 +1299,11 @@ klasse PatchTest(unittest.TestCase):
 
         fuer patcher in patcher1, patcher2:
             patcher.start()
-            try:
+            versuch:
                 self.assertIs(Foo, original_foo)
                 self.assertEqual(Foo.f, 1)
                 self.assertEqual(Foo.g, 2)
-            finally:
+            schliesslich:
                 patcher.stop()
 
             self.assertIs(Foo, original_foo)
@@ -1416,7 +1416,7 @@ klasse PatchTest(unittest.TestCase):
         patcher = patch.multiple(foo_name, f=DEFAULT, g=3, foo=DEFAULT)
 
         result = patcher.start()
-        try:
+        versuch:
             f = result['f']
             foo = result['foo']
             self.assertEqual(set(result), set(['f', 'foo']))
@@ -1426,7 +1426,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertIs(Foo.foo, foo)
             self.assertWahr(is_instance(f, MagicMock))
             self.assertWahr(is_instance(foo, MagicMock))
-        finally:
+        schliesslich:
             patcher.stop()
 
         self.assertEqual(Foo.f, original_f)
@@ -1472,9 +1472,9 @@ klasse PatchTest(unittest.TestCase):
 
         patcher = patch.multiple(Foo, blam='blam', create=Wahr)
         patcher.start()
-        try:
+        versuch:
             self.assertEqual(Foo.blam, 'blam')
-        finally:
+        schliesslich:
             patcher.stop()
 
         self.assertNotHasAttr(Foo, 'blam')
@@ -1485,14 +1485,14 @@ klasse PatchTest(unittest.TestCase):
         # work als the underlying machinery is the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
-        try:
+        versuch:
             self.assertEqual(Foo.foo, result['foo'])
             Foo.foo.a(1)
             Foo.foo.b(2)
             Foo.foo.a.assert_called_with(1)
             Foo.foo.b.assert_called_with(2)
             self.assertRaises(AttributeError, setattr, Foo.foo, 'c', Nichts)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1504,13 +1504,13 @@ klasse PatchTest(unittest.TestCase):
             Foo, f=DEFAULT, g=DEFAULT, new_callable=Thing
         )
         result = patcher.start()
-        try:
+        versuch:
             self.assertIs(Foo.f, result['f'])
             self.assertIs(Foo.g, result['g'])
             self.assertIsInstance(Foo.f, Thing)
             self.assertIsInstance(Foo.g, Thing)
             self.assertIsNot(Foo.f, Foo.g)
-        finally:
+        schliesslich:
             patcher.stop()
 
 
@@ -1545,7 +1545,7 @@ klasse PatchTest(unittest.TestCase):
         original_foo = Foo.foo
 
         def crasher():
-            raise NameError('crasher')
+            wirf NameError('crasher')
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'foo', new_callable=crasher)
@@ -1599,7 +1599,7 @@ klasse PatchTest(unittest.TestCase):
         original_foo = Foo.foo
 
         def crasher():
-            raise NameError('crasher')
+            wirf NameError('crasher')
 
         patcher = patch.object(Foo, 'f', 1)
         patcher.attribute_name = 'f'
@@ -1682,14 +1682,14 @@ klasse PatchTest(unittest.TestCase):
         fuer arg in ('spec', 'autospec', 'spec_set'):
             p = patch('%s.SomeClass' % __name__, **{arg: Wahr})
             m = p.start()
-            try:
+            versuch:
                 self.assertIn(" name='SomeClass'", repr(m))
                 self.assertIn(" name='SomeClass.class_attribute'",
                               repr(m.class_attribute))
                 self.assertIn(" name='SomeClass()'", repr(m()))
                 self.assertIn(" name='SomeClass().class_attribute'",
                               repr(m().class_attribute))
-            finally:
+            schliesslich:
                 p.stop()
 
 
@@ -1706,7 +1706,7 @@ klasse PatchTest(unittest.TestCase):
         fuer arg in ('spec', 'autospec', 'spec_set'):
             p = patch('%s.SomeClass' % __name__, **{arg: Wahr})
             m = p.start()
-            try:
+            versuch:
                 m.wibble()
 
                 kalls = [call.wibble()]
@@ -1725,7 +1725,7 @@ klasse PatchTest(unittest.TestCase):
                 self.assertEqual(result.mock_calls, [call.wibble()])
                 self.assertEqual(result.wibble.mock_calls, [call()])
                 self.assertEqual(result.method_calls, [call.wibble()])
-            finally:
+            schliesslich:
                 p.stop()
 
 
@@ -1763,7 +1763,7 @@ klasse PatchTest(unittest.TestCase):
 
         @with_custom_patch('squizz.squozz')
         def test(mock):
-            raise RuntimeError
+            wirf RuntimeError
 
         mit uncache('squizz'):
             squizz = Mock()
@@ -1877,11 +1877,11 @@ klasse PatchTest(unittest.TestCase):
     def test_specs_false_instead_of_none(self):
         p = patch(MODNAME, spec=Falsch, spec_set=Falsch, autospec=Falsch)
         mock = p.start()
-        try:
+        versuch:
             # no spec should have been set, so attribute access should nicht fail
             mock.does_not_exist
             mock.does_not_exist = 3
-        finally:
+        schliesslich:
             p.stop()
 
 
@@ -1889,9 +1889,9 @@ klasse PatchTest(unittest.TestCase):
         fuer kwarg in ('spec', 'autospec', 'spec_set'):
             p = patch(MODNAME, **{kwarg: 0})
             m = p.start()
-            try:
+            versuch:
                 self.assertRaises(AttributeError, getattr, m, 'doesnotexit')
-            finally:
+            schliesslich:
                 p.stop()
 
 
@@ -1899,11 +1899,11 @@ klasse PatchTest(unittest.TestCase):
         fuer kwarg in ('spec', 'autospec'):
             p = patch(MODNAME, spec_set=Wahr, **{kwarg: Wahr})
             m = p.start()
-            try:
+            versuch:
                 self.assertRaises(AttributeError, setattr, m,
                                   'doesnotexist', 'something')
                 self.assertRaises(AttributeError, getattr, m, 'doesnotexist')
-            finally:
+            schliesslich:
                 p.stop()
 
 
@@ -1911,9 +1911,9 @@ klasse PatchTest(unittest.TestCase):
         spec = ('__call__',)
         p = patch(MODNAME, spec=spec)
         m = p.start()
-        try:
+        versuch:
             self.assertWahr(callable(m))
-        finally:
+        schliesslich:
             p.stop()
 
 
@@ -1921,9 +1921,9 @@ klasse PatchTest(unittest.TestCase):
         spec = ('foo', 'bar')
         p = patch(MODNAME, spec=spec)
         m = p.start()
-        try:
+        versuch:
             self.assertFalsch(callable(m))
-        finally:
+        schliesslich:
             p.stop()
 
 

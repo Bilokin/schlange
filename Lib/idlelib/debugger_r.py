@@ -157,7 +157,7 @@ klasse IdbAdapter:
     #----------called by a DictProxy----------
 
     def dict_keys(self, did):
-        raise NotImplementedError("dict_keys nicht public oder pickleable")
+        wirf NotImplementedError("dict_keys nicht public oder pickleable")
 ##         gib dicttable[did].keys()
 
     ### Needed until dict_keys type is finished und pickleable.
@@ -205,7 +205,7 @@ klasse FrameProxy:
 
     def __getattr__(self, name):
         wenn name[:1] == "_":
-            raise AttributeError(name)
+            wirf AttributeError(name)
         wenn name == "f_code":
             gib self._get_f_code()
         wenn name == "f_globals":
@@ -274,7 +274,7 @@ klasse DictProxy:
 
     def __getattr__(self, name):
         ##drucke("*** Failed DictProxy.__getattr__:", name)
-        raise AttributeError(name)
+        wirf AttributeError(name)
 
 
 klasse GUIAdapter:

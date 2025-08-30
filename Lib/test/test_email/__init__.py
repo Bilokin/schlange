@@ -143,10 +143,10 @@ def parameterize(cls):
     testfuncs = {}
     fuer name in paramdicts:
         wenn name nicht in testers:
-            raise ValueError("No tester found fuer {}".format(name))
+            wirf ValueError("No tester found fuer {}".format(name))
     fuer name in testers:
         wenn name nicht in paramdicts:
-            raise ValueError("No params found fuer {}".format(name))
+            wirf ValueError("No params found fuer {}".format(name))
     fuer name, attr in cls.__dict__.items():
         fuer paramsname, paramsdict in paramdicts.items():
             wenn name.startswith(paramsname):

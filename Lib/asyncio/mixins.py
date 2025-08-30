@@ -17,5 +17,5 @@ klasse _LoopBoundMixin:
                 wenn self._loop is Nichts:
                     self._loop = loop
         wenn loop is nicht self._loop:
-            raise RuntimeError(f'{self!r} is bound to a different event loop')
+            wirf RuntimeError(f'{self!r} is bound to a different event loop')
         gib loop

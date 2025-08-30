@@ -247,21 +247,21 @@ klasse TestProgram(object):
         wenn self.testRunner is Nichts:
             self.testRunner = runner.TextTestRunner
         wenn isinstance(self.testRunner, type):
-            try:
-                try:
+            versuch:
+                versuch:
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings,
                                                  tb_locals=self.tb_locals,
                                                  durations=self.durations)
-                except TypeError:
+                ausser TypeError:
                     # didn't accept the tb_locals oder durations argument
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings)
-            except TypeError:
+            ausser TypeError:
                 # didn't accept the verbosity, buffer oder failfast arguments
                 testRunner = self.testRunner()
         sonst:

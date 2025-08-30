@@ -17,9 +17,9 @@ von test.support importiere (
     force_not_colorized, is_apple, is_apple_mobile, os_helper, threading_helper
 )
 von test.support.script_helper importiere assert_python_ok, spawn_python
-try:
+versuch:
     importiere _testcapi
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
 
 
@@ -333,7 +333,7 @@ klasse WakeupSignalTests(unittest.TestCase):
                 raised = set(raised)
                 signals = set(signals)
             wenn raised != signals:
-                raise Exception("%r != %r" % (raised, signals))
+                wirf Exception("%r != %r" % (raised, signals))
 
         {}
 
@@ -375,31 +375,31 @@ klasse WakeupSignalTests(unittest.TestCase):
 
         # Set wakeup_fd a read-only file descriptor to trigger the error
         signal.set_wakeup_fd(r)
-        try:
+        versuch:
             mit captured_stderr() als err:
                 signal.raise_signal(signal.SIGALRM)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             # An ignored exception should have been printed out on stderr
             err = err.getvalue()
             wenn ('Exception ignored waehrend trying to write to the signal wakeup fd'
                 nicht in err):
-                raise AssertionError(err)
+                wirf AssertionError(err)
             wenn ('OSError: [Errno %d]' % errno.EBADF) nicht in err:
-                raise AssertionError(err)
+                wirf AssertionError(err)
         sonst:
-            raise AssertionError("ZeroDivisionError nicht raised")
+            wirf AssertionError("ZeroDivisionError nicht raised")
 
         os.close(r)
         os.close(w)
         """
         r, w = os.pipe()
-        try:
+        versuch:
             os.write(r, b'x')
-        except OSError:
+        ausser OSError:
             pass
         sonst:
             self.skipTest("OS doesn't report write() error on the read end of a pipe")
-        finally:
+        schliesslich:
             os.close(r)
             os.close(w)
 
@@ -417,26 +417,26 @@ klasse WakeupSignalTests(unittest.TestCase):
                 pass
 
             def handler(signum, frame):
-                raise InterruptSelect
+                wirf InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
             signal.alarm(1)
 
             # We attempt to get a signal during the sleep,
             # before select is called
-            try:
+            versuch:
                 select.select([], [], [], TIMEOUT_FULL)
-            except InterruptSelect:
+            ausser InterruptSelect:
                 pass
             sonst:
-                raise Exception("select() was nicht interrupted")
+                wirf Exception("select() was nicht interrupted")
 
             before_time = time.monotonic()
             select.select([read], [], [], TIMEOUT_FULL)
             after_time = time.monotonic()
             dt = after_time - before_time
             wenn dt >= TIMEOUT_HALF:
-                raise Exception("%s >= %s" % (dt, TIMEOUT_HALF))
+                wirf Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
     def test_wakeup_fd_during(self):
@@ -451,22 +451,22 @@ klasse WakeupSignalTests(unittest.TestCase):
                 pass
 
             def handler(signum, frame):
-                raise InterruptSelect
+                wirf InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
             signal.alarm(1)
             before_time = time.monotonic()
             # We attempt to get a signal during the select call
-            try:
+            versuch:
                 select.select([read], [], [], TIMEOUT_FULL)
-            except InterruptSelect:
+            ausser InterruptSelect:
                 pass
             sonst:
-                raise Exception("select() was nicht interrupted")
+                wirf Exception("select() was nicht interrupted")
             after_time = time.monotonic()
             dt = after_time - before_time
             wenn dt >= TIMEOUT_HALF:
-                raise Exception("%s >= %s" % (dt, TIMEOUT_HALF))
+                wirf Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
     def test_signum(self):
@@ -522,10 +522,10 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
 
         data = read.recv(1)
         wenn nicht data:
-            raise Exception("no signum written")
+            wirf Exception("no signum written")
         raised = struct.unpack('B', data)
         wenn raised != signals:
-            raise Exception("%r != %r" % (raised, signals))
+            wirf Exception("%r != %r" % (raised, signals))
 
         read.close()
         write.close()
@@ -572,7 +572,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
         err = err.getvalue()
         wenn ('Exception ignored waehrend trying to {action} to the signal wakeup fd'
             nicht in err):
-            raise AssertionError(err)
+            wirf AssertionError(err)
         """.format(action=action)
         assert_python_ok('-c', code)
 
@@ -620,23 +620,23 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
             CHUNK_SIZES = (2 ** 16, 2 ** 8, 1)
         fuer chunk_size in CHUNK_SIZES:
             chunk = b"x" * chunk_size
-            try:
+            versuch:
                 waehrend Wahr:
                     write.send(chunk)
                     written += chunk_size
-            except (BlockingIOError, TimeoutError):
+            ausser (BlockingIOError, TimeoutError):
                 pass
 
         drucke(f"%s bytes written into the socketpair" % written, flush=Wahr)
 
         write.setblocking(Falsch)
-        try:
+        versuch:
             write.send(b"x")
-        except BlockingIOError:
+        ausser BlockingIOError:
             # The socketpair buffer seems full
             pass
         sonst:
-            raise AssertionError("%s bytes failed to fill the socketpair "
+            wirf AssertionError("%s bytes failed to fill the socketpair "
                                  "buffer" % written)
 
         # By default, we get a warning when a signal arrives
@@ -649,7 +649,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
 
         err = err.getvalue()
         wenn msg nicht in err:
-            raise AssertionError("first set_wakeup_fd() test failed, "
+            wirf AssertionError("first set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
         # And also wenn warn_on_full_buffer=Wahr
@@ -660,7 +660,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
 
         err = err.getvalue()
         wenn msg nicht in err:
-            raise AssertionError("set_wakeup_fd(warn_on_full_buffer=Wahr) "
+            wirf AssertionError("set_wakeup_fd(warn_on_full_buffer=Wahr) "
                                  "test failed, stderr: %r" % err)
 
         # But nicht wenn warn_on_full_buffer=Falsch
@@ -671,7 +671,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
 
         err = err.getvalue()
         wenn err != "":
-            raise AssertionError("set_wakeup_fd(warn_on_full_buffer=Falsch) "
+            wirf AssertionError("set_wakeup_fd(warn_on_full_buffer=Falsch) "
                                  "test failed, stderr: %r" % err)
 
         # And then check the default again, to make sure warn_on_full_buffer
@@ -683,7 +683,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
 
         err = err.getvalue()
         wenn msg nicht in err:
-            raise AssertionError("second set_wakeup_fd() test failed, "
+            wirf AssertionError("second set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
         """.format(action=action)
@@ -723,36 +723,36 @@ klasse SiginterruptTest(unittest.TestCase):
             sys.stdout.flush()
 
             # run the test twice
-            try:
+            versuch:
                 fuer loop in range(2):
                     # send a SIGALRM in a second (during the read)
                     signal.alarm(1)
-                    try:
+                    versuch:
                         # blocking call: read von a pipe without data
                         os.read(r, 1)
-                    except ZeroDivisionError:
+                    ausser ZeroDivisionError:
                         pass
                     sonst:
                         sys.exit(2)
                 sys.exit(3)
-            finally:
+            schliesslich:
                 os.close(r)
                 os.close(w)
         """ % (interrupt,)
         mit spawn_python('-c', code) als process:
-            try:
+            versuch:
                 # wait until the child process is loaded und has started
                 first_line = process.stdout.readline()
 
                 stdout, stderr = process.communicate(timeout=timeout)
-            except subprocess.TimeoutExpired:
+            ausser subprocess.TimeoutExpired:
                 process.kill()
                 gib Falsch
             sonst:
                 stdout = first_line + stdout
                 exitcode = process.wait()
                 wenn exitcode nicht in (2, 3):
-                    raise Exception("Child error (exit code %s): %r"
+                    wirf Exception("Child error (exit code %s): %r"
                                     % (exitcode, stdout))
                 gib (exitcode == 3)
 
@@ -803,7 +803,7 @@ klasse ItimerTest(unittest.TestCase):
 
         wenn self.hndl_count > 3:
             # it shouldn't be here, because it should have been disabled.
-            raise signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
+            wirf signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
                 "timer.")
         sowenn self.hndl_count == 3:
             # disable ITIMER_VIRTUAL, this function shouldn't be called anymore
@@ -908,13 +908,13 @@ klasse PendingSignalsTests(unittest.TestCase):
             fuer sig in pending:
                 assert isinstance(sig, signal.Signals), repr(pending)
             wenn pending != {signum}:
-                raise Exception('%s != {%s}' % (pending, signum))
-            try:
+                wirf Exception('%s != {%s}' % (pending, signum))
+            versuch:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 pass
             sonst:
-                raise Exception("ZeroDivisionError nicht raised")
+                wirf Exception("ZeroDivisionError nicht raised")
         """
         assert_python_ok('-c', code)
 
@@ -935,12 +935,12 @@ klasse PendingSignalsTests(unittest.TestCase):
             signal.signal(signum, handler)
 
             tid = threading.get_ident()
-            try:
+            versuch:
                 signal.pthread_kill(tid, signum)
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 pass
             sonst:
-                raise Exception("ZeroDivisionError nicht raised")
+                wirf Exception("ZeroDivisionError nicht raised")
         """
         assert_python_ok('-c', code)
 
@@ -965,7 +965,7 @@ klasse PendingSignalsTests(unittest.TestCase):
         signum = signal.SIGALRM
 
         # child: block und wait the signal
-        try:
+        versuch:
             signal.signal(signum, handler)
             signal.pthread_sigmask(signal.SIG_BLOCK, [blocked])
 
@@ -973,13 +973,13 @@ klasse PendingSignalsTests(unittest.TestCase):
             test(signum)
 
             # The handler must nicht be called on unblock
-            try:
+            versuch:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [blocked])
-            except ZeroDivisionError:
+            ausser ZeroDivisionError:
                 drucke("the signal handler has been called",
                       file=sys.stderr)
                 sys.exit(1)
-        except BaseException als err:
+        ausser BaseException als err:
             drucke("error: {}".format(err), file=sys.stderr)
             sys.stderr.flush()
             sys.exit(1)
@@ -999,7 +999,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             received = signal.sigwait([signum])
             assert isinstance(received, signal.Signals), received
             wenn received != signum:
-                raise Exception('received %s, nicht %s' % (received, signum))
+                wirf Exception('received %s, nicht %s' % (received, signum))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigwaitinfo'),
@@ -1010,7 +1010,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             signal.alarm(1)
             info = signal.sigwaitinfo([signum])
             wenn info.si_signo != signum:
-                raise Exception("info.si_signo != %s" % signum)
+                wirf Exception("info.si_signo != %s" % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -1021,7 +1021,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             signal.alarm(1)
             info = signal.sigtimedwait([signum], 10.1000)
             wenn info.si_signo != signum:
-                raise Exception('info.si_signo != %s' % signum)
+                wirf Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -1034,7 +1034,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             os.kill(os.getpid(), signum)
             info = signal.sigtimedwait([signum], 0)
             wenn info.si_signo != signum:
-                raise Exception('info.si_signo != %s' % signum)
+                wirf Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -1044,7 +1044,7 @@ klasse PendingSignalsTests(unittest.TestCase):
         def test(signum):
             received = signal.sigtimedwait([signum], 1.0)
             wenn received is nicht Nichts:
-                raise Exception("received=%r" % (received,))
+                wirf Exception("received=%r" % (received,))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -1142,14 +1142,14 @@ klasse PendingSignalsTests(unittest.TestCase):
         # Unblock SIGUSR1 (and copy the old mask) to test our signal handler
         old_mask = signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
         check_mask(old_mask)
-        try:
+        versuch:
             kill(signum)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            raise Exception("ZeroDivisionError nicht raised")
+            wirf Exception("ZeroDivisionError nicht raised")
 
-        # Block und then raise SIGUSR1. The signal is blocked: the signal
+        # Block und then wirf SIGUSR1. The signal is blocked: the signal
         # handler is nicht called, und the signal is now pending
         mask = signal.pthread_sigmask(signal.SIG_BLOCK, [signum])
         check_mask(mask)
@@ -1159,33 +1159,33 @@ klasse PendingSignalsTests(unittest.TestCase):
         blocked = read_sigmask()
         check_mask(blocked)
         wenn signum nicht in blocked:
-            raise Exception("%s nicht in %s" % (signum, blocked))
+            wirf Exception("%s nicht in %s" % (signum, blocked))
         wenn old_mask ^ blocked != {signum}:
-            raise Exception("%s ^ %s != {%s}" % (old_mask, blocked, signum))
+            wirf Exception("%s ^ %s != {%s}" % (old_mask, blocked, signum))
 
         # Unblock SIGUSR1
-        try:
+        versuch:
             # unblock the pending signal calls immediately the signal handler
             signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            raise Exception("ZeroDivisionError nicht raised")
-        try:
+            wirf Exception("ZeroDivisionError nicht raised")
+        versuch:
             kill(signum)
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            raise Exception("ZeroDivisionError nicht raised")
+            wirf Exception("ZeroDivisionError nicht raised")
 
         # Check the new mask
         unblocked = read_sigmask()
         wenn signum in unblocked:
-            raise Exception("%s in %s" % (signum, unblocked))
+            wirf Exception("%s in %s" % (signum, unblocked))
         wenn blocked ^ unblocked != {signum}:
-            raise Exception("%s ^ %s != {%s}" % (blocked, unblocked, signum))
+            wirf Exception("%s ^ %s != {%s}" % (blocked, unblocked, signum))
         wenn old_mask != unblocked:
-            raise Exception("%s != %s" % (old_mask, unblocked))
+            wirf Exception("%s != %s" % (old_mask, unblocked))
         """
         assert_python_ok('-c', code)
 
@@ -1212,7 +1212,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             stdout, stderr = process.communicate()
             exitcode = process.wait()
             wenn exitcode != 3:
-                raise Exception("Child error (exit code %s): %s" %
+                wirf Exception("Child error (exit code %s): %s" %
                                 (exitcode, stdout))
 
 
@@ -1379,7 +1379,7 @@ klasse StressTest(unittest.TestCase):
         self.addCleanup(signal.signal, signum, old_handler)
 
         t = threading.Thread(target=set_interrupts)
-        try:
+        versuch:
             ignored = Falsch
             mit support.catch_unraisable_exception() als cm:
                 t.start()
@@ -1403,7 +1403,7 @@ klasse StressTest(unittest.TestCase):
                 # Sanity check that some signals were received, but nicht all
                 self.assertGreater(num_received_signals, 0)
             self.assertLessEqual(num_received_signals, num_sent_signals)
-        finally:
+        schliesslich:
             do_stop = Wahr
             t.join()
 
@@ -1416,15 +1416,15 @@ klasse RaiseSignalTest(unittest.TestCase):
 
     @unittest.skipIf(sys.platform != "win32", "Windows specific test")
     def test_invalid_argument(self):
-        try:
+        versuch:
             SIGHUP = 1 # nicht supported on win32
             signal.raise_signal(SIGHUP)
             self.fail("OSError (Invalid argument) expected")
-        except OSError als e:
+        ausser OSError als e:
             wenn e.errno == errno.EINVAL:
                 pass
             sonst:
-                raise
+                wirf
 
     def test_handler(self):
         is_ok = Falsch

@@ -4,16 +4,16 @@ importiere unittest
 von test importiere support
 
 wenn support.PGO:
-    raise unittest.SkipTest("test is nicht helpful fuer PGO")
+    wirf unittest.SkipTest("test is nicht helpful fuer PGO")
 
 wenn sys.platform == "win32":
-    raise unittest.SkipTest("fork is nicht available on Windows")
+    wirf unittest.SkipTest("fork is nicht available on Windows")
 
 wenn sys.platform == 'darwin':
-    raise unittest.SkipTest("test may crash on macOS (bpo-33725)")
+    wirf unittest.SkipTest("test may crash on macOS (bpo-33725)")
 
 wenn support.check_sanitizer(thread=Wahr):
-    raise unittest.SkipTest("TSAN doesn't support threads after fork")
+    wirf unittest.SkipTest("TSAN doesn't support threads after fork")
 
 def load_tests(*args):
     gib support.load_package_tests(os.path.dirname(__file__), *args)

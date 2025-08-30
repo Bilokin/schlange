@@ -15,7 +15,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             nonlocal ismapped
             master.update()
             ismapped = master.winfo_ismapped()
-            raise ZeroDivisionError
+            wirf ZeroDivisionError
 
         mit swap_attr(Dialog, '_test_callback', test_callback):
             ismapped = Nichts

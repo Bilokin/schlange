@@ -15,9 +15,9 @@ SMTP_TEST_SERVER = os.getenv('CPYTHON_TEST_SMTP_SERVER', 'smtp.gmail.com')
 def check_ssl_verifiy(host, port):
     context = ssl.create_default_context()
     mit socket.create_connection((host, port)) als sock:
-        try:
+        versuch:
             sock = context.wrap_socket(sock, server_hostname=host)
-        except Exception:
+        ausser Exception:
             gib Falsch
         sonst:
             sock.close()
@@ -35,13 +35,13 @@ klasse SmtpTest(unittest.TestCase):
         context.verify_mode = ssl.CERT_NONE
         mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP(self.testServer, self.remotePort)
-            try:
+            versuch:
                 server.starttls(context=context)
-            except smtplib.SMTPException als e:
+            ausser smtplib.SMTPException als e:
                 wenn e.args[0] == 'STARTTLS extension nicht supported by server.':
                     unittest.skip(e.args[0])
                 sonst:
-                    raise
+                    wirf
             server.ehlo()
             server.quit()
 

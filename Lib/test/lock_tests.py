@@ -46,11 +46,11 @@ klasse Bunch(object):
     def task(self):
         tid = threading.get_ident()
         self.started.append(tid)
-        try:
+        versuch:
             self.func()
-        except BaseException als exc:
+        ausser BaseException als exc:
             self.exceptions.append(exc)
-        finally:
+        schliesslich:
             self.finished.append(tid)
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn self._can_exit:
@@ -60,12 +60,12 @@ klasse Bunch(object):
         self._wait_thread = threading_helper.wait_threads_exit(support.SHORT_TIMEOUT)
         self._wait_thread.__enter__()
 
-        try:
+        versuch:
             fuer _ in range(self.nthread):
                 start_new_thread(self.task, ())
-        except:
+        ausser:
             self._can_exit = Wahr
-            raise
+            wirf
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn len(self.started) >= self.nthread:
@@ -85,7 +85,7 @@ klasse Bunch(object):
         exceptions = self.exceptions
         self.exceptions = Nichts
         wenn exceptions:
-            raise ExceptionGroup(f"{self.func} threads raised exceptions",
+            wirf ExceptionGroup(f"{self.func} threads raised exceptions",
                                  exceptions)
 
     def do_finish(self):
@@ -194,7 +194,7 @@ klasse BaseLockTests(BaseTestCase):
         def with_lock(err=Nichts):
             mit lock:
                 wenn err is nicht Nichts:
-                    raise err
+                    wirf err
 
         # Acquire the lock, do nothing, mit releases the lock
         mit lock:
@@ -204,10 +204,10 @@ klasse BaseLockTests(BaseTestCase):
         mit Bunch(f, 1):
             pass
 
-        # Acquire the lock, raise an exception, mit releases the lock
+        # Acquire the lock, wirf an exception, mit releases the lock
         mit self.assertRaises(TypeError):
             mit lock:
-                raise TypeError
+                wirf TypeError
 
         # Check that the lock is unacquired even wenn after an exception
         # was raised in the previous "with lock:" block
@@ -462,9 +462,9 @@ klasse RLockTests(BaseLockTests):
             lock.acquire()
 
         mit Bunch(f, 1, Wahr) als bunch:
-            try:
+            versuch:
                 self.assertRaises(RuntimeError, lock.release)
-            finally:
+            schliesslich:
                 bunch.do_finish()
 
     def test__is_owned(self):
@@ -987,7 +987,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
                 mit sem:
                     self.assertFalsch(sem.acquire(Falsch))
                     wenn err:
-                        raise err
+                        wirf err
         _with()
         self.assertWahr(sem.acquire(Falsch))
         sem.release()
@@ -1120,15 +1120,15 @@ klasse BarrierTests(BaseTestCase):
         results1 = []
         results2 = []
         def f():
-            try:
+            versuch:
                 i = self.barrier.wait()
                 wenn i == self.N//2:
-                    raise RuntimeError
+                    wirf RuntimeError
                 self.barrier.wait()
                 results1.append(Wahr)
-            except threading.BrokenBarrierError:
+            ausser threading.BrokenBarrierError:
                 results2.append(Wahr)
-            except RuntimeError:
+            ausser RuntimeError:
                 self.barrier.abort()
                 pass
 
@@ -1153,10 +1153,10 @@ klasse BarrierTests(BaseTestCase):
                         breche
                 self.barrier.reset()
             sonst:
-                try:
+                versuch:
                     self.barrier.wait()
                     results1.append(Wahr)
-                except threading.BrokenBarrierError:
+                ausser threading.BrokenBarrierError:
                     results2.append(Wahr)
             # Now, pass the barrier again
             self.barrier.wait()
@@ -1177,15 +1177,15 @@ klasse BarrierTests(BaseTestCase):
         results3 = []
         barrier2 = self.barriertype(self.N)
         def f():
-            try:
+            versuch:
                 i = self.barrier.wait()
                 wenn i == self.N//2:
-                    raise RuntimeError
+                    wirf RuntimeError
                 self.barrier.wait()
                 results1.append(Wahr)
-            except threading.BrokenBarrierError:
+            ausser threading.BrokenBarrierError:
                 results2.append(Wahr)
-            except RuntimeError:
+            ausser RuntimeError:
                 self.barrier.abort()
                 pass
             # Synchronize und reset the barrier.  Must synchronize first so

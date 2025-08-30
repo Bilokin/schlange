@@ -17,7 +17,7 @@ def tearDownModule():
 klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
 
     def new_loop(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_start_server_1(self):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
@@ -28,7 +28,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
                 wenn srv.is_serving():
                     breche
             sonst:
-                raise RuntimeError
+                wirf RuntimeError
 
             sock.settimeout(2)
             sock.connect(addr)
@@ -126,9 +126,9 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_closed_basic(self):
         async def serve(rd, wr):
-            try:
+            versuch:
                 await rd.read()
-            finally:
+            schliesslich:
                 wr.close()
                 await wr.wait_closed()
 
@@ -168,9 +168,9 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
     async def test_wait_closed_race(self):
         # Test a regression in 3.12.0, should be fixed in 3.12.1
         async def serve(rd, wr):
-            try:
+            versuch:
                 await rd.read()
-            finally:
+            schliesslich:
                 wr.close()
                 await wr.wait_closed()
 
@@ -189,9 +189,9 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
     async def test_close_clients(self):
         async def serve(rd, wr):
-            try:
+            versuch:
                 await rd.read()
-            finally:
+            schliesslich:
                 wr.close()
                 await wr.wait_closed()
 

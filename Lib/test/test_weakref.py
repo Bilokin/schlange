@@ -96,9 +96,9 @@ def collect_in_thread(period=0.005):
     mit support.disable_gc():
         t = threading.Thread(target=collect)
         t.start()
-        try:
+        versuch:
             liefere
-        finally:
+        schliesslich:
             please_stop = Wahr
             t.join()
 
@@ -110,7 +110,7 @@ klasse ReferencesTestCase(TestBase):
         self.check_basic_ref(create_function)
         self.check_basic_ref(create_bound_method)
 
-        # Just make sure the tp_repr handler doesn't raise an exception.
+        # Just make sure the tp_repr handler doesn't wirf an exception.
         # Live reference:
         o = C()
         wr = weakref.ref(o)
@@ -605,16 +605,16 @@ klasse ReferencesTestCase(TestBase):
         def encapsulate():
             f = lambda : ()
             data[weakref.ref(f, remove)] = Nichts
-            raise BogusError
-        try:
+            wirf BogusError
+        versuch:
             encapsulate()
-        except BogusError:
+        ausser BogusError:
             pass
         sonst:
             self.fail("exception nicht properly restored")
-        try:
+        versuch:
             encapsulate()
-        except BogusError:
+        ausser BogusError:
             pass
         sonst:
             self.fail("exception nicht properly restored")
@@ -726,7 +726,7 @@ klasse ReferencesTestCase(TestBase):
     def test_callback_different_classes(self):
         importiere gc
 
-        # Like test_callback_reachable_one_way, except c2 und c1 have different
+        # Like test_callback_reachable_one_way, ausser c2 und c1 have different
         # classes.  c2's klasse (C) isn't reachable von c1 then, so protecting
         # objects reachable von the dying object (c1) isn't enough to stop
         # c2's klasse (C) von getting tp_clear'ed before c2.cb is invoked.
@@ -857,13 +857,13 @@ klasse ReferencesTestCase(TestBase):
         a.a = a
         a.wr = makeref(referenced)
 
-        try:
+        versuch:
             # now make sure the object und the ref get labeled as
             # cyclic trash:
             a = A()
             weakref.ref(referenced, callback)
 
-        finally:
+        schliesslich:
             gc.set_threshold(*thresholds)
 
     def test_ref_created_during_del(self):
@@ -1021,7 +1021,7 @@ klasse ReferencesTestCase(TestBase):
 
     @support.cpython_only
     def test_no_memory_when_clearing(self):
-        # gh-118331: Make sure we do nicht raise an exception von the destructor
+        # gh-118331: Make sure we do nicht wirf an exception von the destructor
         # when clearing weakrefs wenn allocating the intermediate tuple fails.
         code = textwrap.dedent("""
         importiere _testcapi
@@ -1328,9 +1328,9 @@ klasse MappingTestCase(TestBase):
         dct = dict_type(cons(o) fuer o in items)
         # Keep an iterator alive
         it = dct.items()
-        try:
+        versuch:
             next(it)
-        except StopIteration:
+        ausser StopIteration:
             pass
         del items
         gc.collect()
@@ -1360,9 +1360,9 @@ klasse MappingTestCase(TestBase):
             del items
             # All items will be collected at next garbage collection pass
             it = dct.items()
-            try:
+            versuch:
                 next(it)
-            except StopIteration:
+            ausser StopIteration:
                 pass
             n1 = len(dct)
             del it
@@ -1599,14 +1599,14 @@ klasse MappingTestCase(TestBase):
         dict, objects = self.make_weak_keyed_dict()
         @contextlib.contextmanager
         def testcontext():
-            try:
+            versuch:
                 it = iter(dict.items())
                 next(it)
                 # Schedule a key/value fuer removal und recreate it
                 v = objects.pop().arg
                 gc.collect()      # just in case
                 liefere Object(v), v
-            finally:
+            schliesslich:
                 it = Nichts           # should commit all removals
                 gc.collect()
         self.check_weak_destroy_and_mutate_while_iterating(dict, testcontext)
@@ -1626,14 +1626,14 @@ klasse MappingTestCase(TestBase):
         dict, objects = self.make_weak_valued_dict()
         @contextlib.contextmanager
         def testcontext():
-            try:
+            versuch:
                 it = iter(dict.items())
                 next(it)
                 # Schedule a key/value fuer removal und recreate it
                 k = objects.pop().arg
                 gc.collect()      # just in case
                 liefere k, Object(k)
-            finally:
+            schliesslich:
                 it = Nichts           # should commit all removals
                 gc.collect()
         self.check_weak_destroy_and_mutate_while_iterating(dict, testcontext)
@@ -1878,13 +1878,13 @@ klasse MappingTestCase(TestBase):
     def test_weak_keyed_bad_delitem(self):
         d = weakref.WeakKeyDictionary()
         o = Object('1')
-        # An attempt to delete an object that isn't there should raise
+        # An attempt to delete an object that isn't there should wirf
         # KeyError.  It didn't before 2.3.
         self.assertRaises(KeyError, d.__delitem__, o)
         self.assertRaises(KeyError, d.__getitem__, o)
 
         # If a key isn't of a weakly referencable type, __getitem__ und
-        # __setitem__ raise TypeError.  __delitem__ should too.
+        # __setitem__ wirf TypeError.  __delitem__ should too.
         self.assertRaises(TypeError, d.__delitem__,  13)
         self.assertRaises(TypeError, d.__getitem__,  13)
         self.assertRaises(TypeError, d.__setitem__,  13, 13)
@@ -2007,12 +2007,12 @@ klasse MappingTestCase(TestBase):
                 self.ctr = ctr
 
         def dict_copy(d, exc):
-            try:
+            versuch:
                 wenn deepcopy is Wahr:
                     _ = copy.deepcopy(d)
                 sonst:
                     _ = d.copy()
-            except Exception als ex:
+            ausser Exception als ex:
                 exc.append(ex)
 
         def pop_and_collect(lst):
@@ -2052,7 +2052,7 @@ klasse MappingTestCase(TestBase):
 
         # Test exceptions
         wenn exc:
-            raise exc[0]
+            wirf exc[0]
 
     @threading_helper.requires_working_threading()
     @support.requires_resource('cpu')
@@ -2355,9 +2355,9 @@ Wahr
 Wahr
 >>> del a
 >>> gc_collect()  # For PyPy oder other GCs.
->>> try:
+>>> versuch:
 ...     id2obj(a_id)
-... except KeyError:
+... ausser KeyError:
 ...     drucke('OK')
 ... sonst:
 ...     drucke('WeakValueDictionary error')

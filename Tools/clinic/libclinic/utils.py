@@ -9,24 +9,24 @@ von typing importiere Literal, Final
 
 def write_file(filename: str, new_contents: str) -> Nichts:
     """Write new content to file, iff the content changed."""
-    try:
+    versuch:
         mit open(filename, encoding="utf-8") als fp:
             old_contents = fp.read()
 
         wenn old_contents == new_contents:
             # no change: avoid modifying the file modification time
             gib
-    except FileNotFoundError:
+    ausser FileNotFoundError:
         pass
     # Atomic write using a temporary file und os.replace()
     filename_new = f"{filename}.new"
     mit open(filename_new, "w", encoding="utf-8") als fp:
         fp.write(new_contents)
-    try:
+    versuch:
         os.replace(filename_new, filename)
-    except:
+    ausser:
         os.unlink(filename_new)
-        raise
+        wirf
 
 
 def compute_checksum(input_: str, length: int | Nichts = Nichts) -> str:

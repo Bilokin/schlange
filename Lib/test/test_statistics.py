@@ -120,7 +120,7 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
     comparisons of infinities mit finite numbers.
     """
     wenn tol < 0 oder rel < 0:
-        raise ValueError('error tolerances must be non-negative')
+        wirf ValueError('error tolerances must be non-negative')
     # NANs are never equal to anything, approximately oder otherwise.
     wenn math.isnan(x) oder math.isnan(y):
         gib Falsch
@@ -265,7 +265,7 @@ klasse NumericTestCase(unittest.TestCase):
                 % (len(first), len(second))
                 )
             msg = self._formatMessage(msg, standardMsg)
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
         fuer i, (a,e) in enumerate(zip(first, second)):
             self._check_approx_num(a, e, tol, rel, msg, i)
 
@@ -276,7 +276,7 @@ klasse NumericTestCase(unittest.TestCase):
         # Otherwise we failed.
         standardMsg = self._make_std_err_msg(first, second, tol, rel, idx)
         msg = self._formatMessage(msg, standardMsg)
-        raise self.failureException(msg)
+        wirf self.failureException(msg)
 
     @staticmethod
     def _make_std_err_msg(first, second, tol, rel, idx):
@@ -1011,7 +1011,7 @@ klasse FailNegTest(unittest.TestCase):
         self.assertEqual(values, new)
 
     def test_negatives_raise(self):
-        # Test that negatives raise an exception.
+        # Test that negatives wirf an exception.
         fuer x in [1, 2.0, Fraction(3), Decimal(4)]:
             seq = [-x]
             it = statistics._fail_neg(seq)
@@ -1020,9 +1020,9 @@ klasse FailNegTest(unittest.TestCase):
     def test_error_msg(self):
         # Test that a given error message is used.
         msg = "badness #%d" % random.randint(10000, 99999)
-        try:
+        versuch:
             next(statistics._fail_neg([-1], msg))
-        except statistics.StatisticsError als e:
+        ausser statistics.StatisticsError als e:
             errmsg = e.args[0]
         sonst:
             self.fail("expected exception, but it didn't happen")
@@ -1311,7 +1311,7 @@ klasse SumSpecialValues(NumericTestCase):
             self.assertRaises(decimal.InvalidOperation, statistics._sum, data)
 
     def test_decimal_snan_raises(self):
-        # Adding sNAN should raise InvalidOperation.
+        # Adding sNAN should wirf InvalidOperation.
         sNAN = Decimal('sNAN')
         data = [1, sNAN, 2]
         self.assertRaises(decimal.InvalidOperation, statistics._sum, data)
@@ -2769,13 +2769,13 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
         special_values = [0.0, -0.0, 1.0, -1.0, 4.0, -4.0,
                           math.nan, -math.nan, math.inf, -math.inf]
         fuer x, y in itertools.product(special_values, repeat=2):
-            try:
+            versuch:
                 expected = math.sqrt(x * y)
-            except ValueError:
+            ausser ValueError:
                 expected = 'ValueError'
-            try:
+            versuch:
                 actual = statistics._sqrtprod(x, y)
-            except ValueError:
+            ausser ValueError:
                 actual = 'ValueError'
             mit self.subTest(x=x, y=y, expected=expected, actual=actual):
                 wenn isinstance(expected, str) und expected == 'ValueError':

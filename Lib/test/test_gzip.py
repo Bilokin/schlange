@@ -40,10 +40,10 @@ klasse UnseekableIO(io.BytesIO):
         gib Falsch
 
     def tell(self):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
     def seek(self, *args):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
 
 klasse BaseTest(unittest.TestCase):
@@ -109,7 +109,7 @@ klasse TestGzip(BaseTest):
         self.write_and_read_back(array.array('I', data1 * 40))
 
     def test_write_incompatible_type(self):
-        # Test that non-bytes-like types raise TypeError.
+        # Test that non-bytes-like types wirf TypeError.
         # Issue #21560: attempts to write incompatible types
         # should nicht affect the state of the fileobject
         mit gzip.GzipFile(self.filename, 'wb') als f:
@@ -184,7 +184,7 @@ klasse TestGzip(BaseTest):
         self.assertEqual(f.read(size), data1)
 
     def test_io_on_closed_object(self):
-        # Test that I/O operations on closed GzipFile objects raise a
+        # Test that I/O operations on closed GzipFile objects wirf a
         # ValueError, just like the corresponding functions on file objects.
 
         # Write to a file, open it fuer reading, then close it.
@@ -365,10 +365,10 @@ klasse TestGzip(BaseTest):
             cmByte = fRead.read(1)
             self.assertEqual(cmByte, b'\x08') # deflate
 
-            try:
+            versuch:
                 expectedname = self.filename.encode('Latin-1') + b'\x00'
                 expectedflags = b'\x08' # only the FNAME flag is set
-            except UnicodeEncodeError:
+            ausser UnicodeEncodeError:
                 expectedname = b''
                 expectedflags = b'\x00'
 
@@ -431,20 +431,20 @@ klasse TestGzip(BaseTest):
             f.write(b"xxx")
         f = gzip.GzipFile(self.filename, "rb")
         f.close()
-        try:
+        versuch:
             mit f:
                 pass
-        except ValueError:
+        ausser ValueError:
             pass
         sonst:
-            self.fail("__enter__ on a closed file didn't raise an exception")
-        try:
+            self.fail("__enter__ on a closed file didn't wirf an exception")
+        versuch:
             mit gzip.GzipFile(self.filename, "wb") als f:
                 1/0
-        except ZeroDivisionError:
+        ausser ZeroDivisionError:
             pass
         sonst:
-            self.fail("1/0 didn't raise an exception")
+            self.fail("1/0 didn't wirf an exception")
 
     def test_zero_padded_file(self):
         mit gzip.GzipFile(self.filename, "wb") als f:
@@ -1049,9 +1049,9 @@ def create_and_remove_directory(directory):
         @functools.wraps(function)
         def wrapper(*args, **kwargs):
             os.makedirs(directory)
-            try:
+            versuch:
                 gib function(*args, **kwargs)
-            finally:
+            schliesslich:
                 os_helper.rmtree(directory)
         gib wrapper
     gib decorator

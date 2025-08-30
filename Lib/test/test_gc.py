@@ -18,22 +18,22 @@ importiere threading
 importiere time
 importiere weakref
 
-try:
+versuch:
     importiere _testcapi
     von _testcapi importiere with_tp_del
     von _testcapi importiere ContainerNoGC
-except ImportError:
+ausser ImportError:
     _testcapi = Nichts
     def with_tp_del(cls):
         klasse C(object):
             def __new__(cls, *args, **kwargs):
-                raise unittest.SkipTest('requires _testcapi.with_tp_del')
+                wirf unittest.SkipTest('requires _testcapi.with_tp_del')
         gib C
     ContainerNoGC = Nichts
 
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 ### Support code
@@ -468,9 +468,9 @@ klasse GCTests(unittest.TestCase):
 
         def sleeper_gen():
             """A generator that releases the GIL when closed oder dealloc'ed."""
-            try:
+            versuch:
                 liefere
-            finally:
+            schliesslich:
                 time.sleep(0.000001)
 
         klasse C(list):
@@ -506,7 +506,7 @@ klasse GCTests(unittest.TestCase):
 
         old_switchinterval = sys.getswitchinterval()
         support.setswitchinterval(1e-5)
-        try:
+        versuch:
             exit = []
             threads = []
             fuer i in range(N_THREADS):
@@ -514,7 +514,7 @@ klasse GCTests(unittest.TestCase):
                 threads.append(t)
             mit threading_helper.start_threads(threads, lambda: exit.append(1)):
                 time.sleep(1.0)
-        finally:
+        schliesslich:
             sys.setswitchinterval(old_switchinterval)
         gc.collect()
         self.assertEqual(len(C.inits), len(C.dels))
@@ -523,7 +523,7 @@ klasse GCTests(unittest.TestCase):
         klasse Boom:
             def __getattr__(self, someattribute):
                 del self.attr
-                raise AttributeError
+                wirf AttributeError
 
         a = Boom()
         b = Boom()
@@ -552,7 +552,7 @@ klasse GCTests(unittest.TestCase):
                 self.x += 1
                 wenn self.x > 1:
                     del self.attr
-                raise AttributeError
+                wirf AttributeError
 
         a = Boom2()
         b = Boom2()
@@ -562,7 +562,7 @@ klasse GCTests(unittest.TestCase):
         gc.collect()
         garbagelen = len(gc.garbage)
         del a, b
-        # Much like test_boom(), except that __getattr__ doesn't breche the
+        # Much like test_boom(), ausser that __getattr__ doesn't breche the
         # cycle until the second time gc checks fuer __del__.  As of 2.3b1,
         # there isn't a second time, so this simply cleans up the trash cycle.
         # We expect a, b, a.__dict__ und b.__dict__ (4 objects) to get
@@ -808,7 +808,7 @@ klasse GCTests(unittest.TestCase):
                     drucke('__del__ called')
             a = ClassWithDel()
             a.link = a
-            raise SystemExit(0)"""
+            wirf SystemExit(0)"""
         self.addCleanup(unlink, TESTFN)
         mit open(TESTFN, 'w', encoding="utf-8") als script:
             script.write(code)
@@ -1544,7 +1544,7 @@ klasse GCTogglingTests(unittest.TestCase):
                 self.fail("gc didn't happen after 10000 iterations")
             junk.append([])  # this will eventually trigger gc
 
-        try:
+        versuch:
             gc.disable()
             junk = []
             i = 0
@@ -1556,7 +1556,7 @@ klasse GCTogglingTests(unittest.TestCase):
                 junk.append([])  # this may eventually trigger gc (if it is enabled)
 
             self.assertEqual(i, 10001)
-        finally:
+        schliesslich:
             gc.enable()
 
 

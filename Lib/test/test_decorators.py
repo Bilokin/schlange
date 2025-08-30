@@ -30,7 +30,7 @@ def dbcheck(exprstr, globals=Nichts, locals=Nichts):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
         def check(*args, **kwds):
             wenn nicht eval(expr, globals, locals):
-                raise DbcheckError(exprstr, func, args, kwds)
+                wirf DbcheckError(exprstr, func, args, kwds)
             gib func(*args, **kwds)
         gib check
     gib decorate
@@ -54,13 +54,13 @@ def countcalls(counts):
 def memoize(func):
     saved = {}
     def call(*args):
-        try:
+        versuch:
             gib saved[args]
-        except KeyError:
+        ausser KeyError:
             res = func(*args)
             saved[args] = res
             gib res
-        except TypeError:
+        ausser TypeError:
             # Unhashable argument
             gib func(*args)
     call.__name__ = func.__name__
@@ -187,7 +187,7 @@ klasse TestDecorators(unittest.TestCase):
                 exec(f"@{expr}\ndef f(): pass")
 
         def unimp(func):
-            raise NotImplementedError
+            wirf NotImplementedError
         context = dict(nullval=Nichts, unimp=unimp)
 
         fuer expr, exc in [ ("undef", NameError),

@@ -51,9 +51,9 @@ def func_returnlonglong():
 def func_raiseexception():
     5/0
 def func_memoryerror():
-    raise MemoryError
+    wirf MemoryError
 def func_overflowerror():
-    raise OverflowError
+    wirf OverflowError
 
 klasse AggrNoStep:
     def __init__(self):
@@ -354,9 +354,9 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_deterministic(self):
         mock = Mock(return_value=Nichts)
         self.con.create_function("deterministic", 0, mock, deterministic=Wahr)
-        try:
+        versuch:
             self.con.execute("create index t on test(t) where deterministic() is nicht null")
-        except sqlite.OperationalError:
+        ausser sqlite.OperationalError:
             self.fail("Unexpected failure waehrend creating partial index")
 
     def test_func_deterministic_keyword_only(self):
@@ -775,9 +775,9 @@ klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
-            raise ValueError
+            wirf ValueError
         wenn arg2 == 'c2' oder arg1 == 't2':
-            raise ValueError
+            wirf ValueError
         gib sqlite.SQLITE_OK
 
     @with_tracebacks(ValueError, msg_regex="authorizer_cb")

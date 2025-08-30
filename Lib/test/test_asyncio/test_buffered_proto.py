@@ -30,7 +30,7 @@ klasse ReceiveStuffProto(asyncio.BufferedProtocol):
 klasse BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
     def new_loop(self):
-        raise NotImplementedError
+        wirf NotImplementedError
 
     def test_buffered_proto_create_connection(self):
 

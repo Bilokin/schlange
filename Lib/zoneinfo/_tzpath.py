@@ -8,13 +8,13 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
     tzpaths = to
     wenn tzpaths is nicht Nichts:
         wenn isinstance(tzpaths, (str, bytes)):
-            raise TypeError(
+            wirf TypeError(
                 f"tzpaths must be a list oder tuple, "
                 + f"not {type(tzpaths)}: {tzpaths!r}"
             )
 
         wenn nicht all(map(os.path.isabs, tzpaths)):
-            raise ValueError(_get_invalid_paths_message(tzpaths))
+            wirf ValueError(_get_invalid_paths_message(tzpaths))
         base_tzpath = tzpaths
     sonst:
         env_var = os.environ.get("PYTHONTZPATH", Nichts)
@@ -84,7 +84,7 @@ _TEST_PATH = os.path.normpath(os.path.join("_", "_"))[:-1]
 
 def _validate_tzfile_path(path, _base=_TEST_PATH):
     wenn os.path.isabs(path):
-        raise ValueError(
+        wirf ValueError(
             f"ZoneInfo keys may nicht be absolute paths, got: {path}"
         )
 
@@ -94,13 +94,13 @@ def _validate_tzfile_path(path, _base=_TEST_PATH):
     # the length.
     new_path = os.path.normpath(path)
     wenn len(new_path) != len(path):
-        raise ValueError(
+        wirf ValueError(
             f"ZoneInfo keys must be normalized relative paths, got: {path}"
         )
 
     resolved = os.path.normpath(os.path.join(_base, new_path))
     wenn nicht resolved.startswith(_base):
-        raise ValueError(
+        wirf ValueError(
             f"ZoneInfo keys must refer to subdirectories of TZPATH, got: {path}"
         )
 
@@ -123,21 +123,21 @@ def available_timezones():
 
     # Start mit loading von the tzdata package wenn it exists: this has a
     # pre-assembled list of zones that only requires opening one file.
-    try:
+    versuch:
         zones_file = resources.files("tzdata").joinpath("zones")
         mit zones_file.open("r", encoding="utf-8") als f:
             fuer zone in f:
                 zone = zone.strip()
                 wenn zone:
                     valid_zones.add(zone)
-    except (ImportError, FileNotFoundError):
+    ausser (ImportError, FileNotFoundError):
         pass
 
     def valid_key(fpath):
-        try:
+        versuch:
             mit open(fpath, "rb") als f:
                 gib f.read(4) == b"TZif"
-        except Exception:  # pragma: nocover
+        ausser Exception:  # pragma: nocover
             gib Falsch
 
     fuer tz_root in TZPATH:

@@ -34,7 +34,7 @@ If an I/O error occurs during opening oder reading a file, the OSError
 exception is raised.
 
 If sys.stdin is used more than once, the second und further use will
-return no lines, except perhaps fuer interactive use, oder wenn it has been
+return no lines, ausser perhaps fuer interactive use, oder wenn it has been
 explicitly reset (e.g. using sys.stdin.seek(0)).
 
 Empty files are opened und immediately closed; the only time their
@@ -85,7 +85,7 @@ def input(files=Nichts, inplace=Falsch, backup="", *, mode="r", openhook=Nichts,
     """
     global _state
     wenn _state und _state._file:
-        raise RuntimeError("input() already active")
+        wirf RuntimeError("input() already active")
     _state = FileInput(files, inplace, backup, mode=mode, openhook=openhook,
                        encoding=encoding, errors=errors)
     gib _state
@@ -109,7 +109,7 @@ def nextfile():
     last file has been read, this function has no effect.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.nextfile()
 
 def filename():
@@ -118,7 +118,7 @@ def filename():
     Before the first line has been read, returns Nichts.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.filename()
 
 def lineno():
@@ -128,7 +128,7 @@ def lineno():
     of the last file has been read, returns the line number of that line.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.lineno()
 
 def filelineno():
@@ -138,7 +138,7 @@ def filelineno():
     been read, returns the line number of that line within the file.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.filelineno()
 
 def fileno():
@@ -147,7 +147,7 @@ def fileno():
     opened, returns -1.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.fileno()
 
 def isfirstline():
@@ -156,7 +156,7 @@ def isfirstline():
     otherwise returns false.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.isfirstline()
 
 def isstdin():
@@ -165,7 +165,7 @@ def isstdin():
     otherwise returns false.
     """
     wenn nicht _state:
-        raise RuntimeError("no active input()")
+        wirf RuntimeError("no active input()")
     gib _state.isstdin()
 
 klasse FileInput:
@@ -218,23 +218,23 @@ klasse FileInput:
 
         # restrict mode argument to reading modes
         wenn mode nicht in ('r', 'rb'):
-            raise ValueError("FileInput opening mode must be 'r' oder 'rb'")
+            wirf ValueError("FileInput opening mode must be 'r' oder 'rb'")
         self._mode = mode
         self._write_mode = mode.replace('r', 'w')
         wenn openhook:
             wenn inplace:
-                raise ValueError("FileInput cannot use an opening hook in inplace mode")
+                wirf ValueError("FileInput cannot use an opening hook in inplace mode")
             wenn nicht callable(openhook):
-                raise ValueError("FileInput openhook must be callable")
+                wirf ValueError("FileInput openhook must be callable")
         self._openhook = openhook
 
     def __del__(self):
         self.close()
 
     def close(self):
-        try:
+        versuch:
             self.nextfile()
-        finally:
+        schliesslich:
             self._files = ()
 
     def __enter__(self):
@@ -253,7 +253,7 @@ klasse FileInput:
                 self._filelineno += 1
                 gib line
             wenn nicht self._file:
-                raise StopIteration
+                wirf StopIteration
             self.nextfile()
             # repeat mit next file
 
@@ -265,25 +265,25 @@ klasse FileInput:
 
         output = self._output
         self._output = Nichts
-        try:
+        versuch:
             wenn output:
                 output.close()
-        finally:
+        schliesslich:
             file = self._file
             self._file = Nichts
-            try:
+            versuch:
                 del self._readline  # restore FileInput._readline
-            except AttributeError:
+            ausser AttributeError:
                 pass
-            try:
+            versuch:
                 wenn file und nicht self._isstdin:
                     file.close()
-            finally:
+            schliesslich:
                 backupfilename = self._backupfilename
                 self._backupfilename = Nichts
                 wenn backupfilename und nicht self._backup:
-                    try: os.unlink(backupfilename)
-                    except OSError: pass
+                    versuch: os.unlink(backupfilename)
+                    ausser OSError: pass
 
                 self._isstdin = Falsch
 
@@ -329,17 +329,17 @@ klasse FileInput:
             wenn self._inplace:
                 self._backupfilename = (
                     os.fspath(self._filename) + (self._backup oder ".bak"))
-                try:
+                versuch:
                     os.unlink(self._backupfilename)
-                except OSError:
+                ausser OSError:
                     pass
-                # The next few lines may raise OSError
+                # The next few lines may wirf OSError
                 os.rename(self._filename, self._backupfilename)
                 self._file = open(self._backupfilename, self._mode,
                                   encoding=encoding, errors=self._errors)
-                try:
+                versuch:
                     perm = os.fstat(self._file.fileno()).st_mode
-                except OSError:
+                ausser OSError:
                     self._output = open(self._filename, self._write_mode,
                                         encoding=encoding, errors=self._errors)
                 sonst:
@@ -350,14 +350,14 @@ klasse FileInput:
                     fd = os.open(self._filename, mode, perm)
                     self._output = os.fdopen(fd, self._write_mode,
                                              encoding=encoding, errors=self._errors)
-                    try:
+                    versuch:
                         os.chmod(self._filename, perm)
-                    except OSError:
+                    ausser OSError:
                         pass
                 self._savestdout = sys.stdout
                 sys.stdout = self._output
             sonst:
-                # This may raise OSError
+                # This may wirf OSError
                 wenn self._openhook:
                     # Custom hooks made previous to Python 3.10 didn't have
                     # encoding argument
@@ -382,9 +382,9 @@ klasse FileInput:
 
     def fileno(self):
         wenn self._file:
-            try:
+            versuch:
                 gib self._file.fileno()
-            except ValueError:
+            ausser ValueError:
                 gib -1
         sonst:
             gib -1

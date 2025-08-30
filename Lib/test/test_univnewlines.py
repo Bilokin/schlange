@@ -8,7 +8,7 @@ von test.support importiere os_helper
 
 
 wenn nicht hasattr(sys.stdin, 'newlines'):
-    raise unittest.SkipTest(
+    wirf unittest.SkipTest(
         "This Python does nicht have universal newline support")
 
 FATX = 'x' * (2**14)
@@ -51,9 +51,9 @@ klasse TestGenericUnivNewlines:
             fp.write(data)
 
     def tearDown(self):
-        try:
+        versuch:
             os.unlink(os_helper.TESTFN)
-        except:
+        ausser:
             pass
 
     def test_read(self):

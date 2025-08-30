@@ -86,7 +86,7 @@ klasse _ChannelEnd:
         sowenn self._end == 'recv':
             cid = _channels._channel_id(cid, recv=Wahr, force=Wahr)
         sonst:
-            raise NotImplementedError(self._end)
+            wirf NotImplementedError(self._end)
         self._id = cid
         gib self
 
@@ -141,13 +141,13 @@ klasse RecvChannel(_ChannelEnd):
         wenn timeout is nicht Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
-                raise ValueError(f'timeout value must be non-negative')
+                wirf ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
         obj, unboundop = _channels.recv(self._id, _sentinel)
         waehrend obj is _sentinel:
             time.sleep(_delay)
             wenn timeout is nicht Nichts und time.time() >= end:
-                raise TimeoutError
+                wirf TimeoutError
             obj, unboundop = _channels.recv(self._id, _sentinel)
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
@@ -181,10 +181,10 @@ klasse SendChannel(_ChannelEnd):
 
 #    def __new__(cls, cid, *, _unbound=Nichts):
 #        wenn _unbound is Nichts:
-#            try:
+#            versuch:
 #                op = _channels.get_channel_defaults(cid)
 #                _unbound = (op,)
-#            except ChannelNotFoundError:
+#            ausser ChannelNotFoundError:
 #                _unbound = _serialize_unbound(UNBOUND)
 #        self = super().__new__(cls, cid)
 #        self._unbound = _unbound
@@ -200,9 +200,9 @@ klasse SendChannel(_ChannelEnd):
 
     @property
     def unbounditems(self):
-        try:
+        versuch:
             _, items = self._unbound
-        except AttributeError:
+        ausser AttributeError:
             op, _ = _channels.get_queue_defaults(self._id)
             _, items = self._set_unbound(op)
         gib items

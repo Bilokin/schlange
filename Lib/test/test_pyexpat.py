@@ -286,10 +286,10 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
                 r"must be str oder Nichts, nicht int"):
             expat.ParserCreate(namespace_separator=42)
 
-        try:
+        versuch:
             expat.ParserCreate(namespace_separator='too long')
             self.fail()
-        except ValueError als e:
+        ausser ValueError als e:
             self.assertEqual(str(e),
                 'namespace_separator must be at most one character, omitted, oder Nichts')
 
@@ -452,7 +452,7 @@ klasse BufferTextTest(unittest.TestCase):
 # Test handling of exception von callback:
 klasse HandlerExceptionTest(unittest.TestCase):
     def StartElementHandler(self, name, attrs):
-        raise RuntimeError(f'StartElementHandler: <{name}>')
+        wirf RuntimeError(f'StartElementHandler: <{name}>')
 
     def check_traceback_entry(self, entry, filename, funcname):
         self.assertEqual(os.path.basename(entry.filename), filename)
@@ -482,11 +482,11 @@ klasse HandlerExceptionTest(unittest.TestCase):
 
         parser = expat.ParserCreate()
         parser.StartElementHandler = self.StartElementHandler
-        try:
+        versuch:
             parser.Parse(b"<a><b><c/></b></a>", Wahr)
 
-            self.fail("the parser did nicht raise RuntimeError")
-        except RuntimeError als exc:
+            self.fail("the parser did nicht wirf RuntimeError")
+        ausser RuntimeError als exc:
             self.assertEqual(exc.args[0], 'StartElementHandler: <a>', exc)
             entries = traceback.extract_tb(exc.__traceback__)
 
@@ -551,7 +551,7 @@ klasse sf1296433Test(unittest.TestCase):
             pass
 
         def handler(text):
-            raise SpecificException
+            wirf SpecificException
 
         parser = expat.ParserCreate()
         parser.CharacterDataHandler = handler
@@ -684,10 +684,10 @@ klasse MalformedInputTest(unittest.TestCase):
     def test1(self):
         xml = b"\0\r\n"
         parser = expat.ParserCreate()
-        try:
+        versuch:
             parser.Parse(xml, Wahr)
             self.fail()
-        except expat.ExpatError als e:
+        ausser expat.ExpatError als e:
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
 
     def test2(self):
@@ -707,10 +707,10 @@ klasse ErrorMessageTest(unittest.TestCase):
     def test_expaterror(self):
         xml = b'<'
         parser = expat.ParserCreate()
-        try:
+        versuch:
             parser.Parse(xml, Wahr)
             self.fail()
-        except expat.ExpatError als e:
+        ausser expat.ExpatError als e:
             self.assertEqual(e.code,
                              errors.codes[errors.XML_ERROR_UNCLOSED_TOKEN])
 

@@ -12,9 +12,9 @@ __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 importiere _imp  # Just the builtin component, NOT the full Python module
 importiere sys
 
-try:
+versuch:
     importiere _frozen_importlib als _bootstrap
-except ImportError:
+ausser ImportError:
     von . importiere _bootstrap
     _bootstrap._setup(sys, _imp)
 sonst:
@@ -22,26 +22,26 @@ sonst:
     # a second copy of the module.
     _bootstrap.__name__ = 'importlib._bootstrap'
     _bootstrap.__package__ = 'importlib'
-    try:
+    versuch:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
-    except NameError:
+    ausser NameError:
         # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap'] = _bootstrap
 
-try:
+versuch:
     importiere _frozen_importlib_external als _bootstrap_external
-except ImportError:
+ausser ImportError:
     von . importiere _bootstrap_external
     _bootstrap_external._set_bootstrap_module(_bootstrap)
     _bootstrap._bootstrap_external = _bootstrap_external
 sonst:
     _bootstrap_external.__name__ = 'importlib._bootstrap_external'
     _bootstrap_external.__package__ = 'importlib'
-    try:
+    versuch:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
-    except NameError:
+    ausser NameError:
         # __file__ is nicht guaranteed to be defined, e.g. wenn this code gets
         # frozen by a tool like cx_Freeze.
         pass
@@ -79,7 +79,7 @@ def import_module(name, package=Nichts):
     level = 0
     wenn name.startswith('.'):
         wenn nicht package:
-            raise TypeError("the 'package' argument is required to perform a "
+            wirf TypeError("the 'package' argument is required to perform a "
                             f"relative importiere fuer {name!r}")
         fuer character in name:
             wenn character != '.':
@@ -97,26 +97,26 @@ def reload(module):
     The module must have been successfully imported before.
 
     """
-    try:
+    versuch:
         name = module.__spec__.name
-    except AttributeError:
-        try:
+    ausser AttributeError:
+        versuch:
             name = module.__name__
-        except AttributeError:
-            raise TypeError("reload() argument must be a module") von Nichts
+        ausser AttributeError:
+            wirf TypeError("reload() argument must be a module") von Nichts
 
     wenn sys.modules.get(name) is nicht module:
-        raise ImportError(f"module {name} nicht in sys.modules", name=name)
+        wirf ImportError(f"module {name} nicht in sys.modules", name=name)
     wenn name in _RELOADING:
         gib _RELOADING[name]
     _RELOADING[name] = module
-    try:
+    versuch:
         parent_name = name.rpartition('.')[0]
         wenn parent_name:
-            try:
+            versuch:
                 parent = sys.modules[parent_name]
-            except KeyError:
-                raise ImportError(f"parent {parent_name!r} nicht in sys.modules",
+            ausser KeyError:
+                wirf ImportError(f"parent {parent_name!r} nicht in sys.modules",
                                   name=parent_name) von Nichts
             sonst:
                 pkgpath = parent.__path__
@@ -125,12 +125,12 @@ def reload(module):
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
         wenn spec is Nichts:
-            raise ModuleNotFoundError(f"spec nicht found fuer the module {name!r}", name=name)
+            wirf ModuleNotFoundError(f"spec nicht found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
         gib sys.modules[name]
-    finally:
-        try:
+    schliesslich:
+        versuch:
             del _RELOADING[name]
-        except KeyError:
+        ausser KeyError:
             pass

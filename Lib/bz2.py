@@ -57,7 +57,7 @@ klasse BZ2File(_streams.BaseStream):
         self._mode = Nichts
 
         wenn nicht (1 <= compresslevel <= 9):
-            raise ValueError("compresslevel must be between 1 und 9")
+            wirf ValueError("compresslevel must be between 1 und 9")
 
         wenn mode in ("", "r", "rb"):
             mode = "rb"
@@ -75,7 +75,7 @@ klasse BZ2File(_streams.BaseStream):
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
         sonst:
-            raise ValueError("Invalid mode: %r" % (mode,))
+            wirf ValueError("Invalid mode: %r" % (mode,))
 
         wenn isinstance(filename, (str, bytes, os.PathLike)):
             self._fp = _builtin_open(filename, mode)
@@ -85,7 +85,7 @@ klasse BZ2File(_streams.BaseStream):
             self._fp = filename
             self._mode = mode_code
         sonst:
-            raise TypeError("filename must be a str, bytes, file oder PathLike object")
+            wirf TypeError("filename must be a str, bytes, file oder PathLike object")
 
         wenn self._mode == _MODE_READ:
             raw = _streams.DecompressReader(self._fp,
@@ -98,21 +98,21 @@ klasse BZ2File(_streams.BaseStream):
         """Flush und close the file.
 
         May be called more than once without error. Once the file is
-        closed, any other operation on it will raise a ValueError.
+        closed, any other operation on it will wirf a ValueError.
         """
         wenn self.closed:
             gib
-        try:
+        versuch:
             wenn self._mode == _MODE_READ:
                 self._buffer.close()
             sowenn self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = Nichts
-        finally:
-            try:
+        schliesslich:
+            versuch:
                 wenn self._closefp:
                     self._fp.close()
-            finally:
+            schliesslich:
                 self._fp = Nichts
                 self._closefp = Falsch
                 self._buffer = Nichts
@@ -200,7 +200,7 @@ klasse BZ2File(_streams.BaseStream):
         """
         wenn nicht isinstance(size, int):
             wenn nicht hasattr(size, "__index__"):
-                raise TypeError("Integer argument expected")
+                wirf TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
         gib self._buffer.readline(size)
@@ -214,7 +214,7 @@ klasse BZ2File(_streams.BaseStream):
         """
         wenn nicht isinstance(size, int):
             wenn nicht hasattr(size, "__index__"):
-                raise TypeError("Integer argument expected")
+                wirf TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
         gib self._buffer.readlines(size)
@@ -299,14 +299,14 @@ def open(filename, mode="rb", compresslevel=9,
     """
     wenn "t" in mode:
         wenn "b" in mode:
-            raise ValueError("Invalid mode: %r" % (mode,))
+            wirf ValueError("Invalid mode: %r" % (mode,))
     sonst:
         wenn encoding is nicht Nichts:
-            raise ValueError("Argument 'encoding' nicht supported in binary mode")
+            wirf ValueError("Argument 'encoding' nicht supported in binary mode")
         wenn errors is nicht Nichts:
-            raise ValueError("Argument 'errors' nicht supported in binary mode")
+            wirf ValueError("Argument 'errors' nicht supported in binary mode")
         wenn newline is nicht Nichts:
-            raise ValueError("Argument 'newline' nicht supported in binary mode")
+            wirf ValueError("Argument 'newline' nicht supported in binary mode")
 
     bz_mode = mode.replace("t", "")
     binary_file = BZ2File(filename, bz_mode, compresslevel=compresslevel)
@@ -337,16 +337,16 @@ def decompress(data):
     results = []
     waehrend data:
         decomp = BZ2Decompressor()
-        try:
+        versuch:
             res = decomp.decompress(data)
-        except OSError:
+        ausser OSError:
             wenn results:
                 breche  # Leftover data is nicht a valid bzip2 stream; ignore it.
             sonst:
-                raise  # Error on the first iteration; bail out.
+                wirf  # Error on the first iteration; bail out.
         results.append(res)
         wenn nicht decomp.eof:
-            raise ValueError("Compressed data ended before the "
+            wirf ValueError("Compressed data ended before the "
                              "end-of-stream marker was reached")
         data = decomp.unused_data
     gib b"".join(results)

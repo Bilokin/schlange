@@ -273,7 +273,7 @@ klasse CAPITest(unittest.TestCase):
             tuples += referrer_tuples()
             fuer x in range(10):
                 tuples += referrer_tuples()
-                # Prior to 3.13 would raise a SystemError when the tuple needs to be resized
+                # Prior to 3.13 would wirf a SystemError when the tuple needs to be resized
                 liefere x
 
         self.assertEqual(tuple(my_iter()), (TAG, *range(10)))

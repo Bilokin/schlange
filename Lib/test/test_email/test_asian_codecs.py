@@ -11,10 +11,10 @@ von email.message importiere Message
 
 # We're compatible mit Python 2.3, but it doesn't have the built-in Asian
 # codecs, so we have to skip all these tests.
-try:
+versuch:
     str(b'foo', 'euc-jp')
-except LookupError:
-    raise unittest.SkipTest
+ausser LookupError:
+    wirf unittest.SkipTest
 
 
 

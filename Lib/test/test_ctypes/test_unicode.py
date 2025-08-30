@@ -29,7 +29,7 @@ klasse UnicodeTestCase(unittest.TestCase):
         klasse TestStruct(ctypes.Structure):
             _fields_ = [("unicode", ctypes.c_wchar_p)]
         t = TestStruct()
-        # This would raise a ValueError:
+        # This would wirf a ValueError:
         t.unicode = "foo\0bar\0\0"
 
 

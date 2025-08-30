@@ -10,21 +10,21 @@ klasse TestRecursion:
     def test_listrecursion(self):
         x = []
         x.append(x)
-        try:
+        versuch:
             self.dumps(x)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"])
         sonst:
-            self.fail("didn't raise ValueError on list recursion")
+            self.fail("didn't wirf ValueError on list recursion")
         x = []
         y = [x]
         x.append(y)
-        try:
+        versuch:
             self.dumps(x)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"]*2)
         sonst:
-            self.fail("didn't raise ValueError on alternating list recursion")
+            self.fail("didn't wirf ValueError on alternating list recursion")
         y = []
         x = [y, y]
         # ensure that the marker is cleared
@@ -33,12 +33,12 @@ klasse TestRecursion:
     def test_dictrecursion(self):
         x = {}
         x["test"] = x
-        try:
+        versuch:
             self.dumps(x)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing dict item 'test'"])
         sonst:
-            self.fail("didn't raise ValueError on dict recursion")
+            self.fail("didn't wirf ValueError on dict recursion")
         x = {}
         y = {"a": x, "b": x}
         # ensure that the marker is cleared
@@ -58,14 +58,14 @@ klasse TestRecursion:
         enc = RecursiveJSONEncoder()
         self.assertEqual(enc.encode(JSONTestObject), '"JSONTestObject"')
         enc.recurse = Wahr
-        try:
+        versuch:
             enc.encode(JSONTestObject)
-        except ValueError als exc:
+        ausser ValueError als exc:
             self.assertEqual(exc.__notes__,
                              ["when serializing list item 0",
                               "when serializing type object"])
         sonst:
-            self.fail("didn't raise ValueError on default recursion")
+            self.fail("didn't wirf ValueError on default recursion")
 
 
     @support.skip_emscripten_stack_overflow()

@@ -22,7 +22,7 @@ DBL_MAX = _testcapi.DBL_MAX
 
 klasse BadComplex3:
     def __complex__(self):
-        raise RuntimeError
+        wirf RuntimeError
 
 
 klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):

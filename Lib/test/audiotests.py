@@ -7,10 +7,10 @@ importiere pickle
 
 klasse UnseekableIO(io.FileIO):
     def tell(self):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
     def seek(self, *args, **kwargs):
-        raise io.UnsupportedOperation
+        wirf io.UnsupportedOperation
 
 
 klasse AudioTests:
@@ -77,7 +77,7 @@ klasse AudioWriteTests(AudioTests):
         f.close()
 
     def test_write_context_manager_calls_close(self):
-        # Close checks fuer a minimum header und will raise an error
+        # Close checks fuer a minimum header und will wirf an error
         # wenn it is nicht set, so this proves that close is called.
         mit self.assertRaises(self.module.Error):
             mit self.module.open(TESTFN, 'wb'):
@@ -214,13 +214,13 @@ klasse AudioWriteTests(AudioTests):
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes + 1)
-            try:
+            versuch:
                 f.writeframes(self.frames)
-            except OSError:
+            ausser OSError:
                 pass
-            try:
+            versuch:
                 f.close()
-            except OSError:
+            ausser OSError:
                 pass
 
         mit open(TESTFN, 'rb') als testfile:
@@ -232,13 +232,13 @@ klasse AudioWriteTests(AudioTests):
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
             f.setnframes(self.nframes - 1)
-            try:
+            versuch:
                 f.writeframes(self.frames)
-            except OSError:
+            ausser OSError:
                 pass
-            try:
+            versuch:
                 f.close()
-            except OSError:
+            ausser OSError:
                 pass
 
         mit open(TESTFN, 'rb') als testfile:

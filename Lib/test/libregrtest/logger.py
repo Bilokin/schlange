@@ -43,9 +43,9 @@ klasse Logger:
 
     def get_load_avg(self) -> float | Nichts:
         wenn hasattr(os, 'getloadavg'):
-            try:
+            versuch:
                 gib os.getloadavg()[0]
-            except OSError:
+            ausser OSError:
                 pass
         wenn self.win_load_tracker is nicht Nichts:
             gib self.win_load_tracker.getloadavg()
@@ -75,9 +75,9 @@ klasse Logger:
         wenn nicht MS_WINDOWS:
             gib
 
-        try:
+        versuch:
             self.win_load_tracker = WindowsLoadTracker()
-        except PermissionError als error:
+        ausser PermissionError als error:
             # Standard accounts may nicht have access to the performance
             # counters.
             print_warning(f'Failed to create WindowsLoadTracker: {error}')

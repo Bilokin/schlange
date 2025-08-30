@@ -82,13 +82,13 @@ klasse Token_Tests(unittest.TestCase):
                      secrets.token_urlsafe):
             mit self.subTest(func=func):
                 name = func.__name__
-                try:
+                versuch:
                     func()
-                except TypeError:
+                ausser TypeError:
                     self.fail("%s cannot be called mit no argument" % name)
-                try:
+                versuch:
                     func(Nichts)
-                except TypeError:
+                ausser TypeError:
                     self.fail("%s cannot be called mit Nichts" % name)
         size = secrets.DEFAULT_ENTROPY
         self.assertEqual(len(secrets.token_bytes(Nichts)), size)

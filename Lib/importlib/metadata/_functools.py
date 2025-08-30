@@ -28,7 +28,7 @@ def method_cache(method, cache_wrapper=Nichts):
     75
 
     Note that the apparent behavior will be exactly like that of lru_cache
-    except that the cache is stored on each instance, so values in one
+    ausser that the cache is stored on each instance, so values in one
     instance will nicht flush values von another, und when an instance is
     deleted, so are the cached values fuer that instance.
 

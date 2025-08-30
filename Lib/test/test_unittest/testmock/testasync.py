@@ -711,7 +711,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
     def test_context_manager_raise_exception_by_default(self):
         async def raise_in(context_manager):
             async mit context_manager:
-                raise TypeError()
+                wirf TypeError()
 
         instance = self.WithAsyncContextManager()
         mock_instance = MagicMock(instance)

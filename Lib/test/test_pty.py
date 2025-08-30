@@ -9,7 +9,7 @@ von test.support.os_helper importiere TESTFN, unlink
 import_module('termios')
 
 wenn is_android oder is_apple_mobile oder is_wasm32:
-    raise unittest.SkipTest("pty is nicht available on this platform")
+    wirf unittest.SkipTest("pty is nicht available on this platform")
 
 importiere errno
 importiere os
@@ -71,10 +71,10 @@ def _readline(fd):
 
 def expectedFailureIfStdinIsTTY(fun):
     # avoid isatty()
-    try:
+    versuch:
         tty.tcgetattr(pty.STDIN_FILENO)
         gib unittest.expectedFailure(fun)
-    except tty.error:
+    ausser tty.error:
         pass
     gib fun
 
@@ -83,7 +83,7 @@ def write_all(fd, data):
     written = os.write(fd, data)
     wenn written != len(data):
         # gh-73256, gh-110673: It should never happen, but check just in case
-        raise Exception(f"short write: os.write({fd}, {len(data)} bytes) "
+        wirf Exception(f"short write: os.write({fd}, {len(data)} bytes) "
                         f"wrote {written} bytes")
 
 
@@ -97,11 +97,11 @@ klasse PtyTest(unittest.TestCase):
         # Save original stdin window size.
         self.stdin_dim = Nichts
         wenn _HAVE_WINSZ:
-            try:
+            versuch:
                 self.stdin_dim = tty.tcgetwinsize(pty.STDIN_FILENO)
                 self.addCleanup(tty.tcsetwinsize, pty.STDIN_FILENO,
                                 self.stdin_dim)
-            except tty.error:
+            ausser tty.error:
                 pass
 
     @staticmethod
@@ -110,16 +110,16 @@ klasse PtyTest(unittest.TestCase):
 
     @expectedFailureIfStdinIsTTY
     def test_openpty(self):
-        try:
+        versuch:
             mode = tty.tcgetattr(pty.STDIN_FILENO)
-        except tty.error:
+        ausser tty.error:
             # Not a tty oder bad/closed fd.
             debug("tty.tcgetattr(pty.STDIN_FILENO) failed")
             mode = Nichts
 
         new_dim = Nichts
         wenn self.stdin_dim:
-            try:
+            versuch:
                 # Modify pty.STDIN_FILENO window size; we need to
                 # check wenn pty.openpty() is able to set pty slave
                 # window size accordingly.
@@ -134,26 +134,26 @@ klasse PtyTest(unittest.TestCase):
                 new_dim = tty.tcgetwinsize(pty.STDIN_FILENO)
                 self.assertEqual(new_dim, target_dim,
                                  "pty.STDIN_FILENO window size unchanged")
-            except OSError als e:
+            ausser OSError als e:
                 logging.getLogger(__name__).warning(
                     "Failed to set pty.STDIN_FILENO window size.", exc_info=e,
                 )
                 pass
 
-        try:
+        versuch:
             debug("Calling pty.openpty()")
-            try:
+            versuch:
                 master_fd, slave_fd, slave_name = pty.openpty(mode, new_dim,
                                                               Wahr)
-            except TypeError:
+            ausser TypeError:
                 master_fd, slave_fd = pty.openpty()
                 slave_name = Nichts
             debug(f"Got {master_fd=}, {slave_fd=}, {slave_name=}")
-        except OSError:
+        ausser OSError:
             # " An optional feature could nicht be imported " ... ?
-            raise unittest.SkipTest("Pseudo-terminals (seemingly) nicht functional.")
+            wirf unittest.SkipTest("Pseudo-terminals (seemingly) nicht functional.")
 
-        # closing master_fd can raise a SIGHUP wenn the process is
+        # closing master_fd can wirf a SIGHUP wenn the process is
         # the session leader: we installed a SIGHUP signal handler
         # to ignore this signal.
         self.addCleanup(os.close, master_fd)
@@ -170,15 +170,15 @@ klasse PtyTest(unittest.TestCase):
 
         # Ensure the fd is non-blocking in case there's nothing to read.
         blocking = os.get_blocking(master_fd)
-        try:
+        versuch:
             os.set_blocking(master_fd, Falsch)
-            try:
+            versuch:
                 s1 = os.read(master_fd, 1024)
                 self.assertEqual(b'', s1)
-            except OSError als e:
+            ausser OSError als e:
                 wenn e.errno != errno.EAGAIN:
-                    raise
-        finally:
+                    wirf
+        schliesslich:
             # Restore the original flags.
             os.set_blocking(master_fd, blocking)
 
@@ -208,17 +208,17 @@ klasse PtyTest(unittest.TestCase):
             # After pty.fork(), the child should already be a session leader.
             # (on those systems that have that concept.)
             debug("In child, calling os.setsid()")
-            try:
+            versuch:
                 os.setsid()
-            except OSError:
+            ausser OSError:
                 # Good, we already were session leader
                 debug("Good: OSError was raised.")
                 pass
-            except AttributeError:
+            ausser AttributeError:
                 # Have pty, but nicht setsid()?
                 debug("No setsid() available?")
                 pass
-            except:
+            ausser:
                 # We don't want this error to propagate, escaping the call to
                 # os._exit() und causing very peculiar behavior in the calling
                 # regrtest.py !
@@ -237,14 +237,14 @@ klasse PtyTest(unittest.TestCase):
             # platform-dependent amount of data is written to its fd.  On
             # Linux 2.6, it's 4000 bytes und the child won't block, but on OS
             # X even the small writes in the child above will block it.  Also
-            # on Linux, the read() will raise an OSError (input/output error)
+            # on Linux, the read() will wirf an OSError (input/output error)
             # when it tries to read past the end of the buffer but the child's
             # already exited, so catch und discard those exceptions.  It's not
             # worth checking fuer EIO.
             waehrend Wahr:
-                try:
+                versuch:
                     data = os.read(master_fd, 80)
-                except OSError:
+                ausser OSError:
                     breche
                 wenn nicht data:
                     breche
@@ -255,7 +255,7 @@ klasse PtyTest(unittest.TestCase):
             ##lines = line.replace('\r\n', '\n').split('\n')
             ##if Falsch und lines != ['In child, calling os.setsid()',
             ##             'Good: OSError was raised.', '']:
-            ##    raise TestFailed("Unexpected output von child: %r" % line)
+            ##    wirf TestFailed("Unexpected output von child: %r" % line)
 
             (pid, status) = os.waitpid(pid, 0)
             res = os.waitstatus_to_exitcode(status)
@@ -275,7 +275,7 @@ klasse PtyTest(unittest.TestCase):
             ##except OSError:
             ##    pass
             ##else:
-            ##    raise TestFailed("Read von master_fd did nicht raise exception")
+            ##    wirf TestFailed("Read von master_fd did nicht wirf exception")
 
     def test_master_read(self):
         # XXX(nnorwitz):  this test leaks fds when there is an error.
@@ -289,9 +289,9 @@ klasse PtyTest(unittest.TestCase):
         os.close(slave_fd)
 
         debug("Reading von master_fd")
-        try:
+        versuch:
             data = os.read(master_fd, 1)
-        except OSError: # Linux
+        ausser OSError: # Linux
             data = b""
 
         self.assertEqual(data, b"")
@@ -309,10 +309,10 @@ klasse PtyTest(unittest.TestCase):
                 data = os.read(fd, 1024)
                 buf += data
                 gib data
-            try:
+            versuch:
                 pty.spawn([sys.executable, '-c', 'drucke("hi there")'],
                           master_read)
-            finally:
+            schliesslich:
                 os.dup2(dup_stdout, STDOUT_FILENO)
                 os.close(dup_stdout)
         self.assertEqual(buf, b'hi there\r\n')
@@ -351,14 +351,14 @@ klasse SmallPtyTests(unittest.TestCase):
         pty.tcsetattr = self.orig_pty_tcsetattr
         pty.waitpid = self.orig_pty_waitpid
         fuer file in self.files:
-            try:
+            versuch:
                 file.close()
-            except OSError:
+            ausser OSError:
                 pass
         fuer fd in self.fds:
-            try:
+            versuch:
                 os.close(fd)
-            except OSError:
+            ausser OSError:
                 pass
 
     def _pipe(self):
@@ -372,7 +372,7 @@ klasse SmallPtyTests(unittest.TestCase):
         gib socketpair
 
     def _mock_select(self, rfds, wfds, xfds):
-        # This will raise IndexError when no more expected calls exist.
+        # This will wirf IndexError when no more expected calls exist.
         self.assertEqual((rfds, wfds, xfds), self.select_input.pop(0))
         gib self.select_output.pop(0)
 

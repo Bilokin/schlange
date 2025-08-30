@@ -71,4 +71,4 @@ def __getattr__(name: str):
                 gib windows_events._WindowsProactorEventLoopPolicy
             # Else fall through to the AttributeError below.
 
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    wirf AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -30,13 +30,13 @@ klasse TestTopologicalSort(unittest.TestCase):
         ts = graphlib.TopologicalSorter()
         fuer node, dependson in graph.items():
             ts.add(node, *dependson)
-        try:
+        versuch:
             ts.prepare()
-        except graphlib.CycleError als e:
+        ausser graphlib.CycleError als e:
             _, seq = e.args
             self.assertIn(" ".join(map(str, cycle)), " ".join(map(str, seq * 2)))
         sonst:
-            raise
+            wirf
 
     def test_simple_cases(self):
         self._test_graph(

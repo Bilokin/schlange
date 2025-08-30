@@ -15,23 +15,23 @@ von test importiere test_genericpath
 von tempfile importiere TemporaryFile
 
 
-try:
+versuch:
     importiere nt
-except ImportError:
+ausser ImportError:
     # Most tests can complete without the nt module,
     # but fuer those that require it we importiere here.
     nt = Nichts
 
-try:
+versuch:
     ntpath._getfinalpathname
-except AttributeError:
+ausser AttributeError:
     HAVE_GETFINALPATHNAME = Falsch
 sonst:
     HAVE_GETFINALPATHNAME = Wahr
 
-try:
+versuch:
     importiere ctypes
-except ImportError:
+ausser ImportError:
     HAVE_GETSHORTPATHNAME = Falsch
 sonst:
     HAVE_GETSHORTPATHNAME = Wahr
@@ -41,7 +41,7 @@ sonst:
         GSPN.restype = ctypes.c_uint32
         result_len = GSPN(path, Nichts, 0)
         wenn nicht result_len:
-            raise OSError("failed to get short path name 0x{:08X}"
+            wirf OSError("failed to get short path name 0x{:08X}"
                           .format(ctypes.get_last_error()))
         result = ctypes.create_unicode_buffer(result_len)
         result_len = GSPN(path, result, result_len)
@@ -59,7 +59,7 @@ def tester(fn, wantResult):
     fn = fn.replace("\\", "\\\\")
     gotResult = eval(fn)
     wenn wantResult != gotResult und _norm(wantResult) != _norm(gotResult):
-        raise TestFailed("%s should return: %s but returned: %s" \
+        wirf TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), str(gotResult)))
 
     # then mit bytes
@@ -75,7 +75,7 @@ def tester(fn, wantResult):
         warnings.simplefilter("ignore", DeprecationWarning)
         gotResult = eval(fn)
     wenn _norm(wantResult) != _norm(gotResult):
-        raise TestFailed("%s should return: %s but returned: %s" \
+        wirf TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), repr(gotResult)))
 
 
@@ -553,7 +553,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertPathEqual(ntpath.realpath(os.fsencode(ABSTFN + "1"), **kwargs),
                          os.fsencode(ABSTFN))
 
-        # gh-88013: call ntpath.realpath mit binary drive name may raise a
+        # gh-88013: call ntpath.realpath mit binary drive name may wirf a
         # TypeError. The drive should nicht exist to reproduce the bug.
         drives = {f"{c}:\\" fuer c in string.ascii_uppercase} - set(os.listdrives())
         d = drives.pop().encode()
@@ -571,7 +571,7 @@ klasse TestNtpath(NtpathTestCase):
     @os_helper.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_strict(self):
-        # Bug #43757: raise FileNotFoundError in strict mode wenn we encounter
+        # Bug #43757: wirf FileNotFoundError in strict mode wenn we encounter
         # a path that does nicht exist.
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         os.symlink(ABSTFN + "1", ABSTFN)
@@ -587,7 +587,7 @@ klasse TestNtpath(NtpathTestCase):
         path = ABSTFN + '\x00'
         # gh-106242: Embedded nulls und non-strict fallback to abspath
         self.assertEqual(realpath(path, strict=Falsch), path)
-        # gh-106242: Embedded nulls should raise OSError (nicht ValueError)
+        # gh-106242: Embedded nulls should wirf OSError (nicht ValueError)
         self.assertRaises(OSError, realpath, path, strict=ALL_BUT_LAST)
         self.assertRaises(OSError, realpath, path, strict=Wahr)
         self.assertRaises(OSError, realpath, path, strict=ALLOW_MISSING)
@@ -761,7 +761,7 @@ klasse TestNtpath(NtpathTestCase):
     @os_helper.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_symlink_loops_strict(self):
-        # Symlink loops raise OSError in strict mode
+        # Symlink loops wirf OSError in strict mode
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         self.addCleanup(os_helper.unlink, ABSTFN)
         self.addCleanup(os_helper.unlink, ABSTFN + "1")
@@ -824,7 +824,7 @@ klasse TestNtpath(NtpathTestCase):
     @os_helper.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_symlink_loops_raise(self):
-        # Symlink loops raise OSError in ALLOW_MISSING mode
+        # Symlink loops wirf OSError in ALLOW_MISSING mode
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
         self.addCleanup(os_helper.unlink, ABSTFN)
         self.addCleanup(os_helper.unlink, ABSTFN + "1")
@@ -847,7 +847,7 @@ klasse TestNtpath(NtpathTestCase):
                             strict=ALLOW_MISSING)
 
         # Windows eliminates '..' components before resolving links;
-        # realpath is nicht expected to raise wenn this removes the loop.
+        # realpath is nicht expected to wirf wenn this removes the loop.
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\.."),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..\\x"),
@@ -981,12 +981,12 @@ klasse TestNtpath(NtpathTestCase):
         )
 
         wenn p.returncode:
-            raise unittest.SkipTest('failed to set short name')
+            wirf unittest.SkipTest('failed to set short name')
 
-        try:
+        versuch:
             self.assertPathEqual(test_file, ntpath.realpath(test_file_short))
-        except AssertionError:
-            raise unittest.SkipTest('the filesystem seems to lack support fuer short filenames')
+        ausser AssertionError:
+            wirf unittest.SkipTest('the filesystem seems to lack support fuer short filenames')
 
         # Deny the right to [S]YNCHRONIZE on the file to
         # force nt._getfinalpathname to fail mit ERROR_ACCESS_DENIED.
@@ -996,7 +996,7 @@ klasse TestNtpath(NtpathTestCase):
         )
 
         wenn p.returncode:
-            raise unittest.SkipTest('failed to deny access to the test file')
+            wirf unittest.SkipTest('failed to deny access to the test file')
 
         self.assertPathEqual(test_file, ntpath.realpath(test_file_short))
 
@@ -1444,7 +1444,7 @@ klasse TestNtpath(NtpathTestCase):
         # of a path component.
         self.assertFalsch(ntpath.isreserved('bar.com9'))
         self.assertFalsch(ntpath.isreserved('bar.lpt9'))
-        # The entire path is checked, except fuer the drive.
+        # The entire path is checked, ausser fuer the drive.
         self.assertWahr(ntpath.isreserved('c:/bar/baz/NUL'))
         self.assertWahr(ntpath.isreserved('c:/NUL/bar/baz'))
         self.assertFalsch(ntpath.isreserved('//./NUL'))
@@ -1498,10 +1498,10 @@ klasse TestNtpath(NtpathTestCase):
                 os.mkdir('tmpdir')
 
                 importiere _winapi
-                try:
+                versuch:
                     _winapi.CreateJunction('tmpdir', 'testjunc')
-                except OSError:
-                    raise unittest.SkipTest('creating the test junction failed')
+                ausser OSError:
+                    wirf unittest.SkipTest('creating the test junction failed')
 
                 self.assertWahr(ntpath.isjunction('testjunc'))
                 self.assertFalsch(ntpath.isjunction('tmpdir'))
@@ -1518,15 +1518,15 @@ klasse TestNtpath(NtpathTestCase):
     def test_isfile_driveletter(self):
         drive = os.environ.get('SystemDrive')
         wenn drive is Nichts oder len(drive) != 2 oder drive[1] != ':':
-            raise unittest.SkipTest('SystemDrive is nicht defined oder malformed')
+            wirf unittest.SkipTest('SystemDrive is nicht defined oder malformed')
         self.assertFalsch(os.path.isfile('\\\\.\\' + drive))
 
     @unittest.skipUnless(hasattr(os, 'pipe'), "need os.pipe()")
     def test_isfile_anonymous_pipe(self):
         pr, pw = os.pipe()
-        try:
+        versuch:
             self.assertFalsch(ntpath.isfile(pr))
-        finally:
+        schliesslich:
             os.close(pr)
             os.close(pw)
 
@@ -1537,9 +1537,9 @@ klasse TestNtpath(NtpathTestCase):
         h = _winapi.CreateNamedPipe(named_pipe,
                                     _winapi.PIPE_ACCESS_INBOUND,
                                     0, 1, 0, 0, 0, 0)
-        try:
+        versuch:
             self.assertFalsch(ntpath.isfile(named_pipe))
-        finally:
+        schliesslich:
             _winapi.CloseHandle(h)
 
     @unittest.skipIf(sys.platform != 'win32', "windows only")
@@ -1574,7 +1574,7 @@ klasse TestNtpath(NtpathTestCase):
 
     @unittest.skipIf(os.name != 'nt', "Dev Drives only exist on Win32")
     def test_isdevdrive(self):
-        # Result may be Wahr oder Falsch, but shouldn't raise
+        # Result may be Wahr oder Falsch, but shouldn't wirf
         self.assertIn(ntpath.isdevdrive(os_helper.TESTFN), (Wahr, Falsch))
         # ntpath.isdevdrive can handle relative paths
         self.assertIn(ntpath.isdevdrive("."), (Wahr, Falsch))

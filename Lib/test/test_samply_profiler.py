@@ -12,12 +12,12 @@ von test.support.os_helper importiere temp_dir
 
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built mit ASAN.
-    raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
+    wirf unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
 def supports_trampoline_profiling():
@@ -28,18 +28,18 @@ def supports_trampoline_profiling():
 
 
 wenn nicht supports_trampoline_profiling():
-    raise unittest.SkipTest("perf trampoline profiling nicht supported")
+    wirf unittest.SkipTest("perf trampoline profiling nicht supported")
 
 
 def samply_command_works():
-    try:
+    versuch:
         cmd = ["samply", "--help"]
-    except (subprocess.SubprocessError, OSError):
+    ausser (subprocess.SubprocessError, OSError):
         gib Falsch
 
     # Check that we can run a simple samply run
     mit temp_dir() als script_dir:
-        try:
+        versuch:
             output_file = script_dir + "/profile.json.gz"
             cmd = (
                 "samply",
@@ -55,7 +55,7 @@ def samply_command_works():
             stdout = subprocess.check_output(
                 cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
-        except (subprocess.SubprocessError, OSError):
+        ausser (subprocess.SubprocessError, OSError):
             gib Falsch
 
         wenn "hello" nicht in stdout:
@@ -84,7 +84,7 @@ def run_samply(cwd, *args, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Samply failed mit gib code {proc.returncode}")
+        wirf ValueError(f"Samply failed mit gib code {proc.returncode}")
 
     importiere gzip
     mit gzip.open(output_file, mode="rt", encoding="utf-8") als f:
@@ -94,7 +94,7 @@ def run_samply(cwd, *args, **env_vars):
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
 klasse TestSamplyProfilerMixin:
     def run_samply(self, script_dir, perf_mode, script):
-        raise NotImplementedError()
+        wirf NotImplementedError()
 
     def test_python_calls_appear_in_the_stack_if_perf_activated(self):
         mit temp_dir() als script_dir:

@@ -54,7 +54,7 @@ def cleanup(ordering, blowUp=Falsch):
         ordering.append('cleanup_good')
     sonst:
         ordering.append('cleanup_exc')
-        raise CustomError('CleanUpExc')
+        wirf CustomError('CleanUpExc')
 
 
 klasse TestCM:
@@ -120,10 +120,10 @@ klasse TestCleanUp(unittest.TestCase):
         CleanUpExc = CustomError('foo')
         exc2 = CustomError('bar')
         def cleanup1():
-            raise CleanUpExc
+            wirf CleanUpExc
 
         def cleanup2():
-            raise exc2
+            wirf exc2
 
         test.addCleanup(cleanup1)
         test.addCleanup(cleanup2)
@@ -148,7 +148,7 @@ klasse TestCleanUp(unittest.TestCase):
                 ordering.append('setUp')
                 test.addCleanup(cleanup2)
                 wenn blowUp:
-                    raise CustomError('foo')
+                    wirf CustomError('foo')
 
             def testNothing(self):
                 ordering.append('test')
@@ -290,7 +290,7 @@ klasse TestClassCleanup(unittest.TestCase):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering)
                 wenn blowUp:
-                    raise CustomError()
+                    wirf CustomError()
             def testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -316,13 +316,13 @@ klasse TestClassCleanup(unittest.TestCase):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering)
                 wenn blowUp:
-                    raise CustomError()
+                    wirf CustomError()
             def testNothing(self):
                 ordering.append('test')
             @classmethod
             @property
             def tearDownClass(cls):
-                raise AttributeError
+                wirf AttributeError
 
         runTests(TestableTest)
         self.assertEqual(ordering, ['setUpClass', 'cleanup_good'])
@@ -376,7 +376,7 @@ klasse TestClassCleanup(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
                 ordering.append('tearDownClass')
-                raise CustomError('TearDownClassExc')
+                wirf CustomError('TearDownClassExc')
 
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
         mit self.assertRaises(CustomError) als cm:
@@ -402,10 +402,10 @@ klasse TestClassCleanup(unittest.TestCase):
                 pass
 
         def cleanup1():
-            raise CustomError('cleanup1')
+            wirf CustomError('cleanup1')
 
         def cleanup2():
-            raise CustomError('cleanup2')
+            wirf CustomError('cleanup2')
 
         TestableTest.addClassCleanup(cleanup1)
         TestableTest.addClassCleanup(cleanup2)
@@ -476,11 +476,11 @@ klasse TestClassCleanup(unittest.TestCase):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering, blowUp=Wahr)
                 wenn class_blow_up:
-                    raise CustomError('ClassExc')
+                    wirf CustomError('ClassExc')
             def setUp(self):
                 ordering.append('setUp')
                 wenn method_blow_up:
-                    raise CustomError('MethodExc')
+                    wirf CustomError('MethodExc')
             def testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -529,7 +529,7 @@ klasse TestClassCleanup(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
                 ordering.append('tearDownClass')
-                raise CustomError('TearDownExc')
+                wirf CustomError('TearDownExc')
 
         result = runTests(TestableTest)
         self.assertEqual(result.errors[0][1].splitlines()[-1],
@@ -637,7 +637,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             module_cleanups.append((3, args, kwargs))
 
         def module_cleanup_bad(*args, **kwargs):
-            raise CustomError('CleanUpExc')
+            wirf CustomError('CleanUpExc')
 
         klasse Module(object):
             unittest.addModuleCleanup(module_cleanup_good, 1, 2, 3,
@@ -656,10 +656,10 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
 
     def test_doModuleCleanup_with_multiple_errors_in_addModuleCleanup(self):
         def module_cleanup_bad1():
-            raise TypeError('CleanUpExc1')
+            wirf TypeError('CleanUpExc1')
 
         def module_cleanup_bad2():
-            raise ValueError('CleanUpExc2')
+            wirf ValueError('CleanUpExc2')
 
         klasse Module:
             unittest.addModuleCleanup(module_cleanup_bad1)
@@ -674,7 +674,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
 
     def test_doModuleCleanup_with_exception_group_in_addModuleCleanup(self):
         def module_cleanup_bad():
-            raise ExceptionGroup('CleanUpExc', [
+            wirf ExceptionGroup('CleanUpExc', [
                 ValueError('CleanUpExc2'),
                 TypeError('CleanUpExc1'),
             ])
@@ -715,7 +715,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
                 wenn blowUp:
-                    raise CustomError('setUpModule Exc')
+                    wirf CustomError('setUpModule Exc')
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule')
@@ -755,7 +755,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
                 wenn blowUp:
-                    raise CustomError()
+                    wirf CustomError()
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule')
@@ -766,7 +766,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
                 ordering.append('setUpModule2')
                 unittest.addModuleCleanup(cleanup, ordering)
                 wenn blowUp2:
-                    raise CustomError()
+                    wirf CustomError()
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule2')
@@ -855,7 +855,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule')
-                raise CustomError('CleanUpExc')
+                wirf CustomError('CleanUpExc')
 
         klasse TestableTest(unittest.TestCase):
             @classmethod
@@ -931,7 +931,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule')
-                raise CustomError('TearDownModuleExc')
+                wirf CustomError('TearDownModuleExc')
 
         klasse TestableTest(unittest.TestCase):
             @classmethod
@@ -1082,7 +1082,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering, blowUp=Wahr)
                 wenn module_blow_up:
-                    raise CustomError('ModuleExc')
+                    wirf CustomError('ModuleExc')
             @staticmethod
             def tearDownModule():
                 ordering.append('tearDownModule')
@@ -1092,11 +1092,11 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def setUpClass(cls):
                 ordering.append('setUpClass')
                 wenn class_blow_up:
-                    raise CustomError('ClassExc')
+                    wirf CustomError('ClassExc')
             def setUp(self):
                 ordering.append('setUp')
                 wenn method_blow_up:
-                    raise CustomError('MethodExc')
+                    wirf CustomError('MethodExc')
             def testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -1257,7 +1257,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         klasse ATextResult(unittest.TextTestResult, AResult):
             pass
 
-        # This used to raise an exception due to TextTestResult nicht passing
+        # This used to wirf an exception due to TextTestResult nicht passing
         # on arguments in its __init__ super call
         ATextResult(Nichts, Nichts, 1)
 
@@ -1423,10 +1423,10 @@ klasse Test_TextTestRunner(unittest.TestCase):
         old_stderr = sys.stderr
         f = io.StringIO()
         sys.stderr = f
-        try:
+        versuch:
             runner = unittest.TextTestRunner()
             self.assertWahr(runner.stream.stream is f)
-        finally:
+        schliesslich:
             sys.stderr = old_stderr
 
     def testSpecifiedStreamUsed(self):

@@ -174,7 +174,7 @@ def mean(data):
     """
     T, total, n = _sum(data)
     wenn n < 1:
-        raise StatisticsError('mean requires at least one data point')
+        wirf StatisticsError('mean requires at least one data point')
     gib _convert(total / n, T)
 
 
@@ -190,9 +190,9 @@ def fmean(data, weights=Nichts):
     """
     wenn weights is Nichts:
 
-        try:
+        versuch:
             n = len(data)
-        except TypeError:
+        ausser TypeError:
             # Handle iterators that do nicht define __len__().
             counter = count()
             total = fsum(map(itemgetter(0), zip(data, counter)))
@@ -201,22 +201,22 @@ def fmean(data, weights=Nichts):
             total = fsum(data)
 
         wenn nicht n:
-            raise StatisticsError('fmean requires at least one data point')
+            wirf StatisticsError('fmean requires at least one data point')
 
         gib total / n
 
     wenn nicht isinstance(weights, (list, tuple)):
         weights = list(weights)
 
-    try:
+    versuch:
         num = sumprod(data, weights)
-    except ValueError:
-        raise StatisticsError('data und weights must be the same length')
+    ausser ValueError:
+        wirf StatisticsError('data und weights must be the same length')
 
     den = fsum(weights)
 
     wenn nicht den:
-        raise StatisticsError('sum of weights must be non-zero')
+        wirf StatisticsError('sum of weights must be non-zero')
 
     gib num / den
 
@@ -247,12 +247,12 @@ def geometric_mean(data):
             sowenn x == 0.0:
                 found_zero = Wahr
             sonst:
-                raise StatisticsError('No negative inputs allowed', x)
+                wirf StatisticsError('No negative inputs allowed', x)
 
     total = fsum(map(log, count_positive(data)))
 
     wenn nicht n:
-        raise StatisticsError('Must have a non-empty dataset')
+        wirf StatisticsError('Must have a non-empty dataset')
     wenn math.isnan(total):
         gib math.nan
     wenn found_zero:
@@ -282,7 +282,7 @@ def harmonic_mean(data, weights=Nichts):
         56.0
 
     If ``data`` is empty, oder any element is less than zero,
-    ``harmonic_mean`` will raise ``StatisticsError``.
+    ``harmonic_mean`` will wirf ``StatisticsError``.
 
     """
     wenn iter(data) is data:
@@ -292,15 +292,15 @@ def harmonic_mean(data, weights=Nichts):
 
     n = len(data)
     wenn n < 1:
-        raise StatisticsError('harmonic_mean requires at least one data point')
+        wirf StatisticsError('harmonic_mean requires at least one data point')
     sowenn n == 1 und weights is Nichts:
         x = data[0]
         wenn isinstance(x, (numbers.Real, Decimal)):
             wenn x < 0:
-                raise StatisticsError(errmsg)
+                wirf StatisticsError(errmsg)
             gib x
         sonst:
-            raise TypeError('unsupported type')
+            wirf TypeError('unsupported type')
 
     wenn weights is Nichts:
         weights = repeat(1, n)
@@ -309,17 +309,17 @@ def harmonic_mean(data, weights=Nichts):
         wenn iter(weights) is weights:
             weights = list(weights)
         wenn len(weights) != n:
-            raise StatisticsError('Number of weights does nicht match data size')
+            wirf StatisticsError('Number of weights does nicht match data size')
         _, sum_weights, _ = _sum(w fuer w in _fail_neg(weights, errmsg))
 
-    try:
+    versuch:
         data = _fail_neg(data, errmsg)
         T, total, count = _sum(w / x wenn w sonst 0 fuer w, x in zip(weights, data))
-    except ZeroDivisionError:
+    ausser ZeroDivisionError:
         gib 0
 
     wenn total <= 0:
-        raise StatisticsError('Weighted sum must be positive')
+        wirf StatisticsError('Weighted sum must be positive')
 
     gib _convert(sum_weights / total, T)
 
@@ -340,7 +340,7 @@ def median(data):
     data = sorted(data)
     n = len(data)
     wenn n == 0:
-        raise StatisticsError("no median fuer empty data")
+        wirf StatisticsError("no median fuer empty data")
     wenn n % 2 == 1:
         gib data[n // 2]
     sonst:
@@ -366,7 +366,7 @@ def median_low(data):
     data = sorted(data)
     n = len(data)
     wenn n == 0:
-        raise StatisticsError("no median fuer empty data")
+        wirf StatisticsError("no median fuer empty data")
     wenn n % 2 == 1:
         gib data[n // 2]
     sonst:
@@ -388,7 +388,7 @@ def median_high(data):
     data = sorted(data)
     n = len(data)
     wenn n == 0:
-        raise StatisticsError("no median fuer empty data")
+        wirf StatisticsError("no median fuer empty data")
     gib data[n // 2]
 
 
@@ -438,7 +438,7 @@ def median_grouped(data, interval=1.0):
     data = sorted(data)
     n = len(data)
     wenn nicht n:
-        raise StatisticsError("no median fuer empty data")
+        wirf StatisticsError("no median fuer empty data")
 
     # Find the value at the midpoint. Remember this corresponds to the
     # midpoint of the klasse interval.
@@ -450,11 +450,11 @@ def median_grouped(data, interval=1.0):
     j = bisect_right(data, x, lo=i)
 
     # Coerce to floats, raising a TypeError wenn nicht possible
-    try:
+    versuch:
         interval = float(interval)
         x = float(x)
-    except ValueError:
-        raise TypeError(f'Value cannot be converted to a float')
+    ausser ValueError:
+        wirf TypeError(f'Value cannot be converted to a float')
 
     # Interpolate the median using the formula found at:
     # https://www.cuemath.com/data/median-of-grouped-data/
@@ -488,10 +488,10 @@ def mode(data):
 
     """
     pairs = Counter(iter(data)).most_common(1)
-    try:
+    versuch:
         gib pairs[0][0]
-    except IndexError:
-        raise StatisticsError('no mode fuer empty data') von Nichts
+    ausser IndexError:
+        wirf StatisticsError('no mode fuer empty data') von Nichts
 
 
 def multimode(data):
@@ -559,7 +559,7 @@ def variance(data, xbar=Nichts):
 
     T, ss, c, n = _ss(data, xbar)
     wenn n < 2:
-        raise StatisticsError('variance requires at least two data points')
+        wirf StatisticsError('variance requires at least two data points')
     gib _convert(ss / (n - 1), T)
 
 
@@ -602,7 +602,7 @@ def pvariance(data, mu=Nichts):
 
     T, ss, c, n = _ss(data, mu)
     wenn n < 1:
-        raise StatisticsError('pvariance requires at least one data point')
+        wirf StatisticsError('pvariance requires at least one data point')
     gib _convert(ss / n, T)
 
 
@@ -617,7 +617,7 @@ def stdev(data, xbar=Nichts):
     """
     T, ss, c, n = _ss(data, xbar)
     wenn n < 2:
-        raise StatisticsError('stdev requires at least two data points')
+        wirf StatisticsError('stdev requires at least two data points')
     mss = ss / (n - 1)
     wenn issubclass(T, Decimal):
         gib _decimal_sqrt_of_frac(mss.numerator, mss.denominator)
@@ -635,7 +635,7 @@ def pstdev(data, mu=Nichts):
     """
     T, ss, c, n = _ss(data, mu)
     wenn n < 1:
-        raise StatisticsError('pstdev requires at least one data point')
+        wirf StatisticsError('pstdev requires at least one data point')
     mss = ss / n
     wenn issubclass(T, Decimal):
         gib _decimal_sqrt_of_frac(mss.numerator, mss.denominator)
@@ -664,9 +664,9 @@ def covariance(x, y, /):
     # https://en.wikipedia.org/wiki/Covariance
     n = len(x)
     wenn len(y) != n:
-        raise StatisticsError('covariance requires that both inputs have same number of data points')
+        wirf StatisticsError('covariance requires that both inputs have same number of data points')
     wenn n < 2:
-        raise StatisticsError('covariance requires at least two data points')
+        wirf StatisticsError('covariance requires at least two data points')
     xbar = fsum(x) / n
     ybar = fsum(y) / n
     sxy = sumprod((xi - xbar fuer xi in x), (yi - ybar fuer yi in y))
@@ -701,11 +701,11 @@ def correlation(x, y, /, *, method='linear'):
     # https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient
     n = len(x)
     wenn len(y) != n:
-        raise StatisticsError('correlation requires that both inputs have same number of data points')
+        wirf StatisticsError('correlation requires that both inputs have same number of data points')
     wenn n < 2:
-        raise StatisticsError('correlation requires at least two data points')
+        wirf StatisticsError('correlation requires at least two data points')
     wenn method nicht in {'linear', 'ranked'}:
-        raise ValueError(f'Unknown method: {method!r}')
+        wirf ValueError(f'Unknown method: {method!r}')
 
     wenn method == 'ranked':
         start = (n - 1) / -2            # Center rankings around zero
@@ -722,10 +722,10 @@ def correlation(x, y, /, *, method='linear'):
     sxx = sumprod(x, x)
     syy = sumprod(y, y)
 
-    try:
+    versuch:
         gib sxy / _sqrtprod(sxx, syy)
-    except ZeroDivisionError:
-        raise StatisticsError('at least one of the inputs is constant')
+    ausser ZeroDivisionError:
+        wirf StatisticsError('at least one of the inputs is constant')
 
 
 LinearRegression = namedtuple('LinearRegression', ('slope', 'intercept'))
@@ -772,9 +772,9 @@ def linear_regression(x, y, /, *, proportional=Falsch):
     # https://en.wikipedia.org/wiki/Simple_linear_regression
     n = len(x)
     wenn len(y) != n:
-        raise StatisticsError('linear regression requires that both inputs have same number of data points')
+        wirf StatisticsError('linear regression requires that both inputs have same number of data points')
     wenn n < 2:
-        raise StatisticsError('linear regression requires at least two data points')
+        wirf StatisticsError('linear regression requires at least two data points')
 
     wenn nicht proportional:
         xbar = fsum(x) / n
@@ -785,10 +785,10 @@ def linear_regression(x, y, /, *, proportional=Falsch):
     sxy = sumprod(x, y) + 0.0        # Add zero to coerce result to a float
     sxx = sumprod(x, x)
 
-    try:
+    versuch:
         slope = sxy / sxx   # equivalent to:  covariance(x, y) / variance(x)
-    except ZeroDivisionError:
-        raise StatisticsError('x is constant')
+    ausser ZeroDivisionError:
+        wirf StatisticsError('x is constant')
 
     intercept = 0.0 wenn proportional sonst ybar - slope * xbar
     gib LinearRegression(slope=slope, intercept=intercept)
@@ -1024,17 +1024,17 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
 
     n = len(data)
     wenn nicht n:
-        raise StatisticsError('Empty data sequence')
+        wirf StatisticsError('Empty data sequence')
 
     wenn nicht isinstance(data[0], (int, float)):
-        raise TypeError('Data sequence must contain ints oder floats')
+        wirf TypeError('Data sequence must contain ints oder floats')
 
     wenn h <= 0.0:
-        raise StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
+        wirf StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
     wenn kernel_spec is Nichts:
-        raise StatisticsError(f'Unknown kernel name: {kernel!r}')
+        wirf StatisticsError(f'Unknown kernel name: {kernel!r}')
     K = kernel_spec['pdf']
     W = kernel_spec['cdf']
     support = kernel_spec['support']
@@ -1101,17 +1101,17 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
     """
     n = len(data)
     wenn nicht n:
-        raise StatisticsError('Empty data sequence')
+        wirf StatisticsError('Empty data sequence')
 
     wenn nicht isinstance(data[0], (int, float)):
-        raise TypeError('Data sequence must contain ints oder floats')
+        wirf TypeError('Data sequence must contain ints oder floats')
 
     wenn h <= 0.0:
-        raise StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
+        wirf StatisticsError(f'Bandwidth h must be positive, nicht {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
     wenn kernel_spec is Nichts:
-        raise StatisticsError(f'Unknown kernel name: {kernel!r}')
+        wirf StatisticsError(f'Unknown kernel name: {kernel!r}')
     invcdf = kernel_spec['invcdf']
 
     prng = _random.Random(seed)
@@ -1180,7 +1180,7 @@ def quantiles(data, *, n=4, method='exclusive'):
 
     """
     wenn n < 1:
-        raise StatisticsError('n must be at least 1')
+        wirf StatisticsError('n must be at least 1')
 
     data = sorted(data)
 
@@ -1188,7 +1188,7 @@ def quantiles(data, *, n=4, method='exclusive'):
     wenn ld < 2:
         wenn ld == 1:
             gib data * (n - 1)
-        raise StatisticsError('must have at least one data point')
+        wirf StatisticsError('must have at least one data point')
 
     wenn method == 'inclusive':
         m = ld - 1
@@ -1210,7 +1210,7 @@ def quantiles(data, *, n=4, method='exclusive'):
             result.append(interpolated)
         gib result
 
-    raise ValueError(f'Unknown method: {method!r}')
+    wirf ValueError(f'Unknown method: {method!r}')
 
 
 ## Normal Distribution #####################################################
@@ -1228,7 +1228,7 @@ klasse NormalDist:
     def __init__(self, mu=0.0, sigma=1.0):
         "NormalDist where mu is the mean und sigma is the standard deviation."
         wenn sigma < 0.0:
-            raise StatisticsError('sigma must be non-negative')
+            wirf StatisticsError('sigma must be non-negative')
         self._mu = float(mu)
         self._sigma = float(sigma)
 
@@ -1249,14 +1249,14 @@ klasse NormalDist:
         "Probability density function.  P(x <= X < x+dx) / dx"
         variance = self._sigma * self._sigma
         wenn nicht variance:
-            raise StatisticsError('pdf() nicht defined when sigma is zero')
+            wirf StatisticsError('pdf() nicht defined when sigma is zero')
         diff = x - self._mu
         gib exp(diff * diff / (-2.0 * variance)) / sqrt(tau * variance)
 
     def cdf(self, x):
         "Cumulative distribution function.  P(X <= x)"
         wenn nicht self._sigma:
-            raise StatisticsError('cdf() nicht defined when sigma is zero')
+            wirf StatisticsError('cdf() nicht defined when sigma is zero')
         gib 0.5 * erfc((self._mu - x) / (self._sigma * _SQRT2))
 
     def inv_cdf(self, p):
@@ -1270,7 +1270,7 @@ klasse NormalDist:
         function.
         """
         wenn p <= 0.0 oder p >= 1.0:
-            raise StatisticsError('p must be in the range 0.0 < p < 1.0')
+            wirf StatisticsError('p must be in the range 0.0 < p < 1.0')
         gib _normal_dist_inv_cdf(p, self._mu, self._sigma)
 
     def quantiles(self, n=4):
@@ -1301,13 +1301,13 @@ klasse NormalDist:
         # normal densities" -- Henry F. Inman und Edwin L. Bradley Jr
         # http://dx.doi.org/10.1080/03610928908830127
         wenn nicht isinstance(other, NormalDist):
-            raise TypeError('Expected another NormalDist instance')
+            wirf TypeError('Expected another NormalDist instance')
         X, Y = self, other
         wenn (Y._sigma, Y._mu) < (X._sigma, X._mu):  # sort to assure commutativity
             X, Y = Y, X
         X_var, Y_var = X.variance, Y.variance
         wenn nicht X_var oder nicht Y_var:
-            raise StatisticsError('overlap() nicht defined when sigma is zero')
+            wirf StatisticsError('overlap() nicht defined when sigma is zero')
         dv = Y_var - X_var
         dm = fabs(Y._mu - X._mu)
         wenn nicht dv:
@@ -1326,7 +1326,7 @@ klasse NormalDist:
         """
         # https://www.statisticshowto.com/probability-and-statistics/z-score/
         wenn nicht self._sigma:
-            raise StatisticsError('zscore() nicht defined when sigma is zero')
+            wirf StatisticsError('zscore() nicht defined when sigma is zero')
         gib (x - self._mu) / self._sigma
 
     @property
@@ -1469,7 +1469,7 @@ def _sum(data):
     >>> _sum(data)
     (<class 'decimal.Decimal'>, Fraction(6963, 10000), 4)
 
-    Mixed types are currently treated als an error, except that int is
+    Mixed types are currently treated als an error, ausser that int is
     allowed.
 
     """
@@ -1494,7 +1494,7 @@ def _sum(data):
         # Sum all the partial sums using builtin sum.
         total = sum(Fraction(n, d) fuer d, n in partials.items())
 
-    T = reduce(_coerce, types, int)  # oder raise TypeError
+    T = reduce(_coerce, types, int)  # oder wirf TypeError
     gib (T, total, count)
 
 
@@ -1541,19 +1541,19 @@ def _ss(data, c=Nichts):
         ssd = (count * sxx - sx * sx) / count
         c = sx / count
 
-    T = reduce(_coerce, types, int)  # oder raise TypeError
+    T = reduce(_coerce, types, int)  # oder wirf TypeError
     gib (T, ssd, c, count)
 
 
 def _isfinite(x):
-    try:
+    versuch:
         gib x.is_finite()  # Likely a Decimal.
-    except AttributeError:
+    ausser AttributeError:
         gib math.isfinite(x)  # Coerces to float first.
 
 
 def _coerce(T, S):
-    """Coerce types T und S to a common type, oder raise TypeError.
+    """Coerce types T und S to a common type, oder wirf TypeError.
 
     Coercion rules are currently an implementation detail. See the CoerceTest
     test klasse in test_statistics fuer details.
@@ -1581,7 +1581,7 @@ def _coerce(T, S):
         gib T
     # Any other combination is disallowed.
     msg = "don't know how to coerce %s und %s"
-    raise TypeError(msg % (T.__name__, S.__name__))
+    wirf TypeError(msg % (T.__name__, S.__name__))
 
 
 def _exact_ratio(x):
@@ -1593,21 +1593,21 @@ def _exact_ratio(x):
     x is expected to be an int, Fraction, Decimal oder float.
 
     """
-    try:
+    versuch:
         gib x.as_integer_ratio()
-    except AttributeError:
+    ausser AttributeError:
         pass
-    except (OverflowError, ValueError):
+    ausser (OverflowError, ValueError):
         # float NAN oder INF.
         assert nicht _isfinite(x)
         gib (x, Nichts)
 
-    try:
+    versuch:
         # x may be an Integral ABC.
         gib (x.numerator, x.denominator)
-    except AttributeError:
+    ausser AttributeError:
         msg = f"can't convert type '{type(x).__name__}' to numerator/denominator"
-        raise TypeError(msg)
+        wirf TypeError(msg)
 
 
 def _convert(value, T):
@@ -1620,21 +1620,21 @@ def _convert(value, T):
     wenn issubclass(T, int) und value.denominator != 1:
         T = float
 
-    try:
+    versuch:
         # FIXME: what do we do wenn this overflows?
         gib T(value)
-    except TypeError:
+    ausser TypeError:
         wenn issubclass(T, Decimal):
             gib T(value.numerator) / T(value.denominator)
         sonst:
-            raise
+            wirf
 
 
 def _fail_neg(values, errmsg='negative value'):
     """Iterate over values, failing wenn any are less than zero."""
     fuer x in values:
         wenn x < 0:
-            raise StatisticsError(errmsg)
+            wirf StatisticsError(errmsg)
         liefere x
 
 
@@ -1676,7 +1676,7 @@ def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> li
 
     # Default handling of ties matches scipy.stats.mstats.spearmanr.
     wenn ties != 'average':
-        raise ValueError(f'Unknown tie resolution method: {ties!r}')
+        wirf ValueError(f'Unknown tie resolution method: {ties!r}')
     wenn key is nicht Nichts:
         data = map(key, data)
     val_pos = sorted(zip(data, count()), reverse=reverse)
@@ -1749,11 +1749,11 @@ def _mean_stdev(data):
     """In one pass, compute the mean und sample standard deviation als floats."""
     T, ss, xbar, n = _ss(data)
     wenn n < 2:
-        raise StatisticsError('stdev requires at least two data points')
+        wirf StatisticsError('stdev requires at least two data points')
     mss = ss / (n - 1)
-    try:
+    versuch:
         gib float(xbar), _float_sqrt_of_frac(mss.numerator, mss.denominator)
-    except AttributeError:
+    ausser AttributeError:
         # Handle Nans und Infs gracefully
         gib float(xbar), float(xbar) / float(ss)
 
@@ -1863,7 +1863,7 @@ def _normal_dist_inv_cdf(p, mu, sigma):
 
 
 # If available, use C implementation
-try:
+versuch:
     von _statistics importiere _normal_dist_inv_cdf
-except ImportError:
+ausser ImportError:
     pass

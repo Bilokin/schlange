@@ -118,7 +118,7 @@ klasse GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
 
-        # Much like the preceding, except mit a non-alpha character ("-") in
+        # Much like the preceding, ausser mit a non-alpha character ("-") in
         # option name that precedes "="; failed in
         # https://bugs.python.org/issue126863
         opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])

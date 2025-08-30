@@ -13,9 +13,9 @@ importiere tempfile
 importiere types
 importiere textwrap
 importiere warnings
-try:
+versuch:
     importiere _testinternalcapi
-except ImportError:
+ausser ImportError:
     _testinternalcapi = Nichts
 
 von test importiere support
@@ -79,7 +79,7 @@ klasse TestSpecifics(unittest.TestCase):
             def __getitem__(self, key):
                 wenn key == 'a':
                     gib 12
-                raise KeyError
+                wirf KeyError
             def __setitem__(self, key, value):
                 self.results = (key, value)
             def keys(self):
@@ -89,9 +89,9 @@ klasse TestSpecifics(unittest.TestCase):
         g = globals()
         exec('z = a', g, m)
         self.assertEqual(m.results, ('z', 12))
-        try:
+        versuch:
             exec('z = b', g, m)
-        except NameError:
+        ausser NameError:
             pass
         sonst:
             self.fail('Did nicht detect a KeyError')
@@ -489,11 +489,11 @@ klasse TestSpecifics(unittest.TestCase):
         compile(textwrap.dedent("""
             name_1, name_2, name_3 = 1, 2, 3
             waehrend name_3 <= name_2 > name_1:
-                try:
-                    raise
-                except:
+                versuch:
+                    wirf
+                ausser:
                     pass
-                finally:
+                schliesslich:
                     pass
             """), '<eval>', 'exec')
 
@@ -527,15 +527,15 @@ klasse TestSpecifics(unittest.TestCase):
     def test_compile_redundant_jumps_and_nops_after_moving_cold_blocks(self):
         # See gh-120367
         code=textwrap.dedent("""
-            try:
+            versuch:
                 pass
-            except:
+            ausser:
                 pass
             sonst:
                 match name_2:
                     case b'':
                         pass
-            finally:
+            schliesslich:
                 something
             """)
 
@@ -557,9 +557,9 @@ klasse TestSpecifics(unittest.TestCase):
             wenn name_2:
                 pass
             sonst:
-                try:
+                versuch:
                     pass
-                except:
+                ausser:
                     pass
             ~name_5
             """)
@@ -599,14 +599,14 @@ klasse TestSpecifics(unittest.TestCase):
             # the code object's filename comes von the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
-        # raise exception when node type doesn't match mit compile mode
+        # wirf exception when node type doesn't match mit compile mode
         co1 = compile('drucke(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
-        # raise exception when node type is no start node
+        # wirf exception when node type is no start node
         self.assertRaises(TypeError, compile, _ast.If(test=_ast.Name(id='x', ctx=_ast.Load())), '<ast>', 'exec')
 
-        # raise exception when node has invalid children
+        # wirf exception when node has invalid children
         ast = _ast.Module()
         ast.body = [_ast.BoolOp(op=_ast.Or())]
         self.assertRaises(TypeError, compile, ast, '<ast>', 'exec')
@@ -880,7 +880,7 @@ klasse TestSpecifics(unittest.TestCase):
         """Regression test fuer issue35193 when run under clang msan."""
         def unused_code_at_end():
             gib 3
-            raise RuntimeError("unreachable")
+            wirf RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
         # bug in the peephole optimizer als it scans opcodes past the
         # RETURN_VALUE opcode.  This does nicht always crash an interpreter.
@@ -1065,7 +1065,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         funcs = [break_in_while, continue_in_while]
 
-        # Check that we did nicht raise but we also don't generate bytecode
+        # Check that we did nicht wirf but we also don't generate bytecode
         fuer func in funcs:
             opcodes = list(dis.get_instructions(func))
             self.assertEqual(3, len(opcodes))
@@ -1304,10 +1304,10 @@ klasse TestSpecifics(unittest.TestCase):
     def test_line_number_synthetic_jump_multiple_predecessors(self):
         def f():
             fuer x in it:
-                try:
+                versuch:
                     wenn C1:
                         liefere 2
-                except OSError:
+                ausser OSError:
                     pass
 
         self.check_line_numbers(f.__code__, 'JUMP_BACKWARD')
@@ -1315,13 +1315,13 @@ klasse TestSpecifics(unittest.TestCase):
     def test_line_number_synthetic_jump_multiple_predecessors_nested(self):
         def f():
             fuer x in it:
-                try:
+                versuch:
                     X = 3
-                except OSError:
-                    try:
+                ausser OSError:
+                    versuch:
                         wenn C3:
                             X = 4
-                    except OSError:
+                    ausser OSError:
                         pass
             gib 42
 
@@ -1330,19 +1330,19 @@ klasse TestSpecifics(unittest.TestCase):
     def test_line_number_synthetic_jump_multiple_predecessors_more_nested(self):
         def f():
             fuer x in it:
-                try:
+                versuch:
                     X = 3
-                except OSError:
-                    try:
+                ausser OSError:
+                    versuch:
                         wenn C3:
                             wenn C4:
                                 X = 4
-                    except OSError:
-                        try:
+                    ausser OSError:
+                        versuch:
                             wenn C3:
                                 wenn C4:
                                     X = 5
-                        except OSError:
+                        ausser OSError:
                             pass
             gib 42
 
@@ -1532,7 +1532,7 @@ klasse TestSpecifics(unittest.TestCase):
         # See regression in gh-99708
         exprs = [
             "assert (Falsch wenn 1 sonst Wahr)",
-            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): raise AssertionError",
+            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): wirf AssertionError",
             "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): gib 12",
         ]
         fuer expr in exprs:
@@ -1582,18 +1582,18 @@ klasse TestSpecifics(unittest.TestCase):
         # See gh-109627
         def f():
             waehrend element und something:
-                try:
+                versuch:
                     gib something
-                except:
+                ausser:
                     pass
 
     def test_cold_block_moved_to_end(self):
         # See gh-109719
         def f():
             waehrend name:
-                try:
+                versuch:
                     breche
-                except:
+                ausser:
                     pass
             sonst:
                 1 wenn 1 sonst 1
@@ -1613,7 +1613,7 @@ klasse TestSpecifics(unittest.TestCase):
         # See gh-111123
         code = textwrap.dedent("""\
             def f():
-                try:
+                versuch:
                     pass
                 %s Exception:
                     global a
@@ -1670,9 +1670,9 @@ klasse TestSpecifics(unittest.TestCase):
         # compiled twice (for normal execution und for
         # exception handling).
         source = textwrap.dedent("""
-            try:
+            versuch:
                 pass
-            finally:
+            schliesslich:
                 1 is 1
         """)
 
@@ -1727,7 +1727,7 @@ klasse TestBooleanExpression(unittest.TestCase):
         # See gh-137288
         klasse Foo:
             def __bool__(self):
-                raise NotImplementedError()
+                wirf NotImplementedError()
 
         a = Foo()
         b = Foo()
@@ -2537,20 +2537,20 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_try_except_bare(self):
         snippet = """
-            try:
+            versuch:
                 a
-            except:
+            ausser:
                 b
             """
         self.check_stack_size(snippet)
 
     def test_try_except_qualified(self):
         snippet = """
-            try:
+            versuch:
                 a
-            except ImportError:
+            ausser ImportError:
                 b
-            except:
+            ausser:
                 c
             sonst:
                 d
@@ -2559,11 +2559,11 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_try_except_as(self):
         snippet = """
-            try:
+            versuch:
                 a
-            except ImportError als e:
+            ausser ImportError als e:
                 b
-            except:
+            ausser:
                 c
             sonst:
                 d
@@ -2572,7 +2572,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_try_except_star_qualified(self):
         snippet = """
-            try:
+            versuch:
                 a
             except* ImportError:
                 b
@@ -2583,7 +2583,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_try_except_star_as(self):
         snippet = """
-            try:
+            versuch:
                 a
             except* ImportError als e:
                 b
@@ -2594,20 +2594,20 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_try_except_star_finally(self):
         snippet = """
-                try:
+                versuch:
                     a
                 except* A:
                     b
-                finally:
+                schliesslich:
                     c
             """
         self.check_stack_size(snippet)
 
     def test_try_finally(self):
         snippet = """
-                try:
+                versuch:
                     a
-                finally:
+                schliesslich:
                     b
             """
         self.check_stack_size(snippet)
@@ -2661,14 +2661,14 @@ klasse TestStackSizeStability(unittest.TestCase):
     def test_for_break_continue_inside_try_finally_block(self):
         snippet = """
             fuer x in y:
-                try:
+                versuch:
                     wenn z:
                         breche
                     sowenn u:
                         weiter
                     sonst:
                         a
-                finally:
+                schliesslich:
                     f
             sonst:
                 b
@@ -2678,9 +2678,9 @@ klasse TestStackSizeStability(unittest.TestCase):
     def test_for_break_continue_inside_finally_block(self):
         snippet = """
             fuer x in y:
-                try:
+                versuch:
                     t
-                finally:
+                schliesslich:
                     wenn z:
                         breche
                     sowenn u:
@@ -2695,9 +2695,9 @@ klasse TestStackSizeStability(unittest.TestCase):
     def test_for_break_continue_inside_except_block(self):
         snippet = """
             fuer x in y:
-                try:
+                versuch:
                     t
-                except:
+                ausser:
                     wenn z:
                         breche
                     sowenn u:
@@ -2726,21 +2726,21 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_return_inside_try_finally_block(self):
         snippet = """
-            try:
+            versuch:
                 wenn z:
                     gib
                 sonst:
                     a
-            finally:
+            schliesslich:
                 f
             """
         self.check_stack_size(snippet)
 
     def test_return_inside_finally_block(self):
         snippet = """
-            try:
+            versuch:
                 t
-            finally:
+            schliesslich:
                 wenn z:
                     gib
                 sonst:
@@ -2750,9 +2750,9 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_return_inside_except_block(self):
         snippet = """
-            try:
+            versuch:
                 t
-            except:
+            ausser:
                 wenn z:
                     gib
                 sonst:

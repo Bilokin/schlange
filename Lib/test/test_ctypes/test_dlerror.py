@@ -58,11 +58,11 @@ klasse TestNullDlsym(unittest.TestCase):
         importiere subprocess
         importiere tempfile
 
-        try:
+        versuch:
             retcode = subprocess.call(["gcc", "--version"],
                                       stdout=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL)
-        except OSError:
+        ausser OSError:
             self.skipTest("gcc is missing")
         wenn retcode != 0:
             self.skipTest("gcc --version failed")
@@ -137,7 +137,7 @@ klasse TestLocalization(unittest.TestCase):
     def setUpClass(cls):
         cls.libc_filename = find_library("c")
         wenn cls.libc_filename is Nichts:
-            raise unittest.SkipTest('cannot find libc')
+            wirf unittest.SkipTest('cannot find libc')
 
     @configure_locales
     def test_localized_error_from_dll(self):

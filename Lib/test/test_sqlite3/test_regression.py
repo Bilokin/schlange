@@ -85,14 +85,14 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         con = self.con
         con.execute("create table foo(x, unique(x) on conflict rollback)")
         con.execute("insert into foo(x) values (1)")
-        try:
+        versuch:
             con.execute("insert into foo(x) values (1)")
-        except sqlite.DatabaseError:
+        ausser sqlite.DatabaseError:
             pass
         con.execute("insert into foo(x) values (2)")
-        try:
+        versuch:
             con.commit()
-        except sqlite.OperationalError:
+        ausser sqlite.OperationalError:
             self.fail("pysqlite knew nothing about the implicit ROLLBACK")
 
     def test_workaround_for_buggy_sqlite_transfer_bindings(self):
@@ -263,7 +263,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         http://bugs.python.org/issue10811
 
         Recursively using a cursor, such als when reusing it von a generator led to segfaults.
-        Now we catch recursive cursor usage und raise a ProgrammingError.
+        Now we catch recursive cursor usage und wirf a ProgrammingError.
         """
         cur = self.con.cursor()
         cur.execute("create table a (bar)")

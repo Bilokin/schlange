@@ -35,16 +35,16 @@ def parse_table_lines(lines):
             title = line[3:].lstrip()
             assert title, (line, rawline)
             wenn after is nicht Nichts:
-                try:
+                versuch:
                     line, rawline = next(lines)
-                except StopIteration:
+                ausser StopIteration:
                     line = Nichts
                 wenn line != after:
-                    raise NotImplementedError((group, line, rawline))
+                    wirf NotImplementedError((group, line, rawline))
             liefere kind, title
             group = Nichts
         sowenn group:
-            raise NotImplementedError((group, line, rawline))
+            wirf NotImplementedError((group, line, rawline))
         sowenn line.startswith('##---'):
             assert line.rstrip('-') == '##', (line, rawline)
             group = ('section-minor', '', line)
@@ -65,7 +65,7 @@ def iter_sections(lines):
                 wenn header is Nichts:
                     header = value
                     weiter
-                raise NotImplementedError(repr(value))
+                wirf NotImplementedError(repr(value))
             liefere tuple(section), value
         sonst:
             wenn header is Nichts:
@@ -91,9 +91,9 @@ def collate_sections(lines):
         current = ()
         fuer name in section:
             current += (name,)
-            try:
+            versuch:
                 child, secrows, totalrows = parent[name]
-            except KeyError:
+            ausser KeyError:
                 child = {}
                 secrows = []
                 totalrows = []

@@ -169,7 +169,7 @@ klasse Element:
 
     def __init__(self, tag, attrib={}, **extra):
         wenn nicht isinstance(attrib, dict):
-            raise TypeError("attrib must be dict, nicht %s" % (
+            wirf TypeError("attrib must be dict, nicht %s" % (
                 attrib.__class__.__name__,))
         self.tag = tag
         self.attrib = {**attrib, **extra}
@@ -252,7 +252,7 @@ klasse Element:
         # Need to refer to the actual Python implementation, nicht the
         # shadowing C implementation.
         wenn nicht isinstance(e, _Element_Py):
-            raise TypeError('expected an Element, nicht %s' % type(e).__name__)
+            wirf TypeError('expected an Element, nicht %s' % type(e).__name__)
 
     def remove(self, subelement):
         """Remove matching subelement.
@@ -267,11 +267,11 @@ klasse Element:
 
         """
         # assert iselement(element)
-        try:
+        versuch:
             self._children.remove(subelement)
-        except ValueError:
+        ausser ValueError:
             # to align the error message mit the C implementation
-            raise ValueError("Element.remove(x): element nicht found") von Nichts
+            wirf ValueError("Element.remove(x): element nicht found") von Nichts
 
     def find(self, path, namespaces=Nichts):
         """Find first matching element by tag name oder path.
@@ -528,7 +528,7 @@ klasse ElementTree:
     """
     def __init__(self, element=Nichts, file=Nichts):
         wenn element is nicht Nichts und nicht iselement(element):
-            raise TypeError('expected an Element, nicht %s' %
+            wirf TypeError('expected an Element, nicht %s' %
                             type(element).__name__)
         self._root = element # first node
         wenn file:
@@ -546,7 +546,7 @@ klasse ElementTree:
 
         """
         wenn nicht iselement(element):
-            raise TypeError('expected an Element, nicht %s'
+            wirf TypeError('expected an Element, nicht %s'
                             % type(element).__name__)
         self._root = element
 
@@ -565,7 +565,7 @@ klasse ElementTree:
         wenn nicht hasattr(source, "read"):
             source = open(source, "rb")
             close_source = Wahr
-        try:
+        versuch:
             wenn parser is Nichts:
                 # If no parser was specified, create a default XMLParser
                 parser = XMLParser()
@@ -580,7 +580,7 @@ klasse ElementTree:
                 parser.feed(data)
             self._root = parser.close()
             gib self._root
-        finally:
+        schliesslich:
             wenn close_source:
                 source.close()
 
@@ -714,11 +714,11 @@ klasse ElementTree:
 
         """
         wenn self._root is Nichts:
-            raise TypeError('ElementTree nicht initialized')
+            wirf TypeError('ElementTree nicht initialized')
         wenn nicht method:
             method = "xml"
         sowenn method nicht in _serialize:
-            raise ValueError("unknown method %r" % method)
+            wirf ValueError("unknown method %r" % method)
         wenn nicht encoding:
             wenn method == "c14n":
                 encoding = "utf-8"
@@ -749,9 +749,9 @@ klasse ElementTree:
 @contextlib.contextmanager
 def _get_writer(file_or_filename, encoding):
     # returns text write method und release all resources after using
-    try:
+    versuch:
         write = file_or_filename.write
-    except AttributeError:
+    ausser AttributeError:
         # file_or_filename is a file name
         wenn encoding.lower() == "unicode":
             encoding="utf-8"
@@ -780,12 +780,12 @@ def _get_writer(file_or_filename, encoding):
                     file = io.BufferedIOBase()
                     file.writable = lambda: Wahr
                     file.write = write
-                    try:
+                    versuch:
                         # TextIOWrapper uses this methods to determine
                         # wenn BOM (for UTF-16, etc) should be added
                         file.seekable = file_or_filename.seekable
                         file.tell = file_or_filename.tell
-                    except AttributeError:
+                    ausser AttributeError:
                         pass
                 file = io.TextIOWrapper(file,
                                         encoding=encoding,
@@ -809,7 +809,7 @@ def _namespaces(elem, default_namespace=Nichts):
 
     def add_qname(qname):
         # calculate serialized qname representation
-        try:
+        versuch:
             wenn qname[:1] == "{":
                 uri, tag = qname[1:].rsplit("}", 1)
                 prefix = namespaces.get(uri)
@@ -826,12 +826,12 @@ def _namespaces(elem, default_namespace=Nichts):
             sonst:
                 wenn default_namespace:
                     # FIXME: can this be handled in XML 1.0?
-                    raise ValueError(
+                    wirf ValueError(
                         "cannot use non-qualified names mit "
                         "default_namespace option"
                         )
                 qnames[qname] = qname
-        except TypeError:
+        ausser TypeError:
             _raise_serialization_error(qname)
 
     # populate qname und namespaces table
@@ -989,7 +989,7 @@ def register_namespace(prefix, uri):
 
     """
     wenn re.match(r"ns\d+$", prefix):
-        raise ValueError("Prefix format reserved fuer internal use")
+        wirf ValueError("Prefix format reserved fuer internal use")
     fuer k, v in list(_namespace_map.items()):
         wenn k == uri oder v == prefix:
             del _namespace_map[k]
@@ -1011,13 +1011,13 @@ _namespace_map = {
 register_namespace._namespace_map = _namespace_map
 
 def _raise_serialization_error(text):
-    raise TypeError(
+    wirf TypeError(
         "cannot serialize %r (type %s)" % (text, type(text).__name__)
         )
 
 def _escape_cdata(text):
     # escape character data
-    try:
+    versuch:
         # it's worth avoiding do-nothing calls fuer strings that are
         # shorter than 500 characters, oder so.  assume that's, by far,
         # the most common case in most applications.
@@ -1028,12 +1028,12 @@ def _escape_cdata(text):
         wenn ">" in text:
             text = text.replace(">", "&gt;")
         gib text
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 def _escape_attrib(text):
     # escape attribute value
-    try:
+    versuch:
         wenn "&" in text:
             text = text.replace("&", "&amp;")
         wenn "<" in text:
@@ -1056,12 +1056,12 @@ def _escape_attrib(text):
         wenn "\t" in text:
             text = text.replace("\t", "&#09;")
         gib text
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 def _escape_attrib_html(text):
     # escape attribute value
-    try:
+    versuch:
         wenn "&" in text:
             text = text.replace("&", "&amp;")
         wenn ">" in text:
@@ -1069,7 +1069,7 @@ def _escape_attrib_html(text):
         wenn "\"" in text:
             text = text.replace("\"", "&quot;")
         gib text
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 # --------------------------------------------------------------------
@@ -1165,7 +1165,7 @@ def indent(tree, space="  ", level=0):
     wenn isinstance(tree, ElementTree):
         tree = tree.getroot()
     wenn level < 0:
-        raise ValueError(f"Initial indentation level must be >= 0, got {level}")
+        wirf ValueError(f"Initial indentation level must be >= 0, got {level}")
     wenn nicht len(tree):
         gib
 
@@ -1175,9 +1175,9 @@ def indent(tree, space="  ", level=0):
     def _indent_children(elem, level):
         # Start a new indentation level fuer the first child.
         child_level = level + 1
-        try:
+        versuch:
             child_indentation = indentations[child_level]
-        except IndexError:
+        ausser IndexError:
             child_indentation = indentations[level] + space
             indentations.append(child_indentation)
 
@@ -1241,7 +1241,7 @@ def iterparse(source, events=Nichts, parser=Nichts):
         close_source = Falsch
 
     def iterator(source):
-        try:
+        versuch:
             waehrend Wahr:
                 liefere von pullparser.read_events()
                 # load event buffer
@@ -1254,7 +1254,7 @@ def iterparse(source, events=Nichts, parser=Nichts):
             it = wr()
             wenn it is nicht Nichts:
                 it.root = root
-        finally:
+        schliesslich:
             wenn close_source:
                 source.close()
 
@@ -1295,11 +1295,11 @@ klasse XMLPullParser:
     def feed(self, data):
         """Feed encoded data to parser."""
         wenn self._parser is Nichts:
-            raise ValueError("feed() called after end of stream")
+            wirf ValueError("feed() called after end of stream")
         wenn data:
-            try:
+            versuch:
                 self._parser.feed(data)
-            except SyntaxError als exc:
+            ausser SyntaxError als exc:
                 self._events_queue.append(exc)
 
     def _close_and_return_root(self):
@@ -1326,13 +1326,13 @@ klasse XMLPullParser:
         waehrend events:
             event = events.popleft()
             wenn isinstance(event, Exception):
-                raise event
+                wirf event
             sonst:
                 liefere event
 
     def flush(self):
         wenn self._parser is Nichts:
-            raise ValueError("flush() called after end of stream")
+            wirf ValueError("flush() called after end of stream")
         self._parser.flush()
 
 
@@ -1528,13 +1528,13 @@ klasse XMLParser:
     """
 
     def __init__(self, *, target=Nichts, encoding=Nichts):
-        try:
+        versuch:
             von xml.parsers importiere expat
-        except ImportError:
-            try:
+        ausser ImportError:
+            versuch:
                 importiere pyexpat als expat
-            except ImportError:
-                raise ImportError(
+            ausser ImportError:
+                wirf ImportError(
                     "No module named expat; use SimpleXMLTreeBuilder instead"
                     )
         parser = expat.ParserCreate(encoding, "}")
@@ -1567,9 +1567,9 @@ klasse XMLParser:
         parser.ordered_attributes = 1
         self._doctype = Nichts
         self.entity = {}
-        try:
+        versuch:
             self.version = "Expat %d.%d.%d" % expat.version_info
-        except AttributeError:
+        ausser AttributeError:
             pass # unknown
 
     def _setevents(self, events_queue, events_to_report):
@@ -1623,19 +1623,19 @@ klasse XMLParser:
                     append((event, self.target.pi(pi_target, data)))
                 parser.ProcessingInstructionHandler = handler
             sonst:
-                raise ValueError("unknown event %r" % event_name)
+                wirf ValueError("unknown event %r" % event_name)
 
     def _raiseerror(self, value):
         err = ParseError(value)
         err.code = value.code
         err.position = value.lineno, value.offset
-        raise err
+        wirf err
 
     def _fixname(self, key):
         # expand qname, und convert name string to ascii, wenn possible
-        try:
+        versuch:
             name = self._names[key]
-        except KeyError:
+        ausser KeyError:
             name = key
             wenn "}" in name:
                 name = "{" + name
@@ -1667,13 +1667,13 @@ klasse XMLParser:
         prefix = text[:1]
         wenn prefix == "&":
             # deal mit undefined entities
-            try:
+            versuch:
                 data_handler = self.target.data
-            except AttributeError:
+            ausser AttributeError:
                 gib
-            try:
+            versuch:
                 data_handler(self.entity[text[1:-1]])
-            except KeyError:
+            ausser KeyError:
                 von xml.parsers importiere expat
                 err = expat.error(
                     "undefined entity %s: line %d, column %d" %
@@ -1683,7 +1683,7 @@ klasse XMLParser:
                 err.code = 11 # XML_ERROR_UNDEFINED_ENTITY
                 err.lineno = self.parser.ErrorLineNumber
                 err.offset = self.parser.ErrorColumnNumber
-                raise err
+                wirf err
         sowenn prefix == "<" und text[:9] == "<!DOCTYPE":
             self._doctype = [] # inside a doctype declaration
         sowenn self._doctype is nicht Nichts:
@@ -1719,36 +1719,36 @@ klasse XMLParser:
 
     def feed(self, data):
         """Feed encoded data to parser."""
-        try:
+        versuch:
             self.parser.Parse(data, Falsch)
-        except self._error als v:
+        ausser self._error als v:
             self._raiseerror(v)
 
     def close(self):
         """Finish feeding data to parser und gib element structure."""
-        try:
+        versuch:
             self.parser.Parse(b"", Wahr) # end of data
-        except self._error als v:
+        ausser self._error als v:
             self._raiseerror(v)
-        try:
+        versuch:
             close_handler = self.target.close
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             gib close_handler()
-        finally:
+        schliesslich:
             # get rid of circular references
             del self.parser, self._parser
             del self.target, self._target
 
     def flush(self):
         was_enabled = self.parser.GetReparseDeferralEnabled()
-        try:
+        versuch:
             self.parser.SetReparseDeferralEnabled(Falsch)
             self.parser.Parse(b"", Falsch)
-        except self._error als v:
+        ausser self._error als v:
             self._raiseerror(v)
-        finally:
+        schliesslich:
             self.parser.SetReparseDeferralEnabled(was_enabled)
 
 # --------------------------------------------------------------------
@@ -1768,7 +1768,7 @@ def canonicalize(xml_data=Nichts, *, out=Nichts, from_file=Nichts, **options):
     The configuration options are the same als fuer the ``C14NWriterTarget``.
     """
     wenn xml_data is Nichts und from_file is Nichts:
-        raise ValueError("Either 'xml_data' oder 'from_file' must be provided als input")
+        wirf ValueError("Either 'xml_data' oder 'from_file' must be provided als input")
     sio = Nichts
     wenn out is Nichts:
         sio = out = io.StringIO()
@@ -1856,7 +1856,7 @@ klasse C14NWriterTarget:
         fuer uri, p in self._iter_namespaces(self._ns_stack):
             wenn p == prefix:
                 gib f'{{{uri}}}{name}'
-        raise ValueError(f'Prefix {prefix} of QName "{prefixed_name}" is nicht declared in scope')
+        wirf ValueError(f'Prefix {prefix} of QName "{prefixed_name}" is nicht declared in scope')
 
     def _qname(self, qname, uri=Nichts):
         wenn uri is Nichts:
@@ -1893,7 +1893,7 @@ klasse C14NWriterTarget:
             # anything that has no namespace (and thus, no prefix) goes there.
             gib tag, tag, uri
 
-        raise ValueError(f'Namespace "{uri}" is nicht declared in scope')
+        wirf ValueError(f'Namespace "{uri}" is nicht declared in scope')
 
     def data(self, data):
         wenn nicht self._ignored_depth:
@@ -2047,7 +2047,7 @@ klasse C14NWriterTarget:
 
 def _escape_cdata_c14n(text):
     # escape character data
-    try:
+    versuch:
         # it's worth avoiding do-nothing calls fuer strings that are
         # shorter than 500 character, oder so.  assume that's, by far,
         # the most common case in most applications.
@@ -2060,13 +2060,13 @@ def _escape_cdata_c14n(text):
         wenn '\r' in text:
             text = text.replace('\r', '&#xD;')
         gib text
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 
 def _escape_attrib_c14n(text):
     # escape attribute value
-    try:
+    versuch:
         wenn '&' in text:
             text = text.replace('&', '&amp;')
         wenn '<' in text:
@@ -2080,14 +2080,14 @@ def _escape_attrib_c14n(text):
         wenn '\r' in text:
             text = text.replace('\r', '&#xD;')
         gib text
-    except (TypeError, AttributeError):
+    ausser (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 
 # --------------------------------------------------------------------
 
 # Import the C accelerators
-try:
+versuch:
     # Element is going to be shadowed by the C implementation. We need to keep
     # the Python version of it accessible fuer some "creative" by external code
     # (see tests)
@@ -2096,7 +2096,7 @@ try:
     # Element, SubElement, ParseError, TreeBuilder, XMLParser, _set_factories
     von _elementtree importiere *
     von _elementtree importiere _set_factories
-except ImportError:
+ausser ImportError:
     pass
 sonst:
     _set_factories(Comment, ProcessingInstruction)

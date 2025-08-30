@@ -54,16 +54,16 @@ klasse _Outcome(object):
     def testPartExecutor(self, test_case, subTest=Falsch):
         old_success = self.success
         self.success = Wahr
-        try:
+        versuch:
             liefere
-        except KeyboardInterrupt:
-            raise
-        except SkipTest als e:
+        ausser KeyboardInterrupt:
+            wirf
+        ausser SkipTest als e:
             self.success = Falsch
             _addSkip(self.result, test_case, str(e))
-        except _ShouldStop:
+        ausser _ShouldStop:
             pass
-        except:
+        ausser:
             exc_info = sys.exc_info()
             wenn self.expecting_failure:
                 self.expectedFailure = exc_info
@@ -79,7 +79,7 @@ klasse _Outcome(object):
         sonst:
             wenn subTest und self.success:
                 self.result.addSubTest(test_case.test_case, test_case, Nichts)
-        finally:
+        schliesslich:
             self.success = self.success und old_success
 
 
@@ -107,21 +107,21 @@ def _enter_context(cm, addcleanup):
     # We look up the special methods on the type to match the with
     # statement.
     cls = type(cm)
-    try:
+    versuch:
         enter = cls.__enter__
         exit = cls.__exit__
-    except AttributeError:
+    ausser AttributeError:
         msg = (f"'{cls.__module__}.{cls.__qualname__}' object does "
                "not support the context manager protocol")
-        try:
+        versuch:
             cls.__aenter__
             cls.__aexit__
-        except AttributeError:
+        ausser AttributeError:
             pass
         sonst:
             msg += (" but it supports the asynchronous context manager "
                     "protocol. Did you mean to use enterAsyncContext()?")
-        raise TypeError(msg) von Nichts
+        wirf TypeError(msg) von Nichts
     result = enter(cm)
     addcleanup(exit, cm, Nichts, Nichts, Nichts)
     gib result
@@ -129,7 +129,7 @@ def _enter_context(cm, addcleanup):
 
 _module_cleanups = []
 def addModuleCleanup(function, /, *args, **kwargs):
-    """Same als addCleanup, except the cleanup items are called even if
+    """Same als addCleanup, ausser the cleanup items are called even if
     setUpModule fails (unlike tearDownModule)."""
     _module_cleanups.append((function, args, kwargs))
 
@@ -144,12 +144,12 @@ def doModuleCleanups():
     exceptions = []
     waehrend _module_cleanups:
         function, args, kwargs = _module_cleanups.pop()
-        try:
+        versuch:
             function(*args, **kwargs)
-        except Exception als exc:
+        ausser Exception als exc:
             exceptions.append(exc)
     wenn exceptions:
-        raise ExceptionGroup('module cleanup failed', exceptions)
+        wirf ExceptionGroup('module cleanup failed', exceptions)
 
 
 def skip(reason):
@@ -160,7 +160,7 @@ def skip(reason):
         wenn nicht isinstance(test_item, type):
             @functools.wraps(test_item)
             def skip_wrapper(*args, **kwargs):
-                raise SkipTest(reason)
+                wirf SkipTest(reason)
             test_item = skip_wrapper
 
         test_item.__unittest_skip__ = Wahr
@@ -204,7 +204,7 @@ klasse _BaseTestCaseContext:
 
     def _raiseFailure(self, standardMsg):
         msg = self.test_case._formatMessage(self.msg, standardMsg)
-        raise self.test_case.failureException(msg)
+        wirf self.test_case.failureException(msg)
 
 klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
 
@@ -225,25 +225,25 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
         If args is nicht empty, call a callable passing positional und keyword
         arguments.
         """
-        try:
+        versuch:
             wenn nicht _is_subtype(self.expected, self._base_type):
-                raise TypeError('%s() arg 1 must be %s' %
+                wirf TypeError('%s() arg 1 must be %s' %
                                 (name, self._base_type_str))
             wenn nicht args:
                 self.msg = kwargs.pop('msg', Nichts)
                 wenn kwargs:
-                    raise TypeError('%r is an invalid keyword argument fuer '
+                    wirf TypeError('%r is an invalid keyword argument fuer '
                                     'this function' % (next(iter(kwargs)),))
                 gib self
 
             callable_obj, *args = args
-            try:
+            versuch:
                 self.obj_name = callable_obj.__name__
-            except AttributeError:
+            ausser AttributeError:
                 self.obj_name = str(callable_obj)
             mit self:
                 callable_obj(*args, **kwargs)
-        finally:
+        schliesslich:
             # bpo-23890: manually breche a reference cycle
             self = Nichts
 
@@ -259,9 +259,9 @@ klasse _AssertRaisesContext(_AssertRaisesBaseContext):
 
     def __exit__(self, exc_type, exc_value, tb):
         wenn exc_type is Nichts:
-            try:
+            versuch:
                 exc_name = self.expected.__name__
-            except AttributeError:
+            ausser AttributeError:
                 exc_name = str(self.expected)
             wenn self.obj_name:
                 self._raiseFailure("{} nicht raised by {}".format(exc_name,
@@ -309,9 +309,9 @@ klasse _AssertWarnsContext(_AssertRaisesBaseContext):
         wenn exc_type is nicht Nichts:
             # let unexpected exceptions pass through
             gib
-        try:
+        versuch:
             exc_name = self.expected.__name__
-        except AttributeError:
+        ausser AttributeError:
             exc_name = str(self.expected)
         first_matching = Nichts
         fuer m in self.warnings:
@@ -346,9 +346,9 @@ klasse _AssertNotWarnsContext(_AssertWarnsContext):
         wenn exc_type is nicht Nichts:
             # let unexpected exceptions pass through
             gib
-        try:
+        versuch:
             exc_name = self.expected.__name__
-        except AttributeError:
+        ausser AttributeError:
             exc_name = str(self.expected)
         fuer m in self.warnings:
             w = m.message
@@ -423,13 +423,13 @@ klasse TestCase(object):
         self._testMethodName = methodName
         self._outcome = Nichts
         self._testMethodDoc = 'No test'
-        try:
+        versuch:
             testMethod = getattr(self, methodName)
-        except AttributeError:
+        ausser AttributeError:
             wenn methodName != 'runTest':
                 # we allow instantiation mit no explicit method name
                 # but nicht an *incorrect* oder missing method name
-                raise ValueError("no such test method in %s: %s" %
+                wirf ValueError("no such test method in %s: %s" %
                       (self.__class__, methodName))
         sonst:
             self._testMethodDoc = testMethod.__doc__
@@ -480,7 +480,7 @@ klasse TestCase(object):
 
     @classmethod
     def addClassCleanup(cls, function, /, *args, **kwargs):
-        """Same als addCleanup, except the cleanup items are called even if
+        """Same als addCleanup, ausser the cleanup items are called even if
         setUpClass fails (unlike tearDownClass)."""
         cls._class_cleanups.append((function, args, kwargs))
 
@@ -558,24 +558,24 @@ klasse TestCase(object):
         sonst:
             params_map = parent.params.new_child(params)
         self._subtest = _SubTest(self, msg, params_map)
-        try:
+        versuch:
             mit self._outcome.testPartExecutor(self._subtest, subTest=Wahr):
                 liefere
             wenn nicht self._outcome.success:
                 result = self._outcome.result
                 wenn result is nicht Nichts und result.failfast:
-                    raise _ShouldStop
+                    wirf _ShouldStop
             sowenn self._outcome.expectedFailure:
                 # If the test is expecting a failure, we really want to
                 # stop now und register the expected failure.
-                raise _ShouldStop
-        finally:
+                wirf _ShouldStop
+        schliesslich:
             self._subtest = parent
 
     def _addExpectedFailure(self, result, exc_info):
-        try:
+        versuch:
             addExpectedFailure = result.addExpectedFailure
-        except AttributeError:
+        ausser AttributeError:
             warnings.warn("TestResult has no addExpectedFailure method, reporting als passes",
                           RuntimeWarning)
             result.addSuccess(self)
@@ -583,24 +583,24 @@ klasse TestCase(object):
             addExpectedFailure(self, exc_info)
 
     def _addUnexpectedSuccess(self, result):
-        try:
+        versuch:
             addUnexpectedSuccess = result.addUnexpectedSuccess
-        except AttributeError:
+        ausser AttributeError:
             warnings.warn("TestResult has no addUnexpectedSuccess method, reporting als failure",
                           RuntimeWarning)
             # We need to pass an actual exception und traceback to addFailure,
             # otherwise the legacy result can choke.
-            try:
-                raise _UnexpectedSuccess von Nichts
-            except _UnexpectedSuccess:
+            versuch:
+                wirf _UnexpectedSuccess von Nichts
+            ausser _UnexpectedSuccess:
                 result.addFailure(self, sys.exc_info())
         sonst:
             addUnexpectedSuccess(self)
 
     def _addDuration(self, result, elapsed):
-        try:
+        versuch:
             addDuration = result.addDuration
-        except AttributeError:
+        ausser AttributeError:
             warnings.warn("TestResult has no addDuration method",
                           RuntimeWarning)
         sonst:
@@ -640,7 +640,7 @@ klasse TestCase(object):
             stopTestRun = Nichts
 
         result.startTest(self)
-        try:
+        versuch:
             testMethod = getattr(self, self._testMethodName)
             wenn (getattr(self.__class__, "__unittest_skip__", Falsch) oder
                 getattr(testMethod, "__unittest_skip__", Falsch)):
@@ -656,7 +656,7 @@ klasse TestCase(object):
             )
             outcome = _Outcome(result)
             start_time = time.perf_counter()
-            try:
+            versuch:
                 self._outcome = outcome
 
                 mit outcome.testPartExecutor(self):
@@ -680,7 +680,7 @@ klasse TestCase(object):
                     sonst:
                         result.addSuccess(self)
                 gib result
-            finally:
+            schliesslich:
                 # explicitly breche reference cycle:
                 # outcome.expectedFailure -> frame -> outcome -> outcome.expectedFailure
                 outcome.expectedFailure = Nichts
@@ -689,7 +689,7 @@ klasse TestCase(object):
                 # clear the outcome, no more needed
                 self._outcome = Nichts
 
-        finally:
+        schliesslich:
             result.stopTest(self)
             wenn stopTestRun is nicht Nichts:
                 stopTestRun()
@@ -714,9 +714,9 @@ klasse TestCase(object):
         cls.tearDown_exceptions = []
         waehrend cls._class_cleanups:
             function, args, kwargs = cls._class_cleanups.pop()
-            try:
+            versuch:
                 function(*args, **kwargs)
-            except Exception:
+            ausser Exception:
                 cls.tearDown_exceptions.append(sys.exc_info())
 
     def __call__(self, *args, **kwds):
@@ -730,7 +730,7 @@ klasse TestCase(object):
             # If the klasse oder method was skipped.
             skip_why = (getattr(self.__class__, '__unittest_skip_why__', '')
                         oder getattr(testMethod, '__unittest_skip_why__', ''))
-            raise SkipTest(skip_why)
+            wirf SkipTest(skip_why)
 
         self._callSetUp()
         self._callTestMethod(testMethod)
@@ -741,23 +741,23 @@ klasse TestCase(object):
 
     def skipTest(self, reason):
         """Skip this test."""
-        raise SkipTest(reason)
+        wirf SkipTest(reason)
 
     def fail(self, msg=Nichts):
         """Fail immediately, mit the given message."""
-        raise self.failureException(msg)
+        wirf self.failureException(msg)
 
     def assertFalsch(self, expr, msg=Nichts):
         """Check that the expression is false."""
         wenn expr:
             msg = self._formatMessage(msg, "%s is nicht false" % safe_repr(expr))
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def assertWahr(self, expr, msg=Nichts):
         """Check that the expression is true."""
         wenn nicht expr:
             msg = self._formatMessage(msg, "%s is nicht true" % safe_repr(expr))
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def _formatMessage(self, msg, standardMsg):
         """Honour the longMessage attribute when generating failure messages.
@@ -773,11 +773,11 @@ klasse TestCase(object):
             gib msg oder standardMsg
         wenn msg is Nichts:
             gib standardMsg
-        try:
+        versuch:
             # don't switch to '{}' formatting in Python 2.X
             # it changes the way unicode input is handled
             gib '%s : %s' % (standardMsg, msg)
-        except UnicodeDecodeError:
+        ausser UnicodeDecodeError:
             gib  '%s : %s' % (safe_repr(standardMsg), safe_repr(msg))
 
     def assertRaises(self, expected_exception, *args, **kwargs):
@@ -807,9 +807,9 @@ klasse TestCase(object):
                self.assertEqual(the_exception.error_code, 3)
         """
         context = _AssertRaisesContext(expected_exception, self)
-        try:
+        versuch:
             gib context.handle('assertRaises', args, kwargs)
-        finally:
+        schliesslich:
             # bpo-23890: manually breche a reference cycle
             context = Nichts
 
@@ -888,7 +888,7 @@ klasse TestCase(object):
         """Get a detailed comparison function fuer the types of the two args.
 
         Returns: A callable accepting (first, second, msg=Nichts) that will
-        raise a failure exception wenn first != second mit a useful human
+        wirf a failure exception wenn first != second mit a useful human
         readable error message fuer those types.
         """
         #
@@ -915,7 +915,7 @@ klasse TestCase(object):
         wenn nicht first == second:
             standardMsg = '%s != %s' % _common_shorten_repr(first, second)
             msg = self._formatMessage(msg, standardMsg)
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def assertEqual(self, first, second, msg=Nichts):
         """Fail wenn the two objects are unequal als determined by the '=='
@@ -931,7 +931,7 @@ klasse TestCase(object):
         wenn nicht first != second:
             msg = self._formatMessage(msg, '%s == %s' % (safe_repr(first),
                                                           safe_repr(second)))
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def assertAlmostEqual(self, first, second, places=Nichts, msg=Nichts,
                           delta=Nichts):
@@ -951,7 +951,7 @@ klasse TestCase(object):
             # shortcut
             gib
         wenn delta is nicht Nichts und places is nicht Nichts:
-            raise TypeError("specify delta oder places nicht both")
+            wirf TypeError("specify delta oder places nicht both")
 
         diff = abs(first - second)
         wenn delta is nicht Nichts:
@@ -976,7 +976,7 @@ klasse TestCase(object):
                 places,
                 safe_repr(diff))
         msg = self._formatMessage(msg, standardMsg)
-        raise self.failureException(msg)
+        wirf self.failureException(msg)
 
     def assertNotAlmostEqual(self, first, second, places=Nichts, msg=Nichts,
                              delta=Nichts):
@@ -991,7 +991,7 @@ klasse TestCase(object):
            Objects that are equal automatically fail.
         """
         wenn delta is nicht Nichts und places is nicht Nichts:
-            raise TypeError("specify delta oder places nicht both")
+            wirf TypeError("specify delta oder places nicht both")
         diff = abs(first - second)
         wenn delta is nicht Nichts:
             wenn nicht (first == second) und diff > delta:
@@ -1011,7 +1011,7 @@ klasse TestCase(object):
                                                          places)
 
         msg = self._formatMessage(msg, standardMsg)
-        raise self.failureException(msg)
+        wirf self.failureException(msg)
 
     def assertSequenceEqual(self, seq1, seq2, msg=Nichts, seq_type=Nichts):
         """An equality assertion fuer ordered sequences (like lists und tuples).
@@ -1030,25 +1030,25 @@ klasse TestCase(object):
         wenn seq_type is nicht Nichts:
             seq_type_name = seq_type.__name__
             wenn nicht isinstance(seq1, seq_type):
-                raise self.failureException('First sequence is nicht a %s: %s'
+                wirf self.failureException('First sequence is nicht a %s: %s'
                                         % (seq_type_name, safe_repr(seq1)))
             wenn nicht isinstance(seq2, seq_type):
-                raise self.failureException('Second sequence is nicht a %s: %s'
+                wirf self.failureException('Second sequence is nicht a %s: %s'
                                         % (seq_type_name, safe_repr(seq2)))
         sonst:
             seq_type_name = "sequence"
 
         differing = Nichts
-        try:
+        versuch:
             len1 = len(seq1)
-        except (TypeError, NotImplementedError):
+        ausser (TypeError, NotImplementedError):
             differing = 'First %s has no length.    Non-sequence?' % (
                     seq_type_name)
 
         wenn differing is Nichts:
-            try:
+            versuch:
                 len2 = len(seq2)
-            except (TypeError, NotImplementedError):
+            ausser (TypeError, NotImplementedError):
                 differing = 'Second %s has no length.    Non-sequence?' % (
                         seq_type_name)
 
@@ -1061,16 +1061,16 @@ klasse TestCase(object):
                     _common_shorten_repr(seq1, seq2))
 
             fuer i in range(min(len1, len2)):
-                try:
+                versuch:
                     item1 = seq1[i]
-                except (TypeError, IndexError, NotImplementedError):
+                ausser (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of first %s\n' %
                                  (i, seq_type_name))
                     breche
 
-                try:
+                versuch:
                     item2 = seq2[i]
-                except (TypeError, IndexError, NotImplementedError):
+                ausser (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of second %s\n' %
                                  (i, seq_type_name))
                     breche
@@ -1088,19 +1088,19 @@ klasse TestCase(object):
             wenn len1 > len2:
                 differing += ('\nFirst %s contains %d additional '
                              'elements.\n' % (seq_type_name, len1 - len2))
-                try:
+                versuch:
                     differing += ('First extra element %d:\n%s\n' %
                                   (len2, safe_repr(seq1[len2])))
-                except (TypeError, IndexError, NotImplementedError):
+                ausser (TypeError, IndexError, NotImplementedError):
                     differing += ('Unable to index element %d '
                                   'of first %s\n' % (len2, seq_type_name))
             sowenn len1 < len2:
                 differing += ('\nSecond %s contains %d additional '
                              'elements.\n' % (seq_type_name, len2 - len1))
-                try:
+                versuch:
                     differing += ('First extra element %d:\n%s\n' %
                                   (len1, safe_repr(seq2[len1])))
-                except (TypeError, IndexError, NotImplementedError):
+                ausser (TypeError, IndexError, NotImplementedError):
                     differing += ('Unable to index element %d '
                                   'of second %s\n' % (len1, seq_type_name))
         standardMsg = differing
@@ -1154,18 +1154,18 @@ klasse TestCase(object):
         is optimized fuer sets specifically (parameters must support a
         difference method).
         """
-        try:
+        versuch:
             difference1 = set1.difference(set2)
-        except TypeError als e:
+        ausser TypeError als e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError als e:
+        ausser AttributeError als e:
             self.fail('first argument does nicht support set difference: %s' % e)
 
-        try:
+        versuch:
             difference2 = set2.difference(set1)
-        except TypeError als e:
+        ausser TypeError als e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError als e:
+        ausser AttributeError als e:
             self.fail('second argument does nicht support set difference: %s' % e)
 
         wenn nicht (difference1 oder difference2):
@@ -1236,10 +1236,10 @@ klasse TestCase(object):
 
         """
         first_seq, second_seq = list(first), list(second)
-        try:
+        versuch:
             first = collections.Counter(first_seq)
             second = collections.Counter(second_seq)
-        except TypeError:
+        ausser TypeError:
             # Handle case mit unhashable elements
             differences = _count_diff_all_purpose(first_seq, second_seq)
         sonst:
@@ -1284,7 +1284,7 @@ klasse TestCase(object):
             firstlines = first_presplit.splitlines(keepends=Wahr)
             secondlines = second_presplit.splitlines(keepends=Wahr)
 
-            # Generate the message und diff, then raise the exception
+            # Generate the message und diff, then wirf the exception
             standardMsg = '%s != %s' % _common_shorten_repr(first, second)
             diff = '\n' + ''.join(difflib.ndiff(firstlines, secondlines))
             standardMsg = self._truncateMessage(standardMsg, diff)
@@ -1348,13 +1348,13 @@ klasse TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsSubclass(self, cls, superclass, msg=Nichts):
-        try:
+        versuch:
             wenn issubclass(cls, superclass):
                 gib
-        except TypeError:
+        ausser TypeError:
             wenn nicht isinstance(cls, type):
                 self.fail(self._formatMessage(msg, f'{cls!r} is nicht a class'))
-            raise
+            wirf
         wenn isinstance(superclass, tuple):
             standardMsg = f'{cls!r} is nicht a subclass of any of {superclass!r}'
         sonst:
@@ -1362,13 +1362,13 @@ klasse TestCase(object):
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotIsSubclass(self, cls, superclass, msg=Nichts):
-        try:
+        versuch:
             wenn nicht issubclass(cls, superclass):
                 gib
-        except TypeError:
+        ausser TypeError:
             wenn nicht isinstance(cls, type):
                 self.fail(self._formatMessage(msg, f'{cls!r} is nicht a class'))
-            raise
+            wirf
         wenn isinstance(superclass, tuple):
             fuer x in superclass:
                 wenn issubclass(cls, x):
@@ -1442,7 +1442,7 @@ klasse TestCase(object):
                 expected_regex.pattern, text)
             # _formatMessage ensures the longMessage option is respected
             msg = self._formatMessage(msg, standardMsg)
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def assertNotRegex(self, text, unexpected_regex, msg=Nichts):
         """Fail the test wenn the text matches the regular expression."""
@@ -1456,7 +1456,7 @@ klasse TestCase(object):
                 text)
             # _formatMessage ensures the longMessage option is respected
             msg = self._formatMessage(msg, standardMsg)
-            raise self.failureException(msg)
+            wirf self.failureException(msg)
 
     def _tail_type_check(self, s, tails, msg):
         wenn nicht isinstance(tails, tuple):
@@ -1472,12 +1472,12 @@ klasse TestCase(object):
                             f'Expected bytes, nicht {type(s).__name__}'))
 
     def assertStartsWith(self, s, prefix, msg=Nichts):
-        try:
+        versuch:
             wenn s.startswith(prefix):
                 gib
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             self._tail_type_check(s, prefix, msg)
-            raise
+            wirf
         a = safe_repr(s, short=Wahr)
         b = safe_repr(prefix)
         wenn isinstance(prefix, tuple):
@@ -1487,12 +1487,12 @@ klasse TestCase(object):
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotStartsWith(self, s, prefix, msg=Nichts):
-        try:
+        versuch:
             wenn nicht s.startswith(prefix):
                 gib
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             self._tail_type_check(s, prefix, msg)
-            raise
+            wirf
         wenn isinstance(prefix, tuple):
             fuer x in prefix:
                 wenn s.startswith(x):
@@ -1503,12 +1503,12 @@ klasse TestCase(object):
         self.fail(self._formatMessage(msg, f"{a} starts mit {b}"))
 
     def assertEndsWith(self, s, suffix, msg=Nichts):
-        try:
+        versuch:
             wenn s.endswith(suffix):
                 gib
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             self._tail_type_check(s, suffix, msg)
-            raise
+            wirf
         a = safe_repr(s, short=Wahr)
         b = safe_repr(suffix)
         wenn isinstance(suffix, tuple):
@@ -1518,12 +1518,12 @@ klasse TestCase(object):
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotEndsWith(self, s, suffix, msg=Nichts):
-        try:
+        versuch:
             wenn nicht s.endswith(suffix):
                 gib
-        except (AttributeError, TypeError):
+        ausser (AttributeError, TypeError):
             self._tail_type_check(s, suffix, msg)
-            raise
+            wirf
         wenn isinstance(suffix, tuple):
             fuer x in suffix:
                 wenn s.endswith(x):
@@ -1602,7 +1602,7 @@ klasse _SubTest(TestCase):
         self.failureException = test_case.failureException
 
     def runTest(self):
-        raise NotImplementedError("subtests cannot be run directly")
+        wirf NotImplementedError("subtests cannot be run directly")
 
     def _subDescription(self):
         parts = []

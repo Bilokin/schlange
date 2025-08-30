@@ -308,7 +308,7 @@ def permute_optional_groups(
     required = tuple(required)
     wenn nicht required:
         wenn left:
-            raise ValueError("required is empty but left is not")
+            wirf ValueError("required is empty but left is not")
 
     accumulator: list[ParamTuple] = []
     counts = set()

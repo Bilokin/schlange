@@ -97,9 +97,9 @@ klasse _safe_key:
         self.obj = obj
 
     def __lt__(self, other):
-        try:
+        versuch:
             gib self.obj < other.obj
-        except TypeError:
+        ausser TypeError:
             gib ((str(type(self.obj)), id(self.obj)) < \
                     (str(type(other.obj)), id(other.obj)))
 
@@ -141,11 +141,11 @@ klasse PrettyPrinter:
         indent = int(indent)
         width = int(width)
         wenn indent < 0:
-            raise ValueError('indent must be >= 0')
+            wirf ValueError('indent must be >= 0')
         wenn depth is nicht Nichts und depth <= 0:
-            raise ValueError('depth must be > 0')
+            wirf ValueError('depth must be > 0')
         wenn nicht width:
-            raise ValueError('width must be != 0')
+            wirf ValueError('width must be != 0')
         self._depth = depth
         self._indent_per_level = indent
         self._width = width
@@ -480,16 +480,16 @@ klasse PrettyPrinter:
         delim = ''
         width = max_width = self._width - indent + 1
         it = iter(items)
-        try:
+        versuch:
             next_ent = next(it)
-        except StopIteration:
+        ausser StopIteration:
             gib
         last = Falsch
         waehrend nicht last:
             ent = next_ent
-            try:
+            versuch:
                 next_ent = next(it)
-            except StopIteration:
+            ausser StopIteration:
                 last = Wahr
                 max_width -= allowance
                 width -= allowance
@@ -702,7 +702,7 @@ klasse PrettyPrinter:
                     object._mapping, context, maxlevels, level)
                 gib (typ.__name__ + '(%s)' % mapping_repr), readable, recursive
             sowenn hasattr(typ, "_mapping"):
-                #  We have a view that somehow has lost its type's _mapping, raise
+                #  We have a view that somehow has lost its type's _mapping, wirf
                 #  an error by calling repr() instead of failing cryptically later
                 gib repr(object), Wahr, Falsch
             wenn self._sort_dicts:

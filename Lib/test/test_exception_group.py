@@ -196,33 +196,33 @@ klasse StrAndReprTests(unittest.TestCase):
 
 def create_simple_eg():
     excs = []
-    try:
-        try:
-            raise MemoryError("context und cause fuer ValueError(1)")
-        except MemoryError als e:
-            raise ValueError(1) von e
-    except ValueError als e:
+    versuch:
+        versuch:
+            wirf MemoryError("context und cause fuer ValueError(1)")
+        ausser MemoryError als e:
+            wirf ValueError(1) von e
+    ausser ValueError als e:
         excs.append(e)
 
-    try:
-        try:
-            raise OSError("context fuer TypeError")
-        except OSError als e:
-            raise TypeError(int)
-    except TypeError als e:
+    versuch:
+        versuch:
+            wirf OSError("context fuer TypeError")
+        ausser OSError als e:
+            wirf TypeError(int)
+    ausser TypeError als e:
         excs.append(e)
 
-    try:
-        try:
-            raise ImportError("context fuer ValueError(2)")
-        except ImportError als e:
-            raise ValueError(2)
-    except ValueError als e:
+    versuch:
+        versuch:
+            wirf ImportError("context fuer ValueError(2)")
+        ausser ImportError als e:
+            wirf ValueError(2)
+    ausser ValueError als e:
         excs.append(e)
 
-    try:
-        raise ExceptionGroup('simple eg', excs)
-    except ExceptionGroup als e:
+    versuch:
+        wirf ExceptionGroup('simple eg', excs)
+    ausser ExceptionGroup als e:
         gib e
 
 
@@ -513,25 +513,25 @@ klasse LeafGeneratorTest(unittest.TestCase):
 
 def create_nested_eg():
     excs = []
-    try:
-        try:
-            raise TypeError(bytes)
-        except TypeError als e:
-            raise ExceptionGroup("nested", [e])
-    except ExceptionGroup als e:
+    versuch:
+        versuch:
+            wirf TypeError(bytes)
+        ausser TypeError als e:
+            wirf ExceptionGroup("nested", [e])
+    ausser ExceptionGroup als e:
         excs.append(e)
 
-    try:
-        try:
-            raise MemoryError('out of memory')
-        except MemoryError als e:
-            raise ValueError(1) von e
-    except ValueError als e:
+    versuch:
+        versuch:
+            wirf MemoryError('out of memory')
+        ausser MemoryError als e:
+            wirf ValueError(1) von e
+    ausser ValueError als e:
         excs.append(e)
 
-    try:
-        raise ExceptionGroup("root", excs)
-    except ExceptionGroup als eg:
+    versuch:
+        wirf ExceptionGroup("root", excs)
+    ausser ExceptionGroup als eg:
         gib eg
 
 
@@ -654,44 +654,44 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
             pass
 
         def raiseVE(v):
-            raise ValueError(v)
+            wirf ValueError(v)
 
         def raiseTE(t):
-            raise TypeError(t)
+            wirf TypeError(t)
 
         def nested_group():
             def level1(i):
                 excs = []
                 fuer f, arg in [(raiseVE, i), (raiseTE, int), (raiseVE, i+1)]:
-                    try:
+                    versuch:
                         f(arg)
-                    except Exception als e:
+                    ausser Exception als e:
                         excs.append(e)
-                raise ExceptionGroup('msg1', excs)
+                wirf ExceptionGroup('msg1', excs)
 
             def level2(i):
                 excs = []
                 fuer f, arg in [(level1, i), (level1, i+1), (raiseVE, i+2)]:
-                    try:
+                    versuch:
                         f(arg)
-                    except Exception als e:
+                    ausser Exception als e:
                         excs.append(e)
-                raise MyExceptionGroup('msg2', excs)
+                wirf MyExceptionGroup('msg2', excs)
 
             def level3(i):
                 excs = []
                 fuer f, arg in [(level2, i+1), (raiseVE, i+2)]:
-                    try:
+                    versuch:
                         f(arg)
-                    except Exception als e:
+                    ausser Exception als e:
                         excs.append(e)
-                raise ExceptionGroup('msg3', excs)
+                wirf ExceptionGroup('msg3', excs)
 
             level3(5)
 
-        try:
+        versuch:
             nested_group()
-        except ExceptionGroup als e:
+        ausser ExceptionGroup als e:
             e.add_note(f"the note: {id(e)}")
             eg = e
 
@@ -750,15 +750,15 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
 
     def test_split_BaseExceptionGroup(self):
         def exc(ex):
-            try:
-                raise ex
-            except BaseException als e:
+            versuch:
+                wirf ex
+            ausser BaseException als e:
                 gib e
 
-        try:
-            raise BaseExceptionGroup(
+        versuch:
+            wirf BaseExceptionGroup(
                 "beg", [exc(ValueError(1)), exc(KeyboardInterrupt(2))])
-        except BaseExceptionGroup als e:
+        ausser BaseExceptionGroup als e:
             beg = e
 
         # Match Nothing
@@ -836,18 +836,18 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
         klasse EG(ExceptionGroup):
             pass
 
-        try:
-            try:
-                try:
-                    raise TypeError(2)
-                except TypeError als te:
-                    raise EG("nested", [te])
-            except EG als nested:
-                try:
-                    raise ValueError(1)
-                except ValueError als ve:
-                    raise EG("eg", [ve, nested])
-        except EG als e:
+        versuch:
+            versuch:
+                versuch:
+                    wirf TypeError(2)
+                ausser TypeError als te:
+                    wirf EG("nested", [te])
+            ausser EG als nested:
+                versuch:
+                    wirf ValueError(1)
+                ausser ValueError als ve:
+                    wirf EG("eg", [ve, nested])
+        ausser EG als e:
             eg = e
 
         self.assertMatchesTemplate(eg, EG, [ValueError(1), [TypeError(2)]])
@@ -883,9 +883,9 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
                 # it assumes the BaseExceptionGroup.__new__ signature).
                 gib super().__new__(cls, message, excs)
 
-        try:
-            raise EG("eg", [ValueError(1), KeyboardInterrupt(2)], "unused")
-        except EG als e:
+        versuch:
+            wirf EG("eg", [ValueError(1), KeyboardInterrupt(2)], "unused")
+        ausser EG als e:
             eg = e
 
         self.assertMatchesTemplate(
@@ -926,18 +926,18 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
             def derive(self, excs):
                 gib EG(self.message, excs, self.code)
 
-        try:
-            try:
-                try:
-                    raise TypeError(2)
-                except TypeError als te:
-                    raise EG("nested", [te], 101)
-            except EG als nested:
-                try:
-                    raise ValueError(1)
-                except ValueError als ve:
-                    raise EG("eg", [ve, nested], 42)
-        except EG als e:
+        versuch:
+            versuch:
+                versuch:
+                    wirf TypeError(2)
+                ausser TypeError als te:
+                    wirf EG("nested", [te], 101)
+            ausser EG als nested:
+                versuch:
+                    wirf ValueError(1)
+                ausser ValueError als ve:
+                    wirf EG("eg", [ve, nested], 42)
+        ausser EG als e:
             eg = e
 
         self.assertMatchesTemplate(eg, EG, [ValueError(1), [TypeError(2)]])

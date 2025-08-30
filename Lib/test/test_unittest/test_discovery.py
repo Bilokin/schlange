@@ -531,7 +531,7 @@ klasse TestDiscovery(unittest.TestCase):
         import_calls = []
         def _get_module_from_name(name):
             import_calls.append(name)
-            raise ImportError("Cannot importiere Name")
+            wirf ImportError("Cannot importiere Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -556,12 +556,12 @@ klasse TestDiscovery(unittest.TestCase):
 
     def test_discover_with_module_that_raises_SkipTest_on_import(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup is disabled")
 
         loader = unittest.TestLoader()
 
         def _get_module_from_name(name):
-            raise unittest.SkipTest('skipperoo')
+            wirf unittest.SkipTest('skipperoo')
         loader._get_module_from_name = _get_module_from_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
@@ -579,7 +579,7 @@ klasse TestDiscovery(unittest.TestCase):
 
     def test_discover_with_init_module_that_raises_SkipTest_on_import(self):
         wenn nicht unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+            wirf unittest.SkipTest("Suite cleanup is disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
@@ -587,7 +587,7 @@ klasse TestDiscovery(unittest.TestCase):
         import_calls = []
         def _get_module_from_name(name):
             import_calls.append(name)
-            raise unittest.SkipTest('skipperoo')
+            wirf unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))

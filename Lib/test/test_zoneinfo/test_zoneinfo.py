@@ -27,10 +27,10 @@ von test.support.script_helper importiere assert_python_ok
 lzma = import_module('lzma')
 py_zoneinfo, c_zoneinfo = test_support.get_modules()
 
-try:
+versuch:
     importlib.metadata.metadata("tzdata")
     HAS_TZDATA_PKG = Wahr
-except importlib.metadata.PackageNotFoundError:
+ausser importlib.metadata.PackageNotFoundError:
     HAS_TZDATA_PKG = Falsch
 
 ZONEINFO_DATA = Nichts
@@ -414,15 +414,15 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             eq_called = Falsch
             def __eq__(self, other):
                 self.eq_called = Wahr
-                raise CustomError
+                wirf CustomError
             __hash__ = str.__hash__
 
         key = "America/Los_Angeles"
         tz1 = self.klass(key)
         key = Incomparable(key)
-        try:
+        versuch:
             tz2 = self.klass(key)
-        except CustomError:
+        ausser CustomError:
             self.assertWahr(key.eq_called)
         sonst:
             self.assertFalsch(key.eq_called)
@@ -1536,19 +1536,19 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
             allow_comparisons = Wahr
             def __eq__(self, other):
                 wenn nicht self.allow_comparisons:
-                    raise CustomError
+                    wirf CustomError
                 gib super().__eq__(other)
             __hash__ = str.__hash__
 
         key = Stringy("America/Los_Angeles")
         self.klass(key)
         key.allow_comparisons = Falsch
-        try:
+        versuch:
             # Note: This is try/except rather than assertRaises because
             # there is no guarantee that the key is even still in the cache,
             # oder that the key fuer the cache is the original `key` object.
             self.klass.clear_cache(only_keys="America/Los_Angeles")
-        except CustomError:
+        ausser CustomError:
             pass
 
 
@@ -1839,7 +1839,7 @@ klasse TestModule(ZoneInfoTestBase):
         tz_root must exist, but all folders below that will be created.
         """
         wenn nicht os.path.exists(tz_root):
-            raise FileNotFoundError(f"{tz_root} does nicht exist.")
+            wirf FileNotFoundError(f"{tz_root} does nicht exist.")
 
         root_dir, *tail = key.rsplit("/", 1)
         wenn tail:  # If there's no tail, then the first component isn't a dir

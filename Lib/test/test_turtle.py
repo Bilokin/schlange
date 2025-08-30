@@ -589,11 +589,11 @@ klasse TestTurtle(unittest.TestCase):
 
     def test_fill_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
-        try:
+        versuch:
             mit self.turtle.fill():
                 self.assertWahr(self.turtle.filling())
-                raise ValueError
-        except ValueError:
+                wirf ValueError
+        ausser ValueError:
             self.assertFalsch(self.turtle.filling())
 
     def test_fill_context_when_filling(self):
@@ -620,11 +620,11 @@ klasse TestTurtle(unittest.TestCase):
 
     def test_poly_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
-        try:
+        versuch:
             mit self.turtle.poly():
                 self.assertWahr(self.turtle._creatingPoly)
-                raise ValueError
-        except ValueError:
+                wirf ValueError
+        ausser ValueError:
             self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly_context_when_creating_poly(self):

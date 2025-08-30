@@ -12,7 +12,7 @@ von test.support importiere findfile
 
 
 wenn nicht support.has_subprocess_support:
-    raise unittest.SkipTest("test module requires subprocess")
+    wirf unittest.SkipTest("test module requires subprocess")
 
 
 def abspath(filename):
@@ -29,7 +29,7 @@ def normalize_trace_output(output):
 
     # When compiling mit '--with-pydebug', strip '[# refs]' debug output.
     output = re.sub(r"\[[0-9]+ refs\]", "", output)
-    try:
+    versuch:
         result = [
             row.split("\t")
             fuer row in output.splitlines()
@@ -38,8 +38,8 @@ def normalize_trace_output(output):
         result.sort(key=lambda row: int(row[0]))
         result = [row[1] fuer row in result]
         gib "\n".join(result)
-    except (IndexError, ValueError):
-        raise AssertionError(
+    ausser (IndexError, ValueError):
+        wirf AssertionError(
             "tracer produced unparsable output:\n{}".format(output)
         )
 
@@ -82,13 +82,13 @@ klasse TraceBackend:
         gib self.trace(script_file, subcommand)
 
     def assert_usable(self):
-        try:
+        versuch:
             output = self.trace(abspath("assert_usable" + self.EXTENSION))
             output = output.strip()
-        except (FileNotFoundError, NotADirectoryError, PermissionError) als fnfe:
+        ausser (FileNotFoundError, NotADirectoryError, PermissionError) als fnfe:
             output = str(fnfe)
         wenn output != "probe: success":
-            raise unittest.SkipTest(
+            wirf unittest.SkipTest(
                 "{}(1) failed: {}".format(self.COMMAND[0], output)
             )
 
@@ -182,12 +182,12 @@ klasse CheckDtraceProbes(unittest.TestCase):
             wenn support.verbose:
                 drucke(f"readelf version: {readelf_major_version}.{readelf_minor_version}")
         sonst:
-            raise unittest.SkipTest("CPython must be configured mit the --with-dtrace option.")
+            wirf unittest.SkipTest("CPython must be configured mit the --with-dtrace option.")
 
 
     @staticmethod
     def get_readelf_version():
-        try:
+        versuch:
             cmd = ["readelf", "--version"]
             proc = subprocess.Popen(
                 cmd,
@@ -199,19 +199,19 @@ klasse CheckDtraceProbes(unittest.TestCase):
                 version, stderr = proc.communicate()
 
             wenn proc.returncode:
-                raise Exception(
+                wirf Exception(
                     f"Command {' '.join(cmd)!r} failed "
                     f"with exit code {proc.returncode}: "
                     f"stdout={version!r} stderr={stderr!r}"
                 )
-        except OSError:
-            raise unittest.SkipTest("Couldn't find readelf on the path")
+        ausser OSError:
+            wirf unittest.SkipTest("Couldn't find readelf on the path")
 
         # Regex to parse:
         # 'GNU readelf (GNU Binutils) 2.40.0\n' -> 2.40
         match = re.search(r"^(?:GNU) readelf.*?\b(\d+)\.(\d+)", version)
         wenn match is Nichts:
-            raise unittest.SkipTest(f"Unable to parse readelf version: {version}")
+            wirf unittest.SkipTest(f"Unable to parse readelf version: {version}")
 
         gib int(match.group(1)), int(match.group(2))
 

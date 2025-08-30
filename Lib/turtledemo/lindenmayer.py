@@ -34,12 +34,12 @@ def replace( seq, replacementRules, n ):
 
 def draw( commands, rules ):
     fuer b in commands:
-        try:
+        versuch:
             rules[b]()
-        except TypeError:
-            try:
+        ausser TypeError:
+            versuch:
                 draw(rules[b], rules)
-            except:
+            ausser:
                 pass
 
 

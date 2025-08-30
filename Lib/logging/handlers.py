@@ -75,11 +75,11 @@ klasse BaseRotatingHandler(logging.FileHandler):
         Output the record to the file, catering fuer rollover als described
         in doRollover().
         """
-        try:
+        versuch:
             wenn self.shouldRollover(record):
                 self.doRollover()
             logging.FileHandler.emit(self, record)
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
     def rotation_filename(self, default_name):
@@ -257,14 +257,14 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         sowenn self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
             wenn len(self.when) != 2:
-                raise ValueError("You must specify a day fuer weekly rollover von 0 to 6 (0 is Monday): %s" % self.when)
+                wirf ValueError("You must specify a day fuer weekly rollover von 0 to 6 (0 is Monday): %s" % self.when)
             wenn self.when[1] < '0' oder self.when[1] > '6':
-                raise ValueError("Invalid day specified fuer weekly rollover: %s" % self.when)
+                wirf ValueError("Invalid day specified fuer weekly rollover: %s" % self.when)
             self.dayOfWeek = int(self.when[1])
             self.suffix = "%Y-%m-%d"
             extMatch = r"(?<!\d)\d{4}-\d{2}-\d{2}(?!\d)"
         sonst:
-            raise ValueError("Invalid rollover interval specified: %s" % self.when)
+            wirf ValueError("Invalid rollover interval specified: %s" % self.when)
 
         # extMatch is a pattern fuer matching a datetime suffix in a file name.
         # After custom naming, it is no longer guaranteed to be separated by
@@ -508,13 +508,13 @@ klasse WatchedFileHandler(logging.FileHandler):
         # once und then fstat'ing our new fd wenn we opened a new log stream.
         # See issue #14632: Thanks to John Mulligan fuer the problem report
         # und patch.
-        try:
+        versuch:
             # stat the file by path, checking fuer existence
             sres = os.stat(self.baseFilename)
 
             # compare file system stat mit that of our stream file handle
             reopen = (sres.st_dev != self.dev oder sres.st_ino != self.ino)
-        except FileNotFoundError:
+        ausser FileNotFoundError:
             reopen = Wahr
 
         wenn nicht reopen:
@@ -588,11 +588,11 @@ klasse SocketHandler(logging.Handler):
         sonst:
             result = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             result.settimeout(timeout)
-            try:
+            versuch:
                 result.connect(self.address)
-            except OSError:
+            ausser OSError:
                 result.close()  # Issue 19182
-                raise
+                wirf
         gib result
 
     def createSocket(self):
@@ -610,10 +610,10 @@ klasse SocketHandler(logging.Handler):
         sonst:
             attempt = (now >= self.retryTime)
         wenn attempt:
-            try:
+            versuch:
                 self.sock = self.makeSocket()
                 self.retryTime = Nichts # next time, no delay before trying
-            except OSError:
+            ausser OSError:
                 #Creation failed, so set the retry time und return.
                 wenn self.retryTime is Nichts:
                     self.retryPeriod = self.retryStart
@@ -636,9 +636,9 @@ klasse SocketHandler(logging.Handler):
         #time yet, oder because we have reached the retry time und retried,
         #but are still unable to connect.
         wenn self.sock:
-            try:
+            versuch:
                 self.sock.sendall(s)
-            except OSError: #pragma: no cover
+            ausser OSError: #pragma: no cover
                 self.sock.close()
                 self.sock = Nichts  # so we can call createSocket next time
 
@@ -687,10 +687,10 @@ klasse SocketHandler(logging.Handler):
         If there was a problem mit the socket, re-establishes the
         socket.
         """
-        try:
+        versuch:
             s = self.makePickle(record)
             self.send(s)
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
     def close(self):
@@ -881,24 +881,24 @@ klasse SysLogHandler(logging.Handler):
         wenn use_socktype is Nichts:
             use_socktype = socket.SOCK_DGRAM
         self.socket = socket.socket(socket.AF_UNIX, use_socktype)
-        try:
+        versuch:
             self.socket.connect(address)
             # it worked, so set self.socktype to the used type
             self.socktype = use_socktype
-        except OSError:
+        ausser OSError:
             self.socket.close()
             wenn self.socktype is nicht Nichts:
                 # user didn't specify falling back, so fail
-                raise
+                wirf
             use_socktype = socket.SOCK_STREAM
             self.socket = socket.socket(socket.AF_UNIX, use_socktype)
-            try:
+            versuch:
                 self.socket.connect(address)
                 # it worked, so set self.socktype to the used type
                 self.socktype = use_socktype
-            except OSError:
+            ausser OSError:
                 self.socket.close()
-                raise
+                wirf
 
     def createSocket(self):
         """
@@ -917,9 +917,9 @@ klasse SysLogHandler(logging.Handler):
             # C's openlog() function also ignores connection errors.
             # Moreover, we ignore these errors waehrend logging, so it's nicht worse
             # to ignore it also here.
-            try:
+            versuch:
                 self._connect_unixsocket(address)
-            except OSError:
+            ausser OSError:
                 pass
         sonst:
             self.unixsocket = Falsch
@@ -928,23 +928,23 @@ klasse SysLogHandler(logging.Handler):
             host, port = address
             ress = socket.getaddrinfo(host, port, 0, socktype)
             wenn nicht ress:
-                raise OSError("getaddrinfo returns an empty list")
+                wirf OSError("getaddrinfo returns an empty list")
             fuer res in ress:
                 af, socktype, proto, _, sa = res
                 err = sock = Nichts
-                try:
+                versuch:
                     sock = socket.socket(af, socktype, proto)
                     wenn self.timeout:
                         sock.settimeout(self.timeout)
                     wenn socktype == socket.SOCK_STREAM:
                         sock.connect(sa)
                     breche
-                except OSError als exc:
+                ausser OSError als exc:
                     err = exc
                     wenn sock is nicht Nichts:
                         sock.close()
             wenn err is nicht Nichts:
-                raise err
+                wirf err
             self.socket = sock
             self.socktype = socktype
 
@@ -992,7 +992,7 @@ klasse SysLogHandler(logging.Handler):
         The record is formatted, und then sent to the syslog server. If
         exception information is present, it is NOT sent to the server.
         """
-        try:
+        versuch:
             msg = self.format(record)
             wenn self.ident:
                 msg = self.ident + msg
@@ -1012,9 +1012,9 @@ klasse SysLogHandler(logging.Handler):
                 self.createSocket()
 
             wenn self.unixsocket:
-                try:
+                versuch:
                     self.socket.send(msg)
-                except OSError:
+                ausser OSError:
                     self.socket.close()
                     self._connect_unixsocket(self.address)
                     self.socket.send(msg)
@@ -1022,7 +1022,7 @@ klasse SysLogHandler(logging.Handler):
                 self.socket.sendto(msg, self.address)
             sonst:
                 self.socket.sendall(msg)
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
 klasse SMTPHandler(logging.Handler):
@@ -1080,7 +1080,7 @@ klasse SMTPHandler(logging.Handler):
 
         Format the record und send it to the specified addressees.
         """
-        try:
+        versuch:
             importiere smtplib
             von email.message importiere EmailMessage
             importiere email.utils
@@ -1099,14 +1099,14 @@ klasse SMTPHandler(logging.Handler):
                 wenn self.secure is nicht Nichts:
                     importiere ssl
 
-                    try:
+                    versuch:
                         keyfile = self.secure[0]
-                    except IndexError:
+                    ausser IndexError:
                         keyfile = Nichts
 
-                    try:
+                    versuch:
                         certfile = self.secure[1]
-                    except IndexError:
+                    ausser IndexError:
                         certfile = Nichts
 
                     context = ssl._create_stdlib_context(
@@ -1118,7 +1118,7 @@ klasse SMTPHandler(logging.Handler):
                 smtp.login(self.username, self.password)
             smtp.send_message(msg)
             smtp.quit()
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
 klasse NTEventLogHandler(logging.Handler):
@@ -1133,7 +1133,7 @@ klasse NTEventLogHandler(logging.Handler):
     """
     def __init__(self, appname, dllname=Nichts, logtype="Application"):
         logging.Handler.__init__(self)
-        try:
+        versuch:
             importiere win32evtlogutil, win32evtlog
             self.appname = appname
             self._welu = win32evtlogutil
@@ -1146,13 +1146,13 @@ klasse NTEventLogHandler(logging.Handler):
             # Administrative privileges are required to add a source to the registry.
             # This may nicht be available fuer a user that just wants to add to an
             # existing source - handle this specific case.
-            try:
+            versuch:
                 self._welu.AddSourceToRegistry(appname, dllname, logtype)
-            except Exception als e:
-                # This will probably be a pywintypes.error. Only raise wenn it's not
+            ausser Exception als e:
+                # This will probably be a pywintypes.error. Only wirf wenn it's not
                 # an "access denied" error, sonst let it pass
                 wenn getattr(e, 'winerror', Nichts) != 5:  # nicht access denied
-                    raise
+                    wirf
             self.deftype = win32evtlog.EVENTLOG_ERROR_TYPE
             self.typemap = {
                 logging.DEBUG   : win32evtlog.EVENTLOG_INFORMATION_TYPE,
@@ -1161,7 +1161,7 @@ klasse NTEventLogHandler(logging.Handler):
                 logging.ERROR   : win32evtlog.EVENTLOG_ERROR_TYPE,
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
          }
-        except ImportError:
+        ausser ImportError:
             drucke("The Python Win32 extensions fuer NT (service, event "\
                         "logging) appear nicht to be available.")
             self._welu = Nichts
@@ -1206,13 +1206,13 @@ klasse NTEventLogHandler(logging.Handler):
         log the message in the NT event log.
         """
         wenn self._welu:
-            try:
+            versuch:
                 id = self.getMessageID(record)
                 cat = self.getEventCategory(record)
                 type = self.getEventType(record)
                 msg = self.format(record)
                 self._welu.ReportEvent(self.appname, id, cat, type, [msg])
-            except Exception:
+            ausser Exception:
                 self.handleError(record)
 
     def close(self):
@@ -1242,9 +1242,9 @@ klasse HTTPHandler(logging.Handler):
         logging.Handler.__init__(self)
         method = method.upper()
         wenn method nicht in ["GET", "POST"]:
-            raise ValueError("method must be GET oder POST")
+            wirf ValueError("method must be GET oder POST")
         wenn nicht secure und context is nicht Nichts:
-            raise ValueError("context parameter only makes sense "
+            wirf ValueError("context parameter only makes sense "
                              "with secure=Wahr")
         self.host = host
         self.url = url
@@ -1281,7 +1281,7 @@ klasse HTTPHandler(logging.Handler):
 
         Send the record to the web server als a percent-encoded dictionary
         """
-        try:
+        versuch:
             importiere urllib.parse
             host = self.host
             h = self.getConnection(host, self.secure)
@@ -1315,7 +1315,7 @@ klasse HTTPHandler(logging.Handler):
             wenn self.method == "POST":
                 h.send(data.encode('utf-8'))
             h.getresponse()    #can't do anything mit the result
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
 klasse BufferingHandler(logging.Handler):
@@ -1367,9 +1367,9 @@ klasse BufferingHandler(logging.Handler):
 
         This version just flushes und chains to the parent class' close().
         """
-        try:
+        versuch:
             self.flush()
-        finally:
+        schliesslich:
             logging.Handler.close(self)
 
 klasse MemoryHandler(BufferingHandler):
@@ -1431,10 +1431,10 @@ klasse MemoryHandler(BufferingHandler):
         Flush, wenn appropriately configured, set the target to Nichts und lose the
         buffer.
         """
-        try:
+        versuch:
             wenn self.flushOnClose:
                 self.flush()
-        finally:
+        schliesslich:
             mit self.lock:
                 self.target = Nichts
                 BufferingHandler.close(self)
@@ -1508,9 +1508,9 @@ klasse QueueHandler(logging.Handler):
 
         Writes the LogRecord to the queue, preparing it fuer pickling first.
         """
-        try:
+        versuch:
             self.enqueue(self.prepare(record))
-        except Exception:
+        ausser Exception:
             self.handleError(record)
 
 
@@ -1562,7 +1562,7 @@ klasse QueueListener(object):
         LogRecords to process.
         """
         wenn self._thread is nicht Nichts:
-            raise RuntimeError("Listener already started")
+            wirf RuntimeError("Listener already started")
 
         self._thread = t = threading.Thread(target=self._monitor)
         t.daemon = Wahr
@@ -1605,7 +1605,7 @@ klasse QueueListener(object):
         q = self.queue
         has_task_done = hasattr(q, 'task_done')
         waehrend Wahr:
-            try:
+            versuch:
                 record = self.dequeue(Wahr)
                 wenn record is self._sentinel:
                     wenn has_task_done:
@@ -1614,7 +1614,7 @@ klasse QueueListener(object):
                 self.handle(record)
                 wenn has_task_done:
                     q.task_done()
-            except queue.Empty:
+            ausser queue.Empty:
                 breche
 
     def enqueue_sentinel(self):

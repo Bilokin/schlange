@@ -7,7 +7,7 @@ Here's an example of the sort of thing that is tested.
 Traceback (most recent call last):
 SyntaxError: name 'x' is parameter und global
 
-The tests are all raise SyntaxErrors.  They were created by checking
+The tests are all wirf SyntaxErrors.  They were created by checking
 each C call that raises SyntaxError.  There are several modules that
 raise these exceptions-- ast.c, compile.c, future.c, pythonrun.c, und
 symtable.c.
@@ -350,7 +350,7 @@ SyntaxError: invalid syntax. Perhaps you forgot a comma?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Perhaps you forgot a comma?
 
-# Make sure soft keywords constructs don't raise specialized
+# Make sure soft keywords constructs don't wirf specialized
 # errors regarding missing commas oder other spezialiced errors
 
 >>> match x:
@@ -383,7 +383,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 # But prefixes of soft keywords should
-# still raise specialized errors
+# still wirf specialized errors
 
 >>> (mat x)
 Traceback (most recent call last):
@@ -870,9 +870,9 @@ Test control flow in finally
 continue in fuer loop under finally should be ok.
 
     >>> def test():
-    ...     try:
+    ...     versuch:
     ...         pass
-    ...     finally:
+    ...     schliesslich:
     ...         fuer abc in range(10):
     ...             weiter
     ...     drucke(abc)
@@ -882,9 +882,9 @@ continue in fuer loop under finally should be ok.
 break in fuer loop under finally should be ok.
 
     >>> def test():
-    ...     try:
+    ...     versuch:
     ...         pass
-    ...     finally:
+    ...     schliesslich:
     ...         fuer abc in range(10):
     ...             breche
     ...     drucke(abc)
@@ -894,9 +894,9 @@ break in fuer loop under finally should be ok.
 return in function under finally should be ok.
 
     >>> def test():
-    ...     try:
+    ...     versuch:
     ...         pass
-    ...     finally:
+    ...     schliesslich:
     ...         def f():
     ...             gib 42
     ...     drucke(f())
@@ -908,9 +908,9 @@ combine fuer loop und function def
 return in function under finally should be ok.
 
     >>> def test():
-    ...     try:
+    ...     versuch:
     ...         pass
-    ...     finally:
+    ...     schliesslich:
     ...         fuer i in range(10):
     ...             def f():
     ...                 gib 42
@@ -919,9 +919,9 @@ return in function under finally should be ok.
     42
 
     >>> def test():
-    ...     try:
+    ...     versuch:
     ...         pass
-    ...     finally:
+    ...     schliesslich:
     ...         def f():
     ...             fuer i in range(10):
     ...                 gib 42
@@ -932,9 +932,9 @@ return in function under finally should be ok.
 A weiter outside loop should nicht be allowed.
 
     >>> def foo():
-    ...     try:
+    ...     versuch:
     ...         weiter
-    ...     finally:
+    ...     schliesslich:
     ...         pass
     Traceback (most recent call last):
       ...
@@ -945,11 +945,11 @@ uses a single data structure to keep track of try-finally und loops,
 so we need to be sure that a breche is actually inside a loop.  If it
 isn't, there should be a syntax error.
 
-   >>> try:
+   >>> versuch:
    ...     drucke(1)
    ...     breche
    ...     drucke(2)
-   ... finally:
+   ... schliesslich:
    ...     drucke(3)
    Traceback (most recent call last):
      ...
@@ -1215,7 +1215,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> try:
+   >>> versuch:
    ...   pass
    ... except
    ...   pass
@@ -1351,7 +1351,7 @@ Parenthesized parameters in function definitions
 
 Custom error messages fuer try blocks that are nicht followed by except/finally
 
-   >>> try:
+   >>> versuch:
    ...    x = 34
    ...
    Traceback (most recent call last):
@@ -1359,79 +1359,79 @@ Custom error messages fuer try blocks that are nicht followed by except/finally
 
 Custom error message fuer __debug__ als exception variable
 
-   >>> try:
+   >>> versuch:
    ...    pass
-   ... except TypeError als __debug__:
+   ... ausser TypeError als __debug__:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-Custom error message fuer try block mixing except und except*
+Custom error message fuer try block mixing ausser und except*
 
-   >>> try:
+   >>> versuch:
    ...    pass
-   ... except TypeError:
+   ... ausser TypeError:
    ...    pass
    ... except* ValueError:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
-   >>> try:
+   >>> versuch:
    ...    pass
    ... except* TypeError:
    ...    pass
-   ... except ValueError:
+   ... ausser ValueError:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
-   >>> try:
+   >>> versuch:
    ...    pass
-   ... except TypeError:
+   ... ausser TypeError:
    ...    pass
-   ... except TypeError:
+   ... ausser TypeError:
    ...    pass
    ... except* ValueError:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
-   >>> try:
+   >>> versuch:
    ...    pass
    ... except* TypeError:
    ...    pass
    ... except* TypeError:
    ...    pass
-   ... except ValueError:
+   ... ausser ValueError:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' und 'except*' on the same 'try'
 
 Better error message fuer using `except as` mit nicht a name:
 
-   >>> try:
+   >>> versuch:
    ...    pass
-   ... except TypeError als obj.attr:
-   ...    pass
-   Traceback (most recent call last):
-   SyntaxError: cannot use except statement mit attribute
-
-   >>> try:
-   ...    pass
-   ... except TypeError als obj[1]:
+   ... ausser TypeError als obj.attr:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot use except statement mit subscript
+   SyntaxError: cannot use ausser statement mit attribute
 
-   >>> try:
+   >>> versuch:
+   ...    pass
+   ... ausser TypeError als obj[1]:
+   ...    pass
+   Traceback (most recent call last):
+   SyntaxError: cannot use ausser statement mit subscript
+
+   >>> versuch:
    ...    pass
    ... except* TypeError als (obj, name):
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot use except* statement mit tuple
 
-   >>> try:
+   >>> versuch:
    ...    pass
    ... except* TypeError als 1:
    ...    pass
@@ -1440,18 +1440,18 @@ Better error message fuer using `except as` mit nicht a name:
 
 Regression tests fuer gh-133999:
 
-   >>> try: pass
-   ... except TypeError als name: raise von Nichts
+   >>> versuch: pass
+   ... ausser TypeError als name: wirf von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
-   >>> try: pass
-   ... except* TypeError als name: raise von Nichts
+   >>> versuch: pass
+   ... except* TypeError als name: wirf von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
    >>> match 1:
-   ...     case 1 | 2 als abc: raise von Nichts
+   ...     case 1 | 2 als abc: wirf von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' und 'from'?
 
@@ -1566,46 +1566,46 @@ Specialized indentation errors:
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'else' statement on line 5
 
-   >>> try:
+   >>> versuch:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'try' statement on line 1
 
-   >>> try:
+   >>> versuch:
    ...     something()
-   ... except:
+   ... ausser:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'except' statement on line 3
 
-   >>> try:
+   >>> versuch:
    ...     something()
-   ... except A:
+   ... ausser A:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'except' statement on line 3
 
-   >>> try:
+   >>> versuch:
    ...     something()
    ... except* A:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'except*' statement on line 3
 
-   >>> try:
+   >>> versuch:
    ...     something()
-   ... except A:
+   ... ausser A:
    ...     pass
-   ... finally:
+   ... schliesslich:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'finally' statement on line 5
 
-   >>> try:
+   >>> versuch:
    ...     something()
    ... except* A:
    ...     pass
-   ... finally:
+   ... schliesslich:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'finally' statement on line 5
@@ -1693,76 +1693,76 @@ Specialized indentation errors:
    IndentationError: expected an indented block after 'case' statement on line 4
 
 Make sure that the old "raise X, Y[, Z]" form is gone:
-   >>> raise X, Y
+   >>> wirf X, Y
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
-   >>> raise X, Y, Z
+   >>> wirf X, Y, Z
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
 
 Better errors fuer `raise` statement:
 
-    >>> raise ValueError from
+    >>> wirf ValueError from
     Traceback (most recent call last):
     SyntaxError: did you forget an expression after 'from'?
 
-    >>> raise mod.ValueError() from
+    >>> wirf mod.ValueError() from
     Traceback (most recent call last):
     SyntaxError: did you forget an expression after 'from'?
 
-    >>> raise von exc
+    >>> wirf von exc
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' und 'from'?
 
-    >>> raise von Nichts
+    >>> wirf von Nichts
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' und 'from'?
 
-    >>> raise from
+    >>> wirf from
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' und 'from'?
 
 Check that an multiple exception types mit missing parentheses
 raise a custom exception only when using 'as'
 
-   >>> try:
+   >>> versuch:
    ...   pass
-   ... except A, B, C als blech:
-   ...   pass
-   Traceback (most recent call last):
-   SyntaxError: multiple exception types must be parenthesized when using 'as'
-
-   >>> try:
-   ...   pass
-   ... except A, B, C als blech:
-   ...   pass
-   ... finally:
+   ... ausser A, B, C als blech:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
+   >>> versuch:
+   ...   pass
+   ... ausser A, B, C als blech:
+   ...   pass
+   ... schliesslich:
+   ...   pass
+   Traceback (most recent call last):
+   SyntaxError: multiple exception types must be parenthesized when using 'as'
 
-   >>> try:
+
+   >>> versuch:
    ...   pass
    ... except* A, B, C als blech:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
-   >>> try:
+   >>> versuch:
    ...   pass
    ... except* A, B, C als blech:
    ...   pass
-   ... finally:
+   ... schliesslich:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
 Custom exception fuer 'except*' without an exception type
 
-   >>> try:
+   >>> versuch:
    ...   pass
    ... except* A als a:
    ...   pass
@@ -1820,7 +1820,7 @@ SyntaxError: invalid syntax. Did you mean 'else'?
 
 >>> tyo:
 ...   pass
-... except y:
+... ausser y:
 ...   pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'try'?
@@ -2133,7 +2133,7 @@ SyntaxError: cannot use subscript als importiere target
 Traceback (most recent call last):
 SyntaxError: cannot use subscript als importiere target
 
-# Check that we dont raise the "trailing comma" error wenn there is more
+# Check that we dont wirf the "trailing comma" error wenn there is more
 # input to the left of the valid part that we parsed.
 
 >>> von t importiere x,y, und 3
@@ -2208,7 +2208,7 @@ SyntaxError: invalid syntax
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
-Corner-cases that used to fail to raise the correct error:
+Corner-cases that used to fail to wirf the correct error:
 
     >>> def f(*, x=lambda __debug__:0): pass
     Traceback (most recent call last):
@@ -2708,33 +2708,33 @@ klasse SyntaxWarningTest(unittest.TestCase):
     def test_return_in_finally(self):
         source = textwrap.dedent("""
             def f():
-                try:
+                versuch:
                     pass
-                finally:
+                schliesslich:
                     gib 42
             """)
         self.check_warning(source, "'return' in a 'finally' block")
 
         source = textwrap.dedent("""
             def f():
-                try:
+                versuch:
                     pass
-                finally:
-                    try:
+                schliesslich:
+                    versuch:
                         gib 42
-                    except:
+                    ausser:
                         pass
             """)
         self.check_warning(source, "'return' in a 'finally' block")
 
         source = textwrap.dedent("""
             def f():
-                try:
+                versuch:
                     pass
-                finally:
-                    try:
+                schliesslich:
+                    versuch:
                         pass
-                    except:
+                    ausser:
                         gib 42
             """)
         self.check_warning(source, "'return' in a 'finally' block")
@@ -2744,33 +2744,33 @@ klasse SyntaxWarningTest(unittest.TestCase):
 
             source = textwrap.dedent(f"""
                 fuer abc in range(10):
-                    try:
+                    versuch:
                         pass
-                    finally:
+                    schliesslich:
                         {kw}
                 """)
             self.check_warning(source, f"'{kw}' in a 'finally' block")
 
             source = textwrap.dedent(f"""
                 fuer abc in range(10):
-                    try:
+                    versuch:
                         pass
-                    finally:
-                        try:
+                    schliesslich:
+                        versuch:
                             {kw}
-                        except:
+                        ausser:
                             pass
                 """)
             self.check_warning(source, f"'{kw}' in a 'finally' block")
 
             source = textwrap.dedent(f"""
                 fuer abc in range(10):
-                    try:
+                    versuch:
                         pass
-                    finally:
-                        try:
+                    schliesslich:
+                        versuch:
                             pass
-                        except:
+                        ausser:
                             {kw}
                 """)
             self.check_warning(source, f"'{kw}' in a 'finally' block")
@@ -2787,9 +2787,9 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         text of the exception raised.  If subclass is specified it
         is the expected subclass of SyntaxError (e.g. IndentationError).
         """
-        try:
+        versuch:
             compile(code, filename, mode)
-        except SyntaxError als err:
+        ausser SyntaxError als err:
             wenn subclass und nicht isinstance(err, subclass):
                 self.fail("SyntaxError is nicht a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
@@ -2806,7 +2806,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                 self.assertEqual(err.end_offset, end_offset)
 
         sonst:
-            self.fail("compile() did nicht raise SyntaxError")
+            self.fail("compile() did nicht wirf SyntaxError")
 
     def test_expression_with_assignment(self):
         self._check_error(
@@ -2874,7 +2874,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_raise_from_error_message(self):
         source = """if 1:
-        raise AssertionError() von Nichts
+        wirf AssertionError() von Nichts
         drucke(1,,2)
         """
         self._check_error(source, "invalid syntax", lineno=3)
@@ -2979,9 +2979,9 @@ pass
 
 pass
 """
-        try:
+        versuch:
             compile(s, '<string>', 'exec')
-        except SyntaxError:
+        ausser SyntaxError:
             self.fail("Empty line after a line continuation character is valid.")
 
         # See issue-46091
@@ -2997,10 +2997,10 @@ def fib(n):
     '''Print a Fibonacci series up to n.'''
     a, b = 0, 1
 """
-        try:
+        versuch:
             compile(s1, '<string>', 'exec')
             compile(s2, '<string>', 'exec')
-        except SyntaxError:
+        ausser SyntaxError:
             self.fail("Indented statement over multiple lines is valid")
 
     def test_continuation_bad_indentation(self):
@@ -3103,12 +3103,12 @@ klasse A:
         code = """
 def func1():
     wenn a != b:
-        raise ValueError
+        wirf ValueError
 
 def func2():
     try
         gib 1
-    finally:
+    schliesslich:
         pass
 """
         self._check_error(code, "expected ':'")
@@ -3201,7 +3201,7 @@ case(34)
 
     @support.cpython_only
     def test_syntax_error_on_deeply_nested_blocks(self):
-        # This raises a SyntaxError, it used to raise a SystemError. Context
+        # This raises a SyntaxError, it used to wirf a SystemError. Context
         # fuer this change can be found on issue #27514
 
         # In 2.5 there was a missing exception und an assert was triggered in a
@@ -3256,13 +3256,13 @@ while 1:
         self._check_error(
             textwrap.dedent(
                 """
-                try:
+                versuch:
                     pass
-                except ValueError als obj.attr:
+                ausser ValueError als obj.attr:
                     pass
                 """
             ),
-            errtext="cannot use except statement mit attribute",
+            errtext="cannot use ausser statement mit attribute",
             lineno=4,
             end_lineno=4,
             offset=22,

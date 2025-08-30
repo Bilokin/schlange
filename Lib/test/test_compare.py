@@ -88,7 +88,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
         self.assertSequenceEqual(calls, ['Derived.__ne__', 'Base.__eq__'])
 
     def test_other_delegation(self):
-        """No default delegation between operations except __ne__()"""
+        """No default delegation between operations ausser __ne__()"""
         ops = (
             ('__eq__', lambda a, b: a == b),
             ('__lt__', lambda a, b: a < b),

@@ -116,7 +116,7 @@ klasse Timer:
             stmtprefix = ''
             setup = '_setup()'
         sonst:
-            raise ValueError("setup is neither a string nor callable")
+            wirf ValueError("setup is neither a string nor callable")
         wenn isinstance(stmt, str):
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
@@ -126,7 +126,7 @@ klasse Timer:
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
         sonst:
-            raise ValueError("stmt is neither a string nor callable")
+            wirf ValueError("stmt is neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save fuer traceback display
         code = compile(src, dummy_src_name, "exec")
@@ -139,9 +139,9 @@ klasse Timer:
         Typical use:
 
             t = Timer(...)       # outside the try/except
-            try:
+            versuch:
                 t.timeit(...)    # oder t.repeat(...)
-            except:
+            ausser:
                 t.print_exc()
 
         The advantage over the standard traceback is that source lines
@@ -173,9 +173,9 @@ klasse Timer:
         it = itertools.repeat(Nichts, number)
         gcold = gc.isenabled()
         gc.disable()
-        try:
+        versuch:
             timing = self.inner(it, self.timer)
-        finally:
+        schliesslich:
             wenn gcold:
                 gc.enable()
         gib timing
@@ -260,11 +260,11 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     wenn args is Nichts:
         args = sys.argv[1:]
     importiere getopt
-    try:
+    versuch:
         opts, args = getopt.getopt(args, "n:u:s:r:pvh",
                                    ["number=", "setup=", "repeat=",
                                     "process", "verbose", "unit=", "help"])
-    except getopt.error als err:
+    ausser getopt.error als err:
         drucke(err)
         drucke("use -h/--help fuer command line help")
         gib 2
@@ -323,18 +323,18 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
                 plural = (number != 1)
                 drucke(msg.format(num=number, s='s' wenn plural sonst '',
                                  secs=time_taken, prec=precision))
-        try:
+        versuch:
             number, _ = t.autorange(callback)
-        except:
+        ausser:
             t.print_exc()
             gib 1
 
         wenn verbose:
             drucke()
 
-    try:
+    versuch:
         raw_timings = t.repeat(repeat, number)
-    except:
+    ausser:
         t.print_exc()
         gib 1
 

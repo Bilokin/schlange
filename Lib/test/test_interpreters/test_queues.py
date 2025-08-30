@@ -22,9 +22,9 @@ def get_num_queues():
 klasse TestBase(_TestBase):
     def tearDown(self):
         fuer qid, _, _ in _queues.list_all():
-            try:
+            versuch:
                 _queues.destroy(qid)
-            except Exception:
+            ausser Exception:
                 pass
 
 
@@ -434,7 +434,7 @@ klasse TestQueueOps(TestBase):
             sowenn unbound is queues.UNBOUND_REMOVE:
                 extraargs = ', unbounditems=queues.UNBOUND_REMOVE'
             sonst:
-                raise NotImplementedError(repr(unbound))
+                wirf NotImplementedError(repr(unbound))
             interp = interpreters.create()
 
             _run_output(interp, dedent(f"""
@@ -632,10 +632,10 @@ klasse TestQueueOps(TestBase):
 
         def f():
             waehrend Wahr:
-                try:
+                versuch:
                     obj = queue1.get(timeout=0.1)
                     breche
-                except queues.QueueEmpty:
+                ausser queues.QueueEmpty:
                     weiter
             queue2.put(obj)
         t = threading.Thread(target=f)

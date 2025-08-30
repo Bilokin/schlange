@@ -21,9 +21,9 @@ winsound = import_helper.import_module('winsound')
 def sound_func(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        try:
+        versuch:
             ret = func(*args, **kwargs)
-        except RuntimeError als e:
+        ausser RuntimeError als e:
             wenn support.verbose:
                 drucke(func.__name__, 'failed:', e)
         sonst:
@@ -170,7 +170,7 @@ klasse PlaySoundTest(unittest.TestCase):
         time.sleep(0.5)
         safe_PlaySound('SystemQuestion', winsound.SND_ALIAS | winsound.SND_NOSTOP)
         # Issue 8367: PlaySound(Nichts, winsound.SND_PURGE)
-        # does nicht raise on systems without a sound card.
+        # does nicht wirf on systems without a sound card.
         winsound.PlaySound(Nichts, winsound.SND_PURGE)
 
     def test_sound_sentry(self):

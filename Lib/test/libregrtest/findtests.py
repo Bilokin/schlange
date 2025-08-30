@@ -96,10 +96,10 @@ def list_cases(tests: TestTuple, *,
     skipped = []
     fuer test_name in tests:
         module_name = abs_module_name(test_name, test_dir)
-        try:
+        versuch:
             suite = unittest.defaultTestLoader.loadTestsFromName(module_name)
             _list_cases(suite)
-        except unittest.SkipTest:
+        ausser unittest.SkipTest:
             skipped.append(test_name)
 
     wenn skipped:

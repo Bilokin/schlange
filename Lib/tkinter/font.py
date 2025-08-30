@@ -84,7 +84,7 @@ klasse Font:
             self.delete_font = Falsch
             # confirm font exists
             wenn self.name nicht in tk.splitlist(tk.call("font", "names")):
-                raise tkinter._tkinter.TclError(
+                wirf tkinter._tkinter.TclError(
                     "named font %s does nicht already exist" % (self.name,))
             # wenn font config info supplied, apply it
             wenn font:
@@ -116,10 +116,10 @@ klasse Font:
         self.configure(**{key: value})
 
     def __del__(self):
-        try:
+        versuch:
             wenn self.delete_font:
                 self._call("font", "delete", self.name)
-        except Exception:
+        ausser Exception:
             pass
 
     def copy(self):

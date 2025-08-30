@@ -37,13 +37,13 @@ def warnings_state(module):
     """Use a specific warnings implementation in warning_tests."""
     global __warningregistry__
     fuer to_clear in (sys, warning_tests):
-        try:
+        versuch:
             to_clear.__warningregistry__.clear()
-        except AttributeError:
+        ausser AttributeError:
             pass
-    try:
+    versuch:
         __warningregistry__.clear()
-    except NameError:
+    ausser NameError:
         pass
     original_warnings = warning_tests.warnings
     wenn module._use_context:
@@ -51,11 +51,11 @@ def warnings_state(module):
     sonst:
         original_filters = module.filters
         module.filters = original_filters[:]
-    try:
+    versuch:
         module.simplefilter("once")
         warning_tests.warnings = module
         liefere
-    finally:
+    schliesslich:
         warning_tests.warnings = original_warnings
         wenn module._use_context:
             module._set_context(saved_context)
@@ -212,7 +212,7 @@ klasse FilterTests(BaseTest):
                 sowenn x == 1:
                     self.assertEqual(len(w), 0)
                 sonst:
-                    raise ValueError("loop variant unhandled")
+                    wirf ValueError("loop variant unhandled")
 
     def test_module(self):
         mit self.module.catch_warnings(record=Wahr) als w:
@@ -275,9 +275,9 @@ klasse FilterTests(BaseTest):
             self.module.filterwarnings("error", category=UserWarning,
                                         append=Wahr)
             del w[:]
-            try:
+            versuch:
                 self.module.warn("FilterTests.test_ordering", UserWarning)
-            except UserWarning:
+            ausser UserWarning:
                 self.fail("order handling fuer actions failed")
             self.assertEqual(len(w), 0)
 
@@ -557,9 +557,9 @@ klasse WarnTests(BaseTest):
             self.module.filterwarnings("always", category=UserWarning)
             filenames = ["nonascii\xe9\u20ac", "surrogate\udc80"]
             fuer filename in filenames:
-                try:
+                versuch:
                     os.fsencode(filename)
-                except UnicodeEncodeError:
+                ausser UnicodeEncodeError:
                     weiter
                 self.module.warn_explicit("text", UserWarning, filename, 1)
                 self.assertEqual(w[-1].filename, filename)
@@ -596,7 +596,7 @@ klasse WarnTests(BaseTest):
         klasse MyWarningClass(Warning):
             pass
 
-        # passing a non-subclass of Warning should raise a TypeError
+        # passing a non-subclass of Warning should wirf a TypeError
         expected = "category must be a Warning subclass, nicht 'str'"
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', '')
@@ -605,7 +605,7 @@ klasse WarnTests(BaseTest):
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', int)
 
-        # check that warning instances also raise a TypeError
+        # check that warning instances also wirf a TypeError
         expected = "category must be a Warning subclass, nicht '.*MyWarningClass'"
         mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', MyWarningClass())
@@ -814,7 +814,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         # Replacing oder removing the onceregistry should be okay.
         global __warningregistry__
         message = UserWarning('onceregistry test')
-        try:
+        versuch:
             original_registry = self.module.onceregistry
             __warningregistry__ = {}
             mit self.module.catch_warnings(record=Wahr) als w:
@@ -836,14 +836,14 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
                 __warningregistry__ = {}
                 self.module.warn_explicit(message, UserWarning, "file", 42)
                 self.assertEqual(len(w), 0)
-        finally:
+        schliesslich:
             self.module.onceregistry = original_registry
 
     def test_default_action(self):
         # Replacing oder removing defaultaction should be okay.
         message = UserWarning("defaultaction test")
         original = self.module.defaultaction
-        try:
+        versuch:
             mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.resetwarnings()
                 registry = {}
@@ -872,7 +872,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
                 self.module.warn_explicit(message, UserWarning, "<test>", 44,
                                             registry=registry)
                 self.assertEqual(len(w), 0)
-        finally:
+        schliesslich:
             self.module.defaultaction = original
 
     def test_showwarning_missing(self):
@@ -897,18 +897,18 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             self.module.filterwarnings("always", category=UserWarning)
 
             show = self.module._showwarnmsg
-            try:
+            versuch:
                 del self.module._showwarnmsg
                 mit support.captured_output('stderr') als stream:
                     self.module.warn(text)
                     result = stream.getvalue()
-            finally:
+            schliesslich:
                 self.module._showwarnmsg = show
         self.assertIn(text, result)
 
     def test_showwarning_not_callable(self):
         orig = self.module.showwarning
-        try:
+        versuch:
             mit self.module.catch_warnings():
                 self.module.filterwarnings("always", category=UserWarning)
                 self.module.showwarning = drucke
@@ -916,13 +916,13 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
                     self.module.warn('Warning!')
                 self.module.showwarning = 23
                 self.assertRaises(TypeError, self.module.warn, "Warning!")
-        finally:
+        schliesslich:
             self.module.showwarning = orig
 
     def test_show_warning_output(self):
         # With showwarning() missing, make sure that output is okay.
         orig = self.module.showwarning
-        try:
+        versuch:
             text = 'test show_warning'
             mit self.module.catch_warnings():
                 self.module.filterwarnings("always", category=UserWarning)
@@ -943,21 +943,21 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             expected_line = '  ' + linecache.getline(path, line).strip() + '\n'
             assert expected_line
             self.assertEqual(second_line, expected_line)
-        finally:
+        schliesslich:
             self.module.showwarning = orig
 
     def test_filename_none(self):
         # issue #12467: race condition wenn a warning is emitted at shutdown
         globals_dict = globals()
         oldfile = globals_dict['__file__']
-        try:
+        versuch:
             catch = self.module.catch_warnings(record=Wahr)
             mit catch als w:
                 self.module.filterwarnings("always", category=UserWarning)
                 globals_dict['__file__'] = Nichts
                 self.module.warn('test', UserWarning)
                 self.assertWahr(len(w))
-        finally:
+        schliesslich:
             globals_dict['__file__'] = oldfile
 
     def test_stderr_none(self):
@@ -970,7 +970,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         self.assertNotIn(b'Error', stderr)
 
     def test_issue31285(self):
-        # warn_explicit() should neither raise a SystemError nor cause an
+        # warn_explicit() should neither wirf a SystemError nor cause an
         # assertion failure, in case the gib value of get_source() has a
         # bad splitlines() method.
         get_source_called = []
@@ -1016,7 +1016,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
     @support.cpython_only
     def test_issue31411(self):
-        # warn_explicit() shouldn't raise a SystemError in case
+        # warn_explicit() shouldn't wirf a SystemError in case
         # warnings.onceregistry isn't a dictionary.
         wmod = self.module
         mit wmod.catch_warnings():
@@ -2041,26 +2041,26 @@ klasse DeprecatedTests(PyPublicAPITests):
         # Test the child classes first.
         fuer cls in reversed((Cls1, Cls2, Cls3, Cls4, Cls5, Cls6, Cls7, Cls8)):
             mit self.subTest(f'class {cls.__name__} signature'):
-                try:
+                versuch:
                     original_signature = inspect.signature(cls)
-                except ValueError:
+                ausser ValueError:
                     original_signature = Nichts
-                try:
+                versuch:
                     original_new_signature = inspect.signature(cls.__new__)
-                except ValueError:
+                ausser ValueError:
                     original_new_signature = Nichts
 
                 deprecated_cls = deprecated("depr")(cls)
 
-                try:
+                versuch:
                     deprecated_signature = inspect.signature(deprecated_cls)
-                except ValueError:
+                ausser ValueError:
                     deprecated_signature = Nichts
                 self.assertEqual(original_signature, deprecated_signature)
 
-                try:
+                versuch:
                     deprecated_new_signature = inspect.signature(deprecated_cls.__new__)
-                except ValueError:
+                ausser ValueError:
                     deprecated_new_signature = Nichts
                 self.assertEqual(original_new_signature, deprecated_new_signature)
 

@@ -31,7 +31,7 @@ async def open_connection(host=Nichts, port=Nichts, *,
     StreamWriter instance.
 
     The arguments are all the usual arguments to create_connection()
-    except protocol_factory; most common are positional host und port,
+    ausser protocol_factory; most common are positional host und port,
     mit various optional keyword arguments following.
 
     Additional optional keyword arguments are loop (to set the event loop
@@ -40,7 +40,7 @@ async def open_connection(host=Nichts, port=Nichts, *,
 
     (If you want to customize the StreamReader and/or
     StreamReaderProtocol classes, just copy the code -- there's
-    really nothing special here except some convenience.)
+    really nothing special here ausser some convenience.)
     """
     loop = events.get_running_loop()
     reader = StreamReader(limit=limit, loop=loop)
@@ -63,7 +63,7 @@ async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
     Task.
 
     The rest of the arguments are all the usual arguments to
-    loop.create_server() except protocol_factory; most common are
+    loop.create_server() ausser protocol_factory; most common are
     positional host und port, mit various optional keyword arguments
     following.  The gib value is the same als loop.create_server().
 
@@ -163,18 +163,18 @@ klasse FlowControlMixin(protocols.Protocol):
 
     async def _drain_helper(self):
         wenn self._connection_lost:
-            raise ConnectionResetError('Connection lost')
+            wirf ConnectionResetError('Connection lost')
         wenn nicht self._paused:
             gib
         waiter = self._loop.create_future()
         self._drain_waiters.append(waiter)
-        try:
+        versuch:
             await waiter
-        finally:
+        schliesslich:
             self._drain_waiters.remove(waiter)
 
     def _get_close_waiter(self, stream):
-        raise NotImplementedError
+        wirf NotImplementedError
 
 
 klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
@@ -296,9 +296,9 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
     def __del__(self):
         # Prevent reports about unhandled exceptions.
         # Better than self._closed._log_traceback = Falsch hack
-        try:
+        versuch:
             closed = self._closed
-        except AttributeError:
+        ausser AttributeError:
             pass  # failed constructor
         sonst:
             wenn closed.done() und nicht closed.cancelled():
@@ -370,7 +370,7 @@ klasse StreamWriter:
         wenn self._reader is nicht Nichts:
             exc = self._reader.exception()
             wenn exc is nicht Nichts:
-                raise exc
+                wirf exc
         wenn self._transport.is_closing():
             # Wait fuer protocol.connection_lost() call
             # Raise connection closing error wenn any,
@@ -417,7 +417,7 @@ klasse StreamReader:
         # it also doubles als half the buffer limit.
 
         wenn limit <= 0:
-            raise ValueError('Limit cannot be <= 0')
+            wirf ValueError('Limit cannot be <= 0')
 
         self._limit = limit
         wenn loop is Nichts:
@@ -501,9 +501,9 @@ klasse StreamReader:
         wenn (self._transport is nicht Nichts und
                 nicht self._paused und
                 len(self._buffer) > 2 * self._limit):
-            try:
+            versuch:
                 self._transport.pause_reading()
-            except NotImplementedError:
+            ausser NotImplementedError:
                 # The transport can't be paused.
                 # We'll just have to buffer all data.
                 # Forget the transport so we don't keep trying.
@@ -521,7 +521,7 @@ klasse StreamReader:
         # would have an unexpected behaviour. It would nicht possible to know
         # which coroutine would get the next data.
         wenn self._waiter is nicht Nichts:
-            raise RuntimeError(
+            wirf RuntimeError(
                 f'{func_name}() called waehrend another coroutine is '
                 f'already waiting fuer incoming data')
 
@@ -534,9 +534,9 @@ klasse StreamReader:
             self._transport.resume_reading()
 
         self._waiter = self._loop.create_future()
-        try:
+        versuch:
             await self._waiter
-        finally:
+        schliesslich:
             self._waiter = Nichts
 
     async def readline(self):
@@ -557,17 +557,17 @@ klasse StreamReader:
         """
         sep = b'\n'
         seplen = len(sep)
-        try:
+        versuch:
             line = await self.readuntil(sep)
-        except exceptions.IncompleteReadError als e:
+        ausser exceptions.IncompleteReadError als e:
             gib e.partial
-        except exceptions.LimitOverrunError als e:
+        ausser exceptions.LimitOverrunError als e:
             wenn self._buffer.startswith(sep, e.consumed):
                 del self._buffer[:e.consumed + seplen]
             sonst:
                 self._buffer.clear()
             self._maybe_resume_transport()
-            raise ValueError(e.args[0])
+            wirf ValueError(e.args[0])
         gib line
 
     async def readuntil(self, separator=b'\n'):
@@ -602,16 +602,16 @@ klasse StreamReader:
         sonst:
             separator = [separator]
         wenn nicht separator:
-            raise ValueError('Separator should contain at least one element')
+            wirf ValueError('Separator should contain at least one element')
         min_seplen = len(separator[0])
         max_seplen = len(separator[-1])
         wenn min_seplen == 0:
-            raise ValueError('Separator should be at least one-byte string')
+            wirf ValueError('Separator should be at least one-byte string')
 
         wenn self._exception is nicht Nichts:
-            raise self._exception
+            wirf self._exception
 
-        # Consume whole buffer except last bytes, which length is
+        # Consume whole buffer ausser last bytes, which length is
         # one less than max_seplen. Let's check corner cases with
         # separator[-1]='SEPARATOR':
         # * we have received almost complete separator (without last
@@ -619,7 +619,7 @@ klasse StreamReader:
         #   can safely consume max_seplen - 1 bytes.
         # * last byte of buffer is first byte of separator, i.e.
         #   buffer='abcdefghijklmnopqrS'. We may safely consume
-        #   everything except that last byte, but this require to
+        #   everything ausser that last byte, but this require to
         #   analyze bytes of buffer that match partial separator.
         #   This is slow and/or require FSM. For this case our
         #   implementation is nicht optimal, since require rescanning
@@ -659,7 +659,7 @@ klasse StreamReader:
                 # see upper comment fuer explanation.
                 offset = max(0, buflen + 1 - max_seplen)
                 wenn offset > self._limit:
-                    raise exceptions.LimitOverrunError(
+                    wirf exceptions.LimitOverrunError(
                         'Separator is nicht found, und chunk exceed the limit',
                         offset)
 
@@ -670,13 +670,13 @@ klasse StreamReader:
             wenn self._eof:
                 chunk = bytes(self._buffer)
                 self._buffer.clear()
-                raise exceptions.IncompleteReadError(chunk, Nichts)
+                wirf exceptions.IncompleteReadError(chunk, Nichts)
 
             # _wait_for_data() will resume reading wenn stream was paused.
             await self._wait_for_data('readuntil')
 
         wenn match_start > self._limit:
-            raise exceptions.LimitOverrunError(
+            wirf exceptions.LimitOverrunError(
                 'Separator is found, but chunk is longer than limit', match_start)
 
         chunk = self._buffer[:match_end]
@@ -707,7 +707,7 @@ klasse StreamReader:
         """
 
         wenn self._exception is nicht Nichts:
-            raise self._exception
+            wirf self._exception
 
         wenn n == 0:
             gib b''
@@ -751,10 +751,10 @@ klasse StreamReader:
         needed.
         """
         wenn n < 0:
-            raise ValueError('readexactly size can nicht be less than zero')
+            wirf ValueError('readexactly size can nicht be less than zero')
 
         wenn self._exception is nicht Nichts:
-            raise self._exception
+            wirf self._exception
 
         wenn n == 0:
             gib b''
@@ -763,7 +763,7 @@ klasse StreamReader:
             wenn self._eof:
                 incomplete = bytes(self._buffer)
                 self._buffer.clear()
-                raise exceptions.IncompleteReadError(incomplete, n)
+                wirf exceptions.IncompleteReadError(incomplete, n)
 
             await self._wait_for_data('readexactly')
 
@@ -782,5 +782,5 @@ klasse StreamReader:
     async def __anext__(self):
         val = await self.readline()
         wenn val == b'':
-            raise StopAsyncIteration
+            wirf StopAsyncIteration
         gib val

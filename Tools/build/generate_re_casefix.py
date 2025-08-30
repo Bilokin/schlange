@@ -8,11 +8,11 @@ importiere unicodedata
 SCRIPT_NAME = 'Tools/build/generate_re_casefix.py'
 
 def update_file(file, content):
-    try:
+    versuch:
         mit open(file, encoding='utf-8') als fobj:
             wenn fobj.read() == content:
                 gib Falsch
-    except (OSError, ValueError):
+    ausser (OSError, ValueError):
         pass
     mit open(file, 'w', encoding='utf-8') als fobj:
         fobj.write(content)
@@ -58,9 +58,9 @@ def main(outfile='Lib/re/_casefix.py'):
         fuer i in t:
             wenn i > 0xffff:
                 bad_codes.extend(t)
-                try:
+                versuch:
                     bad_codes.append(ord(chr(i).upper()))
-                except (ValueError, TypeError):
+                ausser (ValueError, TypeError):
                     pass
                 breche
     wenn bad_codes:

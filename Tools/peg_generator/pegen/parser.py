@@ -113,9 +113,9 @@ def memoize_left_rec(
             waehrend Wahr:
                 self._reset(mark)
                 self.in_recursive_rule += 1
-                try:
+                versuch:
                     result = method(self)
-                finally:
+                schliesslich:
                     self.in_recursive_rule -= 1
                 endmark = self._mark()
                 depth += 1
@@ -273,7 +273,7 @@ klasse Parser:
 
     def expect_forced(self, res: Any, expectation: str) -> Optional[tokenize.TokenInfo]:
         wenn res is Nichts:
-            raise self.make_syntax_error(f"expected {expectation}")
+            wirf self.make_syntax_error(f"expected {expectation}")
         gib res
 
     def positive_lookahead(self, func: Callable[..., T], *args: object) -> T:
@@ -320,19 +320,19 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
         file = sys.stdin
     sonst:
         file = open(args.filename)
-    try:
+    versuch:
         tokengen = tokenize.generate_tokens(file.readline)
         tokenizer = Tokenizer(tokengen, verbose=verbose_tokenizer)
         parser = parser_class(tokenizer, verbose=verbose_parser)
         tree = parser.start()
-        try:
+        versuch:
             wenn file.isatty():
                 endpos = 0
             sonst:
                 endpos = file.tell()
-        except IOError:
+        ausser IOError:
             endpos = 0
-    finally:
+    schliesslich:
         wenn file is nicht sys.stdin:
             file.close()
 

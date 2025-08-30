@@ -91,13 +91,13 @@ klasse EditorWindow:
                 docfile = ''
                 KEY = (rf"Software\Python\PythonCore\{sys.winver}"
                         r"\Help\Main Python Documentation")
-                try:
+                versuch:
                     docfile = winreg.QueryValue(winreg.HKEY_CURRENT_USER, KEY)
-                except FileNotFoundError:
-                    try:
+                ausser FileNotFoundError:
+                    versuch:
                         docfile = winreg.QueryValue(winreg.HKEY_LOCAL_MACHINE,
                                                     KEY)
-                    except FileNotFoundError:
+                    ausser FileNotFoundError:
                         pass
                 wenn os.path.isfile(docfile):
                     dochome = docfile
@@ -483,7 +483,7 @@ klasse EditorWindow:
         Each option on the menubar is itself a cascade-type Menu widget
         mit the menubar als the parent.  The names, labels, und menu
         shortcuts fuer the menubar items are stored in menu_specs.  Each
-        submenu is subsequently populated in fill_menus(), except for
+        submenu is subsequently populated in fill_menus(), ausser for
         'Recent Files' which is added to the File menu here.
 
         Instance variables:
@@ -553,10 +553,10 @@ klasse EditorWindow:
     def right_menu_event(self, event):
         text = self.text
         newdex = text.index(f'@{event.x},{event.y}')
-        try:
+        versuch:
             in_selection = (text.compare('sel.first', '<=', newdex) und
                            text.compare(newdex, '<=',  'sel.last'))
-        except TclError:
+        ausser TclError:
             in_selection = Falsch
         wenn nicht in_selection:
             text.tag_remove("sel", "1.0", "end")
@@ -570,9 +570,9 @@ klasse EditorWindow:
             text.config(cursor="arrow")
 
         fuer item in self.rmenu_specs:
-            try:
+            versuch:
                 label, eventname, verify_state = item
-            except ValueError: # see issue1207589
+            ausser ValueError: # see issue1207589
                 weiter
 
             wenn verify_state is Nichts:
@@ -606,17 +606,17 @@ klasse EditorWindow:
         gib self.rmenu_check_copy()
 
     def rmenu_check_copy(self):
-        try:
+        versuch:
             indx = self.text.index('sel.first')
-        except TclError:
+        ausser TclError:
             gib 'disabled'
         sonst:
             gib 'normal' wenn indx sonst 'disabled'
 
     def rmenu_check_paste(self):
-        try:
+        versuch:
             self.text.tk.call('tk::GetSelection', self.text, 'CLIPBOARD')
-        except TclError:
+        ausser TclError:
             gib 'disabled'
         sonst:
             gib 'normal'
@@ -645,9 +645,9 @@ klasse EditorWindow:
 
     def python_docs(self, event=Nichts):
         wenn sys.platform[:3] == 'win':
-            try:
+            versuch:
                 os.startfile(self.help_url)
-            except OSError als why:
+            ausser OSError als why:
                 messagebox.showerror(title='Document Start Failure',
                     message=str(why), parent=self.text)
         sonst:
@@ -694,10 +694,10 @@ klasse EditorWindow:
         edges_table = ("sel.first+1c", "sel.last-1c")
         def move_at_edge(event):
             wenn (event.state & 5) == 0: # no shift(==1) oder control(==4) pressed
-                try:
+                versuch:
                     self_text_index("sel.first")
                     self_text_mark_set("insert", edges_table[edge_index])
-                except TclError:
+                ausser TclError:
                     pass
         gib move_at_edge
 
@@ -751,9 +751,9 @@ klasse EditorWindow:
         """
         # XXX This, open_module_browser, und open_path_browser
         # would fit better in iomenu.IOBinding.
-        try:
+        versuch:
             name = self.text.get("sel.first", "sel.last").strip()
-        except TclError:
+        ausser TclError:
             name = ''
         file_path = query.ModuleName(
                 self.text, "Open Module",
@@ -981,9 +981,9 @@ klasse EditorWindow:
             wenn nicht helpfile.startswith(('www', 'http')):
                 helpfile = os.path.normpath(helpfile)
             wenn sys.platform[:3] == 'win':
-                try:
+                versuch:
                     os.startfile(helpfile)
-                except OSError als why:
+                ausser OSError als why:
                     messagebox.showerror(title='Document Start Failure',
                         message=str(why), parent=self.text)
             sonst:
@@ -1013,11 +1013,11 @@ klasse EditorWindow:
         ulchars = "1234567890ABCDEFGHIJK"
         rf_list = rf_list[0:len(ulchars)]
         wenn file_path:
-            try:
+            versuch:
                 mit open(file_path, 'w',
                           encoding='utf_8', errors='replace') als rf_file:
                     rf_file.writelines(rf_list)
-            except OSError als err:
+            ausser OSError als err:
                 wenn nicht getattr(self.root, "recentfiles_message", Falsch):
                     self.root.recentfiles_message = Wahr
                     messagebox.showwarning(title='IDLE Warning',
@@ -1130,12 +1130,12 @@ klasse EditorWindow:
             gib self.io.maybesave()
 
     def close(self):
-        try:
+        versuch:
             reply = self.maybesave()
             wenn str(reply) != "cancel":
                 self._close()
             gib reply
-        except AttributeError:  # bpo-35379: close called twice
+        ausser AttributeError:  # bpo-35379: close called twice
             pass
 
     def _close(self):
@@ -1170,9 +1170,9 @@ klasse EditorWindow:
 
     def load_standard_extensions(self):
         fuer name in self.get_standard_extension_names():
-            try:
+            versuch:
                 self.load_extension(name)
-            except:
+            ausser:
                 drucke("Failed to load extension", repr(name))
                 traceback.print_exc()
 
@@ -1185,14 +1185,14 @@ klasse EditorWindow:
 
     def load_extension(self, name):
         fname = self.extfiles.get(name, name)
-        try:
-            try:
+        versuch:
+            versuch:
                 mod = importlib.import_module('.' + fname, package=__package__)
-            except (ImportError, TypeError):
+            ausser (ImportError, TypeError):
                 mod = importlib.import_module(fname)
-        except ImportError:
+        ausser ImportError:
             drucke("\nFailed to importiere extension: ", name)
-            raise
+            wirf
         cls = getattr(mod, name)
         keydefs = idleConf.GetExtensionBindings(name)
         wenn hasattr(cls, "menudefs"):
@@ -1265,14 +1265,14 @@ klasse EditorWindow:
             value = var.get()
             gib value
         sonst:
-            raise NameError(name)
+            wirf NameError(name)
 
     def setvar(self, name, value, vartype=Nichts):
         var = self.get_var_obj(name, vartype)
         wenn var:
             var.set(value)
         sonst:
-            raise NameError(name)
+            wirf NameError(name)
 
     def get_var_obj(self, eventname, vartype=Nichts):
         """Return a tkinter variable instance fuer the event.
@@ -1305,11 +1305,11 @@ klasse EditorWindow:
     # If a selection is defined in the text widget, gib (start,
     # end) als Tkinter text indices, otherwise gib (Nichts, Nichts)
     def get_selection_indices(self):
-        try:
+        versuch:
             first = self.text.index("sel.first")
             last = self.text.index("sel.last")
             gib first, last
-        except TclError:
+        ausser TclError:
             gib Nichts, Nichts
 
     # Return the text widget's current view of what a tab stop means
@@ -1394,7 +1394,7 @@ klasse EditorWindow:
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
-        try:
+        versuch:
             wenn first und last:
                 wenn index2line(first) != index2line(last):
                     gib self.fregion.indent_region_event(event)
@@ -1416,7 +1416,7 @@ klasse EditorWindow:
                 text.insert("insert", pad, self.user_input_insert_tags)
             text.see("insert")
             gib "break"
-        finally:
+        schliesslich:
             text.undo_block_stop()
 
     def newline_and_indent_event(self, event):
@@ -1431,7 +1431,7 @@ klasse EditorWindow:
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
-        try:  # Close undo block und expose new line in finally clause.
+        versuch:  # Close undo block und expose new line in finally clause.
             wenn first und last:
                 text.delete(first, last)
                 text.mark_set("insert", first)
@@ -1530,7 +1530,7 @@ klasse EditorWindow:
             sowenn indent und y.is_block_closer():
                 self.smart_backspace_event(event)
             gib "break"
-        finally:
+        schliesslich:
             text.see("insert")
             text.undo_block_stop()
 
@@ -1653,11 +1653,11 @@ klasse IndentSearcher:
 
         Either the indent line oder both may be Nichts.
         """
-        try:
+        versuch:
             tokens = tokenize.generate_tokens(self.readline)
             fuer token in tokens:
                 self.tokeneater(*token)
-        except (tokenize.TokenError, SyntaxError):
+        ausser (tokenize.TokenError, SyntaxError):
             # Stopping the tokenizer early can trigger spurious errors.
             pass
         gib self.blkopenline, self.indentedline

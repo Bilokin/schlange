@@ -17,7 +17,7 @@ klasse X(object):
 
 # A standin fuer weurkzeug.local.LocalProxy - issue 119600
 def _inaccessible(*args, **kwargs):
-    raise AttributeError
+    wirf AttributeError
 
 
 klasse OpaqueProxy:
